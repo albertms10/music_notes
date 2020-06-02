@@ -9,7 +9,8 @@ class Note with Music {
 
   Note(this.note, [this.accidental]) : assert(note != null);
 
-  int get noteValue => Music.modValue(note.value + accidental.value);
+  int get noteValue =>
+      Music.modValue(note.value + (accidental != null ? accidental.value : 0));
 
   @override
   String toString() =>
