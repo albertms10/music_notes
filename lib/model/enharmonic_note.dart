@@ -26,4 +26,7 @@ class EnharmonicNote {
 
     return enharmonicNote;
   }
+
+  @override
+  String toString() => '$enharmonicNotes';
 }
