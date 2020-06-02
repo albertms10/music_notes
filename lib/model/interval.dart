@@ -12,7 +12,7 @@ class Interval {
         assert(
           interval.isPerfect
               ? (quality != Qualities.Major || quality != Qualities.Menor)
-              : true,
+              : quality != Qualities.Justa,
         );
 
   Interval.fromDelta(Intervals interval, int delta)
