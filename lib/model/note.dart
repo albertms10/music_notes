@@ -31,11 +31,10 @@ class Note with Music {
     return distance;
   }
 
-  Interval exactInterval(Note note) {
-    int delta = note.accidentalValue - this.accidentalValue;
-    Intervals interval = this.note.interval(note.note);
-    return Interval.fromDelta(interval, delta);
-  }
+  Interval exactInterval(Note note) => Interval.fromDelta(
+        this.note.interval(note.note),
+        note.accidentalValue - this.accidentalValue,
+      );
 
   @override
   String toString() =>
