@@ -16,9 +16,9 @@ class CircleOfFifths {
 
   static int shortestFifthsDistance(
       EnharmonicNote enharmonicNote1, EnharmonicNote enharmonicNote2) {
-    int distanceAbove =
+    final int distanceAbove =
         enharmonicNote1.enharmonicIntervalDistance(enharmonicNote2, 7);
-    int distanceBelow =
+    final int distanceBelow =
         enharmonicNote1.enharmonicIntervalDistance(enharmonicNote2, -7);
 
     return math.min(distanceAbove, distanceBelow);
