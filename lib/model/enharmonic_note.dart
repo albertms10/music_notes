@@ -1,8 +1,9 @@
 import 'package:music_notes_relations/model/enums/accidentals.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
+import 'package:music_notes_relations/model/mixins/music.dart';
 import 'package:music_notes_relations/model/note.dart';
 
-class EnharmonicNote {
+class EnharmonicNote with Music {
   final List<Note> enharmonicNotes;
 
   EnharmonicNote(this.enharmonicNotes) : assert(enharmonicNotes.length > 0);
