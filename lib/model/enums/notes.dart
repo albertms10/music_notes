@@ -1,3 +1,5 @@
+import 'package:music_notes_relations/model/mixins/music.dart';
+
 enum Notes { Do, Re, Mi, Fa, Sol, La, Si }
 
 extension NotesValues on Notes {
@@ -11,8 +13,9 @@ extension NotesValues on Notes {
     Notes.Si: 12,
   };
 
-  static Notes note(int value) => noteValues.keys
-      .firstWhere((note) => value == noteValues[note], orElse: () => null);
+  static Notes note(int value) => noteValues.keys.firstWhere(
+      (note) => Music.modValue(value) == noteValues[note],
+      orElse: () => null);
 
   int get value => noteValues[this];
 }
