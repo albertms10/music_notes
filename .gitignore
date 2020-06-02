@@ -4,6 +4,7 @@
 .dart_tool/
 .packages
 build/
+pubspec.lock
 
 # Avoid committing generated Javascript files:
 *.dart.js
