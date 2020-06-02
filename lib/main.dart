@@ -11,7 +11,7 @@ class FifthsCircle {
     final notes = <EnharmonicNote>[];
 
     for (int i = 0; i < Music.chromaticDivisions * 7; i += 7)
-      notes.add(Music.chromaticScale[i % Music.chromaticScale.length]);
+      notes.add(Music.chromaticScale[Music.modValue(i)]);
 
     return notes;
   }
