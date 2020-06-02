@@ -10,9 +10,7 @@ class Interval {
       : assert(interval != null),
         assert(quality != null),
         assert(
-          (interval == Intervals.Quarta ||
-                  interval == Intervals.Quinta ||
-                  interval == Intervals.Octava)
+          interval.isPerfect
               ? (quality != Qualities.Major || quality != Qualities.Menor)
               : true,
         );

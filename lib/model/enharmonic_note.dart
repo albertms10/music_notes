@@ -7,10 +7,12 @@ class EnharmonicNote with Music {
   final List<Note> enharmonicNotes;
 
   EnharmonicNote(this.enharmonicNotes)
-      : assert(enharmonicNotes.length > 0),
+      : assert(enharmonicNotes.isNotEmpty),
         assert(
           enharmonicNotes.every(
-              (element) => element.value == enharmonicNotes[0].value),
+            (element) => element.value == enharmonicNotes[0].value,
+          ),
+          "The notes are not enharmonic",
         );
 
   EnharmonicNote.fromValue(int value)
