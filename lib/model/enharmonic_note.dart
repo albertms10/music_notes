@@ -7,23 +7,23 @@ class EnharmonicNote {
 
   EnharmonicNote(this.enharmonicNotes);
 
-  static List<Note> getEnharmonicNotes(int value) {
-    final notes = <Note>[];
+  static EnharmonicNote getEnharmonicNotes(int value) {
+    EnharmonicNote enharmonicNote;
 
     final note = NotesValues.note(value);
 
     if (note != null) {
-      notes.add(Note(note));
+      enharmonicNote = EnharmonicNote([Note(note)]);
     } else {
       var noteBelow = NotesValues.note(value - 1);
       var noteAbove = NotesValues.note(value + 1);
 
-      notes.addAll([
+      enharmonicNote = EnharmonicNote([
         Note(noteBelow, Accidentals.Sostingut),
         Note(noteAbove, Accidentals.Bemoll)
       ]);
     }
 
-    return notes;
+    return enharmonicNote;
   }
 }
