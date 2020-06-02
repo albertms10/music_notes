@@ -6,7 +6,7 @@ class Note {
   final Notes note;
   final Accidentals accidental;
 
-  Note(this.note, [this.accidental]);
+  Note(this.note, [this.accidental]) : assert(note != null);
 
   int get noteValue => note.value + accidental.value % 12;
 
