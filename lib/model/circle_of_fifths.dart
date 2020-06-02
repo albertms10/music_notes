@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:music_notes_relations/model/enharmonic_note.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
+import 'package:music_notes_relations/model/note.dart';
 
 class CircleOfFifths {
   static List<EnharmonicNote> get fifthsCircle {
@@ -22,4 +23,7 @@ class CircleOfFifths {
 
     return math.min(distanceAbove, distanceBelow);
   }
+
+  static int exactFifthsDistance(Note note1, Note note2) =>
+      note1.exactIntervalDistance(note2, 7);
 }
