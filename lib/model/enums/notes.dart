@@ -11,8 +11,8 @@ extension NotesValues on Notes {
     Notes.Si: 12,
   };
 
-  static Notes note(int value) =>
-      noteValues.keys.firstWhere((note) => value == noteValues[note]);
+  static Notes note(int value) => noteValues.keys
+      .firstWhere((note) => value == noteValues[note], orElse: () => null);
 
   int get value => noteValues[this];
 }
