@@ -16,7 +16,7 @@ class EnharmonicNote with Music {
   EnharmonicNote.fromValue(int value)
       : this(getEnharmonicNote(value).enharmonicNotes);
 
-  int get value => enharmonicNotes[0].noteValue;
+  int get value => enharmonicNotes[0].value;
 
   static EnharmonicNote getEnharmonicNote(int value) {
     final note = NotesValues.note(value);
