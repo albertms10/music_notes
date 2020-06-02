@@ -1,5 +1,5 @@
 import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/enums.dart';
+import 'package:music_notes_relations/model/enums/enums_to_string.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 
