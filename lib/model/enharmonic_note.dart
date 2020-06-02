@@ -8,25 +8,24 @@ class EnharmonicNote with Music {
 
   EnharmonicNote(this.enharmonicNotes) : assert(enharmonicNotes.length > 0);
 
+  EnharmonicNote.fromValue(int value)
+      : this(getEnharmonicNote(value).enharmonicNotes);
 
-  static EnharmonicNote getEnharmonicNotes(int value) {
-    EnharmonicNote enharmonicNote;
+  int get value => enharmonicNotes[0].noteValue;
 
-    final note = NotesValues.note(value);
+  static EnharmonicNote getEnharmonicNote(int value) {
+    final modValue = Music.modValue(value);
+    final note = NotesValues.note(modValue);
 
-    if (note != null) {
-      enharmonicNote = EnharmonicNote([Note(note)]);
-    } else {
-      var noteBelow = NotesValues.note(value - 1);
-      var noteAbove = NotesValues.note(value + 1);
+    if (note != null) return EnharmonicNote([Note(note)]);
 
-      enharmonicNote = EnharmonicNote([
-        Note(noteBelow, Accidentals.Sostingut),
-        Note(noteAbove, Accidentals.Bemoll)
-      ]);
-    }
+    var noteBelow = NotesValues.note(Music.modValue(modValue - 1));
+    var noteAbove = NotesValues.note(Music.modValue(modValue + 1));
 
-    return enharmonicNote;
+    return EnharmonicNote([
+      Note(noteBelow, Accidentals.Sostingut),
+      Note(noteAbove, Accidentals.Bemoll)
+    ]);
   }
 
   @override
