@@ -6,4 +6,7 @@ class EnharmonicInterval {
   EnharmonicInterval(this.intervals)
       : assert(intervals != null),
         assert(intervals.length > 0);
+
+  @override
+  String toString() => '$intervals';
 }
