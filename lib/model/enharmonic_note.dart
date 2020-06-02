@@ -19,13 +19,12 @@ class EnharmonicNote with Music {
   int get value => enharmonicNotes[0].noteValue;
 
   static EnharmonicNote getEnharmonicNote(int value) {
-    final modValue = Music.modValue(value);
-    final note = NotesValues.note(modValue);
+    final note = NotesValues.note(value);
 
     if (note != null) return EnharmonicNote([Note(note)]);
 
-    var noteBelow = NotesValues.note(Music.modValue(modValue - 1));
-    var noteAbove = NotesValues.note(Music.modValue(modValue + 1));
+    var noteBelow = NotesValues.note(value - 1);
+    var noteAbove = NotesValues.note(value + 1);
 
     return EnharmonicNote([
       Note(noteBelow, Accidentals.Sostingut),
