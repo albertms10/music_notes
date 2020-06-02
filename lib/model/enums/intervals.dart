@@ -1,6 +1,7 @@
 import 'package:music_notes_relations/model/enharmonic_interval.dart';
 import 'package:music_notes_relations/model/enums/qualities.dart';
 import 'package:music_notes_relations/model/interval.dart';
+import 'package:music_notes_relations/model/mixins/music.dart';
 
 enum Intervals {
   Segona,
@@ -53,4 +54,10 @@ extension IntervalsValues on Intervals {
       Interval(Intervals.Octava, Qualities.Justa),
     ]): 12,
   };
+
+  static EnharmonicInterval interval(int value) => intervalsValues.keys.firstWhere(
+      (interval) => Music.modValue(value) == intervalsValues[interval],
+      orElse: () => null);
+
+  int get value => intervalsValues[this];
 }
