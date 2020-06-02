@@ -32,6 +32,21 @@ class EnharmonicNote with Music {
     ]);
   }
 
+  int intervalDistance(EnharmonicNote note, int interval) {
+    int distance = 0;
+
+    int currentPitch = this.value;
+    EnharmonicNote tempNote = EnharmonicNote.fromValue(currentPitch);
+
+    while (tempNote != note) {
+      currentPitch += interval;
+      tempNote = EnharmonicNote.fromValue(currentPitch);
+      distance++;
+    }
+
+    return distance;
+  }
+
   @override
   String toString() => '$enharmonicNotes';
 
