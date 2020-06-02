@@ -4,6 +4,7 @@ import 'package:music_notes_relations/model/interval.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 
 enum Intervals {
+  Unisson,
   Segona,
   Tercera,
   Quarta,
@@ -16,46 +17,18 @@ enum Intervals {
 
 extension IntervalsValues on Intervals {
   static final intervalsValues = {
-    EnharmonicInterval([
-      Interval(Intervals.Segona, Qualities.Menor),
-    ]): 1,
-    EnharmonicInterval([
-      Interval(Intervals.Segona, Qualities.Major),
-    ]): 2,
-    EnharmonicInterval([
-      Interval(Intervals.Tercera, Qualities.Menor),
-    ]): 3,
-    EnharmonicInterval([
-      Interval(Intervals.Tercera, Qualities.Major),
-    ]): 4,
-    EnharmonicInterval([
-      Interval(Intervals.Quarta, Qualities.Justa),
-    ]): 5,
-    EnharmonicInterval([
-      Interval(Intervals.Quarta, Qualities.Augmentada),
-      Interval(Intervals.Quinta, Qualities.Disminuida),
-    ]): 6,
-    EnharmonicInterval([
-      Interval(Intervals.Quinta, Qualities.Justa),
-    ]): 7,
-    EnharmonicInterval([
-      Interval(Intervals.Sexta, Qualities.Menor),
-    ]): 8,
-    EnharmonicInterval([
-      Interval(Intervals.Sexta, Qualities.Major),
-    ]): 9,
-    EnharmonicInterval([
-      Interval(Intervals.Septima, Qualities.Menor),
-    ]): 10,
-    EnharmonicInterval([
-      Interval(Intervals.Septima, Qualities.Major),
-    ]): 11,
-    EnharmonicInterval([
-      Interval(Intervals.Octava, Qualities.Justa),
-    ]): 12,
+    Intervals.Unisson: 1,
+    Intervals.Segona: 2,
+    Intervals.Tercera: 3,
+    Intervals.Quarta: 4,
+    Intervals.Quinta: 5,
+    Intervals.Sexta: 6,
+    Intervals.Septima: 7,
+    Intervals.Octava: 8,
+    Intervals.Novena: 9,
   };
 
-  static EnharmonicInterval interval(int value) => intervalsValues.keys.firstWhere(
+  static Intervals interval(int value) => intervalsValues.keys.firstWhere(
       (interval) => Music.modValue(value) == intervalsValues[interval],
       orElse: () => null);
 
