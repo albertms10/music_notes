@@ -15,4 +15,7 @@ class Note with Music {
   String toString() =>
       '${note.toText()}' +
       (accidental != null ? ' ${accidental.toText()}' : '');
+
+  @override
+  bool operator ==(other) => other is Note && this.note == other.note;
 }
