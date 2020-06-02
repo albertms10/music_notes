@@ -1,3 +1,6 @@
 mixin Music {
-  static int modValue(int value) => value == 12 ? value : value % 12;
+  static int chromaticDivisions = 12;
+
+  static int modValue(int value) =>
+      value == chromaticDivisions ? value : value % chromaticDivisions;
 }
