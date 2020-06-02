@@ -22,7 +22,12 @@ extension NotesValues on Notes {
 
   int get value => notesValues[this];
 
-  Intervals interval(Notes note) => IntervalsValues.interval(
-        NotesValues.index(note.value) - NotesValues.index(this.value) + 1,
-      );
+  Intervals interval(Notes note) {
+    int noteIndex1 = NotesValues.index(this.value);
+    int noteIndex2 = NotesValues.index(note.value);
+
+    if (noteIndex1 > noteIndex2) noteIndex2 += notesValues.length;
+
+    return IntervalsValues.interval(noteIndex2 - noteIndex1 + 1);
+  }
 }
