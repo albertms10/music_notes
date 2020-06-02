@@ -60,4 +60,9 @@ extension IntervalsValues on Intervals {
       orElse: () => null);
 
   int get value => intervalsValues[this];
+
+  bool get isPerfect => (this == Intervals.Unisson ||
+      this == Intervals.Quarta ||
+      this == Intervals.Quinta ||
+      this == Intervals.Octava);
 }
