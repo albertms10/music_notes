@@ -2,7 +2,6 @@ import 'package:music_notes_relations/model/enums/accidentals.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 import 'package:music_notes_relations/model/note.dart';
-import 'package:collection/collection.dart';
 
 class EnharmonicNote with Music {
   final List<Note> enharmonicNotes;
@@ -39,6 +38,5 @@ class EnharmonicNote with Music {
 
   @override
   bool operator ==(other) =>
-      other is EnharmonicNote &&
-      ListEquality().equals(this.enharmonicNotes, other.enharmonicNotes);
+      other is EnharmonicNote && this.value == other.value;
 }
