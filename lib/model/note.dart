@@ -1,9 +1,9 @@
-import 'package:music_notes_relations/model/enharmonic_interval.dart';
 import 'package:music_notes_relations/model/enharmonic_note.dart';
 import 'package:music_notes_relations/model/enums/accidentals.dart';
 import 'package:music_notes_relations/model/enums/enums_to_string.dart';
 import 'package:music_notes_relations/model/enums/intervals.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
+import 'package:music_notes_relations/model/interval.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 
 class Note with Music {
@@ -14,6 +14,8 @@ class Note with Music {
 
   int get value =>
       Music.modValue(note.value + (accidental != null ? accidental.value : 0));
+
+  int get accidentalValue => accidental != null ? accidental.value : 0;
 
   int exactIntervalDistance(Note note, int interval) {
     int distance = 0;
@@ -29,8 +31,11 @@ class Note with Music {
     return distance;
   }
 
-  EnharmonicInterval exactInterval(Note note) =>
-      IntervalsValues.interval(note.value - this.value);
+  Interval exactInterval(Note note) {
+    int delta = note.accidentalValue - this.accidentalValue;
+    Intervals interval = this.note.interval(note.note);
+    return Interval.fromDelta(interval, delta);
+  }
 
   @override
   String toString() =>
