@@ -1,4 +1,5 @@
 import 'package:music_notes_relations/model/enums/accidentals.dart';
+import 'package:music_notes_relations/model/enums/intervals.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
 
 extension NotesToString on Notes {
@@ -6,5 +7,9 @@ extension NotesToString on Notes {
 }
 
 extension AccidentalsToString on Accidentals {
+  String toText() => toString().split('.')[1];
+}
+
+extension IntervalsToString on Intervals {
   String toText() => toString().split('.')[1];
 }
