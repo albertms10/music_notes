@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:music_notes_relations/model/enharmonic_note.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 
@@ -11,5 +13,10 @@ class FifthsCircle {
     return notes;
   }
 
-  static int fifthsDistance(EnharmonicNote note1, EnharmonicNote note2) {}
+  static int distanceInFifths(EnharmonicNote note1, EnharmonicNote note2) {
+    int distanceAbove = note1.intervalDistance(note2, 7);
+    int distanceBelow = note1.intervalDistance(note2, -7);
+
+    return math.min(distanceAbove, distanceBelow);
+  }
 }
