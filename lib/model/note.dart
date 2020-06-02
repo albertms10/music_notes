@@ -18,5 +18,8 @@ class Note with Music {
       (accidental != null ? ' ${accidental.toText()}' : '');
 
   @override
-  bool operator ==(other) => other is Note && this.note == other.note;
+  bool operator ==(other) =>
+      other is Note &&
+      this.note == other.note &&
+      this.accidental == other.accidental;
 }
