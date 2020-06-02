@@ -1,45 +1,20 @@
 import 'package:music_notes_relations/model/enharmonic_note.dart';
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/note.dart';
 
 void main() {
-  print(EnharmonicNote.getEnharmonicNotes(12));
+  print(FifthsCircle.chromaticScale);
+  print(FifthsCircle.fifthsCircle);
 }
 
 class FifthsCircle {
-  static final explicitChromaticScale = [
-    EnharmonicNote([Note(Notes.Do)]),
-    EnharmonicNote([
-      Note(Notes.Do, Accidentals.Sostingut),
-      Note(Notes.Re, Accidentals.Bemoll)
-    ]),
-    EnharmonicNote([Note(Notes.Re)]),
-    EnharmonicNote([
-      Note(Notes.Re, Accidentals.Sostingut),
-      Note(Notes.Mi, Accidentals.Bemoll)
-    ]),
-    EnharmonicNote([Note(Notes.Mi)]),
-    EnharmonicNote([Note(Notes.Fa)]),
-    EnharmonicNote([Note(Notes.Fa, Accidentals.Sostingut)]),
-    EnharmonicNote([Note(Notes.Sol, Accidentals.Bemoll)]),
-    EnharmonicNote([Note(Notes.Sol)]),
-    EnharmonicNote([Note(Notes.Sol, Accidentals.Sostingut)]),
-    EnharmonicNote([Note(Notes.La, Accidentals.Bemoll)]),
-    EnharmonicNote([Note(Notes.La)]),
-    EnharmonicNote([
-      Note(Notes.La, Accidentals.Sostingut),
-      Note(Notes.Si, Accidentals.Bemoll)
-    ]),
-    EnharmonicNote([Note(Notes.Si)]),
+  static final chromaticScale = [
+    for (int i = 1; i <= 12; i++) EnharmonicNote.getEnharmonicNotes(i)
   ];
 
-  static List<List<Note>> get fifthsCircle {
-    final notes = <List<Note>>[];
+  static List<EnharmonicNote> get fifthsCircle {
+    final notes = <EnharmonicNote>[];
 
-    for (int i = -6; i <= 6 * 7; i += 7) {
-      //notes.add(explicitChromaticScale[i % explicitChromaticScale.length]);
-    }
+    for (int i = 0; i < 12 * 7; i += 7)
+      notes.add(chromaticScale[i % chromaticScale.length]);
 
     return notes;
   }
