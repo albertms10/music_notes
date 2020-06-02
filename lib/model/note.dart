@@ -2,7 +2,7 @@ import 'package:music_notes_relations/model/enums/accidentals.dart';
 import 'package:music_notes_relations/model/enums/enums.dart';
 import 'package:music_notes_relations/model/enums/notes.dart';
 
-class Note with Enums {
+class Note {
   final Notes note;
   final Accidentals accidental;
 
@@ -12,6 +12,6 @@ class Note with Enums {
 
   @override
   String toString() =>
-      '${enumToString(note)}' +
-      (accidental != null ? ' ${enumToString(accidental)}' : '');
+      '${note.toText()}' +
+      (accidental != null ? ' ${accidental.toText()}' : '');
 }
