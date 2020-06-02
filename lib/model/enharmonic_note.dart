@@ -5,7 +5,8 @@ import 'package:music_notes_relations/model/note.dart';
 class EnharmonicNote {
   final List<Note> enharmonicNotes;
 
-  EnharmonicNote(this.enharmonicNotes);
+  EnharmonicNote(this.enharmonicNotes) : assert(enharmonicNotes.length > 0);
+
 
   static EnharmonicNote getEnharmonicNotes(int value) {
     EnharmonicNote enharmonicNote;
