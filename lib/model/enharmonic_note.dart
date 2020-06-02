@@ -6,7 +6,12 @@ import 'package:music_notes_relations/model/note.dart';
 class EnharmonicNote with Music {
   final List<Note> enharmonicNotes;
 
-  EnharmonicNote(this.enharmonicNotes) : assert(enharmonicNotes.length > 0);
+  EnharmonicNote(this.enharmonicNotes)
+      : assert(
+          enharmonicNotes.length > 0,
+          enharmonicNotes.every(
+              (element) => element.noteValue == enharmonicNotes[0].noteValue),
+        );
 
   EnharmonicNote.fromValue(int value)
       : this(getEnharmonicNote(value).enharmonicNotes);
