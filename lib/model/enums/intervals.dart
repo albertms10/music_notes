@@ -1,6 +1,3 @@
-import 'package:music_notes_relations/model/enharmonic_interval.dart';
-import 'package:music_notes_relations/model/enums/qualities.dart';
-import 'package:music_notes_relations/model/interval.dart';
 import 'package:music_notes_relations/model/mixins/music.dart';
 
 enum Intervals {
