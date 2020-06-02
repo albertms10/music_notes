@@ -15,6 +15,20 @@ class Interval {
               : true,
         );
 
+  Interval.fromDelta(Intervals interval, int delta)
+      : this(
+          interval,
+          interval.isPerfect
+              ? (delta == 1
+                  ? Qualities.Augmentada
+                  : delta == 0
+                      ? Qualities.Justa
+                      : delta == -1 ? Qualities.Disminuida : null)
+              : (delta == 0
+                  ? Qualities.Major
+                  : delta == -1 ? Qualities.Menor : null),
+        );
+
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
 }
