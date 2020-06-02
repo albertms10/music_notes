@@ -7,7 +7,7 @@ void main() {
 
 class FifthsCircle {
   static final chromaticScale = [
-    for (int i = 1; i <= 12; i++) EnharmonicNote.getEnharmonicNotes(i)
+    for (int i = 1; i <= 12; i++) EnharmonicNote.fromValue(i)
   ];
 
   static List<EnharmonicNote> get fifthsCircle {
