@@ -1,6 +1,6 @@
 part of music_notes;
 
-class EnharmonicNote with Music {
+class EnharmonicNote {
   final Set<Note> enharmonicNotes;
 
   EnharmonicNote(this.enharmonicNotes)

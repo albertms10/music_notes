@@ -1,6 +1,6 @@
 part of music_notes;
 
-class Note with Music {
+class Note {
   final Notes note;
   final Accidentals accidental;
 
