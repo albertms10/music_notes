@@ -8,7 +8,7 @@ import 'package:music_notes_relations/model/mixins/music.dart';
 import 'package:music_notes_relations/model/note.dart';
 
 class CircleOfFifths {
-  static Set<EnharmonicNote> get fifthsCircle {
+  static Set<EnharmonicNote> get circleOfFifths {
     final notes = <EnharmonicNote>{};
 
     for (int i = 0; i < Music.chromaticDivisions; i++)
