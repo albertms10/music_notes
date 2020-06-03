@@ -10,25 +10,13 @@ enum Intervals {
   Septima,
   Octava,
   Novena,
+  Desena,
   Onzena,
+  Dotzena,
   Tretzena,
 }
 
 extension IntervalsValues on Intervals {
-  static const intervalsSemitones = {
-    Intervals.Unison: 1,
-    Intervals.Segona: 2,
-    Intervals.Tercera: 3,
-    Intervals.Quarta: 4,
-    Intervals.Quinta: 5,
-    Intervals.Sexta: 6,
-    Intervals.Septima: 7,
-    Intervals.Octava: 8,
-    Intervals.Novena: 9,
-    Intervals.Onzena: 11,
-    Intervals.Tretzena: 13,
-  };
-
   static const intervalsQualitiesIndex = {
     Intervals.Unison: 0,
     Intervals.Segona: 1,
@@ -42,13 +30,13 @@ extension IntervalsValues on Intervals {
 
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
-  static Intervals interval(int semitones) =>
-      intervalsSemitones.keys.firstWhere(
-          (interval) =>
-              Music.modValueWithZero(semitones) == intervalsSemitones[interval],
-          orElse: () => null);
+  static Intervals interval(int semitones) => Intervals.values.firstWhere(
+      (interval) =>
+          Music.modValueWithZero(semitones) ==
+          Intervals.values.indexOf(interval) + 1,
+      orElse: () => null);
 
-  int get semitones => intervalsSemitones[this];
+  int get semitones => Intervals.values.indexOf(this) + 1;
 
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
