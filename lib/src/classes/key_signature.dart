@@ -8,5 +8,5 @@ abstract class KeySignature {
       : assert(number != null),
         assert(accidental != null);
 
-  List<Tonality> tonalities;
+  List<Tonality> get tonalities;
 }
