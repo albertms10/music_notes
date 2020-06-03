@@ -29,16 +29,21 @@ extension IntervalsValues on Intervals {
     Intervals.Tretzena: 13,
   };
 
+  static final perfectIntervals = const [Intervals.Unison, Intervals.Quinta];
+
   static Intervals interval(int value) => intervalsValues.keys.firstWhere(
       (interval) => Music.modValue(value) == intervalsValues[interval],
       orElse: () => null);
 
   int get value => intervalsValues[this];
 
-  bool get isPerfect => (this == Intervals.Unison ||
-      this == Intervals.Quarta ||
-      this == Intervals.Quinta ||
-      this == Intervals.Octava);
+  bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
+      .any((interval) => interval == this || interval == this.inverted);
 
-  Intervals get inverted => interval((9 - this.value).abs());
+  Intervals get inverted {
+    int diff = 9 - this.value;
+    return interval(diff > 0 ? diff : diff.abs() + 2);
+  }
+
+  Intervals invert(Intervals interval) => interval.inverted;
 }
