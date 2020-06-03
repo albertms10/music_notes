@@ -3,14 +3,8 @@ part of music_notes;
 class EnharmonicNote {
   final Set<Note> enharmonicNotes;
 
-  EnharmonicNote(this.enharmonicNotes)
-      : assert(enharmonicNotes.isNotEmpty),
-        assert(
-          enharmonicNotes.every(
-            (element) => element.value == enharmonicNotes.toList()[0].value,
-          ),
-          "The notes are not enharmonic",
-        );
+  const EnharmonicNote(this.enharmonicNotes)
+      : assert(enharmonicNotes != null && enharmonicNotes.length > 0);
 
   EnharmonicNote.fromSemitone(int semitone)
       : this(getEnharmonicNote(semitone).enharmonicNotes);

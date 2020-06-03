@@ -7,7 +7,7 @@ abstract class CircleOfFifths {
     for (int i = 0; i < Music.chromaticDivisions; i++)
       notes.add(
         Music.chromaticScale.toList()[Music.modValueWithZero(
-          i * Interval(Intervals.Quinta, Qualities.Justa).semitones,
+          i * const Interval(Intervals.Quinta, Qualities.Justa).semitones,
         )],
       );
 
@@ -16,7 +16,7 @@ abstract class CircleOfFifths {
 
   static int shortestFifthsDistance(
       EnharmonicNote enharmonicNote1, EnharmonicNote enharmonicNote2) {
-    int fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
+    int fifthSt = const Interval(Intervals.Quinta, Qualities.Justa).semitones;
 
     final int distanceAbove =
         enharmonicNote1.enharmonicSemitonesDistance(enharmonicNote2, fifthSt);
@@ -28,5 +28,5 @@ abstract class CircleOfFifths {
 
   static int exactFifthsDistance(Note note1, Note note2) =>
       note1.intervalDistance(
-          note2, Interval(Intervals.Quinta, Qualities.Justa).semitones);
+          note2, const Interval(Intervals.Quinta, Qualities.Justa).semitones);
 }

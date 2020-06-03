@@ -4,14 +4,9 @@ class Interval {
   final Intervals interval;
   final Qualities quality;
 
-  Interval(this.interval, this.quality)
+  const Interval(this.interval, this.quality)
       : assert(interval != null),
-        assert(quality != null),
-        assert(
-          interval.isPerfect
-              ? (quality != Qualities.Major || quality != Qualities.Menor)
-              : quality != Qualities.Justa,
-        );
+        assert(quality != null);
 
   Interval.fromDelta(Intervals interval, int delta)
       : this(

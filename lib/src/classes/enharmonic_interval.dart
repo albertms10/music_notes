@@ -3,7 +3,8 @@ part of music_notes;
 class EnharmonicInterval {
   final Set<Interval> intervals;
 
-  EnharmonicInterval(this.intervals) : assert(intervals.isNotEmpty);
+  const EnharmonicInterval(this.intervals)
+      : assert(intervals != null && intervals.length > 0);
 
   @override
   String toString() => '$intervals';
