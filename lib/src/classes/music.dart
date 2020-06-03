@@ -1,6 +1,6 @@
 part of music_notes;
 
-mixin Music {
+abstract class Music {
   static const int chromaticDivisions = 12;
 
   static final chromaticScale = {
