@@ -1,21 +1,21 @@
 part of music_notes;
 
-extension NotesToString on Notes {
+extension on Notes {
   String toText() => toString().split('.')[1];
 }
 
-extension AccidentalsToString on Accidentals {
+extension on Accidentals {
   String toText() => toString().split('.')[1];
 }
 
-extension ModesToString on Modes {
+extension on Modes {
   String toText() => toString().split('.')[1];
 }
 
-extension IntervalsToString on Intervals {
+extension on Intervals {
   String toText() => toString().split('.')[1];
 }
 
-extension QualitiesToString on Qualities {
+extension on Qualities {
   String toText() => toString().split('.')[1];
 }
