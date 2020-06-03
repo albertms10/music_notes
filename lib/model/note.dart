@@ -12,6 +12,13 @@ class Note with Music {
 
   Note(this.note, [this.accidental]) : assert(note != null);
 
+  Note.copy(Note note)
+      : this.note = note.note,
+        this.accidental = note.accidental;
+
+  Note.fromValue(int value, [Accidentals preferAccidental])
+      : this.copy(EnharmonicNote.getNote(value, preferAccidental));
+
   int get value => Music.modValueWithZero(
       note.value + (accidental != null ? accidental.value : 0));
 
