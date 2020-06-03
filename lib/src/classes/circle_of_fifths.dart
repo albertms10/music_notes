@@ -1,6 +1,6 @@
 part of music_notes;
 
-class CircleOfFifths {
+abstract class CircleOfFifths {
   static Set<EnharmonicNote> get circleOfFifths {
     final notes = <EnharmonicNote>{};
 
