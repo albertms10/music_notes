@@ -10,47 +10,47 @@ void main() {
     expect(
         Music.chromaticScale,
         equals([
-          EnharmonicNote([
+          EnharmonicNote({
             Note(Notes.Do),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Do, Accidentals.Sostingut),
             Note(Notes.Re, Accidentals.Bemoll)
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Re),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Re, Accidentals.Sostingut),
             Note(Notes.Mi, Accidentals.Bemoll)
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Mi),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Fa),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Fa, Accidentals.Sostingut),
             Note(Notes.Sol, Accidentals.Bemoll)
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Sol),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Sol, Accidentals.Sostingut),
             Note(Notes.La, Accidentals.Bemoll)
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.La),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.La, Accidentals.Sostingut),
             Note(Notes.Si, Accidentals.Bemoll),
-          ]),
-          EnharmonicNote([
+          }),
+          EnharmonicNote({
             Note(Notes.Si),
-          ])
+          })
         ]));
   });
 }

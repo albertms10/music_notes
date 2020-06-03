@@ -4,13 +4,13 @@ import 'package:music_notes_relations/model/mixins/music.dart';
 import 'package:music_notes_relations/model/note.dart';
 
 class EnharmonicNote with Music {
-  final List<Note> enharmonicNotes;
+  final Set<Note> enharmonicNotes;
 
   EnharmonicNote(this.enharmonicNotes)
       : assert(enharmonicNotes.isNotEmpty),
         assert(
           enharmonicNotes.every(
-            (element) => element.value == enharmonicNotes[0].value,
+            (element) => element.value == enharmonicNotes.toList()[0].value,
           ),
           "The notes are not enharmonic",
         );
@@ -18,20 +18,20 @@ class EnharmonicNote with Music {
   EnharmonicNote.fromValue(int value)
       : this(getEnharmonicNote(value).enharmonicNotes);
 
-  int get value => enharmonicNotes[0].value;
+  int get value => enharmonicNotes.toList()[0].value;
 
   static EnharmonicNote getEnharmonicNote(int value) {
     final note = NotesValues.note(value);
 
-    if (note != null) return EnharmonicNote([Note(note)]);
+    if (note != null) return EnharmonicNote({Note(note)});
 
     var noteBelow = NotesValues.note(value - 1);
     var noteAbove = NotesValues.note(value + 1);
 
-    return EnharmonicNote([
+    return EnharmonicNote({
       Note(noteBelow, Accidentals.Sostingut),
       Note(noteAbove, Accidentals.Bemoll)
-    ]);
+    });
   }
 
   int enharmonicIntervalDistance(EnharmonicNote note, int interval) {

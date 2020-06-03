@@ -5,11 +5,11 @@ import 'package:music_notes_relations/model/mixins/music.dart';
 import 'package:music_notes_relations/model/note.dart';
 
 class CircleOfFifths {
-  static List<EnharmonicNote> get fifthsCircle {
-    final notes = <EnharmonicNote>[];
+  static Set<EnharmonicNote> get fifthsCircle {
+    final notes = <EnharmonicNote>{};
 
     for (int i = 0; i < Music.chromaticDivisions * 7; i += 7)
-      notes.add(Music.chromaticScale[Music.modValue(i)]);
+      notes.add(Music.chromaticScale.toList()[Music.modValue(i)]);
 
     return notes;
   }

@@ -29,7 +29,7 @@ extension IntervalsValues on Intervals {
     Intervals.Tretzena: 13,
   };
 
-  static final perfectIntervals = const [Intervals.Unison, Intervals.Quinta];
+  static final perfectIntervals = const {Intervals.Unison, Intervals.Quinta};
 
   static Intervals interval(int value) => intervalsValues.keys.firstWhere(
       (interval) => Music.modValue(value) == intervalsValues[interval],

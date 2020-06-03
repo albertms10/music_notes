@@ -1,7 +1,7 @@
 import 'package:music_notes_relations/model/interval.dart';
 
 class EnharmonicInterval {
-  final List<Interval> intervals;
+  final Set<Interval> intervals;
 
   EnharmonicInterval(this.intervals) : assert(intervals.isNotEmpty);
 
