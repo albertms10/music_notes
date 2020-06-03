@@ -15,7 +15,7 @@ enum Intervals {
 }
 
 extension IntervalsValues on Intervals {
-  static final intervalsValues = const {
+  static const intervalsValues = {
     Intervals.Unison: 1,
     Intervals.Segona: 2,
     Intervals.Tercera: 3,
@@ -29,7 +29,18 @@ extension IntervalsValues on Intervals {
     Intervals.Tretzena: 13,
   };
 
-  static final perfectIntervals = const {Intervals.Unison, Intervals.Quinta};
+  static const intervalsQualitiesIndex = {
+    Intervals.Unison: 0,
+    Intervals.Segona: 1,
+    Intervals.Tercera: 3,
+    Intervals.Quarta: 5,
+    Intervals.Quinta: 7,
+    Intervals.Sexta: 8,
+    Intervals.Septima: 10,
+    Intervals.Octava: 12,
+  };
+
+  static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
   static Intervals interval(int value) => intervalsValues.keys.firstWhere(
       (interval) => Music.modValue(value) == intervalsValues[interval],
