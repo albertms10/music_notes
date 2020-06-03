@@ -11,10 +11,12 @@ class CircleOfFifths {
   static Set<EnharmonicNote> get fifthsCircle {
     final notes = <EnharmonicNote>{};
 
-    int fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
-
-    for (int i = 0; i < Music.chromaticDivisions * fifthSt; i += fifthSt)
-      notes.add(Music.chromaticScale.toList()[Music.modValueWithZero(i)]);
+    for (int i = 0; i < Music.chromaticDivisions; i++)
+      notes.add(
+        Music.chromaticScale.toList()[Music.modValueWithZero(
+          i * Interval(Intervals.Quinta, Qualities.Justa).semitones,
+        )],
+      );
 
     return notes;
   }
