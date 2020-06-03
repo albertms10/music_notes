@@ -34,14 +34,14 @@ class EnharmonicNote with Music {
     });
   }
 
-  int enharmonicIntervalDistance(EnharmonicNote note, int interval) {
+  int enharmonicSemitonesDistance(EnharmonicNote note, int semitones) {
     int distance = 0;
     int currentPitch = this.value;
     EnharmonicNote tempNote = EnharmonicNote.fromValue(currentPitch);
 
     while (tempNote != note) {
       distance++;
-      currentPitch += interval;
+      currentPitch += semitones;
       tempNote = EnharmonicNote.fromValue(currentPitch);
     }
 
