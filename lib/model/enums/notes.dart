@@ -18,6 +18,8 @@ extension NotesValues on Notes {
       (note) => Music.modValueWithZero(value) == notesValues[note],
       orElse: () => null);
 
+  static bool needsAccidental(int value) => note(value) == null;
+
   static int index(int value) => notesValues.values.toList().indexOf(value);
 
   int get value => notesValues[this];
