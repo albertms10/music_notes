@@ -1,5 +1,4 @@
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/mixins/music.dart';
+part of music_notes;
 
 enum Notes { Do, Re, Mi, Fa, Sol, La, Si }
 

@@ -1,7 +1,4 @@
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/mixins/music.dart';
-import 'package:music_notes_relations/model/note.dart';
+part of music_notes;
 
 class EnharmonicNote with Music {
   final Set<Note> enharmonicNotes;

@@ -1,11 +1,4 @@
-import 'dart:math' as math;
-
-import 'package:music_notes_relations/model/enharmonic_note.dart';
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/enums/qualities.dart';
-import 'package:music_notes_relations/model/interval.dart';
-import 'package:music_notes_relations/model/mixins/music.dart';
-import 'package:music_notes_relations/model/note.dart';
+part of music_notes;
 
 class CircleOfFifths {
   static Set<EnharmonicNote> get circleOfFifths {

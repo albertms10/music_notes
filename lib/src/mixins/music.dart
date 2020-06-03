@@ -1,4 +1,4 @@
-import 'package:music_notes_relations/model/enharmonic_note.dart';
+part of music_notes;
 
 mixin Music {
   static const int chromaticDivisions = 12;

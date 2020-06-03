@@ -1,4 +1,4 @@
-import 'package:music_notes_relations/model/interval.dart';
+part of music_notes;
 
 class EnharmonicInterval {
   final Set<Interval> intervals;

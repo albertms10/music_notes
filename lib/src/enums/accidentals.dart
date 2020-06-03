@@ -1,3 +1,5 @@
+part of music_notes;
+
 enum Accidentals { DobleSostingut, Sostingut, Bemoll, DobleBemoll }
 
 extension AccidentalsValues on Accidentals {

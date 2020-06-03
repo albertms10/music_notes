@@ -1,6 +1,4 @@
-import 'package:music_notes_relations/model/enums/enums_to_string.dart';
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/enums/qualities.dart';
+part of music_notes;
 
 class Interval {
   final Intervals interval;

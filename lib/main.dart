@@ -1,3 +1,7 @@
+import 'package:music_notes/music_notes.dart';
+
 void main() {
-  [].forEach(print);
+  [
+    Note(Notes.Do).exactInterval(Note(Notes.Fa, Accidentals.Sostingut)),
+  ].forEach(print);
 }

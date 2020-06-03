@@ -1,8 +1,4 @@
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/enums/modes.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/enums/qualities.dart';
+part of music_notes;
 
 extension NotesToString on Notes {
   String toText() => toString().split('.')[1];

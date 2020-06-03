@@ -1,5 +1,4 @@
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/tonality.dart';
+part of music_notes;
 
 abstract class KeySignature {
   final int number;

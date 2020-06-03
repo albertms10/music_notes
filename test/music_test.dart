@@ -1,8 +1,4 @@
-import 'package:music_notes_relations/model/enharmonic_note.dart';
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/mixins/music.dart';
-import 'package:music_notes_relations/model/note.dart';
+import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {

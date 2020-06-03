@@ -1,4 +1,4 @@
-import 'package:music_notes_relations/model/mixins/music.dart';
+part of music_notes;
 
 enum Intervals {
   Unison,

@@ -1,5 +1,6 @@
-name: music_notes_relations
+name: music_notes
 version: 0.0.1
 author: albertms10
+repository: https://github.com/albertms10/music_notes.git
 dependencies:
   test: ^1.14.6

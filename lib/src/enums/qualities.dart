@@ -1,3 +1,5 @@
+part of music_notes;
+
 enum Qualities { Augmentada, Major, Justa, Menor, Disminuida }
 
 extension QualitiesValues on Qualities {

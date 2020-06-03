@@ -1,10 +1,4 @@
-import 'package:music_notes_relations/model/enharmonic_note.dart';
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/enums_to_string.dart';
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/interval.dart';
-import 'package:music_notes_relations/model/mixins/music.dart';
+part of music_notes;
 
 class Note with Music {
   final Notes note;

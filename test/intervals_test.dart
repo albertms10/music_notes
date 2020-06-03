@@ -1,9 +1,4 @@
-import 'package:music_notes_relations/model/enums/accidentals.dart';
-import 'package:music_notes_relations/model/enums/intervals.dart';
-import 'package:music_notes_relations/model/enums/notes.dart';
-import 'package:music_notes_relations/model/enums/qualities.dart';
-import 'package:music_notes_relations/model/interval.dart';
-import 'package:music_notes_relations/model/note.dart';
+import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
