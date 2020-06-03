@@ -17,7 +17,7 @@ class Note with Music {
 
   int get accidentalValue => accidental != null ? accidental.value : 0;
 
-  int semitonesDelta(Note note) => note.value - this.value;
+  int semitonesDelta(Note note) => Music.modValue(note.value - this.value);
 
   int exactIntervalDistance(Note note, int interval) {
     int distance = 0;
