@@ -4,8 +4,7 @@ mixin Music {
   static const int chromaticDivisions = 12;
 
   static final chromaticScale = {
-    for (int i = 1; i <= chromaticDivisions; i++)
-      EnharmonicNote.fromSemitone(i)
+    for (int i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromSemitone(i)
   };
 
   static int modValue(int value) => value % chromaticDivisions;
