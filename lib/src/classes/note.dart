@@ -4,7 +4,7 @@ class Note {
   final Notes note;
   final Accidentals accidental;
 
-  Note(this.note, [this.accidental]) : assert(note != null);
+  const Note(this.note, [this.accidental]) : assert(note != null);
 
   Note.copy(Note note)
       : this.note = note.note,

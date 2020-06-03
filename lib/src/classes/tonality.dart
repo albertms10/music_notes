@@ -4,7 +4,7 @@ abstract class Tonality {
   final Note note;
   final Modes mode;
 
-  Tonality(this.note, this.mode)
+  const Tonality(this.note, this.mode)
       : assert(note != null),
         assert(mode != null);
 
