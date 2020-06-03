@@ -6,7 +6,7 @@ import 'package:music_notes_relations/model/note.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Chromatic scale is calculed correctly', () {
+  test('Chromatic scale is correct', () {
     expect(
         Music.chromaticScale,
         equals([
