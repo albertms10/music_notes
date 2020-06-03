@@ -42,9 +42,11 @@ extension IntervalsValues on Intervals {
 
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
-  static Intervals interval(int semitones) => intervalsSemitones.keys.firstWhere(
-      (interval) => Music.modValueWithZero(semitones) == intervalsSemitones[interval],
-      orElse: () => null);
+  static Intervals interval(int semitones) =>
+      intervalsSemitones.keys.firstWhere(
+          (interval) =>
+              Music.modValueWithZero(semitones) == intervalsSemitones[interval],
+          orElse: () => null);
 
   int get semitones => intervalsSemitones[this];
 
