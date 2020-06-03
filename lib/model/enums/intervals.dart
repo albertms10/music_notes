@@ -9,7 +9,9 @@ enum Intervals {
   Sexta,
   Septima,
   Octava,
-  Novena
+  Novena,
+  Onzena,
+  Tretzena,
 }
 
 extension IntervalsValues on Intervals {
@@ -23,6 +25,8 @@ extension IntervalsValues on Intervals {
     Intervals.Septima: 7,
     Intervals.Octava: 8,
     Intervals.Novena: 9,
+    Intervals.Onzena: 11,
+    Intervals.Tretzena: 13,
   };
 
   static Intervals interval(int value) => intervalsValues.keys.firstWhere(
