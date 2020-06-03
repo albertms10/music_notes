@@ -48,6 +48,9 @@ class EnharmonicNote with Music {
     return distance;
   }
 
+  EnharmonicNote transposeBy(int semitones) =>
+      EnharmonicNote.fromValue(this.value + semitones);
+
   @override
   String toString() => '$enharmonicNotes';
 
