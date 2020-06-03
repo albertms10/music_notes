@@ -39,4 +39,6 @@ extension IntervalsValues on Intervals {
       this == Intervals.Quarta ||
       this == Intervals.Quinta ||
       this == Intervals.Octava);
+
+  Intervals get inverted => interval((9 - this.value).abs());
 }
