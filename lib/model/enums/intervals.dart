@@ -1,7 +1,7 @@
 import 'package:music_notes_relations/model/mixins/music.dart';
 
 enum Intervals {
-  Unisson,
+  Unison,
   Segona,
   Tercera,
   Quarta,
@@ -14,7 +14,7 @@ enum Intervals {
 
 extension IntervalsValues on Intervals {
   static final intervalsValues = {
-    Intervals.Unisson: 1,
+    Intervals.Unison: 1,
     Intervals.Segona: 2,
     Intervals.Tercera: 3,
     Intervals.Quarta: 4,
@@ -31,7 +31,7 @@ extension IntervalsValues on Intervals {
 
   int get value => intervalsValues[this];
 
-  bool get isPerfect => (this == Intervals.Unisson ||
+  bool get isPerfect => (this == Intervals.Unison ||
       this == Intervals.Quarta ||
       this == Intervals.Quinta ||
       this == Intervals.Octava);
