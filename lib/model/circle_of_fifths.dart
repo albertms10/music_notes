@@ -11,7 +11,7 @@ class CircleOfFifths {
   static Set<EnharmonicNote> get fifthsCircle {
     final notes = <EnharmonicNote>{};
 
-    var fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
+    int fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
 
     for (int i = 0; i < Music.chromaticDivisions * fifthSt; i += fifthSt)
       notes.add(Music.chromaticScale.toList()[Music.modValueWithZero(i)]);
@@ -21,7 +21,7 @@ class CircleOfFifths {
 
   static int shortestFifthsDistance(
       EnharmonicNote enharmonicNote1, EnharmonicNote enharmonicNote2) {
-    var fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
+    int fifthSt = Interval(Intervals.Quinta, Qualities.Justa).semitones;
 
     final int distanceAbove =
         enharmonicNote1.enharmonicSemitonesDistance(enharmonicNote2, fifthSt);
