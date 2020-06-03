@@ -4,7 +4,7 @@ import 'package:music_notes_relations/model/mixins/music.dart';
 enum Notes { Do, Re, Mi, Fa, Sol, La, Si }
 
 extension NotesValues on Notes {
-  static const notesValues = {
+  static final notesValues = const {
     Notes.Do: 1,
     Notes.Re: 3,
     Notes.Mi: 5,

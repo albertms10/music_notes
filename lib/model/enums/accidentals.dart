@@ -1,7 +1,7 @@
 enum Accidentals { DobleSostingut, Sostingut, Bemoll, DobleBemoll }
 
 extension AccidentalsValues on Accidentals {
-  static const accidentalValues = {
+  static final accidentalValues = const {
     Accidentals.DobleSostingut: 2,
     Accidentals.Sostingut: 1,
     Accidentals.Bemoll: -1,

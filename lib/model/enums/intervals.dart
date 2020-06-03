@@ -15,7 +15,7 @@ enum Intervals {
 }
 
 extension IntervalsValues on Intervals {
-  static final intervalsValues = {
+  static final intervalsValues = const {
     Intervals.Unison: 1,
     Intervals.Segona: 2,
     Intervals.Tercera: 3,
