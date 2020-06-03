@@ -19,15 +19,15 @@ class Note with Music {
 
   int semitonesDelta(Note note) => Music.modValue(note.value - this.value);
 
-  int exactSemitonesDistance(Note note, int semitones) {
+  int intervalDistance(Note note, int semitones) {
     int distance = 0;
     int currentPitch = this.value;
-    EnharmonicNote tempNote = EnharmonicNote.fromValue(currentPitch);
+    EnharmonicNote tempNote = EnharmonicNote.fromSemitone(currentPitch);
 
     while (tempNote.enharmonicNotes.every((temp) => temp != note)) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote.fromValue(currentPitch);
+      tempNote = EnharmonicNote.fromSemitone(currentPitch);
     }
 
     return distance;

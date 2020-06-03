@@ -15,18 +15,18 @@ class EnharmonicNote with Music {
           "The notes are not enharmonic",
         );
 
-  EnharmonicNote.fromValue(int value)
-      : this(getEnharmonicNote(value).enharmonicNotes);
+  EnharmonicNote.fromSemitone(int semitone)
+      : this(getEnharmonicNote(semitone).enharmonicNotes);
 
   int get value => enharmonicNotes.toList()[0].value;
 
-  static EnharmonicNote getEnharmonicNote(int value) {
-    final note = NotesValues.note(value);
+  static EnharmonicNote getEnharmonicNote(int semitone) {
+    final note = NotesValues.note(semitone);
 
     if (note != null) return EnharmonicNote({Note(note)});
 
-    var noteBelow = NotesValues.note(value - 1);
-    var noteAbove = NotesValues.note(value + 1);
+    var noteBelow = NotesValues.note(semitone - 1);
+    var noteAbove = NotesValues.note(semitone + 1);
 
     return EnharmonicNote({
       Note(noteBelow, Accidentals.Sostingut),
@@ -37,19 +37,19 @@ class EnharmonicNote with Music {
   int enharmonicSemitonesDistance(EnharmonicNote note, int semitones) {
     int distance = 0;
     int currentPitch = this.value;
-    EnharmonicNote tempNote = EnharmonicNote.fromValue(currentPitch);
+    EnharmonicNote tempNote = EnharmonicNote.fromSemitone(currentPitch);
 
     while (tempNote != note) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote.fromValue(currentPitch);
+      tempNote = EnharmonicNote.fromSemitone(currentPitch);
     }
 
     return distance;
   }
 
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromValue(this.value + semitones);
+      EnharmonicNote.fromSemitone(this.value + semitones);
 
   @override
   String toString() => '$enharmonicNotes';

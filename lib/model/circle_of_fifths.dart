@@ -25,5 +25,5 @@ class CircleOfFifths {
   }
 
   static int exactFifthsDistance(Note note1, Note note2) =>
-      note1.exactIntervalDistance(note2, 7);
+      note1.intervalDistance(note2, 7);
 }
