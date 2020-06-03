@@ -9,7 +9,7 @@ class CircleOfFifths {
     final notes = <EnharmonicNote>{};
 
     for (int i = 0; i < Music.chromaticDivisions * 7; i += 7)
-      notes.add(Music.chromaticScale.toList()[Music.modValue(i)]);
+      notes.add(Music.chromaticScale.toList()[Music.modValueWithZero(i)]);
 
     return notes;
   }

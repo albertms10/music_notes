@@ -8,7 +8,9 @@ mixin Music {
       EnharmonicNote.fromValue(i)
   };
 
-  static int modValue(int value) {
+  static int modValue(int value) => value % chromaticDivisions;
+
+  static int modValueWithZero(int value) {
     int modValue = value % chromaticDivisions;
     return modValue == 0 ? chromaticDivisions : modValue;
   }

@@ -12,8 +12,8 @@ class Note with Music {
 
   Note(this.note, [this.accidental]) : assert(note != null);
 
-  int get value =>
-      Music.modValue(note.value + (accidental != null ? accidental.value : 0));
+  int get value => Music.modValueWithZero(
+      note.value + (accidental != null ? accidental.value : 0));
 
   int get accidentalValue => accidental != null ? accidental.value : 0;
 

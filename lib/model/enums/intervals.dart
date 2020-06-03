@@ -43,7 +43,7 @@ extension IntervalsValues on Intervals {
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
   static Intervals interval(int value) => intervalsValues.keys.firstWhere(
-      (interval) => Music.modValue(value) == intervalsValues[interval],
+      (interval) => Music.modValueWithZero(value) == intervalsValues[interval],
       orElse: () => null);
 
   int get value => intervalsValues[this];

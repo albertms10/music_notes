@@ -15,7 +15,7 @@ extension NotesValues on Notes {
   };
 
   static Notes note(int value) => notesValues.keys.firstWhere(
-      (note) => Music.modValue(value) == notesValues[note],
+      (note) => Music.modValueWithZero(value) == notesValues[note],
       orElse: () => null);
 
   static int index(int value) => notesValues.values.toList().indexOf(value);
