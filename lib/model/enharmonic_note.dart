@@ -34,6 +34,11 @@ class EnharmonicNote with Music {
     });
   }
 
+  static Note getNote(int semitone, [Accidentals preferAccidental]) =>
+      getEnharmonicNote(semitone)
+          .enharmonicNotes
+          .firstWhere((note) => note.accidental == preferAccidental);
+
   int enharmonicSemitonesDistance(EnharmonicNote note, int semitones) {
     int distance = 0;
     int currentPitch = this.value;
