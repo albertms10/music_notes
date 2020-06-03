@@ -2,7 +2,7 @@ import 'package:music_notes_relations/model/enums/intervals.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Perfect intervals are correct', () {
+  test('Perfect intervals definitions are correct', () {
     expect(Intervals.Unison.isPerfect, true);
     expect(Intervals.Segona.isPerfect, false);
     expect(Intervals.Tercera.isPerfect, false);
