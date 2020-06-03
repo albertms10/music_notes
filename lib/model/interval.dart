@@ -23,6 +23,15 @@ class Interval {
               : QualitiesValues.qualitiesDeltas.toList()[delta],
         );
 
+  int get semitones =>
+      IntervalsValues.intervalsQualitiesIndex[interval] +
+      (interval.isPerfect
+              ? QualitiesValues.perfectQualitiesDeltas
+              : QualitiesValues.qualitiesDeltas)
+          .toList()
+          .indexOf(quality) -
+      1;
+
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
 
