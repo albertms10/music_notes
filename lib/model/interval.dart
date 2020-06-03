@@ -19,14 +19,8 @@ class Interval {
       : this(
           interval,
           interval.isPerfect
-              ? (delta == 1
-                  ? Qualities.Augmentada
-                  : delta == 0
-                      ? Qualities.Justa
-                      : delta == -1 ? Qualities.Disminuida : null)
-              : (delta == 0
-                  ? Qualities.Major
-                  : delta == -1 ? Qualities.Menor : null),
+              ? QualitiesValues.perfectQualitiesDeltas.toList()[delta]
+              : QualitiesValues.qualitiesDeltas.toList()[delta],
         );
 
   @override
