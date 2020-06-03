@@ -31,4 +31,10 @@ class Interval {
 
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
+
+  @override
+  bool operator ==(other) =>
+      other is Interval &&
+      this.interval == other.interval &&
+      this.quality == other.quality;
 }
