@@ -11,8 +11,22 @@ class Tonality {
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
+  Tonality get relative => Tonality(
+        note.transposeBy(
+          Interval(
+            Intervals.Tercera,
+            Qualities.Menor,
+            descending: mode == Modes.Major,
+          ).semitones,
+        ),
+        mode.inverted,
+      );
+
   KeySignature get keySignature => KeySignature.fromDistance(
-        CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note),
+        CircleOfFifths.exactFifthsDistance(
+          Note(Notes.Do),
+          mode == Modes.Major ? note : this.relative.note,
+        ),
       );
 
   @override
