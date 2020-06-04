@@ -11,7 +11,9 @@ class KeySignature {
   KeySignature.fromDistance(int distance)
       : this(
           distance.abs(),
-          distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
+          distance == 0
+              ? null
+              : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
         );
 
   // List<Tonality> get tonalities;
