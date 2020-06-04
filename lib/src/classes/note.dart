@@ -28,7 +28,7 @@ class Note {
 
     return distance < Music.chromaticDivisions
         ? distance
-        : runSemitonesDistance(
+        : -runSemitonesDistance(
             note,
             interval.inverted.semitones,
             Accidentals.Bemoll,
