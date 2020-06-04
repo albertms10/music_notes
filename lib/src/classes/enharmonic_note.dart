@@ -30,15 +30,15 @@ class EnharmonicNote {
           .enharmonicNotes
           .firstWhere((note) => note.accidental == preferAccidental);
 
-  int enharmonicSemitonesDistance(EnharmonicNote note, int semitones) {
+  int enharmonicSemitonesDistance(EnharmonicNote enharmonicNote, int semitones) {
     int distance = 0;
     int currentPitch = this.value;
-    EnharmonicNote tempNote = EnharmonicNote.fromSemitone(currentPitch);
+    var tempEnharmonicNote = EnharmonicNote.fromSemitone(currentPitch);
 
-    while (tempNote != note) {
+    while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote.fromSemitone(currentPitch);
+      tempEnharmonicNote = EnharmonicNote.fromSemitone(currentPitch);
     }
 
     return distance;
