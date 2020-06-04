@@ -7,11 +7,11 @@ class EnharmonicNote {
       : assert(enharmonicNotes != null && enharmonicNotes.length > 0);
 
   EnharmonicNote.fromSemitone(int semitone)
-      : this(getEnharmonicNote(semitone).enharmonicNotes);
+      : this(enharmonicNoteFromSemitone(semitone).enharmonicNotes);
 
   int get value => enharmonicNotes.toList()[0].value;
 
-  static EnharmonicNote getEnharmonicNote(int semitone) {
+  static EnharmonicNote enharmonicNoteFromSemitone(int semitone) {
     final note = NotesValues.note(semitone);
 
     if (note != null) {
@@ -41,7 +41,7 @@ class EnharmonicNote {
   }
 
   static Note getNote(int semitone, [Accidentals preferAccidental]) {
-    var enharmonicNotes = getEnharmonicNote(semitone).enharmonicNotes;
+    var enharmonicNotes = enharmonicNoteFromSemitone(semitone).enharmonicNotes;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferAccidental,
