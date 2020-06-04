@@ -4,9 +4,9 @@ class KeySignature {
   final int number;
   final Accidentals accidental;
 
-  const KeySignature(this.number, this.accidental)
+  const KeySignature(this.number, [this.accidental])
       : assert(number != null),
-        assert(accidental != null);
+        assert(number > 0 ? accidental != null : true);
 
   KeySignature.fromDistance(int distance)
       : this(
