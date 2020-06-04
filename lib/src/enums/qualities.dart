@@ -22,8 +22,16 @@ extension QualitiesValues on Qualities {
     Qualities.Major: Qualities.Menor,
   };
 
+  /// Returns an inverted [Qualities] enum item from [quality].
   static Qualities invert(Qualities quality) => quality.inverted;
 
+  /// Returns an inverted this [Qualities] enum item.
+  ///
+  /// ```dart
+  /// Qualities.Disminuida.inverted == Qualities.Augmentada
+  /// Qualities.Major.inverted == Qualities.Menor
+  /// Qualities.Justa.inverted == Qualities.Justa
+  /// ```
   Qualities get inverted {
     Qualities inverted = invertedQualities[this];
     return inverted != null

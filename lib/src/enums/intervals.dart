@@ -54,10 +54,10 @@ extension IntervalsValues on Intervals {
       ? intervalsQualitiesIndex[this]
       : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);
 
-  /// Returns the ordinal number of this [IntervalsValues].
+  /// Returns the ordinal number of this [Intervals] enum item.
   int get ordinal => Intervals.values.indexOf(this) + 1;
 
-  /// Returns `true` if this [IntervalsValues] is a perfect interval.
+  /// Returns `true` if this [Intervals] enum item is a perfect interval.
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
