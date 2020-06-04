@@ -40,11 +40,11 @@ class EnharmonicNote {
     });
   }
 
-  static Note getNote(int semitone, [Accidentals preferAccidental]) {
+  static Note getNote(int semitone, [Accidentals preferredAccidental]) {
     var enharmonicNotes = enharmonicNoteFromSemitone(semitone).enharmonicNotes;
 
     return enharmonicNotes.firstWhere(
-      (note) => note.accidental == preferAccidental,
+      (note) => note.accidental == preferredAccidental,
       orElse: () => enharmonicNotes.firstWhere(
         (note) => note.accidentalValue == 0,
         orElse: () => enharmonicNotes.first,

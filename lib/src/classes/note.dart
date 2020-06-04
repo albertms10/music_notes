@@ -10,8 +10,8 @@ class Note {
       : this.note = note.note,
         this.accidental = note.accidental;
 
-  Note.fromValue(int value, [Accidentals preferedAccidental])
-      : this.copy(EnharmonicNote.getNote(value, preferedAccidental));
+  Note.fromValue(int value, [Accidentals preferredAccidental])
+      : this.copy(EnharmonicNote.getNote(value, preferredAccidental));
 
   static Note tonalityNoteFromAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
@@ -58,17 +58,17 @@ class Note {
   int _runSemitonesDistance(
     Note note,
     int semitones,
-    Accidentals preferedAccidental,
+    Accidentals preferredAccidental,
   ) {
     int distance = 0;
     int currentPitch = this.value;
 
-    var tempNote = Note.fromValue(currentPitch, preferedAccidental);
+    var tempNote = Note.fromValue(currentPitch, preferredAccidental);
 
     while (tempNote != note && distance < Music.chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = Note.fromValue(currentPitch, preferedAccidental);
+      tempNote = Note.fromValue(currentPitch, preferredAccidental);
     }
 
     return distance;
