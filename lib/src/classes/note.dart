@@ -45,7 +45,7 @@ class Note {
 
     var tempNote = Note.fromValue(currentPitch, preferedAccidental);
 
-    while (tempNote != note || distance > Music.chromaticDivisions) {
+    while (tempNote != note && distance < Music.chromaticDivisions) {
       distance++;
       currentPitch += semitones;
       tempNote = Note.fromValue(currentPitch, preferedAccidental);
