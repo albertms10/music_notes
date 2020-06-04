@@ -17,7 +17,7 @@ class KeySignature {
         );
 
   /// Returns a [Set] of the two tonalities that are defined by this [KeySignature].
-  /// 
+  ///
   /// ```dart
   /// KeySignature(2, Accidentals.Bemolls).tonalities
   ///   == {

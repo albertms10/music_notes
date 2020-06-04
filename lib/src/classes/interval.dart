@@ -18,12 +18,12 @@ class Interval {
         );
 
   /// Returns the number of semitones of this [Interval].
-  /// 
+  ///
   /// ```dart
   /// Interval(Intervals.Segona, Qualities.Major).semitones == 2
-  /// 
+  ///
   /// Interval(Intervals.Quinta, Qualities.Disminuida).semitones
-  ///   == Interval(Intervals.Quarta, Qualities.Augmentada).semitones 
+  ///   == Interval(Intervals.Quarta, Qualities.Augmentada).semitones
   ///   == 6
   /// ```
   int get semitones =>
@@ -37,11 +37,11 @@ class Interval {
       (descending ? -1 : 1);
 
   /// Returns the inverted of this [Interval].
-  /// 
+  ///
   /// ```dart
   /// Interval(Intervals.Tercera, Qualities.Menor).inverted
   ///   == Interval(Intervals.Sexta, Qualities.Major)
-  /// 
+  ///
   /// Interval(Intervals.Unison, Qualities.Justa).inverted
   ///   == Interval(Intervals.Octava, Qualities.Justa)
   /// ```

@@ -20,7 +20,7 @@ class Tonality {
         );
 
   /// Returns the number of [accidentals] of this [Tonality].
-  /// 
+  ///
   /// ```dart
   /// Tonality(Note(Notes.Si), Modes.Major) == 5
   /// ```

@@ -15,11 +15,11 @@ class Note {
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
-  /// 
+  ///
   /// ```dart
   /// Note.tonalityNoteFromAccidentals(2, Modes.Major, Accidentals.Sostingut)
   ///   == Note(Notes.Re)
-  /// 
+  ///
   /// Note.tonalityNoteFromAccidentals(0, Modes.Menor)
   ///   == Note(Notes.La)
   /// ```
@@ -82,6 +82,8 @@ class Note {
 
   /// Returns the iteration distance of an [interval] between this [Note] and a given [note]
   /// with a [preferredAccidental].
+  ///
+  /// It is mainly used by [intervalDistance].
   int _runSemitonesDistance(
     Note note,
     int semitones,

@@ -18,8 +18,8 @@ extension NotesValues on Notes {
         orElse: () => null,
       );
 
-  static Notes fromOrdinal(int ordinal) =>
-      Notes.values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
+  static Notes fromOrdinal(int ordinal) => Notes
+      .values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
 
   static bool needsAccidental(int value) => note(value) == null;
 
