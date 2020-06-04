@@ -28,6 +28,7 @@ extension QualitiesValues on Qualities {
     Qualities inverted = invertedQualities[this];
     return inverted != null
         ? inverted
-        : invertedQualities.values.toList().indexOf(this);
+        : invertedQualities.keys
+            .firstWhere((quality) => this == invertedQualities[quality]);
   }
 }
