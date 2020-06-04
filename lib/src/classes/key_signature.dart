@@ -16,6 +16,11 @@ class KeySignature {
               : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
         );
 
+  Set<Tonality> get tonalities => {
+        Tonality.fromAccidentals(number, Modes.Major, accidental),
+        Tonality.fromAccidentals(number, Modes.Menor, accidental),
+      };
+
   @override
   String toString() =>
       '$number' + (accidental != null ? ' × ${accidental.toText()}' : '');
