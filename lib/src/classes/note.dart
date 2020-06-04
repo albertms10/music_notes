@@ -21,11 +21,19 @@ class Note {
   int semitonesDelta(Note note) => Music.modValue(note.value - this.value);
 
   int intervalDistance(Note note, Interval interval) {
-    int distance = runSemitonesDistance(note, interval.semitones, Accidentals.Sostingut);
+    int distance = runSemitonesDistance(
+      note,
+      interval.semitones,
+      Accidentals.Sostingut,
+    );
 
     return distance < Music.chromaticDivisions
         ? distance
-        : runSemitonesDistance(note, interval.inverted.semitones, Accidentals.Bemoll);
+        : runSemitonesDistance(
+            note,
+            interval.inverted.semitones,
+            Accidentals.Bemoll,
+          );
   }
 
   int runSemitonesDistance(

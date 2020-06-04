@@ -2,8 +2,7 @@ import 'package:music_notes/music_notes.dart';
 
 void main() {
   [
-    const Note(Notes.Do).exactInterval(
-      const Note(Notes.Fa, Accidentals.Sostingut),
-    ),
+    CircleOfFifths.exactFifthsDistance(Note(Notes.Do), Note(Notes.Fa)),
+    Interval(Intervals.Quinta, Qualities.Justa).inverted
   ].forEach(print);
 }
