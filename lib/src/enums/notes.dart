@@ -18,6 +18,9 @@ extension NotesValues on Notes {
         orElse: () => null,
       );
 
+  static Notes fromOrdinal(int ordinal) =>
+      Notes.values[Music.nModValueWithZero(ordinal, Notes.values.length) - 1];
+
   static bool needsAccidental(int value) => note(value) == null;
 
   static int index(int value) => notesValues.values.toList().indexOf(value);
