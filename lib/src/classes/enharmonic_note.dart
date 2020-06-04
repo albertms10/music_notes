@@ -44,6 +44,9 @@ class EnharmonicNote {
     return distance;
   }
 
+  int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
+      enharmonicSemitonesDistance(note, interval.semitones);
+
   EnharmonicNote transposeBy(int semitones) =>
       EnharmonicNote.fromSemitone(this.value + semitones);
 
