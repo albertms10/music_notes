@@ -19,7 +19,7 @@ extension AccidentalsValues on Accidentals {
     Accidentals.TripleBemoll: -3,
   };
 
-  static Accidentals accidental(int value) => accidentalValues.keys.firstWhere(
+  static Accidentals fromValue(int value) => accidentalValues.keys.firstWhere(
         (accidental) =>
             Music.modValue(value + 2) - 2 == accidentalValues[accidental],
         orElse: () => null,

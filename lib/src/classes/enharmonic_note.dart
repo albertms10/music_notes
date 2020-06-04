@@ -34,12 +34,12 @@ class EnharmonicNote {
       return EnharmonicNote({
         Note(
           noteBelow,
-          AccidentalsValues.accidental(note.value - noteBelow.value),
+          AccidentalsValues.fromValue(note.value - noteBelow.value),
         ),
         Note(note),
         Note(
           noteAbove,
-          AccidentalsValues.accidental(note.value - noteAbove.value),
+          AccidentalsValues.fromValue(note.value - noteAbove.value),
         ),
       });
     }
