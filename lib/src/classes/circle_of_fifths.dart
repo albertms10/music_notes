@@ -33,6 +33,6 @@ abstract class CircleOfFifths {
   static int exactFifthsDistance(Note note1, Note note2) =>
       note1.intervalDistance(
         note2,
-        const Interval(Intervals.Quinta, Qualities.Justa).semitones,
+        const Interval(Intervals.Quinta, Qualities.Justa),
       );
 }
