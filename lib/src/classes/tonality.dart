@@ -19,9 +19,23 @@ class Tonality {
           mode,
         );
 
+  /// Returns the number of [accidentals] of this [Tonality].
+  /// 
+  /// ```dart
+  /// Tonality(Note(Notes.Si), Modes.Major) == 5
+  /// ```
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
+  /// Returns the [Modes.Major] or [Modes.Menor] relative [Tonality] of this [Tonality].
+  ///
+  /// ```dart
+  /// Tonality(Note(Notes.Re), Modes.Menor).relative
+  ///   == Tonality(Note(Notes.Fa), Modes.Major)
+  ///
+  /// Tonality(Note(Notes.Si, Accidentals.Bemoll), Modes.Major).relative
+  ///   == Tonality(Note(Notes.Sol), Modes.Menor)
+  /// ```
   Tonality get relative => Tonality(
         note.transposeBySemitones(
           Interval(
@@ -33,6 +47,12 @@ class Tonality {
         mode.inverted,
       );
 
+  /// Returns the [KeySignature] of this [Tonality].
+  ///
+  /// ```dart
+  /// Tonality(Note(Notes.La), Modes.Major).keySignature
+  ///   == KeySignature(3, Accidentals.Sostingut)
+  /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
         CircleOfFifths.exactFifthsDistance(
           Note(Notes.Do),
