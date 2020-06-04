@@ -27,12 +27,7 @@ class Interval {
           1) *
       (descending ? -1 : 1);
 
-  Interval get inverted => Interval(
-        interval.inverted,
-        interval.semitones <= Music.chromaticDivisions
-            ? quality.inverted
-            : quality,
-      );
+  Interval get inverted => Interval(interval.inverted, quality.inverted);
 
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
