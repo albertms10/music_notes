@@ -15,4 +15,19 @@ extension QualitiesValues on Qualities {
     Qualities.Justa,
     Qualities.Augmentada,
   };
+
+  static const invertedQualities = {
+    Qualities.Augmentada: Qualities.Disminuida,
+    Qualities.Justa: Qualities.Justa,
+    Qualities.Major: Qualities.Menor,
+  };
+
+  static Qualities invert(Qualities quality) => quality.inverted;
+
+  Qualities get inverted {
+    Qualities inverted = invertedQualities[this];
+    return inverted != null
+        ? inverted
+        : invertedQualities.values.toList().indexOf(this);
+  }
 }
