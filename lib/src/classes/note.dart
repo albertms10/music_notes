@@ -10,8 +10,8 @@ class Note {
       : this.note = note.note,
         this.accidental = note.accidental;
 
-  Note.fromValue(int value, [Accidentals preferAccidental])
-      : this.copy(EnharmonicNote.getNote(value, preferAccidental));
+  Note.fromValue(int value, [Accidentals preferedAccidental])
+      : this.copy(EnharmonicNote.getNote(value, preferedAccidental));
 
   int get value => Music.modValueWithZero(
       note.value + (accidental != null ? accidental.value : 0));
