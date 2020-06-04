@@ -23,7 +23,7 @@ class Tonality {
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
   Tonality get relative => Tonality(
-        note.transposeBy(
+        note.transposeBySemitones(
           Interval(
             Intervals.Tercera,
             Qualities.Menor,
