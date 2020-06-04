@@ -72,13 +72,12 @@ class Note {
       Accidentals.Sostingut,
     );
 
-    return distance < Music.chromaticDivisions
-        ? distance
-        : -_runSemitonesDistance(
-            note,
-            interval.inverted.semitones,
-            Accidentals.Bemoll,
-          );
+    return _runSemitonesDistance(
+          note,
+          interval.inverted.semitones,
+          Accidentals.Bemoll,
+        ) *
+        (distance < Music.chromaticDivisions ? 1 : -1);
   }
 
   /// Returns the iteration distance of an [interval] between this [Note] and a given [note]
