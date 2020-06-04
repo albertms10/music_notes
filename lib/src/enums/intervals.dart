@@ -46,8 +46,11 @@ extension IntervalsValues on Intervals {
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
+  Intervals get simplified =>
+      this.ordinal > 8 ? Intervals.values[this.ordinal - 8] : this;
+
   Intervals get inverted {
-    int diff = 9 - this.ordinal;
+    int diff = 9 - this.simplified.ordinal;
     return interval(diff > 0 ? diff : diff.abs() + 2);
   }
 
