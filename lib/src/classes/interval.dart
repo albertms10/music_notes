@@ -3,8 +3,9 @@ part of music_notes;
 class Interval {
   final Intervals interval;
   final Qualities quality;
+  final bool descending;
 
-  const Interval(this.interval, this.quality)
+  const Interval(this.interval, this.quality, {this.descending = false})
       : assert(interval != null),
         assert(quality != null);
 
@@ -17,13 +18,14 @@ class Interval {
         );
 
   int get semitones =>
-      IntervalsValues.intervalsQualitiesIndex[interval] +
-      (interval.isPerfect
-              ? QualitiesValues.perfectQualitiesDeltas
-              : QualitiesValues.qualitiesDeltas)
-          .toList()
-          .indexOf(quality) -
-      1;
+      (IntervalsValues.intervalsQualitiesIndex[interval] +
+          (interval.isPerfect
+                  ? QualitiesValues.perfectQualitiesDeltas
+                  : QualitiesValues.qualitiesDeltas)
+              .toList()
+              .indexOf(quality) -
+          1) *
+      (descending ? -1 : 1);
 
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
