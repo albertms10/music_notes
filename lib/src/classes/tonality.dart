@@ -8,6 +8,10 @@ class Tonality {
       : assert(note != null),
         assert(mode != null);
 
+  Tonality.copy(Tonality tonality)
+      : note = tonality.note,
+        mode = tonality.mode;
+
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
