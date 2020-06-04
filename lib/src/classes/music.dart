@@ -11,10 +11,10 @@ abstract class Music {
 
   static int nModValue(int value, int n) => value % n;
 
-  static int modValueWithZero(int value) =>
-      nModValueWithZero(value, chromaticDivisions);
+  static int modValueExcludeZero(int value) =>
+      nModValueExcludeZero(value, chromaticDivisions);
 
-  static int nModValueWithZero(int value, int n) {
+  static int nModValueExcludeZero(int value, int n) {
     int modValue = value % n;
     return modValue == 0 ? n : modValue;
   }

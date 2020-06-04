@@ -32,7 +32,7 @@ extension IntervalsValues on Intervals {
 
   static Intervals interval(int semitones) => Intervals.values.firstWhere(
         (interval) =>
-            Music.modValueWithZero(semitones) ==
+            Music.modValueExcludeZero(semitones) ==
             Intervals.values.indexOf(interval) + 1,
         orElse: () => null,
       );

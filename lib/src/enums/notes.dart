@@ -14,12 +14,12 @@ extension NotesValues on Notes {
   };
 
   static Notes note(int value) => notesValues.keys.firstWhere(
-        (note) => Music.modValueWithZero(value) == notesValues[note],
+        (note) => Music.modValueExcludeZero(value) == notesValues[note],
         orElse: () => null,
       );
 
   static Notes fromOrdinal(int ordinal) =>
-      Notes.values[Music.nModValueWithZero(ordinal, Notes.values.length) - 1];
+      Notes.values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
 
   static bool needsAccidental(int value) => note(value) == null;
 

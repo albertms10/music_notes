@@ -49,7 +49,7 @@ class Note {
   /// Note(Notes.Re).value == 3
   /// Note(Notes.Fa, Accidentals.Sostingut).value == 6
   /// ```
-  int get value => Music.modValueWithZero(note.value + accidentalValue);
+  int get value => Music.modValueExcludeZero(note.value + accidentalValue);
 
   /// Returns this [Note]’s [accidental] value.
   int get accidentalValue => accidental != null ? accidental.value : 0;
