@@ -21,7 +21,7 @@ class EnharmonicNote {
 
     return EnharmonicNote({
       Note(noteBelow, Accidentals.Sostingut),
-      Note(noteAbove, Accidentals.Bemoll)
+      Note(noteAbove, Accidentals.Bemoll),
     });
   }
 
@@ -30,7 +30,10 @@ class EnharmonicNote {
           .enharmonicNotes
           .firstWhere((note) => note.accidental == preferAccidental);
 
-  int enharmonicSemitonesDistance(EnharmonicNote enharmonicNote, int semitones) {
+  int enharmonicSemitonesDistance(
+    EnharmonicNote enharmonicNote,
+    int semitones,
+  ) {
     int distance = 0;
     int currentPitch = this.value;
     var tempEnharmonicNote = EnharmonicNote.fromSemitone(currentPitch);
