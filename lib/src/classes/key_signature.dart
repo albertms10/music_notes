@@ -16,8 +16,7 @@ class KeySignature {
               : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
         );
 
-  // List<Tonality> get tonalities;
-
   @override
-  String toString() => '$number × ${accidental.toText()}';
+  String toString() =>
+      '$number' + (accidental != null ? ' × ${accidental.toText()}' : '');
 }
