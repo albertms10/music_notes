@@ -15,15 +15,17 @@ class Note {
 
   static Note tonalityNoteFromAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
-    Interval fifth = Interval(Intervals.Quinta, Qualities.Justa);
     Note note = Note.fromValue(
-      (accidental == Accidentals.Sostingut
-                  ? fifth.semitones
-                  : fifth.inverted.semitones) *
+      Interval(
+                Intervals.Quinta,
+                Qualities.Justa,
+                descending: accidental == Accidentals.Bemoll,
+              ).semitones *
               accidentals +
           1,
       accidental,
     );
+
     return mode == Modes.Major
         ? note
         : note.transposeBy(
