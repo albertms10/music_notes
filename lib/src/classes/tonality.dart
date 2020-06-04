@@ -9,7 +9,11 @@ class Tonality {
         assert(mode != null);
 
   int get accidentals =>
-      CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note);
+      CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
+
+  KeySignature get keySignature => KeySignature.fromDistance(
+        CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note),
+      );
 
   @override
   String toString() => '$note ${mode.toText()}';
