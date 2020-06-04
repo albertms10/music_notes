@@ -6,7 +6,7 @@ abstract class Music {
 
   /// [Set] of [EnharmonicNote]s that form the chromatic scale.
   static final chromaticScale = {
-    for (int i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromSemitone(i)
+    for (int i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromValue(i)
   };
 
   /// Returns the modulus [chromaticDivisions] of [value].

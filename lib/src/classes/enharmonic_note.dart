@@ -6,13 +6,13 @@ class EnharmonicNote {
   const EnharmonicNote(this.enharmonicNotes)
       : assert(enharmonicNotes != null && enharmonicNotes.length > 0);
 
-  EnharmonicNote.fromSemitone(int semitone)
-      : this(enharmonicNoteFromSemitone(semitone).enharmonicNotes);
+  EnharmonicNote.fromValue(int value)
+      : this(_enharmonicNoteFromValue(value).enharmonicNotes);
 
   int get value => enharmonicNotes.toList()[0].value;
 
-  static EnharmonicNote enharmonicNoteFromSemitone(int semitone) {
-    final note = NotesValues.note(semitone);
+  static EnharmonicNote _enharmonicNoteFromValue(int value) {
+    final note = NotesValues.note(value);
 
     if (note != null) {
       var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
@@ -31,8 +31,8 @@ class EnharmonicNote {
       });
     }
 
-    var noteBelow = NotesValues.note(semitone - 1);
-    var noteAbove = NotesValues.note(semitone + 1);
+    var noteBelow = NotesValues.note(value - 1);
+    var noteAbove = NotesValues.note(value + 1);
 
     return EnharmonicNote({
       Note(noteBelow, Accidentals.Sostingut),
@@ -40,8 +40,8 @@ class EnharmonicNote {
     });
   }
 
-  static Note getNote(int semitone, [Accidentals preferredAccidental]) {
-    var enharmonicNotes = enharmonicNoteFromSemitone(semitone).enharmonicNotes;
+  static Note getNote(int value, [Accidentals preferredAccidental]) {
+    var enharmonicNotes = EnharmonicNote.fromValue(value).enharmonicNotes;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
@@ -58,12 +58,12 @@ class EnharmonicNote {
   ) {
     int distance = 0;
     int currentPitch = this.value;
-    var tempEnharmonicNote = EnharmonicNote.fromSemitone(currentPitch);
+    var tempEnharmonicNote = EnharmonicNote.fromValue(currentPitch);
 
     while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote.fromSemitone(currentPitch);
+      tempEnharmonicNote = EnharmonicNote.fromValue(currentPitch);
     }
 
     return distance;
@@ -73,7 +73,7 @@ class EnharmonicNote {
       enharmonicSemitonesDistance(note, interval.semitones);
 
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitone(this.value + semitones);
+      EnharmonicNote.fromValue(this.value + semitones);
 
   @override
   String toString() => '$enharmonicNotes';
