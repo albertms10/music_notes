@@ -14,7 +14,22 @@ class EnharmonicNote {
   static EnharmonicNote getEnharmonicNote(int semitone) {
     final note = NotesValues.note(semitone);
 
-    if (note != null) return EnharmonicNote({Note(note)});
+    if (note != null) {
+      var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
+      var noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+
+      return EnharmonicNote({
+        Note(
+          noteBelow,
+          AccidentalsValues.accidental(note.value - noteBelow.value),
+        ),
+        Note(note),
+        Note(
+          noteAbove,
+          AccidentalsValues.accidental(note.value - noteAbove.value),
+        ),
+      });
+    }
 
     var noteBelow = NotesValues.note(semitone - 1);
     var noteAbove = NotesValues.note(semitone + 1);
@@ -30,7 +45,10 @@ class EnharmonicNote {
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferAccidental,
-      orElse: () => enharmonicNotes.first,
+      orElse: () => enharmonicNotes.firstWhere(
+        (note) => note.accidentalValue == 0,
+        orElse: () => enharmonicNotes.first,
+      ),
     );
   }
 
