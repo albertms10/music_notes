@@ -12,6 +12,13 @@ class Tonality {
       : note = tonality.note,
         mode = tonality.mode;
 
+  Tonality.fromAccidentals(int accidentals, Modes mode,
+      [Accidentals accidental])
+      : this(
+          Note.tonalityNoteFromAccidentals(accidentals, mode, accidental),
+          mode,
+        );
+
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
