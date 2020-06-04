@@ -33,6 +33,6 @@ extension NotesValues on Notes {
 
     if (noteIndex1 > noteIndex2) noteIndex2 += notesValues.length;
 
-    return IntervalsValues.interval(noteIndex2 - noteIndex1 + 1);
+    return IntervalsValues.fromSemitones(noteIndex2 - noteIndex1 + 1);
   }
 }

@@ -30,12 +30,14 @@ extension IntervalsValues on Intervals {
 
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
-  static Intervals interval(int semitones) => Intervals.values.firstWhere(
+  static Intervals fromSemitones(int semitones) => Intervals.values.firstWhere(
         (interval) =>
             Music.modValueExcludeZero(semitones) ==
             Intervals.values.indexOf(interval) + 1,
         orElse: () => null,
       );
+
+  static Intervals invert(Intervals interval) => interval.inverted;
 
   int get semitones => (intervalsQualitiesIndex[this] != null
       ? intervalsQualitiesIndex[this]
@@ -46,12 +48,13 @@ extension IntervalsValues on Intervals {
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
-  Intervals get simplified =>
-      this.ordinal > 8 ? Intervals.values[this.ordinal - 8] : this;
+  Intervals get simplified => this.ordinal > Intervals.Octava.ordinal
+      ? Intervals.values[this.ordinal - Intervals.Octava.ordinal]
+      : this;
 
   Intervals get inverted {
     int diff = 9 - this.simplified.ordinal;
-    return interval(diff > 0 ? diff : diff.abs() + 2);
+    return fromSemitones(diff > 0 ? diff : diff.abs() + 2);
   }
 
   Intervals invert(Intervals interval) => interval.inverted;
