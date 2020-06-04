@@ -27,7 +27,9 @@ abstract class CircleOfFifths {
       const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
     );
 
-    return math.min(distanceAbove, distanceBelow);
+    int minDistance = math.min(distanceAbove, distanceBelow);
+
+    return minDistance * (minDistance == distanceAbove ? 1 : -1);
   }
 
   static int exactFifthsDistance(Note note1, Note note2) =>
