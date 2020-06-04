@@ -4,7 +4,7 @@ abstract class Music {
   /// Number of chromatic divisions in an octave.
   static const int chromaticDivisions = 12;
 
-  /// Set of [EnharmonicNote]s that form the chromatic scale.
+  /// [Set] of [EnharmonicNote]s that form the chromatic scale.
   static final chromaticScale = {
     for (int i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromSemitone(i)
   };
