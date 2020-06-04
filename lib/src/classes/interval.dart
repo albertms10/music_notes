@@ -27,6 +27,8 @@ class Interval {
           1) *
       (descending ? -1 : 1);
 
+  Interval get inverted => Interval(interval.inverted, quality.inverted);
+
   @override
   String toString() => '${interval.toText()} ${quality.toText()}';
 
