@@ -15,7 +15,9 @@ abstract class CircleOfFifths {
   }
 
   static int shortestFifthsDistance(
-      EnharmonicNote enharmonicNote1, EnharmonicNote enharmonicNote2) {
+    EnharmonicNote enharmonicNote1,
+    EnharmonicNote enharmonicNote2,
+  ) {
     int fifthSt = const Interval(Intervals.Quinta, Qualities.Justa).semitones;
 
     final int distanceAbove =
@@ -28,5 +30,7 @@ abstract class CircleOfFifths {
 
   static int exactFifthsDistance(Note note1, Note note2) =>
       note1.intervalDistance(
-          note2, const Interval(Intervals.Quinta, Qualities.Justa).semitones);
+        note2,
+        const Interval(Intervals.Quinta, Qualities.Justa).semitones,
+      );
 }

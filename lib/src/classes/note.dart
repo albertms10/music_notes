@@ -38,10 +38,11 @@ class Note {
     Intervals interval = this.note.interval(note.note);
 
     return Interval.fromDelta(
-        interval,
-        semitonesDelta(note) -
-            IntervalsValues.intervalsQualitiesIndex[interval] +
-            1);
+      interval,
+      semitonesDelta(note) -
+          IntervalsValues.intervalsQualitiesIndex[interval] +
+          1,
+    );
   }
 
   @override

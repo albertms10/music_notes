@@ -31,10 +31,11 @@ extension IntervalsValues on Intervals {
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
   static Intervals interval(int semitones) => Intervals.values.firstWhere(
-      (interval) =>
-          Music.modValueWithZero(semitones) ==
-          Intervals.values.indexOf(interval) + 1,
-      orElse: () => null);
+        (interval) =>
+            Music.modValueWithZero(semitones) ==
+            Intervals.values.indexOf(interval) + 1,
+        orElse: () => null,
+      );
 
   int get semitones => Intervals.values.indexOf(this) + 1;
 

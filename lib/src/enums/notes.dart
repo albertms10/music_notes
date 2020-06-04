@@ -14,8 +14,9 @@ extension NotesValues on Notes {
   };
 
   static Notes note(int value) => notesValues.keys.firstWhere(
-      (note) => Music.modValueWithZero(value) == notesValues[note],
-      orElse: () => null);
+        (note) => Music.modValueWithZero(value) == notesValues[note],
+        orElse: () => null,
+      );
 
   static bool needsAccidental(int value) => note(value) == null;
 
