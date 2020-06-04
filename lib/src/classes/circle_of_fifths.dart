@@ -18,12 +18,14 @@ abstract class CircleOfFifths {
     EnharmonicNote enharmonicNote1,
     EnharmonicNote enharmonicNote2,
   ) {
-    int fifthSt = const Interval(Intervals.Quinta, Qualities.Justa).semitones;
-
-    final int distanceAbove =
-        enharmonicNote1.enharmonicSemitonesDistance(enharmonicNote2, fifthSt);
-    final int distanceBelow =
-        enharmonicNote1.enharmonicSemitonesDistance(enharmonicNote2, -fifthSt);
+    final int distanceAbove = enharmonicNote1.enharmonicIntervalDistance(
+      enharmonicNote2,
+      const Interval(Intervals.Quinta, Qualities.Justa),
+    );
+    final int distanceBelow = enharmonicNote1.enharmonicIntervalDistance(
+      enharmonicNote2,
+      const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
+    );
 
     return math.min(distanceAbove, distanceBelow);
   }
