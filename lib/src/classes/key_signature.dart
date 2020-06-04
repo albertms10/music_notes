@@ -16,6 +16,15 @@ class KeySignature {
               : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
         );
 
+  /// Returns a [Set] of the two tonalities that are defined by this [KeySignature].
+  /// 
+  /// ```dart
+  /// KeySignature(2, Accidentals.Bemolls).tonalities
+  ///   == {
+  ///     Tonality(Note(Notes.Si, Accidental.Bemoll), Modes.Major),
+  ///     Tonality(Note(Notes.Sol), Modes.Menor),
+  ///   }
+  /// ```
   Set<Tonality> get tonalities => {
         Tonality.fromAccidentals(number, Modes.Major, accidental),
         Tonality.fromAccidentals(number, Modes.Menor, accidental),
