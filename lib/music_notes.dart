@@ -1,6 +1,6 @@
 library music_notes;
 
-import 'dart:math' as math;
+import 'dart:math' as math show min;
 
 part "src/classes/circle_of_fifths.dart";
 part "src/classes/enharmonic_interval.dart";
