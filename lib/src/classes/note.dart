@@ -13,6 +13,24 @@ class Note {
   Note.fromValue(int value, [Accidentals preferedAccidental])
       : this.copy(EnharmonicNote.getNote(value, preferedAccidental));
 
+  static Note tonalityNoteFromAccidentals(int accidentals, Modes mode,
+      [Accidentals accidental]) {
+    Interval fifth = Interval(Intervals.Quinta, Qualities.Justa);
+    Note note = Note.fromValue(
+      (accidental == Accidentals.Sostingut
+                  ? fifth.semitones
+                  : fifth.inverted.semitones) *
+              accidentals +
+          1,
+      accidental,
+    );
+    return mode == Modes.Major
+        ? note
+        : note.transposeBy(
+            -Interval(Intervals.Tercera, Qualities.Menor).semitones,
+          );
+  }
+
   int get value => Music.modValueWithZero(note.value + accidentalValue);
 
   int get accidentalValue => accidental != null ? accidental.value : 0;
