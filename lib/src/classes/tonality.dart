@@ -1,6 +1,6 @@
 part of music_notes;
 
-abstract class Tonality {
+class Tonality {
   final Note note;
   final Modes mode;
 
@@ -11,5 +11,6 @@ abstract class Tonality {
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note);
 
-  KeySignature get keySignature;
+  @override
+  String toString() => '$note ${mode.toText()}';
 }

@@ -1,6 +1,6 @@
 part of music_notes;
 
-abstract class KeySignature {
+class KeySignature {
   final int number;
   final Accidentals accidental;
 
@@ -8,5 +8,7 @@ abstract class KeySignature {
       : assert(number != null),
         assert(accidental != null);
 
-  List<Tonality> get tonalities;
+
+  @override
+  String toString() => '$number × ${accidental.toText()}';
 }
