@@ -20,15 +20,28 @@ class Note {
 
   int semitonesDelta(Note note) => Music.modValue(note.value - this.value);
 
-  int intervalDistance(Note note, int semitones) {
+  int intervalDistance(Note note, Interval interval) {
+    int distance = runSemitonesDistance(note, interval.semitones, Accidentals.Sostingut);
+
+    return distance < Music.chromaticDivisions
+        ? distance
+        : runSemitonesDistance(note, interval.inverted.semitones, Accidentals.Bemoll);
+  }
+
+  int runSemitonesDistance(
+    Note note,
+    int semitones,
+    Accidentals preferedAccidental,
+  ) {
     int distance = 0;
     int currentPitch = this.value;
-    EnharmonicNote tempNote = EnharmonicNote.fromSemitone(currentPitch);
 
-    while (tempNote.enharmonicNotes.every((temp) => temp != note)) {
+    var tempNote = Note.fromValue(currentPitch, preferedAccidental);
+
+    while (tempNote != note || distance > Music.chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote.fromSemitone(currentPitch);
+      tempNote = Note.fromValue(currentPitch, preferedAccidental);
     }
 
     return distance;
