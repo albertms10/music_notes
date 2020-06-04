@@ -28,7 +28,7 @@ extension IntervalsValues on Intervals {
     Intervals.Octava: 12,
   };
 
-  /// [Set] of fundamental perfect intervals.
+  /// [Set] of fundamental perfect [Intervals].
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
   /// Returns an [Intervals] enum item that matches [semitones]
@@ -46,10 +46,10 @@ extension IntervalsValues on Intervals {
         orElse: () => null,
       );
 
-  /// Returns an inverted [Interval] from [interval].
+  /// Returns an inverted [Intervals] enum item from [interval].
   static Intervals invert(Intervals interval) => interval.inverted;
 
-  /// Returns the semitones of this [IntervalsValues] as in [intervalsQualitiesIndex].
+  /// Returns the semitones of this [Intervals] enum item as in [intervalsQualitiesIndex].
   int get semitones => (intervalsQualitiesIndex[this] != null
       ? intervalsQualitiesIndex[this]
       : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);
@@ -61,7 +61,7 @@ extension IntervalsValues on Intervals {
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
-  /// Returns a simplified this [Interval].
+  /// Returns a simplified this [Intervals] enum item.
   ///
   /// ```dart
   /// Intervals.Tretzena.simplified == Intervals.Sexta
@@ -72,7 +72,7 @@ extension IntervalsValues on Intervals {
       ? Intervals.values[this.ordinal - Intervals.Octava.ordinal]
       : this;
 
-  /// Returns an inverted this [Interval].
+  /// Returns an inverted this [Intervals] enum item.
   ///
   /// ```dart
   /// Intervals.Septima.inverted == Intervals.Segona
