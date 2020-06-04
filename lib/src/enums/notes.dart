@@ -13,7 +13,7 @@ extension NotesValues on Notes {
     Notes.Si: 12,
   };
 
-  static Notes note(int value) => notesValues.keys.firstWhere(
+  static Notes fromValue(int value) => notesValues.keys.firstWhere(
         (note) => Music.modValueExcludeZero(value) == notesValues[note],
         orElse: () => null,
       );
@@ -21,18 +21,21 @@ extension NotesValues on Notes {
   static Notes fromOrdinal(int ordinal) => Notes
       .values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
 
-  static bool needsAccidental(int value) => note(value) == null;
+  static bool needsAccidental(int value) => fromValue(value) == null;
 
-  static int index(int value) => notesValues.values.toList().indexOf(value);
+  int get ordinal => Notes.values.indexOf(this) + 1;
 
   int get value => notesValues[this];
 
-  Intervals interval(Notes note) {
-    int noteIndex1 = NotesValues.index(this.value);
-    int noteIndex2 = NotesValues.index(note.value);
+  Intervals interval(Notes note, {descending: false}) {
+    int noteOrdinal1 = this.ordinal;
+    int noteOrdinal2 = note.ordinal;
 
-    if (noteIndex1 > noteIndex2) noteIndex2 += notesValues.length;
+    if (!descending && noteOrdinal1 > noteOrdinal2)
+      noteOrdinal2 += notesValues.length;
 
-    return IntervalsValues.fromSemitones(noteIndex2 - noteIndex1 + 1);
+    return IntervalsValues.fromSemitones(
+      ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1,
+    );
   }
 }

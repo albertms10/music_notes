@@ -25,7 +25,7 @@ class EnharmonicNote {
   ///
   /// It is mainly used by [EnharmonicNote.fromValue] constructor.
   static EnharmonicNote _enharmonicNoteFromValue(int value) {
-    final note = NotesValues.note(value);
+    final note = NotesValues.fromValue(value);
 
     if (note != null) {
       var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
@@ -44,8 +44,8 @@ class EnharmonicNote {
       });
     }
 
-    var noteBelow = NotesValues.note(value - 1);
-    var noteAbove = NotesValues.note(value + 1);
+    var noteBelow = NotesValues.fromValue(value - 1);
+    var noteAbove = NotesValues.fromValue(value + 1);
 
     return EnharmonicNote({
       Note(noteBelow, Accidentals.Sostingut),
