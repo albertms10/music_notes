@@ -19,11 +19,24 @@ extension AccidentalsValues on Accidentals {
     Accidentals.TripleBemoll: -3,
   };
 
+  /// Returns an [Accidentals] enum item that matches [value].
+  ///
+  /// ```dart
+  /// AccidentalsValues.fromValue(1) == Accidentals.Sostingut
+  /// AccidentalsValues.fromValue(-2) == Accidentals.DobleBemoll
+  /// AccidentalsValues.fromValue(3) == Accidentals.TripleSostingut
+  /// ```
   static Accidentals fromValue(int value) => accidentalValues.keys.firstWhere(
         (accidental) =>
             Music.modValue(value + 2) - 2 == accidentalValues[accidental],
         orElse: () => null,
       );
 
+  /// Returns the value of this [Accidentals] enum item.
+  /// 
+  /// ```dart
+  /// Accidentals.Bemoll.value == -1
+  /// Accidentals.DobleSostingut.value == 2
+  /// ```
   int get value => accidentalValues[this];
 }
