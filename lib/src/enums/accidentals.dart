@@ -10,8 +10,11 @@ extension AccidentalsValues on Accidentals {
     Accidentals.DobleBemoll: -2,
   };
 
-  static Accidentals accidental(int value) => accidentalValues.keys
-      .firstWhere((accidental) => value == accidentalValues[accidental]);
+  static Accidentals accidental(int value) => accidentalValues.keys.firstWhere(
+        (accidental) =>
+            Music.modValue(value + 2) - 2 == accidentalValues[accidental],
+        orElse: () => null,
+      );
 
   int get value => accidentalValues[this];
 }
