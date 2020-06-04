@@ -20,12 +20,12 @@ void main() {
     test('Uníson', () {
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Do)),
-        equals(Interval(Intervals.Unison, Qualities.Justa)),
+        equals(const Interval(Intervals.Unison, Qualities.Justa)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Do, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Unison, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Unison, Qualities.Augmentada)),
       );
     });
 
@@ -33,21 +33,21 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Re, Accidentals.DobleBemoll)),
-        equals(Interval(Intervals.Segona, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Segona, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Re, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Segona, Qualities.Menor)),
+        equals(const Interval(Intervals.Segona, Qualities.Menor)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Re)),
-        equals(Interval(Intervals.Segona, Qualities.Major)),
+        equals(const Interval(Intervals.Segona, Qualities.Major)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Re, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Segona, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Segona, Qualities.Augmentada)),
       );
     });
 
@@ -55,21 +55,21 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Mi, Accidentals.DobleBemoll)),
-        equals(Interval(Intervals.Tercera, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Tercera, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Mi, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Tercera, Qualities.Menor)),
+        equals(const Interval(Intervals.Tercera, Qualities.Menor)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Mi)),
-        equals(Interval(Intervals.Tercera, Qualities.Major)),
+        equals(const Interval(Intervals.Tercera, Qualities.Major)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Mi, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Tercera, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Tercera, Qualities.Augmentada)),
       );
     });
 
@@ -77,16 +77,16 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Fa, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Quarta, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Quarta, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Fa)),
-        equals(Interval(Intervals.Quarta, Qualities.Justa)),
+        equals(const Interval(Intervals.Quarta, Qualities.Justa)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Fa, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Quarta, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Quarta, Qualities.Augmentada)),
       );
     });
 
@@ -94,16 +94,16 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Sol, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Quinta, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Quinta, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Sol)),
-        equals(Interval(Intervals.Quinta, Qualities.Justa)),
+        equals(const Interval(Intervals.Quinta, Qualities.Justa)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Sol, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Quinta, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Quinta, Qualities.Augmentada)),
       );
     });
 
@@ -111,21 +111,21 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.La, Accidentals.DobleBemoll)),
-        equals(Interval(Intervals.Sexta, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Sexta, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.La, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Sexta, Qualities.Menor)),
+        equals(const Interval(Intervals.Sexta, Qualities.Menor)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.La)),
-        equals(Interval(Intervals.Sexta, Qualities.Major)),
+        equals(const Interval(Intervals.Sexta, Qualities.Major)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.La, Accidentals.Sostingut)),
-        equals(Interval(Intervals.Sexta, Qualities.Augmentada)),
+        equals(const Interval(Intervals.Sexta, Qualities.Augmentada)),
       );
     });
 
@@ -133,16 +133,16 @@ void main() {
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Si, Accidentals.DobleBemoll)),
-        equals(Interval(Intervals.Septima, Qualities.Disminuida)),
+        equals(const Interval(Intervals.Septima, Qualities.Disminuida)),
       );
       expect(
         const Note(Notes.Do)
             .exactInterval(const Note(Notes.Si, Accidentals.Bemoll)),
-        equals(Interval(Intervals.Septima, Qualities.Menor)),
+        equals(const Interval(Intervals.Septima, Qualities.Menor)),
       );
       expect(
         const Note(Notes.Do).exactInterval(const Note(Notes.Si)),
-        equals(Interval(Intervals.Septima, Qualities.Major)),
+        equals(const Interval(Intervals.Septima, Qualities.Major)),
       );
     });
   });
