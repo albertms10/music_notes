@@ -20,10 +20,10 @@ class Interval {
   /// Returns the number of semitones of this [Interval].
   /// 
   /// ```dart
-  /// Interval(Intervals.Segona, Quality.Major).semitones == 2
+  /// Interval(Intervals.Segona, Qualities.Major).semitones == 2
   /// 
-  /// Interval(Intervals.Quinta, Quality.Disminuida).semitones
-  ///   == Interval(Intervals.Quarta, Quality.Augmentada).semitones 
+  /// Interval(Intervals.Quinta, Qualities.Disminuida).semitones
+  ///   == Interval(Intervals.Quarta, Qualities.Augmentada).semitones 
   ///   == 6
   /// ```
   int get semitones =>
@@ -39,11 +39,11 @@ class Interval {
   /// Returns the inverted of this [Interval].
   /// 
   /// ```dart
-  /// Interval(Intervals.Tercera, Quality.Menor).inverted
-  ///   == Interval(Intervals.Sexta, Quality.Major)
+  /// Interval(Intervals.Tercera, Qualities.Menor).inverted
+  ///   == Interval(Intervals.Sexta, Qualities.Major)
   /// 
-  /// Interval(Intervals.Unison, Quality.Justa).inverted
-  ///   == Interval(Intervals.Octava, Quality.Justa)
+  /// Interval(Intervals.Unison, Qualities.Justa).inverted
+  ///   == Interval(Intervals.Octava, Qualities.Justa)
   /// ```
   Interval get inverted => Interval(interval.inverted, quality.inverted);
 
