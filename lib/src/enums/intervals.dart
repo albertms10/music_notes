@@ -37,13 +37,17 @@ extension IntervalsValues on Intervals {
         orElse: () => null,
       );
 
-  int get semitones => Intervals.values.indexOf(this) + 1;
+  int get semitones => (intervalsQualitiesIndex[this] != null
+      ? intervalsQualitiesIndex[this]
+      : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);
+
+  int get ordinal => Intervals.values.indexOf(this) + 1;
 
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
   Intervals get inverted {
-    int diff = 9 - this.semitones;
+    int diff = 9 - this.ordinal;
     return interval(diff > 0 ? diff : diff.abs() + 2);
   }
 
