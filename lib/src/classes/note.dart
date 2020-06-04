@@ -65,6 +65,8 @@ class Note {
     );
   }
 
+  Note transposeBy(int semitones) => Note.fromValue(this.value + semitones);
+
   @override
   String toString() =>
       note.toText() + (accidental != null ? ' ${accidental.toText()}' : '');
