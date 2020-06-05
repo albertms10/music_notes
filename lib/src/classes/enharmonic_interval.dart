@@ -58,6 +58,20 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   int get semitones => _itemsSemitones(intervals);
 
+  /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicInterval({const Interval(Intervals.Sexta)}).transposeBy(-3)
+  ///   == EnharmonicInterval({
+  ///     const Note(Notes.Fa, Accidentals.Sostingut),
+  ///     const Note(Notes.Sol, Accidentals.Bemoll),
+  ///   })
+  /// ```
+  @override
+  EnharmonicInterval transposeBy(int semitones) =>
+      EnharmonicInterval.fromSemitones(this.semitones + semitones);
+
   /// Returns the [Interval] from [semitones] and a [preferredQuality].
   ///
   /// Examples:
@@ -80,18 +94,4 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       orElse: () => enharmonicIntervals.first,
     );
   }
-
-  /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicInterval({const Interval(Intervals.Sexta)}).transposeBy(-3)
-  ///   == EnharmonicInterval({
-  ///     const Note(Notes.Fa, Accidentals.Sostingut),
-  ///     const Note(Notes.Sol, Accidentals.Bemoll),
-  ///   })
-  /// ```
-  @override
-  EnharmonicInterval transposeBy(int semitones) =>
-      EnharmonicInterval.fromSemitones(this.semitones + semitones);
 }

@@ -46,20 +46,6 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// It is used by [semitones] getter.
   static int _itemsSemitones(Set<Note> notes) => notes.toList()[0].semitones;
 
-  /// Returns the number of semitones of the common chromatic pitch this [EnharmonicNote].
-  ///
-  /// Examples:
-  /// ```dart
-  /// EnharmonicNote({
-  ///   const Note(Notes.Re, Accidental.Bemoll),
-  ///   const Note(Notes.Do, Accidental.Sostingut),
-  /// }).semitones == 2
-  ///
-  /// EnharmonicNote.fromSemitones(4).semitones == 4
-  /// ```
-  @override
-  int get semitones => _itemsSemitones(notes);
-
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
   /// Examples:
@@ -81,6 +67,34 @@ class EnharmonicNote extends Enharmonic<Note> {
       ),
     );
   }
+
+  /// Returns the number of semitones of the common chromatic pitch this [EnharmonicNote].
+  ///
+  /// Examples:
+  /// ```dart
+  /// EnharmonicNote({
+  ///   const Note(Notes.Re, Accidental.Bemoll),
+  ///   const Note(Notes.Do, Accidental.Sostingut),
+  /// }).semitones == 2
+  ///
+  /// EnharmonicNote.fromSemitones(4).semitones == 4
+  /// ```
+  @override
+  int get semitones => _itemsSemitones(notes);
+
+  /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(7)
+  ///   == EnharmonicNote({
+  ///     const Note(Notes.Fa, Accidentals.Sostingut),
+  ///     const Note(Notes.Sol, Accidentals.Bemoll),
+  ///   })
+  /// ```
+  @override
+  EnharmonicNote transposeBy(int semitones) =>
+      EnharmonicNote.fromSemitones(this.semitones + semitones + 1);
 
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
@@ -129,18 +143,4 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
       enharmonicSemitonesDistance(note, interval.semitones);
-
-  /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(7)
-  ///   == EnharmonicNote({
-  ///     const Note(Notes.Fa, Accidentals.Sostingut),
-  ///     const Note(Notes.Sol, Accidentals.Bemoll),
-  ///   })
-  /// ```
-  @override
-  EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitones(this.semitones + semitones + 1);
 }
