@@ -3,23 +3,41 @@ part of music_notes;
 class EnharmonicNote {
   final Set<Note> enharmonicNotes;
 
-  const EnharmonicNote(this.enharmonicNotes)
-      : assert(enharmonicNotes != null && enharmonicNotes.length > 0);
+  EnharmonicNote(this.enharmonicNotes)
+      : assert(enharmonicNotes != null && enharmonicNotes.length > 0),
+        assert(
+          enharmonicNotes.every(
+            (note) => note.value == notesValue(enharmonicNotes),
+          ),
+          "The notes are not enharmonic",
+        );
 
   EnharmonicNote.fromValue(int value)
       : this(_enharmonicNoteFromValue(value).enharmonicNotes);
 
-  /// Returns the value of the common chromatic pitch of this [EnharmonicNote].
+  /// Returns the value of the common chromatic pitch of [notes].
   ///
+  /// Example:
+  /// ```dart
+  /// notesValue({
+  ///   const Note(Notes.Re, Accidental.Bemoll),
+  ///   const Note(Notes.Do, Accidental.Sostingut),
+  /// }) == 2
+  /// ```
+  static int notesValue(Set<Note> notes) => notes.toList()[0].value;
+
+  /// Returns the value of the common chromatic pitch this [EnharmonicNote].
+  ///
+  /// Examples:
   /// ```dart
   /// EnharmonicNote({
-  ///   Note(Notes.Re, Accidental.Bemoll),
-  ///   Note(Notes.Do, Accidental.Sostingut),
+  ///   const Note(Notes.Re, Accidental.Bemoll),
+  ///   const Note(Notes.Do, Accidental.Sostingut),
   /// }).value == 2
   ///
   /// EnharmonicNote.fromValue(4).value == 4
   /// ```
-  int get value => enharmonicNotes.toList()[0].value;
+  int get value => notesValue(enharmonicNotes);
 
   /// Returns the [EnharmonicNote] from a given [value].
   ///
