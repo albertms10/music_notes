@@ -6,9 +6,7 @@ class Note implements MusicItem {
 
   const Note(this.note, [this.accidental]) : assert(note != null);
 
-  Note.copy(Note note)
-      : this.note = note.note,
-        this.accidental = note.accidental;
+  Note.copy(Note note) : this(note.note, note.accidental);
 
   Note.fromValue(int value, [Accidentals preferredAccidental])
       : this.copy(EnharmonicNote.getNote(value, preferredAccidental));

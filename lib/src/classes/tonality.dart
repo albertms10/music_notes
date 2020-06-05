@@ -8,9 +8,7 @@ class Tonality {
       : assert(note != null),
         assert(mode != null);
 
-  Tonality.copy(Tonality tonality)
-      : note = tonality.note,
-        mode = tonality.mode;
+  Tonality.copy(Tonality tonality) : this(tonality.note, tonality.mode);
 
   Tonality.fromAccidentals(int accidentals, Modes mode,
       [Accidentals accidental])
