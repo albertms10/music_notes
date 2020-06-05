@@ -32,7 +32,7 @@ extension IntervalsValues on Intervals {
   static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
 
   /// Returns an [Intervals] enum item that matches [semitones]
-  /// in [intervalsQualitiesIndex], otherwise returns `null`
+  /// in [intervalsQualitiesIndex], otherwise returns `null`.
   ///
   /// Examples:
   /// ```dart

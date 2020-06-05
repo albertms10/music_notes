@@ -56,10 +56,10 @@ class Note implements MusicItem {
   /// Returns this [Note]’s [accidental] value.
   int get accidentalValue => accidental != null ? accidental.value : 0;
 
-  /// Returns the `delta` difference between this [Note] and a given [note].
+  /// Returns the `delta` difference between this [Note] and [note].
   int semitonesDelta(Note note) => Music.modValue(note.value - this.value);
 
-  /// Returns the iteration distance of an [interval] between this [Note] and a given [note].
+  /// Returns the iteration distance of an [interval] between this [Note] and [note].
   ///
   /// Examples:
   /// ```dart
@@ -83,7 +83,7 @@ class Note implements MusicItem {
         (distance < Music.chromaticDivisions ? 1 : -1);
   }
 
-  /// Returns the iteration distance of an [interval] between this [Note] and a given [note]
+  /// Returns the iteration distance of an [interval] between this [Note] and [note]
   /// with a [preferredAccidental].
   ///
   /// It is mainly used by [intervalDistance].
@@ -106,7 +106,7 @@ class Note implements MusicItem {
     return distance;
   }
 
-  /// Returns the exact interval between this [Note] and a given [note].
+  /// Returns the exact interval between this [Note] and [note].
   ///
   /// Examples:
   /// ```dart
@@ -127,7 +127,7 @@ class Note implements MusicItem {
     );
   }
 
-  /// Returns the transposed [Note] by given [semitones], with an optional
+  /// Returns the transposed [Note] by [semitones], with an optional
   /// [preferredAccidental].
   ///
   /// Examples:
@@ -141,7 +141,7 @@ class Note implements MusicItem {
   Note transposeBySemitones(int semitones, [Accidentals preferredAccidental]) =>
       Note.fromValue(this.value + semitones, preferredAccidental);
 
-  /// Returns the [Note] transposed by given [interval].
+  /// Returns the [Note] transposed by [interval].
   ///
   /// Examples:
   /// ```dart

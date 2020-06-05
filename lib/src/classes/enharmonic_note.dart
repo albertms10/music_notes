@@ -32,7 +32,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   int get value => notesValue(notes);
 
-  /// Returns the [EnharmonicNote] from a given [value].
+  /// Returns the [EnharmonicNote] from [value].
   ///
   /// It is mainly used by [EnharmonicNote.fromValue] constructor.
   static EnharmonicNote _enharmonicNoteFromValue(int value) {
@@ -64,7 +64,7 @@ class EnharmonicNote extends Enharmonic<Note> {
     });
   }
 
-  /// Returns the [Note] from a given [value] and a [preferredAccidental].
+  /// Returns the [Note] from [value] and a [preferredAccidental].
   ///
   /// Examples:
   /// ```dart

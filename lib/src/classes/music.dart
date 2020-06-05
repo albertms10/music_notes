@@ -31,7 +31,7 @@ abstract class Music {
   static int nModValue(int value, int n) => value % n;
 
   /// Returns the modulus [chromaticDivisions] of [value]. If the
-  /// given value is 0, it returns [chromaticDivisions].
+  /// is 0, it returns [chromaticDivisions].
   ///
   /// Examples:
   /// ```dart
