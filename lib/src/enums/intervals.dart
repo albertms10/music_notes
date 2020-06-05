@@ -43,7 +43,7 @@ extension IntervalsValues on Intervals {
   static Intervals fromSemitones(int semitones) => Intervals.values.firstWhere(
         (interval) =>
             Music.modValueExcludeZero(semitones) ==
-            Intervals.values.indexOf(interval) + 1,
+            intervalsQualitiesIndex[interval],
         orElse: () => null,
       );
 
