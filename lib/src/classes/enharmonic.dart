@@ -7,16 +7,21 @@ abstract class Enharmonic<T extends MusicItem> {
       : assert(items != null && items.length > 0),
         assert(
           items.every(
-            (item) => item.semitones == itemsSemitones(items),
+            (item) => item.semitones == _itemsSemitones(items),
           ),
           "${T}s are not enharmonic.",
         );
 
-  /// Returns the number of semitones of the common chromatic pitch of [semitones].
-  static int itemsSemitones(Set semitones) => semitones.toList()[0].semitones;
+  /// Returns the number of semitones of the common chromatic pitch of [items].
+  ///
+  /// It is used by [semitones] getter.
+  static int _itemsSemitones(Set items) => items.toList()[0].semitones;
 
   /// Returns the number of semitones of the common chromatic pitch this [Enharmonic].
-  int get semitones => itemsSemitones(items);
+  int get semitones => _itemsSemitones(items);
+
+  /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
+  Enharmonic transposeBy(int semitones);
 
   @override
   String toString() => '$items';

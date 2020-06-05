@@ -42,14 +42,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   /// Returns the number of semitones of the common chromatic pitch of [intervals].
   ///
-  /// Example:
-  /// ```dart
-  /// intervalsSemitones({
-  ///   const Interval(Intervals.Quarta, Qualities.Augmentada),
-  ///   const Interval(Intervals.Quinta, Qualities.Disminuida),
-  /// }) == 6
-  /// ```
-  static int intervalsSemitones(Set<Interval> intervals) =>
+  /// It is used by [semitones] getter.
+  static int _itemsSemitones(Set<Interval> intervals) =>
       intervals.toList()[0].semitones;
 
   /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
@@ -61,5 +55,43 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///   const Interval(Intervals.Quinta, Qualities.Disminuida),
   /// }).semitones == 6
   /// ```
-  int get semitones => intervalsSemitones(intervals);
+  @override
+  int get semitones => _itemsSemitones(intervals);
+
+  /// Returns the [Interval] from [semitones] and a [preferredQuality].
+  ///
+  /// Examples:
+  /// ```dart
+  /// EnharmonicInterval.getInterval(4)
+  ///   == const Interval(Intervals.Tercera, Qualities.Menor)
+  ///
+  /// EnharmonicInterval.getInterval(7),
+  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
+  /// 
+  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida),
+  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// ```
+  static Interval getInterval(int semitones, [Qualities preferredQuality]) {
+    var enharmonicIntervals =
+        EnharmonicInterval.fromSemitones(semitones).intervals;
+
+    return enharmonicIntervals.firstWhere(
+      (interval) => interval.quality == preferredQuality,
+      orElse: () => enharmonicIntervals.first,
+    );
+  }
+
+  /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicInterval({const Interval(Intervals.Sexta)}).transposeBy(-3)
+  ///   == EnharmonicInterval({
+  ///     const Note(Notes.Fa, Accidentals.Sostingut),
+  ///     const Note(Notes.Sol, Accidentals.Bemoll),
+  ///   })
+  /// ```
+  @override
+  EnharmonicInterval transposeBy(int semitones) =>
+      EnharmonicInterval.fromSemitones(this.semitones + semitones);
 }

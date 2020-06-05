@@ -40,15 +40,9 @@ class EnharmonicNote extends Enharmonic<Note> {
   }
 
   /// Returns the number of semitones of the common chromatic pitch of [notes].
-  ///
-  /// Example:
-  /// ```dart
-  /// notesSemitones({
-  ///   const Note(Notes.Re, Accidental.Bemoll),
-  ///   const Note(Notes.Do, Accidental.Sostingut),
-  /// }) == 2
-  /// ```
-  static int notesSemitones(Set<Note> notes) => notes.toList()[0].semitones;
+  /// 
+  /// It is used by [semitones] getter.
+  static int _itemsSemitones(Set<Note> notes) => notes.toList()[0].semitones;
 
   /// Returns the number of semitones of the common chromatic pitch this [EnharmonicNote].
   ///
@@ -61,7 +55,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// EnharmonicNote.fromSemitones(4).semitones == 4
   /// ```
-  int get semitones => notesSemitones(notes);
+  @override
+  int get semitones => _itemsSemitones(notes);
 
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
@@ -143,6 +138,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///     const Note(Notes.Sol, Accidentals.Bemoll),
   ///   })
   /// ```
+  @override
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitones(this.semitones + semitones);
+      EnharmonicNote.fromSemitones(this.semitones + semitones + 1);
 }
