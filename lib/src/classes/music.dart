@@ -11,6 +11,7 @@ abstract class Music {
 
   /// Returns the modulus [chromaticDivisions] of [value].
   ///
+  /// Examples:
   /// ```dart
   /// Music.modValue(4) == 4
   /// Music.modValue(14) == 2
@@ -22,14 +23,17 @@ abstract class Music {
 
   /// Returns the modulus [n] of [value].
   ///
+  /// Examples:
   /// ```dart
   /// Music.nModValue(6, 12) == 6
   /// Music.nModValue(8, 6) == 2
   /// ```
   static int nModValue(int value, int n) => value % n;
 
-  /// Returns the modulus [chromaticDivisions] of [value] excluding 0.
+  /// Returns the modulus [chromaticDivisions] of [value]. If the
+  /// given value is 0, it returns [chromaticDivisions].
   ///
+  /// Examples:
   /// ```dart
   /// Music.modValueExcludeZero(15) == 3
   /// Music.modValueExcludeZero(12) == 12
@@ -38,8 +42,10 @@ abstract class Music {
   static int modValueExcludeZero(int value) =>
       nModValueExcludeZero(value, chromaticDivisions);
 
-  /// Returns the modulus [n] of [value] excluding 0.
+  /// Returns the modulus [n] of [value]. If the
+  /// given value is 0, it returns [n].
   ///
+  /// Examples:
   /// ```dart
   /// Music.nModValueExcludeZero(9, 3) == 3
   /// Music.nModValueExcludeZero(0, 5) == 5
