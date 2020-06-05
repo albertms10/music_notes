@@ -22,7 +22,7 @@ class EnharmonicInterval {
   /// }) == 6
   /// ```
   static int intervalsSemitones(Set<Interval> intervals) =>
-      intervals.toList()[0].semitones;
+      intervals.toList()[0].value;
 
   /// Returns the value of the common chromatic pitch of this [EnharmonicInterval].
   ///

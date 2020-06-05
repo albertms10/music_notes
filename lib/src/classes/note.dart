@@ -31,7 +31,7 @@ class Note {
                 Intervals.Quinta,
                 Qualities.Justa,
                 descending: accidental == Accidentals.Bemoll,
-              ).semitones *
+              ).value *
               accidentals +
           1,
       accidental,
@@ -40,7 +40,7 @@ class Note {
     return mode == Modes.Major
         ? note
         : note.transposeBySemitones(
-            -Interval(Intervals.Tercera, Qualities.Menor).semitones,
+            -Interval(Intervals.Tercera, Qualities.Menor).value,
           );
   }
 
@@ -71,13 +71,13 @@ class Note {
   int intervalDistance(Note note, Interval interval) {
     int distance = _runSemitonesDistance(
       note,
-      interval.semitones,
+      interval.value,
       Accidentals.Sostingut,
     );
 
     return _runSemitonesDistance(
           note,
-          interval.inverted.semitones,
+          interval.inverted.value,
           Accidentals.Bemoll,
         ) *
         (distance < Music.chromaticDivisions ? 1 : -1);
@@ -161,7 +161,7 @@ class Note {
 
     return Note(
       note,
-      AccidentalsValues.fromValue(this.value + interval.semitones - note.value),
+      AccidentalsValues.fromValue(this.value + interval.value - note.value),
     );
   }
 

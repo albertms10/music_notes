@@ -21,13 +21,13 @@ class Interval {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.Segona, Qualities.Major).semitones == 2
+  /// const Interval(Intervals.Segona, Qualities.Major).value == 2
   ///
-  /// const Interval(Intervals.Quinta, Qualities.Disminuida).semitones
-  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).semitones
+  /// const Interval(Intervals.Quinta, Qualities.Disminuida).value
+  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).value
   ///   == 6
   /// ```
-  int get semitones =>
+  int get value =>
       (interval.semitones +
           (interval.isPerfect
                   ? QualitiesValues.perfectQualitiesDeltas
