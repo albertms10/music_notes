@@ -14,8 +14,10 @@ class EnharmonicNote extends Enharmonic<Note> {
     final note = NotesValues.fromValue(semitones);
 
     if (note != null) {
-      final Notes noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
-      final Notes noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+      final Notes noteBelow =
+          NotesValues.fromOrdinal(Notes.values.indexOf(note));
+      final Notes noteAbove =
+          NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
 
       return {
         Note(
@@ -40,7 +42,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   }
 
   /// Returns the number of semitones of the common chromatic pitch of [notes].
-  /// 
+  ///
   /// It is used by [semitones] getter.
   static int _itemsSemitones(Set<Note> notes) => notes.toList()[0].semitones;
 

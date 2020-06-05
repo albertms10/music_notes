@@ -67,7 +67,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// EnharmonicInterval.getInterval(7),
   ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
-  /// 
+  ///
   /// EnharmonicInterval.getInterval(7, Qualities.Disminuida),
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```

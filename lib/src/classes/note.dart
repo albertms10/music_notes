@@ -55,7 +55,8 @@ class Note implements MusicItem {
   int get accidentalValue => accidental != null ? accidental.value : 0;
 
   /// Returns the `delta` difference between this [Note] and [note].
-  int semitonesDelta(Note note) => Music.modValue(note.semitones - this.semitones);
+  int semitonesDelta(Note note) =>
+      Music.modValue(note.semitones - this.semitones);
 
   /// Returns the iteration distance of an [interval] between this [Note] and [note].
   ///
@@ -159,7 +160,8 @@ class Note implements MusicItem {
 
     return Note(
       note,
-      AccidentalsValues.fromValue(this.semitones + interval.semitones - note.value),
+      AccidentalsValues.fromValue(
+          this.semitones + interval.semitones - note.value),
     );
   }
 
