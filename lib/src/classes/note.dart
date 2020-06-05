@@ -122,7 +122,7 @@ class Note implements MusicItem {
 
     return Interval.fromDelta(
       interval,
-      semitonesDelta(note) - interval.semitones,
+      semitonesDelta(note) - interval.semitones + 1,
     );
   }
 
