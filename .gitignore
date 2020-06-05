@@ -1,5 +1,7 @@
 # See https://www.dartlang.org/guides/libraries/private-files
 
+lib/main.dart
+
 # IntelliJ
 *.iml
 *.ipr
