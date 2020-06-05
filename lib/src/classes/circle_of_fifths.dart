@@ -18,10 +18,11 @@ abstract class CircleOfFifths {
   /// Returns the shortest iteration distance between two [EnharmonicNote]s
   /// in fifth intervals.
   ///
+  /// Examples:
   /// ```dart
   /// CircleOfFifths.shortestFifthsDistance(
-  ///   EnharmonicNote({Note(Notes.Fa, Accidentals.Sostingut)}),
-  ///   EnharmonicNote({Note(Notes.La)})
+  ///   EnharmonicNote({const Note(Notes.Fa, Accidentals.Sostingut)}),
+  ///   EnharmonicNote({const Note(Notes.La)})
   /// ) == -3
   ///
   /// CircleOfFifths.shortestFifthsDistance(
@@ -50,15 +51,16 @@ abstract class CircleOfFifths {
   /// Returns the exact iteration distance between two [Note]s
   /// in fifth intervals.
   ///
+  /// Examples:
   /// ```dart
   /// CircleOfFifths.exactFifthsDistance(
-  ///   Note(Notes.La, Accidentals.Bemoll),
-  ///   Note(Notes.Do, Accidentals.Sostingut)
+  ///   const Note(Notes.La, Accidentals.Bemoll),
+  ///   const Note(Notes.Do, Accidentals.Sostingut)
   /// ) == 11
   ///
   /// CircleOfFifths.exactFifthsDistance(
-  ///   Note(Notes.La, Accidentals.Bemoll),
-  ///   Note(Notes.Re, Accidentals.Bemoll)
+  ///   const Note(Notes.La, Accidentals.Bemoll),
+  ///   const Note(Notes.Re, Accidentals.Bemoll)
   /// ) == -1
   /// ```
   static int exactFifthsDistance(Note note1, Note note2) =>

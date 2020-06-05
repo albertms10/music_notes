@@ -27,6 +27,7 @@ extension QualitiesValues on Qualities {
 
   /// Returns an inverted this [Qualities] enum item.
   ///
+  /// Examples:
   /// ```dart
   /// Qualities.Disminuida.inverted == Qualities.Augmentada
   /// Qualities.Major.inverted == Qualities.Menor

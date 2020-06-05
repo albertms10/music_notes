@@ -21,20 +21,22 @@ class Tonality {
 
   /// Returns the number of [accidentals] of this [Tonality].
   ///
+  /// Example:
   /// ```dart
-  /// Tonality(Note(Notes.Si), Modes.Major) == 5
+  /// const Tonality(const Note(Notes.Si), Modes.Major) == 5
   /// ```
   int get accidentals =>
       CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
 
   /// Returns the [Modes.Major] or [Modes.Menor] relative [Tonality] of this [Tonality].
   ///
+  /// Examples:
   /// ```dart
-  /// Tonality(Note(Notes.Re), Modes.Menor).relative
-  ///   == Tonality(Note(Notes.Fa), Modes.Major)
+  /// const Tonality(const Note(Notes.Re), Modes.Menor).relative
+  ///   == const Tonality(const Note(Notes.Fa), Modes.Major)
   ///
-  /// Tonality(Note(Notes.Si, Accidentals.Bemoll), Modes.Major).relative
-  ///   == Tonality(Note(Notes.Sol), Modes.Menor)
+  /// const Tonality(const Note(Notes.Si, Accidentals.Bemoll), Modes.Major).relative
+  ///   == const Tonality(const Note(Notes.Sol), Modes.Menor)
   /// ```
   Tonality get relative => Tonality(
         note.transposeBySemitones(
@@ -49,9 +51,10 @@ class Tonality {
 
   /// Returns the [KeySignature] of this [Tonality].
   ///
+  /// Example:
   /// ```dart
-  /// Tonality(Note(Notes.La), Modes.Major).keySignature
-  ///   == KeySignature(3, Accidentals.Sostingut)
+  /// const Tonality(const Note(Notes.La), Modes.Major).keySignature
+  ///   == const KeySignature(3, Accidentals.Sostingut)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
         CircleOfFifths.exactFifthsDistance(

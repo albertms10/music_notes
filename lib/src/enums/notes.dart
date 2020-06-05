@@ -16,6 +16,7 @@ extension NotesValues on Notes {
   /// Returns a [Notes] enum item that matches [value]
   /// as in [notesValues], otherwise returns `null`.
   ///
+  /// Examples:
   /// ```dart
   /// NotesValues.fromValue(3) == Notes.Re
   /// NotesValues.fromValue(8) == Notes.Sol
@@ -28,6 +29,7 @@ extension NotesValues on Notes {
 
   /// Returns a [Notes] enum item that matches [ordinal].
   ///
+  /// Examples:
   /// ```dart
   /// NotesValues.fromOrdinal(3) == Notes.Mi
   /// NotesValues.fromOrdinal(7) == Notes.Si
@@ -39,6 +41,7 @@ extension NotesValues on Notes {
   /// Returns `true` if a [Notes] enum item needs and accidental to be represented
   /// – that is, it cannot be found in [notesValues].
   ///
+  /// Examples:
   /// ```dart
   /// NotesValues.needsAccidental(4) == true
   /// NotesValues.needsAccidental(6) == false
@@ -47,6 +50,7 @@ extension NotesValues on Notes {
 
   /// Returns the ordinal number of this [Notes] enum item.
   ///
+  /// Examples:
   /// ```dart
   /// Notes.Do.ordinal == 1
   /// Notes.Fa.ordinal == 4
@@ -55,6 +59,7 @@ extension NotesValues on Notes {
 
   /// Returns the value of this [Notes] enum item as in [notesValues].
   ///
+  /// Examples:
   /// ```dart
   /// Notes.Do.values == 1
   /// Notes.Sol.values == 8
@@ -63,15 +68,15 @@ extension NotesValues on Notes {
   int get value => notesValues[this];
 
   /// Returns an [Intervals] enum item that conforms an interval
-  /// between this [Notes] enum item and [note], with optional
-  /// [descending] parameter.
+  /// between this [Notes] enum item and [note] in ascending manner by default.
   ///
+  /// Examples:
   /// ```dart
   /// Notes.Re.interval(Notes.Fa) == Intervals.Tercera
   /// Notes.La.interval(Notes.Mi) == Intervals.Quinta
   /// Notes.La.interval(Notes.Mi, descending: true) == Intervals.Quarta
   /// ```
-  Intervals interval(Notes note, {descending: false}) {
+  Intervals interval(Notes note, {bool descending: false}) {
     int noteOrdinal1 = this.ordinal;
     int noteOrdinal2 = note.ordinal;
 
@@ -85,7 +90,7 @@ extension NotesValues on Notes {
 
   /// Returns a transposed [Notes] enum item from this [Notes] one
   /// given an [Intervals] enum item, ascending by default.
-  /// 
+  ///
   /// ```dart
   /// Notes.Do.transpose(Intervals.Quinta) == Notes.Sol
   /// Notes.Fa.transpose(Intervals.Tercera, descending: true) == Notes.Re

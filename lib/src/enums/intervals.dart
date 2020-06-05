@@ -34,6 +34,7 @@ extension IntervalsValues on Intervals {
   /// Returns an [Intervals] enum item that matches [semitones]
   /// in [intervalsQualitiesIndex], otherwise returns `null`
   ///
+  /// Examples:
   /// ```dart
   /// IntervalsValues.fromSemitones(8) == Intervals.Sexta
   /// IntervalsValues.fromSemitones(1) == Intervals.Unison
@@ -63,6 +64,7 @@ extension IntervalsValues on Intervals {
 
   /// Returns a simplified this [Intervals] enum item.
   ///
+  /// Examples:
   /// ```dart
   /// Intervals.Tretzena.simplified == Intervals.Sexta
   /// Intervals.Novena.simplified == Intervals.Segona
@@ -74,6 +76,7 @@ extension IntervalsValues on Intervals {
 
   /// Returns an inverted this [Intervals] enum item.
   ///
+  /// Examples:
   /// ```dart
   /// Intervals.Septima.inverted == Intervals.Segona
   /// Intervals.Quarta.inverted == Intervals.Quinta
@@ -83,6 +86,7 @@ extension IntervalsValues on Intervals {
   /// If an interval is greater than an octave, the simplified
   /// [Interval] inversion is returned instead.
   ///
+  /// Examples:
   /// ```dart
   /// Intervals.Onzena.inverted == Intervals.Quinta
   /// Intervals.Novena.inverted == Intervals.Septima

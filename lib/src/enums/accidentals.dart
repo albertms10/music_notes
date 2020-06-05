@@ -22,6 +22,7 @@ extension AccidentalsValues on Accidentals {
   /// Returns an [Accidentals] enum item that matches [value]
   /// in [accidentalValues], otherwise returns `null`.
   ///
+  /// Examples:
   /// ```dart
   /// AccidentalsValues.fromValue(1) == Accidentals.Sostingut
   /// AccidentalsValues.fromValue(-2) == Accidentals.DobleBemoll
@@ -34,7 +35,8 @@ extension AccidentalsValues on Accidentals {
       );
 
   /// Returns the value of this [AccidentalsValues] enum item in [accidentalValues].
-  /// 
+  ///
+  /// Examples:
   /// ```dart
   /// Accidentals.Bemoll.value == -1
   /// Accidentals.DobleSostingut.value == 2

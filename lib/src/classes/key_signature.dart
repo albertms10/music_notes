@@ -18,11 +18,12 @@ class KeySignature {
 
   /// Returns a [Set] of the two tonalities that are defined by this [KeySignature].
   ///
+  /// Example:
   /// ```dart
-  /// KeySignature(2, Accidentals.Bemolls).tonalities
+  /// const KeySignature(2, Accidentals.Bemoll).tonalities
   ///   == {
-  ///     Tonality(Note(Notes.Si, Accidental.Bemoll), Modes.Major),
-  ///     Tonality(Note(Notes.Sol), Modes.Menor),
+  ///     const Tonality(const Note(Notes.Si, Accidentals.Bemoll), Modes.Major),
+  ///     const Tonality(const Note(Notes.Sol), Modes.Menor),
   ///   }
   /// ```
   Set<Tonality> get tonalities => {

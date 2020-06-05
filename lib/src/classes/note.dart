@@ -16,12 +16,13 @@ class Note {
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
   ///
+  /// Examples:
   /// ```dart
   /// Note.tonalityNoteFromAccidentals(2, Modes.Major, Accidentals.Sostingut)
-  ///   == Note(Notes.Re)
+  ///   == const Note(Notes.Re)
   ///
   /// Note.tonalityNoteFromAccidentals(0, Modes.Menor)
-  ///   == Note(Notes.La)
+  ///   == const Note(Notes.La)
   /// ```
   static Note tonalityNoteFromAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
@@ -45,9 +46,10 @@ class Note {
 
   /// Returns the semitones that correspond to this [Note] from [Notes.Do].
   ///
+  /// Examples:
   /// ```dart
-  /// Note(Notes.Re).value == 3
-  /// Note(Notes.Fa, Accidentals.Sostingut).value == 6
+  /// const Note(Notes.Re).value == 3
+  /// const Note(Notes.Fa, Accidentals.Sostingut).value == 6
   /// ```
   int get value => Music.modValueExcludeZero(note.value + accidentalValue);
 
@@ -59,10 +61,11 @@ class Note {
 
   /// Returns the iteration distance of an [interval] between this [Note] and a given [note].
   ///
+  /// Examples:
   /// ```dart
-  /// Note(Notes.Do).intervalDistance(
-  ///   Note(Notes.Re),
-  ///   Interval(Intervals.Quinta, Qualities.Justa),
+  /// const Note(Notes.Do).intervalDistance(
+  ///   const Note(Notes.Re),
+  ///   const Interval(Intervals.Quinta, Qualities.Justa),
   /// ) == 2
   /// ```
   int intervalDistance(Note note, Interval interval) {
@@ -105,12 +108,13 @@ class Note {
 
   /// Returns the exact interval between this [Note] and a given [note].
   ///
+  /// Examples:
   /// ```dart
-  /// Note(Notes.Do).exactInterval(Note(Notes.Re))
-  ///   == Interval(Intervals.Segona, Qualities.Menor)
+  /// const Note(Notes.Do).exactInterval(const Note(Notes.Re))
+  ///   == const Interval(Intervals.Segona, Qualities.Menor)
   ///
-  /// Note(Notes.Re).exactInterval(Note(Notes.La, Accidentals.Bemoll))
-  ///   == Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// const Note(Notes.Re).exactInterval(const Note(Notes.La, Accidentals.Bemoll))
+  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   Interval exactInterval(Note note) {
     Intervals interval = this.note.interval(note.note);
@@ -123,28 +127,31 @@ class Note {
     );
   }
 
-  /// Returns the transposed [Note] by given [semitones].
+  /// Returns the transposed [Note] by given [semitones], with an optional
+  /// [preferredAccidental].
   ///
+  /// Examples:
   /// ```dart
-  /// Note(Notes.Mi, Accidentals.Bemoll).transposeBySemitones(-3)
-  ///   == Note(Notes.Do)
+  /// const Note(Notes.Mi, Accidentals.Bemoll).transposeBySemitones(-3)
+  ///   == const Note(Notes.Do)
   ///
-  /// Note(Notes.La).transposeBySemitones(5)
-  ///   == Note(Notes.Re)
+  /// const Note(Notes.La).transposeBySemitones(5)
+  ///   == const Note(Notes.Re)
   /// ```
-  Note transposeBySemitones(int semitones) =>
-      Note.fromValue(this.value + semitones);
+  Note transposeBySemitones(int semitones, [Accidentals preferredAccidental]) =>
+      Note.fromValue(this.value + semitones, preferredAccidental);
 
   /// Returns the [Note] transposed by given [interval].
   ///
+  /// Examples:
   /// ```dart
-  /// Note(Notes.Mi).transposeByInterval(
-  ///   Interval(Intervals.Quinta, Qualities.Justa),
-  /// ) == Note(Notes.Si)
+  /// const Note(Notes.Mi).transposeByInterval(
+  ///   const Interval(Intervals.Quinta, Qualities.Justa),
+  /// ) == const Note(Notes.Si)
   ///
-  /// Note(Notes.Sol).transposeByInterval(
-  ///   Interval(Intervals.Tercera, Qualities.Major, descending: true),
-  /// ) == Note(Notes.Mi, Accidentals.Bemoll)
+  /// const Note(Notes.Sol).transposeByInterval(
+  ///   const Interval(Intervals.Tercera, Qualities.Major, descending: true),
+  /// ) == const Note(Notes.Mi, Accidentals.Bemoll)
   /// ```
   Note transposeByInterval(Interval interval) {
     Notes note = this.note.transpose(

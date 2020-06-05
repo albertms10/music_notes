@@ -73,12 +73,13 @@ class EnharmonicNote {
 
   /// Returns the [Note] from a given [value] and a [preferredAccidental].
   ///
+  /// Examples:
   /// ```dart
   /// EnharmonicNote.getNote(4, Accidentals.Sostingut)
-  ///   == Note(Notes.Re, Accidentals.Sostingut)
+  ///   == const Note(Notes.Re, Accidentals.Sostingut)
   ///
   /// EnharmonicNote.getNote(5, Accidentals.Bemoll)
-  ///   == Note(Notes.Fa, Accidentals.Bemoll)
+  ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
   static Note getNote(int value, [Accidentals preferredAccidental]) {
     var enharmonicNotes = EnharmonicNote.fromValue(value).enharmonicNotes;
@@ -95,8 +96,9 @@ class EnharmonicNote {
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
   ///
+  /// Examples:
   /// ```dart
-  /// EnharmonicNote({Note(Notes.Sol)})
+  /// EnharmonicNote({const Note(Notes.Sol)})
   ///   .enharmonicSemitonesDistance(
   ///     EnharmonicNote.fromValue(10),
   ///     7,
@@ -122,17 +124,18 @@ class EnharmonicNote {
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [interval].
   ///
+  /// Examples:
   /// ```dart
   /// EnharmonicNote.fromValue(5)
   ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({Note(Notes.Re)}),
-  ///     Interval(Intervals.Quinta, Qualities.Justa),
+  ///     EnharmonicNote({const Note(Notes.Re)}),
+  ///     const Interval(Intervals.Quinta, Qualities.Justa),
   ///   ) == 10
   ///
   /// EnharmonicNote.fromValue(5)
   ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({Note(Notes.Re)}),
-  ///     Interval(Intervals.Quinta, Qualities.Justa, descending: true),
+  ///     EnharmonicNote({const Note(Notes.Re)}),
+  ///     const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
@@ -140,11 +143,12 @@ class EnharmonicNote {
 
   /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNoste].
   ///
+  /// Example:
   /// ```dart
-  /// EnharmonicNote({Note(Notes.Do)}).transposeBy(7)
+  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(7)
   ///   == EnharmonicNote({
-  ///     Note(Notes.Fa, Accidentals.Sostingut),
-  ///     Note(Notes.Sol, Accidentals.Bemoll),
+  ///     const Note(Notes.Fa, Accidentals.Sostingut),
+  ///     const Note(Notes.Sol, Accidentals.Bemoll),
   ///   })
   /// ```
   EnharmonicNote transposeBy(int semitones) =>
