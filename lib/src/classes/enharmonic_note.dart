@@ -94,7 +94,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   @override
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitones(this.semitones + semitones + 1);
+      EnharmonicNote.fromSemitones(this.semitones + semitones);
 
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
