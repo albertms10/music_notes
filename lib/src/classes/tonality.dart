@@ -19,12 +19,34 @@ class Tonality {
 
   /// Returns the number of [accidentals] of this [Tonality].
   ///
-  /// Example:
+  /// Examples:
   /// ```dart
-  /// const Tonality(const Note(Notes.Si), Modes.Major) == 5
+  /// const Tonality(const Note(Notes.Si), Modes.Major).accidentals == 5
+  /// const Tonality(const Note(Notes.Sol), Modes.Menor).accidentals == 2
   /// ```
-  int get accidentals =>
-      CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note).abs();
+  int get accidentals => CircleOfFifths.exactFifthsDistance(
+        Note(Notes.Do),
+        mode == Modes.Major
+            ? note
+            : note.transposeByInterval(
+                Interval(Intervals.Tercera, Qualities.Menor),
+              ),
+      ).abs();
+
+  /// Returns an [Accidentals] enum item of this [Tonality]’s key signature.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Tonality(const Note(Notes.Mi), Modes.Major).accidental
+  ///   == Accidentals.Sostingut
+  /// 
+  /// Tonality(const Note(Notes.Fa), Modes.Menor).accidental
+  ///   == Accidentals.Bemoll
+  /// ```
+  Accidentals get accidental =>
+      CircleOfFifths.exactFifthsDistance(Note(Notes.Do), note) > 0
+          ? Accidentals.Sostingut
+          : Accidentals.Bemoll;
 
   /// Returns the [Modes.Major] or [Modes.Menor] relative [Tonality] of this [Tonality].
   ///
