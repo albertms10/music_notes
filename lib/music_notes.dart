@@ -11,6 +11,7 @@ part "src/classes/key_signature.dart";
 part "src/classes/music.dart";
 part "src/classes/music_item.dart";
 part "src/classes/note.dart";
+part "src/classes/relative_tonalities.dart";
 part "src/classes/tonality.dart";
 part "src/enums/accidentals.dart";
 part "src/enums/enums_to_string.dart";
