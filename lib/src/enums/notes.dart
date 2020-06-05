@@ -83,7 +83,7 @@ extension NotesValues on Notes {
     if (!descending && noteOrdinal1 > noteOrdinal2)
       noteOrdinal2 += notesValues.length;
 
-    return IntervalsValues.fromSemitones(
+    return IntervalsValues.fromOrdinal(
       ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1,
     );
   }
