@@ -3,14 +3,14 @@ part of music_notes;
 enum Qualities { Augmentada, Major, Justa, Menor, Disminuida }
 
 extension QualitiesValues on Qualities {
-  static const qualitiesDeltas = {
+  static const qualities = {
     Qualities.Disminuida,
     Qualities.Menor,
     Qualities.Major,
     Qualities.Augmentada,
   };
 
-  static const perfectQualitiesDeltas = {
+  static const perfectQualities = {
     Qualities.Disminuida,
     Qualities.Justa,
     Qualities.Augmentada,
@@ -23,7 +23,7 @@ extension QualitiesValues on Qualities {
   };
 
   static Set<Qualities> intervalQualitiesSet(Intervals interval) =>
-      interval.isPerfect ? perfectQualitiesDeltas : qualitiesDeltas;
+      interval.isPerfect ? perfectQualities : qualities;
 
   static bool exists(Intervals interval, int semitones) {
     final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
