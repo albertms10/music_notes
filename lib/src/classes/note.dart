@@ -146,8 +146,17 @@ class Note {
   ///   Interval(Intervals.Tercera, Qualities.Major, descending: true),
   /// ) == Note(Notes.Mi, Accidentals.Bemoll)
   /// ```
-  Note transposeByInterval(Interval interval) =>
-      transposeBySemitones(interval.semitones);
+  Note transposeByInterval(Interval interval) {
+    Notes note = this.note.transpose(
+          interval.interval,
+          descending: interval.descending,
+        );
+
+    return Note(
+      note,
+      AccidentalsValues.fromValue(this.value + interval.semitones - note.value),
+    );
+  }
 
   @override
   String toString() =>
