@@ -15,7 +15,7 @@ class Tonality {
   Tonality.fromAccidentals(int accidentals, Modes mode,
       [Accidentals accidental])
       : this(
-          Note.tonalityNoteFromAccidentals(accidentals, mode, accidental),
+          Note.fromTonalityAccidentals(accidentals, mode, accidental),
           mode,
         );
 

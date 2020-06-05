@@ -18,13 +18,13 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// Note.tonalityNoteFromAccidentals(2, Modes.Major, Accidentals.Sostingut)
+  /// Note.fromTonalityAccidentals(2, Modes.Major, Accidentals.Sostingut)
   ///   == const Note(Notes.Re)
   ///
-  /// Note.tonalityNoteFromAccidentals(0, Modes.Menor)
+  /// Note.fromTonalityAccidentals(0, Modes.Menor)
   ///   == const Note(Notes.La)
   /// ```
-  static Note tonalityNoteFromAccidentals(int accidentals, Modes mode,
+  static Note fromTonalityAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
     Note note = Note.fromValue(
       Interval(
