@@ -5,8 +5,39 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   EnharmonicNote(this.notes) : super(notes);
 
-  EnharmonicNote.fromValue(int value)
-      : this(_enharmonicNoteFromValue(value).notes);
+  EnharmonicNote.fromValue(int value) : this(_fromValue(value));
+
+  /// Returns the [EnharmonicNote] from [value].
+  ///
+  /// It is mainly used by [EnharmonicNote.fromValue] constructor.
+  static Set<Note> _fromValue(int value) {
+    final note = NotesValues.fromValue(value);
+
+    if (note != null) {
+      var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
+      var noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+
+      return {
+        Note(
+          noteBelow,
+          AccidentalsValues.fromValue(note.value - noteBelow.value),
+        ),
+        Note(note),
+        Note(
+          noteAbove,
+          AccidentalsValues.fromValue(note.value - noteAbove.value),
+        ),
+      };
+    }
+
+    var noteBelow = NotesValues.fromValue(value - 1);
+    var noteAbove = NotesValues.fromValue(value + 1);
+
+    return {
+      Note(noteBelow, Accidentals.Sostingut),
+      Note(noteAbove, Accidentals.Bemoll),
+    };
+  }
 
   /// Returns the value of the common chromatic pitch of [notes].
   ///
@@ -31,38 +62,6 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.fromValue(4).value == 4
   /// ```
   int get value => notesValue(notes);
-
-  /// Returns the [EnharmonicNote] from [value].
-  ///
-  /// It is mainly used by [EnharmonicNote.fromValue] constructor.
-  static EnharmonicNote _enharmonicNoteFromValue(int value) {
-    final note = NotesValues.fromValue(value);
-
-    if (note != null) {
-      var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
-      var noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
-
-      return EnharmonicNote({
-        Note(
-          noteBelow,
-          AccidentalsValues.fromValue(note.value - noteBelow.value),
-        ),
-        Note(note),
-        Note(
-          noteAbove,
-          AccidentalsValues.fromValue(note.value - noteAbove.value),
-        ),
-      });
-    }
-
-    var noteBelow = NotesValues.fromValue(value - 1);
-    var noteAbove = NotesValues.fromValue(value + 1);
-
-    return EnharmonicNote({
-      Note(noteBelow, Accidentals.Sostingut),
-      Note(noteAbove, Accidentals.Bemoll),
-    });
-  }
 
   /// Returns the [Note] from [value] and a [preferredAccidental].
   ///
@@ -134,7 +133,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
       enharmonicSemitonesDistance(note, interval.value);
 
-  /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNoste].
+  /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
   ///
   /// Example:
   /// ```dart
