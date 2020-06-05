@@ -82,4 +82,17 @@ extension NotesValues on Notes {
       ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1,
     );
   }
+
+  /// Returns a transposed [Notes] enum item from this [Notes] one
+  /// given an [Intervals] enum item, ascending by default.
+  /// 
+  /// ```dart
+  /// Notes.Do.transpose(Intervals.Quinta) == Notes.Sol
+  /// Notes.Fa.transpose(Intervals.Tercera, descending: true) == Notes.Re
+  /// Notes.La.transpose(Intervals.Quarta) == Notes.Re
+  /// ```
+  Notes transpose(Intervals interval, {bool descending: false}) =>
+      NotesValues.fromOrdinal(
+        this.ordinal + (interval.ordinal - 1) * (descending ? -1 : 1),
+      );
 }
