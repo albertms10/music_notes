@@ -9,7 +9,7 @@ abstract class Enharmonic<T extends MusicItem> {
           items.every(
             (item) => item.value == itemsValue(items),
           ),
-          "The items are not enharmonic",
+          "${T}s are not enharmonic.",
         );
 
   /// Returns the value of the common chromatic pitch of [items].
