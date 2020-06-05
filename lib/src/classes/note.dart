@@ -74,12 +74,14 @@ class Note implements MusicItem {
       Accidentals.Sostingut,
     );
 
-    return _runSemitonesDistance(
-          note,
-          interval.inverted.semitones,
-          Accidentals.Bemoll,
-        ) *
-        (distance < Music.chromaticDivisions ? 1 : -1);
+    return (distance < Music.chromaticDivisions
+        ? distance
+        : _runSemitonesDistance(
+              note,
+              interval.inverted.semitones,
+              Accidentals.Bemoll,
+            ) *
+            -1);
   }
 
   /// Returns the iteration distance of an [interval] between this [Note] and [note]
