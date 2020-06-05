@@ -14,6 +14,7 @@ enum Intervals {
   Onzena,
   Dotzena,
   Tretzena,
+  Catorzena,
 }
 
 extension IntervalsValues on Intervals {
