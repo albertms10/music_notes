@@ -33,4 +33,10 @@ class KeySignature {
   @override
   String toString() =>
       '$number' + (accidental != null ? ' × ${accidental.toText()}' : '');
+
+  @override
+  bool operator ==(other) =>
+      other is KeySignature &&
+      this.number == other.number &&
+      this.accidental == other.accidental;
 }

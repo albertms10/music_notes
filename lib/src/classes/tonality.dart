@@ -62,4 +62,8 @@ class Tonality {
 
   @override
   String toString() => '$note ${mode.toText()}';
+
+  @override
+  bool operator ==(other) =>
+      other is Tonality && this.note == other.note && this.mode == other.mode;
 }
