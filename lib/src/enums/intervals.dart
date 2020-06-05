@@ -97,6 +97,6 @@ extension IntervalsValues on Intervals {
   /// ```
   Intervals get inverted {
     int diff = 9 - this.simplified.ordinal;
-    return fromSemitones(diff > 0 ? diff : diff.abs() + 2);
+    return fromOrdinal(diff > 0 ? diff : diff.abs() + 2);
   }
 }
