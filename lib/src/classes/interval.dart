@@ -10,12 +10,22 @@ class Interval implements MusicItem {
         assert(quality != null);
 
   Interval.fromDelta(Intervals interval, int delta)
+      : this(interval, qualityFromDelta(interval, delta));
+
+  Interval.fromDesiredSemitones(Intervals interval, int semitones)
       : this(
           interval,
-          interval.isPerfect
-              ? QualitiesValues.perfectQualitiesDeltas.toList()[delta]
-              : QualitiesValues.qualitiesDeltas.toList()[delta],
+          qualityFromDelta(interval, semitones - interval.semitones),
         );
+
+  static Qualities qualityFromDelta(Intervals interval, int delta) {
+    final qualitiesList = QualitiesValues.intervalQualitiesSet(interval);
+
+    return qualitiesList.firstWhere(
+      (quality) => qualitiesList.toList().indexOf(quality) == delta,
+      orElse: () => delta < 0 ? qualitiesList.first : qualitiesList.last,
+    );
+  }
 
   /// Returns the number of semitones of this [Interval].
   ///
@@ -29,9 +39,7 @@ class Interval implements MusicItem {
   /// ```
   int get value =>
       (interval.semitones +
-          (interval.isPerfect
-                  ? QualitiesValues.perfectQualitiesDeltas
-                  : QualitiesValues.qualitiesDeltas)
+          QualitiesValues.intervalQualitiesSet(interval)
               .toList()
               .indexOf(quality) -
           1) *

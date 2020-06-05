@@ -22,6 +22,9 @@ extension QualitiesValues on Qualities {
     Qualities.Major: Qualities.Menor,
   };
 
+  static Set<Qualities> intervalQualitiesSet(Intervals interval) =>
+      interval.isPerfect ? perfectQualitiesDeltas : qualitiesDeltas;
+
   static bool exists(Intervals interval, int semitones) {
     final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
     return delta > 0 && delta <= intervalQualitiesSet(interval).length;
