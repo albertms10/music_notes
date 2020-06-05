@@ -16,20 +16,20 @@ class KeySignature {
               : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
         );
 
-  /// Returns a [Set] of the two tonalities that are defined by this [KeySignature].
+  /// Returns [RelativeTonalities] with the two tonalities that are defined by this [KeySignature].
   ///
   /// Example:
   /// ```dart
   /// const KeySignature(2, Accidentals.Bemoll).tonalities
-  ///   == {
+  ///   == RelativeTonalities({
   ///     const Tonality(const Note(Notes.Si, Accidentals.Bemoll), Modes.Major),
   ///     const Tonality(const Note(Notes.Sol), Modes.Menor),
-  ///   }
+  ///   })
   /// ```
-  Set<Tonality> get tonalities => {
+  RelativeTonalities get tonalities => RelativeTonalities({
         Tonality.fromAccidentals(number, Modes.Major, accidental),
         Tonality.fromAccidentals(number, Modes.Menor, accidental),
-      };
+      });
 
   @override
   String toString() =>
