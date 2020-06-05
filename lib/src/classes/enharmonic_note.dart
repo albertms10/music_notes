@@ -1,12 +1,12 @@
 part of music_notes;
 
 class EnharmonicNote extends Enharmonic<Note> {
-  final Set<Note> enharmonicNotes;
+  final Set<Note> notes;
 
-  EnharmonicNote(this.enharmonicNotes) : super(enharmonicNotes);
+  EnharmonicNote(this.notes) : super(notes);
 
   EnharmonicNote.fromValue(int value)
-      : this(_enharmonicNoteFromValue(value).enharmonicNotes);
+      : this(_enharmonicNoteFromValue(value).notes);
 
   /// Returns the value of the common chromatic pitch of [notes].
   ///
@@ -30,7 +30,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// EnharmonicNote.fromValue(4).value == 4
   /// ```
-  int get value => notesValue(enharmonicNotes);
+  int get value => notesValue(notes);
 
   /// Returns the [EnharmonicNote] from a given [value].
   ///
@@ -75,7 +75,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
   static Note getNote(int value, [Accidentals preferredAccidental]) {
-    var enharmonicNotes = EnharmonicNote.fromValue(value).enharmonicNotes;
+    var enharmonicNotes = EnharmonicNote.fromValue(value).notes;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
@@ -148,7 +148,7 @@ class EnharmonicNote extends Enharmonic<Note> {
       EnharmonicNote.fromValue(this.value + semitones);
 
   @override
-  String toString() => '$enharmonicNotes';
+  String toString() => '$notes';
 
   @override
   bool operator ==(other) =>
