@@ -22,6 +22,11 @@ extension QualitiesValues on Qualities {
     Qualities.Major: Qualities.Menor,
   };
 
+  static bool exists(Intervals interval, int semitones) {
+    final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
+    return delta > 0 && delta <= intervalQualitiesSet(interval).length;
+  }
+
   /// Returns an inverted [Qualities] enum item from [quality].
   static Qualities invert(Qualities quality) => quality.inverted;
 
