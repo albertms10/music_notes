@@ -47,6 +47,9 @@ extension IntervalsValues on Intervals {
         orElse: () => null,
       );
 
+  static Intervals fromOrdinal(int ordinal) => Intervals
+      .values[Music.nModValueExcludeZero(ordinal, Intervals.values.length) - 1];
+
   /// Returns an inverted [Intervals] enum item from [interval].
   static Intervals invert(Intervals interval) => interval.inverted;
 
