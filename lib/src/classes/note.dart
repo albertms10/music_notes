@@ -1,6 +1,6 @@
 part of music_notes;
 
-class Note {
+class Note implements MusicItem {
   final Notes note;
   final Accidentals accidental;
 

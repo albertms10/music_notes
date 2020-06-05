@@ -1,16 +1,9 @@
 part of music_notes;
 
-class EnharmonicNote {
+class EnharmonicNote extends Enharmonic<Note> {
   final Set<Note> enharmonicNotes;
 
-  EnharmonicNote(this.enharmonicNotes)
-      : assert(enharmonicNotes != null && enharmonicNotes.length > 0),
-        assert(
-          enharmonicNotes.every(
-            (note) => note.value == notesValue(enharmonicNotes),
-          ),
-          "The notes are not enharmonic",
-        );
+  EnharmonicNote(this.enharmonicNotes) : super(enharmonicNotes);
 
   EnharmonicNote.fromValue(int value)
       : this(_enharmonicNoteFromValue(value).enharmonicNotes);
@@ -139,7 +132,7 @@ class EnharmonicNote {
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
-      enharmonicSemitonesDistance(note, interval.semitones);
+      enharmonicSemitonesDistance(note, interval.value);
 
   /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNoste].
   ///

@@ -1,16 +1,9 @@
 part of music_notes;
 
-class EnharmonicInterval {
+class EnharmonicInterval extends Enharmonic<Interval> {
   final Set<Interval> intervals;
 
-  EnharmonicInterval(this.intervals)
-      : assert(intervals != null && intervals.length > 0),
-        assert(
-          intervals.every(
-            (interval) => interval.semitones == intervalsSemitones(intervals),
-          ),
-          "The intervals are not enharmonic",
-        );
+  EnharmonicInterval(this.intervals) : super(intervals);
 
   /// Returns the semitones of the common chromatic pitch of [intervals].
   ///

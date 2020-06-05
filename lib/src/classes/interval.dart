@@ -1,6 +1,6 @@
 part of music_notes;
 
-class Interval {
+class Interval implements MusicItem {
   final Intervals interval;
   final Qualities quality;
   final bool descending;
