@@ -22,12 +22,12 @@ abstract class CircleOfFifths {
   /// ```dart
   /// CircleOfFifths.shortestFifthsDistance(
   ///   EnharmonicNote({const Note(Notes.Fa, Accidentals.Sostingut)}),
-  ///   EnharmonicNote({const Note(Notes.La)})
+  ///   EnharmonicNote({const Note(Notes.La)}),
   /// ) == -3
   ///
   /// CircleOfFifths.shortestFifthsDistance(
   ///   EnharmonicNote.fromSemitones(4),
-  ///   EnharmonicNote.fromSemitones(8)
+  ///   EnharmonicNote.fromSemitones(8),
   /// ) == 4
   /// ```
   static int shortestFifthsDistance(
@@ -55,12 +55,12 @@ abstract class CircleOfFifths {
   /// ```dart
   /// CircleOfFifths.exactFifthsDistance(
   ///   const Note(Notes.La, Accidentals.Bemoll),
-  ///   const Note(Notes.Do, Accidentals.Sostingut)
+  ///   const Note(Notes.Do, Accidentals.Sostingut),
   /// ) == 12
   ///
   /// CircleOfFifths.exactFifthsDistance(
   ///   const Note(Notes.La, Accidentals.Bemoll),
-  ///   const Note(Notes.Re, Accidentals.Bemoll)
+  ///   const Note(Notes.Re, Accidentals.Bemoll),
   /// ) == -1
   /// ```
   static int exactFifthsDistance(Note note1, Note note2) =>
