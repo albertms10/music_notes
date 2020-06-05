@@ -15,7 +15,7 @@ abstract class Enharmonic<T extends MusicItem> {
   /// Returns the number of semitones of the common chromatic pitch of [items].
   ///
   /// It is used by [semitones] getter.
-  static int _itemsSemitones(Set items) => items.toList()[0].semitones;
+  static int _itemsSemitones(Set items) => items.first.semitones;
 
   /// Returns the number of semitones of the common chromatic pitch this [Enharmonic].
   int get semitones => _itemsSemitones(items);

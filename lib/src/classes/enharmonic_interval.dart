@@ -44,7 +44,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// It is used by [semitones] getter.
   static int _itemsSemitones(Set<Interval> intervals) =>
-      intervals.toList()[0].semitones;
+      intervals.first.semitones;
 
   /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
   ///

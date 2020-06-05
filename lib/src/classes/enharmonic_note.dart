@@ -44,7 +44,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Returns the number of semitones of the common chromatic pitch of [notes].
   ///
   /// It is used by [semitones] getter.
-  static int _itemsSemitones(Set<Note> notes) => notes.toList()[0].semitones;
+  static int _itemsSemitones(Set<Note> notes) => notes.first.semitones;
 
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
