@@ -146,11 +146,4 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   EnharmonicNote transposeBy(int semitones) =>
       EnharmonicNote.fromValue(this.value + semitones);
-
-  @override
-  String toString() => '$notes';
-
-  @override
-  bool operator ==(other) =>
-      other is EnharmonicNote && this.value == other.value;
 }

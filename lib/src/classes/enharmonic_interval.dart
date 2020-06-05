@@ -27,11 +27,4 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// }).semitones == 6
   /// ```
   int get semitones => intervalsSemitones(intervals);
-
-  @override
-  String toString() => '$intervals';
-
-  @override
-  bool operator ==(other) =>
-      other is EnharmonicInterval && this.semitones == other.semitones;
 }
