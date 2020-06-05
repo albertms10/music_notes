@@ -39,7 +39,7 @@ class Tonality {
   /// ```dart
   /// Tonality(const Note(Notes.Mi), Modes.Major).accidental
   ///   == Accidentals.Sostingut
-  /// 
+  ///
   /// Tonality(const Note(Notes.Fa), Modes.Menor).accidental
   ///   == Accidentals.Bemoll
   /// ```

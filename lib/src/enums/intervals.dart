@@ -38,7 +38,7 @@ extension IntervalsValues on Intervals {
   /// Examples:
   /// ```dart
   /// IntervalsValues.fromSemitones(8) == Intervals.Sexta
-  /// IntervalsValues.fromSemitones(1) == Intervals.Unison
+  /// IntervalsValues.fromSemitones(0) == Intervals.Unison
   /// IntervalsValues.fromSemitones(4) == null
   /// ```
   static Intervals fromSemitones(int semitones) => Intervals.values.firstWhere(
@@ -48,21 +48,57 @@ extension IntervalsValues on Intervals {
         orElse: () => null,
       );
 
+  /// Returns an [Intervals] enum item that matches [ordinal].
+  ///
+  /// Examples:
+  /// ```dart
+  /// IntervalsValues.fromOrdinal(1) == Intervals.Unison
+  /// IntervalsValues.fromOrdinal(5) == Intervals.Quinta
+  /// IntervalsValues.fromOrdinal(14) == Intervals.Catorzena
+  /// ```
   static Intervals fromOrdinal(int ordinal) => Intervals
       .values[Music.nModValueExcludeZero(ordinal, Intervals.values.length) - 1];
 
   /// Returns an inverted [Intervals] enum item from [interval].
+  ///
+  /// Examples:
+  /// ```dart
+  /// IntervalsValues.invert(Intervals.Segona) == Intervals.Septima
+  /// IntervalsValues.invert(Intervals.Quinta) == Intervals.Quarta
+  /// IntervalsValues.invert(Intervals.Octava) == Intervals.Unison
+  /// ```
   static Intervals invert(Intervals interval) => interval.inverted;
 
   /// Returns the number of semitones of this [Intervals] enum item as in [intervalsQualitiesIndex].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Intervals.Tercera.semitones == 3
+  /// Intervals.Quinta.semitones == 7
+  /// Intervals.Septima.semitones == 10
+  /// ```
   int get semitones => (intervalsQualitiesIndex[this] != null
       ? intervalsQualitiesIndex[this]
       : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);
 
   /// Returns the ordinal number of this [Intervals] enum item.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Intervals.Segona.ordinal == 2
+  /// Intervals.Sexta.ordinal == 6
+  /// Intervals.Tretzena.ordinal == 13
+  /// ```
   int get ordinal => Intervals.values.indexOf(this) + 1;
 
   /// Returns `true` if this [Intervals] enum item is a perfect interval.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Intervals.Quinta.isPerfect == true
+  /// Intervals.Sexta.isPerfect == false
+  /// Intervals.Onzena.isPerfect == true
+  /// ```
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == this.inverted);
 
@@ -84,7 +120,7 @@ extension IntervalsValues on Intervals {
   /// ```dart
   /// Intervals.Septima.inverted == Intervals.Segona
   /// Intervals.Quarta.inverted == Intervals.Quinta
-  /// Intervals.Unisso.inverted == Intervals.Octava
+  /// Intervals.Unison.inverted == Intervals.Octava
   /// ```
   ///
   /// If an interval is greater than an octave, the simplified

@@ -47,7 +47,7 @@ class Note implements MusicItem {
   /// Examples:
   /// ```dart
   /// const Note(Notes.Re).semitones == 3
-  /// const Note(Notes.Fa, Accidentals.Sostingut).semitones == 6
+  /// const Note(Notes.Fa, Accidentals.Sostingut).semitones == 7
   /// ```
   int get semitones => Music.modValueExcludeZero(note.value + accidentalValue);
 
@@ -60,7 +60,7 @@ class Note implements MusicItem {
 
   /// Returns the iteration distance of an [interval] between this [Note] and [note].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Note(Notes.Do).intervalDistance(
   ///   const Note(Notes.Re),

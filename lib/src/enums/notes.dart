@@ -20,7 +20,7 @@ extension NotesValues on Notes {
   /// ```dart
   /// NotesValues.fromValue(3) == Notes.Re
   /// NotesValues.fromValue(8) == Notes.Sol
-  /// NotesValues.fromVAlue(11) == null
+  /// NotesValues.fromValue(11) == null
   /// ```
   static Notes fromValue(int value) => notesValues.keys.firstWhere(
         (note) => Music.modValueExcludeZero(value) == notesValues[note],
@@ -61,9 +61,9 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.Do.values == 1
-  /// Notes.Sol.values == 8
-  /// Notes.Si.values == 12
+  /// Notes.Do.value == 1
+  /// Notes.Sol.value == 8
+  /// Notes.Si.value == 12
   /// ```
   int get value => notesValues[this];
 
@@ -91,6 +91,7 @@ extension NotesValues on Notes {
   /// Returns a transposed [Notes] enum item from this [Notes] one
   /// given an [Intervals] enum item, ascending by default.
   ///
+  /// Examples:
   /// ```dart
   /// Notes.Do.transpose(Intervals.Quinta) == Notes.Sol
   /// Notes.Fa.transpose(Intervals.Tercera, descending: true) == Notes.Re

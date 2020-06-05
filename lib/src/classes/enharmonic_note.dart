@@ -9,7 +9,7 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   /// Returns the [EnharmonicNote] from [semitones].
   ///
-  /// It is mainly used by [EnharmonicNote..fromSemitones] constructor.
+  /// It is mainly used by [EnharmonicNote.fromSemitones] constructor.
   static Set<Note> _fromSemitones(int semitones) {
     final note = NotesValues.fromValue(semitones);
 
@@ -73,8 +73,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Examples:
   /// ```dart
   /// EnharmonicNote({
-  ///   const Note(Notes.Re, Accidental.Bemoll),
-  ///   const Note(Notes.Do, Accidental.Sostingut),
+  ///   const Note(Notes.Re, Accidentals.Bemoll),
+  ///   const Note(Notes.Do, Accidentals.Sostingut),
   /// }).semitones == 2
   ///
   /// EnharmonicNote.fromSemitones(4).semitones == 4
@@ -86,7 +86,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(7)
+  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(6)
   ///   == EnharmonicNote({
   ///     const Note(Notes.Fa, Accidentals.Sostingut),
   ///     const Note(Notes.Sol, Accidentals.Bemoll),
@@ -99,7 +99,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// EnharmonicNote({const Note(Notes.Sol)})
   ///   .enharmonicSemitonesDistance(

@@ -62,10 +62,11 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval({const Interval(Intervals.Sexta)}).transposeBy(-3)
+  /// EnharmonicInterval({
+  ///   const Interval(Intervals.Sexta, Qualities.Major),
+  /// }).transposeBy(-3)
   ///   == EnharmonicInterval({
-  ///     const Note(Notes.Fa, Accidentals.Sostingut),
-  ///     const Note(Notes.Sol, Accidentals.Bemoll),
+  ///     const Interval(Intervals.Quarta, Qualities.Justa),
   ///   })
   /// ```
   @override
@@ -79,10 +80,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// EnharmonicInterval.getInterval(4)
   ///   == const Interval(Intervals.Tercera, Qualities.Menor)
   ///
-  /// EnharmonicInterval.getInterval(7),
+  /// EnharmonicInterval.getInterval(7)
   ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
   ///
-  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida),
+  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida)
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   static Interval getInterval(int semitones, [Qualities preferredQuality]) {

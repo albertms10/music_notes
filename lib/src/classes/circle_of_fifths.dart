@@ -56,7 +56,7 @@ abstract class CircleOfFifths {
   /// CircleOfFifths.exactFifthsDistance(
   ///   const Note(Notes.La, Accidentals.Bemoll),
   ///   const Note(Notes.Do, Accidentals.Sostingut)
-  /// ) == 11
+  /// ) == 12
   ///
   /// CircleOfFifths.exactFifthsDistance(
   ///   const Note(Notes.La, Accidentals.Bemoll),
