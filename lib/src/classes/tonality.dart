@@ -42,7 +42,7 @@ class Tonality {
             Intervals.Tercera,
             Qualities.Menor,
             descending: mode == Modes.Major,
-          ).value,
+          ).semitones,
         ),
         mode.inverted,
       );

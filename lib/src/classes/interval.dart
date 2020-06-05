@@ -31,13 +31,13 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.Segona, Qualities.Major).value == 2
+  /// const Interval(Intervals.Segona, Qualities.Major).semitones == 2
   ///
-  /// const Interval(Intervals.Quinta, Qualities.Disminuida).value
-  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).value
+  /// const Interval(Intervals.Quinta, Qualities.Disminuida).semitones
+  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).semitones
   ///   == 6
   /// ```
-  int get value =>
+  int get semitones =>
       (interval.semitones +
           QualitiesValues.intervalQualitiesSet(interval)
               .toList()

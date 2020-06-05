@@ -7,21 +7,21 @@ abstract class Enharmonic<T extends MusicItem> {
       : assert(items != null && items.length > 0),
         assert(
           items.every(
-            (item) => item.value == itemsValue(items),
+            (item) => item.semitones == itemsSemitones(items),
           ),
           "${T}s are not enharmonic.",
         );
 
-  /// Returns the value of the common chromatic pitch of [items].
-  static int itemsValue(Set items) => items.toList()[0].value;
+  /// Returns the number of semitones of the common chromatic pitch of [semitones].
+  static int itemsSemitones(Set semitones) => semitones.toList()[0].semitones;
 
-  /// Returns the value of the common chromatic pitch this [Enharmonic].
-  int get value => itemsValue(items);
+  /// Returns the number of semitones of the common chromatic pitch this [Enharmonic].
+  int get semitones => itemsSemitones(items);
 
   @override
   String toString() => '$items';
 
   @override
   bool operator ==(other) =>
-      other is Enharmonic<T> && this.value == other.value;
+      other is Enharmonic<T> && this.semitones == other.semitones;
 }

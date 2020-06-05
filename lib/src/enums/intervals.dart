@@ -54,7 +54,7 @@ extension IntervalsValues on Intervals {
   /// Returns an inverted [Intervals] enum item from [interval].
   static Intervals invert(Intervals interval) => interval.inverted;
 
-  /// Returns the semitones of this [Intervals] enum item as in [intervalsQualitiesIndex].
+  /// Returns the number of semitones of this [Intervals] enum item as in [intervalsQualitiesIndex].
   int get semitones => (intervalsQualitiesIndex[this] != null
       ? intervalsQualitiesIndex[this]
       : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);

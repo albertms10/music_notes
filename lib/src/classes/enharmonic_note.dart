@@ -5,17 +5,17 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   EnharmonicNote(this.notes) : super(notes);
 
-  EnharmonicNote.fromValue(int value) : this(_fromValue(value));
+  EnharmonicNote.fromSemitones(int semitones) : this(_fromSemitones(semitones));
 
-  /// Returns the [EnharmonicNote] from [value].
+  /// Returns the [EnharmonicNote] from [semitones].
   ///
-  /// It is mainly used by [EnharmonicNote.fromValue] constructor.
-  static Set<Note> _fromValue(int value) {
-    final note = NotesValues.fromValue(value);
+  /// It is mainly used by [EnharmonicNote..fromSemitones] constructor.
+  static Set<Note> _fromSemitones(int semitones) {
+    final note = NotesValues.fromValue(semitones);
 
     if (note != null) {
-      var noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
-      var noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+      final Notes noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
+      final Notes noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
 
       return {
         Note(
@@ -30,8 +30,8 @@ class EnharmonicNote extends Enharmonic<Note> {
       };
     }
 
-    var noteBelow = NotesValues.fromValue(value - 1);
-    var noteAbove = NotesValues.fromValue(value + 1);
+    final Notes noteBelow = NotesValues.fromValue(semitones - 1);
+    final Notes noteAbove = NotesValues.fromValue(semitones + 1);
 
     return {
       Note(noteBelow, Accidentals.Sostingut),
@@ -39,31 +39,31 @@ class EnharmonicNote extends Enharmonic<Note> {
     };
   }
 
-  /// Returns the value of the common chromatic pitch of [notes].
+  /// Returns the number of semitones of the common chromatic pitch of [notes].
   ///
   /// Example:
   /// ```dart
-  /// notesValue({
+  /// notesSemitones({
   ///   const Note(Notes.Re, Accidental.Bemoll),
   ///   const Note(Notes.Do, Accidental.Sostingut),
   /// }) == 2
   /// ```
-  static int notesValue(Set<Note> notes) => notes.toList()[0].value;
+  static int notesSemitones(Set<Note> notes) => notes.toList()[0].semitones;
 
-  /// Returns the value of the common chromatic pitch this [EnharmonicNote].
+  /// Returns the number of semitones of the common chromatic pitch this [EnharmonicNote].
   ///
   /// Examples:
   /// ```dart
   /// EnharmonicNote({
   ///   const Note(Notes.Re, Accidental.Bemoll),
   ///   const Note(Notes.Do, Accidental.Sostingut),
-  /// }).value == 2
+  /// }).semitones == 2
   ///
-  /// EnharmonicNote.fromValue(4).value == 4
+  /// EnharmonicNote.fromSemitones(4).semitones == 4
   /// ```
-  int get value => notesValue(notes);
+  int get semitones => notesSemitones(notes);
 
-  /// Returns the [Note] from [value] and a [preferredAccidental].
+  /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
   /// Examples:
   /// ```dart
@@ -73,8 +73,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.getNote(5, Accidentals.Bemoll)
   ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
-  static Note getNote(int value, [Accidentals preferredAccidental]) {
-    var enharmonicNotes = EnharmonicNote.fromValue(value).notes;
+  static Note getNote(int semitones, [Accidentals preferredAccidental]) {
+    var enharmonicNotes = EnharmonicNote.fromSemitones(semitones).notes;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
@@ -92,7 +92,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```dart
   /// EnharmonicNote({const Note(Notes.Sol)})
   ///   .enharmonicSemitonesDistance(
-  ///     EnharmonicNote.fromValue(10),
+  ///     EnharmonicNote.fromSemitones(10),
   ///     7,
   ///   ) == 2
   /// ```
@@ -101,13 +101,13 @@ class EnharmonicNote extends Enharmonic<Note> {
     int semitones,
   ) {
     int distance = 0;
-    int currentPitch = this.value;
-    var tempEnharmonicNote = EnharmonicNote.fromValue(currentPitch);
+    int currentPitch = this.semitones;
+    var tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
 
     while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote.fromValue(currentPitch);
+      tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
     }
 
     return distance;
@@ -118,20 +118,20 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.fromValue(5)
+  /// EnharmonicNote.fromSemitones(5)
   ///   .enharmonicIntervalDistance(
   ///     EnharmonicNote({const Note(Notes.Re)}),
   ///     const Interval(Intervals.Quinta, Qualities.Justa),
   ///   ) == 10
   ///
-  /// EnharmonicNote.fromValue(5)
+  /// EnharmonicNote.fromSemitones(5)
   ///   .enharmonicIntervalDistance(
   ///     EnharmonicNote({const Note(Notes.Re)}),
   ///     const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
-      enharmonicSemitonesDistance(note, interval.value);
+      enharmonicSemitonesDistance(note, interval.semitones);
 
   /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
   ///
@@ -144,5 +144,5 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///   })
   /// ```
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromValue(this.value + semitones);
+      EnharmonicNote.fromSemitones(this.semitones + semitones);
 }

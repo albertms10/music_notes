@@ -40,7 +40,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     };
   }
 
-  /// Returns the semitones of the common chromatic pitch of [intervals].
+  /// Returns the number of semitones of the common chromatic pitch of [intervals].
   ///
   /// Example:
   /// ```dart
@@ -50,9 +50,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// }) == 6
   /// ```
   static int intervalsSemitones(Set<Interval> intervals) =>
-      intervals.toList()[0].value;
+      intervals.toList()[0].semitones;
 
-  /// Returns the value of the common chromatic pitch of this [EnharmonicInterval].
+  /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
   ///
   /// Example:
   /// ```dart
