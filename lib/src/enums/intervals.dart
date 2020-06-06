@@ -132,7 +132,7 @@ extension IntervalsValues on Intervals {
   /// Intervals.Novena.inverted == Intervals.Septima
   /// ```
   Intervals get inverted {
-    int diff = 9 - this.simplified.ordinal;
+    final int diff = 9 - this.simplified.ordinal;
     return fromOrdinal(diff > 0 ? diff : diff.abs() + 2);
   }
 }

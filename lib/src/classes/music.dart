@@ -53,7 +53,7 @@ abstract class Music {
   /// Music.nModValueExcludeZero(7, 7) == 7
   /// ```
   static int nModValueExcludeZero(int value, int n) {
-    int modValue = value % n;
+    final int modValue = value % n;
     return modValue == 0 ? n : modValue;
   }
 }

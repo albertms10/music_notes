@@ -11,7 +11,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// It is mainly used by [EnharmonicNote.fromSemitones] constructor.
   static Set<Note> _fromSemitones(int semitones) {
-    final note = NotesValues.fromValue(semitones);
+    final Notes note = NotesValues.fromValue(semitones);
 
     if (note != null) {
       final Notes noteBelow =
@@ -32,12 +32,15 @@ class EnharmonicNote extends Enharmonic<Note> {
       };
     }
 
-    final Notes noteBelow = NotesValues.fromValue(semitones - 1);
-    final Notes noteAbove = NotesValues.fromValue(semitones + 1);
-
     return {
-      Note(noteBelow, Accidentals.Sostingut),
-      Note(noteAbove, Accidentals.Bemoll),
+      Note(
+        NotesValues.fromValue(semitones - 1),
+        Accidentals.Sostingut,
+      ),
+      Note(
+        NotesValues.fromValue(semitones + 1),
+        Accidentals.Bemoll,
+      ),
     };
   }
 
@@ -57,7 +60,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
   static Note getNote(int semitones, [Accidentals preferredAccidental]) {
-    var enharmonicNotes = EnharmonicNote.fromSemitones(semitones).notes;
+    final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).notes;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,

@@ -77,7 +77,7 @@ extension NotesValues on Notes {
   /// Notes.La.interval(Notes.Mi, descending: true) == Intervals.Quarta
   /// ```
   Intervals interval(Notes note, {bool descending: false}) {
-    int noteOrdinal1 = this.ordinal;
+    final int noteOrdinal1 = this.ordinal;
     int noteOrdinal2 = note.ordinal;
 
     if (!descending && noteOrdinal1 > noteOrdinal2)

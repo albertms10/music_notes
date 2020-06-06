@@ -15,9 +15,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final interval = IntervalsValues.fromSemitones(semitones);
 
     if (interval != null) {
-      var intervalBelow =
+      final Intervals intervalBelow =
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval));
-      var intervalAbove =
+      final Intervals intervalAbove =
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval) + 2);
 
       return {
@@ -29,8 +29,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       };
     }
 
-    var intervalBelow = IntervalsValues.fromSemitones(semitones - 1);
-    var intervalAbove = IntervalsValues.fromSemitones(semitones + 1);
+    final Intervals intervalBelow =
+        IntervalsValues.fromSemitones(semitones - 1);
+    final Intervals intervalAbove =
+        IntervalsValues.fromSemitones(semitones + 1);
 
     return {
       if (QualitiesValues.exists(intervalBelow, semitones))
@@ -87,7 +89,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   static Interval getInterval(int semitones, [Qualities preferredQuality]) {
-    var enharmonicIntervals =
+    final enharmonicIntervals =
         EnharmonicInterval.fromSemitones(semitones).intervals;
 
     return enharmonicIntervals.firstWhere(

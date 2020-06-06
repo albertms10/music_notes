@@ -24,7 +24,7 @@ class Note implements MusicItem {
   /// ```
   static Note fromTonalityAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
-    Note note = Note.fromSemitones(
+    final Note note = Note.fromSemitones(
       Interval(
                 Intervals.Quinta,
                 Qualities.Justa,
@@ -69,7 +69,7 @@ class Note implements MusicItem {
   /// ) == 2
   /// ```
   int intervalDistance(Note note, Interval interval) {
-    int distance = _runSemitonesDistance(
+    final int distance = _runSemitonesDistance(
       note,
       interval.semitones,
       Accidentals.Sostingut,
@@ -97,7 +97,7 @@ class Note implements MusicItem {
     int distance = 0;
     int currentPitch = this.semitones;
 
-    var tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
+    Note tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
 
     while (tempNote != note && distance < Music.chromaticDivisions) {
       distance++;
@@ -119,7 +119,7 @@ class Note implements MusicItem {
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   Interval exactInterval(Note note) {
-    Intervals interval = this.note.interval(note.note);
+    final Intervals interval = this.note.interval(note.note);
 
     return Interval.fromDelta(
       interval,
