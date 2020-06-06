@@ -8,9 +8,11 @@ class RelativeTonalities {
         assert(tonalities.length == 2),
         assert(
           tonalities.every(
-            (tonality) => tonality.accidentals == _itemsAccidentals(tonalities),
+            (tonality) =>
+                tonality.accidentals == _itemsAccidentals(tonalities) &&
+                tonality.accidental == _itemsAccidental(tonalities),
           ),
-          "Tonalities have different accidental values",
+          "Tonalities have different key signatures.",
         );
 
   /// Returns the number of accidentals of [tonalities].
