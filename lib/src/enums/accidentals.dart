@@ -4,6 +4,7 @@ enum Accidentals {
   TripleSostingut,
   DobleSostingut,
   Sostingut,
+  Becaire,
   Bemoll,
   DobleBemoll,
   TripleBemoll
@@ -14,6 +15,7 @@ extension AccidentalsValues on Accidentals {
     Accidentals.TripleSostingut: 3,
     Accidentals.DobleSostingut: 2,
     Accidentals.Sostingut: 1,
+    Accidentals.Becaire: 0,
     Accidentals.Bemoll: -1,
     Accidentals.DobleBemoll: -2,
     Accidentals.TripleBemoll: -3,
@@ -23,6 +25,7 @@ extension AccidentalsValues on Accidentals {
     Accidentals.TripleSostingut: '♯𝄪',
     Accidentals.DobleSostingut: '𝄪',
     Accidentals.Sostingut: '♯',
+    Accidentals.Becaire: '♮',
     Accidentals.Bemoll: '♭',
     Accidentals.DobleBemoll: '𝄫',
     Accidentals.TripleBemoll: '♭𝄫',
