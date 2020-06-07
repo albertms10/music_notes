@@ -19,6 +19,15 @@ extension AccidentalsValues on Accidentals {
     Accidentals.TripleBemoll: -3,
   };
 
+  static const accidentalsSymbols = {
+    Accidentals.TripleSostingut: '♯𝄪',
+    Accidentals.DobleSostingut: '𝄪',
+    Accidentals.Sostingut: '♯',
+    Accidentals.Bemoll: '♭',
+    Accidentals.DobleBemoll: '𝄫',
+    Accidentals.TripleBemoll: '♭𝄫',
+  };
+
   /// Returns an [Accidentals] enum item that matches [value]
   /// in [accidentalValues], otherwise returns `null`.
   ///
@@ -41,7 +50,8 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.Bemoll.value == -1
   /// Accidentals.DobleSostingut.value == 2
   /// ```
-  int get value => accidentalValues[this];
+
+  String get symbol => accidentalsSymbols[this];
 
   Accidentals get incremented => increment(1);
 
