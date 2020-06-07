@@ -42,4 +42,9 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.DobleSostingut.value == 2
   /// ```
   int get value => accidentalValues[this];
+
+  Accidentals get incremented => increment(1);
+
+  Accidentals increment(int n) =>
+      fromValue(value.abs() + n * (value > 0 ? 1 : -1));
 }
