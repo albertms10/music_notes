@@ -59,6 +59,10 @@ extension AccidentalsValues on Accidentals {
 
   Accidentals get incremented => increment(1);
 
+  Accidentals get decremented => decrement(1);
+
   Accidentals increment(int n) =>
       fromValue((value.abs() + n) * (value > 0 ? 1 : -1));
+
+  Accidentals decrement(int n) => increment(-n);
 }
