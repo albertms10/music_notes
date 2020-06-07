@@ -34,6 +34,8 @@ class KeySignature {
 
   @override
   String toString() {
+    if (number == 0 || accidental != null) return '$number';
+
     final List<String> list = [];
     final int notesValues = Notes.values.length;
     final int iterations = (number / notesValues).ceil();
@@ -42,7 +44,7 @@ class KeySignature {
       final int n = i == iterations
           ? Music.nModValueExcludeZero(number, notesValues)
           : notesValues;
-      list.add('$n ${accidental != null ? '× ${accidental.increment(i - 1).toText()}' : ''}');
+      list.add('$n × ${accidental.increment(i - 1).toText()}');
     }
 
     return list.join(', ');
