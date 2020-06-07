@@ -5,7 +5,7 @@ extension on Notes {
 }
 
 extension on Accidentals {
-  String toText() => symbol;
+  String toText() => toString().split('.')[1];
 }
 
 extension on Modes {
