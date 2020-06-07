@@ -10,7 +10,7 @@ enum Accidentals {
 }
 
 extension AccidentalsValues on Accidentals {
-  static const accidentalValues = {
+  static const accidentalsValues = {
     Accidentals.TripleSostingut: 3,
     Accidentals.DobleSostingut: 2,
     Accidentals.Sostingut: 1,
@@ -29,7 +29,7 @@ extension AccidentalsValues on Accidentals {
   };
 
   /// Returns an [Accidentals] enum item that matches [value]
-  /// in [accidentalValues], otherwise returns `null`.
+  /// in [accidentalsValues], otherwise returns `null`.
   ///
   /// Examples:
   /// ```dart
@@ -37,19 +37,20 @@ extension AccidentalsValues on Accidentals {
   /// AccidentalsValues.fromValue(-2) == Accidentals.DobleBemoll
   /// AccidentalsValues.fromValue(3) == Accidentals.TripleSostingut
   /// ```
-  static Accidentals fromValue(int value) => accidentalValues.keys.firstWhere(
+  static Accidentals fromValue(int value) => accidentalsValues.keys.firstWhere(
         (accidental) =>
-            Music.modValue(value + 3) - 3 == accidentalValues[accidental],
+            Music.modValue(value + 3) - 3 == accidentalsValues[accidental],
         orElse: () => null,
       );
 
-  /// Returns the value of this [AccidentalsValues] enum item in [accidentalValues].
+  /// Returns the value of this [AccidentalsValues] enum item in [accidentalsValues].
   ///
   /// Examples:
   /// ```dart
   /// Accidentals.Bemoll.value == -1
   /// Accidentals.DobleSostingut.value == 2
   /// ```
+  int get value => accidentalsValues[this];
 
   String get symbol => accidentalsSymbols[this];
 
