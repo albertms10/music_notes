@@ -75,14 +75,14 @@ class Note implements MusicItem {
       Accidentals.Sostingut,
     );
 
-    return (distance < Music.chromaticDivisions
+    return distance < Music.chromaticDivisions
         ? distance
         : _runSemitonesDistance(
               note,
               interval.inverted.semitones,
               Accidentals.Bemoll,
             ) *
-            -1);
+            -1;
   }
 
   /// Returns the iteration distance of an [interval] between this [Note] and [note]
@@ -168,7 +168,7 @@ class Note implements MusicItem {
 
   @override
   String toString() =>
-      note.toText() + (accidental != null ? ' ${accidental.toText()}' : '');
+      '${note.toText()} ${accidental != null ? '${accidental.toText()}' : ''}';
 
   @override
   bool operator ==(other) =>
