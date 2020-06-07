@@ -33,8 +33,20 @@ class KeySignature {
       });
 
   @override
-  String toString() =>
-      '$number' + (accidental != null ? ' × ${accidental.toText()}' : '');
+  String toString() {
+    final List<String> list = [];
+    final int notesValues = Notes.values.length;
+    final int iterations = (number / notesValues).ceil();
+
+    for (int i = 1; i <= iterations; i++) {
+      final int n = i == iterations
+          ? Music.nModValueExcludeZero(number, notesValues)
+          : notesValues;
+      list.add('$n ${accidental != null ? '× ${accidental.increment(i - 1).toText()}' : ''}');
+    }
+
+    return list.join(', ');
+  }
 
   @override
   bool operator ==(other) =>
