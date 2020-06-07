@@ -37,10 +37,10 @@ class Tonality {
   ///
   /// Examples:
   /// ```dart
-  /// Tonality(const Note(Notes.Mi), Modes.Major).accidental
+  /// const Tonality(const Note(Notes.Mi), Modes.Major).accidental
   ///   == Accidentals.Sostingut
   ///
-  /// Tonality(const Note(Notes.Fa), Modes.Menor).accidental
+  /// const Tonality(const Note(Notes.Fa), Modes.Menor).accidental
   ///   == Accidentals.Bemoll
   /// ```
   Accidentals get accidental =>
