@@ -30,7 +30,7 @@ extension AccidentalsValues on Accidentals {
   /// ```
   static Accidentals fromValue(int value) => accidentalValues.keys.firstWhere(
         (accidental) =>
-            Music.modValue(value + 2) - 2 == accidentalValues[accidental],
+            Music.modValue(value + 3) - 3 == accidentalValues[accidental],
         orElse: () => null,
       );
 
