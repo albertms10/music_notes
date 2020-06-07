@@ -46,7 +46,7 @@ extension AccidentalsValues on Accidentals {
         orElse: () => null,
       );
 
-  /// Returns the value of this [AccidentalsValues] enum item in [accidentalsValues].
+  /// Returns the value of this [Accidentals] enum item in [accidentalsValues].
   ///
   /// Examples:
   /// ```dart
@@ -55,14 +55,52 @@ extension AccidentalsValues on Accidentals {
   /// ```
   int get value => accidentalsValues[this];
 
+  /// Returns the symbol of this [Accidentals] enum item.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidentals.Bemoll.symbol == '♭'
+  /// Accidentals.DobleSostingut.symbol == '𝄪'
+  /// ```
   String get symbol => accidentalsSymbols[this];
 
+  /// Returns the incremented [Accidentals] enum item of this.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidentals.DobleBemoll.incremented == Accidentals.TripleBemoll
+  /// Accidentals.Sostingut.incremented == Accidentals.DobleSostingut
+  /// ```
   Accidentals get incremented => increment(1);
 
+  /// Returns the decremented [Accidentals] enum item of this.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidentals.DobleBemoll.decremented == Accidentals.Bemoll
+  /// Accidentals.Sostingut.decremented == Accidentals.Becaire
+  /// ```
   Accidentals get decremented => decrement(1);
 
+  /// Returns the incremented [Accidentals] enum item of this by [n].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidentals.Bemoll.increment(2) == Accidentals.TripleBemoll
+  /// Accidentals.Sostingut.increment(1) == Accidentals.DobleSostingut
+  /// ```
   Accidentals increment(int n) =>
       fromValue((value.abs() + n) * (value > 0 ? 1 : -1));
 
+  /// Returns the decremented [Accidentals] enum item of this by [n].
+  ///
+  /// It is an alias for `increment(-n)`.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidentals.Bemoll.decrement(2) == Accidentals.Sostingut
+  /// Accidentals.Sostingut.decrement(1) == Accidentals.Becaire
+  /// Accidentals.DobleBemoll.decrement(4) == Accidentals.DobleSostingut
+  /// ```
   Accidentals decrement(int n) => increment(-n);
 }
