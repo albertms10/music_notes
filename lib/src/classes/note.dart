@@ -40,6 +40,7 @@ class Note implements MusicItem {
         : note.transposeBySemitones(
             Interval(Intervals.Tercera, Qualities.Menor, descending: true)
                 .semitones,
+            accidental,
           );
   }
 
