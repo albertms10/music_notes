@@ -34,7 +34,7 @@ class KeySignature {
 
   @override
   String toString() {
-    if (number == 0 || accidental != null) return '$number';
+    if (number == 0 || accidental == null) return '$number';
 
     final List<String> list = [];
     final int notesValues = Notes.values.length;
