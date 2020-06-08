@@ -168,7 +168,7 @@ class Note implements MusicItem {
 
   @override
   String toString() =>
-      '${note.toText()} ${accidental != null ? '${accidental.toText()}' : ''}';
+      note.toText() + (accidental != null ? ' ${accidental.toText()}' : '');
 
   @override
   bool operator ==(other) =>
