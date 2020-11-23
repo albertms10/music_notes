@@ -87,5 +87,5 @@ class Tonality {
 
   @override
   bool operator ==(other) =>
-      other is Tonality && this.note == other.note && this.mode == other.mode;
+      other is Tonality && note == other.note && mode == other.mode;
 }

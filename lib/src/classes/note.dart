@@ -51,14 +51,14 @@ class Note implements MusicItem {
   /// const Note(Notes.Re).semitones == 3
   /// const Note(Notes.Fa, Accidentals.Sostingut).semitones == 7
   /// ```
+  @override
   int get semitones => Music.modValueExcludeZero(note.value + accidentalValue);
 
   /// Returns this [Note]’s [accidental] value.
   int get accidentalValue => accidental != null ? accidental.value : 0;
 
   /// Returns the `delta` difference between this [Note] and [note].
-  int semitonesDelta(Note note) =>
-      Music.modValue(note.semitones - this.semitones);
+  int semitonesDelta(Note note) => Music.modValue(note.semitones - semitones);
 
   /// Returns the iteration distance of an [interval] between this [Note] and [note].
   ///
@@ -70,7 +70,7 @@ class Note implements MusicItem {
   /// ) == 2
   /// ```
   int intervalDistance(Note note, Interval interval) {
-    final int distance = _runSemitonesDistance(
+    final distance = _runSemitonesDistance(
       note,
       interval.semitones,
       Accidentals.Sostingut,
@@ -95,10 +95,10 @@ class Note implements MusicItem {
     int semitones,
     Accidentals preferredAccidental,
   ) {
-    int distance = 0;
-    int currentPitch = this.semitones;
+    var distance = 0;
+    var currentPitch = this.semitones;
 
-    Note tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
+    var tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
 
     while (tempNote != note && distance < Music.chromaticDivisions) {
       distance++;
@@ -120,7 +120,7 @@ class Note implements MusicItem {
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   Interval exactInterval(Note note) {
-    final Intervals interval = this.note.interval(note.note);
+    final interval = this.note.interval(note.note);
 
     return Interval.fromDelta(
       interval,
@@ -155,15 +155,14 @@ class Note implements MusicItem {
   /// ) == const Note(Notes.Mi, Accidentals.Bemoll)
   /// ```
   Note transposeByInterval(Interval interval) {
-    final Notes note = this.note.transpose(
+    final note = this.note.transpose(
           interval.interval,
           descending: interval.descending,
         );
 
     return Note(
       note,
-      AccidentalsValues.fromValue(
-          this.semitones + interval.semitones - note.value),
+      AccidentalsValues.fromValue(semitones + interval.semitones - note.value),
     );
   }
 
@@ -173,7 +172,5 @@ class Note implements MusicItem {
 
   @override
   bool operator ==(other) =>
-      other is Note &&
-      this.note == other.note &&
-      this.accidental == other.accidental;
+      other is Note && note == other.note && accidental == other.accidental;
 }

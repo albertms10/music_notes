@@ -37,6 +37,7 @@ class Interval implements MusicItem {
   ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).semitones
   ///   == 6
   /// ```
+  @override
   int get semitones =>
       (interval.semitones +
           QualitiesValues.intervalQualitiesSet(interval)
@@ -63,6 +64,6 @@ class Interval implements MusicItem {
   @override
   bool operator ==(other) =>
       other is Interval &&
-      this.interval == other.interval &&
-      this.quality == other.quality;
+      interval == other.interval &&
+      quality == other.quality;
 }

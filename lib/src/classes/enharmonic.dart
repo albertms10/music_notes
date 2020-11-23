@@ -4,12 +4,12 @@ abstract class Enharmonic<T extends MusicItem> {
   final Set<T> items;
 
   Enharmonic(this.items)
-      : assert(items != null && items.length > 0),
+      : assert(items != null && items.isNotEmpty),
         assert(
           items.every(
             (item) => item.semitones == _itemsSemitones(items),
           ),
-          "${T}s are not enharmonic.",
+          '${T}s are not enharmonic.',
         );
 
   /// Returns the number of semitones of the common chromatic pitch of [items].
@@ -28,5 +28,5 @@ abstract class Enharmonic<T extends MusicItem> {
 
   @override
   bool operator ==(other) =>
-      other is Enharmonic<T> && this.semitones == other.semitones;
+      other is Enharmonic<T> && semitones == other.semitones;
 }

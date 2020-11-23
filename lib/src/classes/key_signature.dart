@@ -14,7 +14,9 @@ class KeySignature {
           distance.abs(),
           distance == 0
               ? null
-              : distance > 0 ? Accidentals.Sostingut : Accidentals.Bemoll,
+              : distance > 0
+                  ? Accidentals.Sostingut
+                  : Accidentals.Bemoll,
         );
 
   /// Returns [RelativeTonalities] with the two tonalities that are defined by this [KeySignature].
@@ -36,12 +38,12 @@ class KeySignature {
   String toString() {
     if (number == 0 || accidental == null) return '$number';
 
-    final List<String> list = [];
-    final int notesValues = Notes.values.length;
-    final int iterations = (number / notesValues).ceil();
+    final list = <String>[];
+    final notesValues = Notes.values.length;
+    final iterations = (number / notesValues).ceil();
 
-    for (int i = 1; i <= iterations; i++) {
-      final int n = i == iterations
+    for (var i = 1; i <= iterations; i++) {
+      final n = i == iterations
           ? Music.nModValueExcludeZero(number, notesValues)
           : notesValues;
       list.add('$n × ${accidental.increment(i - 1).toText()}');
@@ -53,6 +55,6 @@ class KeySignature {
   @override
   bool operator ==(other) =>
       other is KeySignature &&
-      this.number == other.number &&
-      this.accidental == other.accidental;
+      number == other.number &&
+      accidental == other.accidental;
 }

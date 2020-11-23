@@ -12,7 +12,7 @@ class RelativeTonalities {
                 tonality.accidentals == _itemsAccidentals(tonalities) &&
                 tonality.accidental == _itemsAccidental(tonalities),
           ),
-          "Tonalities have different key signatures.",
+          'Tonalities have different key signatures.',
         );
 
   /// Returns the number of accidentals of [tonalities].
@@ -55,6 +55,6 @@ class RelativeTonalities {
   @override
   bool operator ==(other) =>
       other is RelativeTonalities &&
-      this.accidentals == other.accidentals &&
-      this.accidental == other.accidental;
+      accidentals == other.accidentals &&
+      accidental == other.accidental;
 }

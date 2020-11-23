@@ -77,9 +77,9 @@ extension IntervalsValues on Intervals {
   /// Intervals.Quinta.semitones == 7
   /// Intervals.Septima.semitones == 10
   /// ```
-  int get semitones => (intervalsQualitiesIndex[this] != null
-      ? intervalsQualitiesIndex[this]
-      : Music.chromaticDivisions + intervalsQualitiesIndex[this.inverted]);
+  int get semitones =>
+      intervalsQualitiesIndex[this] ??
+      Music.chromaticDivisions + intervalsQualitiesIndex[inverted];
 
   /// Returns the ordinal number of this [Intervals] enum item.
   ///
@@ -100,7 +100,7 @@ extension IntervalsValues on Intervals {
   /// Intervals.Onzena.isPerfect == true
   /// ```
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
-      .any((interval) => interval == this || interval == this.inverted);
+      .any((interval) => interval == this || interval == inverted);
 
   /// Returns a simplified this [Intervals] enum item.
   ///
@@ -110,8 +110,8 @@ extension IntervalsValues on Intervals {
   /// Intervals.Novena.simplified == Intervals.Segona
   /// Intervals.Octava.simplified == Intervals.Octava
   /// ```
-  Intervals get simplified => this.ordinal > Intervals.Octava.ordinal
-      ? Intervals.values[this.ordinal - Intervals.Octava.ordinal]
+  Intervals get simplified => ordinal > Intervals.Octava.ordinal
+      ? Intervals.values[ordinal - Intervals.Octava.ordinal]
       : this;
 
   /// Returns an inverted this [Intervals] enum item.
@@ -132,7 +132,7 @@ extension IntervalsValues on Intervals {
   /// Intervals.Novena.inverted == Intervals.Septima
   /// ```
   Intervals get inverted {
-    final int diff = 9 - this.simplified.ordinal;
+    final diff = 9 - simplified.ordinal;
     return fromOrdinal(diff > 0 ? diff : diff.abs() + 2);
   }
 }

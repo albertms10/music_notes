@@ -15,9 +15,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final interval = IntervalsValues.fromSemitones(semitones);
 
     if (interval != null) {
-      final Intervals intervalBelow =
+      final intervalBelow =
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval));
-      final Intervals intervalAbove =
+      final intervalAbove =
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval) + 2);
 
       return {
@@ -29,10 +29,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       };
     }
 
-    final Intervals intervalBelow =
-        IntervalsValues.fromSemitones(semitones - 1);
-    final Intervals intervalAbove =
-        IntervalsValues.fromSemitones(semitones + 1);
+    final intervalBelow = IntervalsValues.fromSemitones(semitones - 1);
+    final intervalAbove = IntervalsValues.fromSemitones(semitones + 1);
 
     return {
       if (QualitiesValues.exists(intervalBelow, semitones))

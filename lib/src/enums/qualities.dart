@@ -45,8 +45,7 @@ extension QualitiesValues on Qualities {
   /// QualitiesValues.exists(Intervals.Sexta, 10) == false
   /// ```
   static bool exists(Intervals interval, int semitones) {
-    final int delta =
-        semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
+    final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
     return delta > 0 && delta <= intervalQualitiesSet(interval).length;
   }
 
@@ -69,10 +68,9 @@ extension QualitiesValues on Qualities {
   /// Qualities.Justa.inverted == Qualities.Justa
   /// ```
   Qualities get inverted {
-    final Qualities inverted = invertedQualities[this];
-    return inverted != null
-        ? inverted
-        : invertedQualities.keys
+    final inverted = invertedQualities[this];
+    return inverted ??
+        invertedQualities.keys
             .firstWhere((quality) => this == invertedQualities[quality]);
   }
 }

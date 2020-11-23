@@ -11,13 +11,11 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// It is mainly used by [EnharmonicNote.fromSemitones] constructor.
   static Set<Note> _fromSemitones(int semitones) {
-    final Notes note = NotesValues.fromValue(semitones);
+    final note = NotesValues.fromValue(semitones);
 
     if (note != null) {
-      final Notes noteBelow =
-          NotesValues.fromOrdinal(Notes.values.indexOf(note));
-      final Notes noteAbove =
-          NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+      final noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
+      final noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
 
       return {
         Note(
@@ -114,8 +112,8 @@ class EnharmonicNote extends Enharmonic<Note> {
     EnharmonicNote enharmonicNote,
     int semitones,
   ) {
-    int distance = 0;
-    int currentPitch = this.semitones;
+    var distance = 0;
+    var currentPitch = this.semitones;
     var tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
 
     while (tempEnharmonicNote != enharmonicNote) {

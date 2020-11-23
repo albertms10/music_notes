@@ -5,12 +5,13 @@ abstract class CircleOfFifths {
   static Set<EnharmonicNote> get circleOfFifths {
     final notes = <EnharmonicNote>{};
 
-    for (int i = 0; i < Music.chromaticDivisions; i++)
+    for (var i = 0; i < Music.chromaticDivisions; i++) {
       notes.add(
         Music.chromaticScale.toList()[Music.modValueExcludeZero(
           i * const Interval(Intervals.Quinta, Qualities.Justa).semitones,
         )],
       );
+    }
 
     return notes;
   }
@@ -34,16 +35,16 @@ abstract class CircleOfFifths {
     EnharmonicNote enharmonicNote1,
     EnharmonicNote enharmonicNote2,
   ) {
-    final int distanceAbove = enharmonicNote1.enharmonicIntervalDistance(
+    final distanceAbove = enharmonicNote1.enharmonicIntervalDistance(
       enharmonicNote2,
       const Interval(Intervals.Quinta, Qualities.Justa),
     );
-    final int distanceBelow = enharmonicNote1.enharmonicIntervalDistance(
+    final distanceBelow = enharmonicNote1.enharmonicIntervalDistance(
       enharmonicNote2,
       const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
     );
 
-    int minDistance = math.min(distanceAbove, distanceBelow);
+    final minDistance = math.min(distanceAbove, distanceBelow);
 
     return minDistance * (minDistance == distanceAbove ? 1 : -1);
   }

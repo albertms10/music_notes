@@ -76,12 +76,13 @@ extension NotesValues on Notes {
   /// Notes.La.interval(Notes.Mi) == Intervals.Quinta
   /// Notes.La.interval(Notes.Mi, descending: true) == Intervals.Quarta
   /// ```
-  Intervals interval(Notes note, {bool descending: false}) {
-    final int noteOrdinal1 = this.ordinal;
-    int noteOrdinal2 = note.ordinal;
+  Intervals interval(Notes note, {bool descending = false}) {
+    final noteOrdinal1 = ordinal;
+    var noteOrdinal2 = note.ordinal;
 
-    if (!descending && noteOrdinal1 > noteOrdinal2)
+    if (!descending && noteOrdinal1 > noteOrdinal2) {
       noteOrdinal2 += notesValues.length;
+    }
 
     return IntervalsValues.fromOrdinal(
       ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1,
@@ -97,8 +98,8 @@ extension NotesValues on Notes {
   /// Notes.Fa.transpose(Intervals.Tercera, descending: true) == Notes.Re
   /// Notes.La.transpose(Intervals.Quarta) == Notes.Re
   /// ```
-  Notes transpose(Intervals interval, {bool descending: false}) =>
+  Notes transpose(Intervals interval, {bool descending = false}) =>
       NotesValues.fromOrdinal(
-        this.ordinal + (interval.ordinal - 1) * (descending ? -1 : 1),
+        ordinal + (interval.ordinal - 1) * (descending ? -1 : 1),
       );
 }
