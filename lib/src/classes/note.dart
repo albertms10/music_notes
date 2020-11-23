@@ -24,16 +24,7 @@ class Note implements MusicItem {
   /// ```
   static Note fromTonalityAccidentals(int accidentals, Modes mode,
       [Accidentals accidental]) {
-    final Note note = Note.fromSemitones(
-      Interval(
-                Intervals.Quinta,
-                Qualities.Justa,
-                descending: accidental == Accidentals.Bemoll,
-              ).semitones *
-              accidentals +
-          1,
-      accidental,
-    );
+    final note = fromRawAccidentals(accidentals, accidental);
 
     return mode == Modes.Major
         ? note
@@ -43,6 +34,32 @@ class Note implements MusicItem {
             accidental,
           );
   }
+
+  /// Returns the [Note] from the [Tonality] given its [accidentals] number
+  /// and optional [accidental].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Note.fromRawAccidentals(2, Accidentals.Sostingut)
+  ///   == const Note(Notes.Re)
+  ///
+  /// Note.fromRawAccidentals(0)
+  ///   == const Note(Notes.La)
+  /// ```
+  static Note fromRawAccidentals(int accidentals, [Accidentals accidental]) =>
+      Note.fromSemitones(
+        Interval(
+                  Intervals.Quinta,
+                  Qualities.Justa,
+                  descending: accidental == Accidentals.Bemoll,
+                ).semitones *
+                accidentals +
+            1,
+        (accidental == Accidentals.Bemoll && accidentals > 8) ||
+                (accidental == Accidentals.Sostingut && accidentals > 10)
+            ? accidental.incremented
+            : accidental,
+      );
 
   /// Returns the number of semitones that correspond to this [Note] from [Notes.Do].
   ///

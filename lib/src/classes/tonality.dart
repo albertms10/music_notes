@@ -40,7 +40,7 @@ class Tonality {
   ///   == Accidentals.Bemoll
   /// ```
   Accidentals get accidental => CircleOfFifths.exactFifthsDistance(
-            Tonality.fromAccidentals(0, Modes.Major).note,
+            Tonality.fromAccidentals(0, mode).note,
             note,
           ) >
           0
