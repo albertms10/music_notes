@@ -5,6 +5,9 @@ version: 0.1.0
 author: albertms10
 repository: https://github.com/albertms10/music_notes.git
 
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
 dependencies:
   test: ^1.14.6
 

@@ -29,7 +29,7 @@ class Note implements MusicItem {
     return mode == Modes.Major
         ? note
         : note.transposeBySemitones(
-            Interval(Intervals.Tercera, Qualities.Menor, descending: true)
+            const Interval(Intervals.Tercera, Qualities.Menor, descending: true)
                 .semitones,
             accidental,
           );
