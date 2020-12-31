@@ -6,9 +6,7 @@ abstract class Enharmonic<T extends MusicItem> {
   Enharmonic(this.items)
       : assert(items != null && items.isNotEmpty),
         assert(
-          items.every(
-            (item) => item.semitones == items.first.semitones,
-          ),
+          items.every((item) => item.semitones == items.first.semitones),
           '${T}s are not enharmonic.',
         );
 
