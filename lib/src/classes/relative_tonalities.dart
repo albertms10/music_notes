@@ -57,4 +57,7 @@ class RelativeTonalities {
       other is RelativeTonalities &&
       accidentals == other.accidentals &&
       accidental == other.accidental;
+
+  @override
+  int get hashCode => hash2(accidentals, accidental);
 }

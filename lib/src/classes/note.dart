@@ -190,4 +190,7 @@ class Note implements MusicItem {
   @override
   bool operator ==(other) =>
       other is Note && note == other.note && accidental == other.accidental;
+
+  @override
+  int get hashCode => hash2(note, accidental);
 }

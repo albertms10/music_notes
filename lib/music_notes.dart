@@ -2,6 +2,8 @@ library music_notes;
 
 import 'dart:math' as math show min;
 
+import 'package:quiver/core.dart';
+
 part 'src/classes/circle_of_fifths.dart';
 part 'src/classes/enharmonic.dart';
 part 'src/classes/enharmonic_interval.dart';

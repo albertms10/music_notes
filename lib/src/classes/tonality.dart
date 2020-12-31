@@ -88,4 +88,7 @@ class Tonality {
   @override
   bool operator ==(other) =>
       other is Tonality && note == other.note && mode == other.mode;
+
+  @override
+  int get hashCode => hash2(note, mode);
 }

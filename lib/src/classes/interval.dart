@@ -66,4 +66,7 @@ class Interval implements MusicItem {
       other is Interval &&
       interval == other.interval &&
       quality == other.quality;
+
+  @override
+  int get hashCode => hash2(interval, quality);
 }

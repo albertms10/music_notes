@@ -57,4 +57,7 @@ class KeySignature {
       other is KeySignature &&
       number == other.number &&
       accidental == other.accidental;
+
+  @override
+  int get hashCode => hash2(number, accidental);
 }

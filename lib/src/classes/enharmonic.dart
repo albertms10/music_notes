@@ -22,4 +22,7 @@ abstract class Enharmonic<T extends MusicItem> {
   @override
   bool operator ==(other) =>
       other is Enharmonic<T> && semitones == other.semitones;
+
+  @override
+  int get hashCode => semitones.hashCode;
 }
