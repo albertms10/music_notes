@@ -65,7 +65,7 @@ class Tonality {
             descending: mode == Modes.Major,
           ).semitones,
         ),
-        mode.inverted,
+        mode.opposite,
       );
 
   /// Returns the [KeySignature] of this [Tonality].

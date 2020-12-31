@@ -10,5 +10,5 @@ extension ModesValues on Modes {
   /// Modes.Major.inverted == Modes.Menor
   /// Modes.Menor.inverted == Modes.Major
   /// ```
-  Modes get inverted => this == Modes.Major ? Modes.Menor : Modes.Major;
+  Modes get opposite => this == Modes.Major ? Modes.Menor : Modes.Major;
 }
