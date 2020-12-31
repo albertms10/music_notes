@@ -9,6 +9,7 @@ environment:
   sdk: '>=2.10.0 <3.0.0'
 
 dependencies:
+  quiver: ^2.1.5
   test: ^1.14.6
 
 dev_dependencies:
