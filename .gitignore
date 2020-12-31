@@ -17,6 +17,7 @@ lib/main.dart
 build/
 pubspec.lock
 
+.vscode/
 doc/api/
 
 # Avoid committing generated Javascript files:
