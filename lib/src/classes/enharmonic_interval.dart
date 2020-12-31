@@ -1,9 +1,7 @@
 part of music_notes;
 
 class EnharmonicInterval extends Enharmonic<Interval> {
-  final Set<Interval> intervals;
-
-  EnharmonicInterval(this.intervals) : super(intervals);
+  EnharmonicInterval(Set<Interval> items) : super(items);
 
   EnharmonicInterval.fromSemitones(int semitones)
       : this(_fromSemitones(semitones));
@@ -40,12 +38,6 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     };
   }
 
-  /// Returns the number of semitones of the common chromatic pitch of [intervals].
-  ///
-  /// It is used by [semitones] getter.
-  static int _itemsSemitones(Set<Interval> intervals) =>
-      intervals.first.semitones;
-
   /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
   ///
   /// Example:
@@ -56,7 +48,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// }).semitones == 6
   /// ```
   @override
-  int get semitones => _itemsSemitones(intervals);
+  int get semitones => super.semitones;
 
   /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
   ///
@@ -88,7 +80,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// ```
   static Interval getInterval(int semitones, [Qualities preferredQuality]) {
     final enharmonicIntervals =
-        EnharmonicInterval.fromSemitones(semitones).intervals;
+        EnharmonicInterval.fromSemitones(semitones).items;
 
     return enharmonicIntervals.firstWhere(
       (interval) => interval.quality == preferredQuality,

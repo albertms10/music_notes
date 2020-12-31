@@ -1,9 +1,7 @@
 part of music_notes;
 
 class EnharmonicNote extends Enharmonic<Note> {
-  final Set<Note> notes;
-
-  EnharmonicNote(this.notes) : super(notes);
+  EnharmonicNote(Set<Note> items) : super(items);
 
   EnharmonicNote.fromSemitones(int semitones) : this(_fromSemitones(semitones));
 
@@ -42,11 +40,6 @@ class EnharmonicNote extends Enharmonic<Note> {
     };
   }
 
-  /// Returns the number of semitones of the common chromatic pitch of [notes].
-  ///
-  /// It is used by [semitones] getter.
-  static int _itemsSemitones(Set<Note> notes) => notes.first.semitones;
-
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
   /// Examples:
@@ -58,7 +51,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
   static Note getNote(int semitones, [Accidentals preferredAccidental]) {
-    final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).notes;
+    final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
@@ -81,7 +74,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.fromSemitones(4).semitones == 4
   /// ```
   @override
-  int get semitones => _itemsSemitones(notes);
+  int get semitones => super.semitones;
 
   /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
   ///
