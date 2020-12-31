@@ -38,6 +38,29 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     };
   }
 
+  /// Returns the [Interval] from [semitones] and a [preferredQuality].
+  ///
+  /// Examples:
+  /// ```dart
+  /// EnharmonicInterval.getInterval(4)
+  ///   == const Interval(Intervals.Tercera, Qualities.Menor)
+  ///
+  /// EnharmonicInterval.getInterval(7)
+  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
+  ///
+  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida)
+  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// ```
+  static Interval getInterval(int semitones, [Qualities preferredQuality]) {
+    final enharmonicIntervals =
+        EnharmonicInterval.fromSemitones(semitones).items;
+
+    return enharmonicIntervals.firstWhere(
+      (interval) => interval.quality == preferredQuality,
+      orElse: () => enharmonicIntervals.first,
+    );
+  }
+
   /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
   ///
   /// Example:
@@ -64,27 +87,4 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   EnharmonicInterval transposeBy(int semitones) =>
       EnharmonicInterval.fromSemitones(this.semitones + semitones);
-
-  /// Returns the [Interval] from [semitones] and a [preferredQuality].
-  ///
-  /// Examples:
-  /// ```dart
-  /// EnharmonicInterval.getInterval(4)
-  ///   == const Interval(Intervals.Tercera, Qualities.Menor)
-  ///
-  /// EnharmonicInterval.getInterval(7)
-  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
-  ///
-  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida)
-  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
-  /// ```
-  static Interval getInterval(int semitones, [Qualities preferredQuality]) {
-    final enharmonicIntervals =
-        EnharmonicInterval.fromSemitones(semitones).items;
-
-    return enharmonicIntervals.firstWhere(
-      (interval) => interval.quality == preferredQuality,
-      orElse: () => enharmonicIntervals.first,
-    );
-  }
 }
