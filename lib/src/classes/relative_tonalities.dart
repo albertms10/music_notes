@@ -4,8 +4,7 @@ class RelativeTonalities {
   final Set<Tonality> tonalities;
 
   RelativeTonalities(this.tonalities)
-      : assert(tonalities != null),
-        assert(tonalities.length == 2),
+      : assert(tonalities.length == 2),
         assert(
           tonalities.every(
             (tonality) =>

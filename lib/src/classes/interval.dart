@@ -5,9 +5,7 @@ class Interval implements MusicItem {
   final Qualities quality;
   final bool descending;
 
-  const Interval(this.interval, this.quality, {this.descending = false})
-      : assert(interval != null),
-        assert(quality != null);
+  const Interval(this.interval, this.quality, {this.descending = false});
 
   Interval.fromDelta(Intervals interval, int delta)
       : this(interval, qualityFromDelta(interval, delta));

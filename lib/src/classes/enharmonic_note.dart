@@ -30,11 +30,11 @@ class EnharmonicNote extends Enharmonic<Note> {
 
     return {
       Note(
-        NotesValues.fromValue(semitones - 1),
+        NotesValues.fromValue(semitones - 1)!,
         Accidentals.Sostingut,
       ),
       Note(
-        NotesValues.fromValue(semitones + 1),
+        NotesValues.fromValue(semitones + 1)!,
         Accidentals.Bemoll,
       ),
     };
@@ -50,7 +50,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.getNote(5, Accidentals.Bemoll)
   ///   == const Note(Notes.Fa, Accidentals.Bemoll)
   /// ```
-  static Note getNote(int semitones, [Accidentals preferredAccidental]) {
+  static Note getNote(int semitones, [Accidentals? preferredAccidental]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
 
     return enharmonicNotes.firstWhere(

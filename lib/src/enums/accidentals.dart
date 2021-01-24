@@ -40,10 +40,10 @@ extension AccidentalsValues on Accidentals {
   /// AccidentalsValues.fromValue(-2) == Accidentals.DobleBemoll
   /// AccidentalsValues.fromValue(3) == Accidentals.TripleSostingut
   /// ```
-  static Accidentals fromValue(int value) => accidentalsValues.keys.firstWhere(
+  static Accidentals? fromValue(int value) =>
+      accidentalsValues.keys.firstWhereOrNull(
         (accidental) =>
             Music.modValue(value + 3) - 3 == accidentalsValues[accidental],
-        orElse: () => null,
       );
 
   /// Returns the value of this [Accidentals] enum item in [accidentalsValues].
@@ -53,7 +53,7 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.Bemoll.value == -1
   /// Accidentals.DobleSostingut.value == 2
   /// ```
-  int get value => accidentalsValues[this];
+  int get value => accidentalsValues[this]!;
 
   /// Returns the symbol of this [Accidentals] enum item.
   ///
@@ -62,7 +62,7 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.Bemoll.symbol == '♭'
   /// Accidentals.DobleSostingut.symbol == '𝄪'
   /// ```
-  String get symbol => accidentalsSymbols[this];
+  String get symbol => accidentalsSymbols[this]!;
 
   /// Returns the incremented [Accidentals] enum item of this.
   ///
@@ -71,7 +71,7 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.DobleBemoll.incremented == Accidentals.TripleBemoll
   /// Accidentals.Sostingut.incremented == Accidentals.DobleSostingut
   /// ```
-  Accidentals get incremented => increment(1);
+  Accidentals get incremented => increment(1)!;
 
   /// Returns the decremented [Accidentals] enum item of this.
   ///
@@ -80,7 +80,7 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.DobleBemoll.decremented == Accidentals.Bemoll
   /// Accidentals.Sostingut.decremented == Accidentals.Becaire
   /// ```
-  Accidentals get decremented => decrement(1);
+  Accidentals get decremented => decrement(1)!;
 
   /// Returns the incremented [Accidentals] enum item of this by [n].
   ///
@@ -89,7 +89,7 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.Bemoll.increment(2) == Accidentals.TripleBemoll
   /// Accidentals.Sostingut.increment(1) == Accidentals.DobleSostingut
   /// ```
-  Accidentals increment(int n) =>
+  Accidentals? increment(int n) =>
       fromValue((value.abs() + n) * (value > 0 ? 1 : -1));
 
   /// Returns the decremented [Accidentals] enum item of this by [n].
@@ -102,5 +102,5 @@ extension AccidentalsValues on Accidentals {
   /// Accidentals.Sostingut.decrement(1) == Accidentals.Becaire
   /// Accidentals.DobleBemoll.decrement(4) == Accidentals.DobleSostingut
   /// ```
-  Accidentals decrement(int n) => increment(-n);
+  Accidentals? decrement(int n) => increment(-n);
 }

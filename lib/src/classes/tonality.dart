@@ -4,14 +4,12 @@ class Tonality {
   final Note note;
   final Modes mode;
 
-  const Tonality(this.note, this.mode)
-      : assert(note != null),
-        assert(mode != null);
+  const Tonality(this.note, this.mode);
 
   Tonality.copy(Tonality tonality) : this(tonality.note, tonality.mode);
 
   Tonality.fromAccidentals(int accidentals, Modes mode,
-      [Accidentals accidental])
+      [Accidentals? accidental])
       : this(
           Note.fromTonalityAccidentals(accidentals, mode, accidental),
           mode,
