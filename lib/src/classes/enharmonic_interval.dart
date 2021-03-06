@@ -32,9 +32,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
     return {
       if (QualitiesValues.exists(intervalBelow, semitones))
-        Interval.fromDesiredSemitones(intervalBelow, semitones),
+        Interval.fromDesiredSemitones(intervalBelow!, semitones),
       if (QualitiesValues.exists(intervalAbove, semitones))
-        Interval.fromDesiredSemitones(intervalAbove, semitones)
+        Interval.fromDesiredSemitones(intervalAbove!, semitones)
     };
   }
 
@@ -51,7 +51,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// EnharmonicInterval.getInterval(7, Qualities.Disminuida)
   ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
-  static Interval getInterval(int semitones, [Qualities preferredQuality]) {
+  static Interval getInterval(int semitones, [Qualities? preferredQuality]) {
     final enharmonicIntervals =
         EnharmonicInterval.fromSemitones(semitones).items;
 

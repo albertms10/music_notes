@@ -2,6 +2,7 @@ library music_notes;
 
 import 'dart:math' as math show min;
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:quiver/core.dart';
 
 part 'src/classes/circle_of_fifths.dart';

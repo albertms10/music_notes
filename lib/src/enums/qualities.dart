@@ -44,7 +44,9 @@ extension QualitiesValues on Qualities {
   /// QualitiesValues.exists(Intervals.Sexta, 8) == true
   /// QualitiesValues.exists(Intervals.Sexta, 10) == false
   /// ```
-  static bool exists(Intervals interval, int semitones) {
+  static bool exists(Intervals? interval, int semitones) {
+    if (interval == null) return false;
+
     final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
     return delta > 0 && delta <= intervalQualitiesSet(interval).length;
   }

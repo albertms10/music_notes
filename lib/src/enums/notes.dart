@@ -22,9 +22,8 @@ extension NotesValues on Notes {
   /// NotesValues.fromValue(8) == Notes.Sol
   /// NotesValues.fromValue(11) == null
   /// ```
-  static Notes fromValue(int value) => notesValues.keys.firstWhere(
+  static Notes? fromValue(int value) => notesValues.keys.firstWhereOrNull(
         (note) => Music.modValueExcludeZero(value) == notesValues[note],
-        orElse: () => null,
       );
 
   /// Returns a [Notes] enum item that matches [ordinal].
@@ -65,7 +64,7 @@ extension NotesValues on Notes {
   /// Notes.Sol.value == 8
   /// Notes.Si.value == 12
   /// ```
-  int get value => notesValues[this];
+  int get value => notesValues[this]!;
 
   /// Returns an [Intervals] enum item that conforms an interval
   /// between this [Notes] enum item and [note] in ascending manner by default.

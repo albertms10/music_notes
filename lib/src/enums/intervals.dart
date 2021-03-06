@@ -41,11 +41,11 @@ extension IntervalsValues on Intervals {
   /// IntervalsValues.fromSemitones(0) == Intervals.Unison
   /// IntervalsValues.fromSemitones(4) == null
   /// ```
-  static Intervals fromSemitones(int semitones) => Intervals.values.firstWhere(
+  static Intervals? fromSemitones(int semitones) =>
+      Intervals.values.firstWhereOrNull(
         (interval) =>
             Music.modValueExcludeZero(semitones) ==
             intervalsQualitiesIndex[interval],
-        orElse: () => null,
       );
 
   /// Returns an [Intervals] enum item that matches [ordinal].
@@ -79,7 +79,7 @@ extension IntervalsValues on Intervals {
   /// ```
   int get semitones =>
       intervalsQualitiesIndex[this] ??
-      Music.chromaticDivisions + intervalsQualitiesIndex[inverted];
+      Music.chromaticDivisions + intervalsQualitiesIndex[inverted]!;
 
   /// Returns the ordinal number of this [Intervals] enum item.
   ///

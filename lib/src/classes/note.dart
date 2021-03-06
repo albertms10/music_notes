@@ -2,13 +2,13 @@ part of music_notes;
 
 class Note implements MusicItem {
   final Notes note;
-  final Accidentals accidental;
+  final Accidentals? accidental;
 
-  const Note(this.note, [this.accidental]) : assert(note != null);
+  const Note(this.note, [this.accidental]);
 
   Note.copy(Note note) : this(note.note, note.accidental);
 
-  Note.fromSemitones(int semitones, [Accidentals preferredAccidental])
+  Note.fromSemitones(int semitones, [Accidentals? preferredAccidental])
       : this.copy(EnharmonicNote.getNote(semitones, preferredAccidental));
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
@@ -22,8 +22,11 @@ class Note implements MusicItem {
   /// Note.fromTonalityAccidentals(0, Modes.Menor)
   ///   == const Note(Notes.La)
   /// ```
-  static Note fromTonalityAccidentals(int accidentals, Modes mode,
-      [Accidentals accidental]) {
+  static Note fromTonalityAccidentals(
+    int accidentals,
+    Modes mode, [
+    Accidentals? accidental,
+  ]) {
     final note = fromRawAccidentals(accidentals, accidental);
 
     return mode == Modes.Major
@@ -46,7 +49,7 @@ class Note implements MusicItem {
   /// Note.fromRawAccidentals(0)
   ///   == const Note(Notes.La)
   /// ```
-  static Note fromRawAccidentals(int accidentals, [Accidentals accidental]) =>
+  static Note fromRawAccidentals(int accidentals, [Accidentals? accidental]) =>
       Note.fromSemitones(
         Interval(
                   Intervals.Quinta,
@@ -57,7 +60,7 @@ class Note implements MusicItem {
             1,
         (accidental == Accidentals.Bemoll && accidentals > 8) ||
                 (accidental == Accidentals.Sostingut && accidentals > 10)
-            ? accidental.incremented
+            ? accidental!.incremented
             : accidental,
       );
 
@@ -72,7 +75,7 @@ class Note implements MusicItem {
   int get semitones => Music.modValueExcludeZero(note.value + accidentalValue);
 
   /// Returns this [Note]’s [accidental] value.
-  int get accidentalValue => accidental != null ? accidental.value : 0;
+  int get accidentalValue => accidental?.value ?? 0;
 
   /// Returns the `delta` difference between this [Note] and [note].
   int semitonesDelta(Note note) => Music.modValue(note.semitones - semitones);
@@ -156,7 +159,8 @@ class Note implements MusicItem {
   /// const Note(Notes.La).transposeBySemitones(5)
   ///   == const Note(Notes.Re)
   /// ```
-  Note transposeBySemitones(int semitones, [Accidentals preferredAccidental]) =>
+  Note transposeBySemitones(int semitones,
+          [Accidentals? preferredAccidental]) =>
       Note.fromSemitones(this.semitones + semitones, preferredAccidental);
 
   /// Returns the [Note] transposed by [interval].
@@ -185,7 +189,7 @@ class Note implements MusicItem {
 
   @override
   String toString() =>
-      note.toText() + (accidental != null ? ' ${accidental.toText()}' : '');
+      note.toText() + (accidental != null ? ' ${accidental!.toText()}' : '');
 
   @override
   bool operator ==(other) =>

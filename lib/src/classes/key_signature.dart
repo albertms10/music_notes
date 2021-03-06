@@ -2,11 +2,10 @@ part of music_notes;
 
 class KeySignature {
   final int number;
-  final Accidentals accidental;
+  final Accidentals? accidental;
 
   const KeySignature(this.number, [this.accidental])
-      : assert(number != null),
-        assert(number >= 0),
+      : assert(number >= 0),
         assert(number > 0 ? accidental != null : true);
 
   KeySignature.fromDistance(int distance)
@@ -46,7 +45,8 @@ class KeySignature {
       final n = i == iterations
           ? Music.nModValueExcludeZero(number, notesValues)
           : notesValues;
-      list.add('$n × ${accidental.increment(i - 1).toText()}');
+
+      list.add('$n × ${accidental!.increment(i - 1)!.toText()}');
     }
 
     return list.join(', ');
