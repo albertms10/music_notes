@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 class Note implements MusicItem {
   final Notes note;
   final Accidentals? accidental;

@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 class KeySignature {
   final int number;
   final Accidentals? accidental;

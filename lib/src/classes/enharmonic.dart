@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 abstract class Enharmonic<T extends MusicItem> {
   final Set<T> items;
 

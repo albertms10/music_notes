@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 class Interval implements MusicItem {
   final Intervals interval;
   final Qualities quality;
@@ -57,7 +58,7 @@ class Interval implements MusicItem {
   Interval get inverted => Interval(interval.inverted, quality.inverted);
 
   @override
-  String toString() => '${interval.toText()} ${quality.toText()}';
+  String toString() => '${quality.toText()} ${interval.toText()}';
 
   @override
   bool operator ==(Object other) =>

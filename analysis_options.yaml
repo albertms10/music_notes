@@ -59,7 +59,6 @@ analyzer:
   errors:
     always_put_required_named_parameters_first: ignore
     always_use_package_imports: ignore
-    avoid_equals_and_hash_code_on_mutable_classes: ignore
     avoid_print: ignore
     avoid_returning_null: ignore
     avoid_unused_constructor_parameters: ignore

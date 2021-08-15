@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 class Tonality {
   final Note note;
   final Modes mode;
@@ -82,7 +83,7 @@ class Tonality {
       );
 
   @override
-  String toString() => '$note ${mode.toText()}';
+  String toString() => '${mode.toText()} $note';
 
   @override
   bool operator ==(Object other) =>

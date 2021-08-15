@@ -1,5 +1,6 @@
 part of music_notes;
 
+@immutable
 class RelativeTonalities {
   final Set<Tonality> tonalities;
 
