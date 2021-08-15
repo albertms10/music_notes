@@ -2,23 +2,31 @@ name: Dart CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     container:
       image:  google/dart:latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: pub get
-    - name: Analyze
-      run: dart analyze --fatal-infos
-    - name: Run tests
-      run: pub run test
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pub get
+      - name: Analyze
+        run: dart analyze --fatal-infos
+      - name: Run tests
+        run: pub run test
+      
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pub run test_coverage
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@1.1.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
