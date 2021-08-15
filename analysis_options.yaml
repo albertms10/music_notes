@@ -58,16 +58,6 @@ linter:
 analyzer:
   errors:
     always_put_required_named_parameters_first: ignore
-    always_use_package_imports: ignore
-    avoid_print: ignore
-    avoid_returning_null: ignore
-    avoid_unused_constructor_parameters: ignore
-    argument_type_not_assignable: ignore
-    implicit_dynamic_list_literal: ignore
-    implicit_dynamic_map_literal: ignore
-    implicit_dynamic_parameter: ignore
-    implicit_dynamic_variable: ignore
-    import_of_legacy_library_into_null_safe: ignore
     prefer_int_literals: ignore
     public_member_api_docs: ignore
     sort_constructors_first: ignore
