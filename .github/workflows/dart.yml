@@ -16,13 +16,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: pub get
+        run: dart pub get
       - name: Analyze
         run: dart analyze --fatal-infos
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
       - name: Run tests
-        run: pub run test
+        run: dart run test
       - name: Run test coverage
-        run: pub run test_coverage
+        run: dart run test_coverage
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@1.1.3
         with:
