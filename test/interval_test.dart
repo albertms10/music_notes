@@ -17,132 +17,139 @@ void main() {
   });
 
   group('Exact intervals are correct', () {
-    test('Uníson', () {
+    test('Unison', () {
+      const baseInterval = Intervals.unison;
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.ut)),
-        equals(const Interval(Intervals.unison, Qualities.perfect)),
+        equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.ut, Accidentals.sharp)),
-        equals(const Interval(Intervals.unison, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Segona', () {
+    test('Second', () {
+      const baseInterval = Intervals.second;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.re, Accidentals.doubleFlat)),
-        equals(const Interval(Intervals.second, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.re, Accidentals.flat)),
-        equals(const Interval(Intervals.second, Qualities.minor)),
+        equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.re)),
-        equals(const Interval(Intervals.second, Qualities.major)),
+        equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.re, Accidentals.sharp)),
-        equals(const Interval(Intervals.second, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Tercera', () {
+    test('Third', () {
+      const baseInterval = Intervals.third;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.mi, Accidentals.doubleFlat)),
-        equals(const Interval(Intervals.third, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.mi, Accidentals.flat)),
-        equals(const Interval(Intervals.third, Qualities.minor)),
+        equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.mi)),
-        equals(const Interval(Intervals.third, Qualities.major)),
+        equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.mi, Accidentals.sharp)),
-        equals(const Interval(Intervals.third, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Quarta', () {
+    test('Fourth', () {
+      const baseInterval = Intervals.fourth;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.fa, Accidentals.flat)),
-        equals(const Interval(Intervals.fourth, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.fa)),
-        equals(const Interval(Intervals.fourth, Qualities.perfect)),
+        equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.fa, Accidentals.sharp)),
-        equals(const Interval(Intervals.fourth, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Quinta', () {
+    test('Fifth', () {
+      const baseInterval = Intervals.fifth;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.sol, Accidentals.flat)),
-        equals(const Interval(Intervals.fifth, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.sol)),
-        equals(const Interval(Intervals.fifth, Qualities.perfect)),
+        equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.sol, Accidentals.sharp)),
-        equals(const Interval(Intervals.fifth, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Sexta', () {
+    test('Sixth', () {
+      const baseInterval = Intervals.sixth;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.la, Accidentals.doubleFlat)),
-        equals(const Interval(Intervals.sixth, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.la, Accidentals.flat)),
-        equals(const Interval(Intervals.sixth, Qualities.minor)),
+        equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.la)),
-        equals(const Interval(Intervals.sixth, Qualities.major)),
+        equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.la, Accidentals.sharp)),
-        equals(const Interval(Intervals.sixth, Qualities.augmented)),
+        equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
 
-    test('Sèptima', () {
+    test('Seventh', () {
+      const baseInterval = Intervals.seventh;
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.si, Accidentals.doubleFlat)),
-        equals(const Interval(Intervals.seventh, Qualities.diminished)),
+        equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
         const Note(Notes.ut)
             .exactInterval(const Note(Notes.si, Accidentals.flat)),
-        equals(const Interval(Intervals.seventh, Qualities.minor)),
+        equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
         const Note(Notes.ut).exactInterval(const Note(Notes.si)),
-        equals(const Interval(Intervals.seventh, Qualities.major)),
+        equals(const Interval(baseInterval, Qualities.major)),
       );
     });
   });
