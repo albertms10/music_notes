@@ -17,6 +17,11 @@ bin/
 build/
 pubspec.lock
 
+# Coverage
+coverage/
+test/.test_coverage.dart
+.coveralls.yaml
+
 .vscode/
 doc/api/
 
