@@ -7,45 +7,45 @@ void main() {
       Music.chromaticScale,
       equals([
         EnharmonicNote({
-          const Note(Notes.Do),
+          const Note(Notes.ut),
         }),
         EnharmonicNote({
-          const Note(Notes.Do, Accidentals.Sostingut),
-          const Note(Notes.Re, Accidentals.Bemoll)
+          const Note(Notes.ut, Accidentals.sharp),
+          const Note(Notes.re, Accidentals.flat)
         }),
         EnharmonicNote({
-          const Note(Notes.Re),
+          const Note(Notes.re),
         }),
         EnharmonicNote({
-          const Note(Notes.Re, Accidentals.Sostingut),
-          const Note(Notes.Mi, Accidentals.Bemoll)
+          const Note(Notes.re, Accidentals.sharp),
+          const Note(Notes.mi, Accidentals.flat)
         }),
         EnharmonicNote({
-          const Note(Notes.Mi),
+          const Note(Notes.mi),
         }),
         EnharmonicNote({
-          const Note(Notes.Fa),
+          const Note(Notes.fa),
         }),
         EnharmonicNote({
-          const Note(Notes.Fa, Accidentals.Sostingut),
-          const Note(Notes.Sol, Accidentals.Bemoll)
+          const Note(Notes.fa, Accidentals.sharp),
+          const Note(Notes.sol, Accidentals.flat)
         }),
         EnharmonicNote({
-          const Note(Notes.Sol),
+          const Note(Notes.sol),
         }),
         EnharmonicNote({
-          const Note(Notes.Sol, Accidentals.Sostingut),
-          const Note(Notes.La, Accidentals.Bemoll)
+          const Note(Notes.sol, Accidentals.sharp),
+          const Note(Notes.la, Accidentals.flat)
         }),
         EnharmonicNote({
-          const Note(Notes.La),
+          const Note(Notes.la),
         }),
         EnharmonicNote({
-          const Note(Notes.La, Accidentals.Sostingut),
-          const Note(Notes.Si, Accidentals.Bemoll),
+          const Note(Notes.la, Accidentals.sharp),
+          const Note(Notes.si, Accidentals.flat),
         }),
         EnharmonicNote({
-          const Note(Notes.Si),
+          const Note(Notes.si),
         })
       ]),
     );

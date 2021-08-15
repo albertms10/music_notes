@@ -31,11 +31,11 @@ class EnharmonicNote extends Enharmonic<Note> {
     return {
       Note(
         NotesValues.fromValue(semitones - 1)!,
-        Accidentals.Sostingut,
+        Accidentals.sharp,
       ),
       Note(
         NotesValues.fromValue(semitones + 1)!,
-        Accidentals.Bemoll,
+        Accidentals.flat,
       ),
     };
   }
@@ -44,11 +44,11 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.getNote(4, Accidentals.Sostingut)
-  ///   == const Note(Notes.Re, Accidentals.Sostingut)
+  /// EnharmonicNote.getNote(4, Accidentals.sharp)
+  ///   == const Note(Notes.re, Accidentals.sharp)
   ///
-  /// EnharmonicNote.getNote(5, Accidentals.Bemoll)
-  ///   == const Note(Notes.Fa, Accidentals.Bemoll)
+  /// EnharmonicNote.getNote(5, Accidentals.flat)
+  ///   == const Note(Notes.fa, Accidentals.flat)
   /// ```
   static Note getNote(int semitones, [Accidentals? preferredAccidental]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
@@ -68,8 +68,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Examples:
   /// ```dart
   /// EnharmonicNote({
-  ///   const Note(Notes.Re, Accidentals.Bemoll),
-  ///   const Note(Notes.Do, Accidentals.Sostingut),
+  ///   const Note(Notes.re, Accidentals.flat),
+  ///   const Note(Notes.ut, Accidentals.sharp),
   /// }).semitones == 2
   ///
   /// EnharmonicNote.fromSemitones(4).semitones == 4
@@ -82,10 +82,10 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote({const Note(Notes.Do)}).transposeBy(6)
+  /// EnharmonicNote({const Note(Notes.ut)}).transposeBy(6)
   ///   == EnharmonicNote({
-  ///     const Note(Notes.Fa, Accidentals.Sostingut),
-  ///     const Note(Notes.Sol, Accidentals.Bemoll),
+  ///     const Note(Notes.fa, Accidentals.sharp),
+  ///     const Note(Notes.sol, Accidentals.flat),
   ///   })
   /// ```
   @override
@@ -97,7 +97,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote({const Note(Notes.Sol)})
+  /// EnharmonicNote({const Note(Notes.sol)})
   ///   .enharmonicSemitonesDistance(
   ///     EnharmonicNote.fromSemitones(10),
   ///     7,
@@ -127,14 +127,14 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```dart
   /// EnharmonicNote.fromSemitones(5)
   ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({const Note(Notes.Re)}),
-  ///     const Interval(Intervals.Quinta, Qualities.Justa),
+  ///     EnharmonicNote({const Note(Notes.re)}),
+  ///     const Interval(Intervals.fifth, Qualities.perfect),
   ///   ) == 10
   ///
   /// EnharmonicNote.fromSemitones(5)
   ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({const Note(Notes.Re)}),
-  ///     const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
+  ///     EnharmonicNote({const Note(Notes.re)}),
+  ///     const Interval(Intervals.fifth, Qualities.perfect, descending: true),
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(

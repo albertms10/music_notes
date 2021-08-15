@@ -43,13 +43,13 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Examples:
   /// ```dart
   /// EnharmonicInterval.getInterval(4)
-  ///   == const Interval(Intervals.Tercera, Qualities.Menor)
+  ///   == const Interval(Intervals.third, Qualities.minor)
   ///
   /// EnharmonicInterval.getInterval(7)
-  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada)
+  ///   == const Interval(Intervals.fourth, Qualities.augmented)
   ///
-  /// EnharmonicInterval.getInterval(7, Qualities.Disminuida)
-  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// EnharmonicInterval.getInterval(7, Qualities.diminished)
+  ///   == const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
   static Interval getInterval(int semitones, [Qualities? preferredQuality]) {
     final enharmonicIntervals =
@@ -67,8 +67,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Example:
   /// ```dart
   /// EnharmonicInterval({
-  ///   const Interval(Intervals.Quarta, Qualities.Augmentada),
-  ///   const Interval(Intervals.Quinta, Qualities.Disminuida),
+  ///   const Interval(Intervals.fourth, Qualities.augmented),
+  ///   const Interval(Intervals.fifth, Qualities.diminished),
   /// }).semitones == 6
   /// ```
   @override
@@ -80,10 +80,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Example:
   /// ```dart
   /// EnharmonicInterval({
-  ///   const Interval(Intervals.Sexta, Qualities.Major),
+  ///   const Interval(Intervals.sixth, Qualities.major),
   /// }).transposeBy(-3)
   ///   == EnharmonicInterval({
-  ///     const Interval(Intervals.Quarta, Qualities.Justa),
+  ///     const Interval(Intervals.fourth, Qualities.perfect),
   ///   })
   /// ```
   @override

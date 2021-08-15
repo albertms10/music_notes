@@ -16,11 +16,11 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromTonalityAccidentals(2, Modes.Major, Accidentals.Sostingut)
-  ///   == const Note(Notes.Re)
+  /// Note.fromTonalityAccidentals(2, Modes.major, Accidentals.sharp)
+  ///   == const Note(Notes.re)
   ///
-  /// Note.fromTonalityAccidentals(0, Modes.Menor)
-  ///   == const Note(Notes.La)
+  /// Note.fromTonalityAccidentals(0, Modes.minor)
+  ///   == const Note(Notes.la)
   /// ```
   static Note fromTonalityAccidentals(
     int accidentals,
@@ -29,10 +29,10 @@ class Note implements MusicItem {
   ]) {
     final note = fromRawAccidentals(accidentals, accidental);
 
-    return mode == Modes.Major
+    return mode == Modes.major
         ? note
         : note.transposeBySemitones(
-            const Interval(Intervals.Tercera, Qualities.Menor, descending: true)
+            const Interval(Intervals.third, Qualities.minor, descending: true)
                 .semitones,
             accidental,
           );
@@ -43,34 +43,34 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromRawAccidentals(2, Accidentals.Sostingut)
-  ///   == const Note(Notes.Re)
+  /// Note.fromRawAccidentals(2, Accidentals.sharp)
+  ///   == const Note(Notes.re)
   ///
   /// Note.fromRawAccidentals(0)
-  ///   == const Note(Notes.La)
+  ///   == const Note(Notes.la)
   /// ```
   static Note fromRawAccidentals(int accidentals, [Accidentals? accidental]) =>
       Note.fromSemitones(
         Interval(
-                  Intervals.Quinta,
-                  Qualities.Justa,
-                  descending: accidental == Accidentals.Bemoll,
+                  Intervals.fifth,
+                  Qualities.perfect,
+                  descending: accidental == Accidentals.flat,
                 ).semitones *
                 accidentals +
             1,
-        (accidental == Accidentals.Bemoll && accidentals > 8) ||
-                (accidental == Accidentals.Sostingut && accidentals > 10)
+        (accidental == Accidentals.flat && accidentals > 8) ||
+                (accidental == Accidentals.sharp && accidentals > 10)
             ? accidental!.incremented
             : accidental,
       );
 
   /// Returns the number of semitones that correspond to this [Note]
-  /// from [Notes.Do].
+  /// from [Notes.ut].
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.Re).semitones == 3
-  /// const Note(Notes.Fa, Accidentals.Sostingut).semitones == 7
+  /// const Note(Notes.re).semitones == 3
+  /// const Note(Notes.fa, Accidentals.sharp).semitones == 7
   /// ```
   @override
   int get semitones => Music.modValueExcludeZero(note.value + accidentalValue);
@@ -86,16 +86,16 @@ class Note implements MusicItem {
   ///
   /// Example:
   /// ```dart
-  /// const Note(Notes.Do).intervalDistance(
-  ///   const Note(Notes.Re),
-  ///   const Interval(Intervals.Quinta, Qualities.Justa),
+  /// const Note(Notes.ut).intervalDistance(
+  ///   const Note(Notes.re),
+  ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == 2
   /// ```
   int intervalDistance(Note note, Interval interval) {
     final distance = _runSemitonesDistance(
       note,
       interval.semitones,
-      Accidentals.Sostingut,
+      Accidentals.sharp,
     );
 
     return distance < Music.chromaticDivisions
@@ -103,7 +103,7 @@ class Note implements MusicItem {
         : _runSemitonesDistance(
               note,
               interval.inverted.semitones,
-              Accidentals.Bemoll,
+              Accidentals.flat,
             ) *
             -1;
   }
@@ -135,12 +135,12 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.Do).exactInterval(const Note(Notes.Re))
-  ///   == const Interval(Intervals.Segona, Qualities.Menor)
+  /// const Note(Notes.ut).exactInterval(const Note(Notes.re))
+  ///   == const Interval(Intervals.second, Qualities.minor)
   ///
-  /// const Note(Notes.Re)
-  ///         .exactInterval(const Note(Notes.La, Accidentals.Bemoll)) ==
-  ///     const Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// const Note(Notes.re)
+  ///         .exactInterval(const Note(Notes.la, Accidentals.flat)) ==
+  ///     const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
   Interval exactInterval(Note note) {
     final interval = this.note.interval(note.note);
@@ -156,11 +156,11 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.Mi, Accidentals.Bemoll).transposeBySemitones(-3)
-  ///   == const Note(Notes.Do)
+  /// const Note(Notes.mi, Accidentals.flat).transposeBySemitones(-3)
+  ///   == const Note(Notes.ut)
   ///
-  /// const Note(Notes.La).transposeBySemitones(5)
-  ///   == const Note(Notes.Re)
+  /// const Note(Notes.la).transposeBySemitones(5)
+  ///   == const Note(Notes.re)
   /// ```
   Note transposeBySemitones(int semitones,
           [Accidentals? preferredAccidental]) =>
@@ -170,13 +170,13 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.Mi).transposeByInterval(
-  ///   const Interval(Intervals.Quinta, Qualities.Justa),
-  /// ) == const Note(Notes.Si)
+  /// const Note(Notes.mi).transposeByInterval(
+  ///   const Interval(Intervals.fifth, Qualities.perfect),
+  /// ) == const Note(Notes.si)
   ///
-  /// const Note(Notes.Sol).transposeByInterval(
-  ///   const Interval(Intervals.Tercera, Qualities.Major, descending: true),
-  /// ) == const Note(Notes.Mi, Accidentals.Bemoll)
+  /// const Note(Notes.sol).transposeByInterval(
+  ///   const Interval(Intervals.third, Qualities.major, descending: true),
+  /// ) == const Note(Notes.mi, Accidentals.flat)
   /// ```
   Note transposeByInterval(Interval interval) {
     final note = this.note.transpose(

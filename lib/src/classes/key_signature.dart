@@ -14,8 +14,8 @@ class KeySignature {
           distance == 0
               ? null
               : distance > 0
-                  ? Accidentals.Sostingut
-                  : Accidentals.Bemoll,
+                  ? Accidentals.sharp
+                  : Accidentals.flat,
         );
 
   /// Returns [RelativeTonalities] with the two tonalities that are defined
@@ -23,15 +23,15 @@ class KeySignature {
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(2, Accidentals.Bemoll).tonalities
+  /// const KeySignature(2, Accidentals.flat).tonalities
   ///   == RelativeTonalities({
-  ///     const Tonality(Note(Notes.Si, Accidentals.Bemoll), Modes.Major),
-  ///     const Tonality(Note(Notes.Sol), Modes.Menor),
+  ///     const Tonality(Note(Notes.si, Accidentals.flat), Modes.major),
+  ///     const Tonality(Note(Notes.sol), Modes.minor),
   ///   })
   /// ```
   RelativeTonalities get tonalities => RelativeTonalities({
-        Tonality.fromAccidentals(number, Modes.Major, accidental),
-        Tonality.fromAccidentals(number, Modes.Menor, accidental),
+        Tonality.fromAccidentals(number, Modes.major, accidental),
+        Tonality.fromAccidentals(number, Modes.minor, accidental),
       });
 
   @override

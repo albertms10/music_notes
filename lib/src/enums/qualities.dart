@@ -1,25 +1,25 @@
 part of music_notes;
 
-enum Qualities { Augmentada, Major, Justa, Menor, Disminuida }
+enum Qualities { augmented, major, perfect, minor, diminished }
 
 extension QualitiesValues on Qualities {
   static const qualities = {
-    Qualities.Disminuida,
-    Qualities.Menor,
-    Qualities.Major,
-    Qualities.Augmentada,
+    Qualities.diminished,
+    Qualities.minor,
+    Qualities.major,
+    Qualities.augmented,
   };
 
   static const perfectQualities = {
-    Qualities.Disminuida,
-    Qualities.Justa,
-    Qualities.Augmentada,
+    Qualities.diminished,
+    Qualities.perfect,
+    Qualities.augmented,
   };
 
   static const invertedQualities = {
-    Qualities.Augmentada: Qualities.Disminuida,
-    Qualities.Justa: Qualities.Justa,
-    Qualities.Major: Qualities.Menor,
+    Qualities.augmented: Qualities.diminished,
+    Qualities.perfect: Qualities.perfect,
+    Qualities.major: Qualities.minor,
   };
 
   /// Returns the [Set] of [Qualities] that corresponds to the
@@ -27,10 +27,10 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.intervalQualitiesSet(Intervals.Quarta)
+  /// QualitiesValues.intervalQualitiesSet(Intervals.fourth)
   ///   == QualitiesValues.perfectQualities
   ///
-  /// QualitiesValues.intervalQualitiesSet(Intervals.Sexta)
+  /// QualitiesValues.intervalQualitiesSet(Intervals.sixth)
   ///   == QualitiesValues.qualities
   /// ```
   static Set<Qualities> intervalQualitiesSet(Intervals interval) =>
@@ -41,9 +41,9 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.exists(Intervals.Segona, 2) == true
-  /// QualitiesValues.exists(Intervals.Sexta, 8) == true
-  /// QualitiesValues.exists(Intervals.Sexta, 10) == false
+  /// QualitiesValues.exists(Intervals.second, 2) == true
+  /// QualitiesValues.exists(Intervals.sixth, 8) == true
+  /// QualitiesValues.exists(Intervals.sixth, 10) == false
   /// ```
   static bool exists(Intervals? interval, int semitones) {
     if (interval == null) return false;
@@ -56,9 +56,9 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.invert(Qualities.Augmentada) == Qualities.Disminuida
-  /// QualitiesValues.invert(Qualities.Menor) == Qualities.Major
-  /// QualitiesValues.invert(Qualities.Justa) == Qualities.Justa
+  /// QualitiesValues.invert(Qualities.augmented) == Qualities.diminished
+  /// QualitiesValues.invert(Qualities.minor) == Qualities.major
+  /// QualitiesValues.invert(Qualities.perfect) == Qualities.perfect
   /// ```
   static Qualities invert(Qualities quality) => quality.inverted;
 
@@ -66,9 +66,9 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// Qualities.Disminuida.inverted == Qualities.Augmentada
-  /// Qualities.Major.inverted == Qualities.Menor
-  /// Qualities.Justa.inverted == Qualities.Justa
+  /// Qualities.diminished.inverted == Qualities.augmented
+  /// Qualities.major.inverted == Qualities.minor
+  /// Qualities.perfect.inverted == Qualities.perfect
   /// ```
   Qualities get inverted {
     final inverted = invertedQualities[this];

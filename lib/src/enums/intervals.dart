@@ -1,44 +1,44 @@
 part of music_notes;
 
 enum Intervals {
-  Unison,
-  Segona,
-  Tercera,
-  Quarta,
-  Quinta,
-  Sexta,
-  Septima,
-  Octava,
-  Novena,
-  Desena,
-  Onzena,
-  Dotzena,
-  Tretzena,
-  Catorzena,
+  unison,
+  second,
+  third,
+  fourth,
+  fifth,
+  sixth,
+  seventh,
+  octave,
+  ninth,
+  tenth,
+  eleventh,
+  twelfth,
+  thirteenth,
+  fourteenth,
 }
 
 extension IntervalsValues on Intervals {
   static const intervalsQualitiesIndex = {
-    Intervals.Unison: 0,
-    Intervals.Segona: 1,
-    Intervals.Tercera: 3,
-    Intervals.Quarta: 5,
-    Intervals.Quinta: 7,
-    Intervals.Sexta: 8,
-    Intervals.Septima: 10,
-    Intervals.Octava: 12,
+    Intervals.unison: 0,
+    Intervals.second: 1,
+    Intervals.third: 3,
+    Intervals.fourth: 5,
+    Intervals.fifth: 7,
+    Intervals.sixth: 8,
+    Intervals.seventh: 10,
+    Intervals.octave: 12,
   };
 
   /// [Set] of fundamental perfect [Intervals].
-  static const perfectIntervals = {Intervals.Unison, Intervals.Quinta};
+  static const perfectIntervals = {Intervals.unison, Intervals.fifth};
 
   /// Returns an [Intervals] enum item that matches [semitones]
   /// in [intervalsQualitiesIndex], otherwise returns `null`.
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.fromSemitones(8) == Intervals.Sexta
-  /// IntervalsValues.fromSemitones(0) == Intervals.Unison
+  /// IntervalsValues.fromSemitones(8) == Intervals.sixth
+  /// IntervalsValues.fromSemitones(0) == Intervals.unison
   /// IntervalsValues.fromSemitones(4) == null
   /// ```
   static Intervals? fromSemitones(int semitones) =>
@@ -52,9 +52,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.fromOrdinal(1) == Intervals.Unison
-  /// IntervalsValues.fromOrdinal(5) == Intervals.Quinta
-  /// IntervalsValues.fromOrdinal(14) == Intervals.Catorzena
+  /// IntervalsValues.fromOrdinal(1) == Intervals.unison
+  /// IntervalsValues.fromOrdinal(5) == Intervals.fifth
+  /// IntervalsValues.fromOrdinal(14) == Intervals.fourteenth
   /// ```
   static Intervals fromOrdinal(int ordinal) => Intervals
       .values[Music.nModValueExcludeZero(ordinal, Intervals.values.length) - 1];
@@ -63,9 +63,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.invert(Intervals.Segona) == Intervals.Septima
-  /// IntervalsValues.invert(Intervals.Quinta) == Intervals.Quarta
-  /// IntervalsValues.invert(Intervals.Octava) == Intervals.Unison
+  /// IntervalsValues.invert(Intervals.second) == Intervals.seventh
+  /// IntervalsValues.invert(Intervals.fifth) == Intervals.fourth
+  /// IntervalsValues.invert(Intervals.octave) == Intervals.unison
   /// ```
   static Intervals invert(Intervals interval) => interval.inverted;
 
@@ -74,9 +74,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Tercera.semitones == 3
-  /// Intervals.Quinta.semitones == 7
-  /// Intervals.Septima.semitones == 10
+  /// Intervals.third.semitones == 3
+  /// Intervals.fifth.semitones == 7
+  /// Intervals.seventh.semitones == 10
   /// ```
   int get semitones =>
       intervalsQualitiesIndex[this] ??
@@ -86,9 +86,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Segona.ordinal == 2
-  /// Intervals.Sexta.ordinal == 6
-  /// Intervals.Tretzena.ordinal == 13
+  /// Intervals.second.ordinal == 2
+  /// Intervals.sixth.ordinal == 6
+  /// Intervals.thirteenth.ordinal == 13
   /// ```
   int get ordinal => Intervals.values.indexOf(this) + 1;
 
@@ -96,9 +96,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Quinta.isPerfect == true
-  /// Intervals.Sexta.isPerfect == false
-  /// Intervals.Onzena.isPerfect == true
+  /// Intervals.fifth.isPerfect == true
+  /// Intervals.sixth.isPerfect == false
+  /// Intervals.eleventh.isPerfect == true
   /// ```
   bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
       .any((interval) => interval == this || interval == inverted);
@@ -107,21 +107,21 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Tretzena.simplified == Intervals.Sexta
-  /// Intervals.Novena.simplified == Intervals.Segona
-  /// Intervals.Octava.simplified == Intervals.Octava
+  /// Intervals.thirteenth.simplified == Intervals.sixth
+  /// Intervals.ninth.simplified == Intervals.second
+  /// Intervals.octave.simplified == Intervals.octave
   /// ```
-  Intervals get simplified => ordinal > Intervals.Octava.ordinal
-      ? Intervals.values[ordinal - Intervals.Octava.ordinal]
+  Intervals get simplified => ordinal > Intervals.octave.ordinal
+      ? Intervals.values[ordinal - Intervals.octave.ordinal]
       : this;
 
   /// Returns an inverted this [Intervals] enum item.
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Septima.inverted == Intervals.Segona
-  /// Intervals.Quarta.inverted == Intervals.Quinta
-  /// Intervals.Unison.inverted == Intervals.Octava
+  /// Intervals.seventh.inverted == Intervals.second
+  /// Intervals.fourth.inverted == Intervals.fifth
+  /// Intervals.unison.inverted == Intervals.octave
   /// ```
   ///
   /// If an interval is greater than an octave, the simplified
@@ -129,8 +129,8 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.Onzena.inverted == Intervals.Quinta
-  /// Intervals.Novena.inverted == Intervals.Septima
+  /// Intervals.eleventh.inverted == Intervals.fifth
+  /// Intervals.ninth.inverted == Intervals.seventh
   /// ```
   Intervals get inverted {
     final diff = 9 - simplified.ordinal;

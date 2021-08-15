@@ -1,14 +1,14 @@
 part of music_notes;
 
-enum Modes { Major, Menor }
+enum Modes { major, minor }
 
 extension ModesValues on Modes {
   /// Returns the inverted this [Modes] enum item.
   ///
   /// Examples:
   /// ```dart
-  /// Modes.Major.inverted == Modes.Menor
-  /// Modes.Menor.inverted == Modes.Major
+  /// Modes.major.inverted == Modes.minor
+  /// Modes.minor.inverted == Modes.major
   /// ```
-  Modes get opposite => this == Modes.Major ? Modes.Menor : Modes.Major;
+  Modes get opposite => this == Modes.major ? Modes.minor : Modes.major;
 }

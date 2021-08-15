@@ -1,34 +1,34 @@
 part of music_notes;
 
 enum Accidentals {
-  TripleSostingut,
-  DobleSostingut,
-  Sostingut,
-  Becaire,
-  Bemoll,
-  DobleBemoll,
-  TripleBemoll
+  tripleSharp,
+  doubleSharp,
+  sharp,
+  natural,
+  flat,
+  doubleFlat,
+  tripleFlat,
 }
 
 extension AccidentalsValues on Accidentals {
   static const accidentalsValues = {
-    Accidentals.TripleSostingut: 3,
-    Accidentals.DobleSostingut: 2,
-    Accidentals.Sostingut: 1,
-    Accidentals.Becaire: 0,
-    Accidentals.Bemoll: -1,
-    Accidentals.DobleBemoll: -2,
-    Accidentals.TripleBemoll: -3,
+    Accidentals.tripleSharp: 3,
+    Accidentals.doubleSharp: 2,
+    Accidentals.sharp: 1,
+    Accidentals.natural: 0,
+    Accidentals.flat: -1,
+    Accidentals.doubleFlat: -2,
+    Accidentals.tripleFlat: -3,
   };
 
   static const accidentalsSymbols = {
-    Accidentals.TripleSostingut: '♯𝄪',
-    Accidentals.DobleSostingut: '𝄪',
-    Accidentals.Sostingut: '♯',
-    Accidentals.Becaire: '♮',
-    Accidentals.Bemoll: '♭',
-    Accidentals.DobleBemoll: '𝄫',
-    Accidentals.TripleBemoll: '♭𝄫',
+    Accidentals.tripleSharp: '♯𝄪',
+    Accidentals.doubleSharp: '𝄪',
+    Accidentals.sharp: '♯',
+    Accidentals.natural: '♮',
+    Accidentals.flat: '♭',
+    Accidentals.doubleFlat: '𝄫',
+    Accidentals.tripleFlat: '♭𝄫',
   };
 
   /// Returns an [Accidentals] enum item that matches [value]
@@ -36,9 +36,9 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// AccidentalsValues.fromValue(1) == Accidentals.Sostingut
-  /// AccidentalsValues.fromValue(-2) == Accidentals.DobleBemoll
-  /// AccidentalsValues.fromValue(3) == Accidentals.TripleSostingut
+  /// AccidentalsValues.fromValue(1) == Accidentals.sharp
+  /// AccidentalsValues.fromValue(-2) == Accidentals.doubleFlat
+  /// AccidentalsValues.fromValue(3) == Accidentals.tripleSharp
   /// ```
   static Accidentals? fromValue(int value) =>
       accidentalsValues.keys.firstWhereOrNull(
@@ -50,8 +50,8 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.Bemoll.value == -1
-  /// Accidentals.DobleSostingut.value == 2
+  /// Accidentals.flat.value == -1
+  /// Accidentals.doubleSharp.value == 2
   /// ```
   int get value => accidentalsValues[this]!;
 
@@ -59,8 +59,8 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.Bemoll.symbol == '♭'
-  /// Accidentals.DobleSostingut.symbol == '𝄪'
+  /// Accidentals.flat.symbol == '♭'
+  /// Accidentals.doubleSharp.symbol == '𝄪'
   /// ```
   String get symbol => accidentalsSymbols[this]!;
 
@@ -68,8 +68,8 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.DobleBemoll.incremented == Accidentals.TripleBemoll
-  /// Accidentals.Sostingut.incremented == Accidentals.DobleSostingut
+  /// Accidentals.doubleFlat.incremented == Accidentals.tripleFlat
+  /// Accidentals.sharp.incremented == Accidentals.doubleSharp
   /// ```
   Accidentals get incremented => increment(1)!;
 
@@ -77,8 +77,8 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.DobleBemoll.decremented == Accidentals.Bemoll
-  /// Accidentals.Sostingut.decremented == Accidentals.Becaire
+  /// Accidentals.doubleFlat.decremented == Accidentals.flat
+  /// Accidentals.sharp.decremented == Accidentals.natural
   /// ```
   Accidentals get decremented => decrement(1)!;
 
@@ -86,8 +86,8 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.Bemoll.increment(2) == Accidentals.TripleBemoll
-  /// Accidentals.Sostingut.increment(1) == Accidentals.DobleSostingut
+  /// Accidentals.flat.increment(2) == Accidentals.tripleFlat
+  /// Accidentals.sharp.increment(1) == Accidentals.doubleSharp
   /// ```
   Accidentals? increment(int n) =>
       fromValue((value.abs() + n) * (value > 0 ? 1 : -1));
@@ -98,9 +98,9 @@ extension AccidentalsValues on Accidentals {
   ///
   /// Examples:
   /// ```dart
-  /// Accidentals.Bemoll.decrement(2) == Accidentals.Sostingut
-  /// Accidentals.Sostingut.decrement(1) == Accidentals.Becaire
-  /// Accidentals.DobleBemoll.decrement(4) == Accidentals.DobleSostingut
+  /// Accidentals.flat.decrement(2) == Accidentals.sharp
+  /// Accidentals.sharp.decrement(1) == Accidentals.natural
+  /// Accidentals.doubleFlat.decrement(4) == Accidentals.doubleSharp
   /// ```
   Accidentals? decrement(int n) => increment(-n);
 }

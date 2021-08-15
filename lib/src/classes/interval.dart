@@ -29,10 +29,10 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.Segona, Qualities.Major).semitones == 2
+  /// const Interval(Intervals.second, Qualities.major).semitones == 2
   ///
-  /// const Interval(Intervals.Quinta, Qualities.Disminuida).semitones
-  ///   == const Interval(Intervals.Quarta, Qualities.Augmentada).semitones
+  /// const Interval(Intervals.fifth, Qualities.diminished).semitones
+  ///   == const Interval(Intervals.fourth, Qualities.augmented).semitones
   ///   == 6
   /// ```
   @override
@@ -48,11 +48,11 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.Tercera, Qualities.Menor).inverted
-  ///   == const Interval(Intervals.Sexta, Qualities.Major)
+  /// const Interval(Intervals.third, Qualities.minor).inverted
+  ///   == const Interval(Intervals.sixth, Qualities.major)
   ///
-  /// const Interval(Intervals.Unison, Qualities.Justa).inverted
-  ///   == const Interval(Intervals.Octava, Qualities.Justa)
+  /// const Interval(Intervals.unison, Qualities.perfect).inverted
+  ///   == const Interval(Intervals.octave, Qualities.perfect)
   /// ```
   Interval get inverted => Interval(interval.inverted, quality.inverted);
 

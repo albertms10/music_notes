@@ -5,7 +5,7 @@ abstract class CircleOfFifths {
   static Set<EnharmonicNote> get circleOfFifths => {
         for (var i = 0; i < Music.chromaticDivisions; i++)
           Music.chromaticScale.toList()[Music.modValueExcludeZero(
-            i * const Interval(Intervals.Quinta, Qualities.Justa).semitones,
+            i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
           )],
       };
 
@@ -15,8 +15,8 @@ abstract class CircleOfFifths {
   /// Examples:
   /// ```dart
   /// CircleOfFifths.shortestFifthsDistance(
-  ///   EnharmonicNote({const Note(Notes.Fa, Accidentals.Sostingut)}),
-  ///   EnharmonicNote({const Note(Notes.La)}),
+  ///   EnharmonicNote({const Note(Notes.fa, Accidentals.sharp)}),
+  ///   EnharmonicNote({const Note(Notes.la)}),
   /// ) == -3
   ///
   /// CircleOfFifths.shortestFifthsDistance(
@@ -30,11 +30,11 @@ abstract class CircleOfFifths {
   ) {
     final distanceAbove = enharmonicNote1.enharmonicIntervalDistance(
       enharmonicNote2,
-      const Interval(Intervals.Quinta, Qualities.Justa),
+      const Interval(Intervals.fifth, Qualities.perfect),
     );
     final distanceBelow = enharmonicNote1.enharmonicIntervalDistance(
       enharmonicNote2,
-      const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
+      const Interval(Intervals.fifth, Qualities.perfect, descending: true),
     );
 
     final minDistance = math.min(distanceAbove, distanceBelow);
@@ -48,18 +48,18 @@ abstract class CircleOfFifths {
   /// Examples:
   /// ```dart
   /// CircleOfFifths.exactFifthsDistance(
-  ///   const Note(Notes.La, Accidentals.Bemoll),
-  ///   const Note(Notes.Do, Accidentals.Sostingut),
+  ///   const Note(Notes.la, Accidentals.flat),
+  ///   const Note(Notes.ut, Accidentals.sharp),
   /// ) == 11
   ///
   /// CircleOfFifths.exactFifthsDistance(
-  ///   const Note(Notes.La, Accidentals.Bemoll),
-  ///   const Note(Notes.Re, Accidentals.Bemoll),
+  ///   const Note(Notes.la, Accidentals.flat),
+  ///   const Note(Notes.re, Accidentals.flat),
   /// ) == -1
   /// ```
   static int exactFifthsDistance(Note note1, Note note2) =>
       note1.intervalDistance(
         note2,
-        const Interval(Intervals.Quinta, Qualities.Justa),
+        const Interval(Intervals.fifth, Qualities.perfect),
       );
 }

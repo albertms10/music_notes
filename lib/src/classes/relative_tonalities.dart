@@ -31,8 +31,8 @@ class RelativeTonalities {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(Note(Notes.Re), Modes.Major),
-  ///   const Tonality(Note(Notes.Si), Modes.Menor),
+  ///   const Tonality(Note(Notes.re), Modes.major),
+  ///   const Tonality(Note(Notes.si), Modes.minor),
   /// }).accidentals == 2
   /// ```
   int get accidentals => _itemsAccidentals(tonalities);
@@ -42,9 +42,9 @@ class RelativeTonalities {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(Note(Notes.Mi, Accidentals.Bemoll), Modes.Major),
-  ///   const Tonality(Note(Notes.Do), Modes.Menor),
-  /// }).accidental == Accidentals.Bemoll
+  ///   const Tonality(Note(Notes.mi, Accidentals.flat), Modes.major),
+  ///   const Tonality(Note(Notes.ut), Modes.minor),
+  /// }).accidental == Accidentals.flat
   /// ```
   Accidentals get accidental => _itemsAccidental(tonalities);
 

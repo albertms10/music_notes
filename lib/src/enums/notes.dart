@@ -1,16 +1,16 @@
 part of music_notes;
 
-enum Notes { Do, Re, Mi, Fa, Sol, La, Si }
+enum Notes { ut, re, mi, fa, sol, la, si }
 
 extension NotesValues on Notes {
   static const notesValues = {
-    Notes.Do: 1,
-    Notes.Re: 3,
-    Notes.Mi: 5,
-    Notes.Fa: 6,
-    Notes.Sol: 8,
-    Notes.La: 10,
-    Notes.Si: 12,
+    Notes.ut: 1,
+    Notes.re: 3,
+    Notes.mi: 5,
+    Notes.fa: 6,
+    Notes.sol: 8,
+    Notes.la: 10,
+    Notes.si: 12,
   };
 
   /// Returns a [Notes] enum item that matches [value]
@@ -18,8 +18,8 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// NotesValues.fromValue(3) == Notes.Re
-  /// NotesValues.fromValue(8) == Notes.Sol
+  /// NotesValues.fromValue(3) == Notes.re
+  /// NotesValues.fromValue(8) == Notes.sol
   /// NotesValues.fromValue(11) == null
   /// ```
   static Notes? fromValue(int value) => notesValues.keys.firstWhereOrNull(
@@ -30,9 +30,9 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// NotesValues.fromOrdinal(3) == Notes.Mi
-  /// NotesValues.fromOrdinal(7) == Notes.Si
-  /// NotesValues.fromOrdinal(10) == Notes.Mi
+  /// NotesValues.fromOrdinal(3) == Notes.mi
+  /// NotesValues.fromOrdinal(7) == Notes.si
+  /// NotesValues.fromOrdinal(10) == Notes.mi
   /// ```
   static Notes fromOrdinal(int ordinal) => Notes
       .values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
@@ -51,8 +51,8 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.Do.ordinal == 1
-  /// Notes.Fa.ordinal == 4
+  /// Notes.ut.ordinal == 1
+  /// Notes.fa.ordinal == 4
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
 
@@ -60,9 +60,9 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.Do.value == 1
-  /// Notes.Sol.value == 8
-  /// Notes.Si.value == 12
+  /// Notes.ut.value == 1
+  /// Notes.sol.value == 8
+  /// Notes.si.value == 12
   /// ```
   int get value => notesValues[this]!;
 
@@ -71,9 +71,9 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.Re.interval(Notes.Fa) == Intervals.Tercera
-  /// Notes.La.interval(Notes.Mi) == Intervals.Quinta
-  /// Notes.La.interval(Notes.Mi, descending: true) == Intervals.Quarta
+  /// Notes.re.interval(Notes.fa) == Intervals.third
+  /// Notes.la.interval(Notes.mi) == Intervals.fifth
+  /// Notes.la.interval(Notes.mi, descending: true) == Intervals.fourth
   /// ```
   Intervals interval(Notes note, {bool descending = false}) {
     final noteOrdinal1 = ordinal;
@@ -93,9 +93,9 @@ extension NotesValues on Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.Do.transpose(Intervals.Quinta) == Notes.Sol
-  /// Notes.Fa.transpose(Intervals.Tercera, descending: true) == Notes.Re
-  /// Notes.La.transpose(Intervals.Quarta) == Notes.Re
+  /// Notes.ut.transpose(Intervals.fifth) == Notes.sol
+  /// Notes.fa.transpose(Intervals.third, descending: true) == Notes.re
+  /// Notes.la.transpose(Intervals.fourth) == Notes.re
   /// ```
   Notes transpose(Intervals interval, {bool descending = false}) =>
       NotesValues.fromOrdinal(
