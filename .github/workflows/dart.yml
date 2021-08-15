@@ -21,11 +21,8 @@ jobs:
         run: dart analyze --fatal-infos
       - name: Run tests
         run: pub run test
-      
-  coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - run: pub run test_coverage
+      - name: Run test coverage
+        run: pub run test_coverage
       - name: Coveralls GitHub Action
         uses: coverallsapp/github-action@1.1.3
         with:
