@@ -108,7 +108,7 @@ class Note implements MusicItem {
             -1;
   }
 
-  /// Returns the iteration distance of an [interval] between
+  /// Returns the iteration distance of an interval between
   /// this [Note] and [note] with a [preferredAccidental].
   ///
   /// It is mainly used by [intervalDistance].

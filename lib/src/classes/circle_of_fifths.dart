@@ -1,7 +1,7 @@
 part of music_notes;
 
 abstract class CircleOfFifths {
-  /// Returns a [Set] of [EnharmonicNotes] that conforms the circle of fifths.
+  /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
   static Set<EnharmonicNote> get circleOfFifths => {
         for (var i = 0; i < Music.chromaticDivisions; i++)
           Music.chromaticScale.toList()[Music.modValueExcludeZero(

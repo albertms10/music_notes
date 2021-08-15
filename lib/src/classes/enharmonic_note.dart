@@ -137,6 +137,9 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///     const Interval(Intervals.Quinta, Qualities.Justa, descending: true),
   ///   ) == 2
   /// ```
-  int enharmonicIntervalDistance(EnharmonicNote note, Interval interval) =>
-      enharmonicSemitonesDistance(note, interval.semitones);
+  int enharmonicIntervalDistance(
+    EnharmonicNote enharmonicNote,
+    Interval interval,
+  ) =>
+      enharmonicSemitonesDistance(enharmonicNote, interval.semitones);
 }
