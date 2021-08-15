@@ -62,7 +62,8 @@ class EnharmonicNote extends Enharmonic<Note> {
     );
   }
 
-  /// Returns the number of semitones of the common chromatic pitch this [EnharmonicNote].
+  /// Returns the number of semitones of the common chromatic pitch
+  /// this [EnharmonicNote].
   ///
   /// Examples:
   /// ```dart
@@ -76,7 +77,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   @override
   int get semitones => super.semitones;
 
-  /// Returns a transposed [EnharmonicNote] by [semitones] from this [EnharmonicNote].
+  /// Returns a transposed [EnharmonicNote] by [semitones]
+  /// from this [EnharmonicNote].
   ///
   /// Example:
   /// ```dart

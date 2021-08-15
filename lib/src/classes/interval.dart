@@ -60,7 +60,7 @@ class Interval implements MusicItem {
   String toString() => '${interval.toText()} ${quality.toText()}';
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Interval &&
       interval == other.interval &&
       quality == other.quality;

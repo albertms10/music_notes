@@ -69,7 +69,8 @@ extension IntervalsValues on Intervals {
   /// ```
   static Intervals invert(Intervals interval) => interval.inverted;
 
-  /// Returns the number of semitones of this [Intervals] enum item as in [intervalsQualitiesIndex].
+  /// Returns the number of semitones of this [Intervals] enum item
+  /// as in [intervalsQualitiesIndex].
   ///
   /// Examples:
   /// ```dart

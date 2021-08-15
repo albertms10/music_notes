@@ -22,7 +22,8 @@ extension QualitiesValues on Qualities {
     Qualities.Major: Qualities.Menor,
   };
 
-  /// Returns the [Set] of [Qualities] that corresponds to the perfect nature of [interval].
+  /// Returns the [Set] of [Qualities] that corresponds to the
+  /// perfect nature of [interval].
   ///
   /// Examples:
   /// ```dart

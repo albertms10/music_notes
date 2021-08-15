@@ -61,7 +61,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     );
   }
 
-  /// Returns the number of semitones of the common chromatic pitch of this [EnharmonicInterval].
+  /// Returns the number of semitones of the common chromatic pitch
+  /// of this [EnharmonicInterval].
   ///
   /// Example:
   /// ```dart
@@ -73,7 +74,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   int get semitones => super.semitones;
 
-  /// Returns a transposed [EnharmonicInterval] by [semitones] from this [EnharmonicInterval].
+  /// Returns a transposed [EnharmonicInterval] by [semitones]
+  /// from this [EnharmonicInterval].
   ///
   /// Example:
   /// ```dart

@@ -2,19 +2,12 @@ part of music_notes;
 
 abstract class CircleOfFifths {
   /// Returns a [Set] of [EnharmonicNotes] that conforms the circle of fifths.
-  static Set<EnharmonicNote> get circleOfFifths {
-    final notes = <EnharmonicNote>{};
-
-    for (var i = 0; i < Music.chromaticDivisions; i++) {
-      notes.add(
-        Music.chromaticScale.toList()[Music.modValueExcludeZero(
-          i * const Interval(Intervals.Quinta, Qualities.Justa).semitones,
-        )],
-      );
-    }
-
-    return notes;
-  }
+  static Set<EnharmonicNote> get circleOfFifths => {
+        for (var i = 0; i < Music.chromaticDivisions; i++)
+          Music.chromaticScale.toList()[Music.modValueExcludeZero(
+            i * const Interval(Intervals.Quinta, Qualities.Justa).semitones,
+          )],
+      };
 
   /// Returns the shortest iteration distance between two [EnharmonicNote]s
   /// in fifth intervals.

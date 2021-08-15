@@ -6,7 +6,7 @@ class KeySignature {
 
   const KeySignature(this.number, [this.accidental])
       : assert(number >= 0),
-        assert(!(number > 0) || accidental != null);
+        assert(number == 0 || accidental != null);
 
   KeySignature.fromDistance(int distance)
       : this(
@@ -18,14 +18,15 @@ class KeySignature {
                   : Accidentals.Bemoll,
         );
 
-  /// Returns [RelativeTonalities] with the two tonalities that are defined by this [KeySignature].
+  /// Returns [RelativeTonalities] with the two tonalities that are defined
+  /// by this [KeySignature].
   ///
   /// Example:
   /// ```dart
   /// const KeySignature(2, Accidentals.Bemoll).tonalities
   ///   == RelativeTonalities({
-  ///     const Tonality(const Note(Notes.Si, Accidentals.Bemoll), Modes.Major),
-  ///     const Tonality(const Note(Notes.Sol), Modes.Menor),
+  ///     const Tonality(Note(Notes.Si, Accidentals.Bemoll), Modes.Major),
+  ///     const Tonality(Note(Notes.Sol), Modes.Menor),
   ///   })
   /// ```
   RelativeTonalities get tonalities => RelativeTonalities({
@@ -53,7 +54,7 @@ class KeySignature {
   }
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is KeySignature &&
       number == other.number &&
       accidental == other.accidental;

@@ -37,8 +37,8 @@ extension NotesValues on Notes {
   static Notes fromOrdinal(int ordinal) => Notes
       .values[Music.nModValueExcludeZero(ordinal, Notes.values.length) - 1];
 
-  /// Returns `true` if a [Notes] enum item needs and accidental to be represented
-  /// – that is, it cannot be found in [notesValues].
+  /// Returns `true` if a [Notes] enum item needs and accidental
+  /// to be represented—that is, it cannot be found in [notesValues].
   ///
   /// Examples:
   /// ```dart

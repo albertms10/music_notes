@@ -31,8 +31,8 @@ class RelativeTonalities {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(const Note(Notes.Re), Modes.Major),
-  ///   const Tonality(const Note(Notes.Si), Modes.Menor),
+  ///   const Tonality(Note(Notes.Re), Modes.Major),
+  ///   const Tonality(Note(Notes.Si), Modes.Menor),
   /// }).accidentals == 2
   /// ```
   int get accidentals => _itemsAccidentals(tonalities);
@@ -42,8 +42,8 @@ class RelativeTonalities {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(const Note(Notes.Mi, Accidentals.Bemoll), Modes.Major),
-  ///   const Tonality(const Note(Notes.Do), Modes.Menor),
+  ///   const Tonality(Note(Notes.Mi, Accidentals.Bemoll), Modes.Major),
+  ///   const Tonality(Note(Notes.Do), Modes.Menor),
   /// }).accidental == Accidentals.Bemoll
   /// ```
   Accidentals get accidental => _itemsAccidental(tonalities);
@@ -52,7 +52,7 @@ class RelativeTonalities {
   String toString() => '$tonalities';
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is RelativeTonalities &&
       accidentals == other.accidentals &&
       accidental == other.accidental;

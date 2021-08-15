@@ -64,7 +64,8 @@ class Note implements MusicItem {
             : accidental,
       );
 
-  /// Returns the number of semitones that correspond to this [Note] from [Notes.Do].
+  /// Returns the number of semitones that correspond to this [Note]
+  /// from [Notes.Do].
   ///
   /// Examples:
   /// ```dart
@@ -80,7 +81,8 @@ class Note implements MusicItem {
   /// Returns the `delta` difference between this [Note] and [note].
   int semitonesDelta(Note note) => Music.modValue(note.semitones - semitones);
 
-  /// Returns the iteration distance of an [interval] between this [Note] and [note].
+  /// Returns the iteration distance of an [interval] between
+  /// this [Note] and [note].
   ///
   /// Example:
   /// ```dart
@@ -106,8 +108,8 @@ class Note implements MusicItem {
             -1;
   }
 
-  /// Returns the iteration distance of an [interval] between this [Note] and [note]
-  /// with a [preferredAccidental].
+  /// Returns the iteration distance of an [interval] between
+  /// this [Note] and [note] with a [preferredAccidental].
   ///
   /// It is mainly used by [intervalDistance].
   int _runSemitonesDistance(
@@ -136,8 +138,9 @@ class Note implements MusicItem {
   /// const Note(Notes.Do).exactInterval(const Note(Notes.Re))
   ///   == const Interval(Intervals.Segona, Qualities.Menor)
   ///
-  /// const Note(Notes.Re).exactInterval(const Note(Notes.La, Accidentals.Bemoll))
-  ///   == const Interval(Intervals.Quinta, Qualities.Disminuida)
+  /// const Note(Notes.Re)
+  ///         .exactInterval(const Note(Notes.La, Accidentals.Bemoll)) ==
+  ///     const Interval(Intervals.Quinta, Qualities.Disminuida)
   /// ```
   Interval exactInterval(Note note) {
     final interval = this.note.interval(note.note);
@@ -192,7 +195,7 @@ class Note implements MusicItem {
       note.toText() + (accidental != null ? ' ${accidental!.toText()}' : '');
 
   @override
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Note && note == other.note && accidental == other.accidental;
 
   @override
