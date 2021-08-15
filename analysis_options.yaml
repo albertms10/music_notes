@@ -1,28 +1,74 @@
-include: package:lints/recommended.yaml
+include: package:very_good_analysis/analysis_options.yaml
 
 linter:
   rules:
     - always_put_required_named_parameters_first
     - avoid_bool_literals_in_conditional_expressions
     - avoid_catches_without_on_clauses
+  # - avoid_classes_with_only_static_members
     - avoid_dynamic_calls
+    - avoid_function_literals_in_foreach_calls
     - avoid_redundant_argument_values
+    - avoid_renaming_method_parameters
+    - avoid_returning_null_for_future
+    - avoid_void_async
+    - avoid_web_libraries_in_flutter
     - cascade_invocations
     - lines_longer_than_80_chars
+    - cancel_subscriptions
+    - constant_identifier_names
+    - deprecated_consistency
+  # - depend_on_referenced_packages
+    - directives_ordering
+  # - eol_at_end_of_file
     - flutter_style_todos
-    - omit_local_variable_types
     - no_default_cases
+  # - noop_primitive_operations
+    - omit_local_variable_types
+    - only_throw_errors
     - prefer_const_constructors
     - prefer_const_literals_to_create_immutables
     - prefer_expression_function_bodies
+    - prefer_contains
     - prefer_final_in_for_each
     - prefer_final_locals
+  # - prefer_final_parameters
   # - public_member_api_docs
+    - prefer_if_elements_to_conditional_expressions
+    - prefer_interpolation_to_compose_strings
+    - prefer_is_empty
+    - prefer_is_not_empty
+    - prefer_single_quotes
+    - prefer_void_to_null
+  # - prefixed_integer_literals
+  # - require_trailing_commas
     - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - type_annotate_public_apis
+    - unawaited_futures
+    - unnecessary_null_checks
     - unnecessary_parenthesis
+    - unnecessary_statements
+    - use_build_context_synchronously
+    - use_late_for_private_fields_and_variables
+    - use_setters_to_change_properties
+  # - use_test_throws_matchers
+    - use_to_and_as_if_applicable
 
 analyzer:
   errors:
-   constant_identifier_names: ignore
+    always_put_required_named_parameters_first: ignore
+    always_use_package_imports: ignore
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
+    avoid_print: ignore
+    avoid_returning_null: ignore
+    avoid_unused_constructor_parameters: ignore
+    argument_type_not_assignable: ignore
+    implicit_dynamic_list_literal: ignore
+    implicit_dynamic_map_literal: ignore
+    implicit_dynamic_parameter: ignore
+    implicit_dynamic_variable: ignore
+    import_of_legacy_library_into_null_safe: ignore
+    prefer_int_literals: ignore
+    public_member_api_docs: ignore
+    sort_constructors_first: ignore
