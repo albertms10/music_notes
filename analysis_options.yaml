@@ -2,9 +2,27 @@ include: package:lints/recommended.yaml
 
 linter:
   rules:
+    - always_put_required_named_parameters_first
+    - avoid_bool_literals_in_conditional_expressions
+    - avoid_catches_without_on_clauses
+    - avoid_dynamic_calls
+    - avoid_redundant_argument_values
+    - cascade_invocations
+    - lines_longer_than_80_chars
+    - flutter_style_todos
     - omit_local_variable_types
+    - no_default_cases
     - prefer_const_constructors
     - prefer_const_literals_to_create_immutables
+    - prefer_expression_function_bodies
     - prefer_final_in_for_each
     - prefer_final_locals
+  # - public_member_api_docs
     - sort_pub_dependencies
+    - sort_unnamed_constructors_first
+    - type_annotate_public_apis
+    - unnecessary_parenthesis
+
+analyzer:
+  errors:
+   constant_identifier_names: ignore
