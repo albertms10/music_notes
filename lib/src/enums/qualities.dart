@@ -27,13 +27,13 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.intervalQualitiesSet(Intervals.fourth)
+  /// QualitiesValues.intervalQualities(Intervals.fourth)
   ///   == QualitiesValues.perfectQualities
   ///
-  /// QualitiesValues.intervalQualitiesSet(Intervals.sixth)
+  /// QualitiesValues.intervalQualities(Intervals.sixth)
   ///   == QualitiesValues.qualities
   /// ```
-  static Set<Qualities> intervalQualitiesSet(Intervals interval) =>
+  static Set<Qualities> intervalQualities(Intervals interval) =>
       interval.isPerfect ? perfectQualities : qualities;
 
   /// Returns `true` if the [Qualities] enum item that matches [interval]
@@ -49,7 +49,7 @@ extension QualitiesValues on Qualities {
     if (interval == null) return false;
 
     final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
-    return delta > 0 && delta <= intervalQualitiesSet(interval).length;
+    return delta > 0 && delta <= intervalQualities(interval).length;
   }
 
   /// Returns an inverted [Qualities] enum item from [quality].

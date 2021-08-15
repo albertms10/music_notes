@@ -9,7 +9,7 @@ class Note implements MusicItem {
   Note.copy(Note note) : this(note.note, note.accidental);
 
   Note.fromSemitones(int semitones, [Accidentals? preferredAccidental])
-      : this.copy(EnharmonicNote.getNote(semitones, preferredAccidental));
+      : this.copy(EnharmonicNote.note(semitones, preferredAccidental));
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].

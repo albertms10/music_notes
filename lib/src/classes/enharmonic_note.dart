@@ -44,13 +44,13 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.getNote(4, Accidentals.sharp)
+  /// EnharmonicNote.note(4, Accidentals.sharp)
   ///   == const Note(Notes.re, Accidentals.sharp)
   ///
-  /// EnharmonicNote.getNote(5, Accidentals.flat)
+  /// EnharmonicNote.note(5, Accidentals.flat)
   ///   == const Note(Notes.fa, Accidentals.flat)
   /// ```
-  static Note getNote(int semitones, [Accidentals? preferredAccidental]) {
+  static Note note(int semitones, [Accidentals? preferredAccidental]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
 
     return enharmonicNotes.firstWhere(
