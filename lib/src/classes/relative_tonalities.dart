@@ -12,7 +12,7 @@ class RelativeTonalities {
                 tonality.accidentals == _itemsAccidentals(tonalities) &&
                 tonality.accidental == _itemsAccidental(tonalities),
           ),
-          'Tonalities have different key signatures.',
+          'Tonalities must have the same key signature.',
         );
 
   /// Returns the number of accidentals of [tonalities].

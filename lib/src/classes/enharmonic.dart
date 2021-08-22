@@ -8,7 +8,7 @@ abstract class Enharmonic<T extends MusicItem> {
       : assert(items.isNotEmpty),
         assert(
           items.every((item) => item.semitones == items.first.semitones),
-          '${T}s are not enharmonic.',
+          '${T}s must have the same number of semitones.',
         );
 
   /// Returns the number of semitones of the common chromatic pitch
