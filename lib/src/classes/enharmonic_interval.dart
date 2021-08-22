@@ -42,16 +42,19 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicInterval.interval(4)
+  /// EnharmonicInterval.intervalFromSemitones(4)
   ///   == const Interval(Intervals.third, Qualities.minor)
   ///
-  /// EnharmonicInterval.interval(7)
+  /// EnharmonicInterval.intervalFromSemitones(7)
   ///   == const Interval(Intervals.fourth, Qualities.augmented)
   ///
-  /// EnharmonicInterval.interval(7, Qualities.diminished)
+  /// EnharmonicInterval.intervalFromSemitones(7, Qualities.diminished)
   ///   == const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
-  static Interval interval(int semitones, [Qualities? preferredQuality]) {
+  static Interval intervalFromSemitones(
+    int semitones, [
+    Qualities? preferredQuality,
+  ]) {
     final enharmonicIntervals =
         EnharmonicInterval.fromSemitones(semitones).items;
 
