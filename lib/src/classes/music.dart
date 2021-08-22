@@ -7,15 +7,15 @@ abstract class Music {
   /// [Set] of [EnharmonicNote]s that form the chromatic scale.
   static final chromaticScale = {
     for (var i = 1; i <= chromaticDivisions; i++)
-      EnharmonicNote.fromSemitones(i)
+      EnharmonicNote.fromSemitones(i),
   };
 
   /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
   static Set<EnharmonicNote> get circleOfFifths => {
         for (var i = 0; i < chromaticDivisions; i++)
-          chromaticScale.toList()[chromaticModExcludeZero(
+          chromaticScale.elementAt(chromaticMod(
             i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
-          )],
+          )),
       };
 
   /// Returns the shortest iteration distance between two [EnharmonicNote]s
