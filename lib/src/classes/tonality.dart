@@ -23,7 +23,7 @@ class Tonality {
   /// const Tonality(Note(Notes.si), Modes.major).accidentals == 5
   /// const Tonality(Note(Notes.sol), Modes.minor).accidentals == 2
   /// ```
-  int get accidentals => CircleOfFifths.exactFifthsDistance(
+  int get accidentals => Music.exactFifthsDistance(
         Tonality.fromAccidentals(0, mode).note,
         note,
       ).abs();
@@ -38,7 +38,7 @@ class Tonality {
   /// const Tonality(Note(Notes.fa), Modes.minor).accidental
   ///   == Accidentals.flat
   /// ```
-  Accidentals get accidental => CircleOfFifths.exactFifthsDistance(
+  Accidentals get accidental => Music.exactFifthsDistance(
             Tonality.fromAccidentals(0, mode).note,
             note,
           ) >
@@ -76,7 +76,7 @@ class Tonality {
   ///   == const KeySignature(3, Accidentals.sharp)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
-        CircleOfFifths.exactFifthsDistance(
+        Music.exactFifthsDistance(
           Tonality.fromAccidentals(0, mode).note,
           note,
         ),

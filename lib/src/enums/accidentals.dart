@@ -43,7 +43,7 @@ extension AccidentalsValues on Accidentals {
   static Accidentals? fromValue(int value) =>
       accidentalsValues.keys.firstWhereOrNull(
         (accidental) =>
-            Music.modValue(value + 3) - 3 == accidentalsValues[accidental],
+            Music.chromaticMod(value + 3) - 3 == accidentalsValues[accidental],
       );
 
   /// Returns the value of this [Accidentals] enum item in [accidentalsValues].

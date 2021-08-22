@@ -6,7 +6,6 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart';
 import 'package:quiver/core.dart';
 
-part 'src/classes/circle_of_fifths.dart';
 part 'src/classes/enharmonic.dart';
 part 'src/classes/enharmonic_interval.dart';
 part 'src/classes/enharmonic_note.dart';

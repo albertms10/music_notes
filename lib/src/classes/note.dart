@@ -74,13 +74,15 @@ class Note implements MusicItem {
   /// const Note(Notes.fa, Accidentals.sharp).semitones == 7
   /// ```
   @override
-  int get semitones => Music.modValueExcludeZero(note.value + accidentalValue);
+  int get semitones =>
+      Music.chromaticModExcludeZero(note.value + accidentalValue);
 
   /// Returns this [Note]’s [accidental] value.
   int get accidentalValue => accidental?.value ?? 0;
 
   /// Returns the `delta` difference between this [Note] and [note].
-  int semitonesDelta(Note note) => Music.modValue(note.semitones - semitones);
+  int semitonesDelta(Note note) =>
+      Music.chromaticMod(note.semitones - semitones);
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [note].
