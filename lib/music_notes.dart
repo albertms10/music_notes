@@ -22,3 +22,4 @@ part 'src/enums/modes.dart';
 part 'src/enums/notes.dart';
 part 'src/enums/qualities.dart';
 part 'src/interfaces/music_item.dart';
+part 'src/interfaces/transposable.dart';

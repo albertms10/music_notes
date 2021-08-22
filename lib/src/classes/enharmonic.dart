@@ -1,7 +1,8 @@
 part of music_notes;
 
 @immutable
-abstract class Enharmonic<T extends MusicItem> {
+abstract class Enharmonic<T extends MusicItem>
+    implements Transposable<Enharmonic> {
   final Set<T> items;
 
   Enharmonic(this.items)
@@ -15,8 +16,8 @@ abstract class Enharmonic<T extends MusicItem> {
   /// this [Enharmonic].
   int get semitones => items.first.semitones;
 
-  /// Returns a transposed [EnharmonicInterval] by [semitones]
-  /// from this [EnharmonicInterval].
+  /// Returns a transposed [Enharmonic] by [semitones] from this [Enharmonic].
+  @override
   Enharmonic transposeBy(int semitones);
 
   @override
