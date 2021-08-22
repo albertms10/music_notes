@@ -32,7 +32,7 @@ class Note implements MusicItem {
 
     return mode == Modes.major
         ? note
-        : note.transposeBySemitones(
+        : note.transposeBy(
             const Interval(Intervals.third, Qualities.minor, descending: true)
                 .semitones,
             accidental,
@@ -159,39 +159,23 @@ class Note implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.mi, Accidentals.flat).transposeBySemitones(-3)
+  /// const Note(Notes.mi, Accidentals.flat).transposeBy(-3)
   ///   == const Note(Notes.ut)
   ///
-  /// const Note(Notes.la).transposeBySemitones(5)
+  /// const Note(Notes.la).transposeBy(5)
   ///   == const Note(Notes.re)
-  /// ```
-  Note transposeBySemitones(int semitones,
-          [Accidentals? preferredAccidental]) =>
-      Note.fromSemitones(this.semitones + semitones, preferredAccidental);
-
-  /// Returns the [Note] transposed by [interval].
   ///
-  /// Examples:
-  /// ```dart
-  /// const Note(Notes.mi).transposeByInterval(
+  /// const Note(Notes.mi).transposeBy(
   ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == const Note(Notes.si)
   ///
-  /// const Note(Notes.sol).transposeByInterval(
+  /// const Note(Notes.sol).transposeBy(
   ///   const Interval(Intervals.third, Qualities.major, descending: true),
   /// ) == const Note(Notes.mi, Accidentals.flat)
   /// ```
-  Note transposeByInterval(Interval interval) {
-    final note = this.note.transpose(
-          interval.interval,
-          descending: interval.descending,
-        );
-
-    return Note(
-      note,
-      AccidentalsValues.fromValue(semitones + interval.semitones - note.value),
-    );
-  }
+  /// ```
+  Note transposeBy(int semitones, [Accidentals? preferredAccidental]) =>
+      Note.fromSemitones(this.semitones + semitones, preferredAccidental);
 
   @override
   String toString() =>

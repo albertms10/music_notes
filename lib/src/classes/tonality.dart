@@ -58,7 +58,7 @@ class Tonality {
   ///   == const Tonality(Note(Notes.sol), Modes.minor)
   /// ```
   Tonality get relative => Tonality(
-        note.transposeBySemitones(
+        note.transposeBy(
           Interval(
             Intervals.third,
             Qualities.minor,
