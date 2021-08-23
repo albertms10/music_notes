@@ -11,12 +11,12 @@ abstract class Music {
   };
 
   /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
-  static Set<EnharmonicNote> get circleOfFifths => {
-        for (var i = 0; i < chromaticDivisions; i++)
-          chromaticScale.elementAt(chromaticMod(
-            i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
-          )),
-      };
+  static final Set<EnharmonicNote> circleOfFifths = {
+    for (var i = 0; i < chromaticDivisions; i++)
+      chromaticScale.elementAt(chromaticMod(
+        i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
+      )),
+  };
 
   /// Returns the shortest iteration distance between two [EnharmonicNote]s
   /// in fifth intervals.
