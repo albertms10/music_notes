@@ -1,7 +1,7 @@
 part of music_notes;
 
 @immutable
-class Interval implements MusicItem {
+class Interval implements MusicItem, Comparable<Interval> {
   final Intervals interval;
   final Qualities quality;
   final bool descending;
@@ -68,4 +68,8 @@ class Interval implements MusicItem {
 
   @override
   int get hashCode => hash2(interval, quality);
+
+  @override
+  int compareTo(covariant Interval other) =>
+      semitones.compareTo(other.semitones);
 }

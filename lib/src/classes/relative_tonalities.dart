@@ -1,7 +1,7 @@
 part of music_notes;
 
 @immutable
-class RelativeTonalities {
+class RelativeTonalities implements Comparable<RelativeTonalities> {
   final Set<Tonality> tonalities;
 
   RelativeTonalities(this.tonalities)
@@ -60,4 +60,8 @@ class RelativeTonalities {
 
   @override
   int get hashCode => hash2(accidentals, accidental);
+
+  @override
+  int compareTo(covariant RelativeTonalities other) =>
+      accidentals.compareTo(other.accidentals);
 }

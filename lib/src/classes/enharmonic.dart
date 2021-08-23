@@ -2,7 +2,7 @@ part of music_notes;
 
 @immutable
 abstract class Enharmonic<T extends MusicItem>
-    implements Transposable<Enharmonic> {
+    implements Transposable<Enharmonic>, Comparable<Enharmonic> {
   final Set<T> items;
 
   Enharmonic(this.items)
@@ -29,4 +29,8 @@ abstract class Enharmonic<T extends MusicItem>
 
   @override
   int get hashCode => semitones.hashCode;
+
+  @override
+  int compareTo(covariant Enharmonic other) =>
+      semitones.compareTo(other.semitones);
 }

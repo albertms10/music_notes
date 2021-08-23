@@ -1,7 +1,7 @@
 part of music_notes;
 
 @immutable
-class Note implements MusicItem {
+class Note implements MusicItem, Comparable<Note> {
   final Notes note;
   final Accidentals? accidental;
 
@@ -188,4 +188,8 @@ class Note implements MusicItem {
 
   @override
   int get hashCode => hash2(note, accidental);
+
+  @override
+  int compareTo(covariant MusicItem other) =>
+      semitones.compareTo(other.semitones);
 }

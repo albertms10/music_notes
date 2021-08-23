@@ -1,7 +1,7 @@
 part of music_notes;
 
 @immutable
-class Tonality {
+class Tonality implements Comparable<Tonality> {
   final Note note;
   final Modes mode;
 
@@ -92,4 +92,10 @@ class Tonality {
 
   @override
   int get hashCode => hash2(note, mode);
+
+  @override
+  int compareTo(covariant Tonality other) => compareMultiple([
+        () => accidental.value.compareTo(other.accidental.value),
+        () => accidentals.compareTo(other.accidentals),
+      ]);
 }
