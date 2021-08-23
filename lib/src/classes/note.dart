@@ -7,10 +7,11 @@ class Note implements MusicItem {
 
   const Note(this.note, [this.accidental]);
 
-  Note.copy(Note note) : this(note.note, note.accidental);
-
-  Note.fromSemitones(int semitones, [Accidentals? preferredAccidental])
-      : this.copy(EnharmonicNote.note(semitones, preferredAccidental));
+  factory Note.fromSemitones(
+    int semitones, [
+    Accidentals? preferredAccidental,
+  ]) =>
+      EnharmonicNote.note(semitones, preferredAccidental);
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
@@ -23,12 +24,12 @@ class Note implements MusicItem {
   /// Note.fromTonalityAccidentals(0, Modes.minor)
   ///   == const Note(Notes.la)
   /// ```
-  static Note fromTonalityAccidentals(
+  factory Note.fromTonalityAccidentals(
     int accidentals,
     Modes mode, [
     Accidentals? accidental,
   ]) {
-    final note = fromRawAccidentals(accidentals, accidental);
+    final note = Note.fromRawAccidentals(accidentals, accidental);
 
     return mode == Modes.major
         ? note
@@ -50,7 +51,7 @@ class Note implements MusicItem {
   /// Note.fromRawAccidentals(0)
   ///   == const Note(Notes.la)
   /// ```
-  static Note fromRawAccidentals(int accidentals, [Accidentals? accidental]) =>
+  factory Note.fromRawAccidentals(int accidentals, [Accidentals? accidental]) =>
       Note.fromSemitones(
         Interval(
                   Intervals.fifth,

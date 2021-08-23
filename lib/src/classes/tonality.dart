@@ -7,14 +7,15 @@ class Tonality {
 
   const Tonality(this.note, this.mode);
 
-  Tonality.copy(Tonality tonality) : this(tonality.note, tonality.mode);
-
-  Tonality.fromAccidentals(int accidentals, Modes mode,
-      [Accidentals? accidental])
-      : this(
-          Note.fromTonalityAccidentals(accidentals, mode, accidental),
-          mode,
-        );
+  factory Tonality.fromAccidentals(
+    int accidentals,
+    Modes mode, [
+    Accidentals? accidental,
+  ]) =>
+      Tonality(
+        Note.fromTonalityAccidentals(accidentals, mode, accidental),
+        mode,
+      );
 
   /// Returns the number of [accidentals] of this [Tonality].
   ///
