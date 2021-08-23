@@ -4,6 +4,7 @@ import 'dart:math' as math show min;
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart';
+import 'package:music_notes/src/utils/iterable.dart';
 import 'package:quiver/core.dart';
 
 part 'src/classes/enharmonic.dart';
