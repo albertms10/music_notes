@@ -70,6 +70,9 @@ class Interval implements MusicItem, Comparable<Interval> {
   int get hashCode => hash2(interval, quality);
 
   @override
-  int compareTo(covariant Interval other) =>
-      semitones.compareTo(other.semitones);
+  int compareTo(covariant Interval other) => compareMultiple([
+        () => semitones.compareTo(other.semitones),
+        () => interval.semitones.compareTo(other.interval.semitones),
+        () => quality.value.compareTo(other.quality.value),
+      ]);
 }
