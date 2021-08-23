@@ -15,7 +15,7 @@ class EnharmonicNote extends Enharmonic<Note> {
       final noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
       final noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
 
-      return {
+      return SplayTreeSet<Note>.from({
         Note(
           noteBelow,
           AccidentalsValues.fromValue(note.value - noteBelow.value),
@@ -25,10 +25,10 @@ class EnharmonicNote extends Enharmonic<Note> {
           noteAbove,
           AccidentalsValues.fromValue(note.value - noteAbove.value),
         ),
-      };
+      });
     }
 
-    return {
+    return SplayTreeSet<Note>.from({
       Note(
         NotesValues.fromValue(semitones - 1)!,
         Accidentals.sharp,
@@ -37,7 +37,7 @@ class EnharmonicNote extends Enharmonic<Note> {
         NotesValues.fromValue(semitones + 1)!,
         Accidentals.flat,
       ),
-    };
+    });
   }
 
   /// Returns the [Note] from [semitones] and a [preferredAccidental].

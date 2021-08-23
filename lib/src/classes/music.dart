@@ -5,18 +5,20 @@ abstract class Music {
   static const int chromaticDivisions = 12;
 
   /// [Set] of [EnharmonicNote]s that form the chromatic scale.
-  static final chromaticScale = {
+  static final Set<EnharmonicNote> chromaticScale =
+      SplayTreeSet<EnharmonicNote>.from({
     for (var i = 1; i <= chromaticDivisions; i++)
       EnharmonicNote.fromSemitones(i),
-  };
+  });
 
   /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
-  static final Set<EnharmonicNote> circleOfFifths = {
+  static final Set<EnharmonicNote> circleOfFifths =
+      SplayTreeSet<EnharmonicNote>.from({
     for (var i = 0; i < chromaticDivisions; i++)
       chromaticScale.elementAt(chromaticMod(
         i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
       )),
-  };
+  });
 
   /// Returns the shortest iteration distance between two [EnharmonicNote]s
   /// in fifth intervals.

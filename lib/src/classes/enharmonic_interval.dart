@@ -18,24 +18,24 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       final intervalAbove =
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval) + 2);
 
-      return {
+      return SplayTreeSet.from({
         if (QualitiesValues.exists(intervalBelow, semitones))
           Interval.fromDesiredSemitones(intervalBelow, semitones),
         Interval.fromDesiredSemitones(interval, semitones),
         if (QualitiesValues.exists(intervalAbove, semitones))
           Interval.fromDesiredSemitones(intervalAbove, semitones),
-      };
+      });
     }
 
     final intervalBelow = IntervalsValues.fromSemitones(semitones - 1);
     final intervalAbove = IntervalsValues.fromSemitones(semitones + 1);
 
-    return {
+    return SplayTreeSet<Interval>.from({
       if (QualitiesValues.exists(intervalBelow, semitones))
         Interval.fromDesiredSemitones(intervalBelow!, semitones),
       if (QualitiesValues.exists(intervalAbove, semitones))
         Interval.fromDesiredSemitones(intervalAbove!, semitones)
-    };
+    });
   }
 
   /// Returns the [Interval] from [semitones] and a [preferredQuality].
