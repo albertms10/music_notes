@@ -3,6 +3,14 @@ part of music_notes;
 enum Qualities { augmented, major, perfect, minor, diminished }
 
 extension QualitiesValues on Qualities {
+  static const qualitiesValues = {
+    Qualities.diminished: -2,
+    Qualities.minor: -1,
+    Qualities.perfect: 0,
+    Qualities.major: 1,
+    Qualities.augmented: 2,
+  };
+
   static const qualities = {
     Qualities.diminished,
     Qualities.minor,
@@ -61,6 +69,17 @@ extension QualitiesValues on Qualities {
   /// QualitiesValues.invert(Qualities.perfect) == Qualities.perfect
   /// ```
   static Qualities invert(Qualities quality) => quality.inverted;
+
+  /// Returns the value of this [Qualities] enum item as in [qualitiesValues].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Qualities.perfect.value == 0
+  /// Qualities.minor.value == -1
+  /// Qualities.augmented.value == 2
+  /// Qualities.major.value == 1
+  /// ```
+  int get value => qualitiesValues[this]!;
 
   /// Returns an inverted this [Qualities] enum item.
   ///
