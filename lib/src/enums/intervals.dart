@@ -30,7 +30,15 @@ extension IntervalsValues on Intervals {
   };
 
   /// [Set] of fundamental perfect [Intervals].
-  static const perfectIntervals = {Intervals.unison, Intervals.fifth};
+  static final Set<Intervals> _basePerfectIntervals = {
+    Intervals.unison,
+    Intervals.fifth,
+  };
+
+  static final Set<Intervals> perfectIntervals = {
+    ..._basePerfectIntervals,
+    ..._basePerfectIntervals.map<Intervals>(invert),
+  };
 
   /// Returns an [Intervals] enum item that matches [semitones]
   /// in [intervalsQualitiesIndex], otherwise returns `null`.
@@ -100,8 +108,8 @@ extension IntervalsValues on Intervals {
   /// Intervals.sixth.isPerfect == false
   /// Intervals.eleventh.isPerfect == true
   /// ```
-  bool get isPerfect => [...perfectIntervals, ...perfectIntervals.map(invert)]
-      .any((interval) => interval == this || interval == inverted);
+  bool get isPerfect =>
+      perfectIntervals.any((interval) => {this, inverted}.contains(interval));
 
   /// Returns a simplified this [Intervals] enum item.
   ///
