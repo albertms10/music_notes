@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   test('Chromatic scale is correct', () {
     expect(
-      Music.chromaticScale,
+      chromaticScale,
       equals([
         EnharmonicNote({
           const Note(Notes.ut),

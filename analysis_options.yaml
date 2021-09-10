@@ -5,7 +5,7 @@ linter:
     - always_put_required_named_parameters_first
     - avoid_bool_literals_in_conditional_expressions
     - avoid_catches_without_on_clauses
-  # - avoid_classes_with_only_static_members
+    - avoid_classes_with_only_static_members
     - avoid_dynamic_calls
     - avoid_function_literals_in_foreach_calls
     - avoid_redundant_argument_values
@@ -18,12 +18,12 @@ linter:
     - cancel_subscriptions
     - constant_identifier_names
     - deprecated_consistency
-  # - depend_on_referenced_packages
+    - depend_on_referenced_packages
     - directives_ordering
-  # - eol_at_end_of_file
+    - eol_at_end_of_file
     - flutter_style_todos
     - no_default_cases
-  # - noop_primitive_operations
+    - noop_primitive_operations
     - omit_local_variable_types
     - only_throw_errors
     - prefer_const_constructors
@@ -32,16 +32,15 @@ linter:
     - prefer_contains
     - prefer_final_in_for_each
     - prefer_final_locals
-  # - prefer_final_parameters
-  # - public_member_api_docs
+    # - prefer_final_parameters
+    # - public_member_api_docs
     - prefer_if_elements_to_conditional_expressions
     - prefer_interpolation_to_compose_strings
     - prefer_is_empty
     - prefer_is_not_empty
     - prefer_single_quotes
     - prefer_void_to_null
-  # - prefixed_integer_literals
-  # - require_trailing_commas
+    - require_trailing_commas
     - sort_pub_dependencies
     - sort_unnamed_constructors_first
     - type_annotate_public_apis
@@ -52,7 +51,7 @@ linter:
     - use_build_context_synchronously
     - use_late_for_private_fields_and_variables
     - use_setters_to_change_properties
-  # - use_test_throws_matchers
+    - use_test_throws_matchers
     - use_to_and_as_if_applicable
 
 analyzer:

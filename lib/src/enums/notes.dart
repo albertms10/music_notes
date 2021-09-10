@@ -23,7 +23,7 @@ extension NotesValues on Notes {
   /// NotesValues.fromValue(11) == null
   /// ```
   static Notes? fromValue(int value) => notesValues.keys.firstWhereOrNull(
-        (note) => Music.chromaticModExcludeZero(value) == notesValues[note],
+        (note) => chromaticModExcludeZero(value) == notesValues[note],
       );
 
   /// Returns a [Notes] enum item that matches [ordinal].
@@ -35,7 +35,7 @@ extension NotesValues on Notes {
   /// NotesValues.fromOrdinal(10) == Notes.mi
   /// ```
   static Notes fromOrdinal(int ordinal) =>
-      Notes.values[Music.nModExcludeZero(ordinal, Notes.values.length) - 1];
+      Notes.values[nModExcludeZero(ordinal, Notes.values.length) - 1];
 
   /// Returns `true` if a [Notes] enum item needs and accidental
   /// to be represented—that is, it cannot be found in [notesValues].

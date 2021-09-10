@@ -75,15 +75,13 @@ class Note implements MusicItem, Comparable<Note> {
   /// const Note(Notes.fa, Accidentals.sharp).semitones == 7
   /// ```
   @override
-  int get semitones =>
-      Music.chromaticModExcludeZero(note.value + accidentalValue);
+  int get semitones => chromaticModExcludeZero(note.value + accidentalValue);
 
   /// Returns this [Note]’s [accidental] value.
   int get accidentalValue => accidental?.value ?? 0;
 
   /// Returns the `delta` difference between this [Note] and [note].
-  int semitonesDelta(Note note) =>
-      Music.chromaticMod(note.semitones - semitones);
+  int semitonesDelta(Note note) => chromaticMod(note.semitones - semitones);
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [note].
@@ -102,7 +100,7 @@ class Note implements MusicItem, Comparable<Note> {
       Accidentals.sharp,
     );
 
-    return distance < Music.chromaticDivisions
+    return distance < chromaticDivisions
         ? distance
         : _runSemitonesDistance(
               note,
@@ -126,7 +124,7 @@ class Note implements MusicItem, Comparable<Note> {
 
     var tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
 
-    while (tempNote != note && distance < Music.chromaticDivisions) {
+    while (tempNote != note && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
       tempNote = Note.fromSemitones(currentPitch, preferredAccidental);

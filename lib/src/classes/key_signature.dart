@@ -44,9 +44,8 @@ class KeySignature {
     final iterations = (number / notesValues).ceil();
 
     for (var i = 1; i <= iterations; i++) {
-      final n = i == iterations
-          ? Music.nModExcludeZero(number, notesValues)
-          : notesValues;
+      final n =
+          i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
 
       list.add('$n × ${accidental!.increment(i - 1)!.toText()}');
     }
