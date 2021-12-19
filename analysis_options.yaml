@@ -58,6 +58,7 @@ analyzer:
   errors:
     always_put_required_named_parameters_first: ignore
     implicit_dynamic_map_literal: ignore
+    prefer_asserts_with_message: ignore
     prefer_int_literals: ignore
     public_member_api_docs: ignore
     sort_constructors_first: ignore
