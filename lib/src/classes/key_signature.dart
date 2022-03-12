@@ -6,8 +6,11 @@ class KeySignature {
   final Accidentals? accidental;
 
   const KeySignature(this.number, [this.accidental])
-      : assert(number >= 0),
-        assert(number == 0 || accidental != null);
+      : assert(number >= 0, 'Provide a positive number'),
+        assert(
+          number == 0 || accidental != null,
+          'Provide an accidental when number is greater than 0',
+        );
 
   KeySignature.fromDistance(int distance)
       : this(

@@ -5,7 +5,7 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   final Set<Tonality> tonalities;
 
   RelativeTonalities(this.tonalities)
-      : assert(tonalities.length == 2),
+      : assert(tonalities.length == 2, 'Provide two relative tonalities'),
         assert(
           tonalities.every(
             (tonality) =>
