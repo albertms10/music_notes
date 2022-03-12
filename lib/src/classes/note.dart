@@ -178,7 +178,7 @@ class Note implements MusicItem, Comparable<Note> {
 
   @override
   String toString() =>
-      note.toText() + (accidental != null ? ' ${accidental!.toText()}' : '');
+      note.name + (accidental != null ? ' ${accidental!.name}' : '');
 
   @override
   bool operator ==(Object other) =>

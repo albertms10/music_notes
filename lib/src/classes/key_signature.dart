@@ -50,7 +50,7 @@ class KeySignature {
       final n =
           i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
 
-      list.add('$n × ${accidental!.increment(i - 1)!.toText()}');
+      list.add('$n × ${accidental!.increment(i - 1)!.name}');
     }
 
     return list.join(', ');
