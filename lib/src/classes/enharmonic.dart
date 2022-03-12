@@ -6,7 +6,7 @@ abstract class Enharmonic<T extends MusicItem>
   final Set<T> items;
 
   Enharmonic(this.items)
-      : assert(items.isNotEmpty),
+      : assert(items.isNotEmpty, 'Provide a non-empty items collection'),
         assert(
           items.every((item) => item.semitones == items.first.semitones),
           '${T}s must have the same number of semitones.',
