@@ -17,7 +17,6 @@ part 'src/classes/note.dart';
 part 'src/classes/relative_tonalities.dart';
 part 'src/classes/tonality.dart';
 part 'src/enums/accidentals.dart';
-part 'src/enums/enums_to_string.dart';
 part 'src/enums/intervals.dart';
 part 'src/enums/modes.dart';
 part 'src/enums/notes.dart';

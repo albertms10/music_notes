@@ -58,7 +58,7 @@ class Interval implements MusicItem, Comparable<Interval> {
   Interval get inverted => Interval(interval.inverted, quality.inverted);
 
   @override
-  String toString() => '${quality.toText()} ${interval.toText()}';
+  String toString() => '${quality.name} ${interval.name}';
 
   @override
   bool operator ==(Object other) =>
