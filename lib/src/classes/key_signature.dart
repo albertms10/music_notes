@@ -3,20 +3,16 @@ part of '../../music_notes.dart';
 @immutable
 class KeySignature {
   final int number;
-  final Accidental? accidental;
+  final Accidental accidental;
 
-  const KeySignature(this.number, [this.accidental])
-      : assert(number >= 0, 'Provide a positive number'),
-        assert(
-          number == 0 || accidental != null,
-          'Provide an accidental when number is greater than 0',
-        );
+  const KeySignature(this.number, [this.accidental = Accidental.natural])
+      : assert(number >= 0, 'Provide a positive number or zero');
 
   KeySignature.fromDistance(int distance)
       : this(
           distance.abs(),
           distance == 0
-              ? null
+              ? Accidental.natural
               : distance > 0
                   ? Accidental.sharp
                   : Accidental.flat,
@@ -40,7 +36,7 @@ class KeySignature {
 
   @override
   String toString() {
-    if (number == 0 || accidental == null) return '$number';
+    if (number == 0) return '$number';
 
     final list = <String>[];
     final notesValues = Notes.values.length;
@@ -50,7 +46,7 @@ class KeySignature {
       final n =
           i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
 
-      list.add('$n × ${Accidental(accidental!.value + i - 1).symbol}');
+      list.add('$n × ${Accidental(accidental.value + i - 1).symbol}');
     }
 
     return list.join(', ');

@@ -50,13 +50,16 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.note(5, Accidental.flat)
   ///   == const Note(Notes.fa, Accidental.flat)
   /// ```
-  static Note note(int semitones, [Accidental? preferredAccidental]) {
+  static Note note(
+    int semitones, [
+    Accidental preferredAccidental = Accidental.natural,
+  ]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
 
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
       orElse: () => enharmonicNotes.firstWhere(
-        (note) => note.accidentalValue == 0,
+        (note) => note.accidental.value == 0,
         orElse: () => enharmonicNotes.first,
       ),
     );
