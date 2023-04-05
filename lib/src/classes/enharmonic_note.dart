@@ -44,11 +44,11 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.note(4, Accidentals.sharp)
-  ///   == const Note(Notes.re, Accidentals.sharp)
+  /// EnharmonicNote.note(4, Accidental.sharp)
+  ///   == const Note(Notes.re, Accidental.sharp)
   ///
-  /// EnharmonicNote.note(5, Accidentals.flat)
-  ///   == const Note(Notes.fa, Accidentals.flat)
+  /// EnharmonicNote.note(5, Accidental.flat)
+  ///   == const Note(Notes.fa, Accidental.flat)
   /// ```
   static Note note(int semitones, [Accidental? preferredAccidental]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
@@ -68,8 +68,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Examples:
   /// ```dart
   /// EnharmonicNote({
-  ///   const Note(Notes.re, Accidentals.flat),
-  ///   const Note(Notes.ut, Accidentals.sharp),
+  ///   const Note(Notes.re, Accidental.flat),
+  ///   const Note(Notes.ut, Accidental.sharp),
   /// }).semitones == 2
   ///
   /// EnharmonicNote.fromSemitones(4).semitones == 4
@@ -84,8 +84,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```dart
   /// EnharmonicNote({const Note(Notes.ut)}).transposeBy(6)
   ///   == EnharmonicNote({
-  ///     const Note(Notes.fa, Accidentals.sharp),
-  ///     const Note(Notes.sol, Accidentals.flat),
+  ///     const Note(Notes.fa, Accidental.sharp),
+  ///     const Note(Notes.sol, Accidental.flat),
   ///   })
   /// ```
   @override
