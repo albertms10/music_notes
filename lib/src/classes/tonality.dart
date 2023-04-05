@@ -55,7 +55,7 @@ class Tonality implements Comparable<Tonality> {
   /// const Tonality(Note(Notes.re), Modes.minor).relative
   ///   == const Tonality(Note(Notes.fa), Modes.major)
   ///
-  /// const Tonality(Note(Notes.si, Accidentals.flat), Modes.major).relative
+  /// const Tonality(Note(Notes.si, Accidental.flat), Modes.major).relative
   ///   == const Tonality(Note(Notes.sol), Modes.minor)
   /// ```
   Tonality get relative => Tonality(
@@ -74,7 +74,7 @@ class Tonality implements Comparable<Tonality> {
   /// Example:
   /// ```dart
   /// const Tonality(Note(Notes.la), Modes.major).keySignature
-  ///   == const KeySignature(3, Accidentals.sharp)
+  ///   == const KeySignature(3, Accidental.sharp)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
         exactFifthsDistance(

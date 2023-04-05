@@ -18,7 +18,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromTonalityAccidentals(2, Modes.major, Accidentals.sharp)
+  /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp)
   ///   == const Note(Notes.re)
   ///
   /// Note.fromTonalityAccidentals(0, Modes.minor)
@@ -45,7 +45,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromRawAccidentals(2, Accidentals.sharp)
+  /// Note.fromRawAccidentals(2, Accidental.sharp)
   ///   == const Note(Notes.re)
   ///
   /// Note.fromRawAccidentals(0)
@@ -72,7 +72,7 @@ class Note implements MusicItem, Comparable<Note> {
   /// Examples:
   /// ```dart
   /// const Note(Notes.re).semitones == 3
-  /// const Note(Notes.fa, Accidentals.sharp).semitones == 7
+  /// const Note(Notes.fa, Accidental.sharp).semitones == 7
   /// ```
   @override
   int get semitones => chromaticModExcludeZero(note.value + accidentalValue);
@@ -141,7 +141,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///   == const Interval(Intervals.second, Qualities.minor)
   ///
   /// const Note(Notes.re)
-  ///         .exactInterval(const Note(Notes.la, Accidentals.flat)) ==
+  ///         .exactInterval(const Note(Notes.la, Accidental.flat)) ==
   ///     const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
   Interval exactInterval(Note note) {
@@ -158,7 +158,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.mi, Accidentals.flat).transposeBy(-3)
+  /// const Note(Notes.mi, Accidental.flat).transposeBy(-3)
   ///   == const Note(Notes.ut)
   ///
   /// const Note(Notes.la).transposeBy(5)
@@ -170,7 +170,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// const Note(Notes.sol).transposeBy(
   ///   const Interval(Intervals.third, Qualities.major, descending: true),
-  /// ) == const Note(Notes.mi, Accidentals.flat)
+  /// ) == const Note(Notes.mi, Accidental.flat)
   /// ```
   /// ```
   Note transposeBy(int semitones, [Accidental? preferredAccidental]) =>

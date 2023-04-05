@@ -24,7 +24,7 @@ final Set<EnharmonicNote> circleOfFifths = SplayTreeSet<EnharmonicNote>.from({
 /// Examples:
 /// ```dart
 /// shortestFifthsDistance(
-///   EnharmonicNote({const Note(Notes.fa, Accidentals.sharp)}),
+///   EnharmonicNote({const Note(Notes.fa, Accidental.sharp)}),
 ///   EnharmonicNote({const Note(Notes.la)}),
 /// ) == -3
 ///
@@ -57,13 +57,13 @@ int shortestFifthsDistance(
 /// Examples:
 /// ```dart
 /// exactFifthsDistance(
-///   const Note(Notes.la, Accidentals.flat),
-///   const Note(Notes.ut, Accidentals.sharp),
+///   const Note(Notes.la, Accidental.flat),
+///   const Note(Notes.ut, Accidental.sharp),
 /// ) == 11
 ///
 /// exactFifthsDistance(
-///   const Note(Notes.la, Accidentals.flat),
-///   const Note(Notes.re, Accidentals.flat),
+///   const Note(Notes.la, Accidental.flat),
+///   const Note(Notes.re, Accidental.flat),
 /// ) == -1
 /// ```
 int exactFifthsDistance(Note note1, Note note2) => note1.intervalDistance(
