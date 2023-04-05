@@ -5,5 +5,6 @@ int compareMultiple(Iterable<int Function()> comparables) {
     compareValue = comparable();
     if (compareValue != 0) break;
   }
+
   return compareValue;
 }

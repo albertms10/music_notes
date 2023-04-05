@@ -1,4 +1,4 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 enum Intervals {
   unison,
@@ -18,7 +18,8 @@ enum Intervals {
 }
 
 extension IntervalsValues on Intervals {
-  static const intervalsQualitiesIndex = {
+  // ignore: avoid-missing-enum-constant-in-map
+  static const Map<Intervals, int> intervalsQualitiesIndex = {
     Intervals.unison: 0,
     Intervals.second: 1,
     Intervals.third: 3,
@@ -142,6 +143,7 @@ extension IntervalsValues on Intervals {
   /// ```
   Intervals get inverted {
     final diff = 9 - simplified.ordinal;
+
     return fromOrdinal(diff > 0 ? diff : diff.abs() + 2);
   }
 }

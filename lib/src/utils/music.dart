@@ -1,4 +1,4 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 /// Number of chromatic divisions in an octave.
 const int chromaticDivisions = 12;
@@ -106,5 +106,6 @@ int chromaticModExcludeZero(int value) =>
 /// ```
 int nModExcludeZero(int value, int n) {
   final modValue = value % n;
+
   return modValue == 0 ? n : modValue;
 }

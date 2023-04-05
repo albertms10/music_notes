@@ -1,4 +1,4 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 @immutable
 class KeySignature {
