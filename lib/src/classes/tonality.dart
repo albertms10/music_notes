@@ -10,7 +10,7 @@ class Tonality implements Comparable<Tonality> {
   factory Tonality.fromAccidentals(
     int accidentals,
     Modes mode, [
-    Accidental? accidental,
+    Accidental accidental = Accidental.natural,
   ]) =>
       Tonality(
         Note.fromTonalityAccidentals(accidentals, mode, accidental),
