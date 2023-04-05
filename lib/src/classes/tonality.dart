@@ -29,7 +29,7 @@ class Tonality implements Comparable<Tonality> {
         note,
       ).abs();
 
-  /// Returns an [Accidental] of this [Tonality]’s key signature.
+  /// Returns the [Accidental] of this [Tonality]’s key signature.
   ///
   /// Examples:
   /// ```dart
