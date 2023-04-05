@@ -3,9 +3,10 @@ part of '../../music_notes.dart';
 /// An accidental.
 class Accidental {
   /// The value representing this [Accidental]:
-  /// * `> 0` for sharps.
-  /// * `== 0` for natural.
-  /// * `< 0` for flats.
+  ///
+  /// - `> 0` for sharps.
+  /// - `== 0` for natural.
+  /// - `< 0` for flats.
   final int value;
 
   /// Creates a new [Accidental] from a [value].
