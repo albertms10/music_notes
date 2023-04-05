@@ -22,7 +22,6 @@ coverage/
 test/.test_coverage.dart
 .coveralls.yaml
 
-.vscode/
 doc/api/
 
 # Avoid committing generated Javascript files:
