@@ -3,13 +3,13 @@ part of '../../music_notes.dart';
 @immutable
 class Note implements MusicItem, Comparable<Note> {
   final Notes note;
-  final Accidental? accidental;
+  final Accidental accidental;
 
-  const Note(this.note, [this.accidental]);
+  const Note(this.note, [this.accidental = Accidental.natural]);
 
   factory Note.fromSemitones(
     int semitones, [
-    Accidental? preferredAccidental,
+    Accidental preferredAccidental = Accidental.natural,
   ]) =>
       EnharmonicNote.note(semitones, preferredAccidental);
 
@@ -27,7 +27,7 @@ class Note implements MusicItem, Comparable<Note> {
   factory Note.fromTonalityAccidentals(
     int accidentals,
     Modes mode, [
-    Accidental? accidental,
+    Accidental accidental = Accidental.natural,
   ]) {
     final note = Note.fromRawAccidentals(accidentals, accidental);
 
@@ -51,7 +51,10 @@ class Note implements MusicItem, Comparable<Note> {
   /// Note.fromRawAccidentals(0)
   ///   == const Note(Notes.la)
   /// ```
-  factory Note.fromRawAccidentals(int accidentals, [Accidental? accidental]) =>
+  factory Note.fromRawAccidentals(
+    int accidentals, [
+    Accidental accidental = Accidental.natural,
+  ]) =>
       Note.fromSemitones(
         Interval(
                   Intervals.fifth,
@@ -62,7 +65,7 @@ class Note implements MusicItem, Comparable<Note> {
             1,
         (accidental == Accidental.flat && accidentals > 8) ||
                 (accidental == Accidental.sharp && accidentals > 10)
-            ? Accidental(accidental!.value + 1)
+            ? Accidental(accidental.value + 1)
             : accidental,
       );
 
@@ -75,16 +78,13 @@ class Note implements MusicItem, Comparable<Note> {
   /// const Note(Notes.fa, Accidental.sharp).semitones == 7
   /// ```
   @override
-  int get semitones => chromaticModExcludeZero(note.value + accidentalValue);
+  int get semitones => chromaticModExcludeZero(note.value + accidental.value);
 
-  /// Returns this [Note]’s [accidental] value.
-  int get accidentalValue => accidental?.value ?? 0;
-
-  /// Returns the `delta` difference between this [Note] and [note].
-  int semitonesDelta(Note note) => chromaticMod(note.semitones - semitones);
+  /// Returns the difference in semitones between this [Note] and [other].
+  int difference(Note other) => chromaticMod(other.semitones - semitones);
 
   /// Returns the iteration distance of an [interval] between
-  /// this [Note] and [note].
+  /// this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -93,9 +93,9 @@ class Note implements MusicItem, Comparable<Note> {
   ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == 2
   /// ```
-  int intervalDistance(Note note, Interval interval) {
+  int intervalDistance(Note other, Interval interval) {
     final distance = _runSemitonesDistance(
-      note,
+      other,
       interval.semitones,
       Accidental.sharp,
     );
@@ -103,7 +103,7 @@ class Note implements MusicItem, Comparable<Note> {
     return distance < chromaticDivisions
         ? distance
         : _runSemitonesDistance(
-              note,
+              other,
               interval.inverted.semitones,
               Accidental.flat,
             ) *
@@ -111,11 +111,11 @@ class Note implements MusicItem, Comparable<Note> {
   }
 
   /// Returns the iteration distance of an interval between
-  /// this [Note] and [note] with a [preferredAccidental].
+  /// this [Note] and [other] with a [preferredAccidental].
   ///
   /// It is mainly used by [intervalDistance].
   int _runSemitonesDistance(
-    Note note,
+    Note other,
     int semitones,
     Accidental preferredAccidental,
   ) {
@@ -124,7 +124,7 @@ class Note implements MusicItem, Comparable<Note> {
 
     var tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
 
-    while (tempNote != note && distance < chromaticDivisions) {
+    while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
       tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
@@ -133,7 +133,7 @@ class Note implements MusicItem, Comparable<Note> {
     return distance;
   }
 
-  /// Returns the exact interval between this [Note] and [note].
+  /// Returns the exact interval between this [Note] and [other].
   ///
   /// Examples:
   /// ```dart
@@ -144,12 +144,12 @@ class Note implements MusicItem, Comparable<Note> {
   ///         .exactInterval(const Note(Notes.la, Accidental.flat)) ==
   ///     const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
-  Interval exactInterval(Note note) {
-    final interval = this.note.interval(note.note);
+  Interval exactInterval(Note other) {
+    final interval = note.interval(other.note);
 
     return Interval.fromDelta(
       interval,
-      semitonesDelta(note) - interval.semitones + 1,
+      difference(other) - interval.semitones + 1,
     );
   }
 
@@ -173,12 +173,15 @@ class Note implements MusicItem, Comparable<Note> {
   /// ) == const Note(Notes.mi, Accidental.flat)
   /// ```
   /// ```
-  Note transposeBy(int semitones, [Accidental? preferredAccidental]) =>
+  Note transposeBy(
+    int semitones, [
+    Accidental preferredAccidental = Accidental.natural,
+  ]) =>
       Note.fromSemitones(this.semitones + semitones, preferredAccidental);
 
   @override
   String toString() =>
-      note.name + (accidental != null ? ' ${accidental!.symbol}' : '');
+      note.name + (accidental.value != 0 ? ' ${accidental.symbol}' : '');
 
   @override
   bool operator ==(Object other) =>

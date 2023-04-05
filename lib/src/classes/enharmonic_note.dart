@@ -56,7 +56,7 @@ class EnharmonicNote extends Enharmonic<Note> {
     return enharmonicNotes.firstWhere(
       (note) => note.accidental == preferredAccidental,
       orElse: () => enharmonicNotes.firstWhere(
-        (note) => note.accidentalValue == 0,
+        (note) => note.accidental.value == 0,
         orElse: () => enharmonicNotes.first,
       ),
     );
