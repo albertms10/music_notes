@@ -3,7 +3,7 @@ part of '../../music_notes.dart';
 @immutable
 class KeySignature {
   final int number;
-  final Accidentals? accidental;
+  final Accidental? accidental;
 
   const KeySignature(this.number, [this.accidental])
       : assert(number >= 0, 'Provide a positive number'),
@@ -18,8 +18,8 @@ class KeySignature {
           distance == 0
               ? null
               : distance > 0
-                  ? Accidentals.sharp
-                  : Accidentals.flat,
+                  ? Accidental.sharp
+                  : Accidental.flat,
         );
 
   /// Returns [RelativeTonalities] with the two tonalities that are defined
@@ -50,7 +50,7 @@ class KeySignature {
       final n =
           i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
 
-      list.add('$n × ${accidental!.increment(i - 1)!.name}');
+      list.add('$n × ${Accidental(accidental!.value + i - 1).symbol}');
     }
 
     return list.join(', ');

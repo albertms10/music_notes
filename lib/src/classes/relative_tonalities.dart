@@ -21,10 +21,10 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   static int _itemsAccidentals(Set<Tonality> tonalities) =>
       tonalities.first.accidentals;
 
-  /// Returns an [Accidentals] enum item of [tonalities].
+  /// Returns the [Accidental] of [tonalities].
   ///
   /// It is mainly used by [accidental] getter.
-  static Accidentals _itemsAccidental(Set<Tonality> tonalities) =>
+  static Accidental _itemsAccidental(Set<Tonality> tonalities) =>
       tonalities.first.accidental;
 
   /// Returns the number of accidentals of this [RelativeTonalities].
@@ -38,7 +38,7 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   /// ```
   int get accidentals => _itemsAccidentals(tonalities);
 
-  /// Returns an [Accidentals] enum item of this [RelativeTonalities].
+  /// Returns the [Accidental] of this [RelativeTonalities].
   ///
   /// Example:
   /// ```dart
@@ -47,7 +47,7 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   ///   const Tonality(Note(Notes.ut), Modes.minor),
   /// }).accidental == Accidentals.flat
   /// ```
-  Accidentals get accidental => _itemsAccidental(tonalities);
+  Accidental get accidental => _itemsAccidental(tonalities);
 
   @override
   String toString() => '$tonalities';

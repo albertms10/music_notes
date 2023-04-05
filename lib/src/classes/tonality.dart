@@ -10,7 +10,7 @@ class Tonality implements Comparable<Tonality> {
   factory Tonality.fromAccidentals(
     int accidentals,
     Modes mode, [
-    Accidentals? accidental,
+    Accidental? accidental,
   ]) =>
       Tonality(
         Note.fromTonalityAccidentals(accidentals, mode, accidental),
@@ -29,23 +29,23 @@ class Tonality implements Comparable<Tonality> {
         note,
       ).abs();
 
-  /// Returns an [Accidentals] enum item of this [Tonality]’s key signature.
+  /// Returns the [Accidental] of this [Tonality]’s key signature.
   ///
   /// Examples:
   /// ```dart
   /// const Tonality(Note(Notes.mi), Modes.major).accidental
-  ///   == Accidentals.sharp
+  ///   == Accidental.sharp
   ///
   /// const Tonality(Note(Notes.fa), Modes.minor).accidental
-  ///   == Accidentals.flat
+  ///   == Accidental.flat
   /// ```
-  Accidentals get accidental => exactFifthsDistance(
+  Accidental get accidental => exactFifthsDistance(
             Tonality.fromAccidentals(0, mode).note,
             note,
           ) >
           0
-      ? Accidentals.sharp
-      : Accidentals.flat;
+      ? Accidental.sharp
+      : Accidental.flat;
 
   /// Returns the [Modes.major] or [Modes.minor] relative [Tonality]
   /// of this [Tonality].

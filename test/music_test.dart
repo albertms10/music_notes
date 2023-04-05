@@ -10,15 +10,15 @@ void main() {
           const Note(Notes.ut),
         }),
         EnharmonicNote({
-          const Note(Notes.ut, Accidentals.sharp),
-          const Note(Notes.re, Accidentals.flat),
+          const Note(Notes.ut, Accidental.sharp),
+          const Note(Notes.re, Accidental.flat),
         }),
         EnharmonicNote({
           const Note(Notes.re),
         }),
         EnharmonicNote({
-          const Note(Notes.re, Accidentals.sharp),
-          const Note(Notes.mi, Accidentals.flat),
+          const Note(Notes.re, Accidental.sharp),
+          const Note(Notes.mi, Accidental.flat),
         }),
         EnharmonicNote({
           const Note(Notes.mi),
@@ -27,22 +27,22 @@ void main() {
           const Note(Notes.fa),
         }),
         EnharmonicNote({
-          const Note(Notes.fa, Accidentals.sharp),
-          const Note(Notes.sol, Accidentals.flat),
+          const Note(Notes.fa, Accidental.sharp),
+          const Note(Notes.sol, Accidental.flat),
         }),
         EnharmonicNote({
           const Note(Notes.sol),
         }),
         EnharmonicNote({
-          const Note(Notes.sol, Accidentals.sharp),
-          const Note(Notes.la, Accidentals.flat),
+          const Note(Notes.sol, Accidental.sharp),
+          const Note(Notes.la, Accidental.flat),
         }),
         EnharmonicNote({
           const Note(Notes.la),
         }),
         EnharmonicNote({
-          const Note(Notes.la, Accidentals.sharp),
-          const Note(Notes.si, Accidentals.flat),
+          const Note(Notes.la, Accidental.sharp),
+          const Note(Notes.si, Accidental.flat),
         }),
         EnharmonicNote({
           const Note(Notes.si),
