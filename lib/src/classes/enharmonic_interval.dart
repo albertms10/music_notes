@@ -1,7 +1,7 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 class EnharmonicInterval extends Enharmonic<Interval> {
-  EnharmonicInterval(Set<Interval> items) : super(items);
+  EnharmonicInterval(super.items);
 
   EnharmonicInterval.fromSemitones(int semitones)
       : this(_fromSemitones(semitones));
@@ -34,7 +34,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       if (QualitiesValues.exists(intervalBelow, semitones))
         Interval.fromDesiredSemitones(intervalBelow!, semitones),
       if (QualitiesValues.exists(intervalAbove, semitones))
-        Interval.fromDesiredSemitones(intervalAbove!, semitones)
+        Interval.fromDesiredSemitones(intervalAbove!, semitones),
     });
   }
 

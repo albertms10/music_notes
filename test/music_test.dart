@@ -11,14 +11,14 @@ void main() {
         }),
         EnharmonicNote({
           const Note(Notes.ut, Accidentals.sharp),
-          const Note(Notes.re, Accidentals.flat)
+          const Note(Notes.re, Accidentals.flat),
         }),
         EnharmonicNote({
           const Note(Notes.re),
         }),
         EnharmonicNote({
           const Note(Notes.re, Accidentals.sharp),
-          const Note(Notes.mi, Accidentals.flat)
+          const Note(Notes.mi, Accidentals.flat),
         }),
         EnharmonicNote({
           const Note(Notes.mi),
@@ -28,14 +28,14 @@ void main() {
         }),
         EnharmonicNote({
           const Note(Notes.fa, Accidentals.sharp),
-          const Note(Notes.sol, Accidentals.flat)
+          const Note(Notes.sol, Accidentals.flat),
         }),
         EnharmonicNote({
           const Note(Notes.sol),
         }),
         EnharmonicNote({
           const Note(Notes.sol, Accidentals.sharp),
-          const Note(Notes.la, Accidentals.flat)
+          const Note(Notes.la, Accidentals.flat),
         }),
         EnharmonicNote({
           const Note(Notes.la),
@@ -46,7 +46,7 @@ void main() {
         }),
         EnharmonicNote({
           const Note(Notes.si),
-        })
+        }),
       ]),
     );
   });

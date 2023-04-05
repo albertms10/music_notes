@@ -1,7 +1,7 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 class EnharmonicNote extends Enharmonic<Note> {
-  EnharmonicNote(Set<Note> items) : super(items);
+  EnharmonicNote(super.items);
 
   EnharmonicNote.fromSemitones(int semitones) : this(_fromSemitones(semitones));
 

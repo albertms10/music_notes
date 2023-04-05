@@ -2,62 +2,77 @@ include: package:very_good_analysis/analysis_options.yaml
 
 linter:
   rules:
-    - always_put_required_named_parameters_first
-    - avoid_bool_literals_in_conditional_expressions
-    - avoid_catches_without_on_clauses
     - avoid_classes_with_only_static_members
-    - avoid_dynamic_calls
-    - avoid_function_literals_in_foreach_calls
-    - avoid_redundant_argument_values
-    - avoid_renaming_method_parameters
-    - avoid_returning_null_for_future
-    - avoid_void_async
-    - avoid_web_libraries_in_flutter
-    - cascade_invocations
-    - lines_longer_than_80_chars
+    - avoid_types_on_closure_parameters
     - cancel_subscriptions
-    - constant_identifier_names
-    - deprecated_consistency
-    - depend_on_referenced_packages
-    - directives_ordering
-    - eol_at_end_of_file
-    - flutter_style_todos
-    - no_default_cases
-    - noop_primitive_operations
-    - omit_local_variable_types
-    - only_throw_errors
-    - prefer_const_constructors
-    - prefer_const_literals_to_create_immutables
-    - prefer_expression_function_bodies
-    - prefer_contains
-    - prefer_final_in_for_each
-    - prefer_final_locals
-    # - prefer_final_parameters
-    # - public_member_api_docs
-    - prefer_if_elements_to_conditional_expressions
-    - prefer_interpolation_to_compose_strings
-    - prefer_is_empty
-    - prefer_is_not_empty
-    - prefer_single_quotes
-    - prefer_void_to_null
-    - require_trailing_commas
-    - sort_pub_dependencies
-    - sort_unnamed_constructors_first
-    - type_annotate_public_apis
-    - unawaited_futures
-    - unnecessary_null_checks
-    - unnecessary_parenthesis
-    - unnecessary_statements
-    - use_build_context_synchronously
-    - use_late_for_private_fields_and_variables
-    - use_setters_to_change_properties
-    - use_test_throws_matchers
-    - use_to_and_as_if_applicable
+  # - discarded_futures
+    - unnecessary_null_aware_operator_on_extension_on_nullable
+
+dart_code_metrics:
+  metrics:
+    cyclomatic-complexity: 20
+    maximum-nesting-level: 5
+    number-of-arguments: 4
+  metrics-exclude:
+    - test/**
+  rules:
+    - arguments-ordering
+    - avoid-cascade-after-if-null
+    - avoid-collection-methods-with-unrelated-types
+    - avoid-double-slash-imports
+    - avoid-duplicate-exports
+    - avoid-global-state
+    - avoid-missing-enum-constant-in-map
+    - avoid-nested-conditional-expressions:
+        acceptable-level: 2
+    - avoid-redundant-async
+    - avoid-throw-in-catch-block
+    - avoid-unnecessary-conditionals
+    - avoid-unnecessary-setstate
+    - avoid-unnecessary-type-assertions
+    - avoid-unnecessary-type-casts
+    - avoid-unrelated-type-assertions
+    - binary-expression-operand-order
+    - double-literal-format
+    - format-comment:
+        ignored-patterns:
+          - ^coverage.*
+  # - member-ordering
+    - missing-test-assertion
+    - newline-before-return
+    - no-boolean-literal-compare
+    - no-equal-then-else
+  # - no-magic-number
+    - prefer-conditional-expressions
+    - prefer-correct-test-file-name:
+        exclude:
+          - lib/**
+          - bin/**
+          - "**/main.dart"
+    - prefer-enums-by-name
+  # - prefer-extracting-callbacks
+    - prefer-first
+    - prefer-immediate-return
+    - prefer-iterable-of
+    - prefer-last
+    - prefer-match-file-name:
+        exclude:
+          - test/**
+  # - prefer-moving-to-variable
+    - prefer-trailing-comma
+  anti-patterns:
+    - long-parameter-list
 
 analyzer:
+  plugins:
+    - dart_code_metrics
+
   errors:
-    always_put_required_named_parameters_first: ignore
-    implicit_dynamic_map_literal: ignore
-    prefer_int_literals: ignore
+    avoid_equals_and_hash_code_on_mutable_classes: ignore
     public_member_api_docs: ignore
+    unused_element: ignore # See https://github.com/dart-lang/sdk/issues/49025
+
+    # Style decisions
+    always_put_required_named_parameters_first: ignore
+    always_use_package_imports: ignore
     sort_constructors_first: ignore

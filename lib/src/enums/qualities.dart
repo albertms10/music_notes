@@ -1,4 +1,4 @@
-part of music_notes;
+part of '../../music_notes.dart';
 
 enum Qualities { augmented, major, perfect, minor, diminished }
 
@@ -24,6 +24,7 @@ extension QualitiesValues on Qualities {
     Qualities.augmented,
   };
 
+  // ignore: avoid-missing-enum-constant-in-map
   static const invertedQualities = {
     Qualities.augmented: Qualities.diminished,
     Qualities.perfect: Qualities.perfect,
@@ -57,6 +58,7 @@ extension QualitiesValues on Qualities {
     if (interval == null) return false;
 
     final delta = semitones - interval.semitones + (interval.isPerfect ? 0 : 1);
+
     return delta > 0 && delta <= intervalQualities(interval).length;
   }
 
@@ -91,6 +93,7 @@ extension QualitiesValues on Qualities {
   /// ```
   Qualities get inverted {
     final inverted = invertedQualities[this];
+
     return inverted ??
         invertedQualities.keys
             .firstWhere((quality) => this == invertedQualities[quality]);
