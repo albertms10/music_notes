@@ -17,26 +17,17 @@ void main() {
     );
   });
 
-  test('Semitones are correct', () {
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.fourth, Qualities.augmented),
-        const Interval(Intervals.fifth, Qualities.diminished),
-      }).semitones,
-      equals(6),
-    );
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.third, Qualities.major),
-        const Interval(Intervals.fourth, Qualities.diminished),
-      }).semitones,
-      equals(4),
-    );
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.second, Qualities.major),
-      }).semitones,
-      equals(2),
-    );
+  test('Items are correct', () {
+    expect(const EnharmonicInterval(6).items, {
+      const Interval(Intervals.fourth, Qualities.augmented),
+      const Interval(Intervals.fifth, Qualities.diminished),
+    });
+    expect(const EnharmonicInterval(4).items, {
+      const Interval(Intervals.third, Qualities.major),
+      const Interval(Intervals.fourth, Qualities.diminished),
+    });
+    expect(const EnharmonicInterval(2).items, {
+      const Interval(Intervals.second, Qualities.major),
+    });
   });
 }

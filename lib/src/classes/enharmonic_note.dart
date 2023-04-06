@@ -1,13 +1,9 @@
 part of '../../music_notes.dart';
 
 class EnharmonicNote extends Enharmonic<Note> {
-  EnharmonicNote(super.items);
-
-  EnharmonicNote.fromSemitones(int semitones) : this(_fromSemitones(semitones));
+  const EnharmonicNote(super.semitones);
 
   /// Returns the [EnharmonicNote] from [semitones].
-  ///
-  /// It is mainly used by [EnharmonicNote.fromSemitones] constructor.
   static Set<Note> _fromSemitones(int semitones) {
     final note = NotesValues.fromValue(semitones);
 
@@ -54,7 +50,7 @@ class EnharmonicNote extends Enharmonic<Note> {
     int semitones, [
     Accidental preferredAccidental = Accidental.natural,
   ]) {
-    final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
+    final enharmonicNotes = EnharmonicNote(semitones).items;
 
     return enharmonicNotes.firstWhereOrNull(
           (note) => note.accidental == preferredAccidental,
@@ -64,21 +60,6 @@ class EnharmonicNote extends Enharmonic<Note> {
         ) ??
         enharmonicNotes.first;
   }
-
-  /// Returns the number of semitones of the common chromatic pitch
-  /// this [EnharmonicNote].
-  ///
-  /// Examples:
-  /// ```dart
-  /// EnharmonicNote({
-  ///   const Note(Notes.re, Accidental.flat),
-  ///   const Note(Notes.ut, Accidental.sharp),
-  /// }).semitones == 2
-  ///
-  /// EnharmonicNote.fromSemitones(4).semitones == 4
-  /// ```
-  @override
-  int get semitones => super.semitones;
 
   /// Returns a transposed [EnharmonicNote] by [semitones]
   /// from this [EnharmonicNote].
@@ -93,7 +74,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   @override
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitones(this.semitones + semitones);
+      EnharmonicNote(this.semitones + semitones);
 
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
@@ -112,12 +93,12 @@ class EnharmonicNote extends Enharmonic<Note> {
   ) {
     var distance = 0;
     var currentPitch = this.semitones;
-    var tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
+    var tempEnharmonicNote = EnharmonicNote(currentPitch);
 
     while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
+      tempEnharmonicNote = EnharmonicNote(currentPitch);
     }
 
     return distance;

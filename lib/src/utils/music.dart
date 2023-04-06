@@ -5,7 +5,7 @@ const int chromaticDivisions = 12;
 
 /// [Set] of [EnharmonicNote]s that form the chromatic scale.
 final Set<EnharmonicNote> chromaticScale = SplayTreeSet<EnharmonicNote>.from({
-  for (var i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromSemitones(i),
+  for (var i = 1; i <= chromaticDivisions; i++) EnharmonicNote(i),
 });
 
 /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.

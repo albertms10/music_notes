@@ -1,14 +1,9 @@
 part of '../../music_notes.dart';
 
 class EnharmonicInterval extends Enharmonic<Interval> {
-  EnharmonicInterval(super.items);
-
-  EnharmonicInterval.fromSemitones(int semitones)
-      : this(_fromSemitones(semitones));
+  const EnharmonicInterval(super.semitones);
 
   /// Returns the [EnharmonicInterval] from [semitones].
-  ///
-  /// It is mainly used by [EnharmonicInterval.fromSemitones] constructor.
   static Set<Interval> _fromSemitones(int semitones) {
     final interval = IntervalsValues.fromSemitones(semitones);
 
@@ -55,27 +50,13 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     int semitones, [
     Qualities? preferredQuality,
   ]) {
-    final enharmonicIntervals =
-        EnharmonicInterval.fromSemitones(semitones).items;
+    final enharmonicIntervals = EnharmonicInterval(semitones).items;
 
     return enharmonicIntervals.firstWhereOrNull(
           (interval) => interval.quality == preferredQuality,
         ) ??
         enharmonicIntervals.first;
   }
-
-  /// Returns the number of semitones of the common chromatic pitch
-  /// of this [EnharmonicInterval].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicInterval({
-  ///   const Interval(Intervals.fourth, Qualities.augmented),
-  ///   const Interval(Intervals.fifth, Qualities.diminished),
-  /// }).semitones == 6
-  /// ```
-  @override
-  int get semitones => super.semitones;
 
   /// Returns a transposed [EnharmonicInterval] by [semitones]
   /// from this [EnharmonicInterval].
@@ -91,5 +72,5 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// ```
   @override
   EnharmonicInterval transposeBy(int semitones) =>
-      EnharmonicInterval.fromSemitones(this.semitones + semitones);
+      EnharmonicInterval(this.semitones + semitones);
 }
