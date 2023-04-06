@@ -58,10 +58,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final enharmonicIntervals =
         EnharmonicInterval.fromSemitones(semitones).items;
 
-    return enharmonicIntervals.firstWhere(
-      (interval) => interval.quality == preferredQuality,
-      orElse: () => enharmonicIntervals.first,
-    );
+    return enharmonicIntervals.firstWhereOrNull(
+          (interval) => interval.quality == preferredQuality,
+        ) ??
+        enharmonicIntervals.first;
   }
 
   /// Returns the number of semitones of the common chromatic pitch

@@ -20,10 +20,10 @@ class Interval implements MusicItem, Comparable<Interval> {
   static Qualities qualityFromDelta(Intervals interval, int delta) {
     final qualitiesList = QualitiesValues.intervalQualities(interval);
 
-    return qualitiesList.firstWhere(
-      (quality) => qualitiesList.toList().indexOf(quality) == delta,
-      orElse: () => delta < 0 ? qualitiesList.first : qualitiesList.last,
-    );
+    return qualitiesList.firstWhereOrNull(
+          (quality) => qualitiesList.toList().indexOf(quality) == delta,
+        ) ??
+        (delta < 0 ? qualitiesList.first : qualitiesList.last);
   }
 
   /// Returns the number of semitones of this [Interval].

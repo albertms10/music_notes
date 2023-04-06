@@ -56,13 +56,13 @@ class EnharmonicNote extends Enharmonic<Note> {
   ]) {
     final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
 
-    return enharmonicNotes.firstWhere(
-      (note) => note.accidental == preferredAccidental,
-      orElse: () => enharmonicNotes.firstWhere(
-        (note) => note.accidental.value == 0,
-        orElse: () => enharmonicNotes.first,
-      ),
-    );
+    return enharmonicNotes.firstWhereOrNull(
+          (note) => note.accidental == preferredAccidental,
+        ) ??
+        enharmonicNotes.firstWhereOrNull(
+          (note) => note.accidental.value == 0,
+        ) ??
+        enharmonicNotes.first;
   }
 
   /// Returns the number of semitones of the common chromatic pitch
