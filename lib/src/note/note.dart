@@ -7,12 +7,6 @@ class Note implements MusicItem, Comparable<Note> {
 
   const Note(this.note, [this.accidental = Accidental.natural]);
 
-  factory Note.fromSemitones(
-    int semitones, [
-    Accidental preferredAccidental = Accidental.natural,
-  ]) =>
-      EnharmonicNote.note(semitones, preferredAccidental);
-
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
   ///
@@ -33,11 +27,12 @@ class Note implements MusicItem, Comparable<Note> {
 
     return mode == Modes.major
         ? note
-        : note.transposeBy(
-            const Interval(Intervals.third, Qualities.minor, descending: true)
-                .semitones,
-            accidental,
-          );
+        : EnharmonicNote(note.semitones)
+            .transposeBy(
+              const Interval(Intervals.third, Qualities.minor, descending: true)
+                  .semitones,
+            )
+            .note(accidental);
   }
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number
@@ -55,7 +50,7 @@ class Note implements MusicItem, Comparable<Note> {
     int accidentals, [
     Accidental accidental = Accidental.natural,
   ]) =>
-      Note.fromSemitones(
+      EnharmonicNote(
         Interval(
                   Intervals.fifth,
                   Qualities.perfect,
@@ -63,6 +58,7 @@ class Note implements MusicItem, Comparable<Note> {
                 ).semitones *
                 accidentals +
             1,
+      ).note(
         (accidental == Accidental.flat && accidentals > 8) ||
                 (accidental == Accidental.sharp && accidentals > 10)
             ? Accidental(accidental.value + 1)
@@ -122,12 +118,12 @@ class Note implements MusicItem, Comparable<Note> {
     var distance = 0;
     var currentPitch = this.semitones;
 
-    var tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
+    var tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
 
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = Note.fromSemitones(currentPitch, preferredAccidental);
+      tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
     }
 
     return distance;
@@ -152,32 +148,6 @@ class Note implements MusicItem, Comparable<Note> {
       difference(other) - interval.semitones + 1,
     );
   }
-
-  /// Returns the transposed [Note] by [semitones], with an optional
-  /// [preferredAccidental].
-  ///
-  /// Examples:
-  /// ```dart
-  /// const Note(Notes.mi, Accidental.flat).transposeBy(-3)
-  ///   == const Note(Notes.ut)
-  ///
-  /// const Note(Notes.la).transposeBy(5)
-  ///   == const Note(Notes.re)
-  ///
-  /// const Note(Notes.mi).transposeBy(
-  ///   const Interval(Intervals.fifth, Qualities.perfect),
-  /// ) == const Note(Notes.si)
-  ///
-  /// const Note(Notes.sol).transposeBy(
-  ///   const Interval(Intervals.third, Qualities.major, descending: true),
-  /// ) == const Note(Notes.mi, Accidental.flat)
-  /// ```
-  /// ```
-  Note transposeBy(
-    int semitones, [
-    Accidental preferredAccidental = Accidental.natural,
-  ]) =>
-      Note.fromSemitones(this.semitones + semitones, preferredAccidental);
 
   @override
   String toString() =>

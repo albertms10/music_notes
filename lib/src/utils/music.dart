@@ -5,7 +5,7 @@ const int chromaticDivisions = 12;
 
 /// [Set] of [EnharmonicNote]s that form the chromatic scale.
 final Set<EnharmonicNote> chromaticScale = SplayTreeSet<EnharmonicNote>.from({
-  for (var i = 1; i <= chromaticDivisions; i++) EnharmonicNote.fromSemitones(i),
+  for (var i = 1; i <= chromaticDivisions; i++) EnharmonicNote(i),
 });
 
 /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
@@ -24,13 +24,13 @@ final Set<EnharmonicNote> circleOfFifths = SplayTreeSet<EnharmonicNote>.from({
 /// Examples:
 /// ```dart
 /// shortestFifthsDistance(
-///   EnharmonicNote({const Note(Notes.fa, Accidental.sharp)}),
-///   EnharmonicNote({const Note(Notes.la)}),
+///   EnharmonicNote.fSharp,
+///   EnharmonicNote.a,
 /// ) == -3
 ///
 /// shortestFifthsDistance(
-///   EnharmonicNote.fromSemitones(4),
-///   EnharmonicNote.fromSemitones(8),
+///   EnharmonicNote.dSharp,
+///   EnharmonicNote.g,
 /// ) == 4
 /// ```
 int shortestFifthsDistance(

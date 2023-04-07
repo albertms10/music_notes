@@ -16,27 +16,4 @@ void main() {
       equals(const Interval(Intervals.fifth, Qualities.diminished)),
     );
   });
-
-  test('Semitones are correct', () {
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.fourth, Qualities.augmented),
-        const Interval(Intervals.fifth, Qualities.diminished),
-      }).semitones,
-      equals(6),
-    );
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.third, Qualities.major),
-        const Interval(Intervals.fourth, Qualities.diminished),
-      }).semitones,
-      equals(4),
-    );
-    expect(
-      EnharmonicInterval({
-        const Interval(Intervals.second, Qualities.major),
-      }).semitones,
-      equals(2),
-    );
-  });
 }

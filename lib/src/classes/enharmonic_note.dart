@@ -1,14 +1,23 @@
 part of '../../music_notes.dart';
 
 class EnharmonicNote extends Enharmonic<Note> {
-  EnharmonicNote(super.items);
+  const EnharmonicNote(super.semitones);
 
-  EnharmonicNote.fromSemitones(int semitones) : this(_fromSemitones(semitones));
+  static const c = EnharmonicNote(1);
+  static const cSharp = EnharmonicNote(2);
+  static const d = EnharmonicNote(3);
+  static const dSharp = EnharmonicNote(4);
+  static const e = EnharmonicNote(5);
+  static const f = EnharmonicNote(6);
+  static const fSharp = EnharmonicNote(7);
+  static const g = EnharmonicNote(8);
+  static const gSharp = EnharmonicNote(9);
+  static const a = EnharmonicNote(10);
+  static const aSharp = EnharmonicNote(11);
+  static const b = EnharmonicNote(12);
 
-  /// Returns the [EnharmonicNote] from [semitones].
-  ///
-  /// It is mainly used by [EnharmonicNote.fromSemitones] constructor.
-  static Set<Note> _fromSemitones(int semitones) {
+  @override
+  Set<Note> get items {
     final note = NotesValues.fromValue(semitones);
 
     if (note != null) {
@@ -44,67 +53,39 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.note(4, Accidental.sharp)
-  ///   == const Note(Notes.re, Accidental.sharp)
-  ///
-  /// EnharmonicNote.note(5, Accidental.flat)
-  ///   == const Note(Notes.fa, Accidental.flat)
+  /// EnharmonicNote.e.note() == const Note(Notes.mi)
+  /// EnharmonicNote.dSharp.note(Accidental.flat)
+  ///   == const Note(Notes.mi, Accidental.flat)
   /// ```
-  static Note note(
-    int semitones, [
-    Accidental preferredAccidental = Accidental.natural,
-  ]) {
-    final enharmonicNotes = EnharmonicNote.fromSemitones(semitones).items;
+  Note note([Accidental preferredAccidental = Accidental.natural]) {
+    final enharmonicNotes = EnharmonicNote(semitones).items;
 
-    return enharmonicNotes.firstWhere(
-      (note) => note.accidental == preferredAccidental,
-      orElse: () => enharmonicNotes.firstWhere(
-        (note) => note.accidental.value == 0,
-        orElse: () => enharmonicNotes.first,
-      ),
-    );
+    return enharmonicNotes.firstWhereOrNull(
+          (note) => note.accidental == preferredAccidental,
+        ) ??
+        enharmonicNotes.firstWhereOrNull(
+          (note) => note.accidental.value == 0,
+        ) ??
+        enharmonicNotes.first;
   }
-
-  /// Returns the number of semitones of the common chromatic pitch
-  /// this [EnharmonicNote].
-  ///
-  /// Examples:
-  /// ```dart
-  /// EnharmonicNote({
-  ///   const Note(Notes.re, Accidental.flat),
-  ///   const Note(Notes.ut, Accidental.sharp),
-  /// }).semitones == 2
-  ///
-  /// EnharmonicNote.fromSemitones(4).semitones == 4
-  /// ```
-  @override
-  int get semitones => super.semitones;
 
   /// Returns a transposed [EnharmonicNote] by [semitones]
   /// from this [EnharmonicNote].
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote({const Note(Notes.ut)}).transposeBy(6)
-  ///   == EnharmonicNote({
-  ///     const Note(Notes.fa, Accidental.sharp),
-  ///     const Note(Notes.sol, Accidental.flat),
-  ///   })
+  /// EnharmonicNote.c.transposeBy(6) == EnharmonicNote.fSharp
   /// ```
   @override
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote.fromSemitones(this.semitones + semitones);
+      EnharmonicNote(this.semitones + semitones);
 
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote({const Note(Notes.sol)})
-  ///   .enharmonicSemitonesDistance(
-  ///     EnharmonicNote.fromSemitones(10),
-  ///     7,
-  ///   ) == 2
+  /// EnharmonicNote.g.enharmonicSemitonesDistance(EnharmonicNote.a, 7) == 2
   /// ```
   int enharmonicSemitonesDistance(
     EnharmonicNote enharmonicNote,
@@ -112,12 +93,12 @@ class EnharmonicNote extends Enharmonic<Note> {
   ) {
     var distance = 0;
     var currentPitch = this.semitones;
-    var tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
+    var tempEnharmonicNote = EnharmonicNote(currentPitch);
 
     while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote.fromSemitones(currentPitch);
+      tempEnharmonicNote = EnharmonicNote(currentPitch);
     }
 
     return distance;
@@ -128,15 +109,13 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.fromSemitones(5)
-  ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({const Note(Notes.re)}),
+  /// EnharmonicNote.e.enharmonicIntervalDistance(
+  ///     EnharmonicNote.d,
   ///     const Interval(Intervals.fifth, Qualities.perfect),
   ///   ) == 10
   ///
-  /// EnharmonicNote.fromSemitones(5)
-  ///   .enharmonicIntervalDistance(
-  ///     EnharmonicNote({const Note(Notes.re)}),
+  /// EnharmonicNote.e.enharmonicIntervalDistance(
+  ///     EnharmonicNote.d,
   ///     const Interval(Intervals.fifth, Qualities.perfect, descending: true),
   ///   ) == 2
   /// ```
