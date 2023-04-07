@@ -5,25 +5,25 @@ void main() {
   group('Note', () {
     group('.semitones', () {
       test('should return the semitones value of this Note', () {
-        expect(const Note(Notes.si, Accidental.sharp).semitones, 1);
-        expect(const Note(Notes.ut).semitones, 1);
-        expect(const Note(Notes.ut, Accidental.sharp).semitones, 2);
-        expect(const Note(Notes.re, Accidental.flat).semitones, 2);
-        expect(const Note(Notes.re).semitones, 3);
-        expect(const Note(Notes.re, Accidental.sharp).semitones, 4);
-        expect(const Note(Notes.mi, Accidental.flat).semitones, 4);
-        expect(const Note(Notes.mi).semitones, 5);
-        expect(const Note(Notes.fa).semitones, 6);
-        expect(const Note(Notes.fa, Accidental.sharp).semitones, 7);
-        expect(const Note(Notes.sol, Accidental.flat).semitones, 7);
-        expect(const Note(Notes.sol).semitones, 8);
-        expect(const Note(Notes.sol, Accidental.sharp).semitones, 9);
-        expect(const Note(Notes.la, Accidental.flat).semitones, 9);
-        expect(const Note(Notes.la).semitones, 10);
-        expect(const Note(Notes.la, Accidental.sharp).semitones, 11);
-        expect(const Note(Notes.si, Accidental.flat).semitones, 11);
-        expect(const Note(Notes.si).semitones, 12);
-        expect(const Note(Notes.ut, Accidental.flat).semitones, 12);
+        expect(const Note(Notes.b, Accidental.sharp).semitones, 1);
+        expect(const Note(Notes.c).semitones, 1);
+        expect(const Note(Notes.c, Accidental.sharp).semitones, 2);
+        expect(const Note(Notes.d, Accidental.flat).semitones, 2);
+        expect(const Note(Notes.d).semitones, 3);
+        expect(const Note(Notes.d, Accidental.sharp).semitones, 4);
+        expect(const Note(Notes.e, Accidental.flat).semitones, 4);
+        expect(const Note(Notes.e).semitones, 5);
+        expect(const Note(Notes.f).semitones, 6);
+        expect(const Note(Notes.f, Accidental.sharp).semitones, 7);
+        expect(const Note(Notes.g, Accidental.flat).semitones, 7);
+        expect(const Note(Notes.g).semitones, 8);
+        expect(const Note(Notes.g, Accidental.sharp).semitones, 9);
+        expect(const Note(Notes.a, Accidental.flat).semitones, 9);
+        expect(const Note(Notes.a).semitones, 10);
+        expect(const Note(Notes.a, Accidental.sharp).semitones, 11);
+        expect(const Note(Notes.b, Accidental.flat).semitones, 11);
+        expect(const Note(Notes.b).semitones, 12);
+        expect(const Note(Notes.c, Accidental.flat).semitones, 12);
       });
     });
 
@@ -31,15 +31,15 @@ void main() {
       test(
         'should return the difference in semitones with another Note',
         () {
-          expect(const Note(Notes.ut).difference(const Note(Notes.ut)), 0);
+          expect(const Note(Notes.c).difference(const Note(Notes.c)), 0);
           expect(
-            const Note(Notes.mi, Accidental.sharp)
-                .difference(const Note(Notes.fa)),
+            const Note(Notes.e, Accidental.sharp)
+                .difference(const Note(Notes.f)),
             0,
           );
           expect(
-            const Note(Notes.re)
-                .difference(const Note(Notes.la, Accidental.flat)),
+            const Note(Notes.d)
+                .difference(const Note(Notes.a, Accidental.flat)),
             6,
           );
         },

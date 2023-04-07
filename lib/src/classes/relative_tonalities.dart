@@ -32,8 +32,8 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(Note(Notes.re), Modes.major),
-  ///   const Tonality(Note(Notes.si), Modes.minor),
+  ///   const Tonality(Note(Notes.d), Modes.major),
+  ///   const Tonality(Note(Notes.b), Modes.minor),
   /// }).accidentals == 2
   /// ```
   int get accidentals => _itemsAccidentals(tonalities);
@@ -43,7 +43,7 @@ class RelativeTonalities implements Comparable<RelativeTonalities> {
   /// Example:
   /// ```dart
   /// RelativeTonalities({
-  ///   const Tonality(Note(Notes.mi, Accidental.flat), Modes.major),
+  ///   const Tonality(Note(Notes.e, Accidental.flat), Modes.major),
   ///   const Tonality(Note(Notes.ut), Modes.minor),
   /// }).accidental == Accidental.flat
   /// ```

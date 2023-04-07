@@ -18,11 +18,11 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   @override
   Set<Note> get items {
-    final note = NotesValues.fromValue(semitones);
+    final note = Notes.fromValue(semitones);
 
     if (note != null) {
-      final noteBelow = NotesValues.fromOrdinal(Notes.values.indexOf(note));
-      final noteAbove = NotesValues.fromOrdinal(Notes.values.indexOf(note) + 2);
+      final noteBelow = Notes.fromOrdinal(Notes.values.indexOf(note));
+      final noteAbove = Notes.fromOrdinal(Notes.values.indexOf(note) + 2);
 
       return SplayTreeSet<Note>.from({
         Note(
@@ -39,11 +39,11 @@ class EnharmonicNote extends Enharmonic<Note> {
 
     return SplayTreeSet<Note>.from({
       Note(
-        NotesValues.fromValue(semitones - 1)!,
+        Notes.fromValue(semitones - 1)!,
         Accidental.sharp,
       ),
       Note(
-        NotesValues.fromValue(semitones + 1)!,
+        Notes.fromValue(semitones + 1)!,
         Accidental.flat,
       ),
     });
@@ -53,9 +53,9 @@ class EnharmonicNote extends Enharmonic<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// EnharmonicNote.e.note() == const Note(Notes.mi)
+  /// EnharmonicNote.e.note() == const Note(Notes.e)
   /// EnharmonicNote.dSharp.note(Accidental.flat)
-  ///   == const Note(Notes.mi, Accidental.flat)
+  ///   == const Note(Notes.e, Accidental.flat)
   /// ```
   Note note([Accidental preferredAccidental = Accidental.natural]) {
     final enharmonicNotes = EnharmonicNote(semitones).items;
