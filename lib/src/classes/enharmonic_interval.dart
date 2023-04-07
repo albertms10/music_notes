@@ -3,8 +3,8 @@ part of '../../music_notes.dart';
 class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
-  /// Returns the [EnharmonicInterval] from [semitones].
-  static Set<Interval> _fromSemitones(int semitones) {
+  @override
+  Set<Interval> get items {
     final interval = IntervalsValues.fromSemitones(semitones);
 
     if (interval != null) {

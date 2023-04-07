@@ -15,8 +15,7 @@ abstract class Enharmonic<T extends MusicItem>
         );
 
   /// Returns the items sharing the same [semitones].
-  // TODO(albertms10): implement method.
-  Set<T> get items => {};
+  Set<T> get items;
 
   /// Returns a transposed [Enharmonic] by [semitones] from this [Enharmonic].
   @override

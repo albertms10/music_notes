@@ -16,8 +16,8 @@ class EnharmonicNote extends Enharmonic<Note> {
   static const aSharp = EnharmonicNote(11);
   static const b = EnharmonicNote(12);
 
-  /// Returns the [EnharmonicNote] from [semitones].
-  static Set<Note> _fromSemitones(int semitones) {
+  @override
+  Set<Note> get items {
     final note = NotesValues.fromValue(semitones);
 
     if (note != null) {

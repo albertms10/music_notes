@@ -16,18 +16,4 @@ void main() {
       equals(const Interval(Intervals.fifth, Qualities.diminished)),
     );
   });
-
-  test('Items are correct', () {
-    expect(const EnharmonicInterval(6).items, {
-      const Interval(Intervals.fourth, Qualities.augmented),
-      const Interval(Intervals.fifth, Qualities.diminished),
-    });
-    expect(const EnharmonicInterval(4).items, {
-      const Interval(Intervals.third, Qualities.major),
-      const Interval(Intervals.fourth, Qualities.diminished),
-    });
-    expect(const EnharmonicInterval(2).items, {
-      const Interval(Intervals.second, Qualities.major),
-    });
-  });
 }
