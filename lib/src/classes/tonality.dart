@@ -59,13 +59,15 @@ class Tonality implements Comparable<Tonality> {
   ///   == const Tonality(Note(Notes.sol), Modes.minor)
   /// ```
   Tonality get relative => Tonality(
-        note.transposeBy(
-          Interval(
-            Intervals.third,
-            Qualities.minor,
-            descending: mode == Modes.major,
-          ).semitones,
-        ),
+        EnharmonicNote(note.semitones)
+            .transposeBy(
+              Interval(
+                Intervals.third,
+                Qualities.minor,
+                descending: mode == Modes.major,
+              ).semitones,
+            )
+            .note(accidental),
         mode.opposite,
       );
 
