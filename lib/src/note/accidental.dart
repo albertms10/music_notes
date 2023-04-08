@@ -44,6 +44,9 @@ class Accidental {
   }
 
   @override
+  String toString() => '$symbol ($semitones)';
+
+  @override
   bool operator ==(Object other) =>
       other is Accidental && semitones == other.semitones;
 

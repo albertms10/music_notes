@@ -21,23 +21,27 @@ class EnharmonicNote extends Enharmonic<Note> {
     final note = Notes.fromValue(semitones);
 
     if (note != null) {
-      final noteBelow = Notes.fromOrdinal(Notes.values.indexOf(note));
-      final noteAbove = Notes.fromOrdinal(Notes.values.indexOf(note) + 2);
+      final noteBelow = Notes.fromOrdinal(note.ordinal - 1);
+      final noteAbove = Notes.fromOrdinal(note.ordinal + 1);
 
-      return SplayTreeSet<Note>.from({
+      return {
         Note(
           noteBelow,
-          Accidental(note.value - noteBelow.value),
+          Accidental((note.value - noteBelow.value).chromaticModExcludeZero),
         ),
         Note(note),
         Note(
           noteAbove,
-          Accidental(note.value - noteAbove.value),
+          Accidental(
+            note.value -
+                noteAbove.value -
+                (note.value > noteAbove.value ? chromaticDivisions : 0),
+          ),
         ),
-      });
+      };
     }
 
-    return SplayTreeSet<Note>.from({
+    return {
       Note(
         Notes.fromValue(semitones - 1)!,
         Accidental.sharp,
@@ -46,7 +50,7 @@ class EnharmonicNote extends Enharmonic<Note> {
         Notes.fromValue(semitones + 1)!,
         Accidental.flat,
       ),
-    });
+    };
   }
 
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
@@ -75,7 +79,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```
   @override
   EnharmonicNote transposeBy(int semitones) =>
-      EnharmonicNote(this.semitones + semitones);
+      EnharmonicNote((this.semitones + semitones).chromaticModExcludeZero);
 
   /// Returns the shortest fifths distance between this and [other].
   ///
