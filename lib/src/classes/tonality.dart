@@ -64,7 +64,7 @@ class Tonality implements Comparable<Tonality> {
                 descending: mode == Modes.major,
               ).semitones,
             )
-            .note(accidental),
+            .toNote(accidental),
         mode.opposite,
       );
 

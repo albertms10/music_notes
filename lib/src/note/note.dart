@@ -47,7 +47,7 @@ class Note implements MusicItem, Comparable<Note> {
               const Interval(Intervals.third, Qualities.minor, descending: true)
                   .semitones,
             )
-            .note(accidental);
+            .toNote(accidental);
   }
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number
@@ -70,7 +70,7 @@ class Note implements MusicItem, Comparable<Note> {
                 ).semitones *
                 accidentals +
             1,
-      ).note(
+      ).toNote(
         (accidental == Accidental.flat && accidentals > 8) ||
                 (accidental == Accidental.sharp && accidentals > 10)
             ? Accidental(accidental.semitones + 1)
@@ -131,12 +131,12 @@ class Note implements MusicItem, Comparable<Note> {
     var distance = 0;
     var currentPitch = this.semitones;
 
-    var tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
+    var tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
 
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
+      tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
     }
 
     return distance;
