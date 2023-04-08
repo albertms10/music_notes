@@ -57,13 +57,13 @@ int shortestFifthsDistance(
 /// Examples:
 /// ```dart
 /// exactFifthsDistance(
-///   const Note(Notes.la, Accidental.flat),
-///   const Note(Notes.ut, Accidental.sharp),
+///   const Note(Notes.a, Accidental.flat),
+///   const Note(Notes.c, Accidental.sharp),
 /// ) == 11
 ///
 /// exactFifthsDistance(
-///   const Note(Notes.la, Accidental.flat),
-///   const Note(Notes.re, Accidental.flat),
+///   const Note(Notes.a, Accidental.flat),
+///   const Note(Notes.d, Accidental.flat),
 /// ) == -1
 /// ```
 int exactFifthsDistance(Note note1, Note note2) => note1.intervalDistance(

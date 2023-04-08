@@ -13,10 +13,10 @@ class Note implements MusicItem, Comparable<Note> {
   /// Examples:
   /// ```dart
   /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp)
-  ///   == const Note(Notes.re)
+  ///   == const Note(Notes.d)
   ///
   /// Note.fromTonalityAccidentals(0, Modes.minor)
-  ///   == const Note(Notes.la)
+  ///   == const Note(Notes.a)
   /// ```
   factory Note.fromTonalityAccidentals(
     int accidentals,
@@ -41,10 +41,10 @@ class Note implements MusicItem, Comparable<Note> {
   /// Examples:
   /// ```dart
   /// Note.fromRawAccidentals(2, Accidental.sharp)
-  ///   == const Note(Notes.re)
+  ///   == const Note(Notes.d)
   ///
   /// Note.fromRawAccidentals(0)
-  ///   == const Note(Notes.la)
+  ///   == const Note(Notes.a)
   /// ```
   factory Note.fromRawAccidentals(
     int accidentals, [
@@ -66,12 +66,12 @@ class Note implements MusicItem, Comparable<Note> {
       );
 
   /// Returns the number of semitones that correspond to this [Note]
-  /// from [Notes.ut].
+  /// from [Notes.c].
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.re).semitones == 3
-  /// const Note(Notes.fa, Accidental.sharp).semitones == 7
+  /// const Note(Notes.d).semitones == 3
+  /// const Note(Notes.f, Accidental.sharp).semitones == 7
   /// ```
   @override
   int get semitones => chromaticModExcludeZero(note.value + accidental.value);
@@ -84,8 +84,8 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// const Note(Notes.ut).intervalDistance(
-  ///   const Note(Notes.re),
+  /// const Note(Notes.c).intervalDistance(
+  ///   const Note(Notes.d),
   ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == 2
   /// ```
@@ -133,11 +133,11 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.ut).exactInterval(const Note(Notes.re))
+  /// const Note(Notes.c).exactInterval(const Note(Notes.d))
   ///   == const Interval(Intervals.second, Qualities.minor)
   ///
-  /// const Note(Notes.re)
-  ///         .exactInterval(const Note(Notes.la, Accidental.flat)) ==
+  /// const Note(Notes.d)
+  ///         .exactInterval(const Note(Notes.a, Accidental.flat)) ==
   ///     const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
   Interval exactInterval(Note other) {
