@@ -61,7 +61,7 @@ class Note implements MusicItem, Comparable<Note> {
       ).note(
         (accidental == Accidental.flat && accidentals > 8) ||
                 (accidental == Accidental.sharp && accidentals > 10)
-            ? Accidental(accidental.value + 1)
+            ? Accidental(accidental.semitones + 1)
             : accidental,
       );
 
@@ -74,7 +74,8 @@ class Note implements MusicItem, Comparable<Note> {
   /// const Note(Notes.f, Accidental.sharp).semitones == 7
   /// ```
   @override
-  int get semitones => chromaticModExcludeZero(note.value + accidental.value);
+  int get semitones =>
+      chromaticModExcludeZero(note.value + accidental.semitones);
 
   /// Returns the difference in semitones between this [Note] and [other].
   int difference(Note other) => chromaticMod(other.semitones - semitones);
@@ -151,7 +152,8 @@ class Note implements MusicItem, Comparable<Note> {
 
   @override
   String toString() =>
-      note.name + (accidental.value != 0 ? ' ${accidental.symbol}' : '');
+      note.name +
+      (accidental != Accidental.natural ? ' ${accidental.symbol}' : '');
 
   @override
   bool operator ==(Object other) =>
