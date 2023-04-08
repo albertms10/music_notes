@@ -20,11 +20,11 @@ class Accidental {
   static const Accidental doubleFlat = Accidental(-2);
   static const Accidental tripleFlat = Accidental(-3);
 
-  static const String doubleSharpSymbol = '𝄪';
-  static const String sharpSymbol = '♯';
-  static const String naturalSymbol = '♮';
-  static const String flatSymbol = '♭';
-  static const String doubleFlatSymbol = '𝄫';
+  static const String _doubleSharpSymbol = '𝄪';
+  static const String _sharpSymbol = '♯';
+  static const String _naturalSymbol = '♮';
+  static const String _flatSymbol = '♭';
+  static const String _doubleFlatSymbol = '𝄫';
 
   /// Returns the symbol of this [Accidental].
   ///
@@ -34,10 +34,12 @@ class Accidental {
   /// assert(Accidental.doubleSharp.symbol == '𝄪')
   /// ```
   String get symbol {
-    if (value == 0) return naturalSymbol;
+    if (value == 0) return _naturalSymbol;
 
-    return (value.isOdd ? (value.isNegative ? flatSymbol : sharpSymbol) : '') +
-        (value.isNegative ? doubleFlatSymbol : doubleSharpSymbol) *
+    return (value.isOdd
+            ? (value.isNegative ? _flatSymbol : _sharpSymbol)
+            : '') +
+        (value.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol) *
             (value.abs() ~/ 2);
   }
 
