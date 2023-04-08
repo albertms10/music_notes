@@ -1,4 +1,4 @@
-part of '../../music_notes.dart';
+part of '../music_notes.dart';
 
 /// Number of chromatic divisions in an octave.
 const int chromaticDivisions = 12;

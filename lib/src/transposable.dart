@@ -1,4 +1,4 @@
-part of '../../music_notes.dart';
+part of '../music_notes.dart';
 
 abstract class Transposable<T> {
   /// Returns a transposed [T] by [semitones] from this [T].
