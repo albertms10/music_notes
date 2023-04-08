@@ -40,5 +40,15 @@ void main() {
         },
       );
     });
+
+    group('.exactFifthsDistance', () {
+      test(
+        'should return the fifths distance between this and other Note',
+        () {
+          expect(Note.c.exactFifthsDistance(Note.c), 0);
+          expect(Note.aFlat.exactFifthsDistance(Note.cSharp), 11);
+        },
+      );
+    });
   });
 }
