@@ -22,6 +22,5 @@ part 'src/note/note.dart';
 part 'src/note/notes.dart';
 part 'src/tonality/key_signature.dart';
 part 'src/tonality/modes.dart';
-part 'src/tonality/relative_tonalities.dart';
 part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
