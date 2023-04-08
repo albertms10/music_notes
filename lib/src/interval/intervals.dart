@@ -51,7 +51,7 @@ enum Intervals {
   static Intervals? fromSemitones(int semitones) =>
       Intervals.values.firstWhereOrNull(
         (interval) =>
-            chromaticModExcludeZero(semitones) ==
+            semitones.chromaticModExcludeZero ==
             intervalsQualitiesIndex[interval],
       );
 
@@ -64,7 +64,7 @@ enum Intervals {
   /// Intervals.fromOrdinal(14) == Intervals.fourteenth
   /// ```
   static Intervals fromOrdinal(int ordinal) =>
-      Intervals.values[nModExcludeZero(ordinal, Intervals.values.length) - 1];
+      Intervals.values[ordinal.nModExcludeZero(Intervals.values.length) - 1];
 
   /// Returns an inverted [Intervals] enum item from [interval].
   ///

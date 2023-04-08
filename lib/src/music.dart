@@ -12,9 +12,8 @@ final Set<EnharmonicNote> chromaticScale = SplayTreeSet<EnharmonicNote>.from({
 final Set<EnharmonicNote> circleOfFifths = SplayTreeSet<EnharmonicNote>.from({
   for (var i = 0; i < chromaticDivisions; i++)
     chromaticScale.elementAt(
-      chromaticMod(
-        i * const Interval(Intervals.fifth, Qualities.perfect).semitones,
-      ),
+      (i * const Interval(Intervals.fifth, Qualities.perfect).semitones)
+          .chromaticMod,
     ),
 });
 
@@ -63,42 +62,3 @@ int exactFifthsDistance(Note note1, Note note2) => note1.intervalDistance(
       note2,
       const Interval(Intervals.fifth, Qualities.perfect),
     );
-
-/// Returns the modulus [chromaticDivisions] of [value].
-///
-/// Examples:
-/// ```dart
-/// chromaticMod(4) == 4
-/// chromaticMod(14) == 2
-/// chromaticMod(-5) == 7
-/// chromaticMod(0) == 0
-/// chromaticMod(12) == 0
-/// ```
-int chromaticMod(int value) => value % chromaticDivisions;
-
-/// Returns the modulus [chromaticDivisions] of [value]. If the
-/// is 0, it returns [chromaticDivisions].
-///
-/// Examples:
-/// ```dart
-/// chromaticModExcludeZero(15) == 3
-/// chromaticModExcludeZero(12) == 12
-/// chromaticModExcludeZero(0) == 12
-/// ```
-int chromaticModExcludeZero(int value) =>
-    nModExcludeZero(value, chromaticDivisions);
-
-/// Returns the modulus [n] of [value]. If the
-/// given value is 0, it returns [n].
-///
-/// Examples:
-/// ```dart
-/// nModExcludeZero(9, 3) == 3
-/// nModExcludeZero(0, 5) == 5
-/// nModExcludeZero(7, 7) == 7
-/// ```
-int nModExcludeZero(int value, int n) {
-  final modValue = value % n;
-
-  return modValue == 0 ? n : modValue;
-}

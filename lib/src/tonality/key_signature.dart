@@ -43,7 +43,7 @@ class KeySignature {
 
     for (var i = 1; i <= iterations; i++) {
       final n = i == iterations
-          ? nModExcludeZero(accidentals, notesValues)
+          ? accidentals.nModExcludeZero(notesValues)
           : notesValues;
 
       list.add('$n × ${Accidental(accidental.semitones + i - 1).symbol}');
