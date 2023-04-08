@@ -21,8 +21,8 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Examples:
   /// ```dart
-  /// const Tonality(Note(Notes.b), Modes.major).accidentals == 5
-  /// const Tonality(Note(Notes.g), Modes.minor).accidentals == 2
+  /// const Tonality(Note.b, Modes.major).accidentals == 5
+  /// const Tonality(Note.g, Modes.minor).accidentals == 2
   /// ```
   int get accidentals => exactFifthsDistance(
         Tonality.fromAccidentals(0, mode).note,
@@ -33,11 +33,8 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Examples:
   /// ```dart
-  /// const Tonality(Note(Notes.e), Modes.major).accidental
-  ///   == Accidental.sharp
-  ///
-  /// const Tonality(Note(Notes.f), Modes.minor).accidental
-  ///   == Accidental.flat
+  /// const Tonality(Note.e, Modes.major).accidental == Accidental.sharp
+  /// const Tonality(Note.f, Modes.minor).accidental == Accidental.flat
   /// ```
   Accidental get accidental => exactFifthsDistance(
             Tonality.fromAccidentals(0, mode).note,
@@ -52,11 +49,11 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Examples:
   /// ```dart
-  /// const Tonality(Note(Notes.d), Modes.minor).relative
-  ///   == const Tonality(Note(Notes.f), Modes.major)
+  /// const Tonality(Note.d, Modes.minor).relative
+  ///   == const Tonality(Note.f, Modes.major)
   ///
-  /// const Tonality(Note(Notes.b, Accidental.flat), Modes.major).relative
-  ///   == const Tonality(Note(Notes.g), Modes.minor)
+  /// const Tonality(Note.bFlat, Modes.major).relative
+  ///   == const Tonality(Note.g, Modes.minor)
   /// ```
   Tonality get relative => Tonality(
         EnharmonicNote(note.semitones)
@@ -67,7 +64,7 @@ class Tonality implements Comparable<Tonality> {
                 descending: mode == Modes.major,
               ).semitones,
             )
-            .note(accidental),
+            .toNote(accidental),
         mode.opposite,
       );
 
@@ -75,7 +72,7 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// const Tonality(Note(Notes.a), Modes.major).keySignature
+  /// const Tonality(Note.a, Modes.major).keySignature
   ///   == const KeySignature(3, Accidental.sharp)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(

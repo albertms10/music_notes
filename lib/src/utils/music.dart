@@ -56,15 +56,8 @@ int shortestFifthsDistance(
 ///
 /// Examples:
 /// ```dart
-/// exactFifthsDistance(
-///   const Note(Notes.a, Accidental.flat),
-///   const Note(Notes.c, Accidental.sharp),
-/// ) == 11
-///
-/// exactFifthsDistance(
-///   const Note(Notes.a, Accidental.flat),
-///   const Note(Notes.d, Accidental.flat),
-/// ) == -1
+/// exactFifthsDistance(Note.aFlat, Note.cSharp) == 11
+/// exactFifthsDistance(Note.aFlat, Note.dFlat) == -1
 /// ```
 int exactFifthsDistance(Note note1, Note note2) => note1.intervalDistance(
       note2,

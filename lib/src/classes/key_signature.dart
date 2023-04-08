@@ -25,8 +25,8 @@ class KeySignature {
   /// ```dart
   /// const KeySignature(2, Accidental.flat).tonalities
   ///   == RelativeTonalities({
-  ///     const Tonality(Note(Notes.b, Accidental.flat), Modes.major),
-  ///     const Tonality(Note(Notes.g), Modes.minor),
+  ///     const Tonality(Note.bFlat, Modes.major),
+  ///     const Tonality(Note.g, Modes.minor),
   ///   })
   /// ```
   RelativeTonalities get tonalities => RelativeTonalities({

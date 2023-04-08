@@ -20,12 +20,11 @@ void main() {
     test('Unison', () {
       const baseInterval = Intervals.unison;
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.c)),
+        Note.c.exactInterval(Note.c),
         equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.c, Accidental.sharp)),
+        Note.c.exactInterval(Note.cSharp),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -33,21 +32,19 @@ void main() {
     test('Second', () {
       const baseInterval = Intervals.second;
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.d, Accidental.doubleFlat)),
+        Note.c.exactInterval(const Note(Notes.d, Accidental.doubleFlat)),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.d, Accidental.flat)),
+        Note.c.exactInterval(Note.dFlat),
         equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.d)),
+        Note.c.exactInterval(Note.d),
         equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.d, Accidental.sharp)),
+        Note.c.exactInterval(Note.dSharp),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -55,21 +52,19 @@ void main() {
     test('Third', () {
       const baseInterval = Intervals.third;
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.e, Accidental.doubleFlat)),
+        Note.c.exactInterval(const Note(Notes.e, Accidental.doubleFlat)),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.e, Accidental.flat)),
+        Note.c.exactInterval(Note.eFlat),
         equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.e)),
+        Note.c.exactInterval(Note.e),
         equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.e, Accidental.sharp)),
+        Note.c.exactInterval(const Note(Notes.e, Accidental.sharp)),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -77,16 +72,15 @@ void main() {
     test('Fourth', () {
       const baseInterval = Intervals.fourth;
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.f, Accidental.flat)),
+        Note.c.exactInterval(const Note(Notes.f, Accidental.flat)),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.f)),
+        Note.c.exactInterval(Note.f),
         equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.f, Accidental.sharp)),
+        Note.c.exactInterval(Note.fSharp),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -94,16 +88,15 @@ void main() {
     test('Fifth', () {
       const baseInterval = Intervals.fifth;
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.g, Accidental.flat)),
+        Note.c.exactInterval(Note.gFlat),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.g)),
+        Note.c.exactInterval(Note.g),
         equals(const Interval(baseInterval, Qualities.perfect)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.g, Accidental.sharp)),
+        Note.c.exactInterval(Note.gSharp),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -111,21 +104,19 @@ void main() {
     test('Sixth', () {
       const baseInterval = Intervals.sixth;
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.a, Accidental.doubleFlat)),
+        Note.c.exactInterval(const Note(Notes.a, Accidental.doubleFlat)),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.a, Accidental.flat)),
+        Note.c.exactInterval(Note.aFlat),
         equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.a)),
+        Note.c.exactInterval(Note.a),
         equals(const Interval(baseInterval, Qualities.major)),
       );
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.a, Accidental.sharp)),
+        Note.c.exactInterval(Note.aSharp),
         equals(const Interval(baseInterval, Qualities.augmented)),
       );
     });
@@ -133,16 +124,15 @@ void main() {
     test('Seventh', () {
       const baseInterval = Intervals.seventh;
       expect(
-        const Note(Notes.c)
-            .exactInterval(const Note(Notes.b, Accidental.doubleFlat)),
+        Note.c.exactInterval(const Note(Notes.b, Accidental.doubleFlat)),
         equals(const Interval(baseInterval, Qualities.diminished)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.b, Accidental.flat)),
+        Note.c.exactInterval(Note.bFlat),
         equals(const Interval(baseInterval, Qualities.minor)),
       );
       expect(
-        const Note(Notes.c).exactInterval(const Note(Notes.b)),
+        Note.c.exactInterval(Note.b),
         equals(const Interval(baseInterval, Qualities.major)),
       );
     });

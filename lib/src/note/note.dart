@@ -7,16 +7,31 @@ class Note implements MusicItem, Comparable<Note> {
 
   const Note(this.note, [this.accidental = Accidental.natural]);
 
+  static const Note c = Note(Notes.c);
+  static const Note cSharp = Note(Notes.c, Accidental.sharp);
+  static const Note dFlat = Note(Notes.d, Accidental.flat);
+  static const Note d = Note(Notes.d);
+  static const Note dSharp = Note(Notes.d, Accidental.sharp);
+  static const Note eFlat = Note(Notes.e, Accidental.flat);
+  static const Note e = Note(Notes.e);
+  static const Note f = Note(Notes.f);
+  static const Note fSharp = Note(Notes.f, Accidental.sharp);
+  static const Note gFlat = Note(Notes.g, Accidental.flat);
+  static const Note g = Note(Notes.g);
+  static const Note gSharp = Note(Notes.g, Accidental.sharp);
+  static const Note aFlat = Note(Notes.a, Accidental.flat);
+  static const Note a = Note(Notes.a);
+  static const Note aSharp = Note(Notes.a, Accidental.sharp);
+  static const Note bFlat = Note(Notes.b, Accidental.flat);
+  static const Note b = Note(Notes.b);
+
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp)
-  ///   == const Note(Notes.d)
-  ///
-  /// Note.fromTonalityAccidentals(0, Modes.minor)
-  ///   == const Note(Notes.a)
+  /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp) == Note.d
+  /// Note.fromTonalityAccidentals(0, Modes.minor) == Note.a
   /// ```
   factory Note.fromTonalityAccidentals(
     int accidentals,
@@ -32,7 +47,7 @@ class Note implements MusicItem, Comparable<Note> {
               const Interval(Intervals.third, Qualities.minor, descending: true)
                   .semitones,
             )
-            .note(accidental);
+            .toNote(accidental);
   }
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number
@@ -40,11 +55,8 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// Note.fromRawAccidentals(2, Accidental.sharp)
-  ///   == const Note(Notes.d)
-  ///
-  /// Note.fromRawAccidentals(0)
-  ///   == const Note(Notes.a)
+  /// Note.fromRawAccidentals(2, Accidental.sharp) == Note.d
+  /// Note.fromRawAccidentals(0) == Note.a
   /// ```
   factory Note.fromRawAccidentals(
     int accidentals, [
@@ -58,7 +70,7 @@ class Note implements MusicItem, Comparable<Note> {
                 ).semitones *
                 accidentals +
             1,
-      ).note(
+      ).toNote(
         (accidental == Accidental.flat && accidentals > 8) ||
                 (accidental == Accidental.sharp && accidentals > 10)
             ? Accidental(accidental.semitones + 1)
@@ -70,8 +82,8 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.d).semitones == 3
-  /// const Note(Notes.f, Accidental.sharp).semitones == 7
+  /// Note.d.semitones == 3
+  /// Note.fSharp.semitones == 7
   /// ```
   @override
   int get semitones =>
@@ -85,8 +97,8 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// const Note(Notes.c).intervalDistance(
-  ///   const Note(Notes.d),
+  /// Note.c.intervalDistance(
+  ///   Note.d,
   ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == 2
   /// ```
@@ -119,12 +131,12 @@ class Note implements MusicItem, Comparable<Note> {
     var distance = 0;
     var currentPitch = this.semitones;
 
-    var tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
+    var tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
 
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote(currentPitch).note(preferredAccidental);
+      tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
     }
 
     return distance;
@@ -134,11 +146,10 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.c).exactInterval(const Note(Notes.d))
+  /// Note.c.exactInterval(Note.d)
   ///   == const Interval(Intervals.second, Qualities.minor)
   ///
-  /// const Note(Notes.d)
-  ///         .exactInterval(const Note(Notes.a, Accidental.flat)) ==
+  /// Note.d.exactInterval(Note.aFlat) ==
   ///     const Interval(Intervals.fifth, Qualities.diminished)
   /// ```
   Interval exactInterval(Note other) {
