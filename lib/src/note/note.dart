@@ -87,10 +87,10 @@ class Note implements MusicItem, Comparable<Note> {
   /// ```
   @override
   int get semitones =>
-      chromaticModExcludeZero(note.value + accidental.semitones);
+      (note.value + accidental.semitones).chromaticModExcludeZero;
 
   /// Returns the difference in semitones between this [Note] and [other].
-  int difference(Note other) => chromaticMod(other.semitones - semitones);
+  int difference(Note other) => (other.semitones - semitones).chromaticMod;
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [other].

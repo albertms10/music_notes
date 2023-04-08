@@ -7,7 +7,8 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart';
 import 'package:quiver/core.dart';
 
-import 'src/utils/iterable.dart';
+import 'utils/int_mod_extension.dart';
+import 'utils/iterable.dart';
 
 part 'src/enharmonic.dart';
 part 'src/interval/enharmonic_interval.dart';

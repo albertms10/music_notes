@@ -23,7 +23,7 @@ enum Notes {
   /// Notes.fromValue(11) == null
   /// ```
   static Notes? fromValue(int value) => values.firstWhereOrNull(
-        (note) => chromaticModExcludeZero(value) == note.value,
+        (note) => value.chromaticModExcludeZero == note.value,
       );
 
   /// Returns a [Notes] enum item that matches [ordinal].
@@ -35,7 +35,7 @@ enum Notes {
   /// Notes.fromOrdinal(10) == Notes.e
   /// ```
   static Notes fromOrdinal(int ordinal) =>
-      Notes.values[nModExcludeZero(ordinal, Notes.values.length) - 1];
+      Notes.values[ordinal.nModExcludeZero(Notes.values.length) - 1];
 
   /// Returns `true` if a [Notes] enum item needs and accidental
   /// to be represented—that is, it cannot be found in [Notes].
