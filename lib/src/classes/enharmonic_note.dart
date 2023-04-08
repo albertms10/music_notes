@@ -64,7 +64,7 @@ class EnharmonicNote extends Enharmonic<Note> {
           (note) => note.accidental == preferredAccidental,
         ) ??
         enharmonicNotes.firstWhereOrNull(
-          (note) => note.accidental.value == 0,
+          (note) => note.accidental.semitones == 0,
         ) ??
         enharmonicNotes.first;
   }

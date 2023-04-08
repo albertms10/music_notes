@@ -7,10 +7,10 @@ class Accidental {
   /// - `> 0` for sharps.
   /// - `== 0` for natural.
   /// - `< 0` for flats.
-  final int value;
+  final int semitones;
 
-  /// Creates a new [Accidental] from a [value].
-  const Accidental(this.value);
+  /// Creates a new [Accidental] from a [semitones].
+  const Accidental(this.semitones);
 
   static const Accidental tripleSharp = Accidental(3);
   static const Accidental doubleSharp = Accidental(2);
@@ -34,18 +34,19 @@ class Accidental {
   /// assert(Accidental.doubleSharp.symbol == '𝄪')
   /// ```
   String get symbol {
-    if (value == 0) return _naturalSymbol;
+    if (semitones == 0) return _naturalSymbol;
 
-    return (value.isOdd
-            ? (value.isNegative ? _flatSymbol : _sharpSymbol)
+    return (semitones.isOdd
+            ? (semitones.isNegative ? _flatSymbol : _sharpSymbol)
             : '') +
-        (value.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol) *
-            (value.abs() ~/ 2);
+        (semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol) *
+            (semitones.abs() ~/ 2);
   }
 
   @override
-  bool operator ==(Object other) => other is Accidental && value == other.value;
+  bool operator ==(Object other) =>
+      other is Accidental && semitones == other.semitones;
 
   @override
-  int get hashCode => value.hashCode;
+  int get hashCode => semitones.hashCode;
 }

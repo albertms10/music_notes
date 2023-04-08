@@ -46,7 +46,7 @@ class KeySignature {
       final n =
           i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
 
-      list.add('$n × ${Accidental(accidental.value + i - 1).symbol}');
+      list.add('$n × ${Accidental(accidental.semitones + i - 1).symbol}');
     }
 
     return list.join(', ');
