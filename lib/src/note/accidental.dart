@@ -9,7 +9,7 @@ class Accidental {
   /// - `< 0` for flats.
   final int semitones;
 
-  /// Creates a new [Accidental] from a [semitones].
+  /// Creates a new [Accidental] from [semitones].
   const Accidental(this.semitones);
 
   static const Accidental tripleSharp = Accidental(3);
