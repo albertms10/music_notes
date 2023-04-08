@@ -57,15 +57,13 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// EnharmonicNote.dSharp.toNote(Accidental.flat) == Note.eFlat
   /// ```
   Note toNote([Accidental preferredAccidental = Accidental.natural]) {
-    final enharmonicNotes = EnharmonicNote(semitones).items;
-
-    return enharmonicNotes.firstWhereOrNull(
+    return items.firstWhereOrNull(
           (note) => note.accidental == preferredAccidental,
         ) ??
-        enharmonicNotes.firstWhereOrNull(
+        items.firstWhereOrNull(
           (note) => note.accidental == Accidental.natural,
         ) ??
-        enharmonicNotes.first;
+        items.first;
   }
 
   /// Returns a transposed [EnharmonicNote] by [semitones]
