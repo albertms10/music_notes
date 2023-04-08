@@ -1,8 +1,9 @@
 part of '../../music_notes.dart';
 
-enum Modes { major, minor }
+enum Modes {
+  major,
+  minor;
 
-extension ModesValues on Modes {
   /// Returns the inverted this [Modes] enum item.
   ///
   /// Examples:

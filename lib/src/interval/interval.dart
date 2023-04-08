@@ -18,7 +18,7 @@ class Interval implements MusicItem, Comparable<Interval> {
         );
 
   static Qualities qualityFromDelta(Intervals interval, int delta) {
-    final qualitiesList = QualitiesValues.intervalQualities(interval);
+    final qualitiesList = Qualities.intervalQualities(interval);
 
     return qualitiesList.firstWhereOrNull(
           (quality) => qualitiesList.toList().indexOf(quality) == delta,
@@ -39,9 +39,7 @@ class Interval implements MusicItem, Comparable<Interval> {
   @override
   int get semitones =>
       (interval.semitones +
-          QualitiesValues.intervalQualities(interval)
-              .toList()
-              .indexOf(quality) -
+          Qualities.intervalQualities(interval).toList().indexOf(quality) -
           1) *
       (descending ? -1 : 1);
 

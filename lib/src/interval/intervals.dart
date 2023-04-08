@@ -14,10 +14,8 @@ enum Intervals {
   eleventh,
   twelfth,
   thirteenth,
-  fourteenth,
-}
+  fourteenth;
 
-extension IntervalsValues on Intervals {
   // ignore: avoid-missing-enum-constant-in-map
   static const Map<Intervals, int> intervalsQualitiesIndex = {
     Intervals.unison: 0,
@@ -31,7 +29,7 @@ extension IntervalsValues on Intervals {
   };
 
   /// [Set] of fundamental perfect [Intervals].
-  static final Set<Intervals> _basePerfectIntervals = {
+  static const Set<Intervals> _basePerfectIntervals = {
     Intervals.unison,
     Intervals.fifth,
   };
@@ -46,9 +44,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.fromSemitones(8) == Intervals.sixth
-  /// IntervalsValues.fromSemitones(0) == Intervals.unison
-  /// IntervalsValues.fromSemitones(4) == null
+  /// Intervals.fromSemitones(8) == Intervals.sixth
+  /// Intervals.fromSemitones(0) == Intervals.unison
+  /// Intervals.fromSemitones(4) == null
   /// ```
   static Intervals? fromSemitones(int semitones) =>
       Intervals.values.firstWhereOrNull(
@@ -61,9 +59,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.fromOrdinal(1) == Intervals.unison
-  /// IntervalsValues.fromOrdinal(5) == Intervals.fifth
-  /// IntervalsValues.fromOrdinal(14) == Intervals.fourteenth
+  /// Intervals.fromOrdinal(1) == Intervals.unison
+  /// Intervals.fromOrdinal(5) == Intervals.fifth
+  /// Intervals.fromOrdinal(14) == Intervals.fourteenth
   /// ```
   static Intervals fromOrdinal(int ordinal) =>
       Intervals.values[nModExcludeZero(ordinal, Intervals.values.length) - 1];
@@ -72,9 +70,9 @@ extension IntervalsValues on Intervals {
   ///
   /// Examples:
   /// ```dart
-  /// IntervalsValues.invert(Intervals.second) == Intervals.seventh
-  /// IntervalsValues.invert(Intervals.fifth) == Intervals.fourth
-  /// IntervalsValues.invert(Intervals.octave) == Intervals.unison
+  /// Intervals.invert(Intervals.second) == Intervals.seventh
+  /// Intervals.invert(Intervals.fifth) == Intervals.fourth
+  /// Intervals.invert(Intervals.octave) == Intervals.unison
   /// ```
   static Intervals invert(Intervals interval) => interval.inverted;
 

@@ -1,15 +1,15 @@
 part of '../../music_notes.dart';
 
-enum Qualities { augmented, major, perfect, minor, diminished }
+enum Qualities {
+  augmented(2),
+  major(1),
+  perfect(0),
+  minor(-1),
+  diminished(-2);
 
-extension QualitiesValues on Qualities {
-  static const qualitiesValues = {
-    Qualities.diminished: -2,
-    Qualities.minor: -1,
-    Qualities.perfect: 0,
-    Qualities.major: 1,
-    Qualities.augmented: 2,
-  };
+  final int value;
+
+  const Qualities(this.value);
 
   static const qualities = {
     Qualities.diminished,
@@ -36,11 +36,11 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.intervalQualities(Intervals.fourth)
-  ///   == QualitiesValues.perfectQualities
+  /// Qualities.intervalQualities(Intervals.fourth)
+  ///   == Qualities.perfectQualities
   ///
-  /// QualitiesValues.intervalQualities(Intervals.sixth)
-  ///   == QualitiesValues.qualities
+  /// Qualities.intervalQualities(Intervals.sixth)
+  ///   == Qualities.qualities
   /// ```
   static Set<Qualities> intervalQualities(Intervals interval) =>
       interval.isPerfect ? perfectQualities : qualities;
@@ -50,9 +50,9 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.exists(Intervals.second, 2) == true
-  /// QualitiesValues.exists(Intervals.sixth, 8) == true
-  /// QualitiesValues.exists(Intervals.sixth, 10) == false
+  /// Qualities.exists(Intervals.second, 2) == true
+  /// Qualities.exists(Intervals.sixth, 8) == true
+  /// Qualities.exists(Intervals.sixth, 10) == false
   /// ```
   static bool exists(Intervals? interval, int semitones) {
     if (interval == null) return false;
@@ -66,22 +66,11 @@ extension QualitiesValues on Qualities {
   ///
   /// Examples:
   /// ```dart
-  /// QualitiesValues.invert(Qualities.augmented) == Qualities.diminished
-  /// QualitiesValues.invert(Qualities.minor) == Qualities.major
-  /// QualitiesValues.invert(Qualities.perfect) == Qualities.perfect
+  /// Qualities.invert(Qualities.augmented) == Qualities.diminished
+  /// Qualities.invert(Qualities.minor) == Qualities.major
+  /// Qualities.invert(Qualities.perfect) == Qualities.perfect
   /// ```
   static Qualities invert(Qualities quality) => quality.inverted;
-
-  /// Returns the value of this [Qualities] enum item as in [qualitiesValues].
-  ///
-  /// Examples:
-  /// ```dart
-  /// Qualities.perfect.value == 0
-  /// Qualities.minor.value == -1
-  /// Qualities.augmented.value == 2
-  /// Qualities.major.value == 1
-  /// ```
-  int get value => qualitiesValues[this]!;
 
   /// Returns an inverted this [Qualities] enum item.
   ///

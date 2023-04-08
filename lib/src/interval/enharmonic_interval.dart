@@ -5,30 +5,30 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   @override
   Set<Interval> get items {
-    final interval = IntervalsValues.fromSemitones(semitones);
+    final interval = Intervals.fromSemitones(semitones);
 
     if (interval != null) {
       final intervalBelow =
-          IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval));
+          Intervals.fromOrdinal(Intervals.values.indexOf(interval));
       final intervalAbove =
-          IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval) + 2);
+          Intervals.fromOrdinal(Intervals.values.indexOf(interval) + 2);
 
       return SplayTreeSet.from({
-        if (QualitiesValues.exists(intervalBelow, semitones))
+        if (Qualities.exists(intervalBelow, semitones))
           Interval.fromDesiredSemitones(intervalBelow, semitones),
         Interval.fromDesiredSemitones(interval, semitones),
-        if (QualitiesValues.exists(intervalAbove, semitones))
+        if (Qualities.exists(intervalAbove, semitones))
           Interval.fromDesiredSemitones(intervalAbove, semitones),
       });
     }
 
-    final intervalBelow = IntervalsValues.fromSemitones(semitones - 1);
-    final intervalAbove = IntervalsValues.fromSemitones(semitones + 1);
+    final intervalBelow = Intervals.fromSemitones(semitones - 1);
+    final intervalAbove = Intervals.fromSemitones(semitones + 1);
 
     return SplayTreeSet<Interval>.from({
-      if (QualitiesValues.exists(intervalBelow, semitones))
+      if (Qualities.exists(intervalBelow, semitones))
         Interval.fromDesiredSemitones(intervalBelow!, semitones),
-      if (QualitiesValues.exists(intervalAbove, semitones))
+      if (Qualities.exists(intervalAbove, semitones))
         Interval.fromDesiredSemitones(intervalAbove!, semitones),
     });
   }
