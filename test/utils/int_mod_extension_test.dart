@@ -15,7 +15,7 @@ void main() {
 
     group('.chromaticModExcludeZero', () {
       test(
-        'should return the correct modulus excluding zero chromatic divisions',
+        'should return the correct modulus chromatic divisions excluding zero',
         () {
           expect(15.chromaticModExcludeZero, 3);
           expect(12.chromaticModExcludeZero, 12);
