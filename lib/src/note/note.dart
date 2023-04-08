@@ -92,6 +92,18 @@ class Note implements MusicItem, Comparable<Note> {
   /// Returns the difference in semitones between this [Note] and [other].
   int difference(Note other) => (other.semitones - semitones).chromaticMod;
 
+  /// Returns the exact fifths distance between this and [other].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Note.aFlat.exactFifthsDistance(Note.cSharp) == 11
+  /// Note.aFlat.exactFifthsDistance(Note.dFlat) == -1
+  /// ```
+  int exactFifthsDistance(Note other) => intervalDistance(
+        other,
+        const Interval(Intervals.fifth, Qualities.perfect),
+      );
+
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [other].
   ///
@@ -128,6 +140,8 @@ class Note implements MusicItem, Comparable<Note> {
     int semitones,
     Accidental preferredAccidental,
   ) {
+    if (this == other) return 0;
+
     var distance = 0;
     var currentPitch = this.semitones;
 
@@ -136,7 +150,8 @@ class Note implements MusicItem, Comparable<Note> {
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
-      tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
+      tempNote = EnharmonicNote(currentPitch.chromaticModExcludeZero)
+          .toNote(preferredAccidental);
     }
 
     return distance;

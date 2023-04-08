@@ -77,6 +77,27 @@ class EnharmonicNote extends Enharmonic<Note> {
   EnharmonicNote transposeBy(int semitones) =>
       EnharmonicNote(this.semitones + semitones);
 
+  /// Returns the shortest fifths distance between this and [other].
+  ///
+  /// Examples:
+  /// ```dart
+  /// EnharmonicNote.fSharp.shortestFifthsDistance(EnharmonicNote.a) == -3
+  /// EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g) == 4
+  /// ```
+  int shortestFifthsDistance(EnharmonicNote other) {
+    final distanceAbove = enharmonicIntervalDistance(
+      other,
+      const Interval(Intervals.fifth, Qualities.perfect),
+    );
+    final distanceBelow = enharmonicIntervalDistance(
+      other,
+      const Interval(Intervals.fifth, Qualities.perfect, descending: true),
+    );
+    final minDistance = math.min(distanceAbove, distanceBelow);
+
+    return minDistance * (minDistance == distanceAbove ? 1 : -1);
+  }
+
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [semitones].
   ///
@@ -95,7 +116,7 @@ class EnharmonicNote extends Enharmonic<Note> {
     while (tempEnharmonicNote != enharmonicNote) {
       distance++;
       currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote(currentPitch);
+      tempEnharmonicNote = EnharmonicNote(currentPitch.chromaticModExcludeZero);
     }
 
     return distance;

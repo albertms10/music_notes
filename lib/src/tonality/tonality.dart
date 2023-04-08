@@ -24,10 +24,8 @@ class Tonality implements Comparable<Tonality> {
   /// const Tonality(Note.b, Modes.major).accidentals == 5
   /// const Tonality(Note.g, Modes.minor).accidentals == 2
   /// ```
-  int get accidentals => exactFifthsDistance(
-        Tonality.fromAccidentals(0, mode).note,
-        note,
-      ).abs();
+  int get accidentals =>
+      Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note).abs();
 
   /// Returns the [Accidental] of this [Tonality]’s key signature.
   ///
@@ -36,13 +34,10 @@ class Tonality implements Comparable<Tonality> {
   /// const Tonality(Note.e, Modes.major).accidental == Accidental.sharp
   /// const Tonality(Note.f, Modes.minor).accidental == Accidental.flat
   /// ```
-  Accidental get accidental => exactFifthsDistance(
-            Tonality.fromAccidentals(0, mode).note,
-            note,
-          ) >
-          0
-      ? Accidental.sharp
-      : Accidental.flat;
+  Accidental get accidental =>
+      Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note) > 0
+          ? Accidental.sharp
+          : Accidental.flat;
 
   /// Returns the [Modes.major] or [Modes.minor] relative [Tonality]
   /// of this [Tonality].
@@ -76,10 +71,7 @@ class Tonality implements Comparable<Tonality> {
   ///   == const KeySignature(3, Accidental.sharp)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
-        exactFifthsDistance(
-          Tonality.fromAccidentals(0, mode).note,
-          note,
-        ),
+        Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note),
       );
 
   @override
