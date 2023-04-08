@@ -50,5 +50,127 @@ void main() {
         },
       );
     });
+
+    group('.exactInterval()', () {
+      test('should return the Interval for a unison', () {
+        const interval = Intervals.unison;
+        expect(
+          Note.c.exactInterval(Note.c),
+          equals(const Interval(interval, Qualities.perfect)),
+        );
+        expect(
+          Note.c.exactInterval(Note.cSharp),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a second', () {
+        const interval = Intervals.second;
+        expect(
+          Note.c.exactInterval(const Note(Notes.d, Accidental.doubleFlat)),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.dFlat),
+          equals(const Interval(interval, Qualities.minor)),
+        );
+        expect(
+          Note.c.exactInterval(Note.d),
+          equals(const Interval(interval, Qualities.major)),
+        );
+        expect(
+          Note.c.exactInterval(Note.dSharp),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a third', () {
+        const interval = Intervals.third;
+        expect(
+          Note.c.exactInterval(const Note(Notes.e, Accidental.doubleFlat)),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.eFlat),
+          equals(const Interval(interval, Qualities.minor)),
+        );
+        expect(
+          Note.c.exactInterval(Note.e),
+          equals(const Interval(interval, Qualities.major)),
+        );
+        expect(
+          Note.c.exactInterval(const Note(Notes.e, Accidental.sharp)),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a fourth', () {
+        const interval = Intervals.fourth;
+        expect(
+          Note.c.exactInterval(const Note(Notes.f, Accidental.flat)),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.f),
+          equals(const Interval(interval, Qualities.perfect)),
+        );
+        expect(
+          Note.c.exactInterval(Note.fSharp),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a fifth', () {
+        const interval = Intervals.fifth;
+        expect(
+          Note.c.exactInterval(Note.gFlat),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.g),
+          equals(const Interval(interval, Qualities.perfect)),
+        );
+        expect(
+          Note.c.exactInterval(Note.gSharp),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a sixth', () {
+        const interval = Intervals.sixth;
+        expect(
+          Note.c.exactInterval(const Note(Notes.a, Accidental.doubleFlat)),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.aFlat),
+          equals(const Interval(interval, Qualities.minor)),
+        );
+        expect(
+          Note.c.exactInterval(Note.a),
+          equals(const Interval(interval, Qualities.major)),
+        );
+        expect(
+          Note.c.exactInterval(Note.aSharp),
+          equals(const Interval(interval, Qualities.augmented)),
+        );
+      });
+
+      test('should return the Interval for a seventh', () {
+        const interval = Intervals.seventh;
+        expect(
+          Note.c.exactInterval(const Note(Notes.b, Accidental.doubleFlat)),
+          equals(const Interval(interval, Qualities.diminished)),
+        );
+        expect(
+          Note.c.exactInterval(Note.bFlat),
+          equals(const Interval(interval, Qualities.minor)),
+        );
+        expect(
+          Note.c.exactInterval(Note.b),
+          equals(const Interval(interval, Qualities.major)),
+        );
+      });
+    });
   });
 }
