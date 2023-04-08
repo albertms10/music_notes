@@ -1,5 +1,5 @@
 import 'interval/enharmonic_interval_test.dart' as enharmonic_interval_test;
-import 'interval/interval_test.dart' as interval_test;
+import 'interval/intervals_test.dart' as interval_test;
 import 'music_test.dart' as music_test;
 import 'note/accidental_test.dart' as accidental_test;
 import 'note/enharmonic_note_test.dart' as enharmonic_note_test;
