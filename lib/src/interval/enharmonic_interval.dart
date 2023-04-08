@@ -14,10 +14,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
           IntervalsValues.fromOrdinal(Intervals.values.indexOf(interval) + 2);
 
       return SplayTreeSet.from({
-        if (QualitiesValues.exists(intervalBelow, semitones))
+        if (Qualities.exists(intervalBelow, semitones))
           Interval.fromDesiredSemitones(intervalBelow, semitones),
         Interval.fromDesiredSemitones(interval, semitones),
-        if (QualitiesValues.exists(intervalAbove, semitones))
+        if (Qualities.exists(intervalAbove, semitones))
           Interval.fromDesiredSemitones(intervalAbove, semitones),
       });
     }
@@ -26,9 +26,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final intervalAbove = IntervalsValues.fromSemitones(semitones + 1);
 
     return SplayTreeSet<Interval>.from({
-      if (QualitiesValues.exists(intervalBelow, semitones))
+      if (Qualities.exists(intervalBelow, semitones))
         Interval.fromDesiredSemitones(intervalBelow!, semitones),
-      if (QualitiesValues.exists(intervalAbove, semitones))
+      if (Qualities.exists(intervalAbove, semitones))
         Interval.fromDesiredSemitones(intervalAbove!, semitones),
     });
   }

@@ -31,7 +31,7 @@ extension IntervalsValues on Intervals {
   };
 
   /// [Set] of fundamental perfect [Intervals].
-  static final Set<Intervals> _basePerfectIntervals = {
+  static const Set<Intervals> _basePerfectIntervals = {
     Intervals.unison,
     Intervals.fifth,
   };
