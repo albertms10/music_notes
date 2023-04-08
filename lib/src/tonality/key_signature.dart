@@ -2,11 +2,11 @@ part of '../../music_notes.dart';
 
 @immutable
 class KeySignature {
-  final int number;
+  final int accidentals;
   final Accidental accidental;
 
-  const KeySignature(this.number, [this.accidental = Accidental.natural])
-      : assert(number >= 0, 'Provide a positive number or zero');
+  const KeySignature(this.accidentals, [this.accidental = Accidental.natural])
+      : assert(accidentals >= 0, 'Provide a positive number or zero');
 
   KeySignature.fromDistance(int distance)
       : this(
@@ -18,33 +18,33 @@ class KeySignature {
                   : Accidental.flat,
         );
 
-  /// Returns [RelativeTonalities] with the two tonalities that are defined
+  /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(2, Accidental.flat).tonalities
-  ///   == RelativeTonalities({
-  ///     const Tonality(Note.bFlat, Modes.major),
-  ///     const Tonality(Note.g, Modes.minor),
-  ///   })
+  /// const KeySignature(2, Accidental.flat).tonalities == {
+  ///   const Tonality(Note.bFlat, Modes.major),
+  ///   const Tonality(Note.g, Modes.minor),
+  /// }
   /// ```
-  RelativeTonalities get tonalities => RelativeTonalities({
-        Tonality.fromAccidentals(number, Modes.major, accidental),
-        Tonality.fromAccidentals(number, Modes.minor, accidental),
+  Set<Tonality> get tonalities => SplayTreeSet.from({
+        Tonality.fromAccidentals(accidentals, Modes.major, accidental),
+        Tonality.fromAccidentals(accidentals, Modes.minor, accidental),
       });
 
   @override
   String toString() {
-    if (number == 0) return '$number';
+    if (accidentals == 0) return '$accidentals';
 
     final list = <String>[];
     final notesValues = Notes.values.length;
-    final iterations = (number / notesValues).ceil();
+    final iterations = (accidentals / notesValues).ceil();
 
     for (var i = 1; i <= iterations; i++) {
-      final n =
-          i == iterations ? nModExcludeZero(number, notesValues) : notesValues;
+      final n = i == iterations
+          ? nModExcludeZero(accidentals, notesValues)
+          : notesValues;
 
       list.add('$n × ${Accidental(accidental.semitones + i - 1).symbol}');
     }
@@ -55,9 +55,9 @@ class KeySignature {
   @override
   bool operator ==(Object other) =>
       other is KeySignature &&
-      number == other.number &&
+      accidentals == other.accidentals &&
       accidental == other.accidental;
 
   @override
-  int get hashCode => hash2(number, accidental);
+  int get hashCode => hash2(accidentals, accidental);
 }
