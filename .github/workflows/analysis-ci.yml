@@ -28,7 +28,7 @@ jobs:
         id: cache
         with:
           path: ~/.pub-cache/hosted
-          key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.lock') }}
+          key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-
             ${{ runner.os }}-pubspec-
