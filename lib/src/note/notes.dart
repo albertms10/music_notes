@@ -73,7 +73,7 @@ enum Notes {
       noteOrdinal2 += values.length;
     }
 
-    return IntervalsValues.fromOrdinal(
+    return Intervals.fromOrdinal(
       ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1,
     );
   }
