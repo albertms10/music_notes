@@ -51,7 +51,7 @@ enum Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.ut.ordinal == 1
+  /// Notes.c.ordinal == 1
   /// Notes.f.ordinal == 4
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
@@ -83,7 +83,7 @@ enum Notes {
   ///
   /// Examples:
   /// ```dart
-  /// Notes.ut.transpose(Intervals.fifth) == Notes.g
+  /// Notes.c.transpose(Intervals.fifth) == Notes.g
   /// Notes.f.transpose(Intervals.third, descending: true) == Notes.d
   /// Notes.a.transpose(Intervals.fourth) == Notes.d
   /// ```

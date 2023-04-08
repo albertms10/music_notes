@@ -58,7 +58,7 @@ int shortestFifthsDistance(
 /// ```dart
 /// exactFifthsDistance(
 ///   const Note(Notes.a, Accidental.flat),
-///   const Note(Notes.ut, Accidental.sharp),
+///   const Note(Notes.c, Accidental.sharp),
 /// ) == 11
 ///
 /// exactFifthsDistance(

@@ -84,7 +84,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// const Note(Notes.ut).intervalDistance(
+  /// const Note(Notes.c).intervalDistance(
   ///   const Note(Notes.d),
   ///   const Interval(Intervals.fifth, Qualities.perfect),
   /// ) == 2
@@ -133,7 +133,7 @@ class Note implements MusicItem, Comparable<Note> {
   ///
   /// Examples:
   /// ```dart
-  /// const Note(Notes.ut).exactInterval(const Note(Notes.d))
+  /// const Note(Notes.c).exactInterval(const Note(Notes.d))
   ///   == const Interval(Intervals.second, Qualities.minor)
   ///
   /// const Note(Notes.d)
