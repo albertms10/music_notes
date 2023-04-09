@@ -59,12 +59,12 @@ void main() {
 
     group('.toString()', () {
       test('should return the string representation of this Accidental', () {
-        expect(const Accidental(5).toString(), '♯𝄪𝄪 (5)');
-        expect(const Accidental(4).toString(), '𝄪𝄪 (4)');
-        expect(Accidental.tripleSharp.toString(), '♯𝄪 (3)');
-        expect(Accidental.doubleSharp.toString(), '𝄪 (2)');
-        expect(Accidental.sharp.toString(), '♯ (1)');
-        expect(Accidental.natural.toString(), '♮ (0)');
+        expect(const Accidental(5).toString(), '♯𝄪𝄪 (+5)');
+        expect(const Accidental(4).toString(), '𝄪𝄪 (+4)');
+        expect(Accidental.tripleSharp.toString(), '♯𝄪 (+3)');
+        expect(Accidental.doubleSharp.toString(), '𝄪 (+2)');
+        expect(Accidental.sharp.toString(), '♯ (+1)');
+        expect(Accidental.natural.toString(), '♮ (+0)');
         expect(Accidental.flat.toString(), '♭ (-1)');
         expect(Accidental.doubleFlat.toString(), '𝄫 (-2)');
         expect(Accidental.tripleFlat.toString(), '♭𝄫 (-3)');
