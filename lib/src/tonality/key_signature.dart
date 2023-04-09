@@ -28,10 +28,10 @@ class KeySignature {
   ///   const Tonality(Note.g, Modes.minor),
   /// }
   /// ```
-  Set<Tonality> get tonalities => SplayTreeSet.from({
+  Set<Tonality> get tonalities => {
         Tonality.fromAccidentals(accidentals, Modes.major, accidental),
         Tonality.fromAccidentals(accidentals, Modes.minor, accidental),
-      });
+      };
 
   @override
   String toString() {
