@@ -1,5 +1,7 @@
 // ignore_for_file: use_named_constants
 
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -73,11 +75,24 @@ void main() {
 
     group('.hashCode', () {
       test('should ignore equal Accidental instances in a Set', () {
-        final collection = {
+        final collection = {Accidental.natural, Accidental.flat};
+        collection.addAll(collection);
+        expect(collection, {Accidental.natural, Accidental.flat});
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort EnharmonicNote items in a collection', () {
+        final orderedSet = SplayTreeSet<Accidental>.of([
+          Accidental.doubleSharp,
           Accidental.natural,
           Accidental.flat,
-        }..add(Accidental.natural);
-        expect(collection.length, 2);
+        ]);
+        expect(orderedSet.toList(), [
+          Accidental.flat,
+          Accidental.natural,
+          Accidental.doubleSharp,
+        ]);
       });
     });
   });

@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -18,6 +20,38 @@ void main() {
           equals(const Interval(Intervals.fifth, Qualities.diminished)),
         );
       });
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal EnharmonicInterval instances in a Set', () {
+        final collection = {
+          const EnharmonicInterval(1),
+          const EnharmonicInterval(5),
+        };
+        collection.addAll(collection);
+        expect(collection, {
+          const EnharmonicInterval(1),
+          const EnharmonicInterval(5),
+        });
+      });
+    });
+
+    group('.compareTo()', () {
+      test(
+        'should correctly sort EnharmonicInterval items in a collection',
+        () {
+          final orderedSet = SplayTreeSet<EnharmonicInterval>.of([
+            const EnharmonicInterval(2),
+            const EnharmonicInterval(5),
+            const EnharmonicInterval(1),
+          ]);
+          expect(orderedSet.toList(), [
+            const EnharmonicInterval(1),
+            const EnharmonicInterval(2),
+            const EnharmonicInterval(5),
+          ]);
+        },
+      );
     });
   });
 }

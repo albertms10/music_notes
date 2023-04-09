@@ -86,7 +86,8 @@ class Tonality implements Comparable<Tonality> {
 
   @override
   int compareTo(covariant Tonality other) => compareMultiple([
-        () => accidental.semitones.compareTo(other.accidental.semitones),
         () => accidentals.compareTo(other.accidentals),
+        () => accidental.semitones.compareTo(other.accidental.semitones),
+        () => note.compareTo(other.note),
       ]);
 }
