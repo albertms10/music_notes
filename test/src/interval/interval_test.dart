@@ -5,6 +5,23 @@ import 'package:test/test.dart';
 
 void main() {
   group('Interval', () {
+    group('.toString()', () {
+      test('should return the string representation of this Interval', () {
+        expect(
+          const Interval(Intervals.second, Qualities.major).toString(),
+          'major second',
+        );
+        expect(
+          const Interval(Intervals.fifth, Qualities.perfect).toString(),
+          'perfect fifth',
+        );
+        expect(
+          const Interval(Intervals.seventh, Qualities.diminished).toString(),
+          'diminished seventh',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('should ignore equal Interval instances in a Set', () {
         final collection = {
