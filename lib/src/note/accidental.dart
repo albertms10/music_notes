@@ -43,6 +43,17 @@ class Accidental {
             (semitones.abs() ~/ 2);
   }
 
+  /// Returns the incremented [Accidental] enum item of this by [n].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidental.flat.increment(2) == Accidental.tripleFlat
+  /// Accidental.sharp.increment(1) == Accidental.doubleSharp
+  /// Accidental.sharp.increment(-1) == Accidental.natural
+  /// ```
+  Accidental increment(int n) =>
+      Accidental((semitones.abs() + n) * (semitones >= 0 ? 1 : -1));
+
   @override
   String toString() => '$symbol ($semitones)';
 
