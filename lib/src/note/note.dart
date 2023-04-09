@@ -178,8 +178,8 @@ class Note implements MusicItem, Comparable<Note> {
 
   @override
   String toString() =>
-      note.name +
-      (accidental != Accidental.natural ? ' ${accidental.symbol}' : '');
+      note.name.toUpperCase() +
+      (accidental != Accidental.natural ? accidental.symbol : '');
 
   @override
   bool operator ==(Object other) =>

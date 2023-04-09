@@ -75,7 +75,7 @@ class Tonality implements Comparable<Tonality> {
       );
 
   @override
-  String toString() => '${mode.name} $note';
+  String toString() => '$note ${mode.name}';
 
   @override
   bool operator ==(Object other) =>
