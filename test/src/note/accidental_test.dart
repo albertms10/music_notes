@@ -33,6 +33,28 @@ void main() {
       });
     });
 
+    group('.increment()', () {
+      test('should return the incremented Accidental', () {
+        expect(Accidental.flat.increment(-2), Accidental.sharp);
+        expect(Accidental.flat.increment(-1), Accidental.natural);
+        expect(Accidental.flat.increment(0), Accidental.flat);
+        expect(Accidental.flat.increment(1), Accidental.doubleFlat);
+        expect(Accidental.flat.increment(2), Accidental.tripleFlat);
+
+        expect(Accidental.natural.increment(-2), Accidental.doubleFlat);
+        expect(Accidental.natural.increment(-1), Accidental.flat);
+        expect(Accidental.natural.increment(0), Accidental.natural);
+        expect(Accidental.natural.increment(1), Accidental.sharp);
+        expect(Accidental.natural.increment(2), Accidental.doubleSharp);
+
+        expect(Accidental.sharp.increment(-2), Accidental.flat);
+        expect(Accidental.sharp.increment(-1), Accidental.natural);
+        expect(Accidental.sharp.increment(0), Accidental.sharp);
+        expect(Accidental.sharp.increment(1), Accidental.doubleSharp);
+        expect(Accidental.sharp.increment(2), Accidental.tripleSharp);
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Accidental', () {
         expect(const Accidental(5).toString(), '♯𝄪𝄪 (5)');
