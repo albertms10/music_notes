@@ -9,10 +9,10 @@ final Set<EnharmonicNote> chromaticScale = SplayTreeSet<EnharmonicNote>.of({
 });
 
 /// Returns a [Set] of [EnharmonicNote]s that conforms the circle of fifths.
-final Set<EnharmonicNote> circleOfFifths = SplayTreeSet<EnharmonicNote>.of({
-  for (var i = 0; i < chromaticDivisions; i++)
+final List<EnharmonicNote> circleOfFifths = [
+  for (var i = -1; i < chromaticDivisions - 1; i++)
     chromaticScale.elementAt(
       (i * const Interval(Intervals.fifth, Qualities.perfect).semitones)
           .chromaticMod,
     ),
-});
+];
