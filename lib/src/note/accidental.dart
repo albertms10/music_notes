@@ -30,8 +30,8 @@ class Accidental {
   ///
   /// Examples:
   /// ```dart
-  /// assert(Accidental.flat.symbol == '♭')
-  /// assert(Accidental.doubleSharp.symbol == '𝄪')
+  /// Accidental.flat.symbol == '♭'
+  /// Accidental.doubleSharp.symbol == '𝄪'
   /// ```
   String get symbol {
     if (semitones == 0) return _naturalSymbol;

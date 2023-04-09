@@ -3,6 +3,35 @@ import 'package:test/test.dart';
 
 void main() {
   group('KeySignature', () {
+    group('constructor', () {
+      test('should throw an assertion error with incorrect arguments', () {
+        expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
+        expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
+      });
+    });
+
+    group('.fromDistance()', () {
+      test('should create a new KeySignature from the given distance', () {
+        expect(
+          KeySignature.fromDistance(-5),
+          const KeySignature(5, Accidental.flat),
+        );
+        expect(
+          KeySignature.fromDistance(-1),
+          const KeySignature(1, Accidental.flat),
+        );
+        expect(KeySignature.fromDistance(0), const KeySignature(0));
+        expect(
+          KeySignature.fromDistance(1),
+          const KeySignature(1, Accidental.sharp),
+        );
+        expect(
+          KeySignature.fromDistance(5),
+          const KeySignature(5, Accidental.sharp),
+        );
+      });
+    });
+
     group('.tonalities', () {
       test('should return the Set of tonalities for this KeySignature', () {
         expect(const KeySignature(10, Accidental.flat).tonalities, {
