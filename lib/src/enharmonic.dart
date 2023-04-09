@@ -2,7 +2,7 @@ part of '../music_notes.dart';
 
 @immutable
 abstract class Enharmonic<T extends MusicItem>
-    implements MusicItem, Transposable<Enharmonic>, Comparable<Enharmonic> {
+    implements MusicItem, Transposable<Enharmonic> {
   /// The number of semitones of the common chromatic pitch of this
   /// [Enharmonic].
   @override

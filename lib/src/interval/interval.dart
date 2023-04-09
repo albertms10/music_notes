@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Interval implements MusicItem, Comparable<Interval> {
+class Interval implements MusicItem {
   final Intervals interval;
   final Qualities quality;
   final bool descending;

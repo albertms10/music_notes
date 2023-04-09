@@ -1,7 +1,8 @@
 part of '../../music_notes.dart';
 
 /// An accidental.
-class Accidental implements MusicItem, Comparable<Accidental> {
+@immutable
+class Accidental implements MusicItem {
   /// The value representing this [Accidental]:
   ///
   /// - `> 0` for sharps.
