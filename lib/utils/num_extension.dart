@@ -7,5 +7,5 @@ extension NumExtension on num {
   /// 0.toDeltaString() == '+0'
   /// (-5).toDeltaString() == '-5'
   /// ```
-  String toDeltaString() => isNegative ? toString() : '+$this';
+  String toDeltaString() => isNegative ? '$this' : '+$this';
 }
