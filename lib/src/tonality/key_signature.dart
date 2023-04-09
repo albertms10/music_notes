@@ -39,7 +39,7 @@ class KeySignature implements Comparable<KeySignature> {
 
   @override
   String toString() {
-    if (accidentals == 0) return '$accidentals × ${accidental.symbol}';
+    if (accidentals == 0) return '$accidentals ${accidental.symbol}';
 
     final list = <String>[];
     final notesLength = Notes.values.length;
@@ -50,7 +50,7 @@ class KeySignature implements Comparable<KeySignature> {
           ? accidentals.nModExcludeZero(notesLength)
           : notesLength;
 
-      list.add('$n × ${accidental.increment(i - 1).symbol}');
+      list.add('$n ${accidental.increment(i - 1).symbol}');
     }
 
     return list.join(', ');
