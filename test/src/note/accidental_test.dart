@@ -77,7 +77,7 @@ void main() {
       test('should ignore equal Accidental instances in a Set', () {
         final collection = {Accidental.natural, Accidental.flat};
         collection.addAll(collection);
-        expect(collection, {Accidental.natural, Accidental.flat});
+        expect(collection.toList(), [Accidental.natural, Accidental.flat]);
       });
     });
 
