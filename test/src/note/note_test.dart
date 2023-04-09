@@ -172,5 +172,15 @@ void main() {
         );
       });
     });
+
+    group('.toString()', () {
+      test('should return the string representation of this Note', () {
+        expect(Note.c.toString(), 'C');
+        expect(Note.bFlat.toString(), 'B♭');
+        expect(Note.fSharp.toString(), 'F♯');
+        expect(const Note(Notes.a, Accidental.doubleSharp).toString(), 'A𝄪');
+        expect(const Note(Notes.g, Accidental.doubleFlat).toString(), 'G𝄫');
+      });
+    });
   });
 }
