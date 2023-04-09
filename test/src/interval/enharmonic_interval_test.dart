@@ -22,6 +22,30 @@ void main() {
       });
     });
 
+    group('.transposeBy()', () {
+      test(
+        'should return the transposed EnharmonicInterval by semitones',
+        () {
+          expect(
+            const EnharmonicInterval(1).transposeBy(2),
+            const EnharmonicInterval(3),
+          );
+          expect(
+            const EnharmonicInterval(6).transposeBy(-3),
+            const EnharmonicInterval(3),
+          );
+          expect(
+            const EnharmonicInterval(8).transposeBy(6),
+            const EnharmonicInterval(2),
+          );
+          expect(
+            const EnharmonicInterval(4).transposeBy(-6),
+            const EnharmonicInterval(10),
+          );
+        },
+      );
+    });
+
     group('.hashCode', () {
       test('should ignore equal EnharmonicInterval instances in a Set', () {
         final collection = {
