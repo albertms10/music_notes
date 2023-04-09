@@ -23,7 +23,7 @@ abstract class Enharmonic<T extends MusicItem>
   Enharmonic transposeBy(int semitones);
 
   @override
-  String toString() => '$items';
+  String toString() => '$semitones $items';
 
   @override
   bool operator ==(Object other) =>
