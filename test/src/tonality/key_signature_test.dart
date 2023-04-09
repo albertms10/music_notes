@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -164,6 +166,39 @@ void main() {
           );
         },
       );
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal KeySignature instances in a Set', () {
+        final collection = {
+          const KeySignature(0),
+          const KeySignature(1, Accidental.sharp),
+        };
+        collection.addAll(collection);
+        expect(collection, {
+          const KeySignature(0),
+          const KeySignature(1, Accidental.sharp),
+        });
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort KeySignature items in a collection', () {
+        final orderedSet = SplayTreeSet<KeySignature>.of([
+          const KeySignature(3, Accidental.flat),
+          const KeySignature(0),
+          const KeySignature(6, Accidental.flat),
+          const KeySignature(4, Accidental.sharp),
+          const KeySignature(3, Accidental.sharp),
+        ]);
+        expect(orderedSet.toList(), [
+          const KeySignature(6, Accidental.flat),
+          const KeySignature(3, Accidental.flat),
+          const KeySignature(0),
+          const KeySignature(3, Accidental.sharp),
+          const KeySignature(4, Accidental.sharp),
+        ]);
+      });
     });
   });
 }

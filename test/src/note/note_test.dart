@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -180,6 +182,31 @@ void main() {
         expect(Note.fSharp.toString(), 'F♯');
         expect(const Note(Notes.a, Accidental.doubleSharp).toString(), 'A𝄪');
         expect(const Note(Notes.g, Accidental.doubleFlat).toString(), 'G𝄫');
+      });
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal Note instances in a Set', () {
+        final collection = {Note.c, Note.aFlat};
+        collection.addAll(collection);
+        expect(collection, {Note.c, Note.aFlat});
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort Note items in a collection', () {
+        final orderedSet = SplayTreeSet<Note>.of([
+          Note.aFlat,
+          Note.c,
+          Note.gSharp,
+          const Note(Notes.b, Accidental.sharp),
+        ]);
+        expect(orderedSet.toList(), [
+          Note.c,
+          const Note(Notes.b, Accidental.sharp),
+          Note.gSharp,
+          Note.aFlat,
+        ]);
       });
     });
   });

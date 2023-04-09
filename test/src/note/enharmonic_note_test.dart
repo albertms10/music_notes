@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -60,6 +62,29 @@ void main() {
           EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g),
           4,
         );
+      });
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal EnharmonicNote instances in a Set', () {
+        final collection = {EnharmonicNote.f, EnharmonicNote.aSharp};
+        collection.addAll(collection);
+        expect(collection, {EnharmonicNote.f, EnharmonicNote.aSharp});
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort EnharmonicNote items in a collection', () {
+        final orderedSet = SplayTreeSet<EnharmonicNote>.of([
+          EnharmonicNote.fSharp,
+          EnharmonicNote.c,
+          EnharmonicNote.d,
+        ]);
+        expect(orderedSet.toList(), [
+          EnharmonicNote.c,
+          EnharmonicNote.d,
+          EnharmonicNote.fSharp,
+        ]);
       });
     });
   });
