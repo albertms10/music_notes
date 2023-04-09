@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class KeySignature {
+class KeySignature implements Comparable<KeySignature> {
   final int accidentals;
   final Accidental accidental;
 
@@ -64,4 +64,12 @@ class KeySignature {
 
   @override
   int get hashCode => hash2(accidentals, accidental);
+
+  @override
+  int compareTo(covariant KeySignature other) => compareMultiple([
+        () => accidental.compareTo(other.accidental),
+        () =>
+            accidentals.compareTo(other.accidentals) *
+            (accidental.semitones > 0 ? 1 : -1),
+      ]);
 }

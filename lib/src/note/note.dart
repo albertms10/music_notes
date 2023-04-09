@@ -190,6 +190,8 @@ class Note implements MusicItem, Comparable<Note> {
   int get hashCode => hash2(note, accidental);
 
   @override
-  int compareTo(covariant MusicItem other) =>
-      semitones.compareTo(other.semitones);
+  int compareTo(covariant Note other) => compareMultiple([
+        () => semitones.compareTo(other.semitones),
+        () => note.value.compareTo(other.note.value),
+      ]);
 }
