@@ -61,21 +61,22 @@ class Note implements MusicItem, Comparable<Note> {
   factory Note.fromRawAccidentals(
     int accidentals, [
     Accidental accidental = Accidental.natural,
-  ]) =>
-      EnharmonicNote(
-        Interval(
-                  Intervals.fifth,
-                  Qualities.perfect,
-                  descending: accidental == Accidental.flat,
-                ).semitones *
-                accidentals +
-            1,
-      ).toNote(
-        (accidental == Accidental.flat && accidentals > 8) ||
-                (accidental == Accidental.sharp && accidentals > 10)
-            ? Accidental(accidental.semitones + 1)
-            : accidental,
-      );
+  ]) {
+    final fifthInterval = Interval(
+      Intervals.fifth,
+      Qualities.perfect,
+      descending: accidental == Accidental.flat,
+    );
+
+    return EnharmonicNote(
+      (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
+    ).toNote(
+      (accidental == Accidental.flat && accidentals > 8) ||
+              (accidental == Accidental.sharp && accidentals > 10)
+          ? Accidental(accidental.semitones + 1)
+          : accidental,
+    );
+  }
 
   /// Returns the number of semitones that correspond to this [Note]
   /// from [Notes.c].

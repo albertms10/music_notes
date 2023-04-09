@@ -6,7 +6,11 @@ class KeySignature {
   final Accidental accidental;
 
   const KeySignature(this.accidentals, [this.accidental = Accidental.natural])
-      : assert(accidentals >= 0, 'Provide a positive number or zero');
+      : assert(accidentals >= 0, 'Provide a positive number or zero'),
+        assert(
+          accidentals == 0 || !identical(accidental, Accidental.natural),
+          'Provide an accidental when accidentals is greater than 0',
+        );
 
   KeySignature.fromDistance(int distance)
       : this(
@@ -28,10 +32,10 @@ class KeySignature {
   ///   const Tonality(Note.g, Modes.minor),
   /// }
   /// ```
-  Set<Tonality> get tonalities => SplayTreeSet.from({
+  Set<Tonality> get tonalities => {
         Tonality.fromAccidentals(accidentals, Modes.major, accidental),
         Tonality.fromAccidentals(accidentals, Modes.minor, accidental),
-      });
+      };
 
   @override
   String toString() {

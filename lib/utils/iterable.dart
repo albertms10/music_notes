@@ -1,5 +1,5 @@
 int compareMultiple(Iterable<int Function()> comparables) {
-  assert(comparables.length > 2, 'Provide more than two comparables');
+  assert(comparables.length > 1, 'Provide more than one comparable');
   late int compareValue;
   for (final comparable in comparables) {
     compareValue = comparable();
