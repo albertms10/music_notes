@@ -8,16 +8,16 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Interval', () {
         expect(
-          const Interval(Intervals.second, Qualities.major).toString(),
-          'major second',
+          const Interval(Intervals.second, ModalQuality.major).toString(),
+          'major (+1) second',
         );
         expect(
-          const Interval(Intervals.fifth, Qualities.perfect).toString(),
-          'perfect fifth',
+          const Interval(Intervals.fifth, PerfectQuality.perfect).toString(),
+          'perfect (+0) fifth',
         );
         expect(
-          const Interval(Intervals.seventh, Qualities.diminished).toString(),
-          'diminished seventh',
+          const Interval(Intervals.seventh, ModalQuality.diminished).toString(),
+          'diminished (-2) seventh',
         );
       });
     });
