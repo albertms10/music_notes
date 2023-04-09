@@ -52,11 +52,11 @@ void main() {
         ]);
         expect(orderedSet.toList(), [
           const Tonality(Note.c, Modes.major),
-          const Tonality(Note.d, Modes.major),
           const Tonality(Note.c, Modes.minor),
+          const Tonality(Note.dFlat, Modes.major),
+          const Tonality(Note.d, Modes.major),
           const Tonality(Note.eFlat, Modes.major),
           const Tonality(Note.fSharp, Modes.minor),
-          const Tonality(Note.dFlat, Modes.major),
         ]);
       });
     });
