@@ -35,18 +35,18 @@ class KeySignature {
 
   @override
   String toString() {
-    if (accidentals == 0) return '$accidentals';
+    if (accidentals == 0) return '$accidentals × ${accidental.symbol}';
 
     final list = <String>[];
-    final notesValues = Notes.values.length;
-    final iterations = (accidentals / notesValues).ceil();
+    final notesLength = Notes.values.length;
+    final iterations = (accidentals / notesLength).ceil();
 
     for (var i = 1; i <= iterations; i++) {
       final n = i == iterations
-          ? accidentals.nModExcludeZero(notesValues)
-          : notesValues;
+          ? accidentals.nModExcludeZero(notesLength)
+          : notesLength;
 
-      list.add('$n × ${Accidental(accidental.semitones + i - 1).symbol}');
+      list.add('$n × ${accidental.increment(i - 1).symbol}');
     }
 
     return list.join(', ');
