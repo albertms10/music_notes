@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Note implements MusicItem, Comparable<Note> {
+class Note implements MusicItem {
   final Notes note;
   final Accidental accidental;
 
