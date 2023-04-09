@@ -63,14 +63,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval({
-  ///   const Interval(Intervals.sixth, Qualities.major),
-  /// }).transposeBy(-3)
-  ///   == EnharmonicInterval({
-  ///     const Interval(Intervals.fourth, Qualities.perfect),
-  ///   })
+  /// EnharmonicInterval(6).transposeBy(-3) == EnharmonicInterval(3)
+  /// EnharmonicInterval(8).transposeBy(6) == EnharmonicInterval(2)
   /// ```
   @override
   EnharmonicInterval transposeBy(int semitones) =>
-      EnharmonicInterval(this.semitones + semitones);
+      EnharmonicInterval((this.semitones + semitones).chromaticModExcludeZero);
 }
