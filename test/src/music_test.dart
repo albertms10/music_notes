@@ -24,5 +24,24 @@ void main() {
         );
       });
     });
+
+    group('circleOfFifths', () {
+      test('should return the correct circle of fifths notes', () {
+        expect(circleOfFifths, [
+          EnharmonicNote.f,
+          EnharmonicNote.c,
+          EnharmonicNote.g,
+          EnharmonicNote.d,
+          EnharmonicNote.a,
+          EnharmonicNote.e,
+          EnharmonicNote.b,
+          EnharmonicNote.fSharp,
+          EnharmonicNote.cSharp,
+          EnharmonicNote.gSharp,
+          EnharmonicNote.dSharp,
+          EnharmonicNote.aSharp,
+        ]);
+      });
+    });
   });
 }
