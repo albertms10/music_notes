@@ -56,7 +56,7 @@ class Accidental implements MusicItem, Comparable<Accidental> {
       Accidental((semitones.abs() + n) * (semitones >= 0 ? 1 : -1));
 
   @override
-  String toString() => '$symbol ($semitones)';
+  String toString() => '$symbol (${semitones.toDeltaString()})';
 
   @override
   bool operator ==(Object other) =>

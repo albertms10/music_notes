@@ -9,6 +9,7 @@ import 'package:quiver/core.dart';
 
 import 'utils/int_mod_extension.dart';
 import 'utils/iterable.dart';
+import 'utils/num_extension.dart';
 
 part 'src/enharmonic.dart';
 part 'src/interval/enharmonic_interval.dart';
