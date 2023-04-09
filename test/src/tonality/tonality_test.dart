@@ -29,12 +29,14 @@ void main() {
         final collection = {
           const Tonality(Note.d, Modes.major),
           const Tonality(Note.fSharp, Modes.minor),
+          const Tonality(Note.gSharp, Modes.minor),
         };
         collection.addAll(collection);
-        expect(collection, {
+        expect(collection.toList(), [
           const Tonality(Note.d, Modes.major),
           const Tonality(Note.fSharp, Modes.minor),
-        });
+          const Tonality(Note.gSharp, Modes.minor),
+        ]);
       });
     });
 

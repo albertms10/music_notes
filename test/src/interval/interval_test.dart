@@ -26,13 +26,15 @@ void main() {
       test('should ignore equal Interval instances in a Set', () {
         final collection = {
           const Interval(Intervals.second, Qualities.major),
+          const Interval(Intervals.third, Qualities.diminished),
           const Interval(Intervals.fourth, Qualities.perfect),
         };
         collection.addAll(collection);
-        expect(collection, {
+        expect(collection.toList(), [
           const Interval(Intervals.second, Qualities.major),
+          const Interval(Intervals.third, Qualities.diminished),
           const Interval(Intervals.fourth, Qualities.perfect),
-        });
+        ]);
       });
     });
 

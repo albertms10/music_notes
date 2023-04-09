@@ -175,10 +175,10 @@ void main() {
           const KeySignature(1, Accidental.sharp),
         };
         collection.addAll(collection);
-        expect(collection, {
+        expect(collection.toList(), [
           const KeySignature(0),
           const KeySignature(1, Accidental.sharp),
-        });
+        ]);
       });
     });
 

@@ -53,10 +53,10 @@ void main() {
           const EnharmonicInterval(5),
         };
         collection.addAll(collection);
-        expect(collection, {
+        expect(collection.toList(), [
           const EnharmonicInterval(1),
           const EnharmonicInterval(5),
-        });
+        ]);
       });
     });
 

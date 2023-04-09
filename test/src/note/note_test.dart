@@ -187,9 +187,9 @@ void main() {
 
     group('.hashCode', () {
       test('should ignore equal Note instances in a Set', () {
-        final collection = {Note.c, Note.aFlat};
+        final collection = {Note.c, Note.aFlat, Note.gSharp};
         collection.addAll(collection);
-        expect(collection, {Note.c, Note.aFlat});
+        expect(collection.toList(), [Note.c, Note.aFlat, Note.gSharp]);
       });
     });
 

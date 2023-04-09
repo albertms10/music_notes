@@ -69,7 +69,7 @@ void main() {
       test('should ignore equal EnharmonicNote instances in a Set', () {
         final collection = {EnharmonicNote.f, EnharmonicNote.aSharp};
         collection.addAll(collection);
-        expect(collection, {EnharmonicNote.f, EnharmonicNote.aSharp});
+        expect(collection.toList(), [EnharmonicNote.f, EnharmonicNote.aSharp]);
       });
     });
 
