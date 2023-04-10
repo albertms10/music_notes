@@ -8,10 +8,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final interval = Intervals.fromSemitones(semitones);
 
     if (interval != null) {
-      final intervalBelow =
-          Intervals.fromOrdinal(Intervals.values.indexOf(interval));
-      final intervalAbove =
-          Intervals.fromOrdinal(Intervals.values.indexOf(interval) + 2);
+      final intervalBelow = Intervals.fromOrdinal(interval.ordinal - 1);
+      final intervalAbove = Intervals.fromOrdinal(interval.ordinal + 1);
 
       return SplayTreeSet.of({
         if (Qualities.exists(intervalBelow, semitones))
