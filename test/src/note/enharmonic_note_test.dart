@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('EnharmonicNote', () {
     group('.items', () {
-      test('should return the correct notes for this EnharmonicNote', () {
+      test('should return the correct Notes for this EnharmonicNote', () {
         expect(EnharmonicNote.c.items, {
           const Note(Notes.b, Accidental.sharp),
           Note.c,
