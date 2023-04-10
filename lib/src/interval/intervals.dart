@@ -110,6 +110,17 @@ enum Intervals {
   bool get isPerfect =>
       perfectIntervals.any((interval) => {this, inverted}.contains(interval));
 
+  /// Returns whether this [Intervals] enum item is compound.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Intervals.fifth.isCompound == false
+  /// Intervals.octave.isCompound == false
+  /// Intervals.ninth.isCompound == true
+  /// Intervals.thirteenth.isCompound == true
+  /// ```
+  bool get isCompound => ordinal > Intervals.octave.ordinal;
+
   /// Returns a simplified this [Intervals] enum item.
   ///
   /// Examples:
@@ -118,9 +129,8 @@ enum Intervals {
   /// Intervals.ninth.simplified == Intervals.second
   /// Intervals.octave.simplified == Intervals.octave
   /// ```
-  Intervals get simplified => ordinal > Intervals.octave.ordinal
-      ? Intervals.values[ordinal - Intervals.octave.ordinal]
-      : this;
+  Intervals get simplified =>
+      isCompound ? Intervals.values[ordinal % Intervals.octave.ordinal] : this;
 
   /// Returns an inverted this [Intervals] enum item.
   ///
