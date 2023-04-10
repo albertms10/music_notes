@@ -5,6 +5,57 @@ import 'package:test/test.dart';
 
 void main() {
   group('EnharmonicInterval', () {
+    group('.items', () {
+      test(
+        'should return the correct Intervals for this EnharmonicInterval',
+        () {
+          expect(const EnharmonicInterval(1).items, {
+            const Interval(Intervals.unison, Qualities.perfect),
+            const Interval(Intervals.second, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(2).items, {
+            const Interval(Intervals.second, Qualities.minor),
+          });
+          expect(const EnharmonicInterval(3).items, {
+            const Interval(Intervals.second, Qualities.major),
+            const Interval(Intervals.third, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(4).items, {
+            const Interval(Intervals.third, Qualities.minor),
+          });
+          expect(const EnharmonicInterval(5).items, {
+            const Interval(Intervals.third, Qualities.major),
+            const Interval(Intervals.fourth, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(6).items, {
+            const Interval(Intervals.fourth, Qualities.perfect),
+          });
+          expect(const EnharmonicInterval(7).items, {
+            const Interval(Intervals.fourth, Qualities.augmented),
+            const Interval(Intervals.fifth, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(8).items, {
+            const Interval(Intervals.fifth, Qualities.perfect),
+            const Interval(Intervals.sixth, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(9).items, {
+            const Interval(Intervals.sixth, Qualities.minor),
+          });
+          expect(const EnharmonicInterval(10).items, {
+            const Interval(Intervals.sixth, Qualities.major),
+            const Interval(Intervals.seventh, Qualities.diminished),
+          });
+          expect(const EnharmonicInterval(11).items, {
+            const Interval(Intervals.seventh, Qualities.minor),
+          });
+          expect(const EnharmonicInterval(12).items, {
+            const Interval(Intervals.seventh, Qualities.major),
+            const Interval(Intervals.octave, Qualities.diminished),
+          });
+        },
+      );
+    });
+
     group('.intervalFromSemitones()', () {
       test('should return the correct Interval from semitones', () {
         expect(
