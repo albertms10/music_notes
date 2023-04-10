@@ -18,5 +18,25 @@ void main() {
         expect(Intervals.thirteenth.isPerfect, isFalse);
       });
     });
+
+    group('.isCompound', () {
+      test('should return whether this Intervals enum item is compound', () {
+        expect(Intervals.unison.isCompound, isFalse);
+        expect(Intervals.fifth.isCompound, isFalse);
+        expect(Intervals.octave.isCompound, isFalse);
+        expect(Intervals.ninth.isCompound, isTrue);
+        expect(Intervals.thirteenth.isCompound, isTrue);
+      });
+    });
+
+    group('.simplified', () {
+      test('should return the simplified Intervals enum item', () {
+        expect(Intervals.second.simplified, Intervals.second);
+        expect(Intervals.fourth.simplified, Intervals.fourth);
+        expect(Intervals.octave.simplified, Intervals.octave);
+        expect(Intervals.tenth.simplified, Intervals.third);
+        expect(Intervals.thirteenth.simplified, Intervals.sixth);
+      });
+    });
   });
 }
