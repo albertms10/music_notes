@@ -55,7 +55,7 @@ class Tonality implements Comparable<Tonality> {
             .transposeBy(
               Interval(
                 Intervals.third,
-                Qualities.minor,
+                ImperfectQuality.minor,
                 descending: mode == Modes.major,
               ).semitones,
             )

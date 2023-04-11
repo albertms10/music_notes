@@ -24,7 +24,7 @@ class EnharmonicNote extends Enharmonic<Note> {
       final noteBelow = Notes.fromOrdinal(note.ordinal - 1);
       final noteAbove = Notes.fromOrdinal(note.ordinal + 1);
 
-      return SplayTreeSet.of({
+      return SplayTreeSet<Note>.of({
         Note(
           noteBelow,
           Accidental((note.value - noteBelow.value).chromaticModExcludeZero),
@@ -41,7 +41,7 @@ class EnharmonicNote extends Enharmonic<Note> {
       });
     }
 
-    return SplayTreeSet.of({
+    return SplayTreeSet<Note>.of({
       Note(
         Notes.fromValue(semitones - 1)!,
         Accidental.sharp,
@@ -91,11 +91,11 @@ class EnharmonicNote extends Enharmonic<Note> {
   int shortestFifthsDistance(EnharmonicNote other) {
     final distanceAbove = enharmonicIntervalDistance(
       other,
-      const Interval(Intervals.fifth, Qualities.perfect),
+      const Interval(Intervals.fifth, PerfectQuality.perfect),
     );
     final distanceBelow = enharmonicIntervalDistance(
       other,
-      const Interval(Intervals.fifth, Qualities.perfect, descending: true),
+      const Interval(Intervals.fifth, PerfectQuality.perfect, descending: true),
     );
     final minDistance = math.min(distanceAbove, distanceBelow);
 
@@ -133,12 +133,16 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// ```dart
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     const Interval(Intervals.fifth, Qualities.perfect),
+  ///     const Interval(Intervals.fifth, PerfectQuality.perfect),
   ///   ) == 10
   ///
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     const Interval(Intervals.fifth, Qualities.perfect, descending: true),
+  ///     const Interval(
+  ///       Intervals.fifth,
+  ///       PerfectQuality.perfect,
+  ///       descending: true
+  ///     ),
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(
