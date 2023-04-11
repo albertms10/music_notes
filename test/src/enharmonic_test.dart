@@ -10,15 +10,15 @@ void main() {
         expect(EnharmonicNote.dSharp.toString(), '4 {D♯, E♭}');
 
         expect(
-          const EnharmonicInterval(1).toString(),
+          EnharmonicInterval.perfectUnison.toString(),
           '1 {perfect unison, diminished second}',
         );
         expect(
-          const EnharmonicInterval(5).toString(),
+          EnharmonicInterval.majorThird.toString(),
           '5 {major third, diminished fourth}',
         );
         expect(
-          const EnharmonicInterval(9).toString(),
+          EnharmonicInterval.minorSixth.toString(),
           '9 {augmented fifth, minor sixth, doubleDiminished seventh}',
         );
       });

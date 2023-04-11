@@ -7,45 +7,45 @@ void main() {
   group('EnharmonicInterval', () {
     group('.items', () {
       test(
-        'should return the correct Intervals for this EnharmonicInterval',
+        'should return the correct Interval items for this EnharmonicInterval',
         () {
-          expect(const EnharmonicInterval(1).items, {
+          expect(EnharmonicInterval.perfectUnison.items, {
             const Interval(Intervals.unison, PerfectQuality.perfect),
             const Interval(Intervals.second, ImperfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(2).items, {
+          expect(EnharmonicInterval.minorSecond.items, {
             const Interval(Intervals.unison, PerfectQuality.augmented),
             const Interval(Intervals.second, ImperfectQuality.minor),
             const Interval(Intervals.third, ImperfectQuality.doubleDiminished),
           });
-          expect(const EnharmonicInterval(3).items, {
+          expect(EnharmonicInterval.majorSecond.items, {
             const Interval(Intervals.second, ImperfectQuality.major),
             const Interval(Intervals.third, ImperfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(4).items, {
+          expect(EnharmonicInterval.minorThird.items, {
             const Interval(Intervals.second, ImperfectQuality.augmented),
             const Interval(Intervals.third, ImperfectQuality.minor),
             const Interval(Intervals.fourth, PerfectQuality.doubleDiminished),
           });
-          expect(const EnharmonicInterval(5).items, {
+          expect(EnharmonicInterval.majorThird.items, {
             const Interval(Intervals.third, ImperfectQuality.major),
             const Interval(Intervals.fourth, PerfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(6).items, {
+          expect(EnharmonicInterval.perfectFourth.items, {
             const Interval(Intervals.third, ImperfectQuality.augmented),
             const Interval(Intervals.fourth, PerfectQuality.perfect),
             const Interval(Intervals.fifth, PerfectQuality.doubleDiminished),
           });
-          expect(const EnharmonicInterval(7).items, {
+          expect(EnharmonicInterval.tritone.items, {
             const Interval(Intervals.fourth, PerfectQuality.augmented),
             const Interval(Intervals.fifth, PerfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(8).items, {
+          expect(EnharmonicInterval.perfectFifth.items, {
             const Interval(Intervals.fourth, PerfectQuality.doubleAugmented),
             const Interval(Intervals.fifth, PerfectQuality.perfect),
             const Interval(Intervals.sixth, ImperfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(9).items, {
+          expect(EnharmonicInterval.minorSixth.items, {
             const Interval(Intervals.fifth, PerfectQuality.augmented),
             const Interval(Intervals.sixth, ImperfectQuality.minor),
             const Interval(
@@ -53,16 +53,16 @@ void main() {
               ImperfectQuality.doubleDiminished,
             ),
           });
-          expect(const EnharmonicInterval(10).items, {
+          expect(EnharmonicInterval.majorSixth.items, {
             const Interval(Intervals.sixth, ImperfectQuality.major),
             const Interval(Intervals.seventh, ImperfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(11).items, {
+          expect(EnharmonicInterval.minorSeventh.items, {
             const Interval(Intervals.sixth, ImperfectQuality.augmented),
             const Interval(Intervals.seventh, ImperfectQuality.minor),
             const Interval(Intervals.octave, PerfectQuality.doubleDiminished),
           });
-          expect(const EnharmonicInterval(12).items, {
+          expect(EnharmonicInterval.majorSeventh.items, {
             const Interval(Intervals.seventh, ImperfectQuality.major),
             const Interval(Intervals.octave, PerfectQuality.diminished),
           });
@@ -102,20 +102,20 @@ void main() {
         'should return the transposed EnharmonicInterval by semitones',
         () {
           expect(
-            const EnharmonicInterval(1).transposeBy(2),
-            const EnharmonicInterval(3),
+            EnharmonicInterval.perfectUnison.transposeBy(2),
+            EnharmonicInterval.majorSecond,
           );
           expect(
-            const EnharmonicInterval(6).transposeBy(-3),
-            const EnharmonicInterval(3),
+            EnharmonicInterval.perfectFourth.transposeBy(-3),
+            EnharmonicInterval.majorSecond,
           );
           expect(
-            const EnharmonicInterval(8).transposeBy(6),
-            const EnharmonicInterval(2),
+            EnharmonicInterval.perfectFifth.transposeBy(6),
+            EnharmonicInterval.minorSecond,
           );
           expect(
-            const EnharmonicInterval(4).transposeBy(-6),
-            const EnharmonicInterval(10),
+            EnharmonicInterval.minorThird.transposeBy(-6),
+            EnharmonicInterval.majorSixth,
           );
         },
       );
@@ -124,13 +124,13 @@ void main() {
     group('.hashCode', () {
       test('should ignore equal EnharmonicInterval instances in a Set', () {
         final collection = {
-          const EnharmonicInterval(1),
-          const EnharmonicInterval(5),
+          EnharmonicInterval.perfectUnison,
+          EnharmonicInterval.majorThird,
         };
         collection.addAll(collection);
         expect(collection.toList(), [
-          const EnharmonicInterval(1),
-          const EnharmonicInterval(5),
+          EnharmonicInterval.perfectUnison,
+          EnharmonicInterval.majorThird,
         ]);
       });
     });
@@ -140,14 +140,14 @@ void main() {
         'should correctly sort EnharmonicInterval items in a collection',
         () {
           final orderedSet = SplayTreeSet<EnharmonicInterval>.of([
-            const EnharmonicInterval(2),
-            const EnharmonicInterval(5),
-            const EnharmonicInterval(1),
+            EnharmonicInterval.minorSecond,
+            EnharmonicInterval.majorThird,
+            EnharmonicInterval.perfectUnison,
           ]);
           expect(orderedSet.toList(), [
-            const EnharmonicInterval(1),
-            const EnharmonicInterval(2),
-            const EnharmonicInterval(5),
+            EnharmonicInterval.perfectUnison,
+            EnharmonicInterval.minorSecond,
+            EnharmonicInterval.majorThird,
           ]);
         },
       );
