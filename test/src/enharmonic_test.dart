@@ -11,16 +11,15 @@ void main() {
 
         expect(
           const EnharmonicInterval(1).toString(),
-          '1 {perfect (+0) unison, diminished (-1) second}',
+          '1 {perfect unison, diminished second}',
         );
         expect(
           const EnharmonicInterval(5).toString(),
-          '5 {major (+1) third, diminished (-1) fourth}',
+          '5 {major third, diminished fourth}',
         );
         expect(
           const EnharmonicInterval(9).toString(),
-          '9 {augmented (+1) fifth, minor (+0) sixth, '
-          'doubleDiminished (-2) seventh}',
+          '9 {augmented fifth, minor sixth, doubleDiminished seventh}',
         );
       });
     });

@@ -388,16 +388,16 @@ void main() {
       test('should return the string representation of this Interval', () {
         expect(
           const Interval(Intervals.second, ImperfectQuality.major).toString(),
-          'major (+1) second',
+          'major second',
         );
         expect(
           const Interval(Intervals.fifth, PerfectQuality.perfect).toString(),
-          'perfect (+0) fifth',
+          'perfect fifth',
         );
         expect(
           const Interval(Intervals.seventh, ImperfectQuality.diminished)
               .toString(),
-          'diminished (-1) seventh',
+          'diminished seventh',
         );
       });
     });

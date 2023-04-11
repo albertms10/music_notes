@@ -61,7 +61,7 @@ class Interval implements MusicItem {
   Interval get inverted => Interval(interval.inverted, quality.inverted);
 
   @override
-  String toString() => '$quality ${interval.name}';
+  String toString() => '${quality.name} ${interval.name}';
 
   @override
   bool operator ==(Object other) =>
