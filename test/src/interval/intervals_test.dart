@@ -3,6 +3,38 @@ import 'package:test/test.dart';
 
 void main() {
   group('Intervals', () {
+    group('.fromSemitones()', () {
+      test(
+        'should return the Intervals enum item with the corresponding '
+        'semitones',
+        () {
+          expect(Intervals.fromSemitones(0), Intervals.unison);
+          expect(Intervals.fromSemitones(1), Intervals.second);
+          expect(Intervals.fromSemitones(3), Intervals.third);
+          expect(Intervals.fromSemitones(5), Intervals.fourth);
+          expect(Intervals.fromSemitones(7), Intervals.fifth);
+          expect(Intervals.fromSemitones(8), Intervals.sixth);
+          expect(Intervals.fromSemitones(10), Intervals.seventh);
+          expect(Intervals.fromSemitones(12), Intervals.octave);
+          expect(Intervals.fromSemitones(13), Intervals.second);
+          expect(Intervals.fromSemitones(-2), Intervals.seventh);
+        },
+      );
+
+      test(
+        'should return null when no Intervals correspond to the given '
+        'semitones',
+        () {
+          expect(Intervals.fromSemitones(-1), isNull);
+          expect(Intervals.fromSemitones(2), isNull);
+          expect(Intervals.fromSemitones(4), isNull);
+          expect(Intervals.fromSemitones(6), isNull);
+          expect(Intervals.fromSemitones(9), isNull);
+          expect(Intervals.fromSemitones(11), isNull);
+        },
+      );
+    });
+
     group('.isPerfect', () {
       test('should return whether this Intervals enum item is perfect', () {
         expect(Intervals.unison.isPerfect, isTrue);
