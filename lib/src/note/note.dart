@@ -44,8 +44,11 @@ class Note implements MusicItem {
         ? note
         : EnharmonicNote(note.semitones)
             .transposeBy(
-              const Interval(Intervals.third, Qualities.minor, descending: true)
-                  .semitones,
+              const Interval(
+                Intervals.third,
+                ImperfectQuality.minor,
+                descending: true,
+              ).semitones,
             )
             .toNote(accidental);
   }
@@ -64,7 +67,7 @@ class Note implements MusicItem {
   ]) {
     final fifthInterval = Interval(
       Intervals.fifth,
-      Qualities.perfect,
+      PerfectQuality.perfect,
       descending: accidental == Accidental.flat,
     );
 
@@ -102,7 +105,7 @@ class Note implements MusicItem {
   /// ```
   int exactFifthsDistance(Note other) => intervalDistance(
         other,
-        const Interval(Intervals.fifth, Qualities.perfect),
+        const Interval(Intervals.fifth, PerfectQuality.perfect),
       );
 
   /// Returns the iteration distance of an [interval] between
@@ -112,7 +115,7 @@ class Note implements MusicItem {
   /// ```dart
   /// Note.c.intervalDistance(
   ///   Note.d,
-  ///   const Interval(Intervals.fifth, Qualities.perfect),
+  ///   const Interval(Intervals.fifth, PerfectQuality.perfect),
   /// ) == 2
   /// ```
   int intervalDistance(Note other, Interval interval) {
@@ -163,17 +166,17 @@ class Note implements MusicItem {
   /// Examples:
   /// ```dart
   /// Note.c.exactInterval(Note.d)
-  ///   == const Interval(Intervals.second, Qualities.minor)
+  ///   == const Interval(Intervals.second, ImperfectQuality.minor)
   ///
   /// Note.d.exactInterval(Note.aFlat) ==
-  ///     const Interval(Intervals.fifth, Qualities.diminished)
+  ///     const Interval(Intervals.fifth, PerfectQuality.diminished)
   /// ```
   Interval exactInterval(Note other) {
     final interval = note.interval(other.note);
 
     return Interval.fromDelta(
       interval,
-      difference(other) - interval.semitones + 1,
+      difference(other) - interval.semitones,
     );
   }
 

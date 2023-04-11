@@ -17,7 +17,10 @@ void main() {
           const EnharmonicInterval(5).toString(),
           '5 {major third, diminished fourth}',
         );
-        expect(const EnharmonicInterval(9).toString(), '9 {minor sixth}');
+        expect(
+          const EnharmonicInterval(9).toString(),
+          '9 {augmented fifth, minor sixth, doubleDiminished seventh}',
+        );
       });
     });
   });

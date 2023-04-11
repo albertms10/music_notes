@@ -5,29 +5,27 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   @override
   Set<Interval> get items {
-    final interval = Intervals.fromSemitones(semitones);
+    final interval = Intervals.fromSemitones(semitones - 1);
 
     if (interval != null) {
-      final intervalBelow = Intervals.fromOrdinal(interval.ordinal - 1);
+      final intervalBelow = interval == Intervals.unison
+          ? Intervals.unison
+          : Intervals.fromOrdinal(interval.ordinal - 1);
       final intervalAbove = Intervals.fromOrdinal(interval.ordinal + 1);
 
-      return SplayTreeSet.of({
-        if (Qualities.exists(intervalBelow, semitones))
-          Interval.fromDesiredSemitones(intervalBelow, semitones),
-        Interval.fromDesiredSemitones(interval, semitones),
-        if (Qualities.exists(intervalAbove, semitones))
-          Interval.fromDesiredSemitones(intervalAbove, semitones),
+      return SplayTreeSet<Interval>.of({
+        Interval.fromDesiredSemitones(intervalBelow, semitones - 1),
+        Interval.fromDesiredSemitones(interval, semitones - 1),
+        Interval.fromDesiredSemitones(intervalAbove, semitones - 1),
       });
     }
 
-    final intervalBelow = Intervals.fromSemitones(semitones - 1);
-    final intervalAbove = Intervals.fromSemitones(semitones + 1);
+    final intervalBelow = Intervals.fromSemitones(semitones - 2);
+    final intervalAbove = Intervals.fromSemitones(semitones);
 
     return SplayTreeSet<Interval>.of({
-      if (Qualities.exists(intervalBelow, semitones))
-        Interval.fromDesiredSemitones(intervalBelow!, semitones),
-      if (Qualities.exists(intervalAbove, semitones))
-        Interval.fromDesiredSemitones(intervalAbove!, semitones),
+      Interval.fromDesiredSemitones(intervalBelow!, semitones - 1),
+      Interval.fromDesiredSemitones(intervalAbove!, semitones - 1),
     });
   }
 
@@ -36,24 +34,31 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Examples:
   /// ```dart
   /// EnharmonicInterval.intervalFromSemitones(4)
-  ///   == const Interval(Intervals.third, Qualities.minor)
+  ///   == const Interval(Intervals.third, ImperfectQuality.minor)
   ///
   /// EnharmonicInterval.intervalFromSemitones(7)
-  ///   == const Interval(Intervals.fourth, Qualities.augmented)
+  ///   == const Interval(Intervals.fourth, PerfectQuality.augmented)
   ///
-  /// EnharmonicInterval.intervalFromSemitones(7, Qualities.diminished)
-  ///   == const Interval(Intervals.fifth, Qualities.diminished)
+  /// EnharmonicInterval.intervalFromSemitones(7, PerfectQuality.diminished)
+  ///   == const Interval(Intervals.fifth, PerfectQuality.diminished)
   /// ```
   static Interval intervalFromSemitones(
     int semitones, [
-    Qualities? preferredQuality,
+    Quality? preferredQuality,
   ]) {
-    final enharmonicIntervals = EnharmonicInterval(semitones).items;
+    final intervals = EnharmonicInterval(semitones).items;
 
-    return enharmonicIntervals.firstWhereOrNull(
+    return intervals.firstWhereOrNull(
           (interval) => interval.quality == preferredQuality,
         ) ??
-        enharmonicIntervals.first;
+        // Find the Interval with the smaller Quality delta semitones.
+        intervals
+            .sorted(
+              (a, b) => a.quality.semitones
+                  .abs()
+                  .compareTo(b.quality.semitones.abs()),
+            )
+            .first;
   }
 
   /// Returns a transposed [EnharmonicInterval] by [semitones]

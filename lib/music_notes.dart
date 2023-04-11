@@ -15,7 +15,7 @@ part 'src/enharmonic.dart';
 part 'src/interval/enharmonic_interval.dart';
 part 'src/interval/interval.dart';
 part 'src/interval/intervals.dart';
-part 'src/interval/qualities.dart';
+part 'src/interval/quality.dart';
 part 'src/music.dart';
 part 'src/music_item.dart';
 part 'src/note/accidental.dart';
