@@ -3,6 +3,19 @@ part of '../../music_notes.dart';
 class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
+  static const perfectUnison = EnharmonicInterval(1);
+  static const minorSecond = EnharmonicInterval(2);
+  static const majorSecond = EnharmonicInterval(3);
+  static const minorThird = EnharmonicInterval(4);
+  static const majorThird = EnharmonicInterval(5);
+  static const perfectFourth = EnharmonicInterval(6);
+  static const tritone = EnharmonicInterval(7);
+  static const perfectFifth = EnharmonicInterval(8);
+  static const minorSixth = EnharmonicInterval(9);
+  static const majorSixth = EnharmonicInterval(10);
+  static const minorSeventh = EnharmonicInterval(11);
+  static const majorSeventh = EnharmonicInterval(12);
+
   @override
   Set<Interval> get items {
     final interval = Intervals.fromSemitones(semitones - 1);
