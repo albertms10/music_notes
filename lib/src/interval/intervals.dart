@@ -17,7 +17,7 @@ enum Intervals {
   fourteenth;
 
   // ignore: avoid-missing-enum-constant-in-map
-  static const Map<Intervals, int> intervalsQualitiesIndex = {
+  static const Map<Intervals, int> intervalsSemitonesDelta = {
     Intervals.unison: 0,
     Intervals.second: 1,
     Intervals.third: 3,
@@ -40,19 +40,22 @@ enum Intervals {
   };
 
   /// Returns an [Intervals] enum item that matches [semitones]
-  /// in [intervalsQualitiesIndex], otherwise returns `null`.
+  /// in [intervalsSemitonesDelta], otherwise returns `null`.
   ///
   /// Examples:
   /// ```dart
   /// Intervals.fromSemitones(8) == Intervals.sixth
   /// Intervals.fromSemitones(0) == Intervals.unison
+  /// Intervals.fromSemitones(12) == Intervals.octave
   /// Intervals.fromSemitones(4) == null
   /// ```
   static Intervals? fromSemitones(int semitones) =>
       Intervals.values.firstWhereOrNull(
         (interval) =>
-            semitones.chromaticModExcludeZero ==
-            intervalsQualitiesIndex[interval],
+            (semitones == chromaticDivisions
+                ? chromaticDivisions
+                : semitones.chromaticMod) ==
+            intervalsSemitonesDelta[interval],
       );
 
   /// Returns an [Intervals] enum item that matches [ordinal].
@@ -77,7 +80,7 @@ enum Intervals {
   static Intervals invert(Intervals interval) => interval.inverted;
 
   /// Returns the number of semitones of this [Intervals] enum item
-  /// as in [intervalsQualitiesIndex].
+  /// as in [intervalsSemitonesDelta].
   ///
   /// Examples:
   /// ```dart
@@ -86,8 +89,8 @@ enum Intervals {
   /// Intervals.seventh.semitones == 10
   /// ```
   int get semitones =>
-      intervalsQualitiesIndex[this] ??
-      chromaticDivisions + intervalsQualitiesIndex[inverted]!;
+      intervalsSemitonesDelta[this] ??
+      chromaticDivisions + intervalsSemitonesDelta[inverted]!;
 
   /// Returns the ordinal number of this [Intervals] enum item.
   ///
