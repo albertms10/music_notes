@@ -61,6 +61,25 @@ void main() {
       });
     });
 
+    group('.isDissonant', () {
+      test('should return whether this Intervals enum item is dissonant', () {
+        expect(Intervals.unison.isDissonant, isFalse);
+        expect(Intervals.second.isDissonant, isTrue);
+        expect(Intervals.third.isDissonant, isFalse);
+        expect(Intervals.fourth.isDissonant, isFalse);
+        expect(Intervals.fifth.isDissonant, isFalse);
+        expect(Intervals.sixth.isDissonant, isFalse);
+        expect(Intervals.seventh.isDissonant, isTrue);
+        expect(Intervals.octave.isDissonant, isFalse);
+        expect(Intervals.ninth.isDissonant, isTrue);
+        expect(Intervals.tenth.isDissonant, isFalse);
+        expect(Intervals.eleventh.isDissonant, isFalse);
+        expect(Intervals.twelfth.isDissonant, isFalse);
+        expect(Intervals.thirteenth.isDissonant, isFalse);
+        expect(Intervals.fourteenth.isDissonant, isTrue);
+      });
+    });
+
     group('.simplified', () {
       test('should return the simplified Intervals enum item', () {
         expect(Intervals.second.simplified, Intervals.second);

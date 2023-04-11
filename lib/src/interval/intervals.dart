@@ -124,6 +124,18 @@ enum Intervals {
   /// ```
   bool get isCompound => ordinal > Intervals.octave.ordinal;
 
+  /// Whether this [Intervals] enum item is dissonant.
+  ///
+  /// Examples:
+  /// ```dart
+  /// Intervals.unison.isDissonant == false
+  /// Intervals.fifth.isDissonant == false
+  /// Intervals.seventh.isDissonant == true
+  /// Intervals.ninth.isDissonant == true
+  /// ```
+  bool get isDissonant =>
+      {Intervals.second, Intervals.seventh}.contains(simplified);
+
   /// Returns a simplified this [Intervals] enum item.
   ///
   /// Examples:
