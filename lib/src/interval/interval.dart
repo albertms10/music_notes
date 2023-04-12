@@ -1,43 +1,57 @@
 part of '../../music_notes.dart';
 
+/// Distance between two notes.
 @immutable
 class Interval implements MusicItem {
-  final int interval;
+  /// Number of lines and spaces (or alphabet letters) spanning the two notes,
+  /// including the beginning and end.
+  final int size;
+
+  /// The quality of this [Interval].
+  ///
+  /// Must be an instance of [PerfectQuality] or
+  /// [ImperfectQuality], depending on the nature of the interval.
   final Quality quality;
+
+  /// Whether this [Interval] is descending.
   final bool descending;
 
-  const Interval._(this.interval, this.quality, {this.descending = false});
+  const Interval._(this.size, this.quality, {this.descending = false});
 
+  /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(
-    this.interval,
+    this.size,
     PerfectQuality this.quality, {
     this.descending = false,
   }) : assert(
-          (interval + interval ~/ 8) % 4 == 0 ||
-              (interval + interval ~/ 8) % 4 == 1,
+          // Copied from [IntIntervalExtension.isPerfect] to allow const.
+          (size + size ~/ 8) % 4 == 0 || (size + size ~/ 8) % 4 == 1,
           'Interval must be perfect',
         );
 
+  /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(
-    this.interval,
+    this.size,
     ImperfectQuality this.quality, {
     this.descending = false,
   }) : assert(
-          (interval + interval ~/ 8) % 4 != 0 &&
-              (interval + interval ~/ 8) % 4 != 1,
+          // Copied from [IntIntervalExtension.isPerfect] to allow const.
+          (size + size ~/ 8) % 4 != 0 && (size + size ~/ 8) % 4 != 1,
           'Interval must be imperfect',
         );
 
-  Interval.fromDelta(int interval, int delta)
-      : this._(interval, qualityFromDelta(interval, delta));
+  /// Creates a new [Interval] from the [Quality] delta.
+  Interval.fromDelta(int size, int delta)
+      : this._(size, qualityFromDelta(size, delta));
 
-  Interval.fromDesiredSemitones(int interval, int semitones)
+  /// Creates a new [Interval] from [semitones].
+  Interval.fromDesiredSemitones(int size, int semitones)
       : this._(
-          interval,
-          qualityFromDelta(interval, semitones - interval.semitones),
+          size,
+          qualityFromDelta(size, semitones - size.semitones),
         );
 
-  static const Map<int, Quality Function(int)> intervalToQuality = {
+  static const Map<int, Quality Function(int)> _intervalToQuality = {
     1: PerfectQuality.new,
     2: ImperfectQuality.new,
     3: ImperfectQuality.new,
@@ -49,7 +63,7 @@ class Interval implements MusicItem {
     final baseInterval = simplifiedInterval > 4
         ? simplifiedInterval.inverted
         : simplifiedInterval;
-    final qualityConstructor = intervalToQuality[baseInterval]!;
+    final qualityConstructor = _intervalToQuality[baseInterval]!;
 
     return qualityConstructor(delta);
   }
@@ -66,7 +80,7 @@ class Interval implements MusicItem {
   /// ```
   @override
   int get semitones =>
-      (interval.semitones + quality.semitones) * (descending ? -1 : 1);
+      (size.semitones + quality.semitones) * (descending ? -1 : 1);
 
   /// Returns the inverted of this [Interval].
   ///
@@ -78,23 +92,21 @@ class Interval implements MusicItem {
   /// const Interval.perfect(1, PerfectQuality.perfect).inverted
   ///   == const Interval.perfect(8, PerfectQuality.perfect)
   /// ```
-  Interval get inverted => Interval._(interval.inverted, quality.inverted);
+  Interval get inverted => Interval._(size.inverted, quality.inverted);
 
   @override
-  String toString() => '${quality.abbreviation}$interval';
+  String toString() => '${quality.abbreviation}$size';
 
   @override
   bool operator ==(Object other) =>
-      other is Interval &&
-      interval == other.interval &&
-      quality == other.quality;
+      other is Interval && size == other.size && quality == other.quality;
 
   @override
-  int get hashCode => hash2(interval, quality);
+  int get hashCode => hash2(size, quality);
 
   @override
   int compareTo(covariant Interval other) => compareMultiple([
-        () => interval.compareTo(other.interval),
+        () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);
 }
