@@ -1,7 +1,8 @@
 import 'enharmonic_test.dart' as enharmonic_test;
 import 'interval/enharmonic_interval_test.dart' as enharmonic_interval_test;
+import 'interval/int_interval_extension_test.dart'
+    as int_interval_extension_test;
 import 'interval/interval_test.dart' as interval_test;
-import 'interval/intervals_test.dart' as intervals_test;
 import 'interval/quality_test.dart' as quality_test;
 import 'music_test.dart' as music_test;
 import 'note/accidental_test.dart' as accidental_test;
@@ -14,8 +15,8 @@ import 'tonality/tonality_test.dart' as tonality_test;
 void main() {
   enharmonic_test.main();
   enharmonic_interval_test.main();
+  int_interval_extension_test.main();
   interval_test.main();
-  intervals_test.main();
   quality_test.main();
   music_test.main();
   accidental_test.main();

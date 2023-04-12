@@ -8,12 +8,12 @@ abstract class Quality implements MusicItem {
 
   const Quality(this.semitones);
 
-  String? get name;
+  String? get abbreviation;
 
   Quality get inverted;
 
   @override
-  String toString() => '$name (${semitones.toDeltaString()})';
+  String toString() => '$abbreviation (${semitones.toDeltaString()})';
 
   @override
   bool operator ==(Object other) =>
@@ -44,12 +44,12 @@ class PerfectQuality extends Quality {
   static const PerfectQuality doubleAugmented = PerfectQuality(2);
 
   @override
-  String? get name => const {
-        -2: 'doubleDiminished',
-        -1: 'diminished',
-        0: 'perfect',
-        1: 'augmented',
-        2: 'doubleAugmented',
+  String? get abbreviation => const {
+        -2: 'dd',
+        -1: 'd',
+        0: 'P',
+        1: 'A',
+        2: 'AA',
       }[semitones];
 
   @override
@@ -77,13 +77,13 @@ class ImperfectQuality extends Quality {
   static const ImperfectQuality doubleAugmented = ImperfectQuality(3);
 
   @override
-  String? get name => const {
-        -2: 'doubleDiminished',
-        -1: 'diminished',
-        0: 'minor',
-        1: 'major',
-        2: 'augmented',
-        3: 'doubleAugmented',
+  String? get abbreviation => const {
+        -2: 'dd',
+        -1: 'd',
+        0: 'm',
+        1: 'M',
+        2: 'A',
+        3: 'AA',
       }[semitones];
 
   @override

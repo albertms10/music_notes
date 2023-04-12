@@ -2,17 +2,37 @@ part of '../../music_notes.dart';
 
 @immutable
 class Interval implements MusicItem {
-  final Intervals interval;
+  final int interval;
   final Quality quality;
   final bool descending;
 
-  const Interval(this.interval, this.quality, {this.descending = false});
+  const Interval._(this.interval, this.quality, {this.descending = false});
 
-  Interval.fromDelta(Intervals interval, int delta)
-      : this(interval, qualityFromDelta(interval, delta));
+  const Interval.perfect(
+    this.interval,
+    PerfectQuality this.quality, {
+    this.descending = false,
+  }) : assert(
+          (interval + interval ~/ 8) % 4 == 0 ||
+              (interval + interval ~/ 8) % 4 == 1,
+          'Interval must be perfect',
+        );
 
-  Interval.fromDesiredSemitones(Intervals interval, int semitones)
-      : this(
+  const Interval.imperfect(
+    this.interval,
+    ImperfectQuality this.quality, {
+    this.descending = false,
+  }) : assert(
+          (interval + interval ~/ 8) % 4 != 0 &&
+              (interval + interval ~/ 8) % 4 != 1,
+          'Interval must be imperfect',
+        );
+
+  Interval.fromDelta(int interval, int delta)
+      : this._(interval, qualityFromDelta(interval, delta));
+
+  Interval.fromDesiredSemitones(int interval, int semitones)
+      : this._(
           interval,
           qualityFromDelta(interval, semitones - interval.semitones),
         );
@@ -24,12 +44,12 @@ class Interval implements MusicItem {
     4: PerfectQuality.new,
   };
 
-  static Quality qualityFromDelta(Intervals interval, int delta) {
+  static Quality qualityFromDelta(int interval, int delta) {
     final simplifiedInterval = interval.simplified;
-    final baseInterval = simplifiedInterval.ordinal > 4
+    final baseInterval = simplifiedInterval > 4
         ? simplifiedInterval.inverted
         : simplifiedInterval;
-    final qualityConstructor = intervalToQuality[baseInterval.ordinal]!;
+    final qualityConstructor = intervalToQuality[baseInterval]!;
 
     return qualityConstructor(delta);
   }
@@ -38,10 +58,10 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.second, ImperfectQuality.major).semitones == 2
+  /// const Interval.imperfect(2, ImperfectQuality.major).semitones == 2
   ///
-  /// const Interval(Intervals.fifth, PerfectQuality.diminished).semitones
-  ///   == const Interval(Intervals.fourth, PerfectQuality.augmented).semitones
+  /// const Interval.perfect(5, PerfectQuality.diminished).semitones
+  ///   == const Interval.perfect(4, PerfectQuality.augmented).semitones
   ///   == 6
   /// ```
   @override
@@ -52,16 +72,16 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.third, ImperfectQuality.minor).inverted
-  ///   == const Interval(Intervals.sixth, ImperfectQuality.major)
+  /// const Interval.imperfect(3, ImperfectQuality.minor).inverted
+  ///   == const Interval.imperfect(6, ImperfectQuality.major)
   ///
-  /// const Interval(Intervals.unison, PerfectQuality.perfect).inverted
-  ///   == const Interval(Intervals.octave, PerfectQuality.perfect)
+  /// const Interval.perfect(1, PerfectQuality.perfect).inverted
+  ///   == const Interval.perfect(8, PerfectQuality.perfect)
   /// ```
-  Interval get inverted => Interval(interval.inverted, quality.inverted);
+  Interval get inverted => Interval._(interval.inverted, quality.inverted);
 
   @override
-  String toString() => '${quality.name} ${interval.name}';
+  String toString() => '${quality.abbreviation}$interval';
 
   @override
   bool operator ==(Object other) =>
@@ -74,7 +94,7 @@ class Interval implements MusicItem {
 
   @override
   int compareTo(covariant Interval other) => compareMultiple([
-        () => interval.ordinal.compareTo(other.interval.ordinal),
+        () => interval.compareTo(other.interval),
         () => semitones.compareTo(other.semitones),
       ]);
 }

@@ -44,8 +44,8 @@ class Note implements MusicItem {
         ? note
         : EnharmonicNote(note.semitones)
             .transposeBy(
-              const Interval(
-                Intervals.third,
+              const Interval.imperfect(
+                3,
                 ImperfectQuality.minor,
                 descending: true,
               ).semitones,
@@ -65,8 +65,8 @@ class Note implements MusicItem {
     int accidentals, [
     Accidental accidental = Accidental.natural,
   ]) {
-    final fifthInterval = Interval(
-      Intervals.fifth,
+    final fifthInterval = Interval.perfect(
+      5,
       PerfectQuality.perfect,
       descending: accidental == Accidental.flat,
     );
@@ -105,7 +105,7 @@ class Note implements MusicItem {
   /// ```
   int exactFifthsDistance(Note other) => intervalDistance(
         other,
-        const Interval(Intervals.fifth, PerfectQuality.perfect),
+        const Interval.perfect(5, PerfectQuality.perfect),
       );
 
   /// Returns the iteration distance of an [interval] between
@@ -115,7 +115,7 @@ class Note implements MusicItem {
   /// ```dart
   /// Note.c.intervalDistance(
   ///   Note.d,
-  ///   const Interval(Intervals.fifth, PerfectQuality.perfect),
+  ///   const Interval.perfect(5, PerfectQuality.perfect),
   /// ) == 2
   /// ```
   int intervalDistance(Note other, Interval interval) {
@@ -166,10 +166,10 @@ class Note implements MusicItem {
   /// Examples:
   /// ```dart
   /// Note.c.exactInterval(Note.d)
-  ///   == const Interval(Intervals.second, ImperfectQuality.minor)
+  ///   == const Interval.imperfect(2, ImperfectQuality.minor)
   ///
   /// Note.d.exactInterval(Note.aFlat) ==
-  ///     const Interval(Intervals.fifth, PerfectQuality.diminished)
+  ///     const Interval.perfect(5, PerfectQuality.diminished)
   /// ```
   Interval exactInterval(Note other) {
     final interval = note.interval(other.note);
