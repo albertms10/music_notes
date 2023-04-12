@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 extension IntIntervalExtension on int {
-  static const Map<int, int> _intervalsSemitonesDelta = {
+  static const Map<int, int> _intervalsToSemitonesDelta = {
     1: 0,
     2: 1,
     3: 3,
@@ -13,22 +13,22 @@ extension IntIntervalExtension on int {
   };
 
   /// Returns an [int] interval that matches [semitones]
-  /// in [_intervalsSemitonesDelta], otherwise returns `null`.
+  /// in [_intervalsToSemitonesDelta], otherwise returns `null`.
   ///
   /// Examples:
   /// ```dart
-  /// Intervals.fromSemitones(8) == 6
-  /// Intervals.fromSemitones(0) == 1
-  /// Intervals.fromSemitones(12) == 8
-  /// Intervals.fromSemitones(4) == null
+  /// IntIntervalExtension.fromSemitones(8) == 6
+  /// IntIntervalExtension.fromSemitones(0) == 1
+  /// IntIntervalExtension.fromSemitones(12) == 8
+  /// IntIntervalExtension.fromSemitones(4) == null
   /// ```
   static int? fromSemitones(int semitones) =>
-      _intervalsSemitonesDelta.keys.firstWhereOrNull(
+      _intervalsToSemitonesDelta.keys.firstWhereOrNull(
         (interval) =>
             (semitones == chromaticDivisions
                 ? chromaticDivisions
                 : semitones.chromaticMod) ==
-            _intervalsSemitonesDelta[interval],
+            _intervalsToSemitonesDelta[interval],
       );
 
   /// Returns the number of semitones of this [int] for a perfect interval or a
@@ -42,8 +42,8 @@ extension IntIntervalExtension on int {
   /// 9.semitones == 13
   /// ```
   int get semitones =>
-      _intervalsSemitonesDelta[this] ??
-      chromaticDivisions + _intervalsSemitonesDelta[simplified]!;
+      _intervalsToSemitonesDelta[this] ??
+      chromaticDivisions + _intervalsToSemitonesDelta[simplified]!;
 
   /// Returns `true` if this [int] interval is a perfect interval.
   ///
@@ -98,7 +98,7 @@ extension IntIntervalExtension on int {
   /// ```
   ///
   /// If an interval is greater than an octave, the simplified
-  /// [Interval] inversion is returned instead.
+  /// [int] interval inversion is returned instead.
   ///
   /// Examples:
   /// ```dart
