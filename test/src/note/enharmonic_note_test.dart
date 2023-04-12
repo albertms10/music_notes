@@ -69,18 +69,21 @@ void main() {
       test('should ignore equal EnharmonicNote instances in a Set', () {
         final collection = {EnharmonicNote.f, EnharmonicNote.aSharp};
         collection.addAll(collection);
-        expect(collection.toList(), [EnharmonicNote.f, EnharmonicNote.aSharp]);
+        expect(
+          collection.toList(),
+          const [EnharmonicNote.f, EnharmonicNote.aSharp],
+        );
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort EnharmonicNote items in a collection', () {
-        final orderedSet = SplayTreeSet<EnharmonicNote>.of([
+        final orderedSet = SplayTreeSet<EnharmonicNote>.of(const [
           EnharmonicNote.fSharp,
           EnharmonicNote.c,
           EnharmonicNote.d,
         ]);
-        expect(orderedSet.toList(), [
+        expect(orderedSet.toList(), const [
           EnharmonicNote.c,
           EnharmonicNote.d,
           EnharmonicNote.fSharp,

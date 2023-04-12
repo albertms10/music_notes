@@ -77,18 +77,21 @@ void main() {
       test('should ignore equal Accidental instances in a Set', () {
         final collection = {Accidental.natural, Accidental.flat};
         collection.addAll(collection);
-        expect(collection.toList(), [Accidental.natural, Accidental.flat]);
+        expect(
+          collection.toList(),
+          const [Accidental.natural, Accidental.flat],
+        );
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort EnharmonicNote items in a collection', () {
-        final orderedSet = SplayTreeSet<Accidental>.of([
+        final orderedSet = SplayTreeSet<Accidental>.of(const [
           Accidental.doubleSharp,
           Accidental.natural,
           Accidental.flat,
         ]);
-        expect(orderedSet.toList(), [
+        expect(orderedSet.toList(), const [
           Accidental.flat,
           Accidental.natural,
           Accidental.doubleSharp,

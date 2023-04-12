@@ -175,28 +175,28 @@ void main() {
           const KeySignature(1, Accidental.sharp),
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          const KeySignature(0),
-          const KeySignature(1, Accidental.sharp),
+        expect(collection.toList(), const [
+          KeySignature(0),
+          KeySignature(1, Accidental.sharp),
         ]);
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort KeySignature items in a collection', () {
-        final orderedSet = SplayTreeSet<KeySignature>.of([
-          const KeySignature(3, Accidental.flat),
-          const KeySignature(0),
-          const KeySignature(6, Accidental.flat),
-          const KeySignature(4, Accidental.sharp),
-          const KeySignature(3, Accidental.sharp),
+        final orderedSet = SplayTreeSet<KeySignature>.of(const [
+          KeySignature(3, Accidental.flat),
+          KeySignature(0),
+          KeySignature(6, Accidental.flat),
+          KeySignature(4, Accidental.sharp),
+          KeySignature(3, Accidental.sharp),
         ]);
-        expect(orderedSet.toList(), [
-          const KeySignature(6, Accidental.flat),
-          const KeySignature(3, Accidental.flat),
-          const KeySignature(0),
-          const KeySignature(3, Accidental.sharp),
-          const KeySignature(4, Accidental.sharp),
+        expect(orderedSet.toList(), const [
+          KeySignature(6, Accidental.flat),
+          KeySignature(3, Accidental.flat),
+          KeySignature(0),
+          KeySignature(3, Accidental.sharp),
+          KeySignature(4, Accidental.sharp),
         ]);
       });
     });

@@ -128,7 +128,7 @@ void main() {
           EnharmonicInterval.majorThird,
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
+        expect(collection.toList(), const [
           EnharmonicInterval.perfectUnison,
           EnharmonicInterval.majorThird,
         ]);
@@ -139,12 +139,12 @@ void main() {
       test(
         'should correctly sort EnharmonicInterval items in a collection',
         () {
-          final orderedSet = SplayTreeSet<EnharmonicInterval>.of([
+          final orderedSet = SplayTreeSet<EnharmonicInterval>.of(const [
             EnharmonicInterval.minorSecond,
             EnharmonicInterval.majorThird,
             EnharmonicInterval.perfectUnison,
           ]);
-          expect(orderedSet.toList(), [
+          expect(orderedSet.toList(), const [
             EnharmonicInterval.perfectUnison,
             EnharmonicInterval.minorSecond,
             EnharmonicInterval.majorThird,

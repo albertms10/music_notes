@@ -205,21 +205,21 @@ void main() {
       test('should ignore equal Note instances in a Set', () {
         final collection = {Note.c, Note.aFlat, Note.gSharp};
         collection.addAll(collection);
-        expect(collection.toList(), [Note.c, Note.aFlat, Note.gSharp]);
+        expect(collection.toList(), const [Note.c, Note.aFlat, Note.gSharp]);
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort Note items in a collection', () {
-        final orderedSet = SplayTreeSet<Note>.of([
+        final orderedSet = SplayTreeSet<Note>.of(const [
           Note.aFlat,
           Note.c,
           Note.gSharp,
-          const Note(Notes.b, Accidental.sharp),
+          Note(Notes.b, Accidental.sharp),
         ]);
-        expect(orderedSet.toList(), [
+        expect(orderedSet.toList(), const [
           Note.c,
-          const Note(Notes.b, Accidental.sharp),
+          Note(Notes.b, Accidental.sharp),
           Note.gSharp,
           Note.aFlat,
         ]);

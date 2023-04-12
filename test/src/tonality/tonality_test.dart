@@ -32,31 +32,31 @@ void main() {
           const Tonality(Note.gSharp, Modes.minor),
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          const Tonality(Note.d, Modes.major),
-          const Tonality(Note.fSharp, Modes.minor),
-          const Tonality(Note.gSharp, Modes.minor),
+        expect(collection.toList(), const [
+          Tonality(Note.d, Modes.major),
+          Tonality(Note.fSharp, Modes.minor),
+          Tonality(Note.gSharp, Modes.minor),
         ]);
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort Tonality items in a collection', () {
-        final orderedSet = SplayTreeSet<Tonality>.of([
-          const Tonality(Note.fSharp, Modes.minor),
-          const Tonality(Note.c, Modes.minor),
-          const Tonality(Note.d, Modes.major),
-          const Tonality(Note.c, Modes.major),
-          const Tonality(Note.dFlat, Modes.major),
-          const Tonality(Note.eFlat, Modes.major),
+        final orderedSet = SplayTreeSet<Tonality>.of(const [
+          Tonality(Note.fSharp, Modes.minor),
+          Tonality(Note.c, Modes.minor),
+          Tonality(Note.d, Modes.major),
+          Tonality(Note.c, Modes.major),
+          Tonality(Note.dFlat, Modes.major),
+          Tonality(Note.eFlat, Modes.major),
         ]);
-        expect(orderedSet.toList(), [
-          const Tonality(Note.c, Modes.major),
-          const Tonality(Note.c, Modes.minor),
-          const Tonality(Note.dFlat, Modes.major),
-          const Tonality(Note.d, Modes.major),
-          const Tonality(Note.eFlat, Modes.major),
-          const Tonality(Note.fSharp, Modes.minor),
+        expect(orderedSet.toList(), const [
+          Tonality(Note.c, Modes.major),
+          Tonality(Note.c, Modes.minor),
+          Tonality(Note.dFlat, Modes.major),
+          Tonality(Note.d, Modes.major),
+          Tonality(Note.eFlat, Modes.major),
+          Tonality(Note.fSharp, Modes.minor),
         ]);
       });
     });

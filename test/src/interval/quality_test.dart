@@ -61,9 +61,9 @@ void main() {
           ImperfectQuality.minor,
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          const PerfectQuality(5),
-          const ImperfectQuality(5),
+        expect(collection.toList(), const [
+          PerfectQuality(5),
+          ImperfectQuality(5),
           PerfectQuality.diminished,
           PerfectQuality.perfect,
           ImperfectQuality.minor,
@@ -73,23 +73,23 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Quality items in a collection', () {
-        final orderedSet = SplayTreeSet<Quality>.of([
-          const PerfectQuality(5),
-          const ImperfectQuality(5),
+        final orderedSet = SplayTreeSet<Quality>.of(const [
+          PerfectQuality(5),
+          ImperfectQuality(5),
           ImperfectQuality.major,
           PerfectQuality.perfect,
           PerfectQuality.diminished,
           ImperfectQuality.diminished,
           ImperfectQuality.augmented,
         ]);
-        expect(orderedSet.toList(), [
+        expect(orderedSet.toList(), const [
           ImperfectQuality.diminished,
           PerfectQuality.diminished,
           PerfectQuality.perfect,
           ImperfectQuality.major,
           ImperfectQuality.augmented,
-          const ImperfectQuality(5),
-          const PerfectQuality(5),
+          ImperfectQuality(5),
+          PerfectQuality(5),
         ]);
       });
     });

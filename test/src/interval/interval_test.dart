@@ -403,27 +403,27 @@ void main() {
           const Interval.perfect(4, PerfectQuality.perfect),
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          const Interval.imperfect(2, ImperfectQuality.major),
-          const Interval.imperfect(3, ImperfectQuality.diminished),
-          const Interval.perfect(4, PerfectQuality.perfect),
+        expect(collection.toList(), const [
+          Interval.imperfect(2, ImperfectQuality.major),
+          Interval.imperfect(3, ImperfectQuality.diminished),
+          Interval.perfect(4, PerfectQuality.perfect),
         ]);
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort Interval items in a collection', () {
-        final orderedSet = SplayTreeSet<Interval>.of([
-          const Interval.imperfect(2, ImperfectQuality.minor),
-          const Interval.perfect(8, PerfectQuality.perfect),
-          const Interval.perfect(1, PerfectQuality.perfect),
-          const Interval.perfect(1, PerfectQuality.augmented),
+        final orderedSet = SplayTreeSet<Interval>.of(const [
+          Interval.imperfect(2, ImperfectQuality.minor),
+          Interval.perfect(8, PerfectQuality.perfect),
+          Interval.perfect(1, PerfectQuality.perfect),
+          Interval.perfect(1, PerfectQuality.augmented),
         ]);
-        expect(orderedSet.toList(), [
-          const Interval.perfect(1, PerfectQuality.perfect),
-          const Interval.perfect(1, PerfectQuality.augmented),
-          const Interval.imperfect(2, ImperfectQuality.minor),
-          const Interval.perfect(8, PerfectQuality.perfect),
+        expect(orderedSet.toList(), const [
+          Interval.perfect(1, PerfectQuality.perfect),
+          Interval.perfect(1, PerfectQuality.augmented),
+          Interval.imperfect(2, ImperfectQuality.minor),
+          Interval.perfect(8, PerfectQuality.perfect),
         ]);
       });
     });
