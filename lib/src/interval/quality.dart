@@ -1,13 +1,17 @@
 part of '../../music_notes.dart';
 
+/// Further description of an [Interval] size that distinguishes intervals of
+/// the same size but with different numbers of half steps.
 @immutable
 abstract class Quality implements MusicItem {
   /// Delta semitones from the [Interval].
   @override
   final int semitones;
 
+  /// Creates a new [Quality] from [semitones].
   const Quality(this.semitones);
 
+  /// The textual abbreviation of this [Quality].
   String? get abbreviation;
 
   Quality get inverted;
@@ -35,6 +39,7 @@ class PerfectQuality extends Quality {
   @override
   int get semitones;
 
+  /// Creates a new [PerfectQuality] from [semitones].
   const PerfectQuality(super.semitones);
 
   static const PerfectQuality doubleDiminished = PerfectQuality(-2);
@@ -52,6 +57,13 @@ class PerfectQuality extends Quality {
         2: 'AA',
       }[semitones];
 
+  /// Returns the inverted version of this [PerfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.inverted == PerfectQuality.perfect
+  /// PerfectQuality.augmented.inverted == PerfectQuality.diminished
+  /// ```
   @override
   PerfectQuality get inverted => PerfectQuality(-semitones);
 
@@ -67,6 +79,7 @@ class ImperfectQuality extends Quality {
   @override
   int get semitones;
 
+  /// Creates a new [ImperfectQuality] from [semitones].
   const ImperfectQuality(super.semitones);
 
   static const ImperfectQuality doubleDiminished = ImperfectQuality(-2);
@@ -86,6 +99,13 @@ class ImperfectQuality extends Quality {
         3: 'AA',
       }[semitones];
 
+  /// Returns the inverted version of this [ImperfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.minor.inverted == ImperfectQuality.major
+  /// ImperfectQuality.augmented.inverted == ImperfectQuality.diminished
+  /// ```
   @override
   ImperfectQuality get inverted => ImperfectQuality(-semitones + 1);
 

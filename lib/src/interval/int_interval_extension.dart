@@ -15,7 +15,7 @@ extension IntIntervalExtension on int {
   /// Returns an [int] interval that matches [semitones]
   /// in [_intervalsToSemitonesDelta], otherwise returns `null`.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// IntIntervalExtension.fromSemitones(8) == 6
   /// IntIntervalExtension.fromSemitones(0) == 1
@@ -34,7 +34,7 @@ extension IntIntervalExtension on int {
   /// Returns the number of semitones of this [int] for a perfect interval or a
   /// minor interval, where appropriate.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 3.semitones == 3
   /// 5.semitones == 7
@@ -47,7 +47,7 @@ extension IntIntervalExtension on int {
 
   /// Returns `true` if this [int] interval is a perfect interval.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 5.isPerfect == true
   /// 6.isPerfect == false
@@ -58,7 +58,7 @@ extension IntIntervalExtension on int {
 
   /// Returns whether this [int] interval is greater than an octave.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 5.isCompound == false
   /// 8.isCompound == false
@@ -69,7 +69,7 @@ extension IntIntervalExtension on int {
 
   /// Whether this [int] interval is dissonant.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 1.isDissonant == false
   /// 5.isDissonant == false
@@ -80,7 +80,7 @@ extension IntIntervalExtension on int {
 
   /// Returns a simplified [int] interval.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 13.simplified == 6
   /// 9.simplified == 2
@@ -90,7 +90,7 @@ extension IntIntervalExtension on int {
 
   /// Returns an inverted this [int] interval.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 7.inverted == 2
   /// 4.inverted == 5
@@ -100,7 +100,7 @@ extension IntIntervalExtension on int {
   /// If an interval is greater than an octave, the simplified
   /// [int] interval inversion is returned instead.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 11.inverted == 5
   /// 9.inverted == 7

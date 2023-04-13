@@ -6,7 +6,7 @@ enum Modes {
 
   /// Returns the inverted this [Modes] enum item.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Modes.major.inverted == Modes.minor
   /// Modes.minor.inverted == Modes.major
