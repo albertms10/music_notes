@@ -53,8 +53,8 @@ class Tonality implements Comparable<Tonality> {
   Tonality get relative => Tonality(
         EnharmonicNote(note.semitones)
             .transposeBy(
-              Interval(
-                Intervals.third,
+              Interval.imperfect(
+                3,
                 ImperfectQuality.minor,
                 descending: mode == Modes.major,
               ).semitones,

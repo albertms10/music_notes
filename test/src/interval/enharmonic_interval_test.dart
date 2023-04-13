@@ -10,61 +10,61 @@ void main() {
         'should return the correct Interval items for this EnharmonicInterval',
         () {
           expect(EnharmonicInterval.perfectUnison.items, {
-            const Interval(Intervals.unison, PerfectQuality.perfect),
-            const Interval(Intervals.second, ImperfectQuality.diminished),
+            const Interval.perfect(1, PerfectQuality.perfect),
+            const Interval.imperfect(2, ImperfectQuality.diminished),
           });
           expect(EnharmonicInterval.minorSecond.items, {
-            const Interval(Intervals.unison, PerfectQuality.augmented),
-            const Interval(Intervals.second, ImperfectQuality.minor),
-            const Interval(Intervals.third, ImperfectQuality.doubleDiminished),
+            const Interval.perfect(1, PerfectQuality.augmented),
+            const Interval.imperfect(2, ImperfectQuality.minor),
+            const Interval.imperfect(3, ImperfectQuality.doubleDiminished),
           });
           expect(EnharmonicInterval.majorSecond.items, {
-            const Interval(Intervals.second, ImperfectQuality.major),
-            const Interval(Intervals.third, ImperfectQuality.diminished),
+            const Interval.imperfect(2, ImperfectQuality.major),
+            const Interval.imperfect(3, ImperfectQuality.diminished),
           });
           expect(EnharmonicInterval.minorThird.items, {
-            const Interval(Intervals.second, ImperfectQuality.augmented),
-            const Interval(Intervals.third, ImperfectQuality.minor),
-            const Interval(Intervals.fourth, PerfectQuality.doubleDiminished),
+            const Interval.imperfect(2, ImperfectQuality.augmented),
+            const Interval.imperfect(3, ImperfectQuality.minor),
+            const Interval.perfect(4, PerfectQuality.doubleDiminished),
           });
           expect(EnharmonicInterval.majorThird.items, {
-            const Interval(Intervals.third, ImperfectQuality.major),
-            const Interval(Intervals.fourth, PerfectQuality.diminished),
+            const Interval.imperfect(3, ImperfectQuality.major),
+            const Interval.perfect(4, PerfectQuality.diminished),
           });
           expect(EnharmonicInterval.perfectFourth.items, {
-            const Interval(Intervals.third, ImperfectQuality.augmented),
-            const Interval(Intervals.fourth, PerfectQuality.perfect),
-            const Interval(Intervals.fifth, PerfectQuality.doubleDiminished),
+            const Interval.imperfect(3, ImperfectQuality.augmented),
+            const Interval.perfect(4, PerfectQuality.perfect),
+            const Interval.perfect(5, PerfectQuality.doubleDiminished),
           });
           expect(EnharmonicInterval.tritone.items, {
-            const Interval(Intervals.fourth, PerfectQuality.augmented),
-            const Interval(Intervals.fifth, PerfectQuality.diminished),
+            const Interval.perfect(4, PerfectQuality.augmented),
+            const Interval.perfect(5, PerfectQuality.diminished),
           });
           expect(EnharmonicInterval.perfectFifth.items, {
-            const Interval(Intervals.fourth, PerfectQuality.doubleAugmented),
-            const Interval(Intervals.fifth, PerfectQuality.perfect),
-            const Interval(Intervals.sixth, ImperfectQuality.diminished),
+            const Interval.perfect(4, PerfectQuality.doubleAugmented),
+            const Interval.perfect(5, PerfectQuality.perfect),
+            const Interval.imperfect(6, ImperfectQuality.diminished),
           });
           expect(EnharmonicInterval.minorSixth.items, {
-            const Interval(Intervals.fifth, PerfectQuality.augmented),
-            const Interval(Intervals.sixth, ImperfectQuality.minor),
-            const Interval(
-              Intervals.seventh,
+            const Interval.perfect(5, PerfectQuality.augmented),
+            const Interval.imperfect(6, ImperfectQuality.minor),
+            const Interval.imperfect(
+              7,
               ImperfectQuality.doubleDiminished,
             ),
           });
           expect(EnharmonicInterval.majorSixth.items, {
-            const Interval(Intervals.sixth, ImperfectQuality.major),
-            const Interval(Intervals.seventh, ImperfectQuality.diminished),
+            const Interval.imperfect(6, ImperfectQuality.major),
+            const Interval.imperfect(7, ImperfectQuality.diminished),
           });
           expect(EnharmonicInterval.minorSeventh.items, {
-            const Interval(Intervals.sixth, ImperfectQuality.augmented),
-            const Interval(Intervals.seventh, ImperfectQuality.minor),
-            const Interval(Intervals.octave, PerfectQuality.doubleDiminished),
+            const Interval.imperfect(6, ImperfectQuality.augmented),
+            const Interval.imperfect(7, ImperfectQuality.minor),
+            const Interval.perfect(8, PerfectQuality.doubleDiminished),
           });
           expect(EnharmonicInterval.majorSeventh.items, {
-            const Interval(Intervals.seventh, ImperfectQuality.major),
-            const Interval(Intervals.octave, PerfectQuality.diminished),
+            const Interval.imperfect(7, ImperfectQuality.major),
+            const Interval.perfect(8, PerfectQuality.diminished),
           });
         },
       );
@@ -74,25 +74,25 @@ void main() {
       test('should return the correct Interval from semitones', () {
         expect(
           EnharmonicInterval.intervalFromSemitones(4),
-          equals(const Interval(Intervals.third, ImperfectQuality.minor)),
+          equals(const Interval.imperfect(3, ImperfectQuality.minor)),
         );
         expect(
           EnharmonicInterval.intervalFromSemitones(7),
-          equals(const Interval(Intervals.fourth, PerfectQuality.augmented)),
+          equals(const Interval.perfect(4, PerfectQuality.augmented)),
         );
         expect(
           EnharmonicInterval.intervalFromSemitones(
             7,
             PerfectQuality.augmented,
           ),
-          equals(const Interval(Intervals.fourth, PerfectQuality.augmented)),
+          equals(const Interval.perfect(4, PerfectQuality.augmented)),
         );
         expect(
           EnharmonicInterval.intervalFromSemitones(
             7,
             PerfectQuality.diminished,
           ),
-          equals(const Interval(Intervals.fifth, PerfectQuality.diminished)),
+          equals(const Interval.perfect(5, PerfectQuality.diminished)),
         );
       });
     });
@@ -128,7 +128,7 @@ void main() {
           EnharmonicInterval.majorThird,
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
+        expect(collection.toList(), const [
           EnharmonicInterval.perfectUnison,
           EnharmonicInterval.majorThird,
         ]);
@@ -139,12 +139,12 @@ void main() {
       test(
         'should correctly sort EnharmonicInterval items in a collection',
         () {
-          final orderedSet = SplayTreeSet<EnharmonicInterval>.of([
+          final orderedSet = SplayTreeSet<EnharmonicInterval>.of(const [
             EnharmonicInterval.minorSecond,
             EnharmonicInterval.majorThird,
             EnharmonicInterval.perfectUnison,
           ]);
-          expect(orderedSet.toList(), [
+          expect(orderedSet.toList(), const [
             EnharmonicInterval.perfectUnison,
             EnharmonicInterval.minorSecond,
             EnharmonicInterval.majorThird,

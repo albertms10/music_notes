@@ -18,13 +18,11 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   @override
   Set<Interval> get items {
-    final interval = Intervals.fromSemitones(semitones - 1);
+    final interval = IntIntervalExtension.fromSemitones(semitones - 1);
 
     if (interval != null) {
-      final intervalBelow = interval == Intervals.unison
-          ? Intervals.unison
-          : Intervals.fromOrdinal(interval.ordinal - 1);
-      final intervalAbove = Intervals.fromOrdinal(interval.ordinal + 1);
+      final intervalBelow = interval == 1 ? 1 : interval - 1;
+      final intervalAbove = interval + 1;
 
       return SplayTreeSet<Interval>.of({
         Interval.fromDesiredSemitones(intervalBelow, semitones - 1),
@@ -33,8 +31,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       });
     }
 
-    final intervalBelow = Intervals.fromSemitones(semitones - 2);
-    final intervalAbove = Intervals.fromSemitones(semitones);
+    final intervalBelow = IntIntervalExtension.fromSemitones(semitones - 2);
+    final intervalAbove = IntIntervalExtension.fromSemitones(semitones);
 
     return SplayTreeSet<Interval>.of({
       Interval.fromDesiredSemitones(intervalBelow!, semitones - 1),
@@ -47,13 +45,13 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Examples:
   /// ```dart
   /// EnharmonicInterval.intervalFromSemitones(4)
-  ///   == const Interval(Intervals.third, ImperfectQuality.minor)
+  ///   == const Interval.imperfect(3, ImperfectQuality.minor)
   ///
   /// EnharmonicInterval.intervalFromSemitones(7)
-  ///   == const Interval(Intervals.fourth, PerfectQuality.augmented)
+  ///   == const Interval.perfect(4, PerfectQuality.augmented)
   ///
   /// EnharmonicInterval.intervalFromSemitones(7, PerfectQuality.diminished)
-  ///   == const Interval(Intervals.fifth, PerfectQuality.diminished)
+  ///   == const Interval.perfect(5, PerfectQuality.diminished)
   /// ```
   static Interval intervalFromSemitones(
     int semitones, [

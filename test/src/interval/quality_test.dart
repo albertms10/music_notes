@@ -36,11 +36,18 @@ void main() {
 
     group('.toString()', () {
       test('should return a string representation of this Quality', () {
-        expect(ImperfectQuality.diminished.toString(), 'diminished (-1)');
-        expect(PerfectQuality.diminished.toString(), 'diminished (-1)');
-        expect(PerfectQuality.perfect.toString(), 'perfect (+0)');
-        expect(ImperfectQuality.major.toString(), 'major (+1)');
-        expect(ImperfectQuality.augmented.toString(), 'augmented (+2)');
+        expect(PerfectQuality.doubleDiminished.toString(), 'dd (-2)');
+        expect(PerfectQuality.diminished.toString(), 'd (-1)');
+        expect(PerfectQuality.perfect.toString(), 'P (+0)');
+        expect(PerfectQuality.augmented.toString(), 'A (+1)');
+        expect(PerfectQuality.doubleAugmented.toString(), 'AA (+2)');
+
+        expect(ImperfectQuality.doubleDiminished.toString(), 'dd (-2)');
+        expect(ImperfectQuality.diminished.toString(), 'd (-1)');
+        expect(ImperfectQuality.minor.toString(), 'm (+0)');
+        expect(ImperfectQuality.major.toString(), 'M (+1)');
+        expect(ImperfectQuality.augmented.toString(), 'A (+2)');
+        expect(ImperfectQuality.doubleAugmented.toString(), 'AA (+3)');
       });
     });
 
@@ -54,9 +61,9 @@ void main() {
           ImperfectQuality.minor,
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          const PerfectQuality(5),
-          const ImperfectQuality(5),
+        expect(collection.toList(), const [
+          PerfectQuality(5),
+          ImperfectQuality(5),
           PerfectQuality.diminished,
           PerfectQuality.perfect,
           ImperfectQuality.minor,
@@ -66,23 +73,23 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Quality items in a collection', () {
-        final orderedSet = SplayTreeSet<Quality>.of([
-          const PerfectQuality(5),
-          const ImperfectQuality(5),
+        final orderedSet = SplayTreeSet<Quality>.of(const [
+          PerfectQuality(5),
+          ImperfectQuality(5),
           ImperfectQuality.major,
           PerfectQuality.perfect,
           PerfectQuality.diminished,
           ImperfectQuality.diminished,
           ImperfectQuality.augmented,
         ]);
-        expect(orderedSet.toList(), [
+        expect(orderedSet.toList(), const [
           ImperfectQuality.diminished,
           PerfectQuality.diminished,
           PerfectQuality.perfect,
           ImperfectQuality.major,
           ImperfectQuality.augmented,
-          const ImperfectQuality(5),
-          const PerfectQuality(5),
+          ImperfectQuality(5),
+          PerfectQuality(5),
         ]);
       });
     });

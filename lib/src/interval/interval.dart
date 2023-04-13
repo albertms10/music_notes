@@ -1,35 +1,69 @@
 part of '../../music_notes.dart';
 
+/// Distance between two notes.
 @immutable
 class Interval implements MusicItem {
-  final Intervals interval;
+  /// Number of lines and spaces (or alphabet letters) spanning the two notes,
+  /// including the beginning and end.
+  final int size;
+
+  /// The quality of this [Interval].
+  ///
+  /// Must be an instance of [PerfectQuality] or
+  /// [ImperfectQuality], depending on the nature of the interval.
   final Quality quality;
+
+  /// Whether this [Interval] is descending.
   final bool descending;
 
-  const Interval(this.interval, this.quality, {this.descending = false});
+  const Interval._(this.size, this.quality, {this.descending = false});
 
-  Interval.fromDelta(Intervals interval, int delta)
-      : this(interval, qualityFromDelta(interval, delta));
-
-  Interval.fromDesiredSemitones(Intervals interval, int semitones)
-      : this(
-          interval,
-          qualityFromDelta(interval, semitones - interval.semitones),
+  /// Creates a new [Interval] allowing only perfect quality [size]s.
+  const Interval.perfect(
+    this.size,
+    PerfectQuality this.quality, {
+    this.descending = false,
+  }) : assert(
+          // Copied from [IntIntervalExtension.isPerfect] to allow const.
+          (size + size ~/ 8) % 4 == 0 || (size + size ~/ 8) % 4 == 1,
+          'Interval must be perfect',
         );
 
-  static const Map<int, Quality Function(int)> intervalToQuality = {
+  /// Creates a new [Interval] allowing only imperfect quality [size]s.
+  const Interval.imperfect(
+    this.size,
+    ImperfectQuality this.quality, {
+    this.descending = false,
+  }) : assert(
+          // Copied from [IntIntervalExtension.isPerfect] to allow const.
+          (size + size ~/ 8) % 4 != 0 && (size + size ~/ 8) % 4 != 1,
+          'Interval must be imperfect',
+        );
+
+  /// Creates a new [Interval] from the [Quality] delta.
+  Interval.fromDelta(int size, int delta)
+      : this._(size, qualityFromDelta(size, delta));
+
+  /// Creates a new [Interval] from [semitones].
+  Interval.fromDesiredSemitones(int size, int semitones)
+      : this._(
+          size,
+          qualityFromDelta(size, semitones - size.semitones),
+        );
+
+  static const Map<int, Quality Function(int)> _intervalToQuality = {
     1: PerfectQuality.new,
     2: ImperfectQuality.new,
     3: ImperfectQuality.new,
     4: PerfectQuality.new,
   };
 
-  static Quality qualityFromDelta(Intervals interval, int delta) {
+  static Quality qualityFromDelta(int interval, int delta) {
     final simplifiedInterval = interval.simplified;
-    final baseInterval = simplifiedInterval.ordinal > 4
+    final baseInterval = simplifiedInterval > 4
         ? simplifiedInterval.inverted
         : simplifiedInterval;
-    final qualityConstructor = intervalToQuality[baseInterval.ordinal]!;
+    final qualityConstructor = _intervalToQuality[baseInterval]!;
 
     return qualityConstructor(delta);
   }
@@ -38,43 +72,41 @@ class Interval implements MusicItem {
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.second, ImperfectQuality.major).semitones == 2
+  /// const Interval.imperfect(2, ImperfectQuality.major).semitones == 2
   ///
-  /// const Interval(Intervals.fifth, PerfectQuality.diminished).semitones
-  ///   == const Interval(Intervals.fourth, PerfectQuality.augmented).semitones
+  /// const Interval.perfect(5, PerfectQuality.diminished).semitones
+  ///   == const Interval.perfect(4, PerfectQuality.augmented).semitones
   ///   == 6
   /// ```
   @override
   int get semitones =>
-      (interval.semitones + quality.semitones) * (descending ? -1 : 1);
+      (size.semitones + quality.semitones) * (descending ? -1 : 1);
 
   /// Returns the inverted of this [Interval].
   ///
   /// Examples:
   /// ```dart
-  /// const Interval(Intervals.third, ImperfectQuality.minor).inverted
-  ///   == const Interval(Intervals.sixth, ImperfectQuality.major)
+  /// const Interval.imperfect(3, ImperfectQuality.minor).inverted
+  ///   == const Interval.imperfect(6, ImperfectQuality.major)
   ///
-  /// const Interval(Intervals.unison, PerfectQuality.perfect).inverted
-  ///   == const Interval(Intervals.octave, PerfectQuality.perfect)
+  /// const Interval.perfect(1, PerfectQuality.perfect).inverted
+  ///   == const Interval.perfect(8, PerfectQuality.perfect)
   /// ```
-  Interval get inverted => Interval(interval.inverted, quality.inverted);
+  Interval get inverted => Interval._(size.inverted, quality.inverted);
 
   @override
-  String toString() => '${quality.name} ${interval.name}';
+  String toString() => '${quality.abbreviation}$size';
 
   @override
   bool operator ==(Object other) =>
-      other is Interval &&
-      interval == other.interval &&
-      quality == other.quality;
+      other is Interval && size == other.size && quality == other.quality;
 
   @override
-  int get hashCode => hash2(interval, quality);
+  int get hashCode => hash2(size, quality);
 
   @override
   int compareTo(covariant Interval other) => compareMultiple([
-        () => interval.ordinal.compareTo(other.interval.ordinal),
+        () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);
 }
