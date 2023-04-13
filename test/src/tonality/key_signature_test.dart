@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('KeySignature', () {
     group('constructor', () {
-      test('should throw an assertion error with incorrect arguments', () {
+      test('should throw an assertion error when arguments are incorrect', () {
         expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
         expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
       });

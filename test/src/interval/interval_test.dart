@@ -5,6 +5,19 @@ import 'package:test/test.dart';
 
 void main() {
   group('Interval', () {
+    group('constructor', () {
+      test('should throw an assertion error when arguments are incorrect', () {
+        expect(
+          () => Interval.perfect(2, PerfectQuality.diminished),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => Interval.imperfect(5, ImperfectQuality.augmented),
+          throwsA(isA<AssertionError>()),
+        );
+      });
+    });
+
     group('.fromDesiredSemitones()', () {
       test('should create a new Interval from desired semitones', () {
         expect(
