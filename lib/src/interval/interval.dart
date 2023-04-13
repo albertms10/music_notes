@@ -70,7 +70,7 @@ class Interval implements MusicItem {
 
   /// Returns the number of semitones of this [Interval].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Interval.imperfect(2, ImperfectQuality.major).semitones == 2
   ///
@@ -84,7 +84,7 @@ class Interval implements MusicItem {
 
   /// Returns the inverted of this [Interval].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Interval.imperfect(3, ImperfectQuality.minor).inverted
   ///   == const Interval.imperfect(6, ImperfectQuality.major)

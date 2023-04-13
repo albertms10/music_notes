@@ -16,7 +16,7 @@ enum Notes {
   /// Returns a [Notes] enum item that matches [value]
   /// as in [Notes], otherwise returns `null`.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.fromValue(3) == Notes.d
   /// Notes.fromValue(8) == Notes.g
@@ -28,7 +28,7 @@ enum Notes {
 
   /// Returns a [Notes] enum item that matches [ordinal].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.fromOrdinal(3) == Notes.e
   /// Notes.fromOrdinal(7) == Notes.b
@@ -40,7 +40,7 @@ enum Notes {
   /// Returns `true` if a [Notes] enum item needs and accidental
   /// to be represented—that is, it cannot be found in [Notes].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.needsAccidental(4) == true
   /// Notes.needsAccidental(6) == false
@@ -49,7 +49,7 @@ enum Notes {
 
   /// Returns the ordinal number of this [Notes] enum item.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.c.ordinal == 1
   /// Notes.f.ordinal == 4
@@ -59,7 +59,7 @@ enum Notes {
   /// Returns an [int] interval that conforms an interval
   /// between this [Notes] enum item and [note] in ascending manner by default.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.d.interval(Notes.f) == 3
   /// Notes.a.interval(Notes.e) == 5
@@ -79,7 +79,7 @@ enum Notes {
   /// Returns a transposed [Notes] enum item from this [Notes] one
   /// given an [int] interval, ascending by default.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Notes.c.transpose(5) == Notes.g
   /// Notes.f.transpose(3, descending: true) == Notes.d

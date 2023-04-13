@@ -28,7 +28,7 @@ class Note implements MusicItem {
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
   /// [mode] and optional [accidental].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp) == Note.d
   /// Note.fromTonalityAccidentals(0, Modes.minor) == Note.a
@@ -56,7 +56,7 @@ class Note implements MusicItem {
   /// Returns the [Note] from the [Tonality] given its [accidentals] number
   /// and optional [accidental].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.fromRawAccidentals(2, Accidental.sharp) == Note.d
   /// Note.fromRawAccidentals(0) == Note.a
@@ -84,7 +84,7 @@ class Note implements MusicItem {
   /// Returns the number of semitones that correspond to this [Note]
   /// from [Notes.c].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.d.semitones == 3
   /// Note.fSharp.semitones == 7
@@ -98,7 +98,7 @@ class Note implements MusicItem {
 
   /// Returns the exact fifths distance between this and [other].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.aFlat.exactFifthsDistance(Note.cSharp) == 11
   /// Note.aFlat.exactFifthsDistance(Note.dFlat) == -1
@@ -163,7 +163,7 @@ class Note implements MusicItem {
 
   /// Returns the exact interval between this [Note] and [other].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.c.exactInterval(Note.d)
   ///   == const Interval.imperfect(2, ImperfectQuality.minor)

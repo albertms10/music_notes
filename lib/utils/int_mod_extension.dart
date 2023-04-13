@@ -3,7 +3,7 @@ import 'package:music_notes/music_notes.dart';
 extension IntModExtension on int {
   /// Returns the modulus [chromaticDivisions] of this [int].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 4.chromaticMod == 4
   /// 14.chromaticMod == 2
@@ -16,7 +16,7 @@ extension IntModExtension on int {
   /// Returns the modulus [chromaticDivisions] of this [int]. If this
   /// is 0, it returns [chromaticDivisions].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 15.chromaticModExcludeZero == 3
   /// 12.chromaticModExcludeZero == 12
@@ -26,7 +26,7 @@ extension IntModExtension on int {
 
   /// Returns the modulus [n] of this [int]. If this is 0, it returns [n].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// 9.nModExcludeZero(3) == 3
   /// 0.nModExcludeZero(5) == 5

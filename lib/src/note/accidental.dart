@@ -30,7 +30,7 @@ class Accidental implements MusicItem {
 
   /// Returns the symbol of this [Accidental].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.flat.symbol == '♭'
   /// Accidental.doubleSharp.symbol == '𝄪'
@@ -47,7 +47,7 @@ class Accidental implements MusicItem {
 
   /// Returns the incremented [Accidental] enum item of this by [n].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.flat.increment(2) == Accidental.tripleFlat
   /// Accidental.sharp.increment(1) == Accidental.doubleSharp

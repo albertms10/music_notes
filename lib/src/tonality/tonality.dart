@@ -19,7 +19,7 @@ class Tonality implements Comparable<Tonality> {
 
   /// Returns the number of [accidentals] of this [Tonality].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Tonality(Note.b, Modes.major).accidentals == 5
   /// const Tonality(Note.g, Modes.minor).accidentals == 2
@@ -29,7 +29,7 @@ class Tonality implements Comparable<Tonality> {
 
   /// Returns the [Accidental] of this [Tonality]’s key signature.
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Tonality(Note.e, Modes.major).accidental == Accidental.sharp
   /// const Tonality(Note.f, Modes.minor).accidental == Accidental.flat
@@ -42,7 +42,7 @@ class Tonality implements Comparable<Tonality> {
   /// Returns the [Modes.major] or [Modes.minor] relative [Tonality]
   /// of this [Tonality].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const Tonality(Note.d, Modes.minor).relative
   ///   == const Tonality(Note.f, Modes.major)

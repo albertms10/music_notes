@@ -42,7 +42,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   /// Returns the [Interval] from [semitones] and a [preferredQuality].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// EnharmonicInterval.intervalFromSemitones(4)
   ///   == const Interval.imperfect(3, ImperfectQuality.minor)

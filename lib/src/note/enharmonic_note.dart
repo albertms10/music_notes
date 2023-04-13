@@ -55,7 +55,7 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   /// Returns the [Note] from [semitones] and a [preferredAccidental].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// EnharmonicNote.e.toNote() == Note.e
   /// EnharmonicNote.dSharp.toNote(Accidental.flat) == Note.eFlat
@@ -76,6 +76,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Example:
   /// ```dart
   /// EnharmonicNote.c.transposeBy(6) == EnharmonicNote.fSharp
+  /// EnharmonicNote.a.transposeBy(-2) == EnharmonicNote.g
   /// ```
   @override
   EnharmonicNote transposeBy(int semitones) =>
@@ -83,7 +84,7 @@ class EnharmonicNote extends Enharmonic<Note> {
 
   /// Returns the shortest fifths distance between this and [other].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// EnharmonicNote.fSharp.shortestFifthsDistance(EnharmonicNote.a) == -3
   /// EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g) == 4
@@ -129,7 +130,7 @@ class EnharmonicNote extends Enharmonic<Note> {
   /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [interval].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
