@@ -42,31 +42,14 @@ class Interval implements MusicItem {
 
   /// Creates a new [Interval] from the [Quality] delta.
   Interval.fromDelta(int size, int delta)
-      : this._(size, qualityFromDelta(size, delta));
+      : this._(size, Quality.fromInterval(size, delta));
 
   /// Creates a new [Interval] from [semitones].
   Interval.fromDesiredSemitones(int size, int semitones)
       : this._(
           size,
-          qualityFromDelta(size, semitones - size.semitones),
+          Quality.fromInterval(size, semitones - size.semitones),
         );
-
-  static const Map<int, Quality Function(int)> _intervalToQuality = {
-    1: PerfectQuality.new,
-    2: ImperfectQuality.new,
-    3: ImperfectQuality.new,
-    4: PerfectQuality.new,
-  };
-
-  static Quality qualityFromDelta(int interval, int delta) {
-    final simplifiedInterval = interval.simplified;
-    final baseInterval = simplifiedInterval > 4
-        ? simplifiedInterval.inverted
-        : simplifiedInterval;
-    final qualityConstructor = _intervalToQuality[baseInterval]!;
-
-    return qualityConstructor(delta);
-  }
 
   /// Returns the number of semitones of this [Interval].
   ///
