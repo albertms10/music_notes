@@ -180,7 +180,7 @@ void main() {
           equals(const Interval.imperfect(7, ImperfectQuality.major)),
         );
         // TODO(albertms10): add test case for:
-        //  Note.c.exactInterval(const Note(Notes.b, Accidental.sharp)).
+        //  `Note.c.exactInterval(const Note(Notes.b, Accidental.sharp))`.
       });
     });
 

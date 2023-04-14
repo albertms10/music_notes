@@ -80,7 +80,7 @@ class EnharmonicNote extends Enharmonic<Note> {
     }
 
     return items
-        // TODO(albertms10): return the note with the closest [withAccidental].
+        // TODO(albertms10): return the note with the closest accidental #50.
         .sorted(
           (a, b) => a.accidental.semitones
               .abs()
