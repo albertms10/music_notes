@@ -72,12 +72,7 @@ class Note implements MusicItem {
 
     return EnharmonicNote(
       (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
-    ).toClosestNote(
-      (accidental == Accidental.flat && accidentals > 8) ||
-              (accidental == Accidental.sharp && accidentals > 10)
-          ? Accidental(accidental.semitones + 1)
-          : accidental,
-    );
+    ).toClosestNote(accidental.increment(accidentals ~/ 9));
   }
 
   /// Returns the number of semitones that correspond to this [Note]

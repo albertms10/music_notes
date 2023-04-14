@@ -37,15 +37,11 @@ void main() {
     group('.tonalities', () {
       test('should return the Set of tonalities for this KeySignature', () {
         expect(const KeySignature(10, Accidental.flat).tonalities, {
-          // TODO(albertms10): Failing test:
-          //  Should be Note(Notes.e, Accidental.doubleFlat).
-          const Tonality(Note.d, Modes.major),
+          const Tonality(Note(Notes.e, Accidental.doubleFlat), Modes.major),
           const Tonality(Note(Notes.c, Accidental.flat), Modes.minor),
         });
         expect(const KeySignature(9, Accidental.flat).tonalities, {
-          // TODO(albertms10): Failing test:
-          //  Should be Note(Notes.b, Accidental.doubleFlat).
-          const Tonality(Note.a, Modes.major),
+          const Tonality(Note(Notes.b, Accidental.doubleFlat), Modes.major),
           const Tonality(Note.gFlat, Modes.minor),
         });
         expect(const KeySignature(8, Accidental.flat).tonalities, {
