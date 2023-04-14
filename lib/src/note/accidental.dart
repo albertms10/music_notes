@@ -28,12 +28,31 @@ class Accidental implements MusicItem {
   static const String _flatSymbol = '♭';
   static const String _doubleFlatSymbol = '𝄫';
 
-  /// Returns the symbol of this [Accidental].
+  /// The name of this [Accidental].
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp.name == 'Sharp'
+  /// Accidental.doubleFlat.name == 'Double flat'
+  /// Accidental.natural.name == 'Natural'
+  /// ```
+  String? get name => const {
+        3: 'Triple sharp',
+        2: 'Double sharp',
+        1: 'Sharp',
+        0: 'Natural',
+        -1: 'Flat',
+        -2: 'Double flat',
+        -3: 'Triple flat',
+      }[semitones];
+
+  /// The symbol of this [Accidental].
   ///
   /// Example:
   /// ```dart
   /// Accidental.flat.symbol == '♭'
   /// Accidental.doubleSharp.symbol == '𝄪'
+  /// Accidental.natural.symbol == '♮'
   /// ```
   String get symbol {
     if (semitones == 0) return _naturalSymbol;
@@ -57,7 +76,11 @@ class Accidental implements MusicItem {
       Accidental((semitones.abs() + n) * (semitones >= 0 ? 1 : -1));
 
   @override
-  String toString() => '$symbol (${semitones.toDeltaString()})';
+  String toString() => [
+        if (name != null) name,
+        symbol,
+        '(${semitones.toDeltaString()})',
+      ].join(' ');
 
   @override
   bool operator ==(Object other) =>
