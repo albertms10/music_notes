@@ -45,11 +45,46 @@ class Interval implements MusicItem {
       : this._(size, Quality.fromInterval(size, delta));
 
   /// Creates a new [Interval] from [semitones].
-  Interval.fromDesiredSemitones(int size, int semitones)
+  Interval.fromSemitones(int size, int semitones)
       : this._(
           size,
           Quality.fromInterval(size, semitones - size.semitones),
         );
+
+  /// Creates a new [Interval] from [semitones] and a [preferredQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.fromSemitonesQuality(4)
+  ///   == const Interval.imperfect(3, ImperfectQuality.minor)
+  ///
+  /// Interval.fromSemitonesQuality(7)
+  ///   == const Interval.perfect(4, PerfectQuality.augmented)
+  ///
+  /// Interval.fromSemitonesQuality(7, PerfectQuality.diminished)
+  ///   == const Interval.perfect(5, PerfectQuality.diminished)
+  /// ```
+  factory Interval.fromSemitonesQuality(
+    int semitones, [
+    Quality? preferredQuality,
+  ]) {
+    final intervals = EnharmonicInterval(semitones).items;
+
+    if (preferredQuality != null) {
+      final interval = intervals.firstWhereOrNull(
+        (interval) => interval.quality == preferredQuality,
+      );
+      if (interval != null) return interval;
+    }
+
+    // Find the Interval with the smaller Quality delta semitones.
+    return intervals
+        .sorted(
+          (a, b) =>
+              a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
+        )
+        .first;
+  }
 
   /// Returns the number of semitones of this [Interval].
   ///

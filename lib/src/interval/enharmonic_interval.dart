@@ -25,9 +25,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       final intervalAbove = interval + 1;
 
       return SplayTreeSet<Interval>.of({
-        Interval.fromDesiredSemitones(intervalBelow, semitones - 1),
-        Interval.fromDesiredSemitones(interval, semitones - 1),
-        Interval.fromDesiredSemitones(intervalAbove, semitones - 1),
+        Interval.fromSemitones(intervalBelow, semitones - 1),
+        Interval.fromSemitones(interval, semitones - 1),
+        Interval.fromSemitones(intervalAbove, semitones - 1),
       });
     }
 
@@ -35,41 +35,9 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final intervalAbove = IntIntervalExtension.fromSemitones(semitones);
 
     return SplayTreeSet<Interval>.of({
-      Interval.fromDesiredSemitones(intervalBelow!, semitones - 1),
-      Interval.fromDesiredSemitones(intervalAbove!, semitones - 1),
+      Interval.fromSemitones(intervalBelow!, semitones - 1),
+      Interval.fromSemitones(intervalAbove!, semitones - 1),
     });
-  }
-
-  /// Returns the [Interval] from [semitones] and a [preferredQuality].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicInterval.intervalFromSemitones(4)
-  ///   == const Interval.imperfect(3, ImperfectQuality.minor)
-  ///
-  /// EnharmonicInterval.intervalFromSemitones(7)
-  ///   == const Interval.perfect(4, PerfectQuality.augmented)
-  ///
-  /// EnharmonicInterval.intervalFromSemitones(7, PerfectQuality.diminished)
-  ///   == const Interval.perfect(5, PerfectQuality.diminished)
-  /// ```
-  static Interval intervalFromSemitones(
-    int semitones, [
-    Quality? preferredQuality,
-  ]) {
-    final intervals = EnharmonicInterval(semitones).items;
-
-    return intervals.firstWhereOrNull(
-          (interval) => interval.quality == preferredQuality,
-        ) ??
-        // Find the Interval with the smaller Quality delta semitones.
-        intervals
-            .sorted(
-              (a, b) => a.quality.semitones
-                  .abs()
-                  .compareTo(b.quality.semitones.abs()),
-            )
-            .first;
   }
 
   /// Returns a transposed [EnharmonicInterval] by [semitones]

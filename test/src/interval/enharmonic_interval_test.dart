@@ -70,33 +70,6 @@ void main() {
       );
     });
 
-    group('.intervalFromSemitones()', () {
-      test('should return the correct Interval from semitones', () {
-        expect(
-          EnharmonicInterval.intervalFromSemitones(4),
-          equals(const Interval.imperfect(3, ImperfectQuality.minor)),
-        );
-        expect(
-          EnharmonicInterval.intervalFromSemitones(7),
-          equals(const Interval.perfect(4, PerfectQuality.augmented)),
-        );
-        expect(
-          EnharmonicInterval.intervalFromSemitones(
-            7,
-            PerfectQuality.augmented,
-          ),
-          equals(const Interval.perfect(4, PerfectQuality.augmented)),
-        );
-        expect(
-          EnharmonicInterval.intervalFromSemitones(
-            7,
-            PerfectQuality.diminished,
-          ),
-          equals(const Interval.perfect(5, PerfectQuality.diminished)),
-        );
-      });
-    });
-
     group('.transposeBy()', () {
       test(
         'should return the transposed EnharmonicInterval by semitones',
