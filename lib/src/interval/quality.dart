@@ -11,6 +11,21 @@ abstract class Quality implements MusicItem {
   /// Creates a new [Quality] from [semitones].
   const Quality(this.semitones);
 
+  /// Creates a new [PerfectQuality] or [ImperfectQuality] from [interval].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Quality.fromInterval(5, 0) == PerfectQuality.perfect
+  /// Quality.fromInterval(3, 1) == ImperfectQuality.major
+  /// Quality.fromInterval(6, 0) == ImperfectQuality.minor
+  /// ```
+  factory Quality.fromInterval(int interval, int semitones) {
+    final qualityConstructor =
+        interval.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
+
+    return qualityConstructor(semitones);
+  }
+
   /// The textual abbreviation of this [Quality].
   String? get abbreviation;
 
