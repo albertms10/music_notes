@@ -39,18 +39,17 @@ class Note implements MusicItem {
     Accidental accidental = Accidental.natural,
   ]) {
     final note = Note.fromRawAccidentals(accidentals, accidental);
+    if (mode == Modes.major) return note;
 
-    return mode == Modes.major
-        ? note
-        : EnharmonicNote(note.semitones)
-            .transposeBy(
-              const Interval.imperfect(
-                3,
-                ImperfectQuality.minor,
-                descending: true,
-              ).semitones,
-            )
-            .toNote(accidental);
+    return EnharmonicNote(note.semitones)
+        .transposeBy(
+          const Interval.imperfect(
+            3,
+            ImperfectQuality.minor,
+            descending: true,
+          ).semitones,
+        )
+        .toClosestNote(accidental);
   }
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number
@@ -73,7 +72,7 @@ class Note implements MusicItem {
 
     return EnharmonicNote(
       (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
-    ).toNote(
+    ).toClosestNote(
       (accidental == Accidental.flat && accidentals > 8) ||
               (accidental == Accidental.sharp && accidentals > 10)
           ? Accidental(accidental.semitones + 1)
@@ -149,13 +148,14 @@ class Note implements MusicItem {
     var distance = 0;
     var currentPitch = this.semitones;
 
-    var tempNote = EnharmonicNote(currentPitch).toNote(preferredAccidental);
+    var tempNote =
+        EnharmonicNote(currentPitch).toClosestNote(preferredAccidental);
 
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
       tempNote = EnharmonicNote(currentPitch.chromaticModExcludeZero)
-          .toNote(preferredAccidental);
+          .toClosestNote(preferredAccidental);
     }
 
     return distance;

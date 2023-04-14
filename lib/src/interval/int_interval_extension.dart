@@ -12,7 +12,7 @@ extension IntIntervalExtension on int {
     8: 12,
   };
 
-  /// Returns an [int] interval that matches [semitones]
+  /// Returns an [int] interval that matches with [semitones]
   /// in [_intervalsToSemitonesDelta], otherwise returns `null`.
   ///
   /// Example:

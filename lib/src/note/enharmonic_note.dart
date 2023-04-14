@@ -53,21 +53,61 @@ class EnharmonicNote extends Enharmonic<Note> {
     });
   }
 
-  /// Returns the [Note] from [semitones] and a [preferredAccidental].
+  /// Returns the [Note] that matches [withAccidental] from this
+  /// [EnharmonicNote].
+  ///
+  /// Throws an [ArgumentError] when [withAccidental] does not match with any
+  /// possible note.
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote.e.toNote() == Note.e
-  /// EnharmonicNote.dSharp.toNote(Accidental.flat) == Note.eFlat
+  /// EnharmonicNote.d.toNote() == Note.d
+  /// EnharmonicNote.fSharp.toNote(Accidental.flat) == Note.gFlat
+  /// EnharmonicNote.cSharp.toNote(Accidental.natural) // throws
   /// ```
-  Note toNote([Accidental preferredAccidental = Accidental.natural]) {
-    return items.firstWhereOrNull(
-          (note) => note.accidental == preferredAccidental,
-        ) ??
-        items.firstWhereOrNull(
-          (note) => note.accidental == Accidental.natural,
-        ) ??
-        items.first;
+  Note toNote([Accidental? withAccidental]) {
+    final matchedNote = items.firstWhereOrNull(
+      (note) => note.accidental == withAccidental,
+    );
+    if (matchedNote != null) return matchedNote;
+
+    if (withAccidental != null) {
+      throw ArgumentError.value(
+        '$withAccidental',
+        'preferredAccidental',
+        'Impossible match for',
+      );
+    }
+
+    return items
+        // TODO(albertms10): return the note with the closest [withAccidental].
+        .sorted(
+          (a, b) => a.accidental.semitones
+              .abs()
+              .compareTo(b.accidental.semitones.abs()),
+        )
+        .first;
+  }
+
+  /// Returns the [Note] that matches with [preferredAccidental] from this
+  /// [EnharmonicNote].
+  ///
+  /// Like [toNote] except that this function returns the closest note where a
+  /// similar call to [toNote] would throw an [ArgumentError].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicNote.d.toClosestNote() == Note.d
+  /// EnharmonicNote.gSharp.toClosestNote(Accidental.flat) == Note.aFlat
+  /// EnharmonicNote.cSharp.toClosestNote(Accidental.natural) == null
+  /// ```
+  Note toClosestNote([Accidental? preferredAccidental]) {
+    try {
+      return toNote(preferredAccidental);
+      // ignore: avoid_catching_errors
+    } on ArgumentError {
+      return toNote();
+    }
   }
 
   /// Returns a transposed [EnharmonicNote] by [semitones]

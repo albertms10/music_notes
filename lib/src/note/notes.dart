@@ -13,7 +13,7 @@ enum Notes {
 
   const Notes(this.value);
 
-  /// Returns a [Notes] enum item that matches [value]
+  /// Returns a [Notes] enum item that matches with [value]
   /// as in [Notes], otherwise returns `null`.
   ///
   /// Example:
@@ -26,7 +26,7 @@ enum Notes {
         (note) => value.chromaticModExcludeZero == note.value,
       );
 
-  /// Returns a [Notes] enum item that matches [ordinal].
+  /// Returns a [Notes] enum item that matches with [ordinal].
   ///
   /// Example:
   /// ```dart
