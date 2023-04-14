@@ -21,7 +21,6 @@ void main() {
 
     group('.name', () {
       test('should return the name of this Accidental', () {
-        ;
         expect(const Accidental(4).name, isNull);
         expect(Accidental.tripleSharp.name, 'Triple sharp');
         expect(Accidental.doubleSharp.name, 'Double sharp');
