@@ -19,6 +19,21 @@ void main() {
       });
     });
 
+    group('.name', () {
+      test('should return the name of this Accidental', () {
+        ;
+        expect(const Accidental(4).name, isNull);
+        expect(Accidental.tripleSharp.name, 'Triple sharp');
+        expect(Accidental.doubleSharp.name, 'Double sharp');
+        expect(Accidental.sharp.name, 'Sharp');
+        expect(Accidental.natural.name, 'Natural');
+        expect(Accidental.flat.name, 'Flat');
+        expect(Accidental.doubleFlat.name, 'Double flat');
+        expect(Accidental.tripleFlat.name, 'Triple flat');
+        expect(const Accidental(-4).name, isNull);
+      });
+    });
+
     group('.symbol', () {
       test('should return the symbol string of this Accidental', () {
         expect(const Accidental(5).symbol, '♯𝄪𝄪');
@@ -61,13 +76,13 @@ void main() {
       test('should return the string representation of this Accidental', () {
         expect(const Accidental(5).toString(), '♯𝄪𝄪 (+5)');
         expect(const Accidental(4).toString(), '𝄪𝄪 (+4)');
-        expect(Accidental.tripleSharp.toString(), '♯𝄪 (+3)');
-        expect(Accidental.doubleSharp.toString(), '𝄪 (+2)');
-        expect(Accidental.sharp.toString(), '♯ (+1)');
-        expect(Accidental.natural.toString(), '♮ (+0)');
-        expect(Accidental.flat.toString(), '♭ (-1)');
-        expect(Accidental.doubleFlat.toString(), '𝄫 (-2)');
-        expect(Accidental.tripleFlat.toString(), '♭𝄫 (-3)');
+        expect(Accidental.tripleSharp.toString(), 'Triple sharp ♯𝄪 (+3)');
+        expect(Accidental.doubleSharp.toString(), 'Double sharp 𝄪 (+2)');
+        expect(Accidental.sharp.toString(), 'Sharp ♯ (+1)');
+        expect(Accidental.natural.toString(), 'Natural ♮ (+0)');
+        expect(Accidental.flat.toString(), 'Flat ♭ (-1)');
+        expect(Accidental.doubleFlat.toString(), 'Double flat 𝄫 (-2)');
+        expect(Accidental.tripleFlat.toString(), 'Triple flat ♭𝄫 (-3)');
         expect(const Accidental(-4).toString(), '𝄫𝄫 (-4)');
         expect(const Accidental(-5).toString(), '♭𝄫𝄫 (-5)');
       });
