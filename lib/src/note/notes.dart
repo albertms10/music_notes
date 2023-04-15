@@ -56,24 +56,24 @@ enum Notes {
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
 
-  /// Returns an [int] interval that conforms an interval
-  /// between this [Notes] enum item and [note] in ascending manner by default.
+  /// Returns the interval size that conforms between this [Notes] enum item and
+  /// [other].
   ///
   /// Example:
   /// ```dart
-  /// Notes.d.interval(Notes.f) == 3
-  /// Notes.a.interval(Notes.e) == 5
-  /// Notes.a.interval(Notes.e, descending: true) == 4
+  /// Notes.d.intervalSize(Notes.f) == 3
+  /// Notes.a.intervalSize(Notes.e) == 5
+  /// Notes.a.intervalSize(Notes.e, descending: true) == 4
   /// ```
-  int interval(Notes note, {bool descending = false}) {
-    final noteOrdinal1 = ordinal;
-    var noteOrdinal2 = note.ordinal;
-
-    if (!descending && noteOrdinal1 > noteOrdinal2) {
-      noteOrdinal2 += values.length;
+  int intervalSize(Notes other, {bool descending = false}) {
+    var otherOrdinal = other.ordinal;
+    if (descending && ordinal < otherOrdinal) {
+      otherOrdinal -= values.length;
+    } else if (!descending && ordinal > otherOrdinal) {
+      otherOrdinal += values.length;
     }
 
-    return ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1;
+    return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
   }
 
   /// Returns a transposed [Notes] enum item from this [Notes] one

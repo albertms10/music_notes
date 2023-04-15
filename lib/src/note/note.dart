@@ -167,7 +167,7 @@ class Note implements MusicItem {
   ///     const Interval.perfect(5, PerfectQuality.diminished)
   /// ```
   Interval exactInterval(Note other) {
-    final interval = note.interval(other.note);
+    final interval = note.intervalSize(other.note);
 
     return Interval.fromDelta(
       interval,
