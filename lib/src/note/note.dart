@@ -88,6 +88,13 @@ class Note implements MusicItem {
       (note.value + accidental.semitones).chromaticModExcludeZero;
 
   /// Returns the difference in semitones between this [Note] and [other].
+  ///
+  /// Examples:
+  /// ```dart
+  /// Note.c.difference(Note.d) == 2
+  /// Note.eFlat.difference(Note.bFlat) == 7
+  /// Note.eFlat.difference(Note.bFlat) == 7
+  /// ```
   int difference(Note other) => (other.semitones - semitones).chromaticMod;
 
   /// Returns the exact fifths distance between this and [other].
