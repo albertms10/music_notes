@@ -34,11 +34,22 @@ void main() {
         'should return the difference in semitones with another Note',
         () {
           expect(Note.c.difference(Note.c), 0);
-          expect(
-            const Note(Notes.e, Accidental.sharp).difference(Note.f),
-            0,
-          );
+          expect(const Note(Notes.e, Accidental.sharp).difference(Note.f), 0);
+          expect(Note.c.difference(Note.dFlat), 1);
+          expect(Note.c.difference(Note.cSharp), 1);
+          expect(Note.b.difference(Note.c), 1);
+          expect(Note.f.difference(Note.g), 2);
+          expect(Note.f.difference(Note.aFlat), 3);
+          expect(Note.e.difference(Note.aFlat), 4);
+          expect(Note.a.difference(Note.d), 5);
           expect(Note.d.difference(Note.aFlat), 6);
+          expect(Note.eFlat.difference(Note.bFlat), 7);
+          expect(Note.dSharp.difference(Note.aSharp), 7);
+          expect(Note.d.difference(Note.aSharp), 8);
+          expect(Note.cSharp.difference(Note.bFlat), 9);
+          expect(Note.cSharp.difference(Note.b), 10);
+          expect(Note.dFlat.difference(Note.b), 10);
+          expect(Note.c.difference(Note.b), 11);
         },
       );
     });
