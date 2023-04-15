@@ -277,6 +277,35 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('should return the inverted of this Interval', () {
+        expect(
+          const Interval.perfect(1, PerfectQuality.augmented).inverted,
+          const Interval.perfect(8, PerfectQuality.diminished),
+        );
+        expect(
+          const Interval.perfect(1, PerfectQuality.perfect).inverted,
+          const Interval.perfect(8, PerfectQuality.perfect),
+        );
+        expect(
+          const Interval.imperfect(2, ImperfectQuality.major).inverted,
+          const Interval.imperfect(7, ImperfectQuality.minor),
+        );
+        expect(
+          const Interval.imperfect(3, ImperfectQuality.minor).inverted,
+          const Interval.imperfect(6, ImperfectQuality.major),
+        );
+        expect(
+          const Interval.perfect(5, PerfectQuality.diminished).inverted,
+          const Interval.perfect(4, PerfectQuality.augmented),
+        );
+        expect(
+          const Interval.perfect(4, PerfectQuality.diminished).inverted,
+          const Interval.perfect(5, PerfectQuality.augmented),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Interval', () {
         expect(

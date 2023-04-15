@@ -102,5 +102,16 @@ void main() {
         expect(13.simplified, 6);
       });
     });
+
+    group('.inverted', () {
+      test('should return the inverted int interval', () {
+        expect(2.inverted, 7);
+        expect(4.inverted, 5);
+        expect(8.inverted, 1);
+        expect(9.inverted, 7);
+        expect(10.inverted, 6);
+        expect(13.inverted, 3);
+      });
+    });
   });
 }
