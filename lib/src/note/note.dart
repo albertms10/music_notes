@@ -163,15 +163,15 @@ class Note implements MusicItem {
   /// Note.c.exactInterval(Note.d)
   ///   == const Interval.imperfect(2, ImperfectQuality.minor)
   ///
-  /// Note.d.exactInterval(Note.aFlat) ==
-  ///     const Interval.perfect(5, PerfectQuality.diminished)
+  /// Note.d.exactInterval(Note.aFlat)
+  ///   == const Interval.perfect(5, PerfectQuality.diminished)
   /// ```
   Interval exactInterval(Note other) {
-    final interval = note.interval(other.note);
+    final intervalSize = note.intervalSize(other.note);
 
     return Interval.fromDelta(
-      interval,
-      difference(other) - interval.semitones,
+      intervalSize,
+      difference(other) - intervalSize.semitones,
     );
   }
 

@@ -37,16 +37,6 @@ enum Notes {
   static Notes fromOrdinal(int ordinal) =>
       Notes.values[ordinal.nModExcludeZero(Notes.values.length) - 1];
 
-  /// Returns `true` if a [Notes] enum item needs and accidental
-  /// to be represented—that is, it cannot be found in [Notes].
-  ///
-  /// Example:
-  /// ```dart
-  /// Notes.needsAccidental(4) == true
-  /// Notes.needsAccidental(6) == false
-  /// ```
-  static bool needsAccidental(int value) => fromValue(value) == null;
-
   /// Returns the ordinal number of this [Notes] enum item.
   ///
   /// Example:
@@ -56,36 +46,23 @@ enum Notes {
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
 
-  /// Returns an [int] interval that conforms an interval
-  /// between this [Notes] enum item and [note] in ascending manner by default.
+  /// Returns the interval size that conforms between this [Notes] enum item and
+  /// [other].
   ///
   /// Example:
   /// ```dart
-  /// Notes.d.interval(Notes.f) == 3
-  /// Notes.a.interval(Notes.e) == 5
-  /// Notes.a.interval(Notes.e, descending: true) == 4
+  /// Notes.d.intervalSize(Notes.f) == 3
+  /// Notes.a.intervalSize(Notes.e) == 5
+  /// Notes.a.intervalSize(Notes.e, descending: true) == 4
   /// ```
-  int interval(Notes note, {bool descending = false}) {
-    final noteOrdinal1 = ordinal;
-    var noteOrdinal2 = note.ordinal;
-
-    if (!descending && noteOrdinal1 > noteOrdinal2) {
-      noteOrdinal2 += values.length;
+  int intervalSize(Notes other, {bool descending = false}) {
+    var otherOrdinal = other.ordinal;
+    if (descending && ordinal < otherOrdinal) {
+      otherOrdinal -= values.length;
+    } else if (!descending && ordinal > otherOrdinal) {
+      otherOrdinal += values.length;
     }
 
-    return ((noteOrdinal2 - noteOrdinal1) * (descending ? -1 : 1)) + 1;
+    return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
   }
-
-  /// Returns a transposed [Notes] enum item from this [Notes] one
-  /// given an [int] interval, ascending by default.
-  ///
-  /// Example:
-  /// ```dart
-  /// Notes.c.transpose(5) == Notes.g
-  /// Notes.f.transpose(3, descending: true) == Notes.d
-  /// Notes.a.transpose(4) == Notes.d
-  /// ```
-  Notes transpose(int interval, {bool descending = false}) => Notes.fromOrdinal(
-        ordinal + (interval - 1) * (descending ? -1 : 1),
-      );
 }
