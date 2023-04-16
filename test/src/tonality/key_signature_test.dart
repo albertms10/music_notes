@@ -50,63 +50,63 @@ void main() {
         });
         expect(const KeySignature(7, Accidental.flat).tonalities, {
           const Tonality(Note(Notes.c, Accidental.flat), Modes.major),
-          const Tonality(Note.aFlat, Modes.minor),
+          Tonality.aFlatMinor,
         });
         expect(const KeySignature(6, Accidental.flat).tonalities, {
-          const Tonality(Note.gFlat, Modes.major),
-          const Tonality(Note.eFlat, Modes.minor),
+          Tonality.gFlatMajor,
+          Tonality.eFlatMinor,
         });
         expect(const KeySignature(5, Accidental.flat).tonalities, {
-          const Tonality(Note.dFlat, Modes.major),
-          const Tonality(Note.bFlat, Modes.minor),
+          Tonality.dFlatMajor,
+          Tonality.bFlatMinor,
         });
         expect(const KeySignature(4, Accidental.flat).tonalities, {
-          const Tonality(Note.aFlat, Modes.major),
-          const Tonality(Note.f, Modes.minor),
+          Tonality.aFlatMajor,
+          Tonality.fMinor,
         });
         expect(const KeySignature(3, Accidental.flat).tonalities, {
-          const Tonality(Note.eFlat, Modes.major),
-          const Tonality(Note.c, Modes.minor),
+          Tonality.eFlatMajor,
+          Tonality.cMinor,
         });
         expect(const KeySignature(2, Accidental.flat).tonalities, {
-          const Tonality(Note.bFlat, Modes.major),
-          const Tonality(Note.g, Modes.minor),
+          Tonality.bFlatMajor,
+          Tonality.gMinor,
         });
         expect(const KeySignature(1, Accidental.flat).tonalities, {
-          const Tonality(Note.f, Modes.major),
-          const Tonality(Note.d, Modes.minor),
+          Tonality.fMajor,
+          Tonality.dMinor,
         });
         expect(const KeySignature(0).tonalities, {
-          const Tonality(Note.c, Modes.major),
-          const Tonality(Note.a, Modes.minor),
+          Tonality.cMajor,
+          Tonality.aMinor,
         });
         expect(const KeySignature(1, Accidental.sharp).tonalities, {
-          const Tonality(Note.g, Modes.major),
-          const Tonality(Note.e, Modes.minor),
+          Tonality.gMajor,
+          Tonality.eMinor,
         });
         expect(const KeySignature(2, Accidental.sharp).tonalities, {
-          const Tonality(Note.d, Modes.major),
-          const Tonality(Note.b, Modes.minor),
+          Tonality.dMajor,
+          Tonality.bMinor,
         });
         expect(const KeySignature(3, Accidental.sharp).tonalities, {
-          const Tonality(Note.a, Modes.major),
-          const Tonality(Note.fSharp, Modes.minor),
+          Tonality.aMajor,
+          Tonality.fSharpMinor,
         });
         expect(const KeySignature(4, Accidental.sharp).tonalities, {
-          const Tonality(Note.e, Modes.major),
-          const Tonality(Note.cSharp, Modes.minor),
+          Tonality.eMajor,
+          Tonality.cSharpMinor,
         });
         expect(const KeySignature(5, Accidental.sharp).tonalities, {
-          const Tonality(Note.b, Modes.major),
-          const Tonality(Note.gSharp, Modes.minor),
+          Tonality.bMajor,
+          Tonality.gSharpMinor,
         });
         expect(const KeySignature(6, Accidental.sharp).tonalities, {
-          const Tonality(Note.fSharp, Modes.major),
-          const Tonality(Note.dSharp, Modes.minor),
+          Tonality.fSharpMajor,
+          Tonality.dSharpMinor,
         });
         expect(const KeySignature(7, Accidental.sharp).tonalities, {
-          const Tonality(Note.cSharp, Modes.major),
-          const Tonality(Note.aSharp, Modes.minor),
+          Tonality.cSharpMajor,
+          Tonality.aSharpMinor,
         });
         expect(const KeySignature(8, Accidental.sharp).tonalities, {
           const Tonality(Note.gSharp, Modes.major),
@@ -120,7 +120,7 @@ void main() {
           const Tonality(Note.aSharp, Modes.major),
           // TODO(albertms10): Failing test #50:
           //  Should be `Note(Notes.f, Accidental.doubleSharp)`.
-          const Tonality(Note.g, Modes.minor),
+          Tonality.gMinor,
         });
       });
     });

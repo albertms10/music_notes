@@ -7,6 +7,47 @@ class Tonality implements Comparable<Tonality> {
 
   const Tonality(this.note, this.mode);
 
+  static const cMajor = Tonality(Note.c, Modes.major);
+  static const cMinor = Tonality(Note.c, Modes.minor);
+
+  static const cSharpMajor = Tonality(Note.cSharp, Modes.major);
+  static const cSharpMinor = Tonality(Note.cSharp, Modes.minor);
+  static const dFlatMajor = Tonality(Note.dFlat, Modes.major);
+
+  static const dMajor = Tonality(Note.d, Modes.major);
+  static const dMinor = Tonality(Note.d, Modes.minor);
+
+  static const dSharpMinor = Tonality(Note.dSharp, Modes.minor);
+  static const eFlatMajor = Tonality(Note.eFlat, Modes.major);
+  static const eFlatMinor = Tonality(Note.eFlat, Modes.minor);
+
+  static const eMajor = Tonality(Note.e, Modes.major);
+  static const eMinor = Tonality(Note.e, Modes.minor);
+
+  static const fMajor = Tonality(Note.f, Modes.major);
+  static const fMinor = Tonality(Note.f, Modes.minor);
+
+  static const fSharpMajor = Tonality(Note.fSharp, Modes.major);
+  static const fSharpMinor = Tonality(Note.fSharp, Modes.minor);
+  static const gFlatMajor = Tonality(Note.gFlat, Modes.major);
+
+  static const gMajor = Tonality(Note.g, Modes.major);
+  static const gMinor = Tonality(Note.g, Modes.minor);
+
+  static const gSharpMinor = Tonality(Note.gSharp, Modes.minor);
+  static const aFlatMajor = Tonality(Note.aFlat, Modes.major);
+  static const aFlatMinor = Tonality(Note.aFlat, Modes.minor);
+
+  static const aMajor = Tonality(Note.a, Modes.major);
+  static const aMinor = Tonality(Note.a, Modes.minor);
+
+  static const aSharpMinor = Tonality(Note.aSharp, Modes.minor);
+  static const bFlatMajor = Tonality(Note.bFlat, Modes.major);
+  static const bFlatMinor = Tonality(Note.bFlat, Modes.minor);
+
+  static const bMajor = Tonality(Note.b, Modes.major);
+  static const bMinor = Tonality(Note.b, Modes.minor);
+
   factory Tonality.fromAccidentals(
     int accidentals,
     Modes mode, [
@@ -21,8 +62,8 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// const Tonality(Note.b, Modes.major).accidentals == 5
-  /// const Tonality(Note.g, Modes.minor).accidentals == 2
+  /// Tonality.bMajor.accidentals == 5
+  /// Tonality.gMinor.accidentals == 2
   /// ```
   int get accidentals =>
       Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note).abs();
@@ -31,8 +72,8 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// const Tonality(Note.e, Modes.major).accidental == Accidental.sharp
-  /// const Tonality(Note.f, Modes.minor).accidental == Accidental.flat
+  /// Tonality.eMajor.accidental == Accidental.sharp
+  /// Tonality.fMinor.accidental == Accidental.flat
   /// ```
   Accidental get accidental =>
       Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note) > 0
@@ -44,11 +85,8 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// const Tonality(Note.d, Modes.minor).relative
-  ///   == const Tonality(Note.f, Modes.major)
-  ///
-  /// const Tonality(Note.bFlat, Modes.major).relative
-  ///   == const Tonality(Note.g, Modes.minor)
+  /// Tonality.dMinor.relative == Tonality.fMajor
+  /// Tonality.bFlatMajor.relative == Tonality.gMinor
   /// ```
   Tonality get relative => Tonality(
         EnharmonicNote(note.semitones)
@@ -67,8 +105,9 @@ class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// const Tonality(Note.a, Modes.major).keySignature
-  ///   == const KeySignature(3, Accidental.sharp)
+  /// Tonality.cMajor.keySignature == const KeySignature(0)
+  /// Tonality.aMajor.keySignature == const KeySignature(3, Accidental.sharp)
+  /// Tonality.gFlatMajor.keySignature == const KeySignature(6, Accidental.flat)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
         Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note),

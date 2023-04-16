@@ -7,10 +7,10 @@ void main() {
   group('Tonality', () {
     group('.toString()', () {
       test('should return the string representation of this Tonality', () {
-        expect(const Tonality(Note.c, Modes.major).toString(), 'C major');
-        expect(const Tonality(Note.d, Modes.minor).toString(), 'D minor');
-        expect(const Tonality(Note.aFlat, Modes.major).toString(), 'A♭ major');
-        expect(const Tonality(Note.fSharp, Modes.minor).toString(), 'F♯ minor');
+        expect(Tonality.cMajor.toString(), 'C major');
+        expect(Tonality.dMinor.toString(), 'D minor');
+        expect(Tonality.aFlatMajor.toString(), 'A♭ major');
+        expect(Tonality.fSharpMinor.toString(), 'F♯ minor');
         expect(
           const Tonality(Note(Notes.g, Accidental.doubleSharp), Modes.major)
               .toString(),
@@ -27,15 +27,15 @@ void main() {
     group('.hashCode', () {
       test('should ignore equal Tonality instances in a Set', () {
         final collection = {
-          const Tonality(Note.d, Modes.major),
-          const Tonality(Note.fSharp, Modes.minor),
-          const Tonality(Note.gSharp, Modes.minor),
+          Tonality.dMajor,
+          Tonality.fSharpMinor,
+          Tonality.gSharpMinor,
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
-          Tonality(Note.d, Modes.major),
-          Tonality(Note.fSharp, Modes.minor),
-          Tonality(Note.gSharp, Modes.minor),
+          Tonality.dMajor,
+          Tonality.fSharpMinor,
+          Tonality.gSharpMinor,
         ]);
       });
     });
@@ -43,20 +43,20 @@ void main() {
     group('.compareTo()', () {
       test('should correctly sort Tonality items in a collection', () {
         final orderedSet = SplayTreeSet<Tonality>.of(const [
-          Tonality(Note.fSharp, Modes.minor),
-          Tonality(Note.c, Modes.minor),
-          Tonality(Note.d, Modes.major),
-          Tonality(Note.c, Modes.major),
-          Tonality(Note.dFlat, Modes.major),
-          Tonality(Note.eFlat, Modes.major),
+          Tonality.fSharpMinor,
+          Tonality.cMinor,
+          Tonality.dMajor,
+          Tonality.cMajor,
+          Tonality.dFlatMajor,
+          Tonality.eFlatMajor,
         ]);
         expect(orderedSet.toList(), const [
-          Tonality(Note.c, Modes.major),
-          Tonality(Note.c, Modes.minor),
-          Tonality(Note.dFlat, Modes.major),
-          Tonality(Note.d, Modes.major),
-          Tonality(Note.eFlat, Modes.major),
-          Tonality(Note.fSharp, Modes.minor),
+          Tonality.cMajor,
+          Tonality.cMinor,
+          Tonality.dFlatMajor,
+          Tonality.dMajor,
+          Tonality.eFlatMajor,
+          Tonality.fSharpMinor,
         ]);
       });
     });
