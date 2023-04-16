@@ -28,8 +28,8 @@ class KeySignature implements Comparable<KeySignature> {
   /// Example:
   /// ```dart
   /// const KeySignature(2, Accidental.flat).tonalities == {
-  ///   const Tonality(Note.bFlat, Modes.major),
-  ///   const Tonality(Note.g, Modes.minor),
+  ///   Tonality.bFlatMajor,
+  ///   Tonality.gMinor,
   /// }
   /// ```
   Set<Tonality> get tonalities => {
