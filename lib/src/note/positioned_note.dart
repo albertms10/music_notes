@@ -101,4 +101,18 @@ class PositionedNote extends Note {
 
   @override
   String toString() => scientificName;
+
+  @override
+  bool operator ==(Object other) =>
+      super == other && other is PositionedNote && octave == other.octave;
+
+  @override
+  int get hashCode => hash2(super.hashCode, octave);
+
+  @override
+  int compareTo(covariant PositionedNote other) => compareMultiple([
+        () => octave.compareTo(other.octave),
+        () => semitones.compareTo(other.semitones),
+        () => note.value.compareTo(other.note.value),
+      ]);
 }

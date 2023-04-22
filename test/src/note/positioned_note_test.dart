@@ -1,3 +1,5 @@
+import 'dart:collection' show SplayTreeSet;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -251,6 +253,43 @@ void main() {
           expect(Note.g.inOctave(7).toString(), 'G7');
         },
       );
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal PositionedNote instances in a Set', () {
+        final collection = {
+          Note.c.inOctave(4),
+          Note.aFlat.inOctave(2),
+          Note.gSharp.inOctave(5),
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), [
+          Note.c.inOctave(4),
+          Note.aFlat.inOctave(2),
+          Note.gSharp.inOctave(5),
+        ]);
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort PositionedNote items in a collection', () {
+        final orderedSet = SplayTreeSet<PositionedNote>.of([
+          Note.aFlat.inOctave(4),
+          Note.bFlat.inOctave(5),
+          Note.c.inOctave(4),
+          Note.d.inOctave(2),
+          Note.gSharp.inOctave(4),
+          const Note(Notes.b, Accidental.sharp).inOctave(4),
+        ]);
+        expect(orderedSet.toList(), [
+          Note.d.inOctave(2),
+          Note.c.inOctave(4),
+          const Note(Notes.b, Accidental.sharp).inOctave(4),
+          Note.gSharp.inOctave(4),
+          Note.aFlat.inOctave(4),
+          Note.bFlat.inOctave(5),
+        ]);
+      });
     });
   });
 }
