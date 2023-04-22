@@ -212,6 +212,42 @@ class Note implements MusicItem {
     return a4Hertzs * sqrt12_2 * difference(Note.a);
   }
 
+  /// Returns the string representation of this [Note] following the
+  /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.scientificName == 'C4'
+  /// Note.a.inOctave(3).scientificName == 'A3'
+  /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
+  /// ```
+  String get scientificName {
+    return '${note.name.toUpperCase()}'
+        '${accidental != Accidental.natural ? accidental.symbol : ''}'
+        '$octave';
+  }
+
+  /// Returns the string representation of this [Note] following
+  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.helmholtzName == 'c′'
+  /// Note.a.inOctave(3).helmholtzName == 'a'
+  /// Note.bFlat.inOctave(1).helmholtzName == 'B♭͵'
+  /// ```
+  String get helmholtzName {
+    if (octave >= 3) {
+      return '${note.name}'
+          '${accidental != Accidental.natural ? accidental.symbol : ''}'
+          '${'′' * (octave - 3)}';
+    }
+
+    return '${note.name.toUpperCase()}'
+        '${accidental != Accidental.natural ? accidental.symbol : ''}'
+        '${'͵' * (octave - 2).abs()}';
+  }
+
   @override
   String toString() =>
       note.name.toUpperCase() +
