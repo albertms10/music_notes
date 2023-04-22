@@ -208,7 +208,7 @@ void main() {
       });
     });
 
-    group('.hertzsFromA()', () {
+    group('.equalTemperamentFrequency()', () {
       test('should return the hertzs of this Note from 440 Hz', () {
         expect(Note.c.equalTemperamentFrequency(), closeTo(261.63, 0.01));
         expect(Note.cSharp.equalTemperamentFrequency(), closeTo(277.18, 0.01));

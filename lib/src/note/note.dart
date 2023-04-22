@@ -207,7 +207,8 @@ class Note implements MusicItem {
     );
   }
 
-  /// Returns the frequency in Hertzs of this [Note] from the A4 reference.
+  /// Returns the equal temperament frequency in Hertzs of this [Note] from the
+  /// A4 note reference.
   ///
   /// Example:
   /// ```dart
