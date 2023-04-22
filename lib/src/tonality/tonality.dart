@@ -58,28 +58,6 @@ class Tonality implements Comparable<Tonality> {
         mode,
       );
 
-  /// Returns the number of [accidentals] of this [Tonality].
-  ///
-  /// Example:
-  /// ```dart
-  /// Tonality.bMajor.accidentals == 5
-  /// Tonality.gMinor.accidentals == 2
-  /// ```
-  int get accidentals =>
-      Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note).abs();
-
-  /// Returns the [Accidental] of this [Tonality]’s key signature.
-  ///
-  /// Example:
-  /// ```dart
-  /// Tonality.eMajor.accidental == Accidental.sharp
-  /// Tonality.fMinor.accidental == Accidental.flat
-  /// ```
-  Accidental get accidental =>
-      Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note) > 0
-          ? Accidental.sharp
-          : Accidental.flat;
-
   /// Returns the [Modes.major] or [Modes.minor] relative [Tonality]
   /// of this [Tonality].
   ///
@@ -97,7 +75,7 @@ class Tonality implements Comparable<Tonality> {
                 descending: mode == Modes.major,
               ).semitones,
             )
-            .toNote(accidental),
+            .toClosestNote(keySignature.accidental),
         mode.opposite,
       );
 
