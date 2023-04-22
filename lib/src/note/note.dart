@@ -4,13 +4,8 @@ part of '../../music_notes.dart';
 class Note implements MusicItem {
   final Notes note;
   final Accidental accidental;
-  final int octave;
 
-  const Note(
-    this.note, [
-    this.accidental = Accidental.natural,
-    this.octave = 4,
-  ]);
+  const Note(this.note, [this.accidental = Accidental.natural]);
 
   static const Note c = Note(Notes.c);
   static const Note cSharp = Note(Notes.c, Accidental.sharp);
@@ -92,16 +87,6 @@ class Note implements MusicItem {
   int get semitones =>
       (note.value + accidental.semitones).chromaticModExcludeZero;
 
-  /// Returns the number of semitones from the root height.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.semitonesFromRootHeight == 49
-  /// Note(Notes.c, Accidental.natural, 0).semitonesFromRootHeight == 1
-  /// Note(Notes.a, Accidental.natural, 2).semitonesFromRootHeight == 34
-  /// ```
-  int get semitonesFromRootHeight => semitones + octave * chromaticDivisions;
-
   /// Returns the difference in semitones between this [Note] and [other].
   ///
   /// Example:
@@ -110,17 +95,19 @@ class Note implements MusicItem {
   /// Note.eFlat.difference(Note.bFlat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
-  int difference(Note other) =>
-      other.semitonesFromRootHeight - semitonesFromRootHeight;
+  int difference(covariant Note other) => other.semitones - semitones;
 
-  /// Returns this [Note] in the given [octave].
+  /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(3) == Note.c;
-  /// Note.aFlat.inOctave(2) == const Note(Notes.a, Accidental.flat, 2);
+  /// Note.c.inOctave(3)
+  ///   == const PositionedNote(Notes.c, Accidental.natural, 3);
+  /// Note.aFlat.inOctave(2)
+  ///   == const PositionedNote(Notes.a, Accidental.flat, 2);
   /// ```
-  Note inOctave(int octave) => Note(note, accidental, octave);
+  PositionedNote inOctave(int octave) =>
+      PositionedNote(note, accidental, octave);
 
   /// Returns the exact fifths distance between this and [other].
   ///
@@ -205,73 +192,6 @@ class Note implements MusicItem {
       intervalSize,
       difference(other).chromaticMod - intervalSize.semitones,
     );
-  }
-
-  /// Returns the equal temperament frequency in Hertzs of this [Note] from the
-  /// A4 note reference.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.equalTemperamentFrequency() == 440
-  /// Note.gSharp.equalTemperamentFrequency() == 415.3
-  /// Note.c.equalTemperamentFrequency() == 261.63
-  /// Note.a.equalTemperamentFrequency(338) == 338
-  /// Note.bFlat.equalTemperamentFrequency(338) == 464.04
-  /// ```
-  double equalTemperamentFrequency([double a4Hertzs = 440]) {
-    return a4Hertzs * math.pow(sqrt12_2, Note.a.difference(this));
-  }
-
-  /// Whether this [Note] is inside the human hearing range.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.isHumanAudible == true
-  /// Note.d.inOctave(0).isHumanAudible == false
-  /// Note.g.inOctave(12).isHumanAudible == false
-  /// ```
-  bool get isHumanAudible {
-    final frequency = equalTemperamentFrequency();
-    const minFrequency = 20;
-    const maxFrequency = 20000;
-
-    return frequency >= minFrequency && frequency <= maxFrequency;
-  }
-
-  /// Returns the string representation of this [Note] following the
-  /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.scientificName == 'C4'
-  /// Note.a.inOctave(3).scientificName == 'A3'
-  /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
-  /// ```
-  String get scientificName {
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '$octave';
-  }
-
-  /// Returns the string representation of this [Note] following
-  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.helmholtzName == 'c′'
-  /// Note.a.inOctave(3).helmholtzName == 'a'
-  /// Note.bFlat.inOctave(1).helmholtzName == 'B♭͵'
-  /// ```
-  String get helmholtzName {
-    if (octave >= 3) {
-      return '${note.name}'
-          '${accidental != Accidental.natural ? accidental.symbol : ''}'
-          '${'′' * (octave - 3)}';
-    }
-
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '${'͵' * (octave - 2).abs()}';
   }
 
   @override
