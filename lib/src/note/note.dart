@@ -222,6 +222,22 @@ class Note implements MusicItem {
     return a4Hertzs * math.pow(sqrt12_2, Note.a.difference(this));
   }
 
+  /// Whether this [Note] is inside the human hearing range.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.isHumanAudible == true
+  /// Note.d.inOctave(0).isHumanAudible == false
+  /// Note.g.inOctave(12).isHumanAudible == false
+  /// ```
+  bool get isHumanAudible {
+    final frequency = equalTemperamentFrequency();
+    const minFrequency = 20;
+    const maxFrequency = 20000;
+
+    return frequency >= minFrequency && frequency <= maxFrequency;
+  }
+
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
   ///

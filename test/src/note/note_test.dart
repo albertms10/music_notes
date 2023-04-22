@@ -280,6 +280,15 @@ void main() {
       });
     });
 
+    group('.isHumanAudible', () {
+      test('should return whether this Note is human-audible', () {
+        expect(Note.c.isHumanAudible, isTrue);
+        expect(Note.a.inOctave(2).isHumanAudible, isTrue);
+        expect(Note.d.inOctave(0).isHumanAudible, isFalse);
+        expect(Note.d.inOctave(12).isHumanAudible, isFalse);
+      });
+    });
+
     group('.scientificName', () {
       test(
         'should return the scientific pitch notation name for this Note',
