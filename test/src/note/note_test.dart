@@ -208,6 +208,42 @@ void main() {
       });
     });
 
+    group('.scientificName', () {
+      test(
+        'should return the scientific pitch notation name for this Note',
+        () {
+          expect(Note.gSharp.inOctave(-1).scientificName, 'G♯-1');
+          expect(Note.d.inOctave(0).scientificName, 'D0');
+          expect(Note.bFlat.inOctave(1).scientificName, 'B♭1');
+          expect(Note.g.inOctave(2).scientificName, 'G2');
+          expect(Note.a.inOctave(3).scientificName, 'A3');
+          expect(Note.c.scientificName, 'C4');
+          expect(Note.cSharp.scientificName, 'C♯4');
+          expect(Note.a.scientificName, 'A4');
+          expect(Note.fSharp.inOctave(5).scientificName, 'F♯5');
+          expect(Note.e.inOctave(7).scientificName, 'E7');
+        },
+      );
+    });
+
+    group('.helmholtzName', () {
+      test(
+        'should return the Helmholtz pitch notation name for this Note',
+        () {
+          expect(Note.gSharp.inOctave(-1).helmholtzName, 'G♯͵͵͵');
+          expect(Note.d.inOctave(0).helmholtzName, 'D͵͵');
+          expect(Note.bFlat.inOctave(1).helmholtzName, 'B♭͵');
+          expect(Note.g.inOctave(2).helmholtzName, 'G');
+          expect(Note.a.inOctave(3).helmholtzName, 'a');
+          expect(Note.c.helmholtzName, 'c′');
+          expect(Note.cSharp.helmholtzName, 'c♯′');
+          expect(Note.a.helmholtzName, 'a′');
+          expect(Note.fSharp.inOctave(5).helmholtzName, 'f♯′′');
+          expect(Note.e.inOctave(7).helmholtzName, 'e′′′′');
+        },
+      );
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Note', () {
         expect(Note.c.toString(), 'C');
