@@ -207,20 +207,6 @@ class Note implements MusicItem {
     );
   }
 
-  /// Returns the string representation of this [Note] following
-  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-  String get helmholtzName {
-    if (octave >= 3) {
-      return '${note.name}'
-              '${accidental != Accidental.natural ? accidental.symbol : ''}'
-          .padRight(octave - 3, '′');
-    }
-
-    return '${note.name.toUpperCase()}'
-            '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        .padRight((octave - 2).abs(), '͵');
-  }
-
   @override
   String toString() =>
       note.name.toUpperCase() +
