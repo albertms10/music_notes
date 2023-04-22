@@ -4,8 +4,13 @@ part of '../../music_notes.dart';
 class Note implements MusicItem {
   final Notes note;
   final Accidental accidental;
+  final int octave;
 
-  const Note(this.note, [this.accidental = Accidental.natural]);
+  const Note(
+    this.note, [
+    this.accidental = Accidental.natural,
+    this.octave = 4,
+  ]);
 
   static const Note c = Note(Notes.c);
   static const Note cSharp = Note(Notes.c, Accidental.sharp);
@@ -87,15 +92,35 @@ class Note implements MusicItem {
   int get semitones =>
       (note.value + accidental.semitones).chromaticModExcludeZero;
 
+  /// Returns the number of semitones from the root height.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.semitonesFromRootHeight == 49
+  /// Note(Notes.c, Accidental.natural, 0).semitonesFromRootHeight == 1
+  /// Note(Notes.a, Accidental.natural, 2).semitonesFromRootHeight == 34
+  /// ```
+  int get semitonesFromRootHeight => semitones + octave * chromaticDivisions;
+
   /// Returns the difference in semitones between this [Note] and [other].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Note.c.difference(Note.d) == 2
   /// Note.eFlat.difference(Note.bFlat) == 7
-  /// Note.eFlat.difference(Note.bFlat) == 7
+  /// Note.a.difference(Note.g) == -2
   /// ```
-  int difference(Note other) => (other.semitones - semitones).chromaticMod;
+  int difference(Note other) =>
+      other.semitonesFromRootHeight - semitonesFromRootHeight;
+
+  /// Returns this [Note] in the given [octave].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(3) == Note.c;
+  /// Note.aFlat.inOctave(2) == const Note(Notes.a, Accidental.flat, 2);
+  /// ```
+  Note inOctave(int octave) => Note(note, accidental, octave);
 
   /// Returns the exact fifths distance between this and [other].
   ///
@@ -178,8 +203,22 @@ class Note implements MusicItem {
 
     return Interval.fromDelta(
       intervalSize,
-      difference(other) - intervalSize.semitones,
+      difference(other).chromaticMod - intervalSize.semitones,
     );
+  }
+
+  /// Returns the string representation of this [Note] following
+  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+  String get helmholtzName {
+    if (octave >= 3) {
+      return '${note.name}'
+              '${accidental != Accidental.natural ? accidental.symbol : ''}'
+          .padRight(octave - 3, '′');
+    }
+
+    return '${note.name.toUpperCase()}'
+            '${accidental != Accidental.natural ? accidental.symbol : ''}'
+        .padRight((octave - 2).abs(), '͵');
   }
 
   @override

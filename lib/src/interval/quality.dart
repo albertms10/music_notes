@@ -13,7 +13,7 @@ abstract class Quality implements MusicItem {
 
   /// Creates a new [PerfectQuality] or [ImperfectQuality] from [interval].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Quality.fromInterval(5, 0) == PerfectQuality.perfect
   /// Quality.fromInterval(3, 1) == ImperfectQuality.major

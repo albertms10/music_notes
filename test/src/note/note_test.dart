@@ -29,6 +29,19 @@ void main() {
       });
     });
 
+    group('.semitonesFromRootHeight', () {
+      test(
+        'should return the semitones from the root height of this Note',
+        () {
+          expect(Note.c.inOctave(0).semitonesFromRootHeight, 1);
+          expect(Note.c.inOctave(1).semitonesFromRootHeight, 13);
+          expect(Note.c.inOctave(2).semitonesFromRootHeight, 25);
+          expect(Note.a.inOctave(2).semitonesFromRootHeight, 34);
+          expect(Note.a.semitonesFromRootHeight, 58);
+        },
+      );
+    });
+
     group('.difference()', () {
       test(
         'should return the difference in semitones with another Note',
@@ -37,11 +50,11 @@ void main() {
           expect(const Note(Notes.e, Accidental.sharp).difference(Note.f), 0);
           expect(Note.c.difference(Note.dFlat), 1);
           expect(Note.c.difference(Note.cSharp), 1);
-          expect(Note.b.difference(Note.c), 1);
+          expect(Note.b.difference(Note.c.inOctave(5)), 1);
           expect(Note.f.difference(Note.g), 2);
           expect(Note.f.difference(Note.aFlat), 3);
           expect(Note.e.difference(Note.aFlat), 4);
-          expect(Note.a.difference(Note.d), 5);
+          expect(Note.a.difference(Note.d.inOctave(5)), 5);
           expect(Note.d.difference(Note.aFlat), 6);
           expect(Note.eFlat.difference(Note.bFlat), 7);
           expect(Note.dSharp.difference(Note.aSharp), 7);
