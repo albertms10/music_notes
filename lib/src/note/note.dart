@@ -132,20 +132,18 @@ class Note implements MusicItem {
   /// ) == 2
   /// ```
   int intervalDistance(Note other, Interval interval) {
-    final distance = _runSemitonesDistance(
+    final distanceFlat = _runSemitonesDistance(
+      other,
+      interval.inverted.semitones,
+      Accidental.flat,
+    );
+    final distanceSharp = _runSemitonesDistance(
       other,
       interval.semitones,
       Accidental.sharp,
     );
 
-    return distance < chromaticDivisions
-        ? distance
-        : _runSemitonesDistance(
-              other,
-              interval.inverted.semitones,
-              Accidental.flat,
-            ) *
-            -1;
+    return distanceFlat < distanceSharp ? distanceFlat * -1 : distanceSharp;
   }
 
   /// Returns the iteration distance of an interval between

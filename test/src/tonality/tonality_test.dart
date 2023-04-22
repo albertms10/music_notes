@@ -5,6 +5,60 @@ import 'package:test/test.dart';
 
 void main() {
   group('Tonality', () {
+    group('.relative', () {
+      test('should return the relative Tonality of this', () {
+        expect(Tonality.cMajor.relative, Tonality.aMinor);
+        expect(Tonality.fMajor.relative, Tonality.dMinor);
+        expect(Tonality.dMajor.relative, Tonality.bMinor);
+        expect(Tonality.gSharpMinor.relative, Tonality.bMajor);
+        expect(
+          Tonality.aFlatMinor.relative,
+          const Tonality(Note(Notes.c, Accidental.flat), Modes.major),
+        );
+      });
+    });
+
+    group('.keySignature', () {
+      test('should return the KeySignature of this Tonality', () {
+        expect(Tonality.cMajor.keySignature, const KeySignature(0));
+        expect(Tonality.aMinor.keySignature, const KeySignature(0));
+
+        expect(
+          Tonality.gMajor.keySignature,
+          const KeySignature(1, Accidental.sharp),
+        );
+        expect(
+          Tonality.eMinor.keySignature,
+          const KeySignature(1, Accidental.sharp),
+        );
+        expect(
+          Tonality.fMajor.keySignature,
+          const KeySignature(1, Accidental.flat),
+        );
+        expect(
+          Tonality.dMinor.keySignature,
+          const KeySignature(1, Accidental.flat),
+        );
+
+        expect(
+          Tonality.bMajor.keySignature,
+          const KeySignature(5, Accidental.sharp),
+        );
+        expect(
+          Tonality.gSharpMinor.keySignature,
+          const KeySignature(5, Accidental.sharp),
+        );
+        expect(
+          Tonality.dFlatMajor.keySignature,
+          const KeySignature(5, Accidental.flat),
+        );
+        expect(
+          Tonality.bFlatMinor.keySignature,
+          const KeySignature(5, Accidental.flat),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Tonality', () {
         expect(Tonality.cMajor.toString(), 'C major');
