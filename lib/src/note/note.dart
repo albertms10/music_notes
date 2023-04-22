@@ -208,8 +208,17 @@ class Note implements MusicItem {
   }
 
   /// Returns the frequency in Hertzs of this [Note] from the A4 reference.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.equalTemperamentFrequency() == 440
+  /// Note.gSharp.equalTemperamentFrequency() == 415.3
+  /// Note.c.equalTemperamentFrequency() == 261.63
+  /// Note.a.equalTemperamentFrequency(338) == 338
+  /// Note.bFlat.equalTemperamentFrequency(338) == 464.04
+  /// ```
   double equalTemperamentFrequency([double a4Hertzs = 440]) {
-    return a4Hertzs * sqrt12_2 * difference(Note.a);
+    return a4Hertzs * math.pow(sqrt12_2, Note.a.difference(this));
   }
 
   /// Returns the string representation of this [Note] following the
