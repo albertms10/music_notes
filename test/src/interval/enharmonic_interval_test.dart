@@ -66,6 +66,11 @@ void main() {
             const Interval.imperfect(7, ImperfectQuality.major),
             const Interval.perfect(8, PerfectQuality.diminished),
           });
+          expect(const EnharmonicInterval(13).items, {
+            const Interval.imperfect(7, ImperfectQuality.augmented),
+            const Interval.perfect(8, PerfectQuality.perfect),
+            const Interval.imperfect(9, ImperfectQuality.diminished),
+          });
         },
       );
     });

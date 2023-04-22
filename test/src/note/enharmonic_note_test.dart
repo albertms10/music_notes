@@ -5,6 +5,16 @@ import 'package:test/test.dart';
 
 void main() {
   group('EnharmonicNote', () {
+    group('constructor', () {
+      test(
+        'should throw an assertion error when arguments are incorrect',
+        () {
+          expect(() => EnharmonicNote(-2), throwsA(isA<AssertionError>()));
+          expect(() => EnharmonicNote(13), throwsA(isA<AssertionError>()));
+        },
+      );
+    });
+
     group('.items', () {
       test('should return the correct Notes for this EnharmonicNote', () {
         expect(EnharmonicNote.c.items, {
