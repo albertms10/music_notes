@@ -34,7 +34,7 @@ class KeySignature implements Comparable<KeySignature> {
   /// ```
   Set<Tonality> get tonalities => {
         Tonality.fromAccidentals(accidentals, Modes.major, accidental),
-        // TODO(albertms10): use `Tonality.relative`
+        // TODO(albertms10): use `Tonality.relative`.
         Tonality.fromAccidentals(accidentals, Modes.minor, accidental),
       };
 
