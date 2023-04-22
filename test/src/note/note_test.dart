@@ -208,6 +208,78 @@ void main() {
       });
     });
 
+    group('.hertzsFromA()', () {
+      test('should return the hertzs of this Note from 440 Hz', () {
+        expect(Note.c.equalTemperamentFrequency(), closeTo(261.63, 0.01));
+        expect(Note.cSharp.equalTemperamentFrequency(), closeTo(277.18, 0.01));
+        expect(Note.dFlat.equalTemperamentFrequency(), closeTo(277.18, 0.01));
+        expect(Note.d.equalTemperamentFrequency(), closeTo(293.66, 0.01));
+        expect(Note.dSharp.equalTemperamentFrequency(), closeTo(311.13, 0.01));
+        expect(Note.eFlat.equalTemperamentFrequency(), closeTo(311.13, 0.01));
+        expect(Note.e.equalTemperamentFrequency(), closeTo(329.63, 0.01));
+        expect(Note.f.equalTemperamentFrequency(), closeTo(349.23, 0.01));
+        expect(Note.fSharp.equalTemperamentFrequency(), closeTo(369.99, 0.01));
+        expect(Note.gFlat.equalTemperamentFrequency(), closeTo(369.99, 0.01));
+        expect(Note.g.equalTemperamentFrequency(), closeTo(392, 0.01));
+        expect(Note.gSharp.equalTemperamentFrequency(), closeTo(415.3, 0.01));
+        expect(Note.aFlat.equalTemperamentFrequency(), closeTo(415.3, 0.01));
+        expect(Note.a.equalTemperamentFrequency(), 440);
+        expect(Note.aSharp.equalTemperamentFrequency(), closeTo(466.16, 0.01));
+        expect(Note.bFlat.equalTemperamentFrequency(), closeTo(466.16, 0.01));
+        expect(Note.b.equalTemperamentFrequency(), closeTo(493.88, 0.01));
+      });
+
+      test('should return the hertzs of this Note from 438 Hz', () {
+        expect(Note.c.equalTemperamentFrequency(438), closeTo(260.44, 0.01));
+        expect(
+          Note.cSharp.equalTemperamentFrequency(438),
+          closeTo(275.92, 0.01),
+        );
+        expect(
+          Note.dFlat.equalTemperamentFrequency(438),
+          closeTo(275.92, 0.01),
+        );
+        expect(Note.d.equalTemperamentFrequency(438), closeTo(292.33, 0.01));
+        expect(
+          Note.dSharp.equalTemperamentFrequency(438),
+          closeTo(309.71, 0.01),
+        );
+        expect(
+          Note.eFlat.equalTemperamentFrequency(438),
+          closeTo(309.71, 0.01),
+        );
+        expect(Note.e.equalTemperamentFrequency(438), closeTo(328.13, 0.01));
+        expect(Note.f.equalTemperamentFrequency(438), closeTo(347.64, 0.01));
+        expect(
+          Note.fSharp.equalTemperamentFrequency(438),
+          closeTo(368.31, 0.01),
+        );
+        expect(
+          Note.gFlat.equalTemperamentFrequency(438),
+          closeTo(368.31, 0.01),
+        );
+        expect(Note.g.equalTemperamentFrequency(438), closeTo(390.21, 0.01));
+        expect(
+          Note.gSharp.equalTemperamentFrequency(438),
+          closeTo(413.42, 0.01),
+        );
+        expect(
+          Note.aFlat.equalTemperamentFrequency(438),
+          closeTo(413.42, 0.01),
+        );
+        expect(Note.a.equalTemperamentFrequency(438), 438);
+        expect(
+          Note.aSharp.equalTemperamentFrequency(438),
+          closeTo(464.04, 0.01),
+        );
+        expect(
+          Note.bFlat.equalTemperamentFrequency(438),
+          closeTo(464.04, 0.01),
+        );
+        expect(Note.b.equalTemperamentFrequency(438), closeTo(491.64, 0.01));
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Note', () {
         expect(Note.c.toString(), 'C');

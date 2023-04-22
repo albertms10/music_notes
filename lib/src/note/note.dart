@@ -207,6 +207,11 @@ class Note implements MusicItem {
     );
   }
 
+  /// Returns the frequency in Hertzs of this [Note] from the A4 reference.
+  double equalTemperamentFrequency([double a4Hertzs = 440]) {
+    return a4Hertzs * sqrt12_2 * difference(Note.a);
+  }
+
   @override
   String toString() =>
       note.name.toUpperCase() +
