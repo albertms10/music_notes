@@ -66,6 +66,15 @@ enum Notes {
     return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
   }
 
+  /// Returns the difference in semitones between this [Notes] enum item and
+  /// [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.c.difference(Notes.c) == 0
+  /// Notes.c.difference(Notes.e) == 4
+  /// Notes.d.difference(Notes.a) == 7
+  /// ```
   int difference(Notes other) => other.value - value;
 
   /// Returns this [Notes] enum item transposed by interval [size].
