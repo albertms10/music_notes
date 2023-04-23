@@ -48,6 +48,13 @@ class Accidental implements MusicItem {
 
   /// The symbol of this [Accidental].
   ///
+  /// If the [Accidental] represents a natural note (0 semitones), returns the
+  /// natural symbol (♮).
+  ///
+  /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
+  /// double sharp/flat symbols (𝄪, 𝄫) depending on the number of semitones
+  /// above/below the natural note.
+  ///
   /// Example:
   /// ```dart
   /// Accidental.flat.symbol == '♭'
