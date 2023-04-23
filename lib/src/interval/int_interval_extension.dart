@@ -31,9 +31,9 @@ extension IntIntervalExtension on int {
           _intervalsToSemitonesDelta[interval],
     );
     if (size == null) return null;
+    if (semitones == 12) return size;
 
-    final octaves =
-        (semitones <= 12 ? (semitones - 1) : semitones) ~/ chromaticDivisions;
+    final octaves = semitones ~/ chromaticDivisions;
 
     return size + (octaves * 7);
   }
