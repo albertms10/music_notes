@@ -3,40 +3,38 @@ part of '../../music_notes.dart';
 class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
-  static const perfectUnison = EnharmonicInterval(1);
-  static const minorSecond = EnharmonicInterval(2);
-  static const majorSecond = EnharmonicInterval(3);
-  static const minorThird = EnharmonicInterval(4);
-  static const majorThird = EnharmonicInterval(5);
-  static const perfectFourth = EnharmonicInterval(6);
-  static const tritone = EnharmonicInterval(7);
-  static const perfectFifth = EnharmonicInterval(8);
-  static const minorSixth = EnharmonicInterval(9);
-  static const majorSixth = EnharmonicInterval(10);
-  static const minorSeventh = EnharmonicInterval(11);
-  static const majorSeventh = EnharmonicInterval(12);
+  static const perfectUnison = EnharmonicInterval(0);
+  static const minorSecond = EnharmonicInterval(1);
+  static const majorSecond = EnharmonicInterval(2);
+  static const minorThird = EnharmonicInterval(3);
+  static const majorThird = EnharmonicInterval(4);
+  static const perfectFourth = EnharmonicInterval(5);
+  static const tritone = EnharmonicInterval(6);
+  static const perfectFifth = EnharmonicInterval(7);
+  static const minorSixth = EnharmonicInterval(8);
+  static const majorSixth = EnharmonicInterval(9);
+  static const minorSeventh = EnharmonicInterval(10);
+  static const majorSeventh = EnharmonicInterval(11);
+  static const perfectOctave = EnharmonicInterval(12);
 
   @override
   Set<Interval> get items {
-    final interval = IntIntervalExtension.fromSemitones(semitones - 1);
+    final interval = IntIntervalExtension.fromSemitones(semitones);
 
     if (interval != null) {
-      final intervalBelow = interval == 1 ? 1 : interval - 1;
-      final intervalAbove = interval + 1;
-
       return SplayTreeSet<Interval>.of({
-        Interval.fromSemitones(intervalBelow, semitones - 1),
-        Interval.fromSemitones(interval, semitones - 1),
-        Interval.fromSemitones(intervalAbove, semitones - 1),
+        if (interval > 1) Interval.fromSemitones(interval - 1, semitones),
+        Interval.fromSemitones(interval, semitones),
+        Interval.fromSemitones(interval + 1, semitones),
       });
     }
 
-    final intervalBelow = IntIntervalExtension.fromSemitones(semitones - 2);
-    final intervalAbove = IntIntervalExtension.fromSemitones(semitones);
+    final intervalBelow = IntIntervalExtension.fromSemitones(semitones - 1);
+    final intervalAbove = IntIntervalExtension.fromSemitones(semitones + 1);
 
     return SplayTreeSet<Interval>.of({
-      Interval.fromSemitones(intervalBelow!, semitones - 1),
-      Interval.fromSemitones(intervalAbove!, semitones - 1),
+      Interval.fromSemitones(intervalBelow!, semitones),
+      Interval.fromSemitones(intervalAbove!, semitones),
     });
   }
 

@@ -7,7 +7,7 @@ void main() {
       test('should return the correct chromatic scale notes', () {
         expect(
           chromaticScale,
-          equals(const [
+          const [
             EnharmonicNote.c,
             EnharmonicNote.cSharp,
             EnharmonicNote.d,
@@ -20,7 +20,7 @@ void main() {
             EnharmonicNote.a,
             EnharmonicNote.aSharp,
             EnharmonicNote.b,
-          ]),
+          ],
         );
       });
     });

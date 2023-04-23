@@ -129,26 +129,20 @@ void main() {
     group('.fromSemitonesQuality()', () {
       test('should return the correct Interval from semitones and Quality', () {
         expect(
-          Interval.fromSemitonesQuality(4),
-          equals(const Interval.imperfect(3, ImperfectQuality.minor)),
+          Interval.fromSemitonesQuality(3),
+          const Interval.imperfect(3, ImperfectQuality.minor),
         );
         expect(
-          Interval.fromSemitonesQuality(7),
-          equals(const Interval.perfect(4, PerfectQuality.augmented)),
+          Interval.fromSemitonesQuality(6),
+          const Interval.perfect(4, PerfectQuality.augmented),
         );
         expect(
-          Interval.fromSemitonesQuality(
-            7,
-            PerfectQuality.augmented,
-          ),
-          equals(const Interval.perfect(4, PerfectQuality.augmented)),
+          Interval.fromSemitonesQuality(6, PerfectQuality.augmented),
+          const Interval.perfect(4, PerfectQuality.augmented),
         );
         expect(
-          Interval.fromSemitonesQuality(
-            7,
-            PerfectQuality.diminished,
-          ),
-          equals(const Interval.perfect(5, PerfectQuality.diminished)),
+          Interval.fromSemitonesQuality(6, PerfectQuality.diminished),
+          const Interval.perfect(5, PerfectQuality.diminished),
         );
       });
     });
