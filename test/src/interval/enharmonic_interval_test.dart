@@ -91,6 +91,10 @@ void main() {
           EnharmonicInterval.perfectFifth,
         );
         expect(
+          EnharmonicInterval.tritone + EnharmonicInterval.tritone,
+          EnharmonicInterval.perfectOctave,
+        );
+        expect(
           EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth,
           EnharmonicInterval.perfectOctave,
         );
@@ -106,6 +110,14 @@ void main() {
         expect(
           EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird,
           EnharmonicInterval.majorSecond,
+        );
+        expect(
+          EnharmonicInterval.perfectOctave - EnharmonicInterval.tritone,
+          EnharmonicInterval.tritone,
+        );
+        expect(
+          EnharmonicInterval.majorSixth - EnharmonicInterval.majorSixth,
+          EnharmonicInterval.perfectUnison,
         );
         expect(
           EnharmonicInterval.minorThird - EnharmonicInterval.tritone,

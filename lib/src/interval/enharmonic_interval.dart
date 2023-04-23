@@ -57,7 +57,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// Example:
   /// ```dart
   /// EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird
-  ///   == EnharmonicInterval.majorSecond,
+  ///   == EnharmonicInterval.majorSecond
+  ///
+  /// EnharmonicInterval.minorThird - EnharmonicInterval.tritone
+  ///   == const EnharmonicInterval(-3)
   /// ```
   EnharmonicInterval operator -(EnharmonicInterval other) =>
       EnharmonicInterval(semitones - other.semitones);
