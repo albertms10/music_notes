@@ -65,4 +65,20 @@ enum Notes {
 
     return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
   }
+
+  int difference(Notes other) => other.value - value;
+
+  /// Returns this [Notes] enum item transposed by interval [size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.g.transposeBy(1) == Notes.g
+  /// Notes.g.transposeBy(5) == Notes.d
+  /// Notes.a.transposeBy(-3) == Notes.f
+  /// ```
+  Notes transposeBy(int size) {
+    assert(size != 0, 'Size must be non-zero');
+
+    return fromOrdinal(ordinal + (size.abs() - 1) * (size.isNegative ? -1 : 1));
+  }
 }
