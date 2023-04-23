@@ -220,6 +220,16 @@ void main() {
               .transposeBy(const Interval.imperfect(3, ImperfectQuality.major)),
           Note.gSharp,
         );
+        expect(
+          Note.aFlat
+              .transposeBy(const Interval.imperfect(3, ImperfectQuality.minor)),
+          const Note(Notes.c, Accidental.flat),
+        );
+        expect(
+          Note.aFlat
+              .transposeBy(const Interval.imperfect(3, ImperfectQuality.major)),
+          Note.c,
+        );
 
         expect(
           Note.f.transposeBy(
@@ -235,6 +245,21 @@ void main() {
           Note.f
               .transposeBy(const Interval.perfect(4, PerfectQuality.augmented)),
           Note.b,
+        );
+        expect(
+          Note.a.transposeBy(
+            const Interval.perfect(4, PerfectQuality.diminished),
+          ),
+          Note.dFlat,
+        );
+        expect(
+          Note.a.transposeBy(const Interval.perfect(4, PerfectQuality.perfect)),
+          Note.d,
+        );
+        expect(
+          Note.a
+              .transposeBy(const Interval.perfect(4, PerfectQuality.augmented)),
+          Note.dSharp,
         );
 
         expect(
@@ -262,6 +287,16 @@ void main() {
           Note.d
               .transposeBy(const Interval.imperfect(6, ImperfectQuality.major)),
           Note.b,
+        );
+        expect(
+          Note.fSharp
+              .transposeBy(const Interval.imperfect(6, ImperfectQuality.minor)),
+          Note.d,
+        );
+        expect(
+          Note.fSharp
+              .transposeBy(const Interval.imperfect(6, ImperfectQuality.major)),
+          Note.dSharp,
         );
 
         expect(
