@@ -23,22 +23,18 @@ class Interval implements MusicItem {
     this.size,
     PerfectQuality this.quality, {
     this.descending = false,
-  }) : assert(
-          // Copied from [IntIntervalExtension.isPerfect] to allow const.
-          (size + size ~/ 8) % 4 == 0 || (size + size ~/ 8) % 4 == 1,
-          'Interval must be perfect',
-        );
+  }) :
+        // Copied from [IntIntervalExtension.isPerfect] to allow const.
+        assert((size + size ~/ 8) % 4 < 2, 'Interval must be perfect');
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(
     this.size,
     ImperfectQuality this.quality, {
     this.descending = false,
-  }) : assert(
-          // Copied from [IntIntervalExtension.isPerfect] to allow const.
-          (size + size ~/ 8) % 4 != 0 && (size + size ~/ 8) % 4 != 1,
-          'Interval must be imperfect',
-        );
+  }) :
+        // Copied from [IntIntervalExtension.isPerfect] to allow const.
+        assert((size + size ~/ 8) % 4 >= 2, 'Interval must be imperfect');
 
   /// Creates a new [Interval] from the [Quality] delta.
   Interval.fromDelta(int size, int delta)

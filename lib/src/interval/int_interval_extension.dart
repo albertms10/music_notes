@@ -53,8 +53,7 @@ extension IntIntervalExtension on int {
   /// 6.isPerfect == false
   /// 11.isPerfect == true
   /// ```
-  bool get isPerfect =>
-      (this + this ~/ 8) % 4 == 0 || (this + this ~/ 8) % 4 == 1;
+  bool get isPerfect => (this + this ~/ 8) % 4 < 2;
 
   /// Returns whether this [int] interval is greater than an octave.
   ///
