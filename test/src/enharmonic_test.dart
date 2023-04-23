@@ -9,9 +9,9 @@ void main() {
         expect(EnharmonicNote.g.toString(), '8 {F𝄪, G, A𝄫}');
         expect(EnharmonicNote.dSharp.toString(), '4 {D♯, E♭}');
 
-        expect(EnharmonicInterval.perfectUnison.toString(), '1 {P1, d2}');
-        expect(EnharmonicInterval.majorThird.toString(), '5 {M3, d4}');
-        expect(EnharmonicInterval.minorSixth.toString(), '9 {A5, m6, dd7}');
+        expect(EnharmonicInterval.perfectUnison.toString(), '0 {P1, d2}');
+        expect(EnharmonicInterval.majorThird.toString(), '4 {M3, d4}');
+        expect(EnharmonicInterval.minorSixth.toString(), '8 {A5, m6, dd7}');
       });
     });
   });

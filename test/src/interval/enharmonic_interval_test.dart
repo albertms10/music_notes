@@ -66,10 +66,15 @@ void main() {
             const Interval.imperfect(7, ImperfectQuality.major),
             const Interval.perfect(8, PerfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(13).items, {
+          expect(EnharmonicInterval.perfectOctave.items, {
             const Interval.imperfect(7, ImperfectQuality.augmented),
             const Interval.perfect(8, PerfectQuality.perfect),
             const Interval.imperfect(9, ImperfectQuality.diminished),
+          });
+          expect(const EnharmonicInterval(13).items, {
+            const Interval.perfect(8, PerfectQuality.augmented),
+            const Interval.imperfect(9, ImperfectQuality.minor),
+            const Interval.imperfect(10, ImperfectQuality.doubleDiminished),
           });
         },
       );
