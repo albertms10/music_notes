@@ -57,11 +57,15 @@ class Accidental implements MusicItem {
   String get symbol {
     if (semitones == 0) return _naturalSymbol;
 
-    return (semitones.isOdd
-            ? (semitones.isNegative ? _flatSymbol : _sharpSymbol)
-            : '') +
-        (semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol) *
-            (semitones.abs() ~/ 2);
+    final accidentalSymbol = semitones.isNegative ? _flatSymbol : _sharpSymbol;
+    final doubleAccidentalSymbol =
+        semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol;
+
+    final absSemitones = semitones.abs();
+    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
+    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
+
+    return singleAccidentals + doubleAccidentals;
   }
 
   /// Returns the incremented [Accidental] enum item of this by [n].
