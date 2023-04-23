@@ -7,6 +7,9 @@ void main() {
       test(
         'should return the int interval with the corresponding semitones',
         () {
+          expect(IntIntervalExtension.fromSemitones(-5), 5);
+          expect(IntIntervalExtension.fromSemitones(-4), 6);
+          expect(IntIntervalExtension.fromSemitones(-2), 7);
           expect(IntIntervalExtension.fromSemitones(0), 1);
           expect(IntIntervalExtension.fromSemitones(1), 2);
           expect(IntIntervalExtension.fromSemitones(3), 3);
@@ -15,8 +18,14 @@ void main() {
           expect(IntIntervalExtension.fromSemitones(8), 6);
           expect(IntIntervalExtension.fromSemitones(10), 7);
           expect(IntIntervalExtension.fromSemitones(12), 8);
-          expect(IntIntervalExtension.fromSemitones(13), 2);
-          expect(IntIntervalExtension.fromSemitones(-2), 7);
+          expect(IntIntervalExtension.fromSemitones(13), 9);
+          expect(IntIntervalExtension.fromSemitones(15), 10);
+          expect(IntIntervalExtension.fromSemitones(17), 11);
+          expect(IntIntervalExtension.fromSemitones(19), 12);
+          expect(IntIntervalExtension.fromSemitones(20), 13);
+          expect(IntIntervalExtension.fromSemitones(22), 14);
+          expect(IntIntervalExtension.fromSemitones(24), 15);
+          expect(IntIntervalExtension.fromSemitones(36), 22);
         },
       );
 

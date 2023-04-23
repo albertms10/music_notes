@@ -22,14 +22,21 @@ extension IntIntervalExtension on int {
   /// IntIntervalExtension.fromSemitones(12) == 8
   /// IntIntervalExtension.fromSemitones(4) == null
   /// ```
-  static int? fromSemitones(int semitones) =>
-      _intervalsToSemitonesDelta.keys.firstWhereOrNull(
-        (interval) =>
-            (semitones == chromaticDivisions
-                ? chromaticDivisions
-                : semitones.chromaticMod) ==
-            _intervalsToSemitonesDelta[interval],
-      );
+  static int? fromSemitones(int semitones) {
+    final size = _intervalsToSemitonesDelta.keys.firstWhereOrNull(
+      (interval) =>
+          (semitones == chromaticDivisions
+              ? chromaticDivisions
+              : semitones.chromaticMod) ==
+          _intervalsToSemitonesDelta[interval],
+    );
+    if (size == null) return null;
+
+    final octaves =
+        (semitones <= 12 ? (semitones - 1) : semitones) ~/ chromaticDivisions;
+
+    return size + (octaves * 7);
+  }
 
   /// Returns the number of semitones of this [int] for a perfect interval or a
   /// minor interval, where appropriate.
