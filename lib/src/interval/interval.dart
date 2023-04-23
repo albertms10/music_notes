@@ -16,14 +16,15 @@ class Interval implements MusicItem {
   /// Whether this [Interval] is descending.
   final bool descending;
 
-  const Interval._(this.size, this.quality, {this.descending = false});
+  const Interval._(this.size, this.quality, {this.descending = false})
+      : assert(size != 0, 'Size must be non-zero');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(
     this.size,
     PerfectQuality this.quality, {
     this.descending = false,
-  }) :
+  })  : assert(size != 0, 'Size must be non-zero'),
         // Copied from [IntIntervalExtension.isPerfect] to allow const.
         assert((size + size ~/ 8) % 4 < 2, 'Interval must be perfect');
 
@@ -32,7 +33,7 @@ class Interval implements MusicItem {
     this.size,
     ImperfectQuality this.quality, {
     this.descending = false,
-  }) :
+  })  : assert(size != 0, 'Size must be non-zero'),
         // Copied from [IntIntervalExtension.isPerfect] to allow const.
         assert((size + size ~/ 8) % 4 >= 2, 'Interval must be imperfect');
 

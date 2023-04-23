@@ -8,6 +8,14 @@ void main() {
     group('constructor', () {
       test('should throw an assertion error when arguments are incorrect', () {
         expect(
+          () => Interval.perfect(0, PerfectQuality.perfect),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => Interval.imperfect(0, ImperfectQuality.minor),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
           () => Interval.perfect(2, PerfectQuality.diminished),
           throwsA(isA<AssertionError>()),
         );
