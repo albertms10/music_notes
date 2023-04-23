@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 extension IntIntervalExtension on int {
-  static const Map<int, int> _intervalsToSemitonesDelta = {
+  static const Map<int, int> _sizeToSemitones = {
     1: 0,
     2: 1,
     3: 3,
@@ -13,7 +13,7 @@ extension IntIntervalExtension on int {
   };
 
   /// Returns an [int] interval that matches with [semitones]
-  /// in [_intervalsToSemitonesDelta], otherwise returns `null`.
+  /// in [_sizeToSemitones], otherwise returns `null`.
   ///
   /// Example:
   /// ```dart
@@ -23,12 +23,12 @@ extension IntIntervalExtension on int {
   /// IntIntervalExtension.fromSemitones(4) == null
   /// ```
   static int? fromSemitones(int semitones) {
-    final size = _intervalsToSemitonesDelta.keys.firstWhereOrNull(
+    final size = _sizeToSemitones.keys.firstWhereOrNull(
       (interval) =>
           (semitones == chromaticDivisions
               ? chromaticDivisions
               : semitones.chromaticMod) ==
-          _intervalsToSemitonesDelta[interval],
+          _sizeToSemitones[interval],
     );
     if (size == null) return null;
     if (semitones == 12) return size;
@@ -49,8 +49,8 @@ extension IntIntervalExtension on int {
   /// 9.semitones == 13
   /// ```
   int get semitones =>
-      _intervalsToSemitonesDelta[this] ??
-      chromaticDivisions + _intervalsToSemitonesDelta[simplified]!;
+      _sizeToSemitones[this] ??
+      chromaticDivisions + _sizeToSemitones[simplified]!;
 
   /// Returns `true` if this [int] interval is a perfect interval.
   ///
