@@ -1,7 +1,11 @@
 part of '../../music_notes.dart';
 
 class EnharmonicNote extends Enharmonic<Note> {
-  const EnharmonicNote(super.semitones);
+  const EnharmonicNote(super.semitones)
+      : assert(
+          semitones > 0 && semitones <= chromaticDivisions,
+          'Semitones must be in chromatic divisions range',
+        );
 
   static const c = EnharmonicNote(1);
   static const cSharp = EnharmonicNote(2);

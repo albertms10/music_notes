@@ -9,11 +9,7 @@ abstract class Enharmonic<T extends MusicItem>
   final int semitones;
 
   /// Creates a new [Enharmonic].
-  const Enharmonic(this.semitones)
-      : assert(
-          semitones > 0 && semitones <= chromaticDivisions,
-          'Semitones must be in chromatic divisions range',
-        );
+  const Enharmonic(this.semitones);
 
   /// Returns the items sharing the same [semitones].
   Set<T> get items;
