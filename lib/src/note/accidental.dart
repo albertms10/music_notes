@@ -48,20 +48,32 @@ class Accidental implements MusicItem {
 
   /// The symbol of this [Accidental].
   ///
+  /// If the [Accidental] represents a natural note (0 semitones), returns the
+  /// natural symbol (♮).
+  ///
+  /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
+  /// double sharp/flat symbols (𝄪, 𝄫) depending on the number of semitones
+  /// above/below the natural note.
+  ///
   /// Example:
   /// ```dart
   /// Accidental.flat.symbol == '♭'
-  /// Accidental.doubleSharp.symbol == '𝄪'
   /// Accidental.natural.symbol == '♮'
+  /// Accidental.doubleFlat.symbol == '𝄫'
+  /// Accidental.tripleSharp.symbol == '♯𝄪'
   /// ```
   String get symbol {
     if (semitones == 0) return _naturalSymbol;
 
-    return (semitones.isOdd
-            ? (semitones.isNegative ? _flatSymbol : _sharpSymbol)
-            : '') +
-        (semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol) *
-            (semitones.abs() ~/ 2);
+    final accidentalSymbol = semitones.isNegative ? _flatSymbol : _sharpSymbol;
+    final doubleAccidentalSymbol =
+        semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol;
+
+    final absSemitones = semitones.abs();
+    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
+    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
+
+    return singleAccidentals + doubleAccidentals;
   }
 
   /// Returns the incremented [Accidental] enum item of this by [n].
