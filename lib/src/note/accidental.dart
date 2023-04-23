@@ -58,8 +58,9 @@ class Accidental implements MusicItem {
   /// Example:
   /// ```dart
   /// Accidental.flat.symbol == '♭'
-  /// Accidental.doubleSharp.symbol == '𝄪'
   /// Accidental.natural.symbol == '♮'
+  /// Accidental.doubleFlat.symbol == '𝄫'
+  /// Accidental.tripleSharp.symbol == '♯𝄪'
   /// ```
   String get symbol {
     if (semitones == 0) return _naturalSymbol;
