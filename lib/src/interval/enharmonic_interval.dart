@@ -19,6 +19,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
 
   @override
   Set<Interval> get items {
+    final semitones = this.semitones.abs();
     final interval = IntIntervalExtension.fromSemitones(semitones);
 
     if (interval != null) {

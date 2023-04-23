@@ -109,7 +109,7 @@ void main() {
         );
         expect(
           EnharmonicInterval.minorThird - EnharmonicInterval.tritone,
-          EnharmonicInterval.majorSixth,
+          const EnharmonicInterval(-3),
         );
       });
     });
