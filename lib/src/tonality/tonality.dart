@@ -73,7 +73,7 @@ class Tonality implements Comparable<Tonality> {
                 3,
                 ImperfectQuality.minor,
                 descending: mode == Modes.major,
-              ).semitones,
+              ),
             )
             .toClosestNote(keySignature.accidental),
         mode.opposite,

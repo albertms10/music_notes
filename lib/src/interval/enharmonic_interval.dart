@@ -38,15 +38,26 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     });
   }
 
-  /// Returns a transposed [EnharmonicInterval] by [semitones]
-  /// from this [EnharmonicInterval].
+  /// Adds [other] to this [EnharmonicInterval].
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval(6).transposeBy(-3) == EnharmonicInterval(3)
-  /// EnharmonicInterval(8).transposeBy(6) == EnharmonicInterval(2)
+  /// EnharmonicInterval.tritone + EnharmonicInterval.minorSecond
+  ///   == EnharmonicInterval.perfectFifth
+  ///
+  /// EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth
+  ///   == EnharmonicInterval.perfectOctave
   /// ```
-  @override
-  EnharmonicInterval transposeBy(int semitones) =>
-      EnharmonicInterval((this.semitones + semitones).chromaticModExcludeZero);
+  EnharmonicInterval operator +(EnharmonicInterval other) =>
+      EnharmonicInterval(semitones + other.semitones);
+
+  /// Subtracts [other] from this [EnharmonicInterval].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird
+  ///   == EnharmonicInterval.majorSecond,
+  /// ```
+  EnharmonicInterval operator -(EnharmonicInterval other) =>
+      EnharmonicInterval(semitones - other.semitones);
 }

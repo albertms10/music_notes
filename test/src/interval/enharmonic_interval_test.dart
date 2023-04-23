@@ -80,28 +80,38 @@ void main() {
       );
     });
 
-    group('.transposeBy()', () {
-      test(
-        'should return the transposed EnharmonicInterval by semitones',
-        () {
-          expect(
-            EnharmonicInterval.perfectUnison.transposeBy(2),
-            EnharmonicInterval.majorSecond,
-          );
-          expect(
-            EnharmonicInterval.perfectFourth.transposeBy(-3),
-            EnharmonicInterval.majorSecond,
-          );
-          expect(
-            EnharmonicInterval.perfectFifth.transposeBy(6),
-            EnharmonicInterval.minorSecond,
-          );
-          expect(
-            EnharmonicInterval.minorThird.transposeBy(-6),
-            EnharmonicInterval.majorSixth,
-          );
-        },
-      );
+    group('operator +()', () {
+      test('should add other to this EnharmonicInterval', () {
+        expect(
+          EnharmonicInterval.perfectUnison + EnharmonicInterval.majorSecond,
+          EnharmonicInterval.majorSecond,
+        );
+        expect(
+          EnharmonicInterval.tritone + EnharmonicInterval.minorSecond,
+          EnharmonicInterval.perfectFifth,
+        );
+        expect(
+          EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth,
+          EnharmonicInterval.perfectOctave,
+        );
+        expect(
+          EnharmonicInterval.perfectFifth + EnharmonicInterval.tritone,
+          const EnharmonicInterval(13),
+        );
+      });
+    });
+
+    group('operator -()', () {
+      test('should subtract other from this EnharmonicInterval', () {
+        expect(
+          EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird,
+          EnharmonicInterval.majorSecond,
+        );
+        expect(
+          EnharmonicInterval.minorThird - EnharmonicInterval.tritone,
+          EnharmonicInterval.majorSixth,
+        );
+      });
     });
 
     group('.hashCode', () {
