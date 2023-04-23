@@ -1,8 +1,7 @@
 part of '../music_notes.dart';
 
 @immutable
-abstract class Enharmonic<T extends MusicItem>
-    implements MusicItem, Transposable<Enharmonic> {
+abstract class Enharmonic<T extends MusicItem> implements MusicItem {
   /// The number of semitones of the common chromatic pitch of this
   /// [Enharmonic].
   @override
@@ -13,10 +12,6 @@ abstract class Enharmonic<T extends MusicItem>
 
   /// Returns the items sharing the same [semitones].
   Set<T> get items;
-
-  /// Returns a transposed [Enharmonic] by [semitones] from this [Enharmonic].
-  @override
-  Enharmonic transposeBy(int semitones);
 
   @override
   String toString() => '$semitones $items';

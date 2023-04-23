@@ -47,7 +47,7 @@ class Note implements MusicItem {
             3,
             ImperfectQuality.minor,
             descending: true,
-          ).semitones,
+          ),
         )
         .toClosestNote(accidental);
   }
