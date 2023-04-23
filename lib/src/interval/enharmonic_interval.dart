@@ -22,13 +22,10 @@ class EnharmonicInterval extends Enharmonic<Interval> {
     final interval = IntIntervalExtension.fromSemitones(semitones);
 
     if (interval != null) {
-      final intervalBelow = interval == 1 ? 1 : interval - 1;
-      final intervalAbove = interval + 1;
-
       return SplayTreeSet<Interval>.of({
-        Interval.fromSemitones(intervalBelow, semitones),
+        if (interval > 1) Interval.fromSemitones(interval - 1, semitones),
         Interval.fromSemitones(interval, semitones),
-        Interval.fromSemitones(intervalAbove, semitones),
+        Interval.fromSemitones(interval + 1, semitones),
       });
     }
 
