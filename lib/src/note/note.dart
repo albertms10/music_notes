@@ -42,13 +42,7 @@ class Note implements MusicItem, Transposable<Note> {
     if (mode == Modes.major) return note;
 
     return EnharmonicNote(note.semitones)
-        .transposeBy(
-          const Interval.imperfect(
-            3,
-            ImperfectQuality.minor,
-            descending: true,
-          ),
-        )
+        .transposeBy(const Interval.imperfect(-3, ImperfectQuality.minor))
         .toClosestNote(accidental);
   }
 
@@ -65,9 +59,8 @@ class Note implements MusicItem, Transposable<Note> {
     Accidental accidental = Accidental.natural,
   ]) {
     final fifthInterval = Interval.perfect(
-      5,
+      5 * (accidental == Accidental.flat ? -1 : 1),
       PerfectQuality.perfect,
-      descending: accidental == Accidental.flat,
     );
 
     return EnharmonicNote(

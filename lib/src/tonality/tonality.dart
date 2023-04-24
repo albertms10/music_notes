@@ -70,9 +70,8 @@ class Tonality implements Comparable<Tonality> {
         EnharmonicNote(note.semitones)
             .transposeBy(
               Interval.imperfect(
-                3,
+                3 * (mode == Modes.major ? -1 : 1),
                 ImperfectQuality.minor,
-                descending: mode == Modes.major,
               ),
             )
             .toClosestNote(keySignature.accidental),

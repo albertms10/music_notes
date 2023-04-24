@@ -139,7 +139,7 @@ class EnharmonicNote extends Enharmonic<Note>
         enharmonicIntervalDistance(other, Interval.perfectFifth);
     final distanceBelow = enharmonicIntervalDistance(
       other,
-      const Interval.perfect(5, PerfectQuality.perfect, descending: true),
+      const Interval.perfect(-5, PerfectQuality.perfect),
     );
     final minDistance = math.min(distanceAbove, distanceBelow);
 
