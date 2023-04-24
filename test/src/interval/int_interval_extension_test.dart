@@ -46,6 +46,10 @@ void main() {
     });
 
     group('.semitones', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.semitones, throwsA(isA<AssertionError>()));
+      });
+
       test('should return the number of semitones of this int interval', () {
         expect((-8).semitones, -12);
         expect((-7).semitones, -10);
@@ -64,6 +68,10 @@ void main() {
     });
 
     group('.isPerfect', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.isPerfect, throwsA(isA<AssertionError>()));
+      });
+
       test('should return whether this int interval is perfect', () {
         expect((-13).isPerfect, isFalse);
         expect((-11).isPerfect, isTrue);
@@ -91,6 +99,10 @@ void main() {
     });
 
     group('.isCompound', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.isCompound, throwsA(isA<AssertionError>()));
+      });
+
       test('should return whether this int interval is compound', () {
         expect((-14).isCompound, isTrue);
         expect((-10).isCompound, isTrue);
@@ -106,6 +118,10 @@ void main() {
     });
 
     group('.isDissonant', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.isDissonant, throwsA(isA<AssertionError>()));
+      });
+
       test('should return whether this int interval is dissonant', () {
         expect((-14).isDissonant, isTrue);
         expect((-13).isDissonant, isFalse);
@@ -139,6 +155,10 @@ void main() {
     });
 
     group('.simplified', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.simplified, throwsA(isA<AssertionError>()));
+      });
+
       test('should return the simplified int interval', () {
         expect((-13).simplified, -6);
         expect((-10).simplified, -3);
@@ -154,6 +174,10 @@ void main() {
     });
 
     group('.inverted', () {
+      test('should throw an assertion error when size is zero', () {
+        expect(() => 0.inverted, throwsA(isA<AssertionError>()));
+      });
+
       test('should return the inverted int interval', () {
         expect((-13).inverted, -3);
         expect((-10).inverted, -6);
