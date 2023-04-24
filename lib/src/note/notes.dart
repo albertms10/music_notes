@@ -73,9 +73,29 @@ enum Notes {
   /// ```dart
   /// Notes.c.difference(Notes.c) == 0
   /// Notes.c.difference(Notes.e) == 4
-  /// Notes.d.difference(Notes.a) == 7
+  /// Notes.a.difference(Notes.d) == -7
   /// ```
   int difference(Notes other) => other.value - value;
+
+  /// Returns the positive difference in semitones between this [Notes] enum
+  /// item and [other].
+  ///
+  /// When [difference] would return a negative value, this method returns the
+  /// difference with [other] being in the next octave.
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.c.positiveDifference(Notes.c) == 0
+  /// Notes.c.positiveDifference(Notes.e) == 4
+  /// Notes.a.positiveDifference(Notes.d) == 5
+  /// ```
+  int positiveDifference(Notes other) {
+    final differenceWithOther = difference(other);
+
+    return differenceWithOther.isNegative
+        ? differenceWithOther + chromaticDivisions
+        : differenceWithOther;
+  }
 
   /// Returns this [Notes] enum item transposed by interval [size].
   ///

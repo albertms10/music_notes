@@ -23,6 +23,8 @@ void main() {
 
     group('.difference()', () {
       test('should return the difference in semitones with other', () {
+        expect(Notes.b.difference(Notes.c), -11);
+        expect(Notes.a.difference(Notes.d), -7);
         expect(Notes.e.difference(Notes.c), -4);
         expect(Notes.e.difference(Notes.d), -2);
         expect(Notes.c.difference(Notes.c), 0);
@@ -32,6 +34,22 @@ void main() {
         expect(Notes.e.difference(Notes.b), 7);
         expect(Notes.d.difference(Notes.b), 9);
         expect(Notes.c.difference(Notes.b), 11);
+      });
+    });
+
+    group('.positiveDifference()', () {
+      test('should return the positive difference in semitones with other', () {
+        expect(Notes.c.positiveDifference(Notes.c), 0);
+        expect(Notes.b.positiveDifference(Notes.c), 1);
+        expect(Notes.c.positiveDifference(Notes.d), 2);
+        expect(Notes.c.positiveDifference(Notes.e), 4);
+        expect(Notes.c.positiveDifference(Notes.f), 5);
+        expect(Notes.a.positiveDifference(Notes.d), 5);
+        expect(Notes.e.positiveDifference(Notes.b), 7);
+        expect(Notes.e.positiveDifference(Notes.c), 8);
+        expect(Notes.d.positiveDifference(Notes.b), 9);
+        expect(Notes.e.positiveDifference(Notes.d), 10);
+        expect(Notes.c.positiveDifference(Notes.b), 11);
       });
     });
 

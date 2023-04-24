@@ -196,14 +196,12 @@ class Note implements MusicItem, Transposable<Note> {
   Note transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval.size);
 
-    final difference = note.difference(transposedNote);
-    final positiveDifference =
-        difference.isNegative ? difference + chromaticDivisions : difference;
-
     return Note(
       transposedNote,
       Accidental(
-        accidental.semitones + interval.semitones - positiveDifference,
+        accidental.semitones +
+            interval.semitones -
+            note.positiveDifference(transposedNote),
       ),
     );
   }

@@ -54,7 +54,7 @@ void main() {
       );
     });
 
-    group('.exactFifthsDistance', () {
+    group('.exactFifthsDistance()', () {
       test(
         'should return the fifths distance between this and other Note',
         () {
