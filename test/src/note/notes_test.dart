@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Notes', () {
     group('.intervalSize()', () {
-      test('should return the interval size between this Notes and other', () {
+      test('should return the Interval size between this Notes and other', () {
         expect(Notes.c.intervalSize(Notes.c), 1);
         expect(Notes.d.intervalSize(Notes.e), 2);
         expect(Notes.e.intervalSize(Notes.f), 2);

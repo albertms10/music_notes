@@ -24,17 +24,18 @@ extension IntervalSizeExtension on int {
   /// ```
   static int? fromSemitones(int semitones) {
     final absoluteSemitones = semitones.abs();
-    final size = _sizeToSemitones.keys.firstWhereOrNull(
-      (interval) =>
+    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
+      (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
               : absoluteSemitones.chromaticMod) ==
-          _sizeToSemitones[interval],
+          _sizeToSemitones[size],
     );
-    if (size == null) return null;
-    if (absoluteSemitones == 12) return size * semitones.sign;
+    if (matchingSize == null) return null;
+    if (absoluteSemitones == 12) return matchingSize * semitones.sign;
 
-    final absResult = size + (absoluteSemitones ~/ chromaticDivisions) * 7;
+    final absResult =
+        matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
 
     return absResult * (semitones.isNegative ? -1 : 1);
   }

@@ -20,22 +20,22 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   Set<Interval> get items {
     final semitones = this.semitones.abs();
-    final interval = IntervalSizeExtension.fromSemitones(semitones);
+    final size = IntervalSizeExtension.fromSemitones(semitones);
 
-    if (interval != null) {
+    if (size != null) {
       return SplayTreeSet<Interval>.of({
-        if (interval > 1) Interval.fromSemitones(interval - 1, semitones),
-        Interval.fromSemitones(interval, semitones),
-        Interval.fromSemitones(interval + 1, semitones),
+        if (size > 1) Interval.fromSemitones(size - 1, semitones),
+        Interval.fromSemitones(size, semitones),
+        Interval.fromSemitones(size + 1, semitones),
       });
     }
 
-    final intervalBelow = IntervalSizeExtension.fromSemitones(semitones - 1);
-    final intervalAbove = IntervalSizeExtension.fromSemitones(semitones + 1);
+    final sizeBelow = IntervalSizeExtension.fromSemitones(semitones - 1);
+    final sizeAbove = IntervalSizeExtension.fromSemitones(semitones + 1);
 
     return SplayTreeSet<Interval>.of({
-      Interval.fromSemitones(intervalBelow!, semitones),
-      Interval.fromSemitones(intervalAbove!, semitones),
+      Interval.fromSemitones(sizeBelow!, semitones),
+      Interval.fromSemitones(sizeAbove!, semitones),
     });
   }
 
