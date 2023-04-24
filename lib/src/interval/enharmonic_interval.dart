@@ -64,4 +64,25 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   /// ```
   EnharmonicInterval operator -(EnharmonicInterval other) =>
       EnharmonicInterval(semitones - other.semitones);
+
+  /// The negation of this [EnharmonicInterval].
+  ///
+  /// Example:
+  /// ```dart
+  /// -EnharmonicInterval.minorThird == const EnharmonicInterval(-3)
+  /// -EnharmonicInterval.perfectUnison == EnharmonicInterval.perfectUnison
+  /// -const EnharmonicInterval(-7) == EnharmonicInterval.perfectFifth
+  /// ```
+  EnharmonicInterval operator -() => EnharmonicInterval(-semitones);
+
+  /// Multiplies this [EnharmonicInterval] by [factor].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicInterval.perfectFourth * -1 == -EnharmonicInterval.perfectFourth
+  /// EnharmonicInterval.majorSixth * 0 == EnharmonicInterval.perfectUnison
+  /// EnharmonicInterval.minorThird * 2 == EnharmonicInterval.tritone
+  /// ```
+  EnharmonicInterval operator *(int factor) =>
+      EnharmonicInterval(semitones * factor);
 }
