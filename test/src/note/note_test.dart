@@ -66,104 +66,53 @@ void main() {
 
     group('.exactInterval()', () {
       test('should return the Interval between this Note and other', () {
-        expect(
-          Note.c.exactInterval(Note.c),
-          const Interval.perfect(1, PerfectQuality.perfect),
-        );
-        expect(
-          Note.c.exactInterval(Note.cSharp),
-          const Interval.perfect(1, PerfectQuality.augmented),
-        );
+        expect(Note.c.exactInterval(Note.c), Interval.perfectUnison);
+        expect(Note.c.exactInterval(Note.cSharp), Interval.augmentedUnison);
 
         expect(
           Note.c.exactInterval(const Note(Notes.d, Accidental.doubleFlat)),
-          const Interval.imperfect(2, ImperfectQuality.diminished),
+          Interval.diminishedSecond,
         );
-        expect(
-          Note.c.exactInterval(Note.dFlat),
-          const Interval.imperfect(2, ImperfectQuality.minor),
-        );
-        expect(
-          Note.c.exactInterval(Note.d),
-          const Interval.imperfect(2, ImperfectQuality.major),
-        );
-        expect(
-          Note.c.exactInterval(Note.dSharp),
-          const Interval.imperfect(2, ImperfectQuality.augmented),
-        );
+        expect(Note.c.exactInterval(Note.dFlat), Interval.minorSecond);
+        expect(Note.c.exactInterval(Note.d), Interval.majorSecond);
+        expect(Note.c.exactInterval(Note.dSharp), Interval.augmentedSecond);
 
         expect(
           Note.c.exactInterval(const Note(Notes.e, Accidental.doubleFlat)),
-          const Interval.imperfect(3, ImperfectQuality.diminished),
+          Interval.diminishedThird,
         );
-        expect(
-          Note.c.exactInterval(Note.eFlat),
-          const Interval.imperfect(3, ImperfectQuality.minor),
-        );
-        expect(
-          Note.c.exactInterval(Note.e),
-          const Interval.imperfect(3, ImperfectQuality.major),
-        );
+        expect(Note.c.exactInterval(Note.eFlat), Interval.minorThird);
+        expect(Note.c.exactInterval(Note.e), Interval.majorThird);
         expect(
           Note.c.exactInterval(const Note(Notes.e, Accidental.sharp)),
-          const Interval.imperfect(3, ImperfectQuality.augmented),
+          Interval.augmentedThird,
         );
 
         expect(
           Note.c.exactInterval(const Note(Notes.f, Accidental.flat)),
-          const Interval.perfect(4, PerfectQuality.diminished),
+          Interval.diminishedFourth,
         );
-        expect(
-          Note.c.exactInterval(Note.f),
-          const Interval.perfect(4, PerfectQuality.perfect),
-        );
-        expect(
-          Note.c.exactInterval(Note.fSharp),
-          const Interval.perfect(4, PerfectQuality.augmented),
-        );
+        expect(Note.c.exactInterval(Note.f), Interval.perfectFourth);
+        expect(Note.c.exactInterval(Note.fSharp), Interval.augmentedFourth);
 
-        expect(
-          Note.c.exactInterval(Note.gFlat),
-          const Interval.perfect(5, PerfectQuality.diminished),
-        );
-        expect(
-          Note.c.exactInterval(Note.g),
-          const Interval.perfect(5, PerfectQuality.perfect),
-        );
-        expect(
-          Note.c.exactInterval(Note.gSharp),
-          const Interval.perfect(5, PerfectQuality.augmented),
-        );
+        expect(Note.c.exactInterval(Note.gFlat), Interval.diminishedFifth);
+        expect(Note.c.exactInterval(Note.g), Interval.perfectFifth);
+        expect(Note.c.exactInterval(Note.gSharp), Interval.augmentedFifth);
 
         expect(
           Note.c.exactInterval(const Note(Notes.a, Accidental.doubleFlat)),
-          const Interval.imperfect(6, ImperfectQuality.diminished),
+          Interval.diminishedSixth,
         );
-        expect(
-          Note.c.exactInterval(Note.aFlat),
-          const Interval.imperfect(6, ImperfectQuality.minor),
-        );
-        expect(
-          Note.c.exactInterval(Note.a),
-          const Interval.imperfect(6, ImperfectQuality.major),
-        );
-        expect(
-          Note.c.exactInterval(Note.aSharp),
-          const Interval.imperfect(6, ImperfectQuality.augmented),
-        );
+        expect(Note.c.exactInterval(Note.aFlat), Interval.minorSixth);
+        expect(Note.c.exactInterval(Note.a), Interval.majorSixth);
+        expect(Note.c.exactInterval(Note.aSharp), Interval.augmentedSixth);
 
         expect(
           Note.c.exactInterval(const Note(Notes.b, Accidental.doubleFlat)),
-          const Interval.imperfect(7, ImperfectQuality.diminished),
+          Interval.diminishedSeventh,
         );
-        expect(
-          Note.c.exactInterval(Note.bFlat),
-          const Interval.imperfect(7, ImperfectQuality.minor),
-        );
-        expect(
-          Note.c.exactInterval(Note.b),
-          const Interval.imperfect(7, ImperfectQuality.major),
-        );
+        expect(Note.c.exactInterval(Note.bFlat), Interval.minorSeventh);
+        expect(Note.c.exactInterval(Note.b), Interval.majorSeventh);
         // TODO(albertms10): add test case for:
         //  `Note.c.exactInterval(const Note(Notes.b, Accidental.sharp))`.
       });
@@ -172,147 +121,51 @@ void main() {
     group('.transposeBy()', () {
       test('should return this Note transposed by Interval', () {
         expect(
-          Note.c.transposeBy(
-            const Interval.perfect(1, PerfectQuality.diminished),
-          ),
+          Note.c.transposeBy(Interval.diminishedUnison),
           const Note(Notes.c, Accidental.flat),
         );
-        expect(
-          Note.c.transposeBy(const Interval.perfect(1, PerfectQuality.perfect)),
-          Note.c,
-        );
-        expect(
-          Note.c
-              .transposeBy(const Interval.perfect(1, PerfectQuality.augmented)),
-          Note.cSharp,
-        );
+        expect(Note.c.transposeBy(Interval.perfectUnison), Note.c);
+        expect(Note.c.transposeBy(Interval.augmentedUnison), Note.cSharp);
 
         expect(
-          Note.c.transposeBy(
-            const Interval.imperfect(2, ImperfectQuality.diminished),
-          ),
+          Note.c.transposeBy(Interval.diminishedSecond),
           const Note(Notes.d, Accidental.doubleFlat),
         );
-        expect(
-          Note.c
-              .transposeBy(const Interval.imperfect(2, ImperfectQuality.minor)),
-          Note.dFlat,
-        );
-        expect(
-          Note.c
-              .transposeBy(const Interval.imperfect(2, ImperfectQuality.major)),
-          Note.d,
-        );
-        expect(
-          Note.c.transposeBy(
-            const Interval.imperfect(2, ImperfectQuality.augmented),
-          ),
-          Note.dSharp,
-        );
+        expect(Note.c.transposeBy(Interval.minorSecond), Note.dFlat);
+        expect(Note.c.transposeBy(Interval.majorSecond), Note.d);
+        expect(Note.c.transposeBy(Interval.augmentedSecond), Note.dSharp);
 
+        expect(Note.e.transposeBy(Interval.minorThird), Note.g);
+        expect(Note.e.transposeBy(Interval.majorThird), Note.gSharp);
         expect(
-          Note.e
-              .transposeBy(const Interval.imperfect(3, ImperfectQuality.minor)),
-          Note.g,
-        );
-        expect(
-          Note.e
-              .transposeBy(const Interval.imperfect(3, ImperfectQuality.major)),
-          Note.gSharp,
-        );
-        expect(
-          Note.aFlat
-              .transposeBy(const Interval.imperfect(3, ImperfectQuality.minor)),
+          Note.aFlat.transposeBy(Interval.minorThird),
           const Note(Notes.c, Accidental.flat),
         );
-        expect(
-          Note.aFlat
-              .transposeBy(const Interval.imperfect(3, ImperfectQuality.major)),
-          Note.c,
-        );
+        expect(Note.aFlat.transposeBy(Interval.majorThird), Note.c);
 
         expect(
-          Note.f.transposeBy(
-            const Interval.perfect(4, PerfectQuality.diminished),
-          ),
+          Note.f.transposeBy(Interval.diminishedFourth),
           const Note(Notes.b, Accidental.doubleFlat),
         );
-        expect(
-          Note.f.transposeBy(const Interval.perfect(4, PerfectQuality.perfect)),
-          Note.bFlat,
-        );
-        expect(
-          Note.f
-              .transposeBy(const Interval.perfect(4, PerfectQuality.augmented)),
-          Note.b,
-        );
-        expect(
-          Note.a.transposeBy(
-            const Interval.perfect(4, PerfectQuality.diminished),
-          ),
-          Note.dFlat,
-        );
-        expect(
-          Note.a.transposeBy(const Interval.perfect(4, PerfectQuality.perfect)),
-          Note.d,
-        );
-        expect(
-          Note.a
-              .transposeBy(const Interval.perfect(4, PerfectQuality.augmented)),
-          Note.dSharp,
-        );
+        expect(Note.f.transposeBy(Interval.perfectFourth), Note.bFlat);
+        expect(Note.f.transposeBy(Interval.augmentedFourth), Note.b);
+        expect(Note.a.transposeBy(Interval.diminishedFourth), Note.dFlat);
+        expect(Note.a.transposeBy(Interval.perfectFourth), Note.d);
+        expect(Note.a.transposeBy(Interval.augmentedFourth), Note.dSharp);
 
-        expect(
-          Note.d.transposeBy(
-            const Interval.perfect(5, PerfectQuality.diminished),
-          ),
-          Note.aFlat,
-        );
-        expect(
-          Note.d.transposeBy(const Interval.perfect(5, PerfectQuality.perfect)),
-          Note.a,
-        );
-        expect(
-          Note.d
-              .transposeBy(const Interval.perfect(5, PerfectQuality.augmented)),
-          Note.aSharp,
-        );
+        expect(Note.d.transposeBy(Interval.diminishedFifth), Note.aFlat);
+        expect(Note.d.transposeBy(Interval.perfectFifth), Note.a);
+        expect(Note.d.transposeBy(Interval.augmentedFifth), Note.aSharp);
 
-        expect(
-          Note.d
-              .transposeBy(const Interval.imperfect(6, ImperfectQuality.minor)),
-          Note.bFlat,
-        );
-        expect(
-          Note.d
-              .transposeBy(const Interval.imperfect(6, ImperfectQuality.major)),
-          Note.b,
-        );
-        expect(
-          Note.fSharp
-              .transposeBy(const Interval.imperfect(6, ImperfectQuality.minor)),
-          Note.d,
-        );
-        expect(
-          Note.fSharp
-              .transposeBy(const Interval.imperfect(6, ImperfectQuality.major)),
-          Note.dSharp,
-        );
+        expect(Note.d.transposeBy(Interval.minorSixth), Note.bFlat);
+        expect(Note.d.transposeBy(Interval.majorSixth), Note.b);
+        expect(Note.fSharp.transposeBy(Interval.minorSixth), Note.d);
+        expect(Note.fSharp.transposeBy(Interval.majorSixth), Note.dSharp);
 
+        expect(Note.c.transposeBy(Interval.minorSeventh), Note.bFlat);
+        expect(Note.c.transposeBy(Interval.majorSeventh), Note.b);
         expect(
-          Note.c
-              .transposeBy(const Interval.imperfect(7, ImperfectQuality.minor)),
-          Note.bFlat,
-        );
-        expect(
-          Note.c
-              .transposeBy(const Interval.imperfect(7, ImperfectQuality.major)),
-          Note.b,
-        );
-        expect(
-          Note.c.transposeBy(
-            const Interval.imperfect(7, ImperfectQuality.augmented),
-          ),
+          Note.c.transposeBy(Interval.augmentedSeventh),
           const Note(Notes.b, Accidental.sharp),
         );
       });

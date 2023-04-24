@@ -116,20 +116,15 @@ class Note implements MusicItem, Transposable<Note> {
   /// Note.aFlat.exactFifthsDistance(Note.cSharp) == 11
   /// Note.aFlat.exactFifthsDistance(Note.dFlat) == -1
   /// ```
-  int exactFifthsDistance(Note other) => intervalDistance(
-        other,
-        const Interval.perfect(5, PerfectQuality.perfect),
-      );
+  int exactFifthsDistance(Note other) =>
+      intervalDistance(other, Interval.perfectFifth);
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [other].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.intervalDistance(
-  ///   Note.d,
-  ///   const Interval.perfect(5, PerfectQuality.perfect),
-  /// ) == 2
+  /// Note.c.intervalDistance(Note.d, Interval.perfectFifth) == 2
   /// ```
   int intervalDistance(Note other, Interval interval) {
     final distanceFlat = _runSemitonesDistance(
@@ -177,11 +172,8 @@ class Note implements MusicItem, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.exactInterval(Note.d)
-  ///   == const Interval.imperfect(2, ImperfectQuality.minor)
-  ///
-  /// Note.d.exactInterval(Note.aFlat)
-  ///   == const Interval.perfect(5, PerfectQuality.diminished)
+  /// Note.c.exactInterval(Note.d) == Interval.minorSecond
+  /// Note.d.exactInterval(Note.aFlat) == Interval.diminishedFifth
   /// ```
   Interval exactInterval(Note other) {
     final intervalSize = note.intervalSize(other.note);

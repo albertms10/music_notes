@@ -29,6 +29,7 @@ abstract class Quality implements MusicItem {
   /// The textual abbreviation of this [Quality].
   String? get abbreviation;
 
+  /// Returns the inverted version of this [Quality].
   Quality get inverted;
 
   @override
