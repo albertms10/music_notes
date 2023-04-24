@@ -1,6 +1,6 @@
 import 'enharmonic_test.dart' as enharmonic_test;
 import 'interval/enharmonic_interval_test.dart' as enharmonic_interval_test;
-import 'interval/int_interval_extension_test.dart'
+import 'interval/interval_size_extension_test.dart'
     as int_interval_extension_test;
 import 'interval/interval_test.dart' as interval_test;
 import 'interval/quality_test.dart' as quality_test;

@@ -46,8 +46,8 @@ enum Notes {
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
 
-  /// Returns the interval size that conforms between this [Notes] enum item and
-  /// [other].
+  /// Returns the [Interval.size] that conforms between this [Notes] enum item
+  /// and [other].
   ///
   /// Example:
   /// ```dart

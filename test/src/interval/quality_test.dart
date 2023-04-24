@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Quality', () {
     group('.fromInterval()', () {
-      test('should create a new Quality from an interval', () {
+      test('should create a new Quality from an Interval size', () {
         expect(Quality.fromInterval(1, -1), PerfectQuality.diminished);
         expect(Quality.fromInterval(1, 0), PerfectQuality.perfect);
         expect(Quality.fromInterval(1, 1), PerfectQuality.augmented);

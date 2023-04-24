@@ -13,7 +13,7 @@ import 'utils/num_extension.dart';
 
 part 'src/enharmonic.dart';
 part 'src/interval/enharmonic_interval.dart';
-part 'src/interval/int_interval_extension.dart';
+part 'src/interval/interval_size_extension.dart';
 part 'src/interval/interval.dart';
 part 'src/interval/quality.dart';
 part 'src/music.dart';
