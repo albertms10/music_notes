@@ -23,6 +23,7 @@ part 'src/note/enharmonic_note.dart';
 part 'src/note/note.dart';
 part 'src/note/notes.dart';
 part 'src/note/positioned_note.dart';
+part 'src/scale/scale.dart';
 part 'src/tonality/key_signature.dart';
 part 'src/tonality/modes.dart';
 part 'src/tonality/tonality.dart';

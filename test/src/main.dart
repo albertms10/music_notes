@@ -10,6 +10,7 @@ import 'note/enharmonic_note_test.dart' as enharmonic_note_test;
 import 'note/note_test.dart' as note_test;
 import 'note/notes_test.dart' as notes_test;
 import 'note/positioned_note_test.dart' as positioned_note_test;
+import 'scale/scale_test.dart' as scale_test;
 import 'tonality/key_signature_test.dart' as key_signature_test;
 import 'tonality/modes_test.dart' as modes_test;
 import 'tonality/tonality_test.dart' as tonality_test;
@@ -26,6 +27,7 @@ void main() {
   note_test.main();
   notes_test.main();
   positioned_note_test.main();
+  scale_test.main();
   key_signature_test.main();
   modes_test.main();
   tonality_test.main();

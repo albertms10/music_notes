@@ -1,6 +1,6 @@
 {
   "cSpell.ignoreWords": ["music"],
-  "cSpell.words": ["helmholtz"],
+  "cSpell.words": ["helmholtz", "octatonic"],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true
   }
