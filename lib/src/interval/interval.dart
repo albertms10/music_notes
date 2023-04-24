@@ -13,10 +13,7 @@ class Interval implements MusicItem {
   /// [ImperfectQuality], depending on the nature of the interval.
   final Quality quality;
 
-  /// Whether this [Interval] is descending.
-  final bool descending;
-
-  const Interval._(this.size, this.quality, {this.descending = false})
+  const Interval._(this.size, this.quality)
       : assert(size != 0, 'Size must be non-zero');
 
   static const diminishedUnison =
@@ -67,22 +64,22 @@ class Interval implements MusicItem {
   static const augmentedOctave = Interval.perfect(8, PerfectQuality.augmented);
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
-  const Interval.perfect(
-    this.size,
-    PerfectQuality this.quality, {
-    this.descending = false,
-  })  : assert(size != 0, 'Size must be non-zero'),
+  const Interval.perfect(this.size, PerfectQuality this.quality)
+      : assert(size != 0, 'Size must be non-zero'),
         // Copied from [IntIntervalExtension.isPerfect] to allow const.
-        assert((size + size ~/ 8) % 4 < 2, 'Interval must be perfect');
+        assert(
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
+          'Interval must be perfect',
+        );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
-  const Interval.imperfect(
-    this.size,
-    ImperfectQuality this.quality, {
-    this.descending = false,
-  })  : assert(size != 0, 'Size must be non-zero'),
+  const Interval.imperfect(this.size, ImperfectQuality this.quality)
+      : assert(size != 0, 'Size must be non-zero'),
         // Copied from [IntIntervalExtension.isPerfect] to allow const.
-        assert((size + size ~/ 8) % 4 >= 2, 'Interval must be imperfect');
+        assert(
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
+          'Interval must be imperfect',
+        );
 
   /// Creates a new [Interval] from the [Quality] delta.
   Interval.fromDelta(int size, int delta)
@@ -137,8 +134,7 @@ class Interval implements MusicItem {
   ///   == 6
   /// ```
   @override
-  int get semitones =>
-      (size.semitones + quality.semitones) * (descending ? -1 : 1);
+  int get semitones => size.semitones + quality.semitones;
 
   /// Returns the inverted of this [Interval].
   ///

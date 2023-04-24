@@ -108,6 +108,6 @@ enum Notes {
   Notes transposeBy(int size) {
     assert(size != 0, 'Size must be non-zero');
 
-    return fromOrdinal(ordinal + (size.abs() - 1) * (size.isNegative ? -1 : 1));
+    return fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
   }
 }
