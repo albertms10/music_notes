@@ -161,6 +161,23 @@ void main() {
             Note.b,
           ],
         );
+        expect(
+          Scale.chromatic.fromNote(Note.dFlat),
+          const [
+            Note.dFlat,
+            Note.d,
+            Note.eFlat,
+            Note.e,
+            Note.f,
+            Note.gFlat,
+            Note.g,
+            Note.aFlat,
+            Note.a,
+            Note.bFlat,
+            Note.b,
+            Note.c,
+          ],
+        );
       });
     });
   });
