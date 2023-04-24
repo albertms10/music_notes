@@ -19,6 +19,53 @@ class Interval implements MusicItem {
   const Interval._(this.size, this.quality, {this.descending = false})
       : assert(size != 0, 'Size must be non-zero');
 
+  static const diminishedUnison =
+      Interval.perfect(1, PerfectQuality.diminished);
+  static const perfectUnison = Interval.perfect(1, PerfectQuality.perfect);
+  static const augmentedUnison = Interval.perfect(1, PerfectQuality.augmented);
+
+  static const diminishedSecond =
+      Interval.imperfect(2, ImperfectQuality.diminished);
+  static const minorSecond = Interval.imperfect(2, ImperfectQuality.minor);
+  static const majorSecond = Interval.imperfect(2, ImperfectQuality.major);
+  static const augmentedSecond =
+      Interval.imperfect(2, ImperfectQuality.augmented);
+
+  static const diminishedThird =
+      Interval.imperfect(3, ImperfectQuality.diminished);
+  static const minorThird = Interval.imperfect(3, ImperfectQuality.minor);
+  static const majorThird = Interval.imperfect(3, ImperfectQuality.major);
+  static const augmentedThird =
+      Interval.imperfect(3, ImperfectQuality.augmented);
+
+  static const diminishedFourth =
+      Interval.perfect(4, PerfectQuality.diminished);
+  static const perfectFourth = Interval.perfect(4, PerfectQuality.perfect);
+  static const augmentedFourth = Interval.perfect(4, PerfectQuality.augmented);
+
+  static const diminishedFifth = Interval.perfect(5, PerfectQuality.diminished);
+  static const perfectFifth = Interval.perfect(5, PerfectQuality.perfect);
+  static const augmentedFifth = Interval.perfect(5, PerfectQuality.augmented);
+
+  static const diminishedSixth =
+      Interval.imperfect(6, ImperfectQuality.diminished);
+  static const minorSixth = Interval.imperfect(6, ImperfectQuality.minor);
+  static const majorSixth = Interval.imperfect(6, ImperfectQuality.major);
+  static const augmentedSixth =
+      Interval.imperfect(6, ImperfectQuality.augmented);
+
+  static const diminishedSeventh =
+      Interval.imperfect(7, ImperfectQuality.diminished);
+  static const minorSeventh = Interval.imperfect(7, ImperfectQuality.minor);
+  static const majorSeventh = Interval.imperfect(7, ImperfectQuality.major);
+  static const augmentedSeventh =
+      Interval.imperfect(7, ImperfectQuality.augmented);
+
+  static const diminishedOctave =
+      Interval.perfect(8, PerfectQuality.diminished);
+  static const perfectOctave = Interval.perfect(8, PerfectQuality.perfect);
+  static const augmentedOctave = Interval.perfect(8, PerfectQuality.augmented);
+
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(
     this.size,
@@ -52,14 +99,10 @@ class Interval implements MusicItem {
   ///
   /// Example:
   /// ```dart
-  /// Interval.fromSemitonesQuality(4)
-  ///   == const Interval.imperfect(3, ImperfectQuality.minor)
-  ///
-  /// Interval.fromSemitonesQuality(7)
-  ///   == const Interval.perfect(4, PerfectQuality.augmented)
-  ///
+  /// Interval.fromSemitonesQuality(4) == Interval.minorThird
+  /// Interval.fromSemitonesQuality(7) == Interval.augmentedFourth
   /// Interval.fromSemitonesQuality(7, PerfectQuality.diminished)
-  ///   == const Interval.perfect(5, PerfectQuality.diminished)
+  ///   == Interval.diminishedFifth
   /// ```
   factory Interval.fromSemitonesQuality(
     int semitones, [
@@ -87,10 +130,10 @@ class Interval implements MusicItem {
   ///
   /// Example:
   /// ```dart
-  /// const Interval.imperfect(2, ImperfectQuality.major).semitones == 2
+  /// Interval.majorSecond.semitones == 2
   ///
-  /// const Interval.perfect(5, PerfectQuality.diminished).semitones
-  ///   == const Interval.perfect(4, PerfectQuality.augmented).semitones
+  /// Interval.diminishedFifth.semitones
+  ///   == Interval.augmentedFourth.semitones
   ///   == 6
   /// ```
   @override
@@ -101,11 +144,8 @@ class Interval implements MusicItem {
   ///
   /// Example:
   /// ```dart
-  /// const Interval.imperfect(3, ImperfectQuality.minor).inverted
-  ///   == const Interval.imperfect(6, ImperfectQuality.major)
-  ///
-  /// const Interval.perfect(1, PerfectQuality.perfect).inverted
-  ///   == const Interval.perfect(8, PerfectQuality.perfect)
+  /// Interval.minorThird.inverted == Interval.majorSixth
+  /// Interval.perfectUnison.inverted == Interval.perfectOctave
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
 

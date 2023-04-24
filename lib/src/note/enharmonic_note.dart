@@ -135,10 +135,8 @@ class EnharmonicNote extends Enharmonic<Note>
   /// EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g) == 4
   /// ```
   int shortestFifthsDistance(EnharmonicNote other) {
-    final distanceAbove = enharmonicIntervalDistance(
-      other,
-      const Interval.perfect(5, PerfectQuality.perfect),
-    );
+    final distanceAbove =
+        enharmonicIntervalDistance(other, Interval.perfectFifth);
     final distanceBelow = enharmonicIntervalDistance(
       other,
       const Interval.perfect(5, PerfectQuality.perfect, descending: true),
@@ -179,16 +177,12 @@ class EnharmonicNote extends Enharmonic<Note>
   /// ```dart
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     const Interval.perfect(5, PerfectQuality.perfect),
+  ///     Interval.perfectFifth,
   ///   ) == 10
   ///
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     const Interval(
-  ///       5,
-  ///       PerfectQuality.perfect,
-  ///       descending: true
-  ///     ),
+  ///     const Interval(5, PerfectQuality.perfect, descending: true),
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(

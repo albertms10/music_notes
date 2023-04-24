@@ -28,315 +28,126 @@ void main() {
 
     group('.fromSemitones()', () {
       test('should create a new Interval from semitones', () {
-        expect(
-          Interval.fromSemitones(1, -1),
-          const Interval.perfect(1, PerfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(1, 0),
-          const Interval.perfect(1, PerfectQuality.perfect),
-        );
-        expect(
-          Interval.fromSemitones(1, 1),
-          const Interval.perfect(1, PerfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(1, -1), Interval.diminishedUnison);
+        expect(Interval.fromSemitones(1, 0), Interval.perfectUnison);
+        expect(Interval.fromSemitones(1, 1), Interval.augmentedUnison);
 
-        expect(
-          Interval.fromSemitones(2, 0),
-          const Interval.imperfect(2, ImperfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(2, 1),
-          const Interval.imperfect(2, ImperfectQuality.minor),
-        );
-        expect(
-          Interval.fromSemitones(2, 2),
-          const Interval.imperfect(2, ImperfectQuality.major),
-        );
-        expect(
-          Interval.fromSemitones(2, 3),
-          const Interval.imperfect(2, ImperfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(2, 0), Interval.diminishedSecond);
+        expect(Interval.fromSemitones(2, 1), Interval.minorSecond);
+        expect(Interval.fromSemitones(2, 2), Interval.majorSecond);
+        expect(Interval.fromSemitones(2, 3), Interval.augmentedSecond);
 
-        expect(
-          Interval.fromSemitones(3, 2),
-          const Interval.imperfect(3, ImperfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(3, 3),
-          const Interval.imperfect(3, ImperfectQuality.minor),
-        );
-        expect(
-          Interval.fromSemitones(3, 4),
-          const Interval.imperfect(3, ImperfectQuality.major),
-        );
-        expect(
-          Interval.fromSemitones(3, 5),
-          const Interval.imperfect(3, ImperfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(3, 2), Interval.diminishedThird);
+        expect(Interval.fromSemitones(3, 3), Interval.minorThird);
+        expect(Interval.fromSemitones(3, 4), Interval.majorThird);
+        expect(Interval.fromSemitones(3, 5), Interval.augmentedThird);
 
-        expect(
-          Interval.fromSemitones(4, 4),
-          const Interval.perfect(4, PerfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(4, 5),
-          const Interval.perfect(4, PerfectQuality.perfect),
-        );
-        expect(
-          Interval.fromSemitones(4, 6),
-          const Interval.perfect(4, PerfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(4, 4), Interval.diminishedFourth);
+        expect(Interval.fromSemitones(4, 5), Interval.perfectFourth);
+        expect(Interval.fromSemitones(4, 6), Interval.augmentedFourth);
 
-        expect(
-          Interval.fromSemitones(5, 6),
-          const Interval.perfect(5, PerfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(5, 7),
-          const Interval.perfect(5, PerfectQuality.perfect),
-        );
-        expect(
-          Interval.fromSemitones(5, 8),
-          const Interval.perfect(5, PerfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(5, 6), Interval.diminishedFifth);
+        expect(Interval.fromSemitones(5, 7), Interval.perfectFifth);
+        expect(Interval.fromSemitones(5, 8), Interval.augmentedFifth);
 
-        expect(
-          Interval.fromSemitones(6, 8),
-          const Interval.imperfect(6, ImperfectQuality.minor),
-        );
-        expect(
-          Interval.fromSemitones(6, 9),
-          const Interval.imperfect(6, ImperfectQuality.major),
-        );
+        expect(Interval.fromSemitones(6, 8), Interval.minorSixth);
+        expect(Interval.fromSemitones(6, 9), Interval.majorSixth);
 
-        expect(
-          Interval.fromSemitones(7, 10),
-          const Interval.imperfect(7, ImperfectQuality.minor),
-        );
-        expect(
-          Interval.fromSemitones(7, 11),
-          const Interval.imperfect(7, ImperfectQuality.major),
-        );
+        expect(Interval.fromSemitones(7, 10), Interval.minorSeventh);
+        expect(Interval.fromSemitones(7, 11), Interval.majorSeventh);
 
-        expect(
-          Interval.fromSemitones(8, 11),
-          const Interval.perfect(8, PerfectQuality.diminished),
-        );
-        expect(
-          Interval.fromSemitones(8, 12),
-          const Interval.perfect(8, PerfectQuality.perfect),
-        );
-        expect(
-          Interval.fromSemitones(8, 13),
-          const Interval.perfect(8, PerfectQuality.augmented),
-        );
+        expect(Interval.fromSemitones(8, 11), Interval.diminishedOctave);
+        expect(Interval.fromSemitones(8, 12), Interval.perfectOctave);
+        expect(Interval.fromSemitones(8, 13), Interval.augmentedOctave);
       });
     });
 
     group('.fromSemitonesQuality()', () {
       test('should return the correct Interval from semitones and Quality', () {
-        expect(
-          Interval.fromSemitonesQuality(3),
-          const Interval.imperfect(3, ImperfectQuality.minor),
-        );
-        expect(
-          Interval.fromSemitonesQuality(6),
-          const Interval.perfect(4, PerfectQuality.augmented),
-        );
+        expect(Interval.fromSemitonesQuality(3), Interval.minorThird);
+        expect(Interval.fromSemitonesQuality(6), Interval.augmentedFourth);
         expect(
           Interval.fromSemitonesQuality(6, PerfectQuality.augmented),
-          const Interval.perfect(4, PerfectQuality.augmented),
+          Interval.augmentedFourth,
         );
         expect(
           Interval.fromSemitonesQuality(6, PerfectQuality.diminished),
-          const Interval.perfect(5, PerfectQuality.diminished),
+          Interval.diminishedFifth,
         );
       });
     });
 
     group('.semitones', () {
       test('should return the number of semitones of this Interval', () {
-        expect(
-          const Interval.perfect(1, PerfectQuality.diminished).semitones,
-          -1,
-        );
-        expect(
-          const Interval.perfect(1, PerfectQuality.perfect).semitones,
-          0,
-        );
-        expect(
-          const Interval.perfect(1, PerfectQuality.augmented).semitones,
-          1,
-        );
+        expect(Interval.diminishedUnison.semitones, -1);
+        expect(Interval.perfectUnison.semitones, 0);
+        expect(Interval.augmentedUnison.semitones, 1);
 
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.diminished).semitones,
-          0,
-        );
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.minor).semitones,
-          1,
-        );
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.major).semitones,
-          2,
-        );
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.augmented).semitones,
-          3,
-        );
+        expect(Interval.diminishedSecond.semitones, 0);
+        expect(Interval.minorSecond.semitones, 1);
+        expect(Interval.majorSecond.semitones, 2);
+        expect(Interval.augmentedSecond.semitones, 3);
 
-        expect(
-          const Interval.imperfect(3, ImperfectQuality.diminished).semitones,
-          2,
-        );
-        expect(
-          const Interval.imperfect(3, ImperfectQuality.minor).semitones,
-          3,
-        );
-        expect(
-          const Interval.imperfect(3, ImperfectQuality.major).semitones,
-          4,
-        );
-        expect(
-          const Interval.imperfect(3, ImperfectQuality.augmented).semitones,
-          5,
-        );
+        expect(Interval.diminishedThird.semitones, 2);
+        expect(Interval.minorThird.semitones, 3);
+        expect(Interval.majorThird.semitones, 4);
+        expect(Interval.augmentedThird.semitones, 5);
 
-        expect(
-          const Interval.perfect(4, PerfectQuality.diminished).semitones,
-          4,
-        );
-        expect(
-          const Interval.perfect(4, PerfectQuality.perfect).semitones,
-          5,
-        );
-        expect(
-          const Interval.perfect(4, PerfectQuality.augmented).semitones,
-          6,
-        );
+        expect(Interval.diminishedFourth.semitones, 4);
+        expect(Interval.perfectFourth.semitones, 5);
+        expect(Interval.augmentedFourth.semitones, 6);
 
-        expect(
-          const Interval.perfect(5, PerfectQuality.diminished).semitones,
-          6,
-        );
-        expect(
-          const Interval.perfect(5, PerfectQuality.perfect).semitones,
-          7,
-        );
-        expect(
-          const Interval.perfect(5, PerfectQuality.augmented).semitones,
-          8,
-        );
+        expect(Interval.diminishedFifth.semitones, 6);
+        expect(Interval.perfectFifth.semitones, 7);
+        expect(Interval.augmentedFifth.semitones, 8);
 
-        expect(
-          const Interval.imperfect(6, ImperfectQuality.diminished).semitones,
-          7,
-        );
-        expect(
-          const Interval.imperfect(6, ImperfectQuality.minor).semitones,
-          8,
-        );
-        expect(
-          const Interval.imperfect(6, ImperfectQuality.major).semitones,
-          9,
-        );
-        expect(
-          const Interval.imperfect(6, ImperfectQuality.augmented).semitones,
-          10,
-        );
+        expect(Interval.diminishedSixth.semitones, 7);
+        expect(Interval.minorSixth.semitones, 8);
+        expect(Interval.majorSixth.semitones, 9);
+        expect(Interval.augmentedSixth.semitones, 10);
 
-        expect(
-          const Interval.imperfect(7, ImperfectQuality.diminished).semitones,
-          9,
-        );
-        expect(
-          const Interval.imperfect(7, ImperfectQuality.minor).semitones,
-          10,
-        );
-        expect(
-          const Interval.imperfect(7, ImperfectQuality.major).semitones,
-          11,
-        );
-        expect(
-          const Interval.imperfect(7, ImperfectQuality.augmented).semitones,
-          12,
-        );
+        expect(Interval.diminishedSeventh.semitones, 9);
+        expect(Interval.minorSeventh.semitones, 10);
+        expect(Interval.majorSeventh.semitones, 11);
+        expect(Interval.augmentedSeventh.semitones, 12);
 
-        expect(
-          const Interval.perfect(8, PerfectQuality.diminished).semitones,
-          11,
-        );
-        expect(
-          const Interval.perfect(8, PerfectQuality.perfect).semitones,
-          12,
-        );
-        expect(
-          const Interval.perfect(8, PerfectQuality.augmented).semitones,
-          13,
-        );
+        expect(Interval.diminishedOctave.semitones, 11);
+        expect(Interval.perfectOctave.semitones, 12);
+        expect(Interval.augmentedOctave.semitones, 13);
       });
     });
 
     group('.inverted', () {
       test('should return the inverted of this Interval', () {
-        expect(
-          const Interval.perfect(1, PerfectQuality.augmented).inverted,
-          const Interval.perfect(8, PerfectQuality.diminished),
-        );
-        expect(
-          const Interval.perfect(1, PerfectQuality.perfect).inverted,
-          const Interval.perfect(8, PerfectQuality.perfect),
-        );
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.major).inverted,
-          const Interval.imperfect(7, ImperfectQuality.minor),
-        );
-        expect(
-          const Interval.imperfect(3, ImperfectQuality.minor).inverted,
-          const Interval.imperfect(6, ImperfectQuality.major),
-        );
-        expect(
-          const Interval.perfect(5, PerfectQuality.diminished).inverted,
-          const Interval.perfect(4, PerfectQuality.augmented),
-        );
-        expect(
-          const Interval.perfect(4, PerfectQuality.diminished).inverted,
-          const Interval.perfect(5, PerfectQuality.augmented),
-        );
+        expect(Interval.augmentedUnison.inverted, Interval.diminishedOctave);
+        expect(Interval.perfectUnison.inverted, Interval.perfectOctave);
+        expect(Interval.majorSecond.inverted, Interval.minorSeventh);
+        expect(Interval.minorThird.inverted, Interval.majorSixth);
+        expect(Interval.diminishedFifth.inverted, Interval.augmentedFourth);
+        expect(Interval.diminishedFourth.inverted, Interval.augmentedFifth);
       });
     });
 
     group('.toString()', () {
       test('should return the string representation of this Interval', () {
-        expect(
-          const Interval.imperfect(2, ImperfectQuality.major).toString(),
-          'M2',
-        );
-        expect(
-          const Interval.perfect(5, PerfectQuality.perfect).toString(),
-          'P5',
-        );
-        expect(
-          const Interval.imperfect(7, ImperfectQuality.diminished).toString(),
-          'd7',
-        );
+        expect(Interval.majorSecond.toString(), 'M2');
+        expect(Interval.perfectFifth.toString(), 'P5');
+        expect(Interval.diminishedSeventh.toString(), 'd7');
       });
     });
 
     group('.hashCode', () {
       test('should ignore equal Interval instances in a Set', () {
         final collection = {
-          const Interval.imperfect(2, ImperfectQuality.major),
-          const Interval.imperfect(3, ImperfectQuality.diminished),
-          const Interval.perfect(4, PerfectQuality.perfect),
+          Interval.majorSecond,
+          Interval.diminishedThird,
+          Interval.perfectFourth,
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
-          Interval.imperfect(2, ImperfectQuality.major),
-          Interval.imperfect(3, ImperfectQuality.diminished),
-          Interval.perfect(4, PerfectQuality.perfect),
+          Interval.majorSecond,
+          Interval.diminishedThird,
+          Interval.perfectFourth,
         ]);
       });
     });
@@ -344,16 +155,16 @@ void main() {
     group('.compareTo()', () {
       test('should correctly sort Interval items in a collection', () {
         final orderedSet = SplayTreeSet<Interval>.of(const [
-          Interval.imperfect(2, ImperfectQuality.minor),
-          Interval.perfect(8, PerfectQuality.perfect),
-          Interval.perfect(1, PerfectQuality.perfect),
-          Interval.perfect(1, PerfectQuality.augmented),
+          Interval.minorSecond,
+          Interval.perfectOctave,
+          Interval.perfectUnison,
+          Interval.augmentedUnison,
         ]);
         expect(orderedSet.toList(), const [
-          Interval.perfect(1, PerfectQuality.perfect),
-          Interval.perfect(1, PerfectQuality.augmented),
-          Interval.imperfect(2, ImperfectQuality.minor),
-          Interval.perfect(8, PerfectQuality.perfect),
+          Interval.perfectUnison,
+          Interval.augmentedUnison,
+          Interval.minorSecond,
+          Interval.perfectOctave,
         ]);
       });
     });
