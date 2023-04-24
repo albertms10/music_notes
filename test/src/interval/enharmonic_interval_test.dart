@@ -92,6 +92,14 @@ void main() {
           EnharmonicInterval.perfectOctave,
         );
         expect(
+          EnharmonicInterval.minorSecond + -EnharmonicInterval.minorSecond,
+          EnharmonicInterval.perfectUnison,
+        );
+        expect(
+          -EnharmonicInterval.majorThird + -EnharmonicInterval.minorThird,
+          -EnharmonicInterval.perfectFifth,
+        );
+        expect(
           EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth,
           EnharmonicInterval.perfectOctave,
         );
@@ -117,9 +125,44 @@ void main() {
           EnharmonicInterval.perfectUnison,
         );
         expect(
+          -EnharmonicInterval.minorThird - EnharmonicInterval.majorSecond,
+          -EnharmonicInterval.perfectFourth,
+        );
+        expect(
+          -EnharmonicInterval.minorThird - -EnharmonicInterval.perfectFourth,
+          EnharmonicInterval.majorSecond,
+        );
+        expect(
           EnharmonicInterval.minorThird - EnharmonicInterval.tritone,
           const EnharmonicInterval(-3),
         );
+      });
+
+      test('should return the negation of this EnharmonicInterval', () {
+        expect(-EnharmonicInterval.minorThird, const EnharmonicInterval(-3));
+        expect(-const EnharmonicInterval(-6), EnharmonicInterval.tritone);
+        expect(
+          -EnharmonicInterval.perfectUnison,
+          EnharmonicInterval.perfectUnison,
+        );
+      });
+    });
+
+    group('operator *()', () {
+      test('should multiply this EnharmonicInterval with factor', () {
+        expect(
+          EnharmonicInterval.perfectFourth * -1,
+          -EnharmonicInterval.perfectFourth,
+        );
+        expect(
+          -EnharmonicInterval.perfectFifth * -1,
+          EnharmonicInterval.perfectFifth,
+        );
+        expect(
+          EnharmonicInterval.majorThird * 0,
+          EnharmonicInterval.perfectUnison,
+        );
+        expect(EnharmonicInterval.minorThird * 2, EnharmonicInterval.tritone);
       });
     });
 
