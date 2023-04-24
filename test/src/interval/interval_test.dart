@@ -128,6 +128,19 @@ void main() {
       });
     });
 
+    group('operator -()', () {
+      test('should return the negation of this Interval', () {
+        expect(
+          -Interval.majorSecond,
+          const Interval.imperfect(-2, ImperfectQuality.major),
+        );
+        expect(
+          -const Interval.imperfect(-6, ImperfectQuality.minor),
+          Interval.minorSixth,
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Interval', () {
         expect(Interval.majorSecond.toString(), 'M2');

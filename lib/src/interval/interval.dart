@@ -145,6 +145,17 @@ class Interval implements MusicItem {
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
 
+  /// The negation of this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// -Interval.minorThird
+  ///   == const Interval.imperfect(-3, ImperfectQuality.minor)
+  /// -const Interval.perfect(-5, PerfectQuality.perfect)
+  ///   == Interval.perfectFifth
+  /// ```
+  Interval operator -() => Interval._(-size, quality);
+
   @override
   String toString() => '${quality.abbreviation}$size';
 

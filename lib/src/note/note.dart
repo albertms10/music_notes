@@ -42,7 +42,7 @@ class Note implements MusicItem, Transposable<Note> {
     if (mode == Modes.major) return note;
 
     return EnharmonicNote(note.semitones)
-        .transposeBy(const Interval.imperfect(-3, ImperfectQuality.minor))
+        .transposeBy(-Interval.minorThird)
         .toClosestNote(accidental);
   }
 

@@ -137,10 +137,8 @@ class EnharmonicNote extends Enharmonic<Note>
   int shortestFifthsDistance(EnharmonicNote other) {
     final distanceAbove =
         enharmonicIntervalDistance(other, Interval.perfectFifth);
-    final distanceBelow = enharmonicIntervalDistance(
-      other,
-      const Interval.perfect(-5, PerfectQuality.perfect),
-    );
+    final distanceBelow =
+        enharmonicIntervalDistance(other, -Interval.perfectFifth);
     final minDistance = math.min(distanceAbove, distanceBelow);
 
     return minDistance * (minDistance == distanceAbove ? 1 : -1);
