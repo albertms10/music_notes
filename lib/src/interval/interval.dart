@@ -66,7 +66,7 @@ class Interval implements MusicItem {
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
-        // Copied from [IntIntervalExtension.isPerfect] to allow const.
+        // Copied from [IntervalSizeExtension.isPerfect] to allow const.
         assert(
           ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
           'Interval must be perfect',
@@ -75,7 +75,7 @@ class Interval implements MusicItem {
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
-        // Copied from [IntIntervalExtension.isPerfect] to allow const.
+        // Copied from [IntervalSizeExtension.isPerfect] to allow const.
         assert(
           ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
           'Interval must be imperfect',

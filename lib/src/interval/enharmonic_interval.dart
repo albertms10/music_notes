@@ -20,7 +20,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   Set<Interval> get items {
     final semitones = this.semitones.abs();
-    final interval = IntIntervalExtension.fromSemitones(semitones);
+    final interval = IntervalSizeExtension.fromSemitones(semitones);
 
     if (interval != null) {
       return SplayTreeSet<Interval>.of({
@@ -30,8 +30,8 @@ class EnharmonicInterval extends Enharmonic<Interval> {
       });
     }
 
-    final intervalBelow = IntIntervalExtension.fromSemitones(semitones - 1);
-    final intervalAbove = IntIntervalExtension.fromSemitones(semitones + 1);
+    final intervalBelow = IntervalSizeExtension.fromSemitones(semitones - 1);
+    final intervalAbove = IntervalSizeExtension.fromSemitones(semitones + 1);
 
     return SplayTreeSet<Interval>.of({
       Interval.fromSemitones(intervalBelow!, semitones),

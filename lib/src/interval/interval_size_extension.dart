@@ -1,6 +1,6 @@
 part of '../../music_notes.dart';
 
-extension IntIntervalExtension on int {
+extension IntervalSizeExtension on int {
   static const Map<int, int> _sizeToSemitones = {
     1: 0,
     2: 1,
@@ -12,15 +12,15 @@ extension IntIntervalExtension on int {
     8: 12,
   };
 
-  /// Returns an [int] interval that matches with [semitones]
+  /// Returns the [Interval.size] that matches with [semitones]
   /// in [_sizeToSemitones], otherwise returns `null`.
   ///
   /// Example:
   /// ```dart
-  /// IntIntervalExtension.fromSemitones(8) == 6
-  /// IntIntervalExtension.fromSemitones(0) == 1
-  /// IntIntervalExtension.fromSemitones(-12) == -8
-  /// IntIntervalExtension.fromSemitones(4) == null
+  /// IntervalSizeExtension.fromSemitones(8) == 6
+  /// IntervalSizeExtension.fromSemitones(0) == 1
+  /// IntervalSizeExtension.fromSemitones(-12) == -8
+  /// IntervalSizeExtension.fromSemitones(4) == null
   /// ```
   static int? fromSemitones(int semitones) {
     final absoluteSemitones = semitones.abs();
@@ -39,8 +39,8 @@ extension IntIntervalExtension on int {
     return absResult * (semitones.isNegative ? -1 : 1);
   }
 
-  /// Returns the number of semitones of this [int] for a perfect interval or a
-  /// minor interval, where appropriate.
+  /// Returns the number of semitones of this [Interval.size] for the
+  /// corresponding perfect or minor interval, where appropriate.
   ///
   /// Example:
   /// ```dart
@@ -59,7 +59,7 @@ extension IntIntervalExtension on int {
         sign;
   }
 
-  /// Returns `true` if this [int] interval is a perfect interval.
+  /// Returns `true` if this [Interval.size] conforms a perfect interval.
   ///
   /// Example:
   /// ```dart
@@ -73,7 +73,7 @@ extension IntIntervalExtension on int {
     return (abs() + abs() ~/ 8) % 4 < 2;
   }
 
-  /// Returns whether this [int] interval is greater than an octave.
+  /// Returns whether this [Interval.size] is greater than an octave.
   ///
   /// Example:
   /// ```dart
@@ -90,7 +90,7 @@ extension IntIntervalExtension on int {
     return abs() > 8;
   }
 
-  /// Whether this [int] interval is dissonant.
+  /// Whether this [Interval.size] is dissonant.
   ///
   /// Example:
   /// ```dart
@@ -105,7 +105,7 @@ extension IntIntervalExtension on int {
     return const {2, 7}.contains(simplified.abs());
   }
 
-  /// Returns a simplified [int] interval.
+  /// Returns the simplified version of this [Interval.size].
   ///
   /// Example:
   /// ```dart
@@ -119,7 +119,7 @@ extension IntIntervalExtension on int {
     return isCompound ? (abs().nModExcludeZero(8) + 1) * sign : this;
   }
 
-  /// Returns an inverted this [int] interval.
+  /// Returns the inverted of this [Interval.size].
   ///
   /// Example:
   /// ```dart
@@ -128,8 +128,8 @@ extension IntIntervalExtension on int {
   /// (-1).inverted == -8
   /// ```
   ///
-  /// If an interval is greater than an octave, the simplified
-  /// [int] interval inversion is returned instead.
+  /// If this [Interval.size] is greater than an octave, the simplified
+  /// inversion is returned instead.
   ///
   /// Example:
   /// ```dart
