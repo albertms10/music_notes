@@ -65,4 +65,49 @@ enum Notes {
 
     return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
   }
+
+  /// Returns the difference in semitones between this [Notes] enum item and
+  /// [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.c.difference(Notes.c) == 0
+  /// Notes.c.difference(Notes.e) == 4
+  /// Notes.a.difference(Notes.d) == -7
+  /// ```
+  int difference(Notes other) => other.value - value;
+
+  /// Returns the positive difference in semitones between this [Notes] enum
+  /// item and [other].
+  ///
+  /// When [difference] would return a negative value, this method returns the
+  /// difference with [other] being in the next octave.
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.c.positiveDifference(Notes.c) == 0
+  /// Notes.c.positiveDifference(Notes.e) == 4
+  /// Notes.a.positiveDifference(Notes.d) == 5
+  /// ```
+  int positiveDifference(Notes other) {
+    final differenceWithOther = difference(other);
+
+    return differenceWithOther.isNegative
+        ? differenceWithOther + chromaticDivisions
+        : differenceWithOther;
+  }
+
+  /// Returns this [Notes] enum item transposed by interval [size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Notes.g.transposeBy(1) == Notes.g
+  /// Notes.g.transposeBy(5) == Notes.d
+  /// Notes.a.transposeBy(-3) == Notes.f
+  /// ```
+  Notes transposeBy(int size) {
+    assert(size != 0, 'Size must be non-zero');
+
+    return fromOrdinal(ordinal + (size.abs() - 1) * (size.isNegative ? -1 : 1));
+  }
 }

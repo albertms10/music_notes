@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Note implements MusicItem {
+class Note implements MusicItem, Transposable<Note> {
   final Notes note;
   final Accidental accidental;
 
@@ -189,6 +189,20 @@ class Note implements MusicItem {
     return Interval.fromDelta(
       intervalSize,
       difference(other).chromaticMod - intervalSize.semitones,
+    );
+  }
+
+  @override
+  Note transposeBy(Interval interval) {
+    final transposedNote = note.transposeBy(interval.size);
+
+    return Note(
+      transposedNote,
+      Accidental(
+        accidental.semitones +
+            interval.semitones -
+            note.positiveDifference(transposedNote),
+      ),
     );
   }
 
