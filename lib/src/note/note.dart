@@ -183,6 +183,7 @@ class Note implements MusicItem, Transposable<Note> {
 
     return Note(
       transposedNote,
+      // TODO(albertms10): handle negative Intervals.
       Accidental(
         accidental.semitones +
             interval.semitones -

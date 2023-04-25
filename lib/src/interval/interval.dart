@@ -128,13 +128,12 @@ class Interval implements MusicItem {
   /// Example:
   /// ```dart
   /// Interval.majorSecond.semitones == 2
-  ///
-  /// Interval.diminishedFifth.semitones
-  ///   == Interval.augmentedFourth.semitones
-  ///   == 6
+  /// Interval.diminishedFifth.semitones == 6
+  /// Interval.augmentedFourth.semitones == 6
+  /// -Interval.majorThird.semitones == -4
   /// ```
   @override
-  int get semitones => size.semitones + quality.semitones;
+  int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
   /// Returns the inverted of this [Interval].
   ///
