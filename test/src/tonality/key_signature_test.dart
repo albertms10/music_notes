@@ -9,6 +9,14 @@ void main() {
       test('should throw an assertion error when arguments are incorrect', () {
         expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
         expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
+        expect(
+          () => KeySignature(1, Accidental.doubleFlat),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => KeySignature(2, Accidental.tripleSharp),
+          throwsA(isA<AssertionError>()),
+        );
       });
     });
 
