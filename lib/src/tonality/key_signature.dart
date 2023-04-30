@@ -8,6 +8,12 @@ class KeySignature implements Comparable<KeySignature> {
   const KeySignature(this.accidentals, [this.accidental = Accidental.natural])
       : assert(accidentals >= 0, 'Provide a positive number or zero'),
         assert(
+          identical(accidental, Accidental.flat) ||
+              identical(accidental, Accidental.natural) ||
+              identical(accidental, Accidental.sharp),
+          'Provide a valid accidental for a key signature',
+        ),
+        assert(
           accidentals == 0 || !identical(accidental, Accidental.natural),
           'Provide an accidental when accidentals is greater than 0',
         );
