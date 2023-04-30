@@ -30,16 +30,17 @@ class Note implements MusicItem, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.fromTonalityAccidentals(2, Modes.major, Accidental.sharp) == Note.d
-  /// Note.fromTonalityAccidentals(0, Modes.minor) == Note.a
+  /// Note.fromTonalityAccidentals(2, TonalMode.major, Accidental.sharp)
+  ///   == Note.d
+  /// Note.fromTonalityAccidentals(0, TonalMode.minor) == Note.a
   /// ```
   factory Note.fromTonalityAccidentals(
     int accidentals,
-    Modes mode, [
+    TonalMode mode, [
     Accidental accidental = Accidental.natural,
   ]) {
     final note = Note.fromRawAccidentals(accidentals, accidental);
-    if (mode == Modes.major) return note;
+    if (mode == TonalMode.major) return note;
 
     return EnharmonicNote(note.semitones)
         .transposeBy(-Interval.minorThird)

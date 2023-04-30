@@ -13,7 +13,7 @@ void main() {
         expect(Tonality.gSharpMinor.relative, Tonality.bMajor);
         expect(
           Tonality.aFlatMinor.relative,
-          const Tonality(Note(Notes.c, Accidental.flat), Modes.major),
+          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.major),
         );
       });
     });
@@ -66,12 +66,12 @@ void main() {
         expect(Tonality.aFlatMajor.toString(), 'A♭ major');
         expect(Tonality.fSharpMinor.toString(), 'F♯ minor');
         expect(
-          const Tonality(Note(Notes.g, Accidental.doubleSharp), Modes.major)
+          const Tonality(Note(Notes.g, Accidental.doubleSharp), TonalMode.major)
               .toString(),
           'G𝄪 major',
         );
         expect(
-          const Tonality(Note(Notes.e, Accidental.doubleFlat), Modes.minor)
+          const Tonality(Note(Notes.e, Accidental.doubleFlat), TonalMode.minor)
               .toString(),
           'E𝄫 minor',
         );

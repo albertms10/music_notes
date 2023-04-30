@@ -3,7 +3,7 @@ library music_notes;
 import 'dart:collection' show SplayTreeSet;
 import 'dart:math' as math show min, pow;
 
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:collection/collection.dart' show IterableExtension, ListEquality;
 import 'package:meta/meta.dart';
 import 'package:quiver/core.dart';
 
@@ -25,6 +25,6 @@ part 'src/note/notes.dart';
 part 'src/note/positioned_note.dart';
 part 'src/scale/scale.dart';
 part 'src/tonality/key_signature.dart';
-part 'src/tonality/modes.dart';
+part 'src/tonality/mode.dart';
 part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
