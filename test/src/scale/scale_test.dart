@@ -295,5 +295,27 @@ void main() {
         );
       });
     });
+
+    group('.hashCode', () {
+      test('should ignore equal Scale instances in a Set', () {
+        final collection = {
+          Scale.major,
+          Scale.aeolian,
+          // ignore: equal_elements_in_set
+          Scale.naturalMinor,
+          // ignore: equal_elements_in_set
+          Scale.ionian,
+          Scale.mixolydian,
+          Scale.tones,
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), const [
+          Scale.major,
+          Scale.aeolian,
+          Scale.mixolydian,
+          Scale.tones,
+        ]);
+      });
+    });
   });
 }
