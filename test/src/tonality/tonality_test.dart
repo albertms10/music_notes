@@ -13,7 +13,7 @@ void main() {
         expect(Tonality.gSharpMinor.relative, Tonality.bMajor);
         expect(
           Tonality.aFlatMinor.relative,
-          const Tonality(Note(Notes.c, Accidental.flat), Modes.major),
+          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.major),
         );
       });
     });
@@ -59,6 +59,31 @@ void main() {
       });
     });
 
+    group('.scaleNotes', () {
+      test('should return the scale notes of this Tonality', () {
+        expect(Tonality.dMajor.scaleNotes, const [
+          Note.d,
+          Note.e,
+          Note.fSharp,
+          Note.g,
+          Note.a,
+          Note.b,
+          Note.cSharp,
+          Note.d,
+        ]);
+        expect(Tonality.cMinor.scaleNotes, const [
+          Note.c,
+          Note.d,
+          Note.eFlat,
+          Note.f,
+          Note.g,
+          Note.aFlat,
+          Note.bFlat,
+          Note.c,
+        ]);
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Tonality', () {
         expect(Tonality.cMajor.toString(), 'C major');
@@ -66,12 +91,12 @@ void main() {
         expect(Tonality.aFlatMajor.toString(), 'A♭ major');
         expect(Tonality.fSharpMinor.toString(), 'F♯ minor');
         expect(
-          const Tonality(Note(Notes.g, Accidental.doubleSharp), Modes.major)
+          const Tonality(Note(Notes.g, Accidental.doubleSharp), TonalMode.major)
               .toString(),
           'G𝄪 major',
         );
         expect(
-          const Tonality(Note(Notes.e, Accidental.doubleFlat), Modes.minor)
+          const Tonality(Note(Notes.e, Accidental.doubleFlat), TonalMode.minor)
               .toString(),
           'E𝄫 minor',
         );

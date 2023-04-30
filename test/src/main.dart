@@ -12,7 +12,7 @@ import 'note/notes_test.dart' as notes_test;
 import 'note/positioned_note_test.dart' as positioned_note_test;
 import 'scale/scale_test.dart' as scale_test;
 import 'tonality/key_signature_test.dart' as key_signature_test;
-import 'tonality/modes_test.dart' as modes_test;
+import 'tonality/mode_test.dart' as mode_test;
 import 'tonality/tonality_test.dart' as tonality_test;
 
 void main() {
@@ -29,6 +29,6 @@ void main() {
   positioned_note_test.main();
   scale_test.main();
   key_signature_test.main();
-  modes_test.main();
+  mode_test.main();
   tonality_test.main();
 }

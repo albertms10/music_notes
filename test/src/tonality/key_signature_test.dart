@@ -9,6 +9,14 @@ void main() {
       test('should throw an assertion error when arguments are incorrect', () {
         expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
         expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
+        expect(
+          () => KeySignature(1, Accidental.doubleFlat),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => KeySignature(2, Accidental.tripleSharp),
+          throwsA(isA<AssertionError>()),
+        );
       });
     });
 
@@ -37,19 +45,19 @@ void main() {
     group('.tonalities', () {
       test('should return the Set of tonalities for this KeySignature', () {
         expect(const KeySignature(10, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.e, Accidental.doubleFlat), Modes.major),
-          const Tonality(Note(Notes.c, Accidental.flat), Modes.minor),
+          const Tonality(Note(Notes.e, Accidental.doubleFlat), TonalMode.major),
+          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.minor),
         });
         expect(const KeySignature(9, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.b, Accidental.doubleFlat), Modes.major),
-          const Tonality(Note.gFlat, Modes.minor),
+          const Tonality(Note(Notes.b, Accidental.doubleFlat), TonalMode.major),
+          const Tonality(Note.gFlat, TonalMode.minor),
         });
         expect(const KeySignature(8, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.f, Accidental.flat), Modes.major),
-          const Tonality(Note.dFlat, Modes.minor),
+          const Tonality(Note(Notes.f, Accidental.flat), TonalMode.major),
+          const Tonality(Note.dFlat, TonalMode.minor),
         });
         expect(const KeySignature(7, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.c, Accidental.flat), Modes.major),
+          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.major),
           Tonality.aFlatMinor,
         });
         expect(const KeySignature(6, Accidental.flat).tonalities, {
@@ -109,15 +117,15 @@ void main() {
           Tonality.aSharpMinor,
         });
         expect(const KeySignature(8, Accidental.sharp).tonalities, {
-          const Tonality(Note.gSharp, Modes.major),
-          const Tonality(Note(Notes.e, Accidental.sharp), Modes.minor),
+          const Tonality(Note.gSharp, TonalMode.major),
+          const Tonality(Note(Notes.e, Accidental.sharp), TonalMode.minor),
         });
         expect(const KeySignature(9, Accidental.sharp).tonalities, {
-          const Tonality(Note.dSharp, Modes.major),
-          const Tonality(Note(Notes.b, Accidental.sharp), Modes.minor),
+          const Tonality(Note.dSharp, TonalMode.major),
+          const Tonality(Note(Notes.b, Accidental.sharp), TonalMode.minor),
         });
         expect(const KeySignature(10, Accidental.sharp).tonalities, {
-          const Tonality(Note.aSharp, Modes.major),
+          const Tonality(Note.aSharp, TonalMode.major),
           // TODO(albertms10): Failing test #50:
           //  Should be `Note(Notes.f, Accidental.doubleSharp)`.
           Tonality.gMinor,
