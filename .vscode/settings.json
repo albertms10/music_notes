@@ -1,6 +1,15 @@
 {
   "cSpell.ignoreWords": ["music"],
-  "cSpell.words": ["helmholtz", "octatonic"],
+  "cSpell.words": [
+    "dorian",
+    "helmholtz",
+    "ionian",
+    "locrian",
+    "lydian",
+    "mixolydian",
+    "octatonic",
+    "phrygian"
+  ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true
   }
