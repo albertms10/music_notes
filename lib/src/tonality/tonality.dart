@@ -90,6 +90,20 @@ class Tonality implements Comparable<Tonality> {
         Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note),
       );
 
+  /// Returns the scale notes of this [Tonality].
+  ///
+  /// Example:
+  /// ```dart
+  /// Tonality.cMajor.scaleNotes
+  ///   == const [Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
+  ///        Note.c]
+  ///
+  /// Tonality.eMinor.scaleNotes
+  ///   == const [Note.e, Note.fSharp, Note.g, Note.a, Note.b, Note.d, Note.d,
+  ///        Note.e]
+  /// ```
+  List<Note> get scaleNotes => mode.scale.fromNote(note);
+
   @override
   String toString() => '$note ${mode.name}';
 

@@ -59,6 +59,31 @@ void main() {
       });
     });
 
+    group('.scaleNotes', () {
+      test('should return the scale notes of this Tonality', () {
+        expect(Tonality.dMajor.scaleNotes, const [
+          Note.d,
+          Note.e,
+          Note.fSharp,
+          Note.g,
+          Note.a,
+          Note.b,
+          Note.cSharp,
+          Note.d,
+        ]);
+        expect(Tonality.cMinor.scaleNotes, const [
+          Note.c,
+          Note.d,
+          Note.eFlat,
+          Note.f,
+          Note.g,
+          Note.aFlat,
+          Note.bFlat,
+          Note.c,
+        ]);
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Tonality', () {
         expect(Tonality.cMajor.toString(), 'C major');
