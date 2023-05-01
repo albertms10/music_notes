@@ -71,9 +71,8 @@ class PositionedNote extends Note {
   /// Note.a.inOctave(4).equalTemperamentFrequency(338) == 338
   /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338) == 464.04
   /// ```
-  double equalTemperamentFrequency([double a4Hertzs = 440]) {
-    return a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
-  }
+  double equalTemperamentFrequency([double a4Hertzs = 440]) =>
+      a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
 
   /// Whether this [Note] is inside the human hearing range.
   ///
@@ -100,11 +99,9 @@ class PositionedNote extends Note {
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName {
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '$octave';
-  }
+  String get scientificName => '${note.name.toUpperCase()}'
+      '${accidental != Accidental.natural ? accidental.symbol : ''}'
+      '$octave';
 
   /// Returns the string representation of this [Note] following
   /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
@@ -116,15 +113,19 @@ class PositionedNote extends Note {
   /// Note.bFlat.inOctave(1).helmholtzName == 'B♭͵'
   /// ```
   String get helmholtzName {
+    final accidentalSymbol =
+        accidental != Accidental.natural ? accidental.symbol : '';
+
     if (octave >= 3) {
-      return '${note.name}'
-          '${accidental != Accidental.natural ? accidental.symbol : ''}'
-          '${'′' * (octave - 3)}';
+      const superPrime = '′';
+
+      return '${note.name}$accidentalSymbol${superPrime * (octave - 3)}';
     }
 
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '${'͵' * (octave - 2).abs()}';
+    const subPrime = '͵';
+
+    return '${note.name.toUpperCase()}$accidentalSymbol'
+        '${subPrime * (octave - 2).abs()}';
   }
 
   @override
