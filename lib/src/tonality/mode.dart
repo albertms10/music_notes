@@ -81,6 +81,20 @@ enum ModalMode implements Mode {
 
   const ModalMode(this.scale, {required this.brightness});
 
+  /// Returns the mirrored version of this [ModalMode].
+  ///
+  /// Follows the DBQ property where the mirrored mode has the opposite
+  /// [brightness] value.
+  ///
+  /// Example:
+  /// ```dart
+  /// ModalMode.dorian.mirrored == ModalMode.dorian
+  /// ModalMode.ionian.mirrored == ModalMode.phrygian
+  /// ModalMode.aeolian.mirrored == ModalMode.mixolydian
+  /// ```
+  ModalMode get mirrored =>
+      values.firstWhere((mode) => mode.brightness == -brightness);
+
   @override
   int compareTo(Mode other) => Mode.compareModes(this, other);
 }
