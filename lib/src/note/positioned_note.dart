@@ -8,6 +8,18 @@ class PositionedNote extends Note {
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
   const PositionedNote(super.note, [super.accidental, this.octave = 4]);
 
+  /// Returns the [octave] that corresponds to the semitones from root height.
+  ///
+  /// Example:
+  /// ```dart
+  /// PositionedNote.octaveFromSemitones(1) == 0
+  /// PositionedNote.octaveFromSemitones(34) == 2
+  /// PositionedNote.octaveFromSemitones(49) == 4
+  /// ```
+  static int octaveFromSemitones(int semitones) =>
+      ((semitones.abs() - semitones.sign) * semitones.sign / chromaticDivisions)
+          .floor();
+
   /// Returns the number of semitones of this [PositionedNote] from the root
   /// height.
   ///
@@ -31,6 +43,22 @@ class PositionedNote extends Note {
   @override
   int difference(covariant PositionedNote other) =>
       other.semitonesFromRootHeight - semitonesFromRootHeight;
+
+  @override
+  PositionedNote transposeBy(Interval interval) {
+    final transposedNote = super.transposeBy(interval);
+
+    return transposedNote.inOctave(
+      octaveFromSemitones(
+        semitonesFromRootHeight +
+            interval.semitones -
+            // We don't want to take the accidental into account when
+            // calculating the octave height, as it depends on the note name.
+            // This correctly handles the case for, e.g., C♭4 == B3.
+            transposedNote.accidental.semitones,
+      ),
+    );
+  }
 
   /// Returns the equal temperament frequency in Hertzs of this [PositionedNote]
   /// from the A4 note reference.

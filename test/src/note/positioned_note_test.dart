@@ -5,15 +5,41 @@ import 'package:test/test.dart';
 
 void main() {
   group('PositionedNote', () {
+    group('.octaveFromSemitones', () {
+      test(
+        'should return the octave that corresponds to the semitones from root '
+        'height',
+        () {
+          expect(PositionedNote.octaveFromSemitones(-35), -3);
+          expect(PositionedNote.octaveFromSemitones(-23), -2);
+          expect(PositionedNote.octaveFromSemitones(-11), -1);
+          expect(PositionedNote.octaveFromSemitones(-1), -1);
+          // TODO(albertms10): Should 0 be considered a correct argument?
+          expect(PositionedNote.octaveFromSemitones(0), 0);
+          expect(PositionedNote.octaveFromSemitones(1), 0);
+          expect(PositionedNote.octaveFromSemitones(13), 1);
+          expect(PositionedNote.octaveFromSemitones(25), 2);
+          expect(PositionedNote.octaveFromSemitones(34), 2);
+          expect(PositionedNote.octaveFromSemitones(58), 4);
+        },
+      );
+    });
+
     group('.semitonesFromRootHeight', () {
       test(
         'should return the semitones from the root height of this '
         'PositionedNote',
         () {
+          expect(Note.c.inOctave(-4).semitonesFromRootHeight, -47);
+          expect(Note.a.inOctave(-4).semitonesFromRootHeight, -38);
+          expect(Note.c.inOctave(-3).semitonesFromRootHeight, -35);
+          expect(Note.c.inOctave(-2).semitonesFromRootHeight, -23);
+          expect(Note.c.inOctave(-1).semitonesFromRootHeight, -11);
           expect(Note.c.inOctave(0).semitonesFromRootHeight, 1);
           expect(Note.c.inOctave(1).semitonesFromRootHeight, 13);
           expect(Note.c.inOctave(2).semitonesFromRootHeight, 25);
           expect(Note.a.inOctave(2).semitonesFromRootHeight, 34);
+          expect(Note.c.inOctave(3).semitonesFromRootHeight, 37);
           expect(Note.a.inOctave(4).semitonesFromRootHeight, 58);
         },
       );
@@ -55,6 +81,125 @@ void main() {
           expect(Note.c.inOctave(4).difference(Note.b.inOctave(4)), 11);
         },
       );
+    });
+
+    group('.transposeBy()', () {
+      test('should return this PositionedNote transposed by Interval', () {
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.diminishedUnison),
+          const Note(Notes.c, Accidental.flat).inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(3).transposeBy(Interval.perfectUnison),
+          Note.c.inOctave(3),
+        );
+        expect(
+          Note.c.inOctave(5).transposeBy(Interval.augmentedUnison),
+          Note.cSharp.inOctave(5),
+        );
+
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.diminishedSecond),
+          const Note(Notes.d, Accidental.doubleFlat).inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(6).transposeBy(Interval.minorSecond),
+          Note.dFlat.inOctave(6),
+        );
+        expect(
+          Note.c.inOctave(-1).transposeBy(Interval.majorSecond),
+          Note.d.inOctave(-1),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.augmentedSecond),
+          Note.dSharp.inOctave(4),
+        );
+
+        expect(
+          Note.e.inOctave(2).transposeBy(Interval.minorThird),
+          Note.g.inOctave(2),
+        );
+        expect(
+          Note.e.inOctave(4).transposeBy(Interval.majorThird),
+          Note.gSharp.inOctave(4),
+        );
+        expect(
+          Note.aFlat.inOctave(4).transposeBy(Interval.minorThird),
+          const Note(Notes.c, Accidental.flat).inOctave(5),
+        );
+        expect(
+          Note.aFlat.inOctave(4).transposeBy(Interval.majorThird),
+          Note.c.inOctave(5),
+        );
+
+        expect(
+          Note.f.inOctave(4).transposeBy(Interval.diminishedFourth),
+          const Note(Notes.b, Accidental.doubleFlat).inOctave(4),
+        );
+        expect(
+          Note.f.inOctave(3).transposeBy(Interval.perfectFourth),
+          Note.bFlat.inOctave(3),
+        );
+        expect(
+          Note.f.inOctave(4).transposeBy(Interval.augmentedFourth),
+          Note.b.inOctave(4),
+        );
+        expect(
+          Note.a.inOctave(6).transposeBy(Interval.diminishedFourth),
+          Note.dFlat.inOctave(7),
+        );
+        expect(
+          Note.a.inOctave(-2).transposeBy(Interval.perfectFourth),
+          Note.d.inOctave(-1),
+        );
+        expect(
+          Note.a.inOctave(7).transposeBy(Interval.augmentedFourth),
+          Note.dSharp.inOctave(8),
+        );
+
+        expect(
+          Note.d.inOctave(4).transposeBy(Interval.diminishedFifth),
+          Note.aFlat.inOctave(4),
+        );
+        expect(
+          Note.d.inOctave(1).transposeBy(Interval.perfectFifth),
+          Note.a.inOctave(1),
+        );
+        expect(
+          Note.d.inOctave(2).transposeBy(Interval.augmentedFifth),
+          Note.aSharp.inOctave(2),
+        );
+
+        expect(
+          Note.d.inOctave(4).transposeBy(Interval.minorSixth),
+          Note.bFlat.inOctave(4),
+        );
+        expect(
+          Note.d.inOctave(-2).transposeBy(Interval.majorSixth),
+          Note.b.inOctave(-2),
+        );
+        expect(
+          Note.fSharp.inOctave(4).transposeBy(Interval.minorSixth),
+          Note.d.inOctave(5),
+        );
+        expect(
+          Note.fSharp.inOctave(-1).transposeBy(Interval.majorSixth),
+          Note.dSharp.inOctave(0),
+        );
+
+        expect(
+          Note.c.inOctave(0).transposeBy(Interval.minorSeventh),
+          Note.bFlat.inOctave(0),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.majorSeventh),
+          Note.b.inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.augmentedSeventh),
+          const Note(Notes.b, Accidental.sharp).inOctave(4),
+        );
+      });
     });
 
     group('.equalTemperamentFrequency()', () {
