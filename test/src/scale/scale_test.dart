@@ -19,16 +19,16 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.f),
-          const [
-            Note.f,
-            Note.g,
-            Note.a,
-            Note.bFlat,
-            Note.c,
-            Note.d,
-            Note.e,
-            Note.f,
+          Scale.major.fromNote(Note.f.inOctave(4)),
+          [
+            Note.f.inOctave(4),
+            Note.g.inOctave(4),
+            Note.a.inOctave(4),
+            Note.bFlat.inOctave(4),
+            Note.c.inOctave(5),
+            Note.d.inOctave(5),
+            Note.e.inOctave(5),
+            Note.f.inOctave(5),
           ],
         );
         expect(
@@ -45,16 +45,16 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.d),
-          const [
-            Note.d,
-            Note.e,
-            Note.fSharp,
-            Note.g,
-            Note.a,
-            Note.b,
-            Note.cSharp,
-            Note.d,
+          Scale.major.fromNote(Note.d.inOctave(2)),
+          [
+            Note.d.inOctave(2),
+            Note.e.inOctave(2),
+            Note.fSharp.inOctave(2),
+            Note.g.inOctave(2),
+            Note.a.inOctave(2),
+            Note.b.inOctave(2),
+            Note.cSharp.inOctave(3),
+            Note.d.inOctave(3),
           ],
         );
       });
@@ -63,16 +63,16 @@ void main() {
         'should return the natural minor scale notes starting from Note',
         () {
           expect(
-            Scale.naturalMinor.fromNote(Note.dSharp),
-            const [
-              Note.dSharp,
-              Note(Notes.e, Accidental.sharp),
-              Note.fSharp,
-              Note.gSharp,
-              Note.aSharp,
-              Note.b,
-              Note.cSharp,
-              Note.dSharp,
+            Scale.naturalMinor.fromNote(Note.dSharp.inOctave(5)),
+            [
+              Note.dSharp.inOctave(5),
+              const Note(Notes.e, Accidental.sharp).inOctave(5),
+              Note.fSharp.inOctave(5),
+              Note.gSharp.inOctave(5),
+              Note.aSharp.inOctave(5),
+              Note.b.inOctave(5),
+              Note.cSharp.inOctave(6),
+              Note.dSharp.inOctave(6),
             ],
           );
           expect(
@@ -95,16 +95,16 @@ void main() {
         'should return the harmonic minor scale notes starting from Note',
         () {
           expect(
-            Scale.harmonicMinor.fromNote(Note.bFlat),
-            const [
-              Note.bFlat,
-              Note.c,
-              Note.dFlat,
-              Note.eFlat,
-              Note.f,
-              Note.gFlat,
-              Note.a,
-              Note.bFlat,
+            Scale.harmonicMinor.fromNote(Note.bFlat.inOctave(4)),
+            [
+              Note.bFlat.inOctave(4),
+              Note.c.inOctave(5),
+              Note.dFlat.inOctave(5),
+              Note.eFlat.inOctave(5),
+              Note.f.inOctave(5),
+              Note.gFlat.inOctave(5),
+              Note.a.inOctave(5),
+              Note.bFlat.inOctave(5),
             ],
           );
           expect(
@@ -140,16 +140,16 @@ void main() {
             ],
           );
           expect(
-            Scale.melodicMinor.fromNote(Note.gSharp),
-            const [
-              Note.gSharp,
-              Note.aSharp,
-              Note.b,
-              Note.cSharp,
-              Note.dSharp,
-              Note(Notes.e, Accidental.sharp),
-              Note(Notes.f, Accidental.doubleSharp),
-              Note.gSharp,
+            Scale.melodicMinor.fromNote(Note.gSharp.inOctave(1)),
+            [
+              Note.gSharp.inOctave(1),
+              Note.aSharp.inOctave(1),
+              Note.b.inOctave(1),
+              Note.cSharp.inOctave(2),
+              Note.dSharp.inOctave(2),
+              const Note(Notes.e, Accidental.sharp).inOctave(2),
+              const Note(Notes.f, Accidental.doubleSharp).inOctave(2),
+              Note.gSharp.inOctave(2),
             ],
           );
         },
