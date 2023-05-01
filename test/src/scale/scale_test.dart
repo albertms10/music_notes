@@ -155,9 +155,9 @@ void main() {
         },
       );
 
-      test('should return the tones scale notes starting from Note', () {
+      test('should return the whole-tone scale notes starting from Note', () {
         expect(
-          Scale.tones.fromNote(Note.c),
+          Scale.wholeTone.fromNote(Note.c),
           const [
             Note.c,
             Note.d,
@@ -169,7 +169,7 @@ void main() {
           ],
         );
         expect(
-          Scale.tones.fromNote(Note.dFlat),
+          Scale.wholeTone.fromNote(Note.dFlat),
           const [
             Note.dFlat,
             Note.eFlat,
@@ -181,7 +181,7 @@ void main() {
           ],
         );
         expect(
-          Scale.tones.fromNote(Note.cSharp),
+          Scale.wholeTone.fromNote(Note.cSharp),
           const [
             Note.cSharp,
             Note.dSharp,
@@ -232,6 +232,41 @@ void main() {
           ],
         );
       });
+
+      test(
+        'should return the major pentatonic scale notes starting from Note',
+        () {
+          expect(
+            Scale.majorPentatonic.fromNote(Note.c),
+            const [Note.c, Note.d, Note.e, Note.g, Note.a, Note.c],
+          );
+          expect(
+            Scale.majorPentatonic.fromNote(Note.fSharp),
+            const [
+              Note.fSharp,
+              Note.gSharp,
+              Note.aSharp,
+              Note.cSharp,
+              Note.dSharp,
+              Note.fSharp,
+            ],
+          );
+        },
+      );
+
+      test(
+        'should return the minor pentatonic scale notes starting from Note',
+        () {
+          expect(
+            Scale.minorPentatonic.fromNote(Note.a),
+            const [Note.a, Note.c, Note.d, Note.e, Note.g, Note.a],
+          );
+          expect(
+            Scale.minorPentatonic.fromNote(Note.g),
+            const [Note.g, Note.bFlat, Note.c, Note.d, Note.f, Note.g],
+          );
+        },
+      );
     });
 
     group('.mirrored', () {
@@ -260,8 +295,9 @@ void main() {
         expect(Scale.harmonicMinor.name, 'Harmonic minor');
         expect(Scale.melodicMinor.name, 'Melodic minor');
         expect(Scale.chromatic.name, 'Chromatic');
-        expect(Scale.tones.name, 'Tones');
-        expect(Scale.pentatonic.name, 'Pentatonic');
+        expect(Scale.wholeTone.name, 'Whole-tone');
+        expect(Scale.majorPentatonic.name, 'Major pentatonic');
+        expect(Scale.minorPentatonic.name, 'Minor pentatonic');
         expect(Scale.octatonic.name, 'Octatonic');
       });
     });
@@ -288,7 +324,7 @@ void main() {
           Scale.melodicMinor.toString(),
           'Melodic minor (M2 m2 M2 M2 M2 M2 m2)',
         );
-        expect(Scale.tones.toString(), 'Tones (M2 M2 M2 M2 M2 d3)');
+        expect(Scale.wholeTone.toString(), 'Whole-tone (M2 M2 M2 M2 M2 d3)');
         expect(
           Scale.octatonic.toString(),
           'Octatonic (M2 m2 M2 m2 M2 m2 M2 m2)',
@@ -306,14 +342,14 @@ void main() {
           // ignore: equal_elements_in_set
           Scale.ionian,
           Scale.mixolydian,
-          Scale.tones,
+          Scale.wholeTone,
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
           Scale.major,
           Scale.aeolian,
           Scale.mixolydian,
-          Scale.tones,
+          Scale.wholeTone,
         ]);
       });
     });
