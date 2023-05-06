@@ -120,8 +120,8 @@ class EnharmonicNote extends Enharmonic<Note>
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote.c.transposeBy(6) == EnharmonicNote.fSharp
-  /// EnharmonicNote.a.transposeBy(-2) == EnharmonicNote.g
+  /// EnharmonicNote.c.transposeBy(Interval.tritone) == EnharmonicNote.fSharp
+  /// EnharmonicNote.a.transposeBy(-Interval.majorSecond) == EnharmonicNote.g
   /// ```
   @override
   EnharmonicNote transposeBy(Interval interval) =>

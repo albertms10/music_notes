@@ -124,49 +124,97 @@ void main() {
           Note.c.transposeBy(Interval.diminishedUnison),
           const Note(Notes.c, Accidental.flat),
         );
+        expect(Note.c.transposeBy(-Interval.diminishedUnison), Note.cSharp);
         expect(Note.c.transposeBy(Interval.perfectUnison), Note.c);
+        expect(Note.c.transposeBy(-Interval.perfectUnison), Note.c);
         expect(Note.c.transposeBy(Interval.augmentedUnison), Note.cSharp);
+        expect(
+          Note.c.transposeBy(-Interval.augmentedUnison),
+          const Note(Notes.c, Accidental.flat),
+        );
 
         expect(
           Note.c.transposeBy(Interval.diminishedSecond),
           const Note(Notes.d, Accidental.doubleFlat),
         );
+        expect(
+          Note.c.transposeBy(-Interval.diminishedSecond),
+          const Note(Notes.b, Accidental.sharp),
+        );
         expect(Note.c.transposeBy(Interval.minorSecond), Note.dFlat);
+        expect(Note.c.transposeBy(-Interval.minorSecond), Note.b);
         expect(Note.c.transposeBy(Interval.majorSecond), Note.d);
+        expect(Note.c.transposeBy(-Interval.majorSecond), Note.bFlat);
         expect(Note.c.transposeBy(Interval.augmentedSecond), Note.dSharp);
+        expect(
+          Note.c.transposeBy(-Interval.augmentedSecond),
+          const Note(Notes.b, Accidental.doubleFlat),
+        );
 
         expect(Note.e.transposeBy(Interval.minorThird), Note.g);
+        expect(Note.e.transposeBy(-Interval.minorThird), Note.cSharp);
         expect(Note.e.transposeBy(Interval.majorThird), Note.gSharp);
+        expect(Note.e.transposeBy(-Interval.majorThird), Note.c);
         expect(
           Note.aFlat.transposeBy(Interval.minorThird),
           const Note(Notes.c, Accidental.flat),
         );
+        expect(Note.aFlat.transposeBy(-Interval.minorThird), Note.f);
         expect(Note.aFlat.transposeBy(Interval.majorThird), Note.c);
+        expect(
+          Note.aFlat.transposeBy(-Interval.majorThird),
+          const Note(Notes.f, Accidental.flat),
+        );
 
         expect(
           Note.f.transposeBy(Interval.diminishedFourth),
           const Note(Notes.b, Accidental.doubleFlat),
         );
+        expect(Note.f.transposeBy(-Interval.diminishedFourth), Note.cSharp);
         expect(Note.f.transposeBy(Interval.perfectFourth), Note.bFlat);
+        expect(Note.f.transposeBy(-Interval.perfectFourth), Note.c);
         expect(Note.f.transposeBy(Interval.augmentedFourth), Note.b);
+        expect(
+          Note.f.transposeBy(-Interval.augmentedFourth),
+          const Note(Notes.c, Accidental.flat),
+        );
         expect(Note.a.transposeBy(Interval.diminishedFourth), Note.dFlat);
+        expect(
+          Note.a.transposeBy(-Interval.diminishedFourth),
+          const Note(Notes.e, Accidental.sharp),
+        );
         expect(Note.a.transposeBy(Interval.perfectFourth), Note.d);
+        expect(Note.a.transposeBy(-Interval.perfectFourth), Note.e);
         expect(Note.a.transposeBy(Interval.augmentedFourth), Note.dSharp);
+        expect(Note.a.transposeBy(-Interval.augmentedFourth), Note.eFlat);
 
         expect(Note.d.transposeBy(Interval.diminishedFifth), Note.aFlat);
+        expect(Note.d.transposeBy(-Interval.diminishedFifth), Note.gSharp);
         expect(Note.d.transposeBy(Interval.perfectFifth), Note.a);
+        expect(Note.d.transposeBy(-Interval.perfectFifth), Note.g);
         expect(Note.d.transposeBy(Interval.augmentedFifth), Note.aSharp);
+        expect(Note.d.transposeBy(-Interval.augmentedFifth), Note.gFlat);
 
         expect(Note.d.transposeBy(Interval.minorSixth), Note.bFlat);
+        expect(Note.d.transposeBy(-Interval.minorSixth), Note.fSharp);
         expect(Note.d.transposeBy(Interval.majorSixth), Note.b);
+        expect(Note.d.transposeBy(-Interval.majorSixth), Note.f);
         expect(Note.fSharp.transposeBy(Interval.minorSixth), Note.d);
+        expect(Note.fSharp.transposeBy(-Interval.minorSixth), Note.aSharp);
         expect(Note.fSharp.transposeBy(Interval.majorSixth), Note.dSharp);
+        expect(Note.fSharp.transposeBy(-Interval.majorSixth), Note.a);
 
         expect(Note.c.transposeBy(Interval.minorSeventh), Note.bFlat);
+        expect(Note.c.transposeBy(-Interval.minorSeventh), Note.d);
         expect(Note.c.transposeBy(Interval.majorSeventh), Note.b);
+        expect(Note.c.transposeBy(-Interval.majorSeventh), Note.dFlat);
         expect(
           Note.c.transposeBy(Interval.augmentedSeventh),
           const Note(Notes.b, Accidental.sharp),
+        );
+        expect(
+          Note.c.transposeBy(-Interval.augmentedSeventh),
+          const Note(Notes.d, Accidental.doubleFlat),
         );
       });
     });

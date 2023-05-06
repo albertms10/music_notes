@@ -44,6 +44,16 @@ class PositionedNote extends Note {
   int difference(covariant PositionedNote other) =>
       other.semitonesFromRootHeight - semitonesFromRootHeight;
 
+  /// Returns a transposed [PositionedNote] by [interval]
+  /// from this [PositionedNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.inOctave(4).transposeBy(Interval.perfectFifth)
+  ///   == Note.d.inOctave(5)
+  /// Note.dFlat.inOctave(2).transposeBy(-Interval.majorSecond)
+  ///   == Note(Notes.c, Accidental.flat).inOctave(2)
+  /// ```
   @override
   PositionedNote transposeBy(Interval interval) {
     final transposedNote = super.transposeBy(interval);
@@ -54,7 +64,8 @@ class PositionedNote extends Note {
             interval.semitones -
             // We don't want to take the accidental into account when
             // calculating the octave height, as it depends on the note name.
-            // This correctly handles the case for, e.g., C♭4 == B3.
+            // This correctly handles cases with the same number of accidentals
+            // but different octaves (e.g., C♭4 but B3).
             transposedNote.accidental.semitones,
       ),
     );

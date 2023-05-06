@@ -132,7 +132,7 @@ class Note implements MusicItem, Transposable<Note> {
       Accidental.sharp,
     );
 
-    return distanceFlat < distanceSharp ? distanceFlat * -1 : distanceSharp;
+    return distanceFlat < distanceSharp ? -distanceFlat : distanceSharp;
   }
 
   /// Returns the iteration distance of an interval between
@@ -178,16 +178,27 @@ class Note implements MusicItem, Transposable<Note> {
     );
   }
 
+  /// Returns a transposed [Note] by [interval] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.transposeBy(Interval.tritone) == Note.fSharp
+  /// Note.a.transposeBy(-Interval.majorSecond) == Note.g
+  /// ```
   @override
   Note transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval.size);
+    final positiveDifference = interval.isDescending
+        ? transposedNote.positiveDifference(note)
+        : note.positiveDifference(transposedNote);
 
     return Note(
       transposedNote,
       Accidental(
-        accidental.semitones +
-            interval.semitones -
-            note.positiveDifference(transposedNote),
+        ((accidental.semitones * interval.size.sign) +
+                ((interval.semitones * interval.size.sign) -
+                    positiveDifference)) *
+            interval.size.sign,
       ),
     );
   }
