@@ -39,32 +39,10 @@ class Note implements MusicItem, Transposable<Note> {
     TonalMode mode, [
     Accidental accidental = Accidental.natural,
   ]) {
-    final note = Note.fromRawAccidentals(accidentals, accidental);
+    final note = KeySignature(accidentals, accidental).majorNote;
     if (mode == TonalMode.major) return note;
 
     return note.transposeBy(-Interval.minorThird);
-  }
-
-  /// Returns the [Note] from the [Tonality] given its [accidentals] number
-  /// and optional [accidental].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.fromRawAccidentals(2, Accidental.sharp) == Note.d
-  /// Note.fromRawAccidentals(0) == Note.a
-  /// ```
-  factory Note.fromRawAccidentals(
-    int accidentals, [
-    Accidental accidental = Accidental.natural,
-  ]) {
-    final fifthInterval = Interval.perfect(
-      5 * (accidental == Accidental.flat ? -1 : 1),
-      PerfectQuality.perfect,
-    );
-
-    return EnharmonicNote(
-      (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
-    ).toClosestNote(accidental.increment(accidentals ~/ 9));
   }
 
   /// Returns the number of semitones that correspond to this [Note]
