@@ -13,5 +13,8 @@
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true
+  },
+  "files.associations": {
+    "*.lock": "yaml"
   }
 }
