@@ -28,6 +28,37 @@ class KeySignature implements Comparable<KeySignature> {
                   : Accidental.sharp,
         );
 
+  /// Returns the [Note] that corresponds to the major [Tonality] of this
+  /// [KeySignature].
+  ///
+  /// Example:
+  /// ```dart
+  /// const KeySignature(0).majorNote == Note.c
+  /// const KeySignature(2, Accidental.sharp).majorNote == Note.d
+  /// ```
+  Note get majorNote {
+    final fifthInterval = Interval.perfect(
+      5 * (accidental == Accidental.flat ? -1 : 1),
+      PerfectQuality.perfect,
+    );
+
+    return EnharmonicNote(
+      (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
+    ).toClosestNote(accidental.increment(accidentals ~/ 9));
+  }
+
+  /// Returns the [Tonality] that corresponds to this [KeySignature] from
+  /// [mode].
+  ///
+  /// Example:
+  /// ```dart
+  /// const KeySignature(0).tonality(TonalMode.major) == Tonality.cMajor
+  /// const KeySignature(2, Accidental.flat).tonality(TonalMode.minor)
+  ///   == Tonality.gMinor
+  /// ```
+  Tonality tonality(TonalMode mode) =>
+      Tonality.fromAccidentals(accidentals, mode, accidental);
+
   /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
   ///
@@ -38,12 +69,8 @@ class KeySignature implements Comparable<KeySignature> {
   ///   Tonality.gMinor,
   /// }
   /// ```
-  Set<Tonality> get tonalities {
-    final majorTonality =
-        Tonality.fromAccidentals(accidentals, TonalMode.major, accidental);
-
-    return {majorTonality, majorTonality.relative};
-  }
+  Set<Tonality> get tonalities =>
+      {tonality(TonalMode.major), tonality(TonalMode.minor)};
 
   @override
   String toString() {
