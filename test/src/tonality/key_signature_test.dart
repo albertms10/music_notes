@@ -10,6 +10,10 @@ void main() {
         expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
         expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
         expect(
+          () => KeySignature(0, Accidental.sharp),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
           () => KeySignature(1, Accidental.doubleFlat),
           throwsA(isA<AssertionError>()),
         );

@@ -14,7 +14,7 @@ class KeySignature implements Comparable<KeySignature> {
           'Provide a valid accidental for a key signature',
         ),
         assert(
-          accidentals == 0 || !identical(accidental, Accidental.natural),
+          (accidentals == 0) ^ !identical(accidental, Accidental.natural),
           'Provide an accidental when accidentals is greater than 0',
         );
 
