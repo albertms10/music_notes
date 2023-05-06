@@ -67,14 +67,12 @@ class Tonality implements Comparable<Tonality> {
   /// Tonality.bFlatMajor.relative == Tonality.gMinor
   /// ```
   Tonality get relative => Tonality(
-        EnharmonicNote(note.semitones)
-            .transposeBy(
-              Interval.imperfect(
-                3 * (mode == TonalMode.major ? -1 : 1),
-                ImperfectQuality.minor,
-              ),
-            )
-            .toClosestNote(keySignature.accidental),
+        note.transposeBy(
+          Interval.imperfect(
+            3 * (mode == TonalMode.major ? -1 : 1),
+            ImperfectQuality.minor,
+          ),
+        ),
         mode.opposite,
       );
 

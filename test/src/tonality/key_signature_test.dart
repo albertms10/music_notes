@@ -126,9 +126,10 @@ void main() {
         });
         expect(const KeySignature(10, Accidental.sharp).tonalities, {
           const Tonality(Note.aSharp, TonalMode.major),
-          // TODO(albertms10): Failing test #50:
-          //  Should be `Note(Notes.f, Accidental.doubleSharp)`.
-          Tonality.gMinor,
+          const Tonality(
+            Note(Notes.f, Accidental.doubleSharp),
+            TonalMode.minor,
+          ),
         });
       });
     });

@@ -220,6 +220,67 @@ void main() {
       );
     });
 
+    group('.transposeBy()', () {
+      test('should return this EnharmonicNote transposed by Interval', () {
+        expect(
+          EnharmonicNote.c.transposeBy(Interval.diminishedUnison),
+          EnharmonicNote.b,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(-Interval.diminishedUnison),
+          EnharmonicNote.cSharp,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(Interval.perfectUnison),
+          EnharmonicNote.c,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(-Interval.perfectUnison),
+          EnharmonicNote.c,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(Interval.augmentedUnison),
+          EnharmonicNote.cSharp,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(-Interval.augmentedUnison),
+          EnharmonicNote.b,
+        );
+
+        expect(
+          EnharmonicNote.c.transposeBy(Interval.diminishedSecond),
+          EnharmonicNote.c,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(-Interval.diminishedSecond),
+          EnharmonicNote.c,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(Interval.minorSecond),
+          EnharmonicNote.cSharp,
+        );
+        expect(
+          EnharmonicNote.c.transposeBy(-Interval.minorSecond),
+          EnharmonicNote.b,
+        );
+
+        expect(
+          EnharmonicNote.fSharp.transposeBy(Interval.majorThird),
+          EnharmonicNote.aSharp,
+        );
+
+        expect(
+          EnharmonicNote.fSharp.transposeBy(-Interval.perfectFourth),
+          EnharmonicNote.cSharp,
+        );
+
+        expect(
+          EnharmonicNote.g.transposeBy(Interval.perfectOctave),
+          EnharmonicNote.g,
+        );
+      });
+    });
+
     group('.shortestFifthsDistance()', () {
       test('should return the shortest fifths distance from other', () {
         expect(EnharmonicNote.c.shortestFifthsDistance(EnharmonicNote.c), 0);
