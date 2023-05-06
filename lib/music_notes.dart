@@ -5,8 +5,7 @@ import 'dart:math' as math show min, pow;
 
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality;
-import 'package:meta/meta.dart';
-import 'package:quiver/core.dart';
+import 'package:meta/meta.dart' show immutable;
 
 import 'utils/int_mod_extension.dart';
 import 'utils/iterable.dart';

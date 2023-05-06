@@ -164,7 +164,7 @@ class Interval implements MusicItem {
       other is Interval && size == other.size && quality == other.quality;
 
   @override
-  int get hashCode => hash2(size, quality);
+  int get hashCode => Object.hash(size, quality);
 
   @override
   int compareTo(covariant Interval other) => compareMultiple([

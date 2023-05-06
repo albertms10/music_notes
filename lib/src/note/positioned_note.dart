@@ -136,7 +136,7 @@ class PositionedNote extends Note {
       super == other && other is PositionedNote && octave == other.octave;
 
   @override
-  int get hashCode => hash2(super.hashCode, octave);
+  int get hashCode => Object.hash(super.hashCode, octave);
 
   @override
   int compareTo(covariant PositionedNote other) => compareMultiple([
