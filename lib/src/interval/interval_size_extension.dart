@@ -142,6 +142,6 @@ extension IntervalSizeExtension on int {
 
     final diff = 9 - simplified.abs();
 
-    return (diff > 0 ? diff : diff.abs() + 2) * sign;
+    return (diff.isNegative ? diff.abs() + 2 : diff) * sign;
   }
 }
