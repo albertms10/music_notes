@@ -90,12 +90,24 @@ void main() {
           const Note(Notes.c, Accidental.flat).inOctave(4),
         );
         expect(
+          Note.c.inOctave(4).transposeBy(-Interval.diminishedUnison),
+          Note.cSharp.inOctave(4),
+        );
+        expect(
           Note.c.inOctave(3).transposeBy(Interval.perfectUnison),
+          Note.c.inOctave(3),
+        );
+        expect(
+          Note.c.inOctave(3).transposeBy(-Interval.perfectUnison),
           Note.c.inOctave(3),
         );
         expect(
           Note.c.inOctave(5).transposeBy(Interval.augmentedUnison),
           Note.cSharp.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(5).transposeBy(-Interval.augmentedUnison),
+          const Note(Notes.c, Accidental.flat).inOctave(5),
         );
 
         expect(
@@ -103,16 +115,32 @@ void main() {
           const Note(Notes.d, Accidental.doubleFlat).inOctave(4),
         );
         expect(
+          Note.c.inOctave(4).transposeBy(-Interval.diminishedSecond),
+          const Note(Notes.b, Accidental.sharp).inOctave(3),
+        );
+        expect(
           Note.c.inOctave(6).transposeBy(Interval.minorSecond),
           Note.dFlat.inOctave(6),
+        );
+        expect(
+          Note.c.inOctave(6).transposeBy(-Interval.minorSecond),
+          Note.b.inOctave(5),
         );
         expect(
           Note.c.inOctave(-1).transposeBy(Interval.majorSecond),
           Note.d.inOctave(-1),
         );
         expect(
+          Note.c.inOctave(-1).transposeBy(-Interval.majorSecond),
+          Note.bFlat.inOctave(-2),
+        );
+        expect(
           Note.c.inOctave(4).transposeBy(Interval.augmentedSecond),
           Note.dSharp.inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(-Interval.augmentedSecond),
+          const Note(Notes.b, Accidental.doubleFlat).inOctave(3),
         );
 
         expect(
@@ -120,16 +148,32 @@ void main() {
           Note.g.inOctave(2),
         );
         expect(
+          Note.e.inOctave(2).transposeBy(-Interval.minorThird),
+          Note.cSharp.inOctave(2),
+        );
+        expect(
           Note.e.inOctave(4).transposeBy(Interval.majorThird),
           Note.gSharp.inOctave(4),
+        );
+        expect(
+          Note.e.inOctave(4).transposeBy(-Interval.majorThird),
+          Note.c.inOctave(4),
         );
         expect(
           Note.aFlat.inOctave(4).transposeBy(Interval.minorThird),
           const Note(Notes.c, Accidental.flat).inOctave(5),
         );
         expect(
+          Note.aFlat.inOctave(4).transposeBy(-Interval.minorThird),
+          Note.f.inOctave(4),
+        );
+        expect(
           Note.aFlat.inOctave(4).transposeBy(Interval.majorThird),
           Note.c.inOctave(5),
+        );
+        expect(
+          Note.aFlat.inOctave(4).transposeBy(-Interval.majorThird),
+          const Note(Notes.f, Accidental.flat).inOctave(4),
         );
 
         expect(
@@ -137,24 +181,48 @@ void main() {
           const Note(Notes.b, Accidental.doubleFlat).inOctave(4),
         );
         expect(
+          Note.f.inOctave(4).transposeBy(-Interval.diminishedFourth),
+          Note.cSharp.inOctave(4),
+        );
+        expect(
           Note.f.inOctave(3).transposeBy(Interval.perfectFourth),
           Note.bFlat.inOctave(3),
+        );
+        expect(
+          Note.f.inOctave(3).transposeBy(-Interval.perfectFourth),
+          Note.c.inOctave(3),
         );
         expect(
           Note.f.inOctave(4).transposeBy(Interval.augmentedFourth),
           Note.b.inOctave(4),
         );
         expect(
+          Note.f.inOctave(4).transposeBy(-Interval.augmentedFourth),
+          const Note(Notes.c, Accidental.flat).inOctave(4),
+        );
+        expect(
           Note.a.inOctave(6).transposeBy(Interval.diminishedFourth),
           Note.dFlat.inOctave(7),
+        );
+        expect(
+          Note.a.inOctave(6).transposeBy(-Interval.diminishedFourth),
+          const Note(Notes.e, Accidental.sharp).inOctave(6),
         );
         expect(
           Note.a.inOctave(-2).transposeBy(Interval.perfectFourth),
           Note.d.inOctave(-1),
         );
         expect(
+          Note.a.inOctave(-2).transposeBy(-Interval.perfectFourth),
+          Note.e.inOctave(-2),
+        );
+        expect(
           Note.a.inOctave(7).transposeBy(Interval.augmentedFourth),
           Note.dSharp.inOctave(8),
+        );
+        expect(
+          Note.a.inOctave(7).transposeBy(-Interval.augmentedFourth),
+          Note.eFlat.inOctave(7),
         );
 
         expect(
@@ -162,12 +230,24 @@ void main() {
           Note.aFlat.inOctave(4),
         );
         expect(
+          Note.d.inOctave(4).transposeBy(-Interval.diminishedFifth),
+          Note.gSharp.inOctave(3),
+        );
+        expect(
           Note.d.inOctave(1).transposeBy(Interval.perfectFifth),
           Note.a.inOctave(1),
         );
         expect(
+          Note.d.inOctave(1).transposeBy(-Interval.perfectFifth),
+          Note.g.inOctave(0),
+        );
+        expect(
           Note.d.inOctave(2).transposeBy(Interval.augmentedFifth),
           Note.aSharp.inOctave(2),
+        );
+        expect(
+          Note.d.inOctave(2).transposeBy(-Interval.augmentedFifth),
+          Note.gFlat.inOctave(1),
         );
 
         expect(
@@ -175,16 +255,32 @@ void main() {
           Note.bFlat.inOctave(4),
         );
         expect(
+          Note.d.inOctave(4).transposeBy(-Interval.minorSixth),
+          Note.fSharp.inOctave(3),
+        );
+        expect(
           Note.d.inOctave(-2).transposeBy(Interval.majorSixth),
           Note.b.inOctave(-2),
+        );
+        expect(
+          Note.d.inOctave(-2).transposeBy(-Interval.majorSixth),
+          Note.f.inOctave(-3),
         );
         expect(
           Note.fSharp.inOctave(4).transposeBy(Interval.minorSixth),
           Note.d.inOctave(5),
         );
         expect(
+          Note.fSharp.inOctave(4).transposeBy(-Interval.minorSixth),
+          Note.aSharp.inOctave(3),
+        );
+        expect(
           Note.fSharp.inOctave(-1).transposeBy(Interval.majorSixth),
           Note.dSharp.inOctave(0),
+        );
+        expect(
+          Note.fSharp.inOctave(-1).transposeBy(-Interval.majorSixth),
+          Note.a.inOctave(-2),
         );
 
         expect(
@@ -192,12 +288,24 @@ void main() {
           Note.bFlat.inOctave(0),
         );
         expect(
+          Note.c.inOctave(0).transposeBy(-Interval.minorSeventh),
+          Note.d.inOctave(-1),
+        );
+        expect(
           Note.c.inOctave(4).transposeBy(Interval.majorSeventh),
           Note.b.inOctave(4),
         );
         expect(
+          Note.c.inOctave(4).transposeBy(-Interval.majorSeventh),
+          Note.dFlat.inOctave(3),
+        );
+        expect(
           Note.c.inOctave(4).transposeBy(Interval.augmentedSeventh),
           const Note(Notes.b, Accidental.sharp).inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(-Interval.augmentedSeventh),
+          const Note(Notes.d, Accidental.doubleFlat).inOctave(3),
         );
       });
     });
