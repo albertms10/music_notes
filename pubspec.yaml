@@ -13,5 +13,5 @@ dependencies:
   test: any
 
 dev_dependencies:
-  dart_code_metrics: ^5.7.1
+  dart_code_metrics: ^5.7.2
   very_good_analysis: ^4.0.0+1
