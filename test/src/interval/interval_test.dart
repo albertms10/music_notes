@@ -81,12 +81,12 @@ void main() {
       test('should return the number of semitones of this Interval', () {
         expect(Interval.diminishedUnison.semitones, -1);
         expect(Interval.perfectUnison.semitones, 0);
-        expect(-Interval.perfectUnison.semitones, 0);
+        expect((-Interval.perfectUnison).semitones, 0);
         expect(Interval.augmentedUnison.semitones, 1);
 
         expect(Interval.diminishedSecond.semitones, 0);
         expect(Interval.minorSecond.semitones, 1);
-        expect(-Interval.minorSecond.semitones, -1);
+        expect((-Interval.minorSecond).semitones, -1);
         expect(Interval.majorSecond.semitones, 2);
         expect(Interval.augmentedSecond.semitones, 3);
 
@@ -97,14 +97,14 @@ void main() {
 
         expect(Interval.diminishedFourth.semitones, 4);
         expect(Interval.perfectFourth.semitones, 5);
-        expect(-Interval.perfectFourth.semitones, -5);
+        expect((-Interval.perfectFourth).semitones, -5);
         expect(Interval.augmentedFourth.semitones, 6);
 
         expect(Interval.diminishedFifth.semitones, 6);
         expect(Interval.perfectFifth.semitones, 7);
         expect(Interval.augmentedFifth.semitones, 8);
 
-        expect(-Interval.diminishedSixth.semitones, -7);
+        expect((-Interval.diminishedSixth).semitones, -7);
         expect(Interval.diminishedSixth.semitones, 7);
         expect(Interval.minorSixth.semitones, 8);
         expect(Interval.majorSixth.semitones, 9);
@@ -118,7 +118,7 @@ void main() {
         expect(Interval.diminishedOctave.semitones, 11);
         expect(Interval.perfectOctave.semitones, 12);
         expect(Interval.augmentedOctave.semitones, 13);
-        expect(-Interval.augmentedOctave.semitones, -13);
+        expect((-Interval.augmentedOctave).semitones, -13);
       });
     });
 
