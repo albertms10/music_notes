@@ -135,6 +135,16 @@ class Interval implements MusicItem {
   @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
+  /// Whether this [Interval] is descending.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.majorSecond.isDescending == false
+  /// (-Interval.perfectFourth).isDescending == true
+  /// Interval.diminishedUnison.isDescending == false
+  /// ```
+  bool get isDescending => size.isNegative;
+
   /// Returns the inverted of this [Interval].
   ///
   /// Example:
@@ -163,7 +173,7 @@ class Interval implements MusicItem {
       other is Interval && size == other.size && quality == other.quality;
 
   @override
-  int get hashCode => hash2(size, quality);
+  int get hashCode => Object.hash(size, quality);
 
   @override
   int compareTo(covariant Interval other) => compareMultiple([

@@ -3,7 +3,7 @@ part of '../../music_notes.dart';
 /// An accidental.
 @immutable
 class Accidental implements MusicItem {
-  /// The value representing this [Accidental]:
+  /// The number of semitones above or below the natural note.
   ///
   /// - `> 0` for sharps.
   /// - `== 0` for natural.

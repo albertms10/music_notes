@@ -8,6 +8,18 @@ class PositionedNote extends Note {
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
   const PositionedNote(super.note, [super.accidental, this.octave = 4]);
 
+  /// Returns the [octave] that corresponds to the semitones from root height.
+  ///
+  /// Example:
+  /// ```dart
+  /// PositionedNote.octaveFromSemitones(1) == 0
+  /// PositionedNote.octaveFromSemitones(34) == 2
+  /// PositionedNote.octaveFromSemitones(49) == 4
+  /// ```
+  static int octaveFromSemitones(int semitones) =>
+      ((semitones.abs() - semitones.sign) * semitones.sign / chromaticDivisions)
+          .floor();
+
   /// Returns the number of semitones of this [PositionedNote] from the root
   /// height.
   ///
@@ -32,6 +44,22 @@ class PositionedNote extends Note {
   int difference(covariant PositionedNote other) =>
       other.semitonesFromRootHeight - semitonesFromRootHeight;
 
+  @override
+  PositionedNote transposeBy(Interval interval) {
+    final transposedNote = super.transposeBy(interval);
+
+    return transposedNote.inOctave(
+      octaveFromSemitones(
+        semitonesFromRootHeight +
+            interval.semitones -
+            // We don't want to take the accidental into account when
+            // calculating the octave height, as it depends on the note name.
+            // This correctly handles the case for, e.g., C♭4 == B3.
+            transposedNote.accidental.semitones,
+      ),
+    );
+  }
+
   /// Returns the equal temperament frequency in Hertzs of this [PositionedNote]
   /// from the A4 note reference.
   ///
@@ -43,9 +71,8 @@ class PositionedNote extends Note {
   /// Note.a.inOctave(4).equalTemperamentFrequency(338) == 338
   /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338) == 464.04
   /// ```
-  double equalTemperamentFrequency([double a4Hertzs = 440]) {
-    return a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
-  }
+  double equalTemperamentFrequency([double a4Hertzs = 440]) =>
+      a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
 
   /// Whether this [Note] is inside the human hearing range.
   ///
@@ -72,11 +99,9 @@ class PositionedNote extends Note {
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName {
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '$octave';
-  }
+  String get scientificName => '${note.name.toUpperCase()}'
+      '${accidental != Accidental.natural ? accidental.symbol : ''}'
+      '$octave';
 
   /// Returns the string representation of this [Note] following
   /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
@@ -88,15 +113,19 @@ class PositionedNote extends Note {
   /// Note.bFlat.inOctave(1).helmholtzName == 'B♭͵'
   /// ```
   String get helmholtzName {
+    final accidentalSymbol =
+        accidental != Accidental.natural ? accidental.symbol : '';
+
     if (octave >= 3) {
-      return '${note.name}'
-          '${accidental != Accidental.natural ? accidental.symbol : ''}'
-          '${'′' * (octave - 3)}';
+      const superPrime = '′';
+
+      return '${note.name}$accidentalSymbol${superPrime * (octave - 3)}';
     }
 
-    return '${note.name.toUpperCase()}'
-        '${accidental != Accidental.natural ? accidental.symbol : ''}'
-        '${'͵' * (octave - 2).abs()}';
+    const subPrime = '͵';
+
+    return '${note.name.toUpperCase()}$accidentalSymbol'
+        '${subPrime * (octave - 2).abs()}';
   }
 
   @override
@@ -107,7 +136,7 @@ class PositionedNote extends Note {
       super == other && other is PositionedNote && octave == other.octave;
 
   @override
-  int get hashCode => hash2(super.hashCode, octave);
+  int get hashCode => Object.hash(super.hashCode, octave);
 
   @override
   int compareTo(covariant PositionedNote other) => compareMultiple([

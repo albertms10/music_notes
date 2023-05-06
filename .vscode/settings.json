@@ -3,6 +3,7 @@
   "cSpell.words": [
     "dorian",
     "helmholtz",
+    "heptatonic",
     "ionian",
     "locrian",
     "lydian",
@@ -12,5 +13,8 @@
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true
+  },
+  "files.associations": {
+    "*.lock": "yaml"
   }
 }

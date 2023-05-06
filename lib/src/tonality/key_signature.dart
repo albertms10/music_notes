@@ -23,9 +23,9 @@ class KeySignature implements Comparable<KeySignature> {
           distance.abs(),
           distance == 0
               ? Accidental.natural
-              : distance > 0
-                  ? Accidental.sharp
-                  : Accidental.flat,
+              : distance.isNegative
+                  ? Accidental.flat
+                  : Accidental.sharp,
         );
 
   /// Returns a [Set] with the two tonalities that are defined
@@ -70,7 +70,7 @@ class KeySignature implements Comparable<KeySignature> {
       accidental == other.accidental;
 
   @override
-  int get hashCode => hash2(accidentals, accidental);
+  int get hashCode => Object.hash(accidentals, accidental);
 
   @override
   int compareTo(covariant KeySignature other) => compareMultiple([
