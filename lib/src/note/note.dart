@@ -178,6 +178,13 @@ class Note implements MusicItem, Transposable<Note> {
     );
   }
 
+  /// Returns a transposed [Note] by [interval] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.transposeBy(Interval.tritone) == Note.fSharp
+  /// Note.a.transposeBy(-Interval.majorSecond) == Note.g
+  /// ```
   @override
   Note transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval.size);
