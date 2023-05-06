@@ -130,7 +130,7 @@ class Interval implements MusicItem {
   /// Interval.majorSecond.semitones == 2
   /// Interval.diminishedFifth.semitones == 6
   /// Interval.augmentedFourth.semitones == 6
-  /// -Interval.majorThird.semitones == -4
+  /// (-Interval.majorThird).semitones == -4
   /// ```
   @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
