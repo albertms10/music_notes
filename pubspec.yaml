@@ -10,7 +10,7 @@ environment:
 dependencies:
   collection: any
   meta: any
-  test: ^1.24.1
+  test: any
 
 dev_dependencies:
   dart_code_metrics: ^5.7.1
