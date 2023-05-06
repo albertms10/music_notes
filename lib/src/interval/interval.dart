@@ -136,6 +136,16 @@ class Interval implements MusicItem {
   @override
   int get semitones => size.semitones + quality.semitones;
 
+  /// Whether this [Interval] is descending.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.majorSecond.isDescending == false
+  /// (-Interval.perfectFourth).isDescending == true
+  /// Interval.diminishedUnison.isDescending == false
+  /// ```
+  bool get isDescending => size.isNegative;
+
   /// Returns the inverted of this [Interval].
   ///
   /// Example:

@@ -117,6 +117,23 @@ void main() {
       });
     });
 
+    group('.isDescending', () {
+      test('should return whether this Interval is descending', () {
+        expect(Interval.minorThird.isDescending, isFalse);
+        expect((-Interval.perfectFifth).isDescending, isTrue);
+        expect(Interval.diminishedUnison.isDescending, isFalse);
+        expect(
+          const Interval.imperfect(9, ImperfectQuality.major).isDescending,
+          isFalse,
+        );
+        expect(
+          const Interval.perfect(-4, PerfectQuality.doubleAugmented)
+              .isDescending,
+          isTrue,
+        );
+      });
+    });
+
     group('.inverted', () {
       test('should return the inverted of this Interval', () {
         expect(Interval.augmentedUnison.inverted, Interval.diminishedOctave);
