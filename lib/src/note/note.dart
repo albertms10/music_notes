@@ -202,7 +202,7 @@ class Note implements MusicItem, Transposable<Note> {
       other is Note && note == other.note && accidental == other.accidental;
 
   @override
-  int get hashCode => hash2(note, accidental);
+  int get hashCode => Object.hash(note, accidental);
 
   @override
   int compareTo(covariant Note other) => compareMultiple([
