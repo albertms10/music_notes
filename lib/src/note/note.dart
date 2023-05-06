@@ -42,9 +42,7 @@ class Note implements MusicItem, Transposable<Note> {
     final note = Note.fromRawAccidentals(accidentals, accidental);
     if (mode == TonalMode.major) return note;
 
-    return EnharmonicNote(note.semitones)
-        .transposeBy(-Interval.minorThird)
-        .toClosestNote(accidental);
+    return note.transposeBy(-Interval.minorThird);
   }
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number

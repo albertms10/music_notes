@@ -38,11 +38,12 @@ class KeySignature implements Comparable<KeySignature> {
   ///   Tonality.gMinor,
   /// }
   /// ```
-  Set<Tonality> get tonalities => {
-        Tonality.fromAccidentals(accidentals, TonalMode.major, accidental),
-        // TODO(albertms10): use `Tonality.relative`.
-        Tonality.fromAccidentals(accidentals, TonalMode.minor, accidental),
-      };
+  Set<Tonality> get tonalities {
+    final majorTonality =
+        Tonality.fromAccidentals(accidentals, TonalMode.major, accidental);
+
+    return {majorTonality, majorTonality.relative};
+  }
 
   @override
   String toString() {
