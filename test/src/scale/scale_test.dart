@@ -157,15 +157,15 @@ void main() {
 
       test('should return the whole-tone scale notes starting from Note', () {
         expect(
-          Scale.wholeTone.fromNote(Note.c),
+          Scale.wholeTone.fromNote(EnharmonicNote.c),
           const [
-            Note.c,
-            Note.d,
-            Note.e,
-            Note.fSharp,
-            Note.gSharp,
-            Note.aSharp,
-            Note.c,
+            EnharmonicNote.c,
+            EnharmonicNote.d,
+            EnharmonicNote.e,
+            EnharmonicNote.fSharp,
+            EnharmonicNote.gSharp,
+            EnharmonicNote.aSharp,
+            EnharmonicNote.c,
           ],
         );
         expect(
@@ -214,6 +214,24 @@ void main() {
           ],
         );
         expect(
+          Scale.chromatic.fromNote(EnharmonicNote.cSharp),
+          const [
+            EnharmonicNote.cSharp,
+            EnharmonicNote.d,
+            EnharmonicNote.dSharp,
+            EnharmonicNote.e,
+            EnharmonicNote.f,
+            EnharmonicNote.fSharp,
+            EnharmonicNote.g,
+            EnharmonicNote.gSharp,
+            EnharmonicNote.a,
+            EnharmonicNote.aSharp,
+            EnharmonicNote.b,
+            EnharmonicNote.c,
+            EnharmonicNote.cSharp,
+          ],
+        );
+        expect(
           Scale.chromatic.fromNote(Note.dFlat),
           const [
             Note.dFlat,
@@ -249,6 +267,17 @@ void main() {
               Note.cSharp,
               Note.dSharp,
               Note.fSharp,
+            ],
+          );
+          expect(
+            Scale.majorPentatonic.fromNote(EnharmonicNote.fSharp),
+            const [
+              EnharmonicNote.fSharp,
+              EnharmonicNote.gSharp,
+              EnharmonicNote.aSharp,
+              EnharmonicNote.cSharp,
+              EnharmonicNote.dSharp,
+              EnharmonicNote.fSharp,
             ],
           );
         },
