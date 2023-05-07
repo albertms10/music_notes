@@ -156,7 +156,7 @@ void main() {
           isFalse,
         );
         expect(
-          const Interval.perfect(-4, PerfectQuality.doubleAugmented)
+          const Interval.perfect(-4, PerfectQuality.doublyAugmented)
               .isDescending,
           isTrue,
         );
