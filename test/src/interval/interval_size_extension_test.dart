@@ -160,6 +160,10 @@ void main() {
       });
 
       test('should return the simplified Interval size', () {
+        expect((-22).simplified, -8);
+        expect((-17).simplified, -3);
+        expect((-16).simplified, -2);
+        expect((-15).simplified, -8);
         expect((-13).simplified, -6);
         expect((-10).simplified, -3);
         expect((-8).simplified, -8);
@@ -170,6 +174,10 @@ void main() {
         expect(8.simplified, 8);
         expect(10.simplified, 3);
         expect(13.simplified, 6);
+        expect(15.simplified, 8);
+        expect(16.simplified, 2);
+        expect(17.simplified, 3);
+        expect(22.simplified, 8);
       });
     });
 

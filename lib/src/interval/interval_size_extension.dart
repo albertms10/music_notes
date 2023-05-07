@@ -113,11 +113,15 @@ extension IntervalSizeExtension on int {
   /// 13.simplified == 6
   /// (-9).simplified == -2
   /// 8.simplified == 8
+  /// (-22).simplified == -8
   /// ```
   int get simplified {
     assert(this != 0, 'Size must be non-zero');
+    final sizeAbs = abs();
 
-    return isCompound ? (abs().nModExcludeZero(8) + 1) * sign : this;
+    return isCompound
+        ? ((sizeAbs + sizeAbs ~/ 8).nModExcludeZero(8)) * sign
+        : this;
   }
 
   /// Returns the inverted of this [Interval.size].
