@@ -15,49 +15,52 @@ void main() {
       );
     });
 
-    group('.items', () {
-      test('should return the correct Notes for this EnharmonicNote', () {
-        expect(EnharmonicNote.c.items, {
-          const Note(Notes.b, Accidental.sharp),
-          Note.c,
-          const Note(Notes.d, Accidental.doubleFlat),
-        });
-        expect(EnharmonicNote.cSharp.items, {Note.cSharp, Note.dFlat});
-        expect(EnharmonicNote.d.items, {
-          const Note(Notes.c, Accidental.doubleSharp),
-          Note.d,
-          const Note(Notes.e, Accidental.doubleFlat),
-        });
-        expect(EnharmonicNote.dSharp.items, {Note.dSharp, Note.eFlat});
-        expect(EnharmonicNote.e.items, {
-          const Note(Notes.d, Accidental.doubleSharp),
-          Note.e,
-          const Note(Notes.f, Accidental.flat),
-        });
-        expect(EnharmonicNote.f.items, {
-          const Note(Notes.e, Accidental.sharp),
-          Note.f,
-          const Note(Notes.g, Accidental.doubleFlat),
-        });
-        expect(EnharmonicNote.fSharp.items, {Note.fSharp, Note.gFlat});
-        expect(EnharmonicNote.g.items, {
-          const Note(Notes.f, Accidental.doubleSharp),
-          Note.g,
-          const Note(Notes.a, Accidental.doubleFlat),
-        });
-        expect(EnharmonicNote.gSharp.items, {Note.gSharp, Note.aFlat});
-        expect(EnharmonicNote.a.items, {
-          const Note(Notes.g, Accidental.doubleSharp),
-          Note.a,
-          const Note(Notes.b, Accidental.doubleFlat),
-        });
-        expect(EnharmonicNote.aSharp.items, {Note.aSharp, Note.bFlat});
-        expect(EnharmonicNote.b.items, {
-          const Note(Notes.a, Accidental.doubleSharp),
-          Note.b,
-          const Note(Notes.c, Accidental.flat),
-        });
-      });
+    group('.spellings', () {
+      test(
+        'should return the correct Note spellings for this EnharmonicNote',
+        () {
+          expect(EnharmonicNote.c.spellings, {
+            const Note(Notes.b, Accidental.sharp),
+            Note.c,
+            const Note(Notes.d, Accidental.doubleFlat),
+          });
+          expect(EnharmonicNote.cSharp.spellings, {Note.cSharp, Note.dFlat});
+          expect(EnharmonicNote.d.spellings, {
+            const Note(Notes.c, Accidental.doubleSharp),
+            Note.d,
+            const Note(Notes.e, Accidental.doubleFlat),
+          });
+          expect(EnharmonicNote.dSharp.spellings, {Note.dSharp, Note.eFlat});
+          expect(EnharmonicNote.e.spellings, {
+            const Note(Notes.d, Accidental.doubleSharp),
+            Note.e,
+            const Note(Notes.f, Accidental.flat),
+          });
+          expect(EnharmonicNote.f.spellings, {
+            const Note(Notes.e, Accidental.sharp),
+            Note.f,
+            const Note(Notes.g, Accidental.doubleFlat),
+          });
+          expect(EnharmonicNote.fSharp.spellings, {Note.fSharp, Note.gFlat});
+          expect(EnharmonicNote.g.spellings, {
+            const Note(Notes.f, Accidental.doubleSharp),
+            Note.g,
+            const Note(Notes.a, Accidental.doubleFlat),
+          });
+          expect(EnharmonicNote.gSharp.spellings, {Note.gSharp, Note.aFlat});
+          expect(EnharmonicNote.a.spellings, {
+            const Note(Notes.g, Accidental.doubleSharp),
+            Note.a,
+            const Note(Notes.b, Accidental.doubleFlat),
+          });
+          expect(EnharmonicNote.aSharp.spellings, {Note.aSharp, Note.bFlat});
+          expect(EnharmonicNote.b.spellings, {
+            const Note(Notes.a, Accidental.doubleSharp),
+            Note.b,
+            const Note(Notes.c, Accidental.flat),
+          });
+        },
+      );
     });
 
     group('.toNote()', () {

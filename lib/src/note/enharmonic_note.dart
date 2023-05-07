@@ -22,7 +22,7 @@ class EnharmonicNote extends Enharmonic<Note>
   static const b = EnharmonicNote(12);
 
   @override
-  Set<Note> get items {
+  Set<Note> get spellings {
     final note = Notes.fromValue(semitones);
 
     if (note != null) {
@@ -71,7 +71,7 @@ class EnharmonicNote extends Enharmonic<Note>
   /// EnharmonicNote.cSharp.toNote(Accidental.natural) // throws
   /// ```
   Note toNote([Accidental? withAccidental]) {
-    final matchedNote = items.firstWhereOrNull(
+    final matchedNote = spellings.firstWhereOrNull(
       (note) => note.accidental == withAccidental,
     );
     if (matchedNote != null) return matchedNote;
@@ -84,7 +84,7 @@ class EnharmonicNote extends Enharmonic<Note>
       );
     }
 
-    return items
+    return spellings
         // TODO(albertms10): return the note with the closest accidental #50.
         .sorted(
           (a, b) => a.accidental.semitones

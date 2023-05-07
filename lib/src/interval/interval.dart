@@ -108,7 +108,7 @@ class Interval implements MusicItem {
     int semitones, [
     Quality? preferredQuality,
   ]) {
-    final intervals = EnharmonicInterval(semitones).items;
+    final intervals = EnharmonicInterval(semitones).spellings;
 
     if (preferredQuality != null) {
       final interval = intervals.firstWhereOrNull(
