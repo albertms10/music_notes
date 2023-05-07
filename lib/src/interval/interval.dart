@@ -171,8 +171,16 @@ class Interval implements MusicItem {
   Interval operator -() => Interval._(-size, quality);
 
   @override
-  String toString() =>
-      '${isDescending ? 'desc ' : ''}${quality.abbreviation}${size.abs()}';
+  String toString() {
+    final naming = '${quality.abbreviation}${size.abs()}';
+    final descending = isDescending ? 'desc ' : '';
+    if (size.isCompound) {
+      return '$descending$naming '
+          '(${quality.abbreviation}${size.simplified.abs()})';
+    }
+
+    return '$descending$naming';
+  }
 
   @override
   bool operator ==(Object other) =>

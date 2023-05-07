@@ -207,6 +207,34 @@ void main() {
         expect((-Interval.perfectFifth).toString(), 'desc P5');
         expect(Interval.diminishedSeventh.toString(), 'd7');
         expect((-Interval.diminishedOctave).toString(), 'desc d8');
+        expect(
+          const Interval.imperfect(9, ImperfectQuality.major).toString(),
+          'M9 (M2)',
+        );
+        expect(
+          const Interval.imperfect(10, ImperfectQuality.minor).toString(),
+          'm10 (m3)',
+        );
+        expect(
+          const Interval.perfect(11, PerfectQuality.augmented).toString(),
+          'A11 (A4)',
+        );
+        expect(
+          const Interval.imperfect(14, ImperfectQuality.major).toString(),
+          'M14 (M7)',
+        );
+        expect(
+          const Interval.perfect(15, PerfectQuality.perfect).toString(),
+          'P15 (P8)',
+        );
+        expect(
+          const Interval.imperfect(16, ImperfectQuality.diminished).toString(),
+          'd16 (d2)',
+        );
+        expect(
+          const Interval.perfect(22, PerfectQuality.perfect).toString(),
+          'P22 (P8)',
+        );
       });
     });
 
