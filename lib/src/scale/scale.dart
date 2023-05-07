@@ -183,7 +183,7 @@ class Scale {
     Interval.minorSecond,
   ]);
 
-  /// Returns the scale of notes starting from [note].
+  /// Returns the scale of notes starting from [transposable].
   ///
   /// Example:
   /// ```dart
@@ -199,8 +199,9 @@ class Scale {
   ///   == const [Note.c, Note.d, Note.eFlat, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c]
   /// ```
-  List<Note> fromNote(Note note) => intervalSteps.fold(
-        [note],
+  List<Transposable<T>> fromNote<T>(Transposable<T> transposable) =>
+      intervalSteps.fold(
+        [transposable],
         (scaleNotes, interval) =>
             [...scaleNotes, scaleNotes.last.transposeBy(interval)],
       );
