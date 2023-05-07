@@ -13,65 +13,130 @@ void main() {
             Interval.perfectUnison,
             Interval.diminishedSecond,
           });
+          // TODO(albertms10): descending P1 interval.
+          expect((-EnharmonicInterval.perfectUnison).items, {
+            Interval.perfectUnison,
+            Interval.diminishedSecond,
+          });
           expect(EnharmonicInterval.minorSecond.items, {
             Interval.augmentedUnison,
             Interval.minorSecond,
             const Interval.imperfect(3, ImperfectQuality.doubleDiminished),
           });
+          expect((-EnharmonicInterval.minorSecond).items, {
+            -Interval.augmentedUnison,
+            -Interval.minorSecond,
+            -const Interval.imperfect(3, ImperfectQuality.doubleDiminished),
+          });
           expect(EnharmonicInterval.majorSecond.items, {
             Interval.majorSecond,
             Interval.diminishedThird,
+          });
+          expect((-EnharmonicInterval.majorSecond).items, {
+            -Interval.majorSecond,
+            -Interval.diminishedThird,
           });
           expect(EnharmonicInterval.minorThird.items, {
             Interval.augmentedSecond,
             Interval.minorThird,
             const Interval.perfect(4, PerfectQuality.doubleDiminished),
           });
+          expect((-EnharmonicInterval.minorThird).items, {
+            -Interval.augmentedSecond,
+            -Interval.minorThird,
+            -const Interval.perfect(4, PerfectQuality.doubleDiminished),
+          });
           expect(EnharmonicInterval.majorThird.items, {
             Interval.majorThird,
             Interval.diminishedFourth,
+          });
+          expect((-EnharmonicInterval.majorThird).items, {
+            -Interval.majorThird,
+            -Interval.diminishedFourth,
           });
           expect(EnharmonicInterval.perfectFourth.items, {
             Interval.augmentedThird,
             Interval.perfectFourth,
             const Interval.perfect(5, PerfectQuality.doubleDiminished),
           });
+          expect((-EnharmonicInterval.perfectFourth).items, {
+            -Interval.augmentedThird,
+            -Interval.perfectFourth,
+            -const Interval.perfect(5, PerfectQuality.doubleDiminished),
+          });
           expect(EnharmonicInterval.tritone.items, {
             Interval.augmentedFourth,
             Interval.diminishedFifth,
+          });
+          expect((-EnharmonicInterval.tritone).items, {
+            -Interval.augmentedFourth,
+            -Interval.diminishedFifth,
           });
           expect(EnharmonicInterval.perfectFifth.items, {
             const Interval.perfect(4, PerfectQuality.doubleAugmented),
             Interval.perfectFifth,
             Interval.diminishedSixth,
           });
+          expect((-EnharmonicInterval.perfectFifth).items, {
+            -const Interval.perfect(4, PerfectQuality.doubleAugmented),
+            -Interval.perfectFifth,
+            -Interval.diminishedSixth,
+          });
           expect(EnharmonicInterval.minorSixth.items, {
             Interval.augmentedFifth,
             Interval.minorSixth,
             const Interval.imperfect(7, ImperfectQuality.doubleDiminished),
           });
+          expect((-EnharmonicInterval.minorSixth).items, {
+            -Interval.augmentedFifth,
+            -Interval.minorSixth,
+            -const Interval.imperfect(7, ImperfectQuality.doubleDiminished),
+          });
           expect(EnharmonicInterval.majorSixth.items, {
             Interval.majorSixth,
             Interval.diminishedSeventh,
+          });
+          expect((-EnharmonicInterval.majorSixth).items, {
+            -Interval.majorSixth,
+            -Interval.diminishedSeventh,
           });
           expect(EnharmonicInterval.minorSeventh.items, {
             Interval.augmentedSixth,
             Interval.minorSeventh,
             const Interval.perfect(8, PerfectQuality.doubleDiminished),
           });
+          expect((-EnharmonicInterval.minorSeventh).items, {
+            -Interval.augmentedSixth,
+            -Interval.minorSeventh,
+            -const Interval.perfect(8, PerfectQuality.doubleDiminished),
+          });
           expect(EnharmonicInterval.majorSeventh.items, {
             Interval.majorSeventh,
             Interval.diminishedOctave,
+          });
+          expect((-EnharmonicInterval.majorSeventh).items, {
+            -Interval.majorSeventh,
+            -Interval.diminishedOctave,
           });
           expect(EnharmonicInterval.perfectOctave.items, {
             Interval.augmentedSeventh,
             Interval.perfectOctave,
             const Interval.imperfect(9, ImperfectQuality.diminished),
           });
+          expect((-EnharmonicInterval.perfectOctave).items, {
+            -Interval.augmentedSeventh,
+            -Interval.perfectOctave,
+            -const Interval.imperfect(9, ImperfectQuality.diminished),
+          });
           expect(const EnharmonicInterval(13).items, {
             Interval.augmentedOctave,
             const Interval.imperfect(9, ImperfectQuality.minor),
             const Interval.imperfect(10, ImperfectQuality.doubleDiminished),
+          });
+          expect(const EnharmonicInterval(-13).items, {
+            -Interval.augmentedOctave,
+            -const Interval.imperfect(9, ImperfectQuality.minor),
+            -const Interval.imperfect(10, ImperfectQuality.doubleDiminished),
           });
         },
       );

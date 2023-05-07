@@ -89,7 +89,10 @@ class Interval implements MusicItem {
   Interval.fromSemitones(int size, int semitones)
       : this._(
           size,
-          Quality.fromInterval(size, semitones - size.semitones),
+          Quality.fromInterval(
+            size,
+            semitones * size.sign - size.semitones.abs(),
+          ),
         );
 
   /// Creates a new [Interval] from [semitones] and a [preferredQuality].
@@ -150,6 +153,8 @@ class Interval implements MusicItem {
   /// Example:
   /// ```dart
   /// Interval.minorThird.inverted == Interval.majorSixth
+  /// Interval.augmentedFourth.inverted == Interval.diminishedFifth
+  /// Interval.majorSeventh.inverted == Interval.minorSecond
   /// Interval.perfectUnison.inverted == Interval.perfectOctave
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
@@ -166,7 +171,8 @@ class Interval implements MusicItem {
   Interval operator -() => Interval._(-size, quality);
 
   @override
-  String toString() => '${quality.abbreviation}$size';
+  String toString() =>
+      '${isDescending ? 'desc ' : ''}${quality.abbreviation}${size.abs()}';
 
   @override
   bool operator ==(Object other) =>
