@@ -87,18 +87,22 @@ void main() {
 
     group('.toString()', () {
       test('should return a string representation of this Quality', () {
+        expect(PerfectQuality.triplyDiminished.toString(), 'ddd (-3)');
         expect(PerfectQuality.doublyDiminished.toString(), 'dd (-2)');
         expect(PerfectQuality.diminished.toString(), 'd (-1)');
         expect(PerfectQuality.perfect.toString(), 'P (+0)');
         expect(PerfectQuality.augmented.toString(), 'A (+1)');
         expect(PerfectQuality.doublyAugmented.toString(), 'AA (+2)');
+        expect(PerfectQuality.triplyAugmented.toString(), 'AAA (+3)');
 
+        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd (-3)');
         expect(ImperfectQuality.doublyDiminished.toString(), 'dd (-2)');
         expect(ImperfectQuality.diminished.toString(), 'd (-1)');
         expect(ImperfectQuality.minor.toString(), 'm (+0)');
         expect(ImperfectQuality.major.toString(), 'M (+1)');
         expect(ImperfectQuality.augmented.toString(), 'A (+2)');
         expect(ImperfectQuality.doublyAugmented.toString(), 'AA (+3)');
+        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA (+4)');
       });
     });
 
