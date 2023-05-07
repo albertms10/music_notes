@@ -70,8 +70,9 @@ extension IntervalSizeExtension on int {
   /// ```
   bool get isPerfect {
     assert(this != 0, 'Size must be non-zero');
+    final sizeAbs = abs();
 
-    return (abs() + abs() ~/ 8) % 4 < 2;
+    return (sizeAbs + sizeAbs ~/ 8) % 4 < 2;
   }
 
   /// Returns whether this [Interval.size] is greater than an octave.
