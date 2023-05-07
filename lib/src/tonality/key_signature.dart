@@ -44,7 +44,7 @@ class KeySignature implements Comparable<KeySignature> {
 
     return EnharmonicNote(
       (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
-    ).toClosestNote(accidental.increment(accidentals ~/ 9));
+    ).resolveClosestSpelling(accidental.increment(accidentals ~/ 9));
   }
 
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
