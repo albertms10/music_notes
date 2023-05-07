@@ -58,19 +58,23 @@ class PerfectQuality extends Quality {
   /// Creates a new [PerfectQuality] from [semitones].
   const PerfectQuality(super.semitones);
 
-  static const PerfectQuality doubleDiminished = PerfectQuality(-2);
+  static const PerfectQuality triplyDiminished = PerfectQuality(-3);
+  static const PerfectQuality doublyDiminished = PerfectQuality(-2);
   static const PerfectQuality diminished = PerfectQuality(-1);
   static const PerfectQuality perfect = PerfectQuality(0);
   static const PerfectQuality augmented = PerfectQuality(1);
-  static const PerfectQuality doubleAugmented = PerfectQuality(2);
+  static const PerfectQuality doublyAugmented = PerfectQuality(2);
+  static const PerfectQuality triplyAugmented = PerfectQuality(3);
 
   @override
   String? get abbreviation => const {
+        -3: 'ddd',
         -2: 'dd',
         -1: 'd',
         0: 'P',
         1: 'A',
         2: 'AA',
+        3: 'AAA',
       }[semitones];
 
   /// Returns the inverted version of this [PerfectQuality].
@@ -98,21 +102,25 @@ class ImperfectQuality extends Quality {
   /// Creates a new [ImperfectQuality] from [semitones].
   const ImperfectQuality(super.semitones);
 
-  static const ImperfectQuality doubleDiminished = ImperfectQuality(-2);
+  static const ImperfectQuality triplyDiminished = ImperfectQuality(-3);
+  static const ImperfectQuality doublyDiminished = ImperfectQuality(-2);
   static const ImperfectQuality diminished = ImperfectQuality(-1);
   static const ImperfectQuality minor = ImperfectQuality(0);
   static const ImperfectQuality major = ImperfectQuality(1);
   static const ImperfectQuality augmented = ImperfectQuality(2);
-  static const ImperfectQuality doubleAugmented = ImperfectQuality(3);
+  static const ImperfectQuality doublyAugmented = ImperfectQuality(3);
+  static const ImperfectQuality triplyAugmented = ImperfectQuality(4);
 
   @override
   String? get abbreviation => const {
+        -3: 'ddd',
         -2: 'dd',
         -1: 'd',
         0: 'm',
         1: 'M',
         2: 'A',
         3: 'AA',
+        4: 'AAA',
       }[semitones];
 
   /// Returns the inverted version of this [ImperfectQuality].

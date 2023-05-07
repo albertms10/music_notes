@@ -52,15 +52,21 @@ void main() {
 
     group('.inverted', () {
       test('should return the inverted of this Quality', () {
-        expect(const PerfectQuality(-3).inverted, const PerfectQuality(3));
+        expect(
+          PerfectQuality.triplyDiminished.inverted,
+          PerfectQuality.triplyAugmented,
+        );
         expect(PerfectQuality.diminished.inverted, PerfectQuality.augmented);
         expect(PerfectQuality.perfect.inverted, PerfectQuality.perfect);
         expect(PerfectQuality.augmented.inverted, PerfectQuality.diminished);
-        expect(const PerfectQuality(3).inverted, const PerfectQuality(-3));
+        expect(
+          PerfectQuality.triplyAugmented.inverted,
+          PerfectQuality.triplyDiminished,
+        );
 
         expect(
-          ImperfectQuality.doubleDiminished.inverted,
-          ImperfectQuality.doubleAugmented,
+          ImperfectQuality.doublyDiminished.inverted,
+          ImperfectQuality.doublyAugmented,
         );
         expect(
           ImperfectQuality.diminished.inverted,
@@ -73,26 +79,26 @@ void main() {
           ImperfectQuality.diminished,
         );
         expect(
-          ImperfectQuality.doubleAugmented.inverted,
-          ImperfectQuality.doubleDiminished,
+          ImperfectQuality.doublyAugmented.inverted,
+          ImperfectQuality.doublyDiminished,
         );
       });
     });
 
     group('.toString()', () {
       test('should return a string representation of this Quality', () {
-        expect(PerfectQuality.doubleDiminished.toString(), 'dd (-2)');
+        expect(PerfectQuality.doublyDiminished.toString(), 'dd (-2)');
         expect(PerfectQuality.diminished.toString(), 'd (-1)');
         expect(PerfectQuality.perfect.toString(), 'P (+0)');
         expect(PerfectQuality.augmented.toString(), 'A (+1)');
-        expect(PerfectQuality.doubleAugmented.toString(), 'AA (+2)');
+        expect(PerfectQuality.doublyAugmented.toString(), 'AA (+2)');
 
-        expect(ImperfectQuality.doubleDiminished.toString(), 'dd (-2)');
+        expect(ImperfectQuality.doublyDiminished.toString(), 'dd (-2)');
         expect(ImperfectQuality.diminished.toString(), 'd (-1)');
         expect(ImperfectQuality.minor.toString(), 'm (+0)');
         expect(ImperfectQuality.major.toString(), 'M (+1)');
         expect(ImperfectQuality.augmented.toString(), 'A (+2)');
-        expect(ImperfectQuality.doubleAugmented.toString(), 'AA (+3)');
+        expect(ImperfectQuality.doublyAugmented.toString(), 'AA (+3)');
       });
     });
 
