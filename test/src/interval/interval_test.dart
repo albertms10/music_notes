@@ -212,24 +212,24 @@ void main() {
           'M9 (M2)',
         );
         expect(
-          const Interval.imperfect(10, ImperfectQuality.minor).toString(),
-          'm10 (m3)',
+          const Interval.imperfect(-10, ImperfectQuality.minor).toString(),
+          'desc m10 (m3)',
         );
         expect(
           const Interval.perfect(11, PerfectQuality.augmented).toString(),
           'A11 (A4)',
         );
         expect(
-          const Interval.imperfect(14, ImperfectQuality.major).toString(),
-          'M14 (M7)',
+          const Interval.imperfect(-14, ImperfectQuality.major).toString(),
+          'desc M14 (M7)',
         );
         expect(
           const Interval.perfect(15, PerfectQuality.perfect).toString(),
           'P15 (P8)',
         );
         expect(
-          const Interval.imperfect(16, ImperfectQuality.diminished).toString(),
-          'd16 (d2)',
+          const Interval.imperfect(-16, ImperfectQuality.diminished).toString(),
+          'desc d16 (d2)',
         );
         expect(
           const Interval.perfect(22, PerfectQuality.perfect).toString(),
