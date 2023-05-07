@@ -202,8 +202,11 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Interval', () {
         expect(Interval.majorSecond.toString(), 'M2');
-        expect(Interval.perfectFifth.toString(), 'P5');
+        expect((-Interval.minorThird).toString(), 'desc m3');
+        expect(Interval.augmentedFourth.toString(), 'A4');
+        expect((-Interval.perfectFifth).toString(), 'desc P5');
         expect(Interval.diminishedSeventh.toString(), 'd7');
+        expect((-Interval.diminishedOctave).toString(), 'desc d8');
       });
     });
 
