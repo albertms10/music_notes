@@ -125,14 +125,14 @@ class Note implements MusicItem, Transposable<Note> {
     var distance = 0;
     var currentPitch = this.semitones;
 
-    var tempNote =
-        EnharmonicNote(currentPitch).toClosestNote(preferredAccidental);
+    var tempNote = EnharmonicNote(currentPitch)
+        .resolveClosestSpelling(preferredAccidental);
 
     while (tempNote != other && distance < chromaticDivisions) {
       distance++;
       currentPitch += semitones;
       tempNote = EnharmonicNote(currentPitch.chromaticModExcludeZero)
-          .toClosestNote(preferredAccidental);
+          .resolveClosestSpelling(preferredAccidental);
     }
 
     return distance;

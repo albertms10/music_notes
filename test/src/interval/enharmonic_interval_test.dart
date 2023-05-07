@@ -5,135 +5,136 @@ import 'package:test/test.dart';
 
 void main() {
   group('EnharmonicInterval', () {
-    group('.items', () {
+    group('.spellings', () {
       test(
-        'should return the correct Interval items for this EnharmonicInterval',
+        'should return the correct Interval spellings for this '
+        'EnharmonicInterval',
         () {
-          expect(EnharmonicInterval.perfectUnison.items, {
+          expect(EnharmonicInterval.perfectUnison.spellings, {
             Interval.perfectUnison,
             Interval.diminishedSecond,
           });
           // TODO(albertms10): descending P1 interval.
-          expect((-EnharmonicInterval.perfectUnison).items, {
+          expect((-EnharmonicInterval.perfectUnison).spellings, {
             Interval.perfectUnison,
             Interval.diminishedSecond,
           });
-          expect(EnharmonicInterval.minorSecond.items, {
+          expect(EnharmonicInterval.minorSecond.spellings, {
             Interval.augmentedUnison,
             Interval.minorSecond,
             const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSecond).items, {
+          expect((-EnharmonicInterval.minorSecond).spellings, {
             -Interval.augmentedUnison,
             -Interval.minorSecond,
             -const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSecond.items, {
+          expect(EnharmonicInterval.majorSecond.spellings, {
             Interval.majorSecond,
             Interval.diminishedThird,
           });
-          expect((-EnharmonicInterval.majorSecond).items, {
+          expect((-EnharmonicInterval.majorSecond).spellings, {
             -Interval.majorSecond,
             -Interval.diminishedThird,
           });
-          expect(EnharmonicInterval.minorThird.items, {
+          expect(EnharmonicInterval.minorThird.spellings, {
             Interval.augmentedSecond,
             Interval.minorThird,
             const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorThird).items, {
+          expect((-EnharmonicInterval.minorThird).spellings, {
             -Interval.augmentedSecond,
             -Interval.minorThird,
             -const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorThird.items, {
+          expect(EnharmonicInterval.majorThird.spellings, {
             Interval.majorThird,
             Interval.diminishedFourth,
           });
-          expect((-EnharmonicInterval.majorThird).items, {
+          expect((-EnharmonicInterval.majorThird).spellings, {
             -Interval.majorThird,
             -Interval.diminishedFourth,
           });
-          expect(EnharmonicInterval.perfectFourth.items, {
+          expect(EnharmonicInterval.perfectFourth.spellings, {
             Interval.augmentedThird,
             Interval.perfectFourth,
             const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.perfectFourth).items, {
+          expect((-EnharmonicInterval.perfectFourth).spellings, {
             -Interval.augmentedThird,
             -Interval.perfectFourth,
             -const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.tritone.items, {
+          expect(EnharmonicInterval.tritone.spellings, {
             Interval.augmentedFourth,
             Interval.diminishedFifth,
           });
-          expect((-EnharmonicInterval.tritone).items, {
+          expect((-EnharmonicInterval.tritone).spellings, {
             -Interval.augmentedFourth,
             -Interval.diminishedFifth,
           });
-          expect(EnharmonicInterval.perfectFifth.items, {
+          expect(EnharmonicInterval.perfectFifth.spellings, {
             const Interval.perfect(4, PerfectQuality.doublyAugmented),
             Interval.perfectFifth,
             Interval.diminishedSixth,
           });
-          expect((-EnharmonicInterval.perfectFifth).items, {
+          expect((-EnharmonicInterval.perfectFifth).spellings, {
             -const Interval.perfect(4, PerfectQuality.doublyAugmented),
             -Interval.perfectFifth,
             -Interval.diminishedSixth,
           });
-          expect(EnharmonicInterval.minorSixth.items, {
+          expect(EnharmonicInterval.minorSixth.spellings, {
             Interval.augmentedFifth,
             Interval.minorSixth,
             const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSixth).items, {
+          expect((-EnharmonicInterval.minorSixth).spellings, {
             -Interval.augmentedFifth,
             -Interval.minorSixth,
             -const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSixth.items, {
+          expect(EnharmonicInterval.majorSixth.spellings, {
             Interval.majorSixth,
             Interval.diminishedSeventh,
           });
-          expect((-EnharmonicInterval.majorSixth).items, {
+          expect((-EnharmonicInterval.majorSixth).spellings, {
             -Interval.majorSixth,
             -Interval.diminishedSeventh,
           });
-          expect(EnharmonicInterval.minorSeventh.items, {
+          expect(EnharmonicInterval.minorSeventh.spellings, {
             Interval.augmentedSixth,
             Interval.minorSeventh,
             const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSeventh).items, {
+          expect((-EnharmonicInterval.minorSeventh).spellings, {
             -Interval.augmentedSixth,
             -Interval.minorSeventh,
             -const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSeventh.items, {
+          expect(EnharmonicInterval.majorSeventh.spellings, {
             Interval.majorSeventh,
             Interval.diminishedOctave,
           });
-          expect((-EnharmonicInterval.majorSeventh).items, {
+          expect((-EnharmonicInterval.majorSeventh).spellings, {
             -Interval.majorSeventh,
             -Interval.diminishedOctave,
           });
-          expect(EnharmonicInterval.perfectOctave.items, {
+          expect(EnharmonicInterval.perfectOctave.spellings, {
             Interval.augmentedSeventh,
             Interval.perfectOctave,
             const Interval.imperfect(9, ImperfectQuality.diminished),
           });
-          expect((-EnharmonicInterval.perfectOctave).items, {
+          expect((-EnharmonicInterval.perfectOctave).spellings, {
             -Interval.augmentedSeventh,
             -Interval.perfectOctave,
             -const Interval.imperfect(9, ImperfectQuality.diminished),
           });
-          expect(const EnharmonicInterval(13).items, {
+          expect(const EnharmonicInterval(13).spellings, {
             Interval.augmentedOctave,
             const Interval.imperfect(9, ImperfectQuality.minor),
             const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
-          expect(const EnharmonicInterval(-13).items, {
+          expect(const EnharmonicInterval(-13).spellings, {
             -Interval.augmentedOctave,
             -const Interval.imperfect(9, ImperfectQuality.minor),
             -const Interval.imperfect(10, ImperfectQuality.doublyDiminished),

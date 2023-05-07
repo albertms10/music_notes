@@ -22,7 +22,7 @@ class EnharmonicNote extends Enharmonic<Note>
   static const b = EnharmonicNote(12);
 
   @override
-  Set<Note> get items {
+  Set<Note> get spellings {
     final note = Notes.fromValue(semitones);
 
     if (note != null) {
@@ -66,12 +66,12 @@ class EnharmonicNote extends Enharmonic<Note>
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote.d.toNote() == Note.d
-  /// EnharmonicNote.fSharp.toNote(Accidental.flat) == Note.gFlat
-  /// EnharmonicNote.cSharp.toNote(Accidental.natural) // throws
+  /// EnharmonicNote.d.resolveSpelling() == Note.d
+  /// EnharmonicNote.fSharp.resolveSpelling(Accidental.flat) == Note.gFlat
+  /// EnharmonicNote.cSharp.resolveSpelling(Accidental.natural) // throws
   /// ```
-  Note toNote([Accidental? withAccidental]) {
-    final matchedNote = items.firstWhereOrNull(
+  Note resolveSpelling([Accidental? withAccidental]) {
+    final matchedNote = spellings.firstWhereOrNull(
       (note) => note.accidental == withAccidental,
     );
     if (matchedNote != null) return matchedNote;
@@ -84,7 +84,7 @@ class EnharmonicNote extends Enharmonic<Note>
       );
     }
 
-    return items
+    return spellings
         // TODO(albertms10): return the note with the closest accidental #50.
         .sorted(
           (a, b) => a.accidental.semitones
@@ -97,21 +97,22 @@ class EnharmonicNote extends Enharmonic<Note>
   /// Returns the [Note] that matches with [preferredAccidental] from this
   /// [EnharmonicNote].
   ///
-  /// Like [toNote] except that this function returns the closest note where a
-  /// similar call to [toNote] would throw an [ArgumentError].
+  /// Like [resolveSpelling] except that this function returns the closest note
+  /// where a similar call to [resolveSpelling] would throw an [ArgumentError].
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote.d.toClosestNote() == Note.d
-  /// EnharmonicNote.gSharp.toClosestNote(Accidental.flat) == Note.aFlat
-  /// EnharmonicNote.cSharp.toClosestNote(Accidental.natural) == null
+  /// EnharmonicNote.d.resolveClosestSpelling() == Note.d
+  /// EnharmonicNote.gSharp.resolveClosestSpelling(Accidental.flat)
+  ///   == Note.aFlat
+  /// EnharmonicNote.cSharp.resolveClosestSpelling(Accidental.natural) == null
   /// ```
-  Note toClosestNote([Accidental? preferredAccidental]) {
+  Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
-      return toNote(preferredAccidental);
+      return resolveSpelling(preferredAccidental);
       // ignore: avoid_catching_errors
     } on ArgumentError {
-      return toNote();
+      return resolveSpelling();
     }
   }
 

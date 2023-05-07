@@ -18,7 +18,7 @@ class EnharmonicInterval extends Enharmonic<Interval> {
   static const perfectOctave = EnharmonicInterval(12);
 
   @override
-  Set<Interval> get items {
+  Set<Interval> get spellings {
     final semitonesAbs = semitones.abs();
     final sign = semitones.isNegative ? -1 : 1;
     final size = IntervalSizeExtension.fromSemitones(semitonesAbs);
