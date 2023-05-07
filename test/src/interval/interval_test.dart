@@ -29,36 +29,60 @@ void main() {
     group('.fromSemitones()', () {
       test('should create a new Interval from semitones', () {
         expect(Interval.fromSemitones(1, -1), Interval.diminishedUnison);
+        expect(Interval.fromSemitones(-1, 1), -Interval.diminishedUnison);
         expect(Interval.fromSemitones(1, 0), Interval.perfectUnison);
+        expect(Interval.fromSemitones(-1, 0), -Interval.perfectUnison);
         expect(Interval.fromSemitones(1, 1), Interval.augmentedUnison);
+        expect(Interval.fromSemitones(-1, -1), -Interval.augmentedUnison);
 
         expect(Interval.fromSemitones(2, 0), Interval.diminishedSecond);
+        expect(Interval.fromSemitones(-2, 0), -Interval.diminishedSecond);
         expect(Interval.fromSemitones(2, 1), Interval.minorSecond);
+        expect(Interval.fromSemitones(-2, -1), -Interval.minorSecond);
         expect(Interval.fromSemitones(2, 2), Interval.majorSecond);
+        expect(Interval.fromSemitones(-2, -2), -Interval.majorSecond);
         expect(Interval.fromSemitones(2, 3), Interval.augmentedSecond);
+        expect(Interval.fromSemitones(-2, -3), -Interval.augmentedSecond);
 
         expect(Interval.fromSemitones(3, 2), Interval.diminishedThird);
+        expect(Interval.fromSemitones(-3, -2), -Interval.diminishedThird);
         expect(Interval.fromSemitones(3, 3), Interval.minorThird);
+        expect(Interval.fromSemitones(-3, -3), -Interval.minorThird);
         expect(Interval.fromSemitones(3, 4), Interval.majorThird);
+        expect(Interval.fromSemitones(-3, -4), -Interval.majorThird);
         expect(Interval.fromSemitones(3, 5), Interval.augmentedThird);
+        expect(Interval.fromSemitones(-3, -5), -Interval.augmentedThird);
 
         expect(Interval.fromSemitones(4, 4), Interval.diminishedFourth);
+        expect(Interval.fromSemitones(-4, -4), -Interval.diminishedFourth);
         expect(Interval.fromSemitones(4, 5), Interval.perfectFourth);
+        expect(Interval.fromSemitones(-4, -5), -Interval.perfectFourth);
         expect(Interval.fromSemitones(4, 6), Interval.augmentedFourth);
+        expect(Interval.fromSemitones(-4, -6), -Interval.augmentedFourth);
 
         expect(Interval.fromSemitones(5, 6), Interval.diminishedFifth);
+        expect(Interval.fromSemitones(-5, -6), -Interval.diminishedFifth);
         expect(Interval.fromSemitones(5, 7), Interval.perfectFifth);
+        expect(Interval.fromSemitones(-5, -7), -Interval.perfectFifth);
         expect(Interval.fromSemitones(5, 8), Interval.augmentedFifth);
+        expect(Interval.fromSemitones(-5, -8), -Interval.augmentedFifth);
 
         expect(Interval.fromSemitones(6, 8), Interval.minorSixth);
+        expect(Interval.fromSemitones(-6, -8), -Interval.minorSixth);
         expect(Interval.fromSemitones(6, 9), Interval.majorSixth);
+        expect(Interval.fromSemitones(-6, -9), -Interval.majorSixth);
 
         expect(Interval.fromSemitones(7, 10), Interval.minorSeventh);
+        expect(Interval.fromSemitones(-7, -10), -Interval.minorSeventh);
         expect(Interval.fromSemitones(7, 11), Interval.majorSeventh);
+        expect(Interval.fromSemitones(-7, -11), -Interval.majorSeventh);
 
         expect(Interval.fromSemitones(8, 11), Interval.diminishedOctave);
+        expect(Interval.fromSemitones(-8, -11), -Interval.diminishedOctave);
         expect(Interval.fromSemitones(8, 12), Interval.perfectOctave);
+        expect(Interval.fromSemitones(-8, -12), -Interval.perfectOctave);
         expect(Interval.fromSemitones(8, 13), Interval.augmentedOctave);
+        expect(Interval.fromSemitones(-8, -13), -Interval.augmentedOctave);
       });
     });
 
@@ -141,12 +165,24 @@ void main() {
 
     group('.inverted', () {
       test('should return the inverted of this Interval', () {
-        expect(Interval.augmentedUnison.inverted, Interval.diminishedOctave);
+        expect(Interval.diminishedUnison.inverted, Interval.augmentedOctave);
         expect(Interval.perfectUnison.inverted, Interval.perfectOctave);
+        expect(Interval.augmentedUnison.inverted, Interval.diminishedOctave);
+        expect(Interval.minorSecond.inverted, Interval.majorSeventh);
         expect(Interval.majorSecond.inverted, Interval.minorSeventh);
         expect(Interval.minorThird.inverted, Interval.majorSixth);
-        expect(Interval.diminishedFifth.inverted, Interval.augmentedFourth);
+        expect(Interval.majorThird.inverted, Interval.minorSixth);
         expect(Interval.diminishedFourth.inverted, Interval.augmentedFifth);
+        expect(Interval.augmentedFourth.inverted, Interval.diminishedFifth);
+        expect(Interval.diminishedFifth.inverted, Interval.augmentedFourth);
+        expect(Interval.augmentedFifth.inverted, Interval.diminishedFourth);
+        expect(Interval.minorSixth.inverted, Interval.majorThird);
+        expect(Interval.majorSixth.inverted, Interval.minorThird);
+        expect(Interval.minorSeventh.inverted, Interval.majorSecond);
+        expect(Interval.majorSeventh.inverted, Interval.minorSecond);
+        expect(Interval.diminishedOctave.inverted, Interval.augmentedUnison);
+        expect(Interval.perfectOctave.inverted, Interval.perfectUnison);
+        expect(Interval.augmentedOctave.inverted, Interval.diminishedUnison);
       });
     });
 
