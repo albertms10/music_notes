@@ -28,6 +28,16 @@ class KeySignature implements Comparable<KeySignature> {
                   : Accidental.sharp,
         );
 
+  /// Returns the fifths distance of this [KeySignature].
+  ///
+  /// Example:
+  /// ```dart
+  /// const KeySignature(0).distance == 0
+  /// const KeySignature(3, Accidental.sharp).distance == 3
+  /// const KeySignature(4, Accidental.flat).distance == -4
+  /// ```
+  int get distance => accidentals * (accidental == Accidental.flat ? -1 : 1);
+
   /// Returns the [Note] that corresponds to the major [Tonality] of this
   /// [KeySignature].
   ///

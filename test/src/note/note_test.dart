@@ -54,6 +54,26 @@ void main() {
       );
     });
 
+    group('.circleOfFifthsDistance', () {
+      test('should return the circle of fifths distance of this Note', () {
+        expect(const Note(Notes.c, Accidental.flat).circleOfFifthsDistance, -7);
+        expect(Note.gFlat.circleOfFifthsDistance, -6);
+        expect(Note.dFlat.circleOfFifthsDistance, -5);
+        expect(Note.aFlat.circleOfFifthsDistance, -4);
+        expect(Note.eFlat.circleOfFifthsDistance, -3);
+        expect(Note.bFlat.circleOfFifthsDistance, -2);
+        expect(Note.f.circleOfFifthsDistance, -1);
+        expect(Note.c.circleOfFifthsDistance, 0);
+        expect(Note.g.circleOfFifthsDistance, 1);
+        expect(Note.d.circleOfFifthsDistance, 2);
+        expect(Note.a.circleOfFifthsDistance, 3);
+        expect(Note.e.circleOfFifthsDistance, 4);
+        expect(Note.b.circleOfFifthsDistance, 5);
+        expect(Note.fSharp.circleOfFifthsDistance, 6);
+        expect(Note.cSharp.circleOfFifthsDistance, 7);
+      });
+    });
+
     group('.exactFifthsDistance()', () {
       test(
         'should return the fifths distance between this and other Note',
