@@ -79,6 +79,17 @@ class Note implements MusicItem, Transposable<Note> {
   PositionedNote inOctave(int octave) =>
       PositionedNote(note, accidental, octave);
 
+  /// Returns the distance in relation to the circle of fifths.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.circleOfFifthsDistance == 0
+  /// Note.d.circleOfFifthsDistance == 2
+  /// Note.aFlat.circleOfFifthsDistance == -4
+  /// ```
+  int get circleOfFifthsDistance =>
+      Tonality(this, TonalMode.major).keySignature.distance;
+
   /// Returns the exact fifths distance between this and [other].
   ///
   /// Example:
