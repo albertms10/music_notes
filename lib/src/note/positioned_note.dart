@@ -85,16 +85,16 @@ class PositionedNote extends Note {
   double equalTemperamentFrequency([double a4Hertzs = 440]) =>
       a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
 
-  /// Whether this [Note] is inside the human hearing range.
+  /// Whether this [Note] is inside the human hearing range at [a4Hertzs].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).isHumanAudible == true
-  /// Note.d.inOctave(0).isHumanAudible == false
-  /// Note.g.inOctave(12).isHumanAudible == false
+  /// Note.a.inOctave(4).isHumanAudibleAt() == true
+  /// Note.d.inOctave(0).isHumanAudibleAt() == false
+  /// Note.g.inOctave(12).isHumanAudibleAt(442) == false
   /// ```
-  bool get isHumanAudible {
-    final frequency = equalTemperamentFrequency();
+  bool isHumanAudibleAt([double a4Hertzs = 440]) {
+    final frequency = equalTemperamentFrequency(a4Hertzs);
     const minFrequency = 20;
     const maxFrequency = 20000;
 
