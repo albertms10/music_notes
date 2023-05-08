@@ -45,6 +45,10 @@ class Note implements MusicItem, Transposable<Note> {
     return note.transposeBy(-Interval.minorThird);
   }
 
+  /// [Comparator] for [Note]s by fifths distance.
+  static int compareByFifthsDistance(Note a, Note b) =>
+      a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
+
   /// Returns the number of semitones that correspond to this [Note]
   /// from [Notes.c].
   ///
