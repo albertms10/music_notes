@@ -199,7 +199,7 @@ class Scale {
   ///   == const [Note.c, Note.d, Note.eFlat, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c]
   /// ```
-  List<Transposable<T>> fromNote<T>(Transposable<T> transposable) =>
+  List<T> fromNote<T extends Transposable<T>>(T transposable) =>
       intervalSteps.fold(
         [transposable],
         (scaleNotes, interval) =>
