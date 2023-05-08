@@ -16,7 +16,7 @@ abstract class Mode implements Enum, Comparable<Mode> {
   int get brightness;
 
   /// [Comparator] for [Mode]s.
-  static int compareModes(Mode a, Mode b) => compareMultiple([
+  static int compare(Mode a, Mode b) => compareMultiple([
         () => a.brightness.compareTo(b.brightness),
         () => a.name.compareTo(b.name),
       ]);
@@ -48,7 +48,7 @@ enum TonalMode implements Mode {
       this == TonalMode.major ? TonalMode.minor : TonalMode.major;
 
   @override
-  int compareTo(Mode other) => Mode.compareModes(this, other);
+  int compareTo(Mode other) => Mode.compare(this, other);
 }
 
 enum ModalMode implements Mode {
@@ -96,5 +96,5 @@ enum ModalMode implements Mode {
       values.firstWhere((mode) => mode.brightness == -brightness);
 
   @override
-  int compareTo(Mode other) => Mode.compareModes(this, other);
+  int compareTo(Mode other) => Mode.compare(this, other);
 }
