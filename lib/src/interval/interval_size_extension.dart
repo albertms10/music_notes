@@ -60,6 +60,14 @@ extension IntervalSizeExtension on int {
         sign;
   }
 
+  /// Returns the absolute [Interval.size] value taking octave shift into
+  /// account.
+  int get _sizeAbsShift {
+    final sizeAbs = abs();
+
+    return sizeAbs + sizeAbs ~/ 8;
+  }
+
   /// Returns `true` if this [Interval.size] conforms a perfect interval.
   ///
   /// Example:
@@ -70,9 +78,8 @@ extension IntervalSizeExtension on int {
   /// ```
   bool get isPerfect {
     assert(this != 0, 'Size must be non-zero');
-    final sizeAbs = abs();
 
-    return (sizeAbs + sizeAbs ~/ 8) % 4 < 2;
+    return _sizeAbsShift % 4 < 2;
   }
 
   /// Returns whether this [Interval.size] is greater than an octave.
@@ -118,11 +125,9 @@ extension IntervalSizeExtension on int {
   /// ```
   int get simplified {
     assert(this != 0, 'Size must be non-zero');
-    final sizeAbs = abs();
+    if (!isCompound) return this;
 
-    return isCompound
-        ? ((sizeAbs + sizeAbs ~/ 8).nModExcludeZero(8)) * sign
-        : this;
+    return _sizeAbsShift.nModExcludeZero(8) * sign;
   }
 
   /// Returns the inverted of this [Interval.size].
