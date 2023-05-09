@@ -68,10 +68,7 @@ class Tonality implements Comparable<Tonality> {
   /// ```
   Tonality get relative => Tonality(
         note.transposeBy(
-          Interval.imperfect(
-            3 * (mode == TonalMode.major ? -1 : 1),
-            ImperfectQuality.minor,
-          ),
+          Interval.minorThird.descending(isDescending: mode == TonalMode.major),
         ),
         mode.opposite,
       );
