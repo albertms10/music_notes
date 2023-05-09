@@ -56,6 +56,7 @@ void main() {
 
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
+        expect(const Note(Notes.f, Accidental.flat).circleOfFifthsDistance, -8);
         expect(const Note(Notes.c, Accidental.flat).circleOfFifthsDistance, -7);
         expect(Note.gFlat.circleOfFifthsDistance, -6);
         expect(Note.dFlat.circleOfFifthsDistance, -5);
@@ -71,6 +72,18 @@ void main() {
         expect(Note.b.circleOfFifthsDistance, 5);
         expect(Note.fSharp.circleOfFifthsDistance, 6);
         expect(Note.cSharp.circleOfFifthsDistance, 7);
+        expect(Note.gSharp.circleOfFifthsDistance, 8);
+        expect(Note.dSharp.circleOfFifthsDistance, 9);
+        expect(Note.aSharp.circleOfFifthsDistance, 10);
+        expect(
+          const Note(Notes.e, Accidental.sharp).circleOfFifthsDistance,
+          11,
+        );
+        // TODO(albertms10): Failing test: should return 12.
+        expect(
+          const Note(Notes.b, Accidental.sharp).circleOfFifthsDistance,
+          0,
+        );
       });
     });
 
@@ -272,6 +285,32 @@ void main() {
           Note.aFlat,
         ]);
       });
+
+      test(
+        'should correctly sort Note items in a collection by fifths distance',
+        () {
+          final orderedSet = SplayTreeSet<Note>.of(
+            const [
+              Note.d,
+              Note.aFlat,
+              Note.c,
+              Note.bFlat,
+              Note.gSharp,
+              Note(Notes.b, Accidental.sharp),
+            ],
+            Note.compareByFifthsDistance,
+          );
+          expect(orderedSet.toList(), const [
+            Note.aFlat,
+            Note.bFlat,
+            Note.c,
+            Note.d,
+            Note.gSharp,
+            // TODO(albertms10): Failing test: should include
+            //  `Note(Notes.b, Accidental.sharp)`.
+          ]);
+        },
+      );
     });
   });
 }
