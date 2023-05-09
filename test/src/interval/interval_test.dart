@@ -163,6 +163,44 @@ void main() {
       });
     });
 
+    group('.descending()', () {
+      test(
+        'should return the descending Interval based on isDescending',
+        () {
+          expect(Interval.majorSecond.descending(), -Interval.majorSecond);
+          expect(
+            Interval.minorThird.descending(isDescending: false),
+            Interval.minorThird,
+          );
+          expect(
+            (-Interval.minorSixth).descending(isDescending: false),
+            Interval.minorSixth,
+          );
+          expect(
+            (-Interval.perfectOctave).descending(),
+            -Interval.perfectOctave,
+          );
+        },
+      );
+
+      test(
+        'should return a copy of this Interval based on isDescending',
+        () {
+          const ascendingInterval = Interval.perfectFourth;
+          expect(
+            identical(ascendingInterval.descending(), ascendingInterval),
+            isFalse,
+          );
+
+          final descendingInterval = -Interval.minorThird;
+          expect(
+            identical(descendingInterval.descending(), descendingInterval),
+            isFalse,
+          );
+        },
+      );
+    });
+
     group('.inverted', () {
       test('should return the inverted of this Interval', () {
         expect(Interval.diminishedUnison.inverted, Interval.augmentedOctave);

@@ -148,6 +148,19 @@ class Interval implements MusicItem {
   /// ```
   bool get isDescending => size.isNegative;
 
+  /// Returns a copy of this [Interval] based on [isDescending].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.minorSecond.descending() == -Interval.minorSecond
+  /// Interval.majorThird.descending(isDescending: false) == Interval.majorThird
+  /// (-Interval.perfectFifth).descending() == -Interval.perfectFifth
+  /// (-Interval.majorSeventh).descending(isDescending: false)
+  ///   == Interval.majorSeventh
+  /// ```
+  Interval descending({bool isDescending = true}) =>
+      this.isDescending != isDescending ? -this : Interval._(size, quality);
+
   /// Returns the inverted of this [Interval].
   ///
   /// Example:
