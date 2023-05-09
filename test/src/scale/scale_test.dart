@@ -193,7 +193,7 @@ void main() {
           );
           expect(
             Scale.melodicMinor.fromNote(Note.f, isDescending: true),
-            Scale.naturalMinor.fromNote(Note.f).reversed.toList(),
+            Scale.naturalMinor.fromNote(Note.f).reversed,
           );
         },
       );
