@@ -57,6 +57,19 @@ void main() {
             Note.d.inOctave(3),
           ],
         );
+        expect(
+          Scale.major.fromNote(Note.cSharp, isDescending: true),
+          const [
+            Note.cSharp,
+            Note(Notes.b, Accidental.sharp),
+            Note.aSharp,
+            Note.gSharp,
+            Note.fSharp,
+            Note(Notes.e, Accidental.sharp),
+            Note.dSharp,
+            Note.cSharp,
+          ],
+        );
       });
 
       test(
@@ -86,6 +99,19 @@ void main() {
               Note.bFlat,
               Note.c,
               Note.d,
+            ],
+          );
+          expect(
+            Scale.naturalMinor.fromNote(Note.aFlat, isDescending: true),
+            const [
+              Note.aFlat,
+              Note.gFlat,
+              Note(Notes.f, Accidental.flat),
+              Note.eFlat,
+              Note.dFlat,
+              Note(Notes.c, Accidental.flat),
+              Note.bFlat,
+              Note.aFlat,
             ],
           );
         },
@@ -120,6 +146,20 @@ void main() {
               Note.d,
             ],
           );
+          expect(
+            Scale.harmonicMinor
+                .fromNote(Note.e.inOctave(3), isDescending: true),
+            [
+              Note.e.inOctave(3),
+              Note.dSharp.inOctave(3),
+              Note.c.inOctave(3),
+              Note.b.inOctave(2),
+              Note.a.inOctave(2),
+              Note.g.inOctave(2),
+              Note.fSharp.inOctave(2),
+              Note.e.inOctave(2),
+            ],
+          );
         },
       );
 
@@ -151,6 +191,10 @@ void main() {
               const Note(Notes.f, Accidental.doubleSharp).inOctave(2),
               Note.gSharp.inOctave(2),
             ],
+          );
+          expect(
+            Scale.melodicMinor.fromNote(Note.f, isDescending: true),
+            Scale.naturalMinor.fromNote(Note.f).reversed,
           );
         },
       );
