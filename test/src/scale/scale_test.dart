@@ -147,16 +147,17 @@ void main() {
             ],
           );
           expect(
-            Scale.harmonicMinor.fromNote(Note.e, isDescending: true),
-            const [
-              Note.e,
-              Note.dSharp,
-              Note.c,
-              Note.b,
-              Note.a,
-              Note.g,
-              Note.fSharp,
-              Note.e,
+            Scale.harmonicMinor
+                .fromNote(Note.e.inOctave(3), isDescending: true),
+            [
+              Note.e.inOctave(3),
+              Note.dSharp.inOctave(3),
+              Note.c.inOctave(3),
+              Note.b.inOctave(2),
+              Note.a.inOctave(2),
+              Note.g.inOctave(2),
+              Note.fSharp.inOctave(2),
+              Note.e.inOctave(2),
             ],
           );
         },
