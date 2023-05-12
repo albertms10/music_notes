@@ -3,7 +3,7 @@ part of '../../music_notes.dart';
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
 @immutable
-abstract class Quality implements MusicItem {
+sealed class Quality implements MusicItem {
   /// Delta semitones from the [Interval].
   @override
   final int semitones;
@@ -45,6 +45,7 @@ abstract class Quality implements MusicItem {
   @override
   int compareTo(covariant Quality other) => compareMultiple([
         () => semitones.compareTo(other.semitones),
+        // ignore: no_runtimetype_tostring
         () => '$runtimeType'.compareTo('${other.runtimeType}'),
       ]);
 }
@@ -67,15 +68,16 @@ class PerfectQuality extends Quality {
   static const PerfectQuality triplyAugmented = PerfectQuality(3);
 
   @override
-  String? get abbreviation => const {
-        -3: 'ddd',
-        -2: 'dd',
-        -1: 'd',
-        0: 'P',
-        1: 'A',
-        2: 'AA',
-        3: 'AAA',
-      }[semitones];
+  String? get abbreviation => switch (semitones) {
+        -3 => 'ddd',
+        -2 => 'dd',
+        -1 => 'd',
+        0 => 'P',
+        1 => 'A',
+        2 => 'AA',
+        3 => 'AAA',
+        _ => null,
+      };
 
   /// Returns the inverted version of this [PerfectQuality].
   ///
@@ -112,16 +114,17 @@ class ImperfectQuality extends Quality {
   static const ImperfectQuality triplyAugmented = ImperfectQuality(4);
 
   @override
-  String? get abbreviation => const {
-        -3: 'ddd',
-        -2: 'dd',
-        -1: 'd',
-        0: 'm',
-        1: 'M',
-        2: 'A',
-        3: 'AA',
-        4: 'AAA',
-      }[semitones];
+  String? get abbreviation => switch (semitones) {
+        -3 => 'ddd',
+        -2 => 'dd',
+        -1 => 'd',
+        0 => 'm',
+        1 => 'M',
+        2 => 'A',
+        3 => 'AA',
+        4 => 'AAA',
+        _ => null,
+      };
 
   /// Returns the inverted version of this [ImperfectQuality].
   ///

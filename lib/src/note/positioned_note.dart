@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 /// A note octave in the octave range.
-class PositionedNote extends Note {
+final class PositionedNote extends Note {
   /// The octave where this [PositionedNote] is.
   final int octave;
 

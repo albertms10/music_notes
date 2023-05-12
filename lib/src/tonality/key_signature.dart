@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class KeySignature implements Comparable<KeySignature> {
+final class KeySignature implements Comparable<KeySignature> {
   final int accidentals;
   final Accidental accidental;
 

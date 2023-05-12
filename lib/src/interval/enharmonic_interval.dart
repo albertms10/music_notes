@@ -1,6 +1,6 @@
 part of '../../music_notes.dart';
 
-class EnharmonicInterval extends Enharmonic<Interval> {
+final class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
   static const perfectUnison = EnharmonicInterval(0);

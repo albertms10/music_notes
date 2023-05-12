@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Note implements MusicItem, Transposable<Note> {
+final class Note implements MusicItem, Transposable<Note> {
   final Notes note;
   final Accidental accidental;
 

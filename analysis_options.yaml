@@ -6,6 +6,10 @@ linter:
     - avoid_types_on_closure_parameters
     - cancel_subscriptions
   # - discarded_futures
+    - implicit_reopen
+    - invalid_case_patterns
+    - type_literal_in_constant_pattern
+    - unnecessary_breaks
     - unnecessary_null_aware_operator_on_extension_on_nullable
 
 dart_code_metrics:
