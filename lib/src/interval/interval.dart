@@ -2,7 +2,7 @@ part of '../../music_notes.dart';
 
 /// Distance between two notes.
 @immutable
-class Interval implements MusicItem {
+final class Interval implements MusicItem {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final int size;
@@ -147,6 +147,19 @@ class Interval implements MusicItem {
   /// Interval.diminishedUnison.isDescending == false
   /// ```
   bool get isDescending => size.isNegative;
+
+  /// Returns a copy of this [Interval] based on [isDescending].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.minorSecond.descending() == -Interval.minorSecond
+  /// Interval.majorThird.descending(isDescending: false) == Interval.majorThird
+  /// (-Interval.perfectFifth).descending() == -Interval.perfectFifth
+  /// (-Interval.majorSeventh).descending(isDescending: false)
+  ///   == Interval.majorSeventh
+  /// ```
+  Interval descending({bool isDescending = true}) =>
+      this.isDescending != isDescending ? -this : Interval._(size, quality);
 
   /// Returns the inverted of this [Interval].
   ///

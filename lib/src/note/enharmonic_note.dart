@@ -1,6 +1,6 @@
 part of '../../music_notes.dart';
 
-class EnharmonicNote extends Enharmonic<Note>
+final class EnharmonicNote extends Enharmonic<Note>
     implements Transposable<EnharmonicNote> {
   const EnharmonicNote(super.semitones)
       : assert(

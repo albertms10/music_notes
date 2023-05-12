@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class KeySignature implements Comparable<KeySignature> {
+final class KeySignature implements Comparable<KeySignature> {
   final int accidentals;
   final Accidental accidental;
 
@@ -28,6 +28,16 @@ class KeySignature implements Comparable<KeySignature> {
                   : Accidental.sharp,
         );
 
+  /// Returns the fifths distance of this [KeySignature].
+  ///
+  /// Example:
+  /// ```dart
+  /// const KeySignature(0).distance == 0
+  /// const KeySignature(3, Accidental.sharp).distance == 3
+  /// const KeySignature(4, Accidental.flat).distance == -4
+  /// ```
+  int get distance => accidentals * (accidental == Accidental.flat ? -1 : 1);
+
   /// Returns the [Note] that corresponds to the major [Tonality] of this
   /// [KeySignature].
   ///
@@ -37,10 +47,8 @@ class KeySignature implements Comparable<KeySignature> {
   /// const KeySignature(2, Accidental.sharp).majorNote == Note.d
   /// ```
   Note get majorNote {
-    final fifthInterval = Interval.perfect(
-      5 * (accidental == Accidental.flat ? -1 : 1),
-      PerfectQuality.perfect,
-    );
+    final fifthInterval = Interval.perfectFifth
+        .descending(isDescending: accidental == Accidental.flat);
 
     return EnharmonicNote(
       (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,

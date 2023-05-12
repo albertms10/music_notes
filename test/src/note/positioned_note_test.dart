@@ -448,12 +448,13 @@ void main() {
       });
     });
 
-    group('.isHumanAudible', () {
+    group('.isHumanAudibleAt()', () {
       test('should return whether this PositionedNote is human-audible', () {
-        expect(Note.c.inOctave(4).isHumanAudible, isTrue);
-        expect(Note.a.inOctave(2).isHumanAudible, isTrue);
-        expect(Note.d.inOctave(0).isHumanAudible, isFalse);
-        expect(Note.d.inOctave(12).isHumanAudible, isFalse);
+        expect(Note.c.inOctave(4).isHumanAudibleAt(338), isTrue);
+        expect(Note.a.inOctave(2).isHumanAudibleAt(442), isTrue);
+        expect(Note.d.inOctave(0).isHumanAudibleAt(), isFalse);
+        expect(Note.d.inOctave(11).isHumanAudibleAt(220), isTrue);
+        expect(Note.d.inOctave(12).isHumanAudibleAt(), isFalse);
       });
     });
 

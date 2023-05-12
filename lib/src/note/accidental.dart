@@ -2,7 +2,7 @@ part of '../../music_notes.dart';
 
 /// An accidental.
 @immutable
-class Accidental implements MusicItem {
+final class Accidental implements MusicItem {
   /// The number of semitones above or below the natural note.
   ///
   /// - `> 0` for sharps.
@@ -36,15 +36,16 @@ class Accidental implements MusicItem {
   /// Accidental.doubleFlat.name == 'Double flat'
   /// Accidental.natural.name == 'Natural'
   /// ```
-  String? get name => const {
-        3: 'Triple sharp',
-        2: 'Double sharp',
-        1: 'Sharp',
-        0: 'Natural',
-        -1: 'Flat',
-        -2: 'Double flat',
-        -3: 'Triple flat',
-      }[semitones];
+  String? get name => switch (semitones) {
+        3 => 'Triple sharp',
+        2 => 'Double sharp',
+        1 => 'Sharp',
+        0 => 'Natural',
+        -1 => 'Flat',
+        -2 => 'Double flat',
+        -3 => 'Triple flat',
+        _ => null,
+      };
 
   /// The symbol of this [Accidental].
   ///

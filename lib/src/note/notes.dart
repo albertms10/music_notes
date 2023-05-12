@@ -43,6 +43,7 @@ enum Notes {
   /// ```dart
   /// Notes.c.ordinal == 1
   /// Notes.f.ordinal == 4
+  /// Notes.b.ordinal == 7
   /// ```
   int get ordinal => Notes.values.indexOf(this) + 1;
 

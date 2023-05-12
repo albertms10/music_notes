@@ -3,12 +3,16 @@ part of '../../music_notes.dart';
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
-class Scale {
-  /// The interval steps that define the scale.
+final class Scale {
+  /// The interval steps that define this [Scale].
   final List<Interval> intervalSteps;
 
-  /// Creates a new [Scale] from [intervalSteps].
-  const Scale(this.intervalSteps);
+  /// The descending interval steps that define this [Scale] (if different).
+  final List<Interval>? _descendingIntervalSteps;
+
+  /// Creates a new [Scale] from [intervalSteps] and optional
+  /// [_descendingIntervalSteps].
+  const Scale(this.intervalSteps, [this._descendingIntervalSteps]);
 
   /// ![C Ionian scale](https://upload.wikimedia.org/score/p/2/p2fun2296uif26uyy61yxjli7ocfq9d/p2fun229.png).
   static const ionian = Scale([
@@ -105,15 +109,26 @@ class Scale {
   ]);
 
   /// ![C Melodic minor scale](https://upload.wikimedia.org/score/9/2/92i6sjg41ji8y1ab881a1pcq1u3hr0p/92i6sjg4.png).
-  static const melodicMinor = Scale([
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-  ]);
+  static const melodicMinor = Scale(
+    [
+      Interval.majorSecond,
+      Interval.minorSecond,
+      Interval.majorSecond,
+      Interval.majorSecond,
+      Interval.majorSecond,
+      Interval.majorSecond,
+      Interval.minorSecond,
+    ],
+    [
+      Interval.majorSecond,
+      Interval.majorSecond,
+      Interval.minorSecond,
+      Interval.majorSecond,
+      Interval.majorSecond,
+      Interval.minorSecond,
+      Interval.majorSecond,
+    ],
+  );
 
   /// See [Chromatic scale](https://en.wikipedia.org/wiki/Chromatic_scale).
   ///
@@ -183,6 +198,10 @@ class Scale {
     Interval.minorSecond,
   ]);
 
+  /// The descending interval steps that define this [Scale].
+  List<Interval> get descendingIntervalSteps =>
+      _descendingIntervalSteps ?? intervalSteps.reversed.toList();
+
   /// Returns the scale of notes starting from [transposable].
   ///
   /// Example:
@@ -198,13 +217,27 @@ class Scale {
   /// Scale.melodicMinor.fromNote(Note.c)
   ///   == const [Note.c, Note.d, Note.eFlat, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c]
+  ///
+  /// Scale.melodicMinor.fromNote(Note.c, isDescending: true)
+  ///   == const [Note.c, Note.bFlat, Note.aFlat, Note.g, Note.f, Note.eFlat,
+  ///        Note.d, Note.c]
   /// ```
-  List<T> fromNote<T extends Transposable<T>>(T transposable) =>
-      intervalSteps.fold(
-        [transposable],
-        (scaleNotes, interval) =>
-            [...scaleNotes, scaleNotes.last.transposeBy(interval)],
-      );
+  List<T> fromNote<T extends Transposable<T>>(
+    T transposable, {
+    bool isDescending = false,
+  }) {
+    final steps = isDescending ? descendingIntervalSteps : intervalSteps;
+
+    return steps.fold(
+      [transposable],
+      (scaleNotes, interval) => [
+        ...scaleNotes,
+        scaleNotes.last.transposeBy(
+          interval.descending(isDescending: isDescending),
+        ),
+      ],
+    );
+  }
 
   /// Returns the mirrored scale version of this [Scale].
   ///
@@ -223,24 +256,23 @@ class Scale {
   /// Scale.chromatic.name == 'Chromatic'
   /// Scale.melodicMinor.name == 'Melodic minor'
   /// ```
-  String? get name {
-    if (this == Scale.ionian) return 'Major (ionian)';
-    if (this == Scale.dorian) return 'Dorian';
-    if (this == Scale.phrygian) return 'Phrygian';
-    if (this == Scale.lydian) return 'Lydian';
-    if (this == Scale.mixolydian) return 'Mixolydian';
-    if (this == Scale.aeolian) return 'Natural minor (aeolian)';
-    if (this == Scale.locrian) return 'Locrian';
-    if (this == Scale.harmonicMinor) return 'Harmonic minor';
-    if (this == Scale.melodicMinor) return 'Melodic minor';
-    if (this == Scale.chromatic) return 'Chromatic';
-    if (this == Scale.wholeTone) return 'Whole-tone';
-    if (this == Scale.majorPentatonic) return 'Major pentatonic';
-    if (this == Scale.minorPentatonic) return 'Minor pentatonic';
-    if (this == Scale.octatonic) return 'Octatonic';
-
-    return null;
-  }
+  String? get name => switch (this) {
+        Scale.ionian => 'Major (ionian)',
+        Scale.dorian => 'Dorian',
+        Scale.phrygian => 'Phrygian',
+        Scale.lydian => 'Lydian',
+        Scale.mixolydian => 'Mixolydian',
+        Scale.aeolian => 'Natural minor (aeolian)',
+        Scale.locrian => 'Locrian',
+        Scale.harmonicMinor => 'Harmonic minor',
+        Scale.melodicMinor => 'Melodic minor',
+        Scale.chromatic => 'Chromatic',
+        Scale.wholeTone => 'Whole-tone',
+        Scale.majorPentatonic => 'Major pentatonic',
+        Scale.minorPentatonic => 'Minor pentatonic',
+        Scale.octatonic => 'Octatonic',
+        _ => null,
+      };
 
   @override
   String toString() => '$name (${intervalSteps.join(' ')})';

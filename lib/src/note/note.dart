@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Note implements MusicItem, Transposable<Note> {
+final class Note implements MusicItem, Transposable<Note> {
   final Notes note;
   final Accidental accidental;
 
@@ -45,6 +45,10 @@ class Note implements MusicItem, Transposable<Note> {
     return note.transposeBy(-Interval.minorThird);
   }
 
+  /// [Comparator] for [Note]s by fifths distance.
+  static int compareByFifthsDistance(Note a, Note b) =>
+      a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
+
   /// Returns the number of semitones that correspond to this [Note]
   /// from [Notes.c].
   ///
@@ -78,6 +82,17 @@ class Note implements MusicItem, Transposable<Note> {
   /// ```
   PositionedNote inOctave(int octave) =>
       PositionedNote(note, accidental, octave);
+
+  /// Returns the distance in relation to the circle of fifths.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.circleOfFifthsDistance == 0
+  /// Note.d.circleOfFifthsDistance == 2
+  /// Note.aFlat.circleOfFifthsDistance == -4
+  /// ```
+  int get circleOfFifthsDistance =>
+      Tonality(this, TonalMode.major).keySignature.distance;
 
   /// Returns the exact fifths distance between this and [other].
   ///

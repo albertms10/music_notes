@@ -46,6 +46,16 @@ void main() {
       });
     });
 
+    group('.distance', () {
+      test('should return the fifths distance of this KeySignature', () {
+        expect(const KeySignature(7, Accidental.flat).distance, -7);
+        expect(const KeySignature(2, Accidental.flat).distance, -2);
+        expect(const KeySignature(0).distance, 0);
+        expect(const KeySignature(1, Accidental.sharp).distance, 1);
+        expect(const KeySignature(5, Accidental.sharp).distance, 5);
+      });
+    });
+
     group('.majorNote', () {
       test(
         'should return the Note that corresponds to the major Tonality of '
