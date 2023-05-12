@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-class Tonality implements Comparable<Tonality> {
+final class Tonality implements Comparable<Tonality> {
   final Note note;
   final TonalMode mode;
 

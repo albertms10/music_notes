@@ -4,7 +4,7 @@ part of '../../music_notes.dart';
 /// harmonic behaviors.
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
-abstract class Mode implements Enum, Comparable<Mode> {
+sealed class Mode implements Enum, Comparable<Mode> {
   Scale get scale;
 
   /// The [Dorian Brightness Quotient](https://mynewmicrophone.com/dorian-brightness-quotient)

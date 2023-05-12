@@ -2,7 +2,7 @@ part of '../../music_notes.dart';
 
 /// Distance between two notes.
 @immutable
-class Interval implements MusicItem {
+final class Interval implements MusicItem {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final int size;
