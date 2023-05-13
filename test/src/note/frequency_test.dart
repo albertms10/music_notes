@@ -5,6 +5,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('Frequency', () {
+    group('constructor', () {
+      test('should throw an assertion error when arguments are incorrect', () {
+        expect(() => Frequency(-0.1), throwsA(isA<AssertionError>()));
+      });
+    });
+
     group('.isHumanAudible', () {
       test('should return whether the frequency is audible by humans', () {
         expect(const Frequency(0).isHumanAudible, isFalse);
