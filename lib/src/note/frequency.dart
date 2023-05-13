@@ -2,10 +2,15 @@ part of '../../music_notes.dart';
 
 /// Represents an absolute pitch, a physical frequency.
 @immutable
-class Frequency {
+class Frequency implements Comparable<Frequency> {
+  /// The value of this [Frequency] in Hertz.
+  final double hertz;
+
+  /// Creates a new [Frequency] instance from [hertz].
   const Frequency(this.hertz);
 
-  final double hertz;
+  /// The symbol for the Hertz unit.
+  static const hertzUnitSymbol = 'Hz';
 
   /// Whether this [Frequency] is inside the human hearing range.
   ///
@@ -21,4 +26,16 @@ class Frequency {
 
     return hertz >= minFrequency && hertz <= maxFrequency;
   }
+
+  @override
+  String toString() => '$hertz $hertzUnitSymbol';
+
+  @override
+  bool operator ==(Object other) => other is Frequency && hertz == other.hertz;
+
+  @override
+  int get hashCode => hertz.hashCode;
+
+  @override
+  int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
