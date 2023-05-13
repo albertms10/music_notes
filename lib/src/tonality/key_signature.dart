@@ -109,7 +109,7 @@ final class KeySignature implements Comparable<KeySignature> {
   int get hashCode => Object.hash(accidentals, accidental);
 
   @override
-  int compareTo(covariant KeySignature other) => compareMultiple([
+  int compareTo(KeySignature other) => compareMultiple([
         () => accidental.compareTo(other.accidental),
         () =>
             accidentals.compareTo(other.accidentals) *

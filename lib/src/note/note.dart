@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-final class Note implements MusicItem, Transposable<Note> {
+final class Note implements Comparable<Note>, Transposable<Note> {
   final Notes note;
   final Accidental accidental;
 
@@ -57,7 +57,6 @@ final class Note implements MusicItem, Transposable<Note> {
   /// Note.d.semitones == 3
   /// Note.fSharp.semitones == 7
   /// ```
-  @override
   int get semitones =>
       (note.value + accidental.semitones).chromaticModExcludeZero;
 
@@ -207,7 +206,7 @@ final class Note implements MusicItem, Transposable<Note> {
   int get hashCode => Object.hash(note, accidental);
 
   @override
-  int compareTo(covariant Note other) => compareMultiple([
+  int compareTo(Note other) => compareMultiple([
         () => semitones.compareTo(other.semitones),
         () => note.value.compareTo(other.note.value),
       ]);
