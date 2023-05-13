@@ -80,8 +80,9 @@ final class PositionedNote extends Note {
   /// Note.gSharp.inOctave(4).equalTemperamentFrequency()
   ///   == const Frequency(415.3)
   /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
-  /// Note.a.inOctave(4).equalTemperamentFrequency(338) == const Frequency(338)
-  /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338)
+  /// Note.a.inOctave(4).equalTemperamentFrequency(const Frequency(338))
+  ///   == const Frequency(338)
+  /// Note.bFlat.inOctave(4).equalTemperamentFrequency(const Frequency(338))
   ///   == const Frequency(464.04)
   /// ```
   Frequency equalTemperamentFrequency([
