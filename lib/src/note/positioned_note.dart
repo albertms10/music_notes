@@ -72,7 +72,7 @@ final class PositionedNote extends Note {
   }
 
   /// Returns the equal temperament [Frequency] of this [PositionedNote] from
-  /// the A4 note reference.
+  /// the A4 note [reference].
   ///
   /// Example:
   /// ```dart
@@ -84,8 +84,12 @@ final class PositionedNote extends Note {
   /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338)
   ///   == const Frequency(464.04)
   /// ```
-  Frequency equalTemperamentFrequency([double a4Hertz = 440]) => Frequency(
-        a4Hertz * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
+  Frequency equalTemperamentFrequency([
+    Frequency reference = const Frequency(440),
+  ]) =>
+      Frequency(
+        reference.hertz *
+            math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
       );
 
   /// Returns the string representation of this [Note] following the

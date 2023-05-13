@@ -385,69 +385,73 @@ void main() {
       test(
         'should return the Frequency of this PositionedNote from 438 Hz',
         () {
+          const frequency = Frequency(438);
           expect(
-            Note.c.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.c.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(260.44, 0.01),
           );
           expect(
-            Note.cSharp.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.cSharp.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(275.92, 0.01),
           );
           expect(
-            Note.dFlat.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.dFlat.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(275.92, 0.01),
           );
           expect(
-            Note.d.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.d.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(292.33, 0.01),
           );
           expect(
-            Note.dSharp.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.dSharp.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(309.71, 0.01),
           );
           expect(
-            Note.eFlat.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.eFlat.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(309.71, 0.01),
           );
           expect(
-            Note.e.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.e.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(328.13, 0.01),
           );
           expect(
-            Note.f.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.f.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(347.64, 0.01),
           );
           expect(
-            Note.fSharp.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.fSharp.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(368.31, 0.01),
           );
           expect(
-            Note.gFlat.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.gFlat.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(368.31, 0.01),
           );
           expect(
-            Note.g.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.g.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(390.21, 0.01),
           );
           expect(
-            Note.gSharp.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.gSharp.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(413.42, 0.01),
           );
           expect(
-            Note.aFlat.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.aFlat.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(413.42, 0.01),
           );
-          expect(Note.a.inOctave(4).equalTemperamentFrequency(438).hertz, 438);
           expect(
-            Note.aSharp.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.a.inOctave(4).equalTemperamentFrequency(frequency).hertz,
+            438,
+          );
+          expect(
+            Note.aSharp.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(464.04, 0.01),
           );
           expect(
-            Note.bFlat.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.bFlat.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(464.04, 0.01),
           );
           expect(
-            Note.b.inOctave(4).equalTemperamentFrequency(438).hertz,
+            Note.b.inOctave(4).equalTemperamentFrequency(frequency).hertz,
             closeTo(491.64, 0.01),
           );
         },
