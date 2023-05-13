@@ -7,6 +7,7 @@ import 'interval/quality_test.dart' as quality_test;
 import 'music_test.dart' as music_test;
 import 'note/accidental_test.dart' as accidental_test;
 import 'note/enharmonic_note_test.dart' as enharmonic_note_test;
+import 'note/frequency_test.dart' as frequency_test;
 import 'note/note_test.dart' as note_test;
 import 'note/notes_test.dart' as notes_test;
 import 'note/positioned_note_test.dart' as positioned_note_test;
@@ -24,6 +25,7 @@ void main() {
   music_test.main();
   accidental_test.main();
   enharmonic_note_test.main();
+  frequency_test.main();
   note_test.main();
   notes_test.main();
   positioned_note_test.main();

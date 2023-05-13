@@ -82,8 +82,8 @@ final class PositionedNote extends Note {
   /// Note.a.inOctave(4).equalTemperamentFrequency(338) == 338
   /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338) == 464.04
   /// ```
-  Frequency equalTemperamentFrequency([double a4Hertzs = 440]) => Frequency(
-        a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
+  Frequency equalTemperamentFrequency([double a4Hertz = 440]) => Frequency(
+        a4Hertz * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
       );
 
   /// Returns the string representation of this [Note] following the

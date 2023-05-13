@@ -1,8 +1,9 @@
 part of '../../music_notes.dart';
 
 /// Represents an absolute pitch, a physical frequency.
+@immutable
 class Frequency {
-  Frequency(this.hertz);
+  const Frequency(this.hertz);
 
   final double hertz;
 
@@ -10,9 +11,9 @@ class Frequency {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).isHumanAudibleAt() == true
-  /// Note.d.inOctave(0).isHumanAudibleAt() == false
-  /// Note.g.inOctave(12).isHumanAudibleAt(442) == false
+  /// const Frequency(880).isHumanAudible == true
+  /// Note.a.inOctave(4).equalTemperamentFrequency().isHumanAudible == true
+  /// Note.g.inOctave(12).equalTemperamentFrequency(442).isHumanAudible == false
   /// ```
   bool get isHumanAudible {
     const minFrequency = 20;
