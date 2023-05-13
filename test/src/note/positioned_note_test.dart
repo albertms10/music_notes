@@ -36,6 +36,12 @@ void main() {
           expect(Note.c.inOctave(-2).semitonesFromRootHeight, -23);
           expect(Note.c.inOctave(-1).semitonesFromRootHeight, -11);
           expect(Note.c.inOctave(0).semitonesFromRootHeight, 1);
+          expect(Note.d.inOctave(0).semitonesFromRootHeight, 3);
+          expect(Note.e.inOctave(0).semitonesFromRootHeight, 5);
+          expect(Note.fSharp.inOctave(0).semitonesFromRootHeight, 7);
+          expect(Note.gFlat.inOctave(0).semitonesFromRootHeight, 7);
+          expect(Note.a.inOctave(0).semitonesFromRootHeight, 10);
+          expect(Note.b.inOctave(0).semitonesFromRootHeight, 12);
           expect(Note.c.inOctave(1).semitonesFromRootHeight, 13);
           expect(Note.c.inOctave(2).semitonesFromRootHeight, 25);
           expect(Note.a.inOctave(2).semitonesFromRootHeight, 34);
