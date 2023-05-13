@@ -7,7 +7,7 @@ class Frequency implements Comparable<Frequency> {
   final double hertz;
 
   /// Creates a new [Frequency] instance from [hertz].
-  const Frequency(this.hertz);
+  const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive');
 
   /// The symbol for the Hertz unit.
   static const hertzUnitSymbol = 'Hz';
