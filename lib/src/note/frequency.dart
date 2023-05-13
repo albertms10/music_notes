@@ -18,7 +18,8 @@ class Frequency implements Comparable<Frequency> {
   /// ```dart
   /// const Frequency(880).isHumanAudible == true
   /// Note.a.inOctave(4).equalTemperamentFrequency().isHumanAudible == true
-  /// Note.g.inOctave(12).equalTemperamentFrequency(442).isHumanAudible == false
+  /// Note.g.inOctave(12).equalTemperamentFrequency(const Frequency(442))
+  ///   .isHumanAudible == false
   /// ```
   bool get isHumanAudible {
     const minFrequency = 20;
