@@ -71,35 +71,22 @@ final class PositionedNote extends Note {
     );
   }
 
-  /// Returns the equal temperament frequency in Hertzs of this [PositionedNote]
-  /// from the A4 note reference.
+  /// Returns the equal temperament [Frequency] of this [PositionedNote] from
+  /// the A4 note reference.
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).equalTemperamentFrequency() == 440
-  /// Note.gSharp.inOctave(4).equalTemperamentFrequency() == 415.3
-  /// Note.c.inOctave(4).equalTemperamentFrequency() == 261.63
-  /// Note.a.inOctave(4).equalTemperamentFrequency(338) == 338
-  /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338) == 464.04
+  /// Note.a.inOctave(4).equalTemperamentFrequency() == const Frequency(440)
+  /// Note.gSharp.inOctave(4).equalTemperamentFrequency()
+  ///   == const Frequency(415.3)
+  /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
+  /// Note.a.inOctave(4).equalTemperamentFrequency(338) == const Frequency(338)
+  /// Note.bFlat.inOctave(4).equalTemperamentFrequency(338)
+  ///   == const Frequency(464.04)
   /// ```
-  double equalTemperamentFrequency([double a4Hertzs = 440]) =>
-      a4Hertzs * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
-
-  /// Whether this [Note] is inside the human hearing range at [a4Hertzs].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.inOctave(4).isHumanAudibleAt() == true
-  /// Note.d.inOctave(0).isHumanAudibleAt() == false
-  /// Note.g.inOctave(12).isHumanAudibleAt(442) == false
-  /// ```
-  bool isHumanAudibleAt([double a4Hertzs = 440]) {
-    final frequency = equalTemperamentFrequency(a4Hertzs);
-    const minFrequency = 20;
-    const maxFrequency = 20000;
-
-    return frequency >= minFrequency && frequency <= maxFrequency;
-  }
+  Frequency equalTemperamentFrequency([double a4Hertz = 440]) => Frequency(
+        a4Hertz * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
+      );
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
