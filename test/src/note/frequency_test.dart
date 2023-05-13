@@ -39,7 +39,7 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort Note items in a collection', () {
+      test('should correctly sort Frequency items in a collection', () {
         final orderedSet = SplayTreeSet<Frequency>.of(const [
           Frequency(2000),
           Frequency(10),
