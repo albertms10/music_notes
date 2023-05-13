@@ -113,6 +113,6 @@ final class KeySignature implements Comparable<KeySignature> {
         () => accidental.compareTo(other.accidental),
         () =>
             accidentals.compareTo(other.accidentals) *
-            (accidental.semitones > 0 ? 1 : -1),
+            (accidental.semitones.isNegative ? -1 : 1),
       ]);
 }

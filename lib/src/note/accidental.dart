@@ -86,7 +86,7 @@ final class Accidental implements MusicItem {
   /// Accidental.sharp.increment(-1) == Accidental.natural
   /// ```
   Accidental increment(int n) =>
-      Accidental((semitones.abs() + n) * (semitones >= 0 ? 1 : -1));
+      Accidental((semitones.abs() + n) * (semitones.isNegative ? -1 : 1));
 
   @override
   String toString() => [
