@@ -24,14 +24,13 @@ final class PositionedNote
       ((semitones.abs() - semitones.sign) * semitones.sign / chromaticDivisions)
           .floor();
 
-  /// Returns the number of semitones of this [PositionedNote] from the root
-  /// height.
+  /// Returns the number of semitones of this [PositionedNote] from C0 (root).
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).semitonesFromRootHeight == 49
-  /// Note.a.inOctave(2).semitonesFromRootHeight == 34
-  /// Note.c.inOctave(0).semitonesFromRootHeight == 1
+  /// Note.a.inOctave(4).semitones == 58
+  /// Note.a.inOctave(2).semitones == 34
+  /// Note.c.inOctave(0).semitones == 1
   /// ```
   int get semitones => note.semitones + octave * chromaticDivisions;
 
