@@ -14,7 +14,7 @@ void main() {
             Interval.perfectUnison,
             Interval.diminishedSecond,
           });
-          // TODO(albertms10): descending P1 interval.
+          // TODO(albertms10): Failing test: descending P1 interval.
           expect((-EnharmonicInterval.perfectUnison).spellings, {
             Interval.perfectUnison,
             Interval.diminishedSecond,

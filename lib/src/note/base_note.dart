@@ -54,17 +54,17 @@ enum BaseNote {
   /// ```dart
   /// BaseNote.d.intervalSize(BaseNote.f) == 3
   /// BaseNote.a.intervalSize(BaseNote.e) == 5
-  /// BaseNote.a.intervalSize(BaseNote.e, descending: true) == 4
+  /// BaseNote.a.intervalSize(BaseNote.e, isDescending: true) == 4
   /// ```
-  int intervalSize(BaseNote other, {bool descending = false}) {
+  int intervalSize(BaseNote other, {bool isDescending = false}) {
     var otherOrdinal = other.ordinal;
-    if (descending && ordinal < otherOrdinal) {
+    if (isDescending && ordinal < otherOrdinal) {
       otherOrdinal -= values.length;
-    } else if (!descending && ordinal > otherOrdinal) {
+    } else if (!isDescending && ordinal > otherOrdinal) {
       otherOrdinal += values.length;
     }
 
-    return ((otherOrdinal - ordinal) * (descending ? -1 : 1)) + 1;
+    return ((otherOrdinal - ordinal) * (isDescending ? -1 : 1)) + 1;
   }
 
   /// Returns the difference in semitones between this [BaseNote] enum item and
