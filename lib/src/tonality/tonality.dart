@@ -97,7 +97,7 @@ final class Tonality implements Comparable<Tonality> {
   ///   == const [Note.e, Note.fSharp, Note.g, Note.a, Note.b, Note.d, Note.d,
   ///        Note.e]
   /// ```
-  List<Transposable<Note>> get scaleNotes => mode.scale.fromNote(note);
+  List<Note> get scaleNotes => mode.scale.fromNote(note);
 
   @override
   String toString() => '$note ${mode.name}';

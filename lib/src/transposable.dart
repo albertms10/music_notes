@@ -4,5 +4,5 @@ part of '../music_notes.dart';
 // ignore: one_member_abstracts
 abstract interface class Transposable<T> {
   /// Returns a transposed [T] by [interval] from this [T].
-  Transposable<T> transposeBy(Interval interval);
+  T transposeBy(Interval interval);
 }

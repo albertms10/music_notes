@@ -222,8 +222,8 @@ final class Scale {
   ///   == const [Note.c, Note.bFlat, Note.aFlat, Note.g, Note.f, Note.eFlat,
   ///        Note.d, Note.c]
   /// ```
-  List<Transposable<T>> fromNote<T>(
-    Transposable<T> transposable, {
+  List<T> fromNote<T extends Transposable<T>>(
+    T transposable, {
     bool isDescending = false,
   }) {
     final steps = isDescending ? descendingIntervalSteps : intervalSteps;
