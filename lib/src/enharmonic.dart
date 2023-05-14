@@ -1,10 +1,9 @@
 part of '../music_notes.dart';
 
 @immutable
-abstract interface class Enharmonic<T extends MusicItem> implements MusicItem {
+abstract interface class Enharmonic<T> implements Comparable<Enharmonic<T>> {
   /// The number of semitones of the common chromatic pitch of this
   /// [Enharmonic].
-  @override
   final int semitones;
 
   /// Creates a new [Enharmonic].
@@ -24,6 +23,5 @@ abstract interface class Enharmonic<T extends MusicItem> implements MusicItem {
   int get hashCode => semitones.hashCode;
 
   @override
-  int compareTo(covariant Enharmonic other) =>
-      semitones.compareTo(other.semitones);
+  int compareTo(Enharmonic<T> other) => semitones.compareTo(other.semitones);
 }

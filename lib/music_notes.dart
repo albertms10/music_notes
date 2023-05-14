@@ -17,7 +17,6 @@ part 'src/interval/interval.dart';
 part 'src/interval/interval_size_extension.dart';
 part 'src/interval/quality.dart';
 part 'src/music.dart';
-part 'src/music_item.dart';
 part 'src/note/accidental.dart';
 part 'src/note/enharmonic_note.dart';
 part 'src/note/frequency.dart';

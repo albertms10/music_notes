@@ -1,12 +1,16 @@
 part of '../../music_notes.dart';
 
 /// A note octave in the octave range.
-final class PositionedNote extends Note {
-  /// The octave where this [PositionedNote] is.
+final class PositionedNote
+    implements Comparable<PositionedNote>, Transposable<PositionedNote> {
+  /// Which of the 12 notes inside the octave.
+  final Note note;
+
+  /// The octave where the [note] is positioned.
   final int octave;
 
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
-  const PositionedNote(super.note, [super.accidental, this.octave = 4]);
+  const PositionedNote(this.note, [this.octave = 4]);
 
   /// Returns the [octave] that corresponds to the semitones from root height.
   ///
@@ -28,7 +32,7 @@ final class PositionedNote extends Note {
   /// Note.a.inOctave(2).semitonesFromRootHeight == 34
   /// Note.c.inOctave(0).semitonesFromRootHeight == 1
   /// ```
-  int get semitonesFromRootHeight => semitones + octave * chromaticDivisions;
+  int get semitones => note.semitones + octave * chromaticDivisions;
 
   /// Returns the difference in semitones between this [PositionedNote] and
   /// [other].
@@ -39,9 +43,7 @@ final class PositionedNote extends Note {
   /// Note.eFlat.inOctave(4).difference(Note.bFlat.inOctave(4)) == 7
   /// Note.a.inOctave(4).difference(Note.g.inOctave(4)) == -2
   /// ```
-  @override
-  int difference(covariant PositionedNote other) =>
-      other.semitonesFromRootHeight - semitonesFromRootHeight;
+  int difference(PositionedNote other) => other.semitones - semitones;
 
   /// Returns a transposed [PositionedNote] by [interval]
   /// from this [PositionedNote].
@@ -55,11 +57,11 @@ final class PositionedNote extends Note {
   /// ```
   @override
   PositionedNote transposeBy(Interval interval) {
-    final transposedNote = super.transposeBy(interval);
+    final transposedNote = note.transposeBy(interval);
 
     return transposedNote.inOctave(
       octaveFromSemitones(
-        semitonesFromRootHeight +
+        semitones +
             interval.semitones -
             // We don't want to take the accidental into account when
             // calculating the octave height, as it depends on the note name.
@@ -101,8 +103,8 @@ final class PositionedNote extends Note {
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName => '${note.name.toUpperCase()}'
-      '${accidental != Accidental.natural ? accidental.symbol : ''}'
+  String get scientificName => '${note.note.name.toUpperCase()}'
+      '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 
   /// Returns the string representation of this [Note] following
@@ -116,17 +118,17 @@ final class PositionedNote extends Note {
   /// ```
   String get helmholtzName {
     final accidentalSymbol =
-        accidental != Accidental.natural ? accidental.symbol : '';
+        note.accidental != Accidental.natural ? note.accidental.symbol : '';
 
     if (octave >= 3) {
       const superPrime = '′';
 
-      return '${note.name}$accidentalSymbol${superPrime * (octave - 3)}';
+      return '${note.note.name}$accidentalSymbol${superPrime * (octave - 3)}';
     }
 
     const subPrime = '͵';
 
-    return '${note.name.toUpperCase()}$accidentalSymbol'
+    return '${note.note.name.toUpperCase()}$accidentalSymbol'
         '${subPrime * (octave - 2).abs()}';
   }
 
@@ -135,15 +137,14 @@ final class PositionedNote extends Note {
 
   @override
   bool operator ==(Object other) =>
-      super == other && other is PositionedNote && octave == other.octave;
+      other is PositionedNote && note == other.note && octave == other.octave;
 
   @override
   int get hashCode => Object.hash(super.hashCode, octave);
 
   @override
-  int compareTo(covariant PositionedNote other) => compareMultiple([
+  int compareTo(PositionedNote other) => compareMultiple([
         () => octave.compareTo(other.octave),
-        () => semitones.compareTo(other.semitones),
-        () => note.value.compareTo(other.note.value),
+        () => note.compareTo(other.note),
       ]);
 }
