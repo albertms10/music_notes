@@ -68,7 +68,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Note.eFlat.difference(Note.bFlat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
-  int difference(covariant Note other) => other.semitones - semitones;
+  int difference(Note other) => other.semitones - semitones;
 
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
@@ -79,8 +79,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Note.aFlat.inOctave(2)
   ///   == const PositionedNote(Notes.a, Accidental.flat, 2);
   /// ```
-  PositionedNote inOctave(int octave) =>
-      PositionedNote(note, accidental, octave);
+  PositionedNote inOctave(int octave) => PositionedNote(this, octave);
 
   /// Returns the distance in relation to the circle of fifths.
   ///
