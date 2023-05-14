@@ -2,7 +2,7 @@ part of '../../music_notes.dart';
 
 /// Distance between two notes.
 @immutable
-final class Interval implements MusicItem {
+final class Interval implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final int size;
@@ -135,7 +135,6 @@ final class Interval implements MusicItem {
   /// Interval.augmentedFourth.semitones == 6
   /// (-Interval.majorThird).semitones == -4
   /// ```
-  @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
   /// Whether this [Interval] is descending.
@@ -203,7 +202,7 @@ final class Interval implements MusicItem {
   int get hashCode => Object.hash(size, quality);
 
   @override
-  int compareTo(covariant Interval other) => compareMultiple([
+  int compareTo(Interval other) => compareMultiple([
         () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);

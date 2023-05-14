@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-final class Note implements MusicItem, Transposable<Note> {
+final class Note implements Comparable<Note>, Transposable<Note> {
   final Notes note;
   final Accidental accidental;
 
@@ -57,7 +57,6 @@ final class Note implements MusicItem, Transposable<Note> {
   /// Note.d.semitones == 3
   /// Note.fSharp.semitones == 7
   /// ```
-  @override
   int get semitones =>
       (note.value + accidental.semitones).chromaticModExcludeZero;
 
@@ -69,7 +68,7 @@ final class Note implements MusicItem, Transposable<Note> {
   /// Note.eFlat.difference(Note.bFlat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
-  int difference(covariant Note other) => other.semitones - semitones;
+  int difference(Note other) => other.semitones - semitones;
 
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
@@ -80,8 +79,7 @@ final class Note implements MusicItem, Transposable<Note> {
   /// Note.aFlat.inOctave(2)
   ///   == const PositionedNote(Notes.a, Accidental.flat, 2);
   /// ```
-  PositionedNote inOctave(int octave) =>
-      PositionedNote(note, accidental, octave);
+  PositionedNote inOctave(int octave) => PositionedNote(this, octave);
 
   /// Returns the distance in relation to the circle of fifths.
   ///
@@ -207,7 +205,7 @@ final class Note implements MusicItem, Transposable<Note> {
   int get hashCode => Object.hash(note, accidental);
 
   @override
-  int compareTo(covariant Note other) => compareMultiple([
+  int compareTo(Note other) => compareMultiple([
         () => semitones.compareTo(other.semitones),
         () => note.value.compareTo(other.note.value),
       ]);

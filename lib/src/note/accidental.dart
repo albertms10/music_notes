@@ -2,13 +2,12 @@ part of '../../music_notes.dart';
 
 /// An accidental.
 @immutable
-final class Accidental implements MusicItem {
+final class Accidental implements Comparable<Accidental> {
   /// The number of semitones above or below the natural note.
   ///
   /// - `> 0` for sharps.
   /// - `== 0` for natural.
   /// - `< 0` for flats.
-  @override
   final int semitones;
 
   /// Creates a new [Accidental] from [semitones].
@@ -86,7 +85,7 @@ final class Accidental implements MusicItem {
   /// Accidental.sharp.increment(-1) == Accidental.natural
   /// ```
   Accidental increment(int n) =>
-      Accidental((semitones.abs() + n) * (semitones >= 0 ? 1 : -1));
+      Accidental((semitones.abs() + n) * (semitones.isNegative ? -1 : 1));
 
   @override
   String toString() => [
@@ -103,6 +102,5 @@ final class Accidental implements MusicItem {
   int get hashCode => semitones.hashCode;
 
   @override
-  int compareTo(covariant Accidental other) =>
-      semitones.compareTo(other.semitones);
+  int compareTo(Accidental other) => semitones.compareTo(other.semitones);
 }

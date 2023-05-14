@@ -110,7 +110,7 @@ final class Tonality implements Comparable<Tonality> {
   int get hashCode => Object.hash(note, mode);
 
   @override
-  int compareTo(covariant Tonality other) => compareMultiple([
+  int compareTo(Tonality other) => compareMultiple([
         () => note.compareTo(other.note),
         () => mode.name.compareTo(other.mode.name),
       ]);
