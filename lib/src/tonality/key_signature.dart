@@ -60,9 +60,9 @@ final class KeySignature implements Comparable<KeySignature> {
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(0).tonality(TonalMode.major) == Tonality.cMajor
+  /// const KeySignature(0).tonality(TonalMode.major) == Note.c.major
   /// const KeySignature(2, Accidental.flat).tonality(TonalMode.minor)
-  ///   == Tonality.gMinor
+  ///   == Note.g.minor
   /// ```
   Tonality tonality(TonalMode mode) =>
       Tonality.fromAccidentals(accidentals, mode, accidental);
@@ -73,8 +73,8 @@ final class KeySignature implements Comparable<KeySignature> {
   /// Example:
   /// ```dart
   /// const KeySignature(2, Accidental.flat).tonalities == {
-  ///   Tonality.bFlatMajor,
-  ///   Tonality.gMinor,
+  ///   Note.bFlat.major,
+  ///   Note.g.minor,
   /// }
   /// ```
   Set<Tonality> get tonalities =>

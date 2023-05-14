@@ -70,6 +70,24 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// ```
   int difference(Note other) => other.semitones - semitones;
 
+  /// Returns the [TonalMode.major] [Tonality] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major == const Tonality(Note.c, TonalMode.major)
+  /// Note.eFlat.major == const Tonality(Note.eFlat, TonalMode.major)
+  /// ```
+  Tonality get major => Tonality(this, TonalMode.major);
+
+  /// Returns the [TonalMode.minor] [Tonality] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.minor == const Tonality(Note.d, TonalMode.minor)
+  /// Note.gSharp.minor == const Tonality(Note.gSharp, TonalMode.minor)
+  /// ```
+  Tonality get minor => Tonality(this, TonalMode.minor);
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
