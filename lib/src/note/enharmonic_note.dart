@@ -23,38 +23,34 @@ final class EnharmonicNote extends Enharmonic<Note>
 
   @override
   Set<Note> get spellings {
-    final note = BaseNote.fromValue(semitones);
+    final baseNote = BaseNote.fromValue(semitones);
 
-    if (note != null) {
-      final noteBelow = BaseNote.fromOrdinal(note.ordinal - 1);
-      final noteAbove = BaseNote.fromOrdinal(note.ordinal + 1);
+    if (baseNote != null) {
+      final noteBelow = BaseNote.fromOrdinal(baseNote.ordinal - 1);
+      final noteAbove = BaseNote.fromOrdinal(baseNote.ordinal + 1);
 
       return SplayTreeSet<Note>.of({
         Note(
           noteBelow,
-          Accidental((note.value - noteBelow.value).chromaticModExcludeZero),
+          Accidental(
+            (baseNote.value - noteBelow.value).chromaticModExcludeZero,
+          ),
         ),
-        Note(note),
+        Note(baseNote),
         Note(
           noteAbove,
           Accidental(
-            note.value -
+            baseNote.value -
                 noteAbove.value -
-                (note.value > noteAbove.value ? chromaticDivisions : 0),
+                (baseNote.value > noteAbove.value ? chromaticDivisions : 0),
           ),
         ),
       });
     }
 
     return SplayTreeSet<Note>.of({
-      Note(
-        BaseNote.fromValue(semitones - 1)!,
-        Accidental.sharp,
-      ),
-      Note(
-        BaseNote.fromValue(semitones + 1)!,
-        Accidental.flat,
-      ),
+      Note(BaseNote.fromValue(semitones - 1)!, Accidental.sharp),
+      Note(BaseNote.fromValue(semitones + 1)!, Accidental.flat),
     });
   }
 
