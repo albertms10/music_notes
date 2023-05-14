@@ -85,7 +85,7 @@ final class KeySignature implements Comparable<KeySignature> {
     if (accidentals == 0) return '$accidentals ${accidental.symbol}';
 
     final list = <String>[];
-    final notesLength = Notes.values.length;
+    final notesLength = BaseNote.values.length;
     final iterations = (accidentals / notesLength).ceil();
 
     for (var i = 1; i <= iterations; i++) {

@@ -21,7 +21,7 @@ part 'src/note/accidental.dart';
 part 'src/note/enharmonic_note.dart';
 part 'src/note/frequency.dart';
 part 'src/note/note.dart';
-part 'src/note/notes.dart';
+part 'src/note/base_note.dart';
 part 'src/note/positioned_note.dart';
 part 'src/scale/scale.dart';
 part 'src/tonality/key_signature.dart';
