@@ -26,23 +26,23 @@ final class EnharmonicNote extends Enharmonic<Note>
     final baseNote = BaseNote.fromValue(semitones);
 
     if (baseNote != null) {
-      final noteBelow = BaseNote.fromOrdinal(baseNote.ordinal - 1);
-      final noteAbove = BaseNote.fromOrdinal(baseNote.ordinal + 1);
+      final baseNoteBelow = BaseNote.fromOrdinal(baseNote.ordinal - 1);
+      final baseNoteAbove = BaseNote.fromOrdinal(baseNote.ordinal + 1);
 
       return SplayTreeSet<Note>.of({
         Note(
-          noteBelow,
+          baseNoteBelow,
           Accidental(
-            (baseNote.value - noteBelow.value).chromaticModExcludeZero,
+            (baseNote.value - baseNoteBelow.value).chromaticModExcludeZero,
           ),
         ),
         Note(baseNote),
         Note(
-          noteAbove,
+          baseNoteAbove,
           Accidental(
             baseNote.value -
-                noteAbove.value -
-                (baseNote.value > noteAbove.value ? chromaticDivisions : 0),
+                baseNoteAbove.value -
+                (baseNote.value > baseNoteAbove.value ? chromaticDivisions : 0),
           ),
         ),
       });

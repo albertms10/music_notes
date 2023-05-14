@@ -56,24 +56,27 @@ void main() {
       });
     });
 
-    group('.transposeBy()', () {
+    group('.transposeBySize()', () {
       test('should throw an assertion error when size is zero', () {
-        expect(() => BaseNote.c.transposeBy(0), throwsA(isA<AssertionError>()));
+        expect(
+          () => BaseNote.c.transposeBySize(0),
+          throwsA(isA<AssertionError>()),
+        );
       });
 
       test('should transpose this BaseNote enum item by Interval', () {
-        expect(BaseNote.f.transposeBy(-8), BaseNote.f);
-        expect(BaseNote.g.transposeBy(-3), BaseNote.e);
-        expect(BaseNote.c.transposeBy(-2), BaseNote.b);
-        expect(BaseNote.d.transposeBy(-1), BaseNote.d);
-        expect(BaseNote.c.transposeBy(1), BaseNote.c);
-        expect(BaseNote.d.transposeBy(2), BaseNote.e);
-        expect(BaseNote.e.transposeBy(3), BaseNote.g);
-        expect(BaseNote.e.transposeBy(4), BaseNote.a);
-        expect(BaseNote.f.transposeBy(5), BaseNote.c);
-        expect(BaseNote.a.transposeBy(6), BaseNote.f);
-        expect(BaseNote.b.transposeBy(7), BaseNote.a);
-        expect(BaseNote.c.transposeBy(8), BaseNote.c);
+        expect(BaseNote.f.transposeBySize(-8), BaseNote.f);
+        expect(BaseNote.g.transposeBySize(-3), BaseNote.e);
+        expect(BaseNote.c.transposeBySize(-2), BaseNote.b);
+        expect(BaseNote.d.transposeBySize(-1), BaseNote.d);
+        expect(BaseNote.c.transposeBySize(1), BaseNote.c);
+        expect(BaseNote.d.transposeBySize(2), BaseNote.e);
+        expect(BaseNote.e.transposeBySize(3), BaseNote.g);
+        expect(BaseNote.e.transposeBySize(4), BaseNote.a);
+        expect(BaseNote.f.transposeBySize(5), BaseNote.c);
+        expect(BaseNote.a.transposeBySize(6), BaseNote.f);
+        expect(BaseNote.b.transposeBySize(7), BaseNote.a);
+        expect(BaseNote.c.transposeBySize(8), BaseNote.c);
       });
     });
   });
