@@ -194,13 +194,13 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// ```
   @override
   Note transposeBy(Interval interval) {
-    final transposedNote = baseNote.transposeBy(interval.size);
+    final transposedBaseNote = baseNote.transposeBySize(interval.size);
     final positiveDifference = interval.isDescending
-        ? transposedNote.positiveDifference(baseNote)
-        : baseNote.positiveDifference(transposedNote);
+        ? transposedBaseNote.positiveDifference(baseNote)
+        : baseNote.positiveDifference(transposedBaseNote);
 
     return Note(
-      transposedNote,
+      transposedBaseNote,
       Accidental(
         ((accidental.semitones * interval.size.sign) +
                 ((interval.semitones * interval.size.sign) -

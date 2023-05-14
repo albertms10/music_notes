@@ -102,11 +102,11 @@ enum BaseNote {
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.g.transposeBy(1) == BaseNote.g
-  /// BaseNote.g.transposeBy(5) == BaseNote.d
-  /// BaseNote.a.transposeBy(-3) == BaseNote.f
+  /// BaseNote.g.transposeBySize(1) == BaseNote.g
+  /// BaseNote.g.transposeBySize(5) == BaseNote.d
+  /// BaseNote.a.transposeBySize(-3) == BaseNote.f
   /// ```
-  BaseNote transposeBy(int size) {
+  BaseNote transposeBySize(int size) {
     assert(size != 0, 'Size must be non-zero');
 
     return fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
