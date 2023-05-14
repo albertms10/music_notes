@@ -25,30 +25,32 @@ void main() {
       );
     });
 
-    group('.semitonesFromRootHeight', () {
-      test(
-        'should return the semitones from the root height of this '
-        'PositionedNote',
-        () {
-          expect(Note.c.inOctave(-4).semitones, -47);
-          expect(Note.a.inOctave(-4).semitones, -38);
-          expect(Note.c.inOctave(-3).semitones, -35);
-          expect(Note.c.inOctave(-2).semitones, -23);
-          expect(Note.c.inOctave(-1).semitones, -11);
-          expect(Note.c.inOctave(0).semitones, 1);
-          expect(Note.d.inOctave(0).semitones, 3);
-          expect(Note.e.inOctave(0).semitones, 5);
-          expect(Note.fSharp.inOctave(0).semitones, 7);
-          expect(Note.gFlat.inOctave(0).semitones, 7);
-          expect(Note.a.inOctave(0).semitones, 10);
-          expect(Note.b.inOctave(0).semitones, 12);
-          expect(Note.c.inOctave(1).semitones, 13);
-          expect(Note.c.inOctave(2).semitones, 25);
-          expect(Note.a.inOctave(2).semitones, 34);
-          expect(Note.c.inOctave(3).semitones, 37);
-          expect(Note.a.inOctave(4).semitones, 58);
-        },
-      );
+    group('.semitones', () {
+      test('should return the semitones of this PositionedNote from C0', () {
+        expect(Note.c.inOctave(-4).semitones, -47);
+        expect(Note.a.inOctave(-4).semitones, -38);
+        expect(Note.c.inOctave(-3).semitones, -35);
+        expect(Note.c.inOctave(-2).semitones, -23);
+        expect(Note.c.inOctave(-1).semitones, -11);
+        expect(Note.d.inOctave(-1).semitones, -9);
+        expect(Note.e.inOctave(-1).semitones, -7);
+        expect(Note.f.inOctave(-1).semitones, -6);
+        expect(Note.g.inOctave(-1).semitones, -4);
+        expect(Note.a.inOctave(-1).semitones, -2);
+        expect(Note.b.inOctave(-1).semitones, 0);
+        expect(Note.c.inOctave(0).semitones, 1);
+        expect(Note.d.inOctave(0).semitones, 3);
+        expect(Note.e.inOctave(0).semitones, 5);
+        expect(Note.fSharp.inOctave(0).semitones, 7);
+        expect(Note.gFlat.inOctave(0).semitones, 7);
+        expect(Note.a.inOctave(0).semitones, 10);
+        expect(Note.b.inOctave(0).semitones, 12);
+        expect(Note.c.inOctave(1).semitones, 13);
+        expect(Note.c.inOctave(2).semitones, 25);
+        expect(Note.a.inOctave(2).semitones, 34);
+        expect(Note.c.inOctave(3).semitones, 37);
+        expect(Note.a.inOctave(4).semitones, 58);
+      });
     });
 
     group('.difference()', () {
