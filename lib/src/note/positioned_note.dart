@@ -53,7 +53,7 @@ final class PositionedNote
   /// Note.g.inOctave(4).transposeBy(Interval.perfectFifth)
   ///   == Note.d.inOctave(5)
   /// Note.dFlat.inOctave(2).transposeBy(-Interval.majorSecond)
-  ///   == Note(Notes.c, Accidental.flat).inOctave(2)
+  ///   == Note(BaseNote.c, Accidental.flat).inOctave(2)
   /// ```
   @override
   PositionedNote transposeBy(Interval interval) {
@@ -103,7 +103,7 @@ final class PositionedNote
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName => '${note.note.name.toUpperCase()}'
+  String get scientificName => '${note.baseNote.name.toUpperCase()}'
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 
@@ -123,12 +123,13 @@ final class PositionedNote
     if (octave >= 3) {
       const superPrime = '′';
 
-      return '${note.note.name}$accidentalSymbol${superPrime * (octave - 3)}';
+      return '${note.baseNote.name}$accidentalSymbol'
+          '${superPrime * (octave - 3)}';
     }
 
     const subPrime = '͵';
 
-    return '${note.note.name.toUpperCase()}$accidentalSymbol'
+    return '${note.baseNote.name.toUpperCase()}$accidentalSymbol'
         '${subPrime * (octave - 2).abs()}';
   }
 

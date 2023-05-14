@@ -122,19 +122,25 @@ void main() {
     group('.tonalities', () {
       test('should return the Set of tonalities for this KeySignature', () {
         expect(const KeySignature(10, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.e, Accidental.doubleFlat), TonalMode.major),
-          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.minor),
+          const Tonality(
+            Note(BaseNote.e, Accidental.doubleFlat),
+            TonalMode.major,
+          ),
+          const Tonality(Note(BaseNote.c, Accidental.flat), TonalMode.minor),
         });
         expect(const KeySignature(9, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.b, Accidental.doubleFlat), TonalMode.major),
+          const Tonality(
+            Note(BaseNote.b, Accidental.doubleFlat),
+            TonalMode.major,
+          ),
           const Tonality(Note.gFlat, TonalMode.minor),
         });
         expect(const KeySignature(8, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.f, Accidental.flat), TonalMode.major),
+          const Tonality(Note(BaseNote.f, Accidental.flat), TonalMode.major),
           const Tonality(Note.dFlat, TonalMode.minor),
         });
         expect(const KeySignature(7, Accidental.flat).tonalities, {
-          const Tonality(Note(Notes.c, Accidental.flat), TonalMode.major),
+          const Tonality(Note(BaseNote.c, Accidental.flat), TonalMode.major),
           Tonality.aFlatMinor,
         });
         expect(const KeySignature(6, Accidental.flat).tonalities, {
@@ -195,16 +201,16 @@ void main() {
         });
         expect(const KeySignature(8, Accidental.sharp).tonalities, {
           const Tonality(Note.gSharp, TonalMode.major),
-          const Tonality(Note(Notes.e, Accidental.sharp), TonalMode.minor),
+          const Tonality(Note(BaseNote.e, Accidental.sharp), TonalMode.minor),
         });
         expect(const KeySignature(9, Accidental.sharp).tonalities, {
           const Tonality(Note.dSharp, TonalMode.major),
-          const Tonality(Note(Notes.b, Accidental.sharp), TonalMode.minor),
+          const Tonality(Note(BaseNote.b, Accidental.sharp), TonalMode.minor),
         });
         expect(const KeySignature(10, Accidental.sharp).tonalities, {
           const Tonality(Note.aSharp, TonalMode.major),
           const Tonality(
-            Note(Notes.f, Accidental.doubleSharp),
+            Note(BaseNote.f, Accidental.doubleSharp),
             TonalMode.minor,
           ),
         });

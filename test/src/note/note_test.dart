@@ -7,7 +7,7 @@ void main() {
   group('Note', () {
     group('.semitones', () {
       test('should return the semitones value of this Note', () {
-        expect(const Note(Notes.b, Accidental.sharp).semitones, 1);
+        expect(const Note(BaseNote.b, Accidental.sharp).semitones, 1);
         expect(Note.c.semitones, 1);
         expect(Note.cSharp.semitones, 2);
         expect(Note.dFlat.semitones, 2);
@@ -25,7 +25,7 @@ void main() {
         expect(Note.aSharp.semitones, 11);
         expect(Note.bFlat.semitones, 11);
         expect(Note.b.semitones, 12);
-        expect(const Note(Notes.c, Accidental.flat).semitones, 12);
+        expect(const Note(BaseNote.c, Accidental.flat).semitones, 12);
       });
     });
 
@@ -34,7 +34,10 @@ void main() {
         'should return the difference in semitones with another Note',
         () {
           expect(Note.c.difference(Note.c), 0);
-          expect(const Note(Notes.e, Accidental.sharp).difference(Note.f), 0);
+          expect(
+            const Note(BaseNote.e, Accidental.sharp).difference(Note.f),
+            0,
+          );
           expect(Note.c.difference(Note.dFlat), 1);
           expect(Note.c.difference(Note.cSharp), 1);
           expect(Note.b.difference(Note.c), -11);
@@ -56,8 +59,14 @@ void main() {
 
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
-        expect(const Note(Notes.f, Accidental.flat).circleOfFifthsDistance, -8);
-        expect(const Note(Notes.c, Accidental.flat).circleOfFifthsDistance, -7);
+        expect(
+          const Note(BaseNote.f, Accidental.flat).circleOfFifthsDistance,
+          -8,
+        );
+        expect(
+          const Note(BaseNote.c, Accidental.flat).circleOfFifthsDistance,
+          -7,
+        );
         expect(Note.gFlat.circleOfFifthsDistance, -6);
         expect(Note.dFlat.circleOfFifthsDistance, -5);
         expect(Note.aFlat.circleOfFifthsDistance, -4);
@@ -76,12 +85,12 @@ void main() {
         expect(Note.dSharp.circleOfFifthsDistance, 9);
         expect(Note.aSharp.circleOfFifthsDistance, 10);
         expect(
-          const Note(Notes.e, Accidental.sharp).circleOfFifthsDistance,
+          const Note(BaseNote.e, Accidental.sharp).circleOfFifthsDistance,
           11,
         );
         // TODO(albertms10): Failing test: should return 12.
         expect(
-          const Note(Notes.b, Accidental.sharp).circleOfFifthsDistance,
+          const Note(BaseNote.b, Accidental.sharp).circleOfFifthsDistance,
           0,
         );
       });
@@ -103,7 +112,7 @@ void main() {
         expect(Note.c.exactInterval(Note.cSharp), Interval.augmentedUnison);
 
         expect(
-          Note.c.exactInterval(const Note(Notes.d, Accidental.doubleFlat)),
+          Note.c.exactInterval(const Note(BaseNote.d, Accidental.doubleFlat)),
           Interval.diminishedSecond,
         );
         expect(Note.c.exactInterval(Note.dFlat), Interval.minorSecond);
@@ -111,18 +120,18 @@ void main() {
         expect(Note.c.exactInterval(Note.dSharp), Interval.augmentedSecond);
 
         expect(
-          Note.c.exactInterval(const Note(Notes.e, Accidental.doubleFlat)),
+          Note.c.exactInterval(const Note(BaseNote.e, Accidental.doubleFlat)),
           Interval.diminishedThird,
         );
         expect(Note.c.exactInterval(Note.eFlat), Interval.minorThird);
         expect(Note.c.exactInterval(Note.e), Interval.majorThird);
         expect(
-          Note.c.exactInterval(const Note(Notes.e, Accidental.sharp)),
+          Note.c.exactInterval(const Note(BaseNote.e, Accidental.sharp)),
           Interval.augmentedThird,
         );
 
         expect(
-          Note.c.exactInterval(const Note(Notes.f, Accidental.flat)),
+          Note.c.exactInterval(const Note(BaseNote.f, Accidental.flat)),
           Interval.diminishedFourth,
         );
         expect(Note.c.exactInterval(Note.f), Interval.perfectFourth);
@@ -133,7 +142,7 @@ void main() {
         expect(Note.c.exactInterval(Note.gSharp), Interval.augmentedFifth);
 
         expect(
-          Note.c.exactInterval(const Note(Notes.a, Accidental.doubleFlat)),
+          Note.c.exactInterval(const Note(BaseNote.a, Accidental.doubleFlat)),
           Interval.diminishedSixth,
         );
         expect(Note.c.exactInterval(Note.aFlat), Interval.minorSixth);
@@ -141,13 +150,13 @@ void main() {
         expect(Note.c.exactInterval(Note.aSharp), Interval.augmentedSixth);
 
         expect(
-          Note.c.exactInterval(const Note(Notes.b, Accidental.doubleFlat)),
+          Note.c.exactInterval(const Note(BaseNote.b, Accidental.doubleFlat)),
           Interval.diminishedSeventh,
         );
         expect(Note.c.exactInterval(Note.bFlat), Interval.minorSeventh);
         expect(Note.c.exactInterval(Note.b), Interval.majorSeventh);
         // TODO(albertms10): add test case for:
-        //  `Note.c.exactInterval(const Note(Notes.b, Accidental.sharp))`.
+        //  `Note.c.exactInterval(const Note(BaseNote.b, Accidental.sharp))`.
       });
     });
 
@@ -155,7 +164,7 @@ void main() {
       test('should return this Note transposed by Interval', () {
         expect(
           Note.c.transposeBy(Interval.diminishedUnison),
-          const Note(Notes.c, Accidental.flat),
+          const Note(BaseNote.c, Accidental.flat),
         );
         expect(Note.c.transposeBy(-Interval.diminishedUnison), Note.cSharp);
         expect(Note.c.transposeBy(Interval.perfectUnison), Note.c);
@@ -163,16 +172,16 @@ void main() {
         expect(Note.c.transposeBy(Interval.augmentedUnison), Note.cSharp);
         expect(
           Note.c.transposeBy(-Interval.augmentedUnison),
-          const Note(Notes.c, Accidental.flat),
+          const Note(BaseNote.c, Accidental.flat),
         );
 
         expect(
           Note.c.transposeBy(Interval.diminishedSecond),
-          const Note(Notes.d, Accidental.doubleFlat),
+          const Note(BaseNote.d, Accidental.doubleFlat),
         );
         expect(
           Note.c.transposeBy(-Interval.diminishedSecond),
-          const Note(Notes.b, Accidental.sharp),
+          const Note(BaseNote.b, Accidental.sharp),
         );
         expect(Note.c.transposeBy(Interval.minorSecond), Note.dFlat);
         expect(Note.c.transposeBy(-Interval.minorSecond), Note.b);
@@ -181,7 +190,7 @@ void main() {
         expect(Note.c.transposeBy(Interval.augmentedSecond), Note.dSharp);
         expect(
           Note.c.transposeBy(-Interval.augmentedSecond),
-          const Note(Notes.b, Accidental.doubleFlat),
+          const Note(BaseNote.b, Accidental.doubleFlat),
         );
 
         expect(Note.e.transposeBy(Interval.minorThird), Note.g);
@@ -190,18 +199,18 @@ void main() {
         expect(Note.e.transposeBy(-Interval.majorThird), Note.c);
         expect(
           Note.aFlat.transposeBy(Interval.minorThird),
-          const Note(Notes.c, Accidental.flat),
+          const Note(BaseNote.c, Accidental.flat),
         );
         expect(Note.aFlat.transposeBy(-Interval.minorThird), Note.f);
         expect(Note.aFlat.transposeBy(Interval.majorThird), Note.c);
         expect(
           Note.aFlat.transposeBy(-Interval.majorThird),
-          const Note(Notes.f, Accidental.flat),
+          const Note(BaseNote.f, Accidental.flat),
         );
 
         expect(
           Note.f.transposeBy(Interval.diminishedFourth),
-          const Note(Notes.b, Accidental.doubleFlat),
+          const Note(BaseNote.b, Accidental.doubleFlat),
         );
         expect(Note.f.transposeBy(-Interval.diminishedFourth), Note.cSharp);
         expect(Note.f.transposeBy(Interval.perfectFourth), Note.bFlat);
@@ -209,12 +218,12 @@ void main() {
         expect(Note.f.transposeBy(Interval.augmentedFourth), Note.b);
         expect(
           Note.f.transposeBy(-Interval.augmentedFourth),
-          const Note(Notes.c, Accidental.flat),
+          const Note(BaseNote.c, Accidental.flat),
         );
         expect(Note.a.transposeBy(Interval.diminishedFourth), Note.dFlat);
         expect(
           Note.a.transposeBy(-Interval.diminishedFourth),
-          const Note(Notes.e, Accidental.sharp),
+          const Note(BaseNote.e, Accidental.sharp),
         );
         expect(Note.a.transposeBy(Interval.perfectFourth), Note.d);
         expect(Note.a.transposeBy(-Interval.perfectFourth), Note.e);
@@ -243,11 +252,11 @@ void main() {
         expect(Note.c.transposeBy(-Interval.majorSeventh), Note.dFlat);
         expect(
           Note.c.transposeBy(Interval.augmentedSeventh),
-          const Note(Notes.b, Accidental.sharp),
+          const Note(BaseNote.b, Accidental.sharp),
         );
         expect(
           Note.c.transposeBy(-Interval.augmentedSeventh),
-          const Note(Notes.d, Accidental.doubleFlat),
+          const Note(BaseNote.d, Accidental.doubleFlat),
         );
       });
     });
@@ -257,8 +266,11 @@ void main() {
         expect(Note.c.toString(), 'C');
         expect(Note.bFlat.toString(), 'B♭');
         expect(Note.fSharp.toString(), 'F♯');
-        expect(const Note(Notes.a, Accidental.doubleSharp).toString(), 'A𝄪');
-        expect(const Note(Notes.g, Accidental.doubleFlat).toString(), 'G𝄫');
+        expect(
+          const Note(BaseNote.a, Accidental.doubleSharp).toString(),
+          'A𝄪',
+        );
+        expect(const Note(BaseNote.g, Accidental.doubleFlat).toString(), 'G𝄫');
       });
     });
 
@@ -276,11 +288,11 @@ void main() {
           Note.aFlat,
           Note.c,
           Note.gSharp,
-          Note(Notes.b, Accidental.sharp),
+          Note(BaseNote.b, Accidental.sharp),
         ]);
         expect(orderedSet.toList(), const [
           Note.c,
-          Note(Notes.b, Accidental.sharp),
+          Note(BaseNote.b, Accidental.sharp),
           Note.gSharp,
           Note.aFlat,
         ]);
@@ -296,7 +308,7 @@ void main() {
               Note.c,
               Note.bFlat,
               Note.gSharp,
-              Note(Notes.b, Accidental.sharp),
+              Note(BaseNote.b, Accidental.sharp),
             ],
             Note.compareByFifthsDistance,
           );
@@ -307,7 +319,7 @@ void main() {
             Note.d,
             Note.gSharp,
             // TODO(albertms10): Failing test: should include
-            //  `Note(Notes.b, Accidental.sharp)`.
+            //  `Note(BaseNote.b, Accidental.sharp)`.
           ]);
         },
       );
