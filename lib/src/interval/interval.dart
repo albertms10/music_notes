@@ -185,13 +185,13 @@ final class Interval implements Comparable<Interval> {
   @override
   String toString() {
     final naming = '${quality.abbreviation}${size.abs()}';
-    final descending = isDescending ? 'desc ' : '';
+    final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (size.isCompound) {
-      return '$descending$naming '
+      return '$descendingAbbreviation$naming '
           '(${quality.abbreviation}${size.simplified.abs()})';
     }
 
-    return '$descending$naming';
+    return '$descendingAbbreviation$naming';
   }
 
   @override

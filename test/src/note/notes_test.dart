@@ -14,12 +14,12 @@ void main() {
           expect(BaseNote.a.intervalSize(BaseNote.g), 7);
           expect(BaseNote.b.intervalSize(BaseNote.c), 2);
 
-          expect(BaseNote.d.intervalSize(BaseNote.d, descending: true), 1);
-          expect(BaseNote.c.intervalSize(BaseNote.b, descending: true), 2);
-          expect(BaseNote.a.intervalSize(BaseNote.e, descending: true), 4);
-          expect(BaseNote.e.intervalSize(BaseNote.f, descending: true), 7);
-          expect(BaseNote.f.intervalSize(BaseNote.e, descending: true), 2);
-          expect(BaseNote.b.intervalSize(BaseNote.c, descending: true), 7);
+          expect(BaseNote.d.intervalSize(BaseNote.d, isDescending: true), 1);
+          expect(BaseNote.c.intervalSize(BaseNote.b, isDescending: true), 2);
+          expect(BaseNote.a.intervalSize(BaseNote.e, isDescending: true), 4);
+          expect(BaseNote.e.intervalSize(BaseNote.f, isDescending: true), 7);
+          expect(BaseNote.f.intervalSize(BaseNote.e, isDescending: true), 2);
+          expect(BaseNote.b.intervalSize(BaseNote.c, isDescending: true), 7);
         },
       );
     });
