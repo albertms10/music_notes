@@ -142,30 +142,6 @@ final class EnharmonicNote extends Enharmonic<Note>
   }
 
   /// Returns the shortest iteration distance from [enharmonicNote]
-  /// to [semitones].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicNote.g.enharmonicSemitonesDistance(EnharmonicNote.a, 7) == 2
-  /// ```
-  int enharmonicSemitonesDistance(
-    EnharmonicNote enharmonicNote,
-    int semitones,
-  ) {
-    var distance = 0;
-    var currentPitch = this.semitones;
-    var tempEnharmonicNote = EnharmonicNote(currentPitch);
-
-    while (tempEnharmonicNote != enharmonicNote) {
-      distance++;
-      currentPitch += semitones;
-      tempEnharmonicNote = EnharmonicNote(currentPitch.chromaticModExcludeZero);
-    }
-
-    return distance;
-  }
-
-  /// Returns the shortest iteration distance from [enharmonicNote]
   /// to [interval].
   ///
   /// Example:
@@ -177,12 +153,23 @@ final class EnharmonicNote extends Enharmonic<Note>
   ///
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     const Interval(5, PerfectQuality.perfect, descending: true),
+  ///     -Interval.perfectFifth,
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(
     EnharmonicNote enharmonicNote,
     Interval interval,
-  ) =>
-      enharmonicSemitonesDistance(enharmonicNote, interval.semitones);
+  ) {
+    var distance = 0;
+    var currentPitch = semitones;
+    var tempEnharmonicNote = EnharmonicNote(currentPitch);
+
+    while (tempEnharmonicNote != enharmonicNote) {
+      distance++;
+      currentPitch += interval.semitones;
+      tempEnharmonicNote = EnharmonicNote(currentPitch.chromaticModExcludeZero);
+    }
+
+    return distance;
+  }
 }
