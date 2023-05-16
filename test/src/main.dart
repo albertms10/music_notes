@@ -11,7 +11,7 @@ import 'note/frequency_test.dart' as frequency_test;
 import 'note/note_test.dart' as note_test;
 import 'note/notes_test.dart' as notes_test;
 import 'note/positioned_note_test.dart' as positioned_note_test;
-import 'scale/scale_test.dart' as scale_test;
+import 'scale/scale_pattern_test.dart' as scale_pattern_test;
 import 'tonality/key_signature_test.dart' as key_signature_test;
 import 'tonality/mode_test.dart' as mode_test;
 import 'tonality/tonality_test.dart' as tonality_test;
@@ -29,7 +29,7 @@ void main() {
   note_test.main();
   notes_test.main();
   positioned_note_test.main();
-  scale_test.main();
+  scale_pattern_test.main();
   key_signature_test.main();
   mode_test.main();
   tonality_test.main();
