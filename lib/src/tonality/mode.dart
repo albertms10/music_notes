@@ -5,7 +5,7 @@ part of '../../music_notes.dart';
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
 sealed class Mode implements Enum, Comparable<Mode> {
-  Scale get scale;
+  ScalePattern get scale;
 
   /// The [Dorian Brightness Quotient](https://mynewmicrophone.com/dorian-brightness-quotient)
   /// is a number we assign to a heptatonic scale that tells us how bright or
@@ -24,13 +24,13 @@ sealed class Mode implements Enum, Comparable<Mode> {
 
 enum TonalMode implements Mode {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
-  major(Scale.major, brightness: 2),
+  major(ScalePattern.major, brightness: 2),
 
   /// See [Minor mode](https://en.wikipedia.org/wiki/Minor_mode).
-  minor(Scale.naturalMinor, brightness: -1);
+  minor(ScalePattern.naturalMinor, brightness: -1);
 
   @override
-  final Scale scale;
+  final ScalePattern scale;
 
   @override
   final int brightness;
@@ -53,28 +53,28 @@ enum TonalMode implements Mode {
 
 enum ModalMode implements Mode {
   /// See [Lydian mode](https://en.wikipedia.org/wiki/Lydian_mode).
-  lydian(Scale.lydian, brightness: 3),
+  lydian(ScalePattern.lydian, brightness: 3),
 
   /// See [Ionian mode](https://en.wikipedia.org/wiki/Ionian_mode).
-  ionian(Scale.ionian, brightness: 2),
+  ionian(ScalePattern.ionian, brightness: 2),
 
   /// See [Mixolydian mode](https://en.wikipedia.org/wiki/Mixolydian_mode).
-  mixolydian(Scale.mixolydian, brightness: 1),
+  mixolydian(ScalePattern.mixolydian, brightness: 1),
 
   /// See [Dorian mode](https://en.wikipedia.org/wiki/Dorian_mode).
-  dorian(Scale.dorian, brightness: 0),
+  dorian(ScalePattern.dorian, brightness: 0),
 
   /// See [Aeolian mode](https://en.wikipedia.org/wiki/Aeolian_mode).
-  aeolian(Scale.aeolian, brightness: -1),
+  aeolian(ScalePattern.aeolian, brightness: -1),
 
   /// See [Phrygian mode](https://en.wikipedia.org/wiki/Phrygian_mode).
-  phrygian(Scale.phrygian, brightness: -2),
+  phrygian(ScalePattern.phrygian, brightness: -2),
 
   /// See [Locrian mode](https://en.wikipedia.org/wiki/Locrian_mode).
-  locrian(Scale.locrian, brightness: -3);
+  locrian(ScalePattern.locrian, brightness: -3);
 
   @override
-  final Scale scale;
+  final ScalePattern scale;
 
   @override
   final int brightness;

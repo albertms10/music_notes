@@ -2,11 +2,11 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Scale', () {
+  group('ScalePattern', () {
     group('.fromNote()', () {
       test('should return the major scale notes starting from Note', () {
         expect(
-          Scale.major.fromNote(Note.a.flat),
+          ScalePattern.major.fromNote(Note.a.flat),
           [
             Note.a.flat,
             Note.b.flat,
@@ -19,7 +19,7 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.f.inOctave(4)),
+          ScalePattern.major.fromNote(Note.f.inOctave(4)),
           [
             Note.f.inOctave(4),
             Note.g.inOctave(4),
@@ -32,7 +32,7 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.c),
+          ScalePattern.major.fromNote(Note.c),
           const [
             Note.c,
             Note.d,
@@ -45,7 +45,7 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.d.inOctave(2)),
+          ScalePattern.major.fromNote(Note.d.inOctave(2)),
           [
             Note.d.inOctave(2),
             Note.e.inOctave(2),
@@ -58,7 +58,7 @@ void main() {
           ],
         );
         expect(
-          Scale.major.fromNote(Note.c.sharp, isDescending: true),
+          ScalePattern.major.fromNote(Note.c.sharp, isDescending: true),
           [
             Note.c.sharp,
             Note.b.sharp,
@@ -76,7 +76,7 @@ void main() {
         'should return the natural minor scale notes starting from Note',
         () {
           expect(
-            Scale.naturalMinor.fromNote(Note.d.sharp.inOctave(5)),
+            ScalePattern.naturalMinor.fromNote(Note.d.sharp.inOctave(5)),
             [
               Note.d.sharp.inOctave(5),
               Note.e.sharp.inOctave(5),
@@ -89,7 +89,7 @@ void main() {
             ],
           );
           expect(
-            Scale.naturalMinor.fromNote(Note.d),
+            ScalePattern.naturalMinor.fromNote(Note.d),
             [
               Note.d,
               Note.e,
@@ -102,7 +102,7 @@ void main() {
             ],
           );
           expect(
-            Scale.naturalMinor.fromNote(Note.a.flat, isDescending: true),
+            ScalePattern.naturalMinor.fromNote(Note.a.flat, isDescending: true),
             [
               Note.a.flat,
               Note.g.flat,
@@ -121,7 +121,7 @@ void main() {
         'should return the harmonic minor scale notes starting from Note',
         () {
           expect(
-            Scale.harmonicMinor.fromNote(Note.b.flat.inOctave(4)),
+            ScalePattern.harmonicMinor.fromNote(Note.b.flat.inOctave(4)),
             [
               Note.b.flat.inOctave(4),
               Note.c.inOctave(5),
@@ -134,7 +134,7 @@ void main() {
             ],
           );
           expect(
-            Scale.harmonicMinor.fromNote(Note.d),
+            ScalePattern.harmonicMinor.fromNote(Note.d),
             [
               Note.d,
               Note.e,
@@ -147,7 +147,7 @@ void main() {
             ],
           );
           expect(
-            Scale.harmonicMinor
+            ScalePattern.harmonicMinor
                 .fromNote(Note.e.inOctave(3), isDescending: true),
             [
               Note.e.inOctave(3),
@@ -167,7 +167,7 @@ void main() {
         'should return the melodic minor scale notes starting from Note',
         () {
           expect(
-            Scale.melodicMinor.fromNote(Note.d),
+            ScalePattern.melodicMinor.fromNote(Note.d),
             [
               Note.d,
               Note.e,
@@ -180,7 +180,7 @@ void main() {
             ],
           );
           expect(
-            Scale.melodicMinor.fromNote(Note.g.sharp.inOctave(1)),
+            ScalePattern.melodicMinor.fromNote(Note.g.sharp.inOctave(1)),
             [
               Note.g.sharp.inOctave(1),
               Note.a.sharp.inOctave(1),
@@ -193,15 +193,15 @@ void main() {
             ],
           );
           expect(
-            Scale.melodicMinor.fromNote(Note.f, isDescending: true),
-            Scale.naturalMinor.fromNote(Note.f).reversed,
+            ScalePattern.melodicMinor.fromNote(Note.f, isDescending: true),
+            ScalePattern.naturalMinor.fromNote(Note.f).reversed,
           );
         },
       );
 
       test('should return the whole-tone scale notes starting from Note', () {
         expect(
-          Scale.wholeTone.fromNote(EnharmonicNote.c),
+          ScalePattern.wholeTone.fromNote(EnharmonicNote.c),
           const [
             EnharmonicNote.c,
             EnharmonicNote.d,
@@ -213,7 +213,7 @@ void main() {
           ],
         );
         expect(
-          Scale.wholeTone.fromNote(Note.d.flat),
+          ScalePattern.wholeTone.fromNote(Note.d.flat),
           [
             Note.d.flat,
             Note.e.flat,
@@ -225,7 +225,7 @@ void main() {
           ],
         );
         expect(
-          Scale.wholeTone.fromNote(Note.c.sharp),
+          ScalePattern.wholeTone.fromNote(Note.c.sharp),
           [
             Note.c.sharp,
             Note.d.sharp,
@@ -240,7 +240,7 @@ void main() {
 
       test('should return the chromatic scale notes starting from Note', () {
         expect(
-          Scale.chromatic.fromNote(Note.c),
+          ScalePattern.chromatic.fromNote(Note.c),
           [
             Note.c,
             Note.c.sharp,
@@ -258,7 +258,7 @@ void main() {
           ],
         );
         expect(
-          Scale.chromatic.fromNote(EnharmonicNote.cSharp),
+          ScalePattern.chromatic.fromNote(EnharmonicNote.cSharp),
           const [
             EnharmonicNote.cSharp,
             EnharmonicNote.d,
@@ -276,7 +276,7 @@ void main() {
           ],
         );
         expect(
-          Scale.chromatic.fromNote(Note.d.flat),
+          ScalePattern.chromatic.fromNote(Note.d.flat),
           [
             Note.d.flat,
             Note.d,
@@ -299,11 +299,11 @@ void main() {
         'should return the major pentatonic scale notes starting from Note',
         () {
           expect(
-            Scale.majorPentatonic.fromNote(Note.c),
+            ScalePattern.majorPentatonic.fromNote(Note.c),
             const [Note.c, Note.d, Note.e, Note.g, Note.a, Note.c],
           );
           expect(
-            Scale.majorPentatonic.fromNote(Note.f.sharp),
+            ScalePattern.majorPentatonic.fromNote(Note.f.sharp),
             [
               Note.f.sharp,
               Note.g.sharp,
@@ -314,7 +314,7 @@ void main() {
             ],
           );
           expect(
-            Scale.majorPentatonic.fromNote(EnharmonicNote.fSharp),
+            ScalePattern.majorPentatonic.fromNote(EnharmonicNote.fSharp),
             const [
               EnharmonicNote.fSharp,
               EnharmonicNote.gSharp,
@@ -331,11 +331,11 @@ void main() {
         'should return the minor pentatonic scale notes starting from Note',
         () {
           expect(
-            Scale.minorPentatonic.fromNote(Note.a),
+            ScalePattern.minorPentatonic.fromNote(Note.a),
             const [Note.a, Note.c, Note.d, Note.e, Note.g, Note.a],
           );
           expect(
-            Scale.minorPentatonic.fromNote(Note.g),
+            ScalePattern.minorPentatonic.fromNote(Note.g),
             [Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g],
           );
         },
@@ -343,86 +343,89 @@ void main() {
     });
 
     group('.mirrored', () {
-      test('should return the mirrored version of this Scale', () {
-        expect(Scale.lydian.mirrored, Scale.locrian);
-        expect(Scale.ionian.mirrored, Scale.phrygian);
-        expect(Scale.mixolydian.mirrored, Scale.aeolian);
-        expect(Scale.dorian.mirrored, Scale.dorian);
-        expect(Scale.aeolian.mirrored, Scale.mixolydian);
-        expect(Scale.phrygian.mirrored, Scale.ionian);
-        expect(Scale.locrian.mirrored, Scale.lydian);
+      test('should return the mirrored version of this ScalePattern', () {
+        expect(ScalePattern.lydian.mirrored, ScalePattern.locrian);
+        expect(ScalePattern.ionian.mirrored, ScalePattern.phrygian);
+        expect(ScalePattern.mixolydian.mirrored, ScalePattern.aeolian);
+        expect(ScalePattern.dorian.mirrored, ScalePattern.dorian);
+        expect(ScalePattern.aeolian.mirrored, ScalePattern.mixolydian);
+        expect(ScalePattern.phrygian.mirrored, ScalePattern.ionian);
+        expect(ScalePattern.locrian.mirrored, ScalePattern.lydian);
       });
     });
 
     group('.name', () {
-      test('should return the name of this Scale', () {
-        expect(Scale.ionian.name, 'Major (ionian)');
-        expect(Scale.dorian.name, 'Dorian');
-        expect(Scale.phrygian.name, 'Phrygian');
-        expect(Scale.lydian.name, 'Lydian');
-        expect(Scale.mixolydian.name, 'Mixolydian');
-        expect(Scale.aeolian.name, 'Natural minor (aeolian)');
-        expect(Scale.locrian.name, 'Locrian');
-        expect(Scale.major.name, 'Major (ionian)');
-        expect(Scale.naturalMinor.name, 'Natural minor (aeolian)');
-        expect(Scale.harmonicMinor.name, 'Harmonic minor');
-        expect(Scale.melodicMinor.name, 'Melodic minor');
-        expect(Scale.chromatic.name, 'Chromatic');
-        expect(Scale.wholeTone.name, 'Whole-tone');
-        expect(Scale.majorPentatonic.name, 'Major pentatonic');
-        expect(Scale.minorPentatonic.name, 'Minor pentatonic');
-        expect(Scale.octatonic.name, 'Octatonic');
+      test('should return the name of this ScalePattern', () {
+        expect(ScalePattern.ionian.name, 'Major (ionian)');
+        expect(ScalePattern.dorian.name, 'Dorian');
+        expect(ScalePattern.phrygian.name, 'Phrygian');
+        expect(ScalePattern.lydian.name, 'Lydian');
+        expect(ScalePattern.mixolydian.name, 'Mixolydian');
+        expect(ScalePattern.aeolian.name, 'Natural minor (aeolian)');
+        expect(ScalePattern.locrian.name, 'Locrian');
+        expect(ScalePattern.major.name, 'Major (ionian)');
+        expect(ScalePattern.naturalMinor.name, 'Natural minor (aeolian)');
+        expect(ScalePattern.harmonicMinor.name, 'Harmonic minor');
+        expect(ScalePattern.melodicMinor.name, 'Melodic minor');
+        expect(ScalePattern.chromatic.name, 'Chromatic');
+        expect(ScalePattern.wholeTone.name, 'Whole-tone');
+        expect(ScalePattern.majorPentatonic.name, 'Major pentatonic');
+        expect(ScalePattern.minorPentatonic.name, 'Minor pentatonic');
+        expect(ScalePattern.octatonic.name, 'Octatonic');
       });
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Scale', () {
+      test('should return the string representation of this ScalePattern', () {
         expect(
-          Scale.ionian.toString(),
+          ScalePattern.ionian.toString(),
           'Major (ionian) (M2 M2 m2 M2 M2 M2 m2)',
         );
         expect(
-          Scale.major.toString(),
+          ScalePattern.major.toString(),
           'Major (ionian) (M2 M2 m2 M2 M2 M2 m2)',
         );
         expect(
-          Scale.aeolian.toString(),
+          ScalePattern.aeolian.toString(),
           'Natural minor (aeolian) (M2 m2 M2 M2 m2 M2 M2)',
         );
         expect(
-          Scale.naturalMinor.toString(),
+          ScalePattern.naturalMinor.toString(),
           'Natural minor (aeolian) (M2 m2 M2 M2 m2 M2 M2)',
         );
         expect(
-          Scale.melodicMinor.toString(),
+          ScalePattern.melodicMinor.toString(),
           'Melodic minor (M2 m2 M2 M2 M2 M2 m2)',
         );
-        expect(Scale.wholeTone.toString(), 'Whole-tone (M2 M2 M2 M2 M2 d3)');
         expect(
-          Scale.octatonic.toString(),
+          ScalePattern.wholeTone.toString(),
+          'Whole-tone (M2 M2 M2 M2 M2 d3)',
+        );
+        expect(
+          ScalePattern.octatonic.toString(),
           'Octatonic (M2 m2 M2 m2 M2 m2 M2 m2)',
         );
       });
     });
 
     group('.hashCode', () {
-      test('should ignore equal Scale instances in a Set', () {
+      test('should ignore equal ScalePattern instances in a Set', () {
         final collection = {
-          Scale.major,
-          Scale.aeolian,
+          ScalePattern.major,
+          ScalePattern.aeolian,
           // ignore: equal_elements_in_set
-          Scale.naturalMinor,
+          ScalePattern.naturalMinor,
           // ignore: equal_elements_in_set
-          Scale.ionian,
-          Scale.mixolydian,
-          Scale.wholeTone,
+          ScalePattern.ionian,
+          ScalePattern.mixolydian,
+          ScalePattern.wholeTone,
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
-          Scale.major,
-          Scale.aeolian,
-          Scale.mixolydian,
-          Scale.wholeTone,
+          ScalePattern.major,
+          ScalePattern.aeolian,
+          ScalePattern.mixolydian,
+          ScalePattern.wholeTone,
         ]);
       });
     });
