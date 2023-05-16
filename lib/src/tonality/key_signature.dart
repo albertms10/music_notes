@@ -73,7 +73,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// Example:
   /// ```dart
   /// const KeySignature(2, Accidental.flat).tonalities == {
-  ///   Note.bFlat.major,
+  ///   Note.b.flat.major,
   ///   Note.g.minor,
   /// }
   /// ```

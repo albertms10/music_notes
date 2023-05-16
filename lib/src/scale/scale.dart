@@ -215,11 +215,10 @@ final class Scale {
   ///        Note.a]
   ///
   /// Scale.melodicMinor.fromNote(Note.c)
-  ///   == const [Note.c, Note.d, Note.eFlat, Note.f, Note.g, Note.a, Note.b,
-  ///        Note.c]
+  ///   == [Note.c, Note.d, Note.e.flat, Note.f, Note.g, Note.a, Note.b, Note.c]
   ///
   /// Scale.melodicMinor.fromNote(Note.c, isDescending: true)
-  ///   == const [Note.c, Note.bFlat, Note.aFlat, Note.g, Note.f, Note.eFlat,
+  ///   == [Note.c, Note.b.flat, Note.a.flat, Note.g, Note.f, Note.e.flat,
   ///        Note.d, Note.c]
   /// ```
   List<T> fromNote<T extends Transposable<T>>(

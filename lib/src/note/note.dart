@@ -8,21 +8,11 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   const Note(this.baseNote, [this.accidental = Accidental.natural]);
 
   static const Note c = Note(BaseNote.c);
-  static const Note cSharp = Note(BaseNote.c, Accidental.sharp);
-  static const Note dFlat = Note(BaseNote.d, Accidental.flat);
   static const Note d = Note(BaseNote.d);
-  static const Note dSharp = Note(BaseNote.d, Accidental.sharp);
-  static const Note eFlat = Note(BaseNote.e, Accidental.flat);
   static const Note e = Note(BaseNote.e);
   static const Note f = Note(BaseNote.f);
-  static const Note fSharp = Note(BaseNote.f, Accidental.sharp);
-  static const Note gFlat = Note(BaseNote.g, Accidental.flat);
   static const Note g = Note(BaseNote.g);
-  static const Note gSharp = Note(BaseNote.g, Accidental.sharp);
-  static const Note aFlat = Note(BaseNote.a, Accidental.flat);
   static const Note a = Note(BaseNote.a);
-  static const Note aSharp = Note(BaseNote.a, Accidental.sharp);
-  static const Note bFlat = Note(BaseNote.b, Accidental.flat);
   static const Note b = Note(BaseNote.b);
 
   /// Returns the [Note] from the [Tonality] given its [accidentals] number,
@@ -55,7 +45,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Example:
   /// ```dart
   /// Note.d.semitones == 3
-  /// Note.fSharp.semitones == 7
+  /// Note.f.sharp.semitones == 7
   /// ```
   int get semitones =>
       (baseNote.value + accidental.semitones).chromaticModExcludeZero;
@@ -65,17 +55,35 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.difference(Note.d) == 2
-  /// Note.eFlat.difference(Note.bFlat) == 7
+  /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
   int difference(Note other) => other.semitones - semitones;
+
+  /// Returns this [Note] sharpened by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.sharp == const Note(BaseNote.c, Accidental.sharp)
+  /// Note.a.sharp == const Note(BaseNote.a, Accidental.sharp)
+  /// ```
+  Note get sharp => Note(baseNote, Accidental(accidental.semitones + 1));
+
+  /// Returns this [Note] flattened by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.flat == const Note(BaseNote.e, Accidental.flat)
+  /// Note.f.flat == const Note(BaseNote.f, Accidental.flat)
+  /// ```
+  Note get flat => Note(baseNote, Accidental(accidental.semitones - 1));
 
   /// Returns the [TonalMode.major] [Tonality] from this [Note].
   ///
   /// Example:
   /// ```dart
   /// Note.c.major == const Tonality(Note.c, TonalMode.major)
-  /// Note.eFlat.major == const Tonality(Note.eFlat, TonalMode.major)
+  /// Note.e.flat.major == const Tonality(Note.e.flat, TonalMode.major)
   /// ```
   Tonality get major => Tonality(this, TonalMode.major);
 
@@ -84,7 +92,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Example:
   /// ```dart
   /// Note.d.minor == const Tonality(Note.d, TonalMode.minor)
-  /// Note.gSharp.minor == const Tonality(Note.gSharp, TonalMode.minor)
+  /// Note.g.sharp.minor == const Tonality(Note.g.sharp, TonalMode.minor)
   /// ```
   Tonality get minor => Tonality(this, TonalMode.minor);
 
@@ -93,7 +101,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.inOctave(3) == const PositionedNote(Note.c, 3)
-  /// Note.aFlat.inOctave(2) == const PositionedNote(Note.aFlat, 2)
+  /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, 2)
   /// ```
   PositionedNote inOctave(int octave) => PositionedNote(this, octave);
 
@@ -103,7 +111,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// ```dart
   /// Note.c.circleOfFifthsDistance == 0
   /// Note.d.circleOfFifthsDistance == 2
-  /// Note.aFlat.circleOfFifthsDistance == -4
+  /// Note.a.flat.circleOfFifthsDistance == -4
   /// ```
   int get circleOfFifthsDistance =>
       Tonality(this, TonalMode.major).keySignature.distance;
@@ -112,8 +120,8 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.aFlat.exactFifthsDistance(Note.cSharp) == 11
-  /// Note.aFlat.exactFifthsDistance(Note.dFlat) == -1
+  /// Note.a.flat.exactFifthsDistance(Note.c.sharp) == 11
+  /// Note.a.flat.exactFifthsDistance(Note.d.flat) == -1
   /// ```
   int exactFifthsDistance(Note other) =>
       intervalDistance(other, Interval.perfectFifth);
@@ -172,7 +180,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.exactInterval(Note.d) == Interval.minorSecond
-  /// Note.d.exactInterval(Note.aFlat) == Interval.diminishedFifth
+  /// Note.d.exactInterval(Note.a.flat) == Interval.diminishedFifth
   /// ```
   Interval exactInterval(Note other) {
     final intervalSize = baseNote.intervalSize(other.baseNote);
@@ -187,7 +195,7 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.transposeBy(Interval.tritone) == Note.fSharp
+  /// Note.c.transposeBy(Interval.tritone) == Note.f.sharp
   /// Note.a.transposeBy(-Interval.majorSecond) == Note.g
   /// ```
   @override

@@ -63,7 +63,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// Example:
   /// ```dart
   /// EnharmonicNote.d.resolveSpelling() == Note.d
-  /// EnharmonicNote.fSharp.resolveSpelling(Accidental.flat) == Note.gFlat
+  /// EnharmonicNote.fSharp.resolveSpelling(Accidental.flat) == Note.g.flat
   /// EnharmonicNote.cSharp.resolveSpelling(Accidental.natural) // throws
   /// ```
   Note resolveSpelling([Accidental? withAccidental]) {
@@ -100,7 +100,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// ```dart
   /// EnharmonicNote.d.resolveClosestSpelling() == Note.d
   /// EnharmonicNote.gSharp.resolveClosestSpelling(Accidental.flat)
-  ///   == Note.aFlat
+  ///   == Note.a.flat
   /// EnharmonicNote.cSharp.resolveClosestSpelling(Accidental.natural) == null
   /// ```
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {

@@ -23,7 +23,7 @@ final class Tonality implements Comparable<Tonality> {
   /// Example:
   /// ```dart
   /// Note.d.minor.relative == Note.f.major
-  /// Note.bFlat.major.relative == Note.g.minor
+  /// Note.b.flat.major.relative == Note.g.minor
   /// ```
   Tonality get relative => Tonality(
         note.transposeBy(
@@ -38,7 +38,7 @@ final class Tonality implements Comparable<Tonality> {
   /// ```dart
   /// Note.c.major.keySignature == const KeySignature(0)
   /// Note.a.major.keySignature == const KeySignature(3, Accidental.sharp)
-  /// Note.gFlat.major.keySignature == const KeySignature(6, Accidental.flat)
+  /// Note.g.flat.major.keySignature == const KeySignature(6, Accidental.flat)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
         Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note),
@@ -51,9 +51,8 @@ final class Tonality implements Comparable<Tonality> {
   /// Note.c.major.scaleNotes
   ///   == const [Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c]
-  ///
   /// Note.e.minor.scaleNotes
-  ///   == const [Note.e, Note.fSharp, Note.g, Note.a, Note.b, Note.d, Note.d,
+  ///   == [Note.e, Note.f.sharp, Note.g, Note.a, Note.b, Note.d, Note.d,
   ///        Note.e]
   /// ```
   List<Note> get scaleNotes => mode.scale.fromNote(note);
