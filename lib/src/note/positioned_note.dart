@@ -40,7 +40,7 @@ final class PositionedNote
   /// Example:
   /// ```dart
   /// Note.c.inOctave(4).difference(Note.d.inOctave(4)) == 2
-  /// Note.eFlat.inOctave(4).difference(Note.bFlat.inOctave(4)) == 7
+  /// Note.e.flat.inOctave(4).difference(Note.b.flat.inOctave(4)) == 7
   /// Note.a.inOctave(4).difference(Note.g.inOctave(4)) == -2
   /// ```
   int difference(PositionedNote other) => other.semitones - semitones;
@@ -52,7 +52,7 @@ final class PositionedNote
   /// ```dart
   /// Note.g.inOctave(4).transposeBy(Interval.perfectFifth)
   ///   == Note.d.inOctave(5)
-  /// Note.dFlat.inOctave(2).transposeBy(-Interval.majorSecond)
+  /// Note.d.flat.inOctave(2).transposeBy(-Interval.majorSecond)
   ///   == Note(BaseNote.c, Accidental.flat).inOctave(2)
   /// ```
   @override
@@ -78,12 +78,12 @@ final class PositionedNote
   /// Example:
   /// ```dart
   /// Note.a.inOctave(4).equalTemperamentFrequency() == const Frequency(440)
-  /// Note.gSharp.inOctave(4).equalTemperamentFrequency()
+  /// Note.g.sharp.inOctave(4).equalTemperamentFrequency()
   ///   == const Frequency(415.3)
   /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
   /// Note.a.inOctave(4).equalTemperamentFrequency(const Frequency(338))
   ///   == const Frequency(338)
-  /// Note.bFlat.inOctave(4).equalTemperamentFrequency(const Frequency(338))
+  /// Note.b.flat.inOctave(4).equalTemperamentFrequency(const Frequency(338))
   ///   == const Frequency(464.04)
   /// ```
   Frequency equalTemperamentFrequency([
@@ -101,7 +101,7 @@ final class PositionedNote
   /// ```dart
   /// Note.c.inOctave(4).scientificName == 'C4'
   /// Note.a.inOctave(3).scientificName == 'A3'
-  /// Note.bFlat.inOctave(1).scientificName == 'B♭1'
+  /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
   /// ```
   String get scientificName => '${note.baseNote.name.toUpperCase()}'
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
@@ -114,7 +114,7 @@ final class PositionedNote
   /// ```dart
   /// Note.c.inOctave(4).helmholtzName == 'c′'
   /// Note.a.inOctave(3).helmholtzName == 'a'
-  /// Note.bFlat.inOctave(1).helmholtzName == 'B♭͵'
+  /// Note.b.flat.inOctave(1).helmholtzName == 'B♭͵'
   /// ```
   String get helmholtzName {
     final accidentalSymbol =

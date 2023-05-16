@@ -10,11 +10,8 @@ void main() {
         expect(Note.c.major.relative, Note.a.minor);
         expect(Note.f.major.relative, Note.d.minor);
         expect(Note.d.major.relative, Note.b.minor);
-        expect(Note.gSharp.minor.relative, Note.b.major);
-        expect(
-          Note.aFlat.minor.relative,
-          const Tonality(Note(BaseNote.c, Accidental.flat), TonalMode.major),
-        );
+        expect(Note.g.sharp.minor.relative, Note.b.major);
+        expect(Note.a.flat.minor.relative, Note.c.flat.major);
       });
     });
 
@@ -45,15 +42,15 @@ void main() {
           const KeySignature(5, Accidental.sharp),
         );
         expect(
-          Note.gSharp.minor.keySignature,
+          Note.g.sharp.minor.keySignature,
           const KeySignature(5, Accidental.sharp),
         );
         expect(
-          Note.dFlat.major.keySignature,
+          Note.d.flat.major.keySignature,
           const KeySignature(5, Accidental.flat),
         );
         expect(
-          Note.bFlat.minor.keySignature,
+          Note.b.flat.minor.keySignature,
           const KeySignature(5, Accidental.flat),
         );
       });
@@ -61,24 +58,24 @@ void main() {
 
     group('.scaleNotes', () {
       test('should return the scale notes of this Tonality', () {
-        expect(Note.d.major.scaleNotes, const [
+        expect(Note.d.major.scaleNotes, [
           Note.d,
           Note.e,
-          Note.fSharp,
+          Note.f.sharp,
           Note.g,
           Note.a,
           Note.b,
-          Note.cSharp,
+          Note.c.sharp,
           Note.d,
         ]);
-        expect(Note.c.minor.scaleNotes, const [
+        expect(Note.c.minor.scaleNotes, [
           Note.c,
           Note.d,
-          Note.eFlat,
+          Note.e.flat,
           Note.f,
           Note.g,
-          Note.aFlat,
-          Note.bFlat,
+          Note.a.flat,
+          Note.b.flat,
           Note.c,
         ]);
       });
@@ -88,22 +85,10 @@ void main() {
       test('should return the string representation of this Tonality', () {
         expect(Note.c.major.toString(), 'C major');
         expect(Note.d.minor.toString(), 'D minor');
-        expect(Note.aFlat.major.toString(), 'A♭ major');
-        expect(Note.fSharp.minor.toString(), 'F♯ minor');
-        expect(
-          const Tonality(
-            Note(BaseNote.g, Accidental.doubleSharp),
-            TonalMode.major,
-          ).toString(),
-          'G𝄪 major',
-        );
-        expect(
-          const Tonality(
-            Note(BaseNote.e, Accidental.doubleFlat),
-            TonalMode.minor,
-          ).toString(),
-          'E𝄫 minor',
-        );
+        expect(Note.a.flat.major.toString(), 'A♭ major');
+        expect(Note.f.sharp.minor.toString(), 'F♯ minor');
+        expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
+        expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
       });
     });
 
@@ -111,14 +96,14 @@ void main() {
       test('should ignore equal Tonality instances in a Set', () {
         final collection = {
           Note.d.major,
-          Note.fSharp.minor,
-          Note.gSharp.minor,
+          Note.f.sharp.minor,
+          Note.g.sharp.minor,
         };
         collection.addAll(collection);
         expect(collection.toList(), [
           Note.d.major,
-          Note.fSharp.minor,
-          Note.gSharp.minor,
+          Note.f.sharp.minor,
+          Note.g.sharp.minor,
         ]);
       });
     });
@@ -126,20 +111,20 @@ void main() {
     group('.compareTo()', () {
       test('should correctly sort Tonality items in a collection', () {
         final orderedSet = SplayTreeSet<Tonality>.of([
-          Note.fSharp.minor,
+          Note.f.sharp.minor,
           Note.c.minor,
           Note.d.major,
           Note.c.major,
-          Note.dFlat.major,
-          Note.eFlat.major,
+          Note.d.flat.major,
+          Note.e.flat.major,
         ]);
         expect(orderedSet.toList(), [
           Note.c.major,
           Note.c.minor,
-          Note.dFlat.major,
+          Note.d.flat.major,
           Note.d.major,
-          Note.eFlat.major,
-          Note.fSharp.minor,
+          Note.e.flat.major,
+          Note.f.sharp.minor,
         ]);
       });
     });

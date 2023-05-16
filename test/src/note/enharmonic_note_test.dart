@@ -20,44 +20,44 @@ void main() {
         'should return the correct Note spellings for this EnharmonicNote',
         () {
           expect(EnharmonicNote.c.spellings, {
-            const Note(BaseNote.b, Accidental.sharp),
+            Note.b.sharp,
             Note.c,
-            const Note(BaseNote.d, Accidental.doubleFlat),
+            Note.d.flat.flat,
           });
-          expect(EnharmonicNote.cSharp.spellings, {Note.cSharp, Note.dFlat});
+          expect(EnharmonicNote.cSharp.spellings, {Note.c.sharp, Note.d.flat});
           expect(EnharmonicNote.d.spellings, {
-            const Note(BaseNote.c, Accidental.doubleSharp),
+            Note.c.sharp.sharp,
             Note.d,
-            const Note(BaseNote.e, Accidental.doubleFlat),
+            Note.e.flat.flat,
           });
-          expect(EnharmonicNote.dSharp.spellings, {Note.dSharp, Note.eFlat});
+          expect(EnharmonicNote.dSharp.spellings, {Note.d.sharp, Note.e.flat});
           expect(EnharmonicNote.e.spellings, {
-            const Note(BaseNote.d, Accidental.doubleSharp),
+            Note.d.sharp.sharp,
             Note.e,
-            const Note(BaseNote.f, Accidental.flat),
+            Note.f.flat,
           });
           expect(EnharmonicNote.f.spellings, {
-            const Note(BaseNote.e, Accidental.sharp),
+            Note.e.sharp,
             Note.f,
-            const Note(BaseNote.g, Accidental.doubleFlat),
+            Note.g.flat.flat,
           });
-          expect(EnharmonicNote.fSharp.spellings, {Note.fSharp, Note.gFlat});
+          expect(EnharmonicNote.fSharp.spellings, {Note.f.sharp, Note.g.flat});
           expect(EnharmonicNote.g.spellings, {
-            const Note(BaseNote.f, Accidental.doubleSharp),
+            Note.f.sharp.sharp,
             Note.g,
-            const Note(BaseNote.a, Accidental.doubleFlat),
+            Note.a.flat.flat,
           });
-          expect(EnharmonicNote.gSharp.spellings, {Note.gSharp, Note.aFlat});
+          expect(EnharmonicNote.gSharp.spellings, {Note.g.sharp, Note.a.flat});
           expect(EnharmonicNote.a.spellings, {
-            const Note(BaseNote.g, Accidental.doubleSharp),
+            Note.g.sharp.sharp,
             Note.a,
-            const Note(BaseNote.b, Accidental.doubleFlat),
+            Note.b.flat.flat,
           });
-          expect(EnharmonicNote.aSharp.spellings, {Note.aSharp, Note.bFlat});
+          expect(EnharmonicNote.aSharp.spellings, {Note.a.sharp, Note.b.flat});
           expect(EnharmonicNote.b.spellings, {
-            const Note(BaseNote.a, Accidental.doubleSharp),
+            Note.a.sharp.sharp,
             Note.b,
-            const Note(BaseNote.c, Accidental.flat),
+            Note.c.flat,
           });
         },
       );
@@ -70,101 +70,101 @@ void main() {
           expect(EnharmonicNote.c.resolveSpelling(), Note.c);
           expect(
             EnharmonicNote.c.resolveSpelling(Accidental.sharp),
-            const Note(BaseNote.b, Accidental.sharp),
+            Note.b.sharp,
           );
           expect(
             EnharmonicNote.c.resolveSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.d, Accidental.doubleFlat),
+            Note.d.flat.flat,
           );
 
-          expect(EnharmonicNote.cSharp.resolveSpelling(), Note.cSharp);
+          expect(EnharmonicNote.cSharp.resolveSpelling(), Note.c.sharp);
           expect(
             EnharmonicNote.cSharp.resolveSpelling(Accidental.flat),
-            Note.dFlat,
+            Note.d.flat,
           );
 
           expect(EnharmonicNote.d.resolveSpelling(), Note.d);
           expect(
             EnharmonicNote.d.resolveSpelling(Accidental.doubleSharp),
-            const Note(BaseNote.c, Accidental.doubleSharp),
+            Note.c.sharp.sharp,
           );
           expect(
             EnharmonicNote.d.resolveSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.e, Accidental.doubleFlat),
+            Note.e.flat.flat,
           );
 
-          expect(EnharmonicNote.dSharp.resolveSpelling(), Note.dSharp);
+          expect(EnharmonicNote.dSharp.resolveSpelling(), Note.d.sharp);
           expect(
             EnharmonicNote.dSharp.resolveSpelling(Accidental.flat),
-            Note.eFlat,
+            Note.e.flat,
           );
 
           expect(EnharmonicNote.e.resolveSpelling(), Note.e);
           expect(
             EnharmonicNote.e.resolveSpelling(Accidental.doubleSharp),
-            const Note(BaseNote.d, Accidental.doubleSharp),
+            Note.d.sharp.sharp,
           );
           expect(
             EnharmonicNote.e.resolveSpelling(Accidental.flat),
-            const Note(BaseNote.f, Accidental.flat),
+            Note.f.flat,
           );
 
           expect(EnharmonicNote.f.resolveSpelling(), Note.f);
           expect(
             EnharmonicNote.f.resolveSpelling(Accidental.sharp),
-            const Note(BaseNote.e, Accidental.sharp),
+            Note.e.sharp,
           );
           expect(
             EnharmonicNote.f.resolveSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.g, Accidental.doubleFlat),
+            Note.g.flat.flat,
           );
 
-          expect(EnharmonicNote.fSharp.resolveSpelling(), Note.fSharp);
+          expect(EnharmonicNote.fSharp.resolveSpelling(), Note.f.sharp);
           expect(
             EnharmonicNote.fSharp.resolveSpelling(Accidental.flat),
-            Note.gFlat,
+            Note.g.flat,
           );
 
           expect(EnharmonicNote.g.resolveSpelling(), Note.g);
           expect(
             EnharmonicNote.g.resolveSpelling(Accidental.doubleSharp),
-            const Note(BaseNote.f, Accidental.doubleSharp),
+            Note.f.sharp.sharp,
           );
           expect(
             EnharmonicNote.g.resolveSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.a, Accidental.doubleFlat),
+            Note.a.flat.flat,
           );
 
-          expect(EnharmonicNote.gSharp.resolveSpelling(), Note.gSharp);
+          expect(EnharmonicNote.gSharp.resolveSpelling(), Note.g.sharp);
           expect(
             EnharmonicNote.gSharp.resolveSpelling(Accidental.flat),
-            Note.aFlat,
+            Note.a.flat,
           );
 
           expect(EnharmonicNote.a.resolveSpelling(), Note.a);
           expect(
             EnharmonicNote.a.resolveSpelling(Accidental.doubleSharp),
-            const Note(BaseNote.g, Accidental.doubleSharp),
+            Note.g.sharp.sharp,
           );
           expect(
             EnharmonicNote.a.resolveSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.b, Accidental.doubleFlat),
+            Note.b.flat.flat,
           );
 
-          expect(EnharmonicNote.aSharp.resolveSpelling(), Note.aSharp);
+          expect(EnharmonicNote.aSharp.resolveSpelling(), Note.a.sharp);
           expect(
             EnharmonicNote.aSharp.resolveSpelling(Accidental.flat),
-            Note.bFlat,
+            Note.b.flat,
           );
 
           expect(EnharmonicNote.b.resolveSpelling(), Note.b);
           expect(
             EnharmonicNote.b.resolveSpelling(Accidental.doubleSharp),
-            const Note(BaseNote.a, Accidental.doubleSharp),
+            Note.a.sharp.sharp,
           );
           expect(
             EnharmonicNote.b.resolveSpelling(Accidental.flat),
-            const Note(BaseNote.c, Accidental.flat),
+            Note.c.flat,
           );
         },
       );
@@ -200,17 +200,17 @@ void main() {
           expect(EnharmonicNote.c.resolveClosestSpelling(), Note.c);
           expect(
             EnharmonicNote.c.resolveClosestSpelling(Accidental.sharp),
-            const Note(BaseNote.b, Accidental.sharp),
+            Note.b.sharp,
           );
           expect(
             EnharmonicNote.c.resolveClosestSpelling(Accidental.doubleFlat),
-            const Note(BaseNote.d, Accidental.doubleFlat),
+            Note.d.flat.flat,
           );
 
-          expect(EnharmonicNote.cSharp.resolveClosestSpelling(), Note.cSharp);
+          expect(EnharmonicNote.cSharp.resolveClosestSpelling(), Note.c.sharp);
           expect(
             EnharmonicNote.cSharp.resolveClosestSpelling(Accidental.flat),
-            Note.dFlat,
+            Note.d.flat,
           );
 
           // ... Similar to `.resolveSpelling()`.
@@ -223,7 +223,7 @@ void main() {
         () {
           expect(
             EnharmonicNote.cSharp.resolveClosestSpelling(Accidental.natural),
-            Note.cSharp,
+            Note.c.sharp,
           );
           expect(
             EnharmonicNote.c.resolveClosestSpelling(Accidental.flat),
