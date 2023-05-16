@@ -100,10 +100,8 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(3)
-  ///   == const PositionedNote(BaseNote.c, Accidental.natural, 3);
-  /// Note.a.flat.inOctave(2)
-  ///   == const PositionedNote(BaseNote.a, Accidental.flat, 2);
+  /// Note.c.inOctave(3) == const PositionedNote(Note.c, 3)
+  /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, 2)
   /// ```
   PositionedNote inOctave(int octave) => PositionedNote(this, octave);
 
