@@ -89,10 +89,7 @@ final class PositionedNote
   Frequency equalTemperamentFrequency([
     Frequency reference = const Frequency(440),
   ]) =>
-      Frequency(
-        reference.hertz *
-            math.pow(sqrt12_2, Note.a.inOctave(4).difference(this)),
-      );
+      reference * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
