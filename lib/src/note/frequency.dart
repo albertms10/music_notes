@@ -28,6 +28,39 @@ class Frequency implements Comparable<Frequency> {
     return hertz >= minFrequency && hertz <= maxFrequency;
   }
 
+  /// Adds [other] to this [Frequency].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440) + const Frequency(220) == const Frequency(660)
+  /// ```
+  Frequency operator +(Frequency other) => Frequency(hertz + other.hertz);
+
+  /// Subtracts [other] from this [Frequency].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440) - const Frequency(220) == const Frequency(220)
+  /// ```
+  Frequency operator -(Frequency other) => Frequency(hertz - other.hertz);
+
+  /// Multiplies this [Frequency] by [factor].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440) * 2 == const Frequency(880)
+  /// const Frequency(440) * 0.5 == const Frequency(220)
+  /// ```
+  Frequency operator *(num factor) => Frequency(hertz * factor);
+
+  /// Divides this [Frequency] by [factor].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440) / 2 == const Frequency(220)
+  /// ```
+  Frequency operator /(num factor) => Frequency(hertz / factor);
+
   @override
   String toString() => '$hertz $hertzUnitSymbol';
 
