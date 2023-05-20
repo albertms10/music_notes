@@ -184,11 +184,13 @@ final class Interval implements Comparable<Interval> {
 
   @override
   String toString() {
-    final naming = '${quality.abbreviation}${size.abs()}';
+    final qualityAbbreviation =
+        quality.abbreviation ?? '[${quality.semitones.toDeltaString()}]';
+    final naming = '$qualityAbbreviation${size.abs()}';
     final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (size.isCompound) {
       return '$descendingAbbreviation$naming '
-          '(${quality.abbreviation}${size.simplified.abs()})';
+          '($qualityAbbreviation${size.simplified.abs()})';
     }
 
     return '$descendingAbbreviation$naming';

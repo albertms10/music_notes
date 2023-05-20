@@ -273,6 +273,15 @@ void main() {
           const Interval.perfect(22, PerfectQuality.perfect).toString(),
           'P22 (P8)',
         );
+
+        expect(
+          const Interval.perfect(5, PerfectQuality(-4)).toString(),
+          '[-4]5',
+        );
+        expect(
+          const Interval.imperfect(10, ImperfectQuality(6)).toString(),
+          '[+6]10 ([+6]3)',
+        );
       });
     });
 
