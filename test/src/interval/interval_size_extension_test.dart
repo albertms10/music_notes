@@ -63,7 +63,24 @@ void main() {
         expect(6.semitones, 8);
         expect(7.semitones, 10);
         expect(8.semitones, 12);
+
         expect(9.semitones, 13);
+        expect(10.semitones, 15);
+        expect(11.semitones, 17);
+        expect(12.semitones, 19);
+        expect(13.semitones, 20);
+        expect(14.semitones, 22);
+        expect(15.semitones, 24);
+
+        // Failing tests (greater than two octaves):
+        // expect(16.semitones, 25);
+        // expect(17.semitones, 27);
+        // expect(18.semitones, 29);
+        // expect(19.semitones, 30);
+        // expect(20.semitones, 32);
+        // expect(21.semitones, 34);
+        // expect(22.semitones, 36);
+        // expect(29.semitones, 48);
       });
     });
 

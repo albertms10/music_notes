@@ -56,7 +56,7 @@ extension IntervalSizeExtension on int {
     assert(this != 0, 'Size must be non-zero');
 
     return (_sizeToSemitones[abs()] ??
-            chromaticDivisions + _sizeToSemitones[simplified.abs()]!) *
+            (chromaticDivisions + _sizeToSemitones[simplified.abs()]!)) *
         sign;
   }
 
