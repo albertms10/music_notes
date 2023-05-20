@@ -87,6 +87,161 @@ void main() {
       );
     });
 
+    group('.interval()', () {
+      test(
+        'should return the Interval between this PositionedNote and other',
+        () {
+          expect(
+            Note.c.inOctave(4).interval(Note.c.inOctave(4)),
+            Interval.perfectUnison,
+          );
+          expect(
+            Note.c.inOctave(3).interval(Note.c.sharp.inOctave(3)),
+            Interval.augmentedUnison,
+          );
+          expect(
+            Note.f.flat.inOctave(2).interval(Note.f.inOctave(2)),
+            Interval.augmentedUnison,
+          );
+
+          expect(
+            Note.c.inOctave(3).interval(Note.d.flat.flat.inOctave(3)),
+            Interval.diminishedSecond,
+          );
+          expect(
+            Note.f.flat.inOctave(4).interval(Note.g.flat.flat.inOctave(4)),
+            Interval.minorSecond,
+          );
+          expect(
+            Note.c.inOctave(5).interval(Note.d.flat.inOctave(5)),
+            Interval.minorSecond,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.d.inOctave(4)),
+            Interval.majorSecond,
+          );
+          expect(
+            Note.d.inOctave(4).interval(Note.c.inOctave(4)),
+            -Interval.majorSecond,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.d.sharp.inOctave(4)),
+            Interval.augmentedSecond,
+          );
+
+          expect(
+            Note.c.inOctave(4).interval(Note.e.flat.flat.inOctave(4)),
+            Interval.diminishedThird,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.e.flat.inOctave(4)),
+            Interval.minorThird,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.e.inOctave(4)),
+            Interval.majorThird,
+          );
+          expect(
+            Note.g.inOctave(4).interval(Note.b.inOctave(4)),
+            Interval.majorThird,
+          );
+          expect(
+            Note.b.flat.inOctave(4).interval(Note.d.inOctave(5)),
+            Interval.majorThird,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.e.sharp.inOctave(4)),
+            Interval.augmentedThird,
+          );
+
+          expect(
+            Note.c.inOctave(4).interval(Note.f.flat.inOctave(4)),
+            Interval.diminishedFourth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.f.inOctave(4)),
+            Interval.perfectFourth,
+          );
+          expect(
+            Note.g.sharp.inOctave(4).interval(Note.c.sharp.inOctave(5)),
+            Interval.perfectFourth,
+          );
+          expect(
+            Note.a.flat.inOctave(4).interval(Note.d.inOctave(5)),
+            Interval.augmentedFourth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.f.sharp.inOctave(4)),
+            Interval.augmentedFourth,
+          );
+
+          expect(
+            Note.c.inOctave(4).interval(Note.g.flat.inOctave(4)),
+            Interval.diminishedFifth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.g.inOctave(4)),
+            Interval.perfectFifth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.g.sharp.inOctave(4)),
+            Interval.augmentedFifth,
+          );
+
+          expect(
+            Note.c.inOctave(4).interval(Note.a.flat.flat.inOctave(4)),
+            Interval.diminishedSixth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.a.flat.inOctave(4)),
+            Interval.minorSixth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.a.inOctave(4)),
+            Interval.majorSixth,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.a.sharp.inOctave(4)),
+            Interval.augmentedSixth,
+          );
+
+          expect(
+            Note.c.inOctave(4).interval(Note.b.flat.flat.inOctave(4)),
+            Interval.diminishedSeventh,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.b.flat.inOctave(4)),
+            Interval.minorSeventh,
+          );
+          expect(
+            Note.c.inOctave(4).interval(Note.b.inOctave(4)),
+            Interval.majorSeventh,
+          );
+          expect(
+            Note.b.inOctave(4).interval(Note.a.sharp.inOctave(5)),
+            Interval.majorSeventh,
+          );
+
+          expect(
+            Note.c.inOctave(3).interval(Note.c.inOctave(4)),
+            Interval.perfectOctave,
+          );
+          expect(
+            Note.c.inOctave(3).interval(Note.c.inOctave(5)),
+            const Interval.perfect(15, PerfectQuality.perfect),
+          );
+          // TODO(albertms10): Failing test. See #132.
+          // expect(
+          //   Note.c.inOctave(3).interval(Note.c.inOctave(6)),
+          //   const Interval.perfect(22, PerfectQuality.perfect),
+          // );
+
+          // TODO(albertms10): add test case for:
+          //  `Note.c.inOctave(4).interval(Note.b.sharp.inOctave(4))`.
+        },
+      );
+    });
+
     group('.transposeBy()', () {
       test('should return this PositionedNote transposed by Interval', () {
         expect(

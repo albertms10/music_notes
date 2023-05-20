@@ -2,7 +2,7 @@ part of '../../music_notes.dart';
 
 /// A note octave in the octave range.
 final class PositionedNote
-    implements Comparable<PositionedNote>, Transposable<PositionedNote> {
+    implements Comparable<PositionedNote>, Scalable<PositionedNote> {
   /// Which of the 12 notes inside the octave.
   final Note note;
 
@@ -69,6 +69,28 @@ final class PositionedNote
             // but different octaves (e.g., C♭4 but B3).
             transposedNote.accidental.semitones,
       ),
+    );
+  }
+
+  /// Returns the exact interval between this [PositionedNote] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.perfectFifth
+  /// Note.d.inOctave(3).interval(Note.a.flat.inOctave(4))
+  ///   == Interval.diminishedFifth
+  /// ```
+  @override
+  Interval interval(PositionedNote other) {
+    final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
+    final ordinalDeltaSign = ordinalDelta.isNegative ? -1 : 1;
+    final intervalSize = ordinalDelta + ordinalDeltaSign;
+    final octaveShift =
+        (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
+
+    return Interval.fromSemitones(
+      intervalSize + octaveShift,
+      difference(other),
     );
   }
 

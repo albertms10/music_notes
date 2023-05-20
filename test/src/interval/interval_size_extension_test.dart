@@ -72,7 +72,7 @@ void main() {
         expect(14.semitones, 22);
         expect(15.semitones, 24);
 
-        // Failing tests (greater than two octaves):
+        // TODO(albertms10): Failing tests. See #132.
         // expect(16.semitones, 25);
         // expect(17.semitones, 27);
         // expect(18.semitones, 29);

@@ -91,51 +91,47 @@ void main() {
       );
     });
 
-    group('.exactInterval()', () {
+    group('.interval()', () {
       test('should return the Interval between this Note and other', () {
-        expect(Note.c.exactInterval(Note.c), Interval.perfectUnison);
-        expect(Note.c.exactInterval(Note.c.sharp), Interval.augmentedUnison);
+        expect(Note.c.interval(Note.c), Interval.perfectUnison);
+        expect(Note.c.interval(Note.c.sharp), Interval.augmentedUnison);
+        expect(Note.f.flat.interval(Note.f), Interval.augmentedUnison);
 
-        expect(
-          Note.c.exactInterval(Note.d.flat.flat),
-          Interval.diminishedSecond,
-        );
-        expect(Note.c.exactInterval(Note.d.flat), Interval.minorSecond);
-        expect(Note.c.exactInterval(Note.d), Interval.majorSecond);
-        expect(Note.c.exactInterval(Note.d.sharp), Interval.augmentedSecond);
+        expect(Note.c.interval(Note.d.flat.flat), Interval.diminishedSecond);
+        expect(Note.f.flat.interval(Note.g.flat.flat), Interval.minorSecond);
+        expect(Note.c.interval(Note.d.flat), Interval.minorSecond);
+        expect(Note.c.interval(Note.d), Interval.majorSecond);
+        expect(Note.c.interval(Note.d.sharp), Interval.augmentedSecond);
 
-        expect(
-          Note.c.exactInterval(Note.e.flat.flat),
-          Interval.diminishedThird,
-        );
-        expect(Note.c.exactInterval(Note.e.flat), Interval.minorThird);
-        expect(Note.c.exactInterval(Note.e), Interval.majorThird);
-        expect(Note.c.exactInterval(Note.e.sharp), Interval.augmentedThird);
+        expect(Note.c.interval(Note.e.flat.flat), Interval.diminishedThird);
+        expect(Note.c.interval(Note.e.flat), Interval.minorThird);
+        expect(Note.c.interval(Note.e), Interval.majorThird);
+        expect(Note.g.interval(Note.b), Interval.majorThird);
+        expect(Note.b.flat.interval(Note.d), Interval.majorThird);
+        expect(Note.c.interval(Note.e.sharp), Interval.augmentedThird);
 
-        expect(Note.c.exactInterval(Note.f.flat), Interval.diminishedFourth);
-        expect(Note.c.exactInterval(Note.f), Interval.perfectFourth);
-        expect(Note.c.exactInterval(Note.f.sharp), Interval.augmentedFourth);
+        expect(Note.c.interval(Note.f.flat), Interval.diminishedFourth);
+        expect(Note.c.interval(Note.f), Interval.perfectFourth);
+        expect(Note.g.sharp.interval(Note.c.sharp), Interval.perfectFourth);
+        expect(Note.a.flat.interval(Note.d), Interval.augmentedFourth);
+        expect(Note.c.interval(Note.f.sharp), Interval.augmentedFourth);
 
-        expect(Note.c.exactInterval(Note.g.flat), Interval.diminishedFifth);
-        expect(Note.c.exactInterval(Note.g), Interval.perfectFifth);
-        expect(Note.c.exactInterval(Note.g.sharp), Interval.augmentedFifth);
+        expect(Note.c.interval(Note.g.flat), Interval.diminishedFifth);
+        expect(Note.c.interval(Note.g), Interval.perfectFifth);
+        expect(Note.c.interval(Note.g.sharp), Interval.augmentedFifth);
 
-        expect(
-          Note.c.exactInterval(Note.a.flat.flat),
-          Interval.diminishedSixth,
-        );
-        expect(Note.c.exactInterval(Note.a.flat), Interval.minorSixth);
-        expect(Note.c.exactInterval(Note.a), Interval.majorSixth);
-        expect(Note.c.exactInterval(Note.a.sharp), Interval.augmentedSixth);
+        expect(Note.c.interval(Note.a.flat.flat), Interval.diminishedSixth);
+        expect(Note.c.interval(Note.a.flat), Interval.minorSixth);
+        expect(Note.c.interval(Note.a), Interval.majorSixth);
+        expect(Note.c.interval(Note.a.sharp), Interval.augmentedSixth);
 
-        expect(
-          Note.c.exactInterval(Note.b.flat.flat),
-          Interval.diminishedSeventh,
-        );
-        expect(Note.c.exactInterval(Note.b.flat), Interval.minorSeventh);
-        expect(Note.c.exactInterval(Note.b), Interval.majorSeventh);
+        expect(Note.c.interval(Note.b.flat.flat), Interval.diminishedSeventh);
+        expect(Note.c.interval(Note.b.flat), Interval.minorSeventh);
+        expect(Note.c.interval(Note.b), Interval.majorSeventh);
+        expect(Note.b.interval(Note.a.sharp), Interval.majorSeventh);
+
         // TODO(albertms10): add test case for:
-        //  `Note.c.exactInterval(Note.b.sharp)`.
+        //  `Note.c.interval(Note.b.sharp)`.
       });
     });
 
