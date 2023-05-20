@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 final class EnharmonicNote extends Enharmonic<Note>
-    implements Transposable<EnharmonicNote> {
+    implements Scalable<EnharmonicNote> {
   const EnharmonicNote(super.semitones)
       : assert(
           semitones > 0 && semitones <= chromaticDivisions,
@@ -123,6 +123,10 @@ final class EnharmonicNote extends Enharmonic<Note>
   @override
   EnharmonicNote transposeBy(Interval interval) =>
       EnharmonicNote((semitones + interval.semitones).chromaticModExcludeZero);
+
+  @override
+  Interval interval(EnharmonicNote other) =>
+      Interval.fromSemitonesQuality(semitones - other.semitones);
 
   /// Returns the shortest fifths distance between this and [other].
   ///

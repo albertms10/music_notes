@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 @immutable
-final class Note implements Comparable<Note>, Transposable<Note> {
+final class Note implements Comparable<Note>, Scalable<Note> {
   final BaseNote baseNote;
   final Accidental accidental;
 
@@ -179,10 +179,11 @@ final class Note implements Comparable<Note>, Transposable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.exactInterval(Note.d) == Interval.minorSecond
-  /// Note.d.exactInterval(Note.a.flat) == Interval.diminishedFifth
+  /// Note.c.interval(Note.d) == Interval.minorSecond
+  /// Note.d.interval(Note.a.flat) == Interval.diminishedFifth
   /// ```
-  Interval exactInterval(Note other) {
+  @override
+  Interval interval(Note other) {
     final intervalSize = baseNote.intervalSize(other.baseNote);
 
     return Interval.fromDelta(
