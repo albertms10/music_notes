@@ -124,9 +124,22 @@ final class EnharmonicNote extends Enharmonic<Note>
   EnharmonicNote transposeBy(Interval interval) =>
       EnharmonicNote((semitones + interval.semitones).chromaticModExcludeZero);
 
+  /// Returns the [Interval] between this [EnharmonicNote] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicNote.c.interval(EnharmonicNote.e) == Interval.majorThird
+  /// EnharmonicNote.gSharp.interval(EnharmonicNote.d)
+  ///   == Interval.augmentedFourth
+  /// ```
   @override
-  Interval interval(EnharmonicNote other) =>
-      Interval.fromSemitonesQuality(semitones - other.semitones);
+  Interval interval(EnharmonicNote other) {
+    final difference = other.semitones - semitones;
+
+    return Interval.fromSemitonesQuality(
+      difference + (difference.isNegative ? chromaticDivisions : 0),
+    );
+  }
 
   /// Returns the shortest fifths distance between this and [other].
   ///

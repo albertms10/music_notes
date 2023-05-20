@@ -241,6 +241,85 @@ void main() {
       );
     });
 
+    group('.interval()', () {
+      test('should return the Interval between this Note and other', () {
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.c),
+          Interval.perfectUnison,
+        );
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.cSharp),
+          Interval.minorSecond,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.d),
+          Interval.majorSecond,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.dSharp),
+          Interval.minorThird,
+        );
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.e),
+          Interval.majorThird,
+        );
+        expect(
+          EnharmonicNote.g.interval(EnharmonicNote.b),
+          Interval.majorThird,
+        );
+        expect(
+          EnharmonicNote.aSharp.interval(EnharmonicNote.d),
+          Interval.majorThird,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.f),
+          Interval.perfectFourth,
+        );
+        expect(
+          EnharmonicNote.gSharp.interval(EnharmonicNote.cSharp),
+          Interval.perfectFourth,
+        );
+        expect(
+          EnharmonicNote.gSharp.interval(EnharmonicNote.d),
+          Interval.augmentedFourth,
+        );
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.fSharp),
+          Interval.augmentedFourth,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.g),
+          Interval.perfectFifth,
+        );
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.gSharp),
+          Interval.minorSixth,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.a),
+          Interval.majorSixth,
+        );
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.aSharp),
+          Interval.minorSeventh,
+        );
+
+        expect(
+          EnharmonicNote.c.interval(EnharmonicNote.b),
+          Interval.majorSeventh,
+        );
+        expect(
+          EnharmonicNote.b.interval(EnharmonicNote.aSharp),
+          Interval.majorSeventh,
+        );
+      });
+    });
+
     group('.transposeBy()', () {
       test('should return this EnharmonicNote transposed by Interval', () {
         expect(
