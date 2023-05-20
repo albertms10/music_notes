@@ -224,6 +224,62 @@ void main() {
       });
     });
 
+    group('operator +()', () {
+      test('should add other to this Interval', () {
+        expect(
+          Interval.perfectUnison + Interval.perfectUnison,
+          Interval.perfectUnison,
+        );
+        expect(
+          Interval.perfectUnison + Interval.minorSecond,
+          Interval.minorSecond,
+        );
+        expect(
+          Interval.minorSecond + Interval.perfectUnison,
+          Interval.minorSecond,
+        );
+        expect(
+          Interval.perfectUnison + Interval.perfectFifth,
+          Interval.perfectFifth,
+        );
+
+        expect(
+          Interval.minorSecond + Interval.minorSecond,
+          Interval.diminishedThird,
+        );
+        expect(
+          Interval.minorSecond + Interval.majorSecond,
+          Interval.minorThird,
+        );
+        expect(
+          Interval.minorSecond + Interval.minorThird,
+          Interval.diminishedFourth,
+        );
+        expect(
+          Interval.minorSecond + Interval.perfectFourth,
+          Interval.diminishedFifth,
+        );
+
+        expect(
+          Interval.majorSecond + Interval.minorThird,
+          Interval.perfectFourth,
+        );
+        expect(
+          Interval.majorSecond + Interval.majorThird,
+          Interval.augmentedFourth,
+        );
+        expect(
+          Interval.majorSecond + Interval.perfectFourth,
+          Interval.perfectFifth,
+        );
+
+        expect(
+          Interval.perfectFourth + Interval.perfectFourth,
+          Interval.minorSeventh,
+        );
+      });
+    });
+
     group('operator -()', () {
       test('should return the negation of this Interval', () {
         expect(

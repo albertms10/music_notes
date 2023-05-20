@@ -171,6 +171,21 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
 
+  /// Adds [other] to this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.minorSecond + Interval.minorSecond == Interval.diminishedThird
+  /// Interval.minorSecond + Interval.majorSecond == Interval.minorThird
+  /// Interval.majorSecond + Interval.perfectFourth == Interval.perfectFifth
+  /// ```
+  Interval operator +(Interval other) {
+    final initialNote = Note.c.inOctave(4);
+    final finalNote = initialNote.transposeBy(this).transposeBy(other);
+
+    return initialNote.interval(finalNote);
+  }
+
   /// The negation of this [Interval].
   ///
   /// Example:
