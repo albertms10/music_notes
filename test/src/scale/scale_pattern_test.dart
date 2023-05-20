@@ -419,6 +419,17 @@ void main() {
           ScalePattern.ionian,
           ScalePattern.mixolydian,
           ScalePattern.wholeTone,
+          // Melodic minor scale (ascending only)
+          const ScalePattern([
+            Interval.majorSecond,
+            Interval.minorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.minorSecond,
+          ]),
+          ScalePattern.melodicMinor,
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
@@ -426,6 +437,17 @@ void main() {
           ScalePattern.aeolian,
           ScalePattern.mixolydian,
           ScalePattern.wholeTone,
+          // Melodic minor scale (ascending only)
+          ScalePattern([
+            Interval.majorSecond,
+            Interval.minorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.majorSecond,
+            Interval.minorSecond,
+          ]),
+          ScalePattern.melodicMinor,
         ]);
       });
     });

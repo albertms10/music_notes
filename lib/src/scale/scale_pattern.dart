@@ -280,7 +280,10 @@ final class ScalePattern {
   @override
   bool operator ==(Object other) =>
       other is ScalePattern &&
-      const ListEquality<Interval>().equals(intervalSteps, other.intervalSteps);
+      const ListEquality<Interval>()
+          .equals(intervalSteps, other.intervalSteps) &&
+      const ListEquality<Interval>()
+          .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
   int get hashCode => Object.hashAll(intervalSteps);
