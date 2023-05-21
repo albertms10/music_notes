@@ -12,6 +12,10 @@ void main() {
         expect(EnharmonicInterval.perfectUnison.toString(), '0 {P1, d2}');
         expect(EnharmonicInterval.majorThird.toString(), '4 {M3, d4}');
         expect(EnharmonicInterval.minorSixth.toString(), '8 {A5, m6, dd7}');
+        expect(
+          (-EnharmonicInterval.majorSixth).toString(),
+          'desc 9 {desc d7, desc M6}',
+        );
       });
     });
   });
