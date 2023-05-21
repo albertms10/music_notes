@@ -218,10 +218,6 @@ final class ScalePattern {
   /// ScalePattern.melodicMinor.from(Note.c)
   ///   == Scale([Note.c, Note.d, Note.e.flat, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c])
-  ///
-  /// ScalePattern.melodicMinor.from(Note.c, isDescending: true)
-  ///   == Scale([Note.c, Note.b.flat, Note.a.flat, Note.g, Note.f, Note.e.flat,
-  ///        Note.d, Note.c])
   /// ```
   Scale<T> from<T extends Scalable<T>>(T scalable) => Scale(
         intervalSteps.fold(
