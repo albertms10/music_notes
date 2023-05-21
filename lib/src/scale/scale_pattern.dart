@@ -203,41 +203,36 @@ final class ScalePattern {
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
 
-  /// Returns the scale of notes starting from [transposable].
+  /// Returns the scale of notes starting from [scalable].
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.fromNote(Note.c)
-  ///   == const [Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
-  ///        Note.c]
+  /// ScalePattern.major.from(Note.c)
+  ///   == const Scale([Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
+  ///        Note.c])
   ///
-  /// ScalePattern.naturalMinor.fromNote(Note.a)
-  ///   == const [Note.a, Note.b, Note.c, Note.d, Note.e, Note.f, Note.g,
-  ///        Note.a]
+  /// ScalePattern.naturalMinor.from(Note.a)
+  ///   == const Scale([Note.a, Note.b, Note.c, Note.d, Note.e, Note.f, Note.g,
+  ///        Note.a])
   ///
-  /// ScalePattern.melodicMinor.fromNote(Note.c)
-  ///   == [Note.c, Note.d, Note.e.flat, Note.f, Note.g, Note.a, Note.b, Note.c]
+  /// ScalePattern.melodicMinor.from(Note.c)
+  ///   == Scale([Note.c, Note.d, Note.e.flat, Note.f, Note.g, Note.a, Note.b,
+  ///        Note.c])
   ///
-  /// ScalePattern.melodicMinor.fromNote(Note.c, isDescending: true)
-  ///   == [Note.c, Note.b.flat, Note.a.flat, Note.g, Note.f, Note.e.flat,
-  ///        Note.d, Note.c]
+  /// ScalePattern.melodicMinor.from(Note.c, isDescending: true)
+  ///   == Scale([Note.c, Note.b.flat, Note.a.flat, Note.g, Note.f, Note.e.flat,
+  ///        Note.d, Note.c])
   /// ```
-  List<T> fromNote<T extends Transposable<T>>(
-    T transposable, {
-    bool isDescending = false,
-  }) {
-    final steps = isDescending ? descendingIntervalSteps : intervalSteps;
-
-    return steps.fold(
-      [transposable],
-      (scaleNotes, interval) => [
-        ...scaleNotes,
-        scaleNotes.last.transposeBy(
-          interval.descending(isDescending: isDescending),
+  Scale<T> from<T extends Scalable<T>>(T scalable) => Scale(
+        intervalSteps.fold(
+          [scalable],
+          (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-      ],
-    );
-  }
+        _descendingIntervalSteps?.fold(
+          [scalable],
+          (scale, interval) => [...?scale, scale!.last.transposeBy(-interval)],
+        ),
+      );
 
   /// Returns the mirrored scale version of this [ScalePattern].
   ///
@@ -275,13 +270,7 @@ final class ScalePattern {
       };
 
   @override
-  String toString() {
-    final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps!.join(' ')}'
-        : '';
-
-    return '$name (${intervalSteps.join(' ')}$descendingSteps)';
-  }
+  String toString() => '$name (${intervalSteps.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
