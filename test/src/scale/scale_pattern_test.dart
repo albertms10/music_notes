@@ -164,7 +164,8 @@ void main() {
                 Note.f.sharp.sharp.inOctave(2),
                 Note.g.sharp.inOctave(2),
               ],
-              // TODO(albertms10): Failing test: should start from octave 2.
+              // TODO(albertms10): Failing test: descending scale should start
+              //  from octave 2. See #140.
               [
                 Note.g.sharp.inOctave(1),
                 Note.f.sharp.inOctave(1),

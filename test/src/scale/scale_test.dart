@@ -48,6 +48,39 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('should return the string representation of this Scale', () {
+        expect(
+          ScalePattern.major.from(Note.b.flat).toString(),
+          'B♭ Major (ionian) (B♭ C D E♭ F G A B♭)',
+        );
+        expect(
+          ScalePattern.naturalMinor.from(Note.c.sharp).toString(),
+          'C♯ Natural minor (aeolian) (C♯ D♯ E F♯ G♯ A B C♯)',
+        );
+        expect(
+          ScalePattern.melodicMinor.from(Note.c).toString(),
+          'C Melodic minor (C D E♭ F G A B C, C B♭ A♭ G F E♭ D C)',
+        );
+        // TODO(albertms10): Failing test: descending scale start from octave 5.
+        //  See 140.
+        expect(
+          ScalePattern.melodicMinor.from(Note.a.inOctave(4)).toString(),
+          'A4 Melodic minor '
+          '(A4 B4 C5 D5 E5 F♯5 G♯5 A5, A4 G4 F4 E4 D4 C4 B3 A3)',
+        );
+        expect(
+          ScalePattern.majorPentatonic.from(Note.d.inOctave(3)).toString(),
+          'D3 Major pentatonic (D3 E3 F♯3 A3 B3 D4)',
+        );
+        expect(
+          ScalePattern.minorPentatonic.from(EnharmonicNote.f).toString(),
+          '6 {E♯, F, G𝄫} Minor pentatonic (6 {E♯, F, G𝄫} 9 {G♯, A♭} '
+          '11 {A♯, B♭} 1 {C, D𝄫, B♯} 4 {D♯, E♭} 6 {E♯, F, G𝄫})',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('should ignore equal Scale instances in a Set', () {
         final collection = {

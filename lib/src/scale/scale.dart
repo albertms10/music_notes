@@ -37,8 +37,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       Scale([for (final item in items) item.transposeBy(interval)]);
 
   @override
-  String toString() => '${items.join(' ')}'
-      '${_descendingItems != null ? ' (${_descendingItems!.join(' ')})' : ''}';
+  String toString() => '${items.first} ${pattern.name} (${items.join(' ')}'
+      '${_descendingItems != null ? ', ${_descendingItems!.join(' ')}' : ''})';
 
   @override
   bool operator ==(Object other) =>
