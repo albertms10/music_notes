@@ -275,7 +275,13 @@ final class ScalePattern {
       };
 
   @override
-  String toString() => '$name (${intervalSteps.join(' ')})';
+  String toString() {
+    final joinDescendingSteps = _descendingIntervalSteps != null
+        ? ', ${_descendingIntervalSteps!.join(' ')}'
+        : '';
+
+    return '$name (${intervalSteps.join(' ')}$joinDescendingSteps)';
+  }
 
   @override
   bool operator ==(Object other) =>
