@@ -23,7 +23,7 @@ part 'src/note/enharmonic_note.dart';
 part 'src/note/frequency.dart';
 part 'src/note/note.dart';
 part 'src/note/positioned_note.dart';
-part 'src/scale/scalable.dart';
+part 'src/scalable.dart';
 part 'src/scale/scale.dart';
 part 'src/scale/scale_pattern.dart';
 part 'src/tonality/key_signature.dart';

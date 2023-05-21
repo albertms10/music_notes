@@ -1,4 +1,4 @@
-part of '../../music_notes.dart';
+part of '../music_notes.dart';
 
 abstract interface class Scalable<T> implements Transposable<T> {
   @override
