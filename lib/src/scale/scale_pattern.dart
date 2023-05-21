@@ -224,10 +224,13 @@ final class ScalePattern {
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-        _descendingIntervalSteps?.fold(
-          [scalable],
-          (scale, interval) => [...?scale, scale!.last.transposeBy(-interval)],
-        ),
+        _descendingIntervalSteps?.reversed
+            .fold(
+              [scalable],
+              (scale, interval) => [...scale, scale.last.transposeBy(interval)],
+            )
+            .reversed
+            .toList(),
       );
 
   /// Returns the mirrored scale version of this [ScalePattern].

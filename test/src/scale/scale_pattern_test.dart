@@ -164,17 +164,15 @@ void main() {
                 Note.f.sharp.sharp.inOctave(2),
                 Note.g.sharp.inOctave(2),
               ],
-              // TODO(albertms10): Failing test: descending scale should start
-              //  from octave 2. See #140.
               [
+                Note.g.sharp.inOctave(2),
+                Note.f.sharp.inOctave(2),
+                Note.e.inOctave(2),
+                Note.d.sharp.inOctave(2),
+                Note.c.sharp.inOctave(2),
+                Note.b.inOctave(1),
+                Note.a.sharp.inOctave(1),
                 Note.g.sharp.inOctave(1),
-                Note.f.sharp.inOctave(1),
-                Note.e.inOctave(1),
-                Note.d.sharp.inOctave(1),
-                Note.c.sharp.inOctave(1),
-                Note.b.inOctave(0),
-                Note.a.sharp.inOctave(0),
-                Note.g.sharp.inOctave(0),
               ],
             ),
           );

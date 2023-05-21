@@ -83,12 +83,10 @@ void main() {
           ScalePattern.melodicMinor.from(Note.c).toString(),
           'C Melodic minor (C D E♭ F G A B C, C B♭ A♭ G F E♭ D C)',
         );
-        // TODO(albertms10): Failing test: descending scale start from octave 5.
-        //  See 140.
         expect(
           ScalePattern.melodicMinor.from(Note.a.inOctave(4)).toString(),
           'A4 Melodic minor '
-          '(A4 B4 C5 D5 E5 F♯5 G♯5 A5, A4 G4 F4 E4 D4 C4 B3 A3)',
+          '(A4 B4 C5 D5 E5 F♯5 G♯5 A5, A5 G5 F5 E5 D5 C5 B4 A4)',
         );
         expect(
           ScalePattern.majorPentatonic.from(Note.d.inOctave(3)).toString(),
