@@ -48,6 +48,27 @@ void main() {
       });
     });
 
+    group('.transposeBy()', () {
+      test('should return this Scale transposed by Interval', () {
+        expect(
+          ScalePattern.major.from(Note.c).transposeBy(Interval.majorThird),
+          ScalePattern.major.from(Note.e),
+        );
+        expect(
+          ScalePattern.naturalMinor
+              .from(Note.d.flat)
+              .transposeBy(-Interval.minorThird),
+          ScalePattern.naturalMinor.from(Note.b.flat),
+        );
+        expect(
+          ScalePattern.melodicMinor
+              .from(Note.g.sharp)
+              .transposeBy(Interval.perfectFifth),
+          ScalePattern.melodicMinor.from(Note.d.sharp),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Scale', () {
         expect(

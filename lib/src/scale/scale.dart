@@ -23,18 +23,21 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ScalePattern get pattern =>
       ScalePattern(items.intervals, _descendingItems?.descendingIntervals);
 
-  /// Returns the reversed scale of this [Scale].
+  /// Returns the reversed of this [Scale].
+  Scale<T> get reversed => Scale(descendingItems, items);
+
+  /// Returns this [Scale] transposed by [interval].
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.melodicMinor.from(Note.d, isDescending: true)
-  ///   == ScalePattern.naturalMinor.from(Note.d).reversed
+  /// ScalePattern.major.from(Note.c).transposeBy(Interval.minorThird)
+  ///   == ScalePattern.major.from(Note.e.flat)
   /// ```
-  Scale<T> get reversed => Scale(descendingItems, items);
-
   @override
-  Scale<T> transposeBy(Interval interval) =>
-      Scale([for (final item in items) item.transposeBy(interval)]);
+  Scale<T> transposeBy(Interval interval) => Scale(
+        items.transposeBy(interval),
+        _descendingItems?.transposeBy(interval),
+      );
 
   @override
   String toString() => '${items.first} ${pattern.name} (${items.join(' ')}'
@@ -58,4 +61,8 @@ extension _ListScalableExtension<T extends Scalable<T>> on List<T> {
   /// Returns the descending [Interval] list between this [List<Scalable<T>>].
   List<Interval> get descendingIntervals =>
       [for (var i = 0; i < length - 1; i++) this[i + 1].interval(this[i])];
+
+  /// Returns this [List<Scalable<T>>] transposed by [interval].
+  List<T> transposeBy(Interval interval) =>
+      [for (final item in this) item.transposeBy(interval)];
 }
