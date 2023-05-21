@@ -143,6 +143,54 @@ void main() {
       );
     });
 
+    group('.isDescending', () {
+      test('should return whether this EnharmonicInterval is descending', () {
+        expect(EnharmonicInterval.minorThird.isDescending, isFalse);
+        expect((-EnharmonicInterval.perfectFifth).isDescending, isTrue);
+      });
+    });
+
+    group('.descending()', () {
+      test(
+        'should return the descending EnharmonicInterval based on isDescending',
+        () {
+          expect(
+            EnharmonicInterval.majorSecond.descending(),
+            -EnharmonicInterval.majorSecond,
+          );
+          expect(
+            EnharmonicInterval.minorThird.descending(isDescending: false),
+            EnharmonicInterval.minorThird,
+          );
+          expect(
+            (-EnharmonicInterval.minorSixth).descending(isDescending: false),
+            EnharmonicInterval.minorSixth,
+          );
+          expect(
+            (-EnharmonicInterval.perfectOctave).descending(),
+            -EnharmonicInterval.perfectOctave,
+          );
+        },
+      );
+
+      test(
+        'should return a copy of this EnharmonicInterval based on isDescending',
+        () {
+          const ascendingInterval = EnharmonicInterval.perfectFourth;
+          expect(
+            identical(ascendingInterval.descending(), ascendingInterval),
+            isFalse,
+          );
+
+          final descendingInterval = -EnharmonicInterval.minorThird;
+          expect(
+            identical(descendingInterval.descending(), descendingInterval),
+            isFalse,
+          );
+        },
+      );
+    });
+
     group('operator +()', () {
       test('should add other to this EnharmonicInterval', () {
         expect(
