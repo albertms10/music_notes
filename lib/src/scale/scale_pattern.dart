@@ -238,7 +238,10 @@ final class ScalePattern {
   /// ScalePattern.dorian.mirrored == ScalePattern.dorian
   /// ScalePattern.locrian.mirrored == ScalePattern.lydian
   /// ```
-  ScalePattern get mirrored => ScalePattern(intervalSteps.reversed.toList());
+  ScalePattern get mirrored => ScalePattern(
+        descendingIntervalSteps,
+        _descendingIntervalSteps != null ? intervalSteps : null,
+      );
 
   /// Returns the name associated with this [ScalePattern].
   ///
