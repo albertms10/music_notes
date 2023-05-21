@@ -395,7 +395,7 @@ void main() {
         );
         expect(
           ScalePattern.melodicMinor.toString(),
-          'Melodic minor (M2 m2 M2 M2 M2 M2 m2)',
+          'Melodic minor (M2 m2 M2 M2 M2 M2 m2, M2 M2 m2 M2 M2 m2 M2)',
         );
         expect(
           ScalePattern.wholeTone.toString(),
