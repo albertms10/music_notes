@@ -48,14 +48,13 @@ final class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scaleNotes
-  ///   == const [Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
-  ///        Note.c]
-  /// Note.e.minor.scaleNotes
-  ///   == [Note.e, Note.f.sharp, Note.g, Note.a, Note.b, Note.d, Note.d,
-  ///        Note.e]
+  /// Note.c.major.scale == const Scale([Note.c, Note.d, Note.e, Note.f, Note.g,
+  ///   Note.a, Note.b, Note.c])
+  ///
+  /// Note.e.minor.scale == Scale([Note.e, Note.f.sharp, Note.g, Note.a, Note.b,
+  ///   Note.d, Note.d, Note.e])
   /// ```
-  List<Note> get scaleNotes => mode.scale.fromNote(note);
+  Scale<Note> get scale => mode.scale.from(note);
 
   @override
   String toString() => '$note ${mode.name}';
