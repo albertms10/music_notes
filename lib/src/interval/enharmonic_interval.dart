@@ -40,6 +40,32 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
     });
   }
 
+  /// Whether this [Interval] is descending.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.majorSecond.isDescending == false
+  /// (-Interval.perfectFourth).isDescending == true
+  /// Interval.diminishedUnison.isDescending == false
+  /// ```
+  bool get isDescending => semitones.isNegative;
+
+  /// Returns a copy of this [Interval] based on [isDescending].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicInterval.minorSecond.descending()
+  ///   == -EnharmonicIntervalInterval.minorSecond
+  /// EnharmonicInterval.majorThird.descending(isDescending: false)
+  ///   == EnharmonicIntervalInterval.majorThird
+  /// (-EnharmonicIntervalInterval.perfectFifth).descending()
+  ///   == -EnharmonicIntervalInterval.perfectFifth
+  /// (-EnharmonicIntervalInterval.majorSeventh).descending(isDescending: false)
+  ///   == EnharmonicIntervalInterval.majorSeventh
+  /// ```
+  EnharmonicInterval descending({bool isDescending = true}) =>
+      this.isDescending != isDescending ? -this : EnharmonicInterval(semitones);
+
   /// Adds [other] to this [EnharmonicInterval].
   ///
   /// Example:
@@ -86,4 +112,11 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   /// ```
   EnharmonicInterval operator *(int factor) =>
       EnharmonicInterval(semitones * factor);
+
+  @override
+  String toString() {
+    final descendingAbbreviation = isDescending ? 'desc ' : '';
+
+    return '$descendingAbbreviation${semitones.abs()} $spellings';
+  }
 }
