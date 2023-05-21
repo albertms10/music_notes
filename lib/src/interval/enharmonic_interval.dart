@@ -44,9 +44,8 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.majorSecond.isDescending == false
-  /// (-Interval.perfectFourth).isDescending == true
-  /// Interval.diminishedUnison.isDescending == false
+  /// EnharmonicInterval.majorSecond.isDescending == false
+  /// (-EnharmonicInterval.perfectFourth).isDescending == true
   /// ```
   bool get isDescending => semitones.isNegative;
 
