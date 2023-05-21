@@ -24,7 +24,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       ScalePattern(items.intervals, _descendingItems?.descendingIntervals);
 
   /// Returns the reversed of this [Scale].
-  Scale<T> get reversed => Scale(descendingItems, items);
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.aeolian.from(Note.a).reversed
+  ///   == Scale([Note.a, Note.g, Note.f, Note.e, Note.d, Note.c, Note.b,
+  ///        Note.a])
+  /// ```
+  Scale<T> get reversed =>
+      Scale(descendingItems, _descendingItems != null ? items : null);
 
   /// Returns this [Scale] transposed by [interval].
   ///
