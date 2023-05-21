@@ -351,6 +351,30 @@ void main() {
         expect(ScalePattern.aeolian.mirrored, ScalePattern.mixolydian);
         expect(ScalePattern.phrygian.mirrored, ScalePattern.ionian);
         expect(ScalePattern.locrian.mirrored, ScalePattern.lydian);
+
+        expect(
+          ScalePattern.melodicMinor.mirrored,
+          const ScalePattern(
+            [
+              Interval.majorSecond,
+              Interval.majorSecond,
+              Interval.minorSecond,
+              Interval.majorSecond,
+              Interval.majorSecond,
+              Interval.minorSecond,
+              Interval.majorSecond,
+            ],
+            [
+              Interval.majorSecond,
+              Interval.minorSecond,
+              Interval.majorSecond,
+              Interval.majorSecond,
+              Interval.majorSecond,
+              Interval.majorSecond,
+              Interval.minorSecond,
+            ],
+          ),
+        );
       });
     });
 
