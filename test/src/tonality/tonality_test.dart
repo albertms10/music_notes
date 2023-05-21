@@ -56,28 +56,34 @@ void main() {
       });
     });
 
-    group('.scaleNotes', () {
+    group('.scale', () {
       test('should return the scale notes of this Tonality', () {
-        expect(Note.d.major.scaleNotes, [
-          Note.d,
-          Note.e,
-          Note.f.sharp,
-          Note.g,
-          Note.a,
-          Note.b,
-          Note.c.sharp,
-          Note.d,
-        ]);
-        expect(Note.c.minor.scaleNotes, [
-          Note.c,
-          Note.d,
-          Note.e.flat,
-          Note.f,
-          Note.g,
-          Note.a.flat,
-          Note.b.flat,
-          Note.c,
-        ]);
+        expect(
+          Note.d.major.scale,
+          Scale([
+            Note.d,
+            Note.e,
+            Note.f.sharp,
+            Note.g,
+            Note.a,
+            Note.b,
+            Note.c.sharp,
+            Note.d,
+          ]),
+        );
+        expect(
+          Note.c.minor.scale,
+          Scale([
+            Note.c,
+            Note.d,
+            Note.e.flat,
+            Note.f,
+            Note.g,
+            Note.a.flat,
+            Note.b.flat,
+            Note.c,
+          ]),
+        );
       });
     });
 
