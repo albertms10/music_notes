@@ -224,10 +224,16 @@ final class ScalePattern {
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-        _descendingIntervalSteps?.fold(
-          [scalable],
-          (scale, interval) => [...?scale, scale!.last.transposeBy(-interval)],
-        ),
+        // We iterate over the `reversed` descending step list to make sure both
+        // regular and descending scales match, e.g., their octave in
+        // `PositionedNote` lists.
+        _descendingIntervalSteps?.reversed
+            .fold(
+              [scalable],
+              (scale, interval) => [...scale, scale.last.transposeBy(interval)],
+            )
+            .reversed
+            .toList(),
       );
 
   /// Returns the mirrored scale version of this [ScalePattern].
