@@ -615,6 +615,27 @@ void main() {
           );
         },
       );
+
+      test(
+        'should return the Frequency of this PositionedNote from 256 Hz (C4)',
+        () {
+          const reference = Frequency(256);
+          expect(
+            Note.c
+                .inOctave(4)
+                .equalTemperamentFrequency(reference, Note.c.inOctave(4))
+                .hertz,
+            256,
+          );
+          expect(
+            Note.a
+                .inOctave(4)
+                .equalTemperamentFrequency(reference, Note.c.inOctave(4))
+                .hertz,
+            closeTo(430.53, 0.01),
+          );
+        },
+      );
     });
 
     group('.scientificName', () {
