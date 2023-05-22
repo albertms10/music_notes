@@ -396,6 +396,14 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('should return a string representation of this EnharmonicNote', () {
+        expect(EnharmonicNote.c.toString(), '1 {C, D𝄫, B♯}');
+        expect(EnharmonicNote.g.toString(), '8 {F𝄪, G, A𝄫}');
+        expect(EnharmonicNote.dSharp.toString(), '4 {D♯, E♭}');
+      });
+    });
+
     group('.hashCode', () {
       test('should ignore equal EnharmonicNote instances in a Set', () {
         final collection = {EnharmonicNote.f, EnharmonicNote.aSharp};
