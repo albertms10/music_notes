@@ -617,8 +617,7 @@ void main() {
       );
 
       test(
-        'should return the frequency of this Positioned note in the reference '
-        'note',
+        'should return the Frequency of this PositionedNote from 256 Hz (C4)',
         () {
           const reference = Frequency(256);
           expect(
