@@ -95,7 +95,7 @@ final class PositionedNote
   }
 
   /// Returns the equal temperament [Frequency] of this [PositionedNote] from
-  /// the A4 note [reference].
+  /// the [reference] frequency and [note].
   ///
   /// Example:
   /// ```dart
