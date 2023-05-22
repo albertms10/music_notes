@@ -1,3 +1,5 @@
+import 'harmony/chord_pattern_test.dart' as chord_pattern_test;
+import 'harmony/chord_test.dart' as chord_test;
 import 'interval/enharmonic_interval_test.dart' as enharmonic_interval_test;
 import 'interval/interval_size_extension_test.dart'
     as interval_size_extension_test;
@@ -17,6 +19,8 @@ import 'tonality/mode_test.dart' as mode_test;
 import 'tonality/tonality_test.dart' as tonality_test;
 
 void main() {
+  chord_pattern_test.main();
+  chord_test.main();
   enharmonic_interval_test.main();
   interval_size_extension_test.main();
   interval_test.main();
