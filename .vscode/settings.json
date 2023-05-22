@@ -9,7 +9,8 @@
     "lydian",
     "mixolydian",
     "octatonic",
-    "phrygian"
+    "phrygian",
+    "sublist"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true
