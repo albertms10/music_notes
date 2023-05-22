@@ -54,6 +54,58 @@ void main() {
       );
     });
 
+    group('.sharp', () {
+      test('should return this Note sharpened by 1 semitone', () {
+        expect(Note.f.sharp, const Note(BaseNote.f, Accidental.sharp));
+        expect(Note.a.sharp, const Note(BaseNote.a, Accidental.sharp));
+        expect(Note.e.sharp, const Note(BaseNote.e, Accidental.sharp));
+        expect(Note.b.flat.sharp, Note.b);
+        expect(
+          Note.g.sharp.sharp,
+          const Note(BaseNote.g, Accidental.doubleSharp),
+        );
+        expect(
+          Note.c.sharp.sharp.sharp,
+          const Note(BaseNote.c, Accidental.tripleSharp),
+        );
+      });
+    });
+
+    group('.flat', () {
+      test('should return this Note flattened by 1 semitone', () {
+        expect(Note.e.flat, const Note(BaseNote.e, Accidental.flat));
+        expect(Note.a.flat, const Note(BaseNote.a, Accidental.flat));
+        expect(Note.d.flat, const Note(BaseNote.d, Accidental.flat));
+        expect(Note.g.flat.sharp, Note.g);
+        expect(
+          Note.e.flat.flat,
+          const Note(BaseNote.e, Accidental.doubleFlat),
+        );
+        expect(
+          Note.c.flat.flat.flat,
+          const Note(BaseNote.c, Accidental.tripleFlat),
+        );
+      });
+    });
+
+    group('.major', () {
+      test('should return the major Tonality from this Note', () {
+        expect(Note.c.major, const Tonality(Note.c, TonalMode.major));
+        expect(Note.a.major, const Tonality(Note.a, TonalMode.major));
+        expect(Note.b.flat.major, Tonality(Note.b.flat, TonalMode.major));
+        expect(Note.c.sharp.major, Tonality(Note.c.sharp, TonalMode.major));
+      });
+    });
+
+    group('.minor', () {
+      test('should return the minor Tonality from this Note', () {
+        expect(Note.c.minor, const Tonality(Note.c, TonalMode.minor));
+        expect(Note.e.minor, const Tonality(Note.e, TonalMode.minor));
+        expect(Note.a.flat.minor, Tonality(Note.a.flat, TonalMode.minor));
+        expect(Note.d.sharp.minor, Tonality(Note.d.sharp, TonalMode.minor));
+      });
+    });
+
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
         expect(Note.f.flat.circleOfFifthsDistance, -8);
