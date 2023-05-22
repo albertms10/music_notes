@@ -100,18 +100,21 @@ final class PositionedNote
   /// Example:
   /// ```dart
   /// Note.a.inOctave(4).equalTemperamentFrequency() == const Frequency(440)
-  /// Note.g.sharp.inOctave(4).equalTemperamentFrequency()
-  ///   == const Frequency(415.3)
   /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
-  /// Note.a.inOctave(4).equalTemperamentFrequency(const Frequency(338))
-  ///   == const Frequency(338)
+  ///
   /// Note.b.flat.inOctave(4).equalTemperamentFrequency(const Frequency(338))
   ///   == const Frequency(464.04)
+  ///
+  /// Note.c.inOctave(4).equalTemperamentFrequency(
+  ///   const Frequency(256),
+  ///   Note.c.inOctave(4),
+  /// ) == const Frequency(256)
   /// ```
   Frequency equalTemperamentFrequency([
     Frequency reference = const Frequency(440),
+    PositionedNote note = const PositionedNote(Note.a),
   ]) =>
-      reference * math.pow(sqrt12_2, Note.a.inOctave(4).difference(this));
+      reference * math.pow(sqrt12_2, note.difference(this));
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).

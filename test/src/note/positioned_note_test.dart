@@ -615,6 +615,28 @@ void main() {
           );
         },
       );
+
+      test(
+        'should return the frequency of this Positioned note in the reference '
+        'note',
+        () {
+          const reference = Frequency(256);
+          expect(
+            Note.c
+                .inOctave(4)
+                .equalTemperamentFrequency(reference, Note.c.inOctave(4))
+                .hertz,
+            256,
+          );
+          expect(
+            Note.a
+                .inOctave(4)
+                .equalTemperamentFrequency(reference, Note.c.inOctave(4))
+                .hertz,
+            closeTo(430.53, 0.01),
+          );
+        },
+      );
     });
 
     group('.scientificName', () {
