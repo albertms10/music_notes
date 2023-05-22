@@ -292,5 +292,10 @@ final class ScalePattern {
           .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
-  int get hashCode => Object.hashAll(intervalSteps);
+  int get hashCode => Object.hash(
+        Object.hashAll(intervalSteps),
+        _descendingIntervalSteps != null
+            ? Object.hashAll(_descendingIntervalSteps!)
+            : null,
+      );
 }

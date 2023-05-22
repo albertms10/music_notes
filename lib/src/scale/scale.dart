@@ -55,10 +55,13 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   bool operator ==(Object other) =>
       other is Scale<T> &&
       ListEquality<T>().equals(items, other.items) &&
-      ListEquality<T>().equals(descendingItems, other.descendingItems);
+      ListEquality<T>().equals(_descendingItems, other._descendingItems);
 
   @override
-  int get hashCode => Object.hashAll(items);
+  int get hashCode => Object.hash(
+        Object.hashAll(items),
+        _descendingItems != null ? Object.hashAll(_descendingItems!) : null,
+      );
 }
 
 extension _ListScalableExtension<T extends Scalable<T>> on List<T> {
