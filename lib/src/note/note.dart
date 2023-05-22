@@ -120,10 +120,10 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.flat.exactFifthsDistance(Note.c.sharp) == 11
-  /// Note.a.flat.exactFifthsDistance(Note.d.flat) == -1
+  /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
+  /// Note.a.flat.fifthsDistanceWith(Note.d.flat) == -1
   /// ```
-  int exactFifthsDistance(Note other) =>
+  int fifthsDistanceWith(Note other) =>
       intervalDistance(other, Interval.perfectFifth);
 
   /// Returns the iteration distance of an [interval] between

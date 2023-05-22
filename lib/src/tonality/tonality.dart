@@ -41,7 +41,7 @@ final class Tonality implements Comparable<Tonality> {
   /// Note.g.flat.major.keySignature == const KeySignature(6, Accidental.flat)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
-        Tonality.fromAccidentals(0, mode).note.exactFifthsDistance(note),
+        Tonality.fromAccidentals(0, mode).note.fifthsDistanceWith(note),
       );
 
   /// Returns the scale notes of this [Tonality].

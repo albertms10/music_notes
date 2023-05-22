@@ -81,12 +81,37 @@ void main() {
       });
     });
 
-    group('.exactFifthsDistance()', () {
+    group('.fifthsDistanceWith()', () {
       test(
-        'should return the fifths distance between this and other Note',
+        'should return the fifths distance between this Note and other',
         () {
-          expect(Note.c.exactFifthsDistance(Note.c), 0);
-          expect(Note.a.flat.exactFifthsDistance(Note.c.sharp), 11);
+          expect(Note.c.fifthsDistanceWith(Note.f.flat), -8);
+          expect(Note.c.fifthsDistanceWith(Note.c.flat), -7);
+          expect(Note.c.fifthsDistanceWith(Note.g.flat), -6);
+          expect(Note.c.fifthsDistanceWith(Note.d.flat), -5);
+          expect(Note.c.fifthsDistanceWith(Note.a.flat), -4);
+          expect(Note.c.fifthsDistanceWith(Note.e.flat), -3);
+          expect(Note.c.fifthsDistanceWith(Note.b.flat), -2);
+          expect(Note.c.fifthsDistanceWith(Note.f), -1);
+          expect(Note.c.fifthsDistanceWith(Note.c), 0);
+          expect(Note.c.fifthsDistanceWith(Note.g), 1);
+          expect(Note.c.fifthsDistanceWith(Note.d), 2);
+          expect(Note.c.fifthsDistanceWith(Note.a), 3);
+          expect(Note.c.fifthsDistanceWith(Note.e), 4);
+          expect(Note.c.fifthsDistanceWith(Note.b), 5);
+          expect(Note.c.fifthsDistanceWith(Note.f.sharp), 6);
+          expect(Note.c.fifthsDistanceWith(Note.c.sharp), 7);
+          expect(Note.c.fifthsDistanceWith(Note.g.sharp), 8);
+          expect(Note.c.fifthsDistanceWith(Note.d.sharp), 9);
+          expect(Note.c.fifthsDistanceWith(Note.a.sharp), 10);
+          expect(Note.c.fifthsDistanceWith(Note.e.sharp), 11);
+          // TODO(albertms10): Failing test: should return 12.
+          expect(Note.c.fifthsDistanceWith(Note.b.sharp), 0);
+
+          expect(Note.a.flat.fifthsDistanceWith(Note.d.flat), -1);
+          // TODO(albertms10): Failing test: should return 1.
+          expect(Note.a.flat.fifthsDistanceWith(Note.e.flat), -11);
+          expect(Note.a.flat.fifthsDistanceWith(Note.c.sharp), 11);
         },
       );
     });
