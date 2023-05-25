@@ -44,5 +44,21 @@ void main() {
         );
       });
     });
+
+    group('.hashCode', () {
+      test('should ignore equal Chord instances in a Set', () {
+        final collection = {
+          const Chord([Note.c, Note.e, Note.g]),
+          ChordPattern.minorTriad.from(Note.g),
+          ChordPattern.augmentedTriad.from(Note.d),
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), [
+          const Chord([Note.c, Note.e, Note.g]),
+          ChordPattern.minorTriad.from(Note.g),
+          ChordPattern.augmentedTriad.from(Note.d),
+        ]);
+      });
+    });
   });
 }

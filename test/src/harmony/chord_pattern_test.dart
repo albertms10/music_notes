@@ -384,5 +384,23 @@ void main() {
         },
       );
     });
+
+    group('.hashCode', () {
+      test('should ignore equal ChordPattern instances in a Set', () {
+        final collection = {
+          ChordPattern.augmentedTriad,
+          ChordPattern.majorTriad,
+          ChordPattern.minorTriad,
+          ChordPattern.diminishedTriad,
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), [
+          ChordPattern.augmentedTriad,
+          ChordPattern.majorTriad,
+          ChordPattern.minorTriad,
+          ChordPattern.diminishedTriad,
+        ]);
+      });
+    });
   });
 }
