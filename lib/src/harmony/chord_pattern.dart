@@ -28,6 +28,12 @@ class ChordPattern {
   ]);
 
   /// Returns the [Chord<T>] from [scalable].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.from(Note.c)
+  ///   == const Chord([Note.c, Note.e, Note.g])
+  /// ```
   Chord<T> from<T extends Scalable<T>>(T scalable) => Chord(
         intervals.fold(
           [scalable],
@@ -37,7 +43,15 @@ class ChordPattern {
       );
 
   /// Returns the root triad of this [ChordPattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().add9().rootTriad == ChordPattern.majorTriad
+  /// ```
   ChordPattern get rootTriad => ChordPattern(intervals.sublist(0, 2));
+
+  /// Whether this [ChordPattern] is [ImperfectQuality.augmented].
+  bool get isAugmented => rootTriad == augmentedTriad;
 
   /// Whether this [ChordPattern] is [ImperfectQuality.major].
   bool get isMajor => rootTriad == majorTriad;
@@ -45,17 +59,19 @@ class ChordPattern {
   /// Whether this [ChordPattern] is [ImperfectQuality.minor].
   bool get isMinor => rootTriad == minorTriad;
 
-  /// Returns a new [ChordPattern] adding a suspended [quality] 2nd.
-  ChordPattern sus2([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(2, quality));
+  /// Whether this [ChordPattern] is [ImperfectQuality.diminished].
+  bool get isDiminished => rootTriad == diminishedTriad;
 
-  /// Returns a new [ChordPattern] adding a suspended [quality] 4th.
-  ChordPattern sus4([PerfectQuality quality = PerfectQuality.perfect]) =>
-      add(Interval.perfect(4, quality));
+  /// Returns a new [ChordPattern] with a suspended [Interval.majorSecond].
+  ChordPattern sus2() => add(Interval.majorSecond, replaceSizes: const [3, 4]);
+
+  /// Returns a new [ChordPattern] with a suspended [Interval.perfectFourth].
+  ChordPattern sus4() =>
+      add(Interval.perfectFourth, replaceSizes: const [2, 3]);
 
   /// Returns a new [ChordPattern] adding a [quality] 6th.
   ChordPattern add6([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(7, quality));
+      add(Interval.imperfect(6, quality));
 
   /// Returns a new [ChordPattern] adding a [quality] 7th.
   ChordPattern add7([ImperfectQuality quality = ImperfectQuality.minor]) =>
@@ -66,23 +82,43 @@ class ChordPattern {
       add(Interval.imperfect(9, quality));
 
   /// Returns a new [ChordPattern] adding an [quality] 11th.
-  ChordPattern add11([ImperfectQuality quality = ImperfectQuality.minor]) =>
-      add(Interval.imperfect(11, quality));
+  ChordPattern add11([PerfectQuality quality = PerfectQuality.perfect]) =>
+      add(Interval.perfect(11, quality));
 
   /// Returns a new [ChordPattern] adding a [quality] 13th.
   ChordPattern add13([ImperfectQuality quality = ImperfectQuality.major]) =>
       add(Interval.imperfect(13, quality));
 
   /// Returns a new [ChordPattern] adding [interval].
-  ChordPattern add(Interval interval) {
-    final filteredIntervals = intervals.toList()
-      ..removeWhere((chordInterval) => chordInterval.size == interval.size);
+  ChordPattern add(Interval interval, {List<int>? replaceSizes}) {
+    final sizesToReplace = [interval.size, ...?replaceSizes];
+    final filteredIntervals = intervals.whereNot(
+      (chordInterval) => sizesToReplace.contains(chordInterval.size),
+    );
 
     return ChordPattern(
-      // Keep the intervals sorted after the addition.
+      // Keep the intervals sorted after these operations.
       SplayTreeSet.of([...filteredIntervals, interval]).toList(),
     );
   }
+
+  /// Returns the abbreviated quality representing this [ChordPattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.abbreviation == 'maj.'
+  /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
+  /// ```
+  String get abbreviation => switch (this) {
+        _ when isAugmented => 'aug.',
+        _ when isMajor => 'maj.',
+        _ when isMinor => 'min.',
+        _ when isDiminished => 'dim.',
+        _ => '?',
+      };
+
+  @override
+  String toString() => '$abbreviation (${intervals.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
