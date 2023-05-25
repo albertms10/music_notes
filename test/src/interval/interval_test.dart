@@ -151,10 +151,7 @@ void main() {
         expect(Interval.minorThird.isDescending, isFalse);
         expect((-Interval.perfectFifth).isDescending, isTrue);
         expect(Interval.diminishedUnison.isDescending, isFalse);
-        expect(
-          const Interval.imperfect(9, ImperfectQuality.major).isDescending,
-          isFalse,
-        );
+        expect(Interval.majorNinth.isDescending, isFalse);
         expect(
           const Interval.perfect(-4, PerfectQuality.doublyAugmented)
               .isDescending,
@@ -301,18 +298,12 @@ void main() {
         expect((-Interval.perfectFifth).toString(), 'desc P5');
         expect(Interval.diminishedSeventh.toString(), 'd7');
         expect((-Interval.diminishedOctave).toString(), 'desc d8');
-        expect(
-          const Interval.imperfect(9, ImperfectQuality.major).toString(),
-          'M9 (M2)',
-        );
+        expect(Interval.majorNinth.toString(), 'M9 (M2)');
         expect(
           const Interval.imperfect(-10, ImperfectQuality.minor).toString(),
           'desc m10 (m3)',
         );
-        expect(
-          const Interval.perfect(11, PerfectQuality.augmented).toString(),
-          'A11 (A4)',
-        );
+        expect(Interval.augmentedEleventh.toString(), 'A11 (A4)');
         expect(
           const Interval.imperfect(-14, ImperfectQuality.major).toString(),
           'desc M14 (M7)',

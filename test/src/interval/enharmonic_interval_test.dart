@@ -131,12 +131,12 @@ void main() {
           });
           expect(const EnharmonicInterval(13).spellings, {
             Interval.augmentedOctave,
-            const Interval.imperfect(9, ImperfectQuality.minor),
+            Interval.minorNinth,
             const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
           expect(const EnharmonicInterval(-13).spellings, {
             -Interval.augmentedOctave,
-            -const Interval.imperfect(9, ImperfectQuality.minor),
+            -Interval.minorNinth,
             -const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
         },
