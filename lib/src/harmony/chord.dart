@@ -11,10 +11,20 @@ class Chord<T extends Scalable<T>> {
   T get root => items.first;
 
   /// Returns the [ChordPattern] for this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord([Note.a, Note.c, Note.e]).pattern == ChordPattern.minorTriad
+  /// const Chord([Note.g, Note.b, Note.d, Note.f]).pattern
+  ///   == ChordPattern.majorTriad.add7()
+  /// ```
   ChordPattern get pattern => ChordPattern([
         // We skip the root of the chord.
         for (final scalable in items.skip(1)) root.interval(scalable),
       ]);
+
+  @override
+  String toString() => '$root ${pattern.abbreviation} (${items.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
