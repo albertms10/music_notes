@@ -63,6 +63,18 @@ final class Interval implements Comparable<Interval> {
   static const perfectOctave = Interval.perfect(8, PerfectQuality.perfect);
   static const augmentedOctave = Interval.perfect(8, PerfectQuality.augmented);
 
+  static const minorNinth = Interval.imperfect(9, ImperfectQuality.minor);
+  static const majorNinth = Interval.imperfect(9, ImperfectQuality.major);
+
+  static const diminishedEleventh =
+      Interval.perfect(11, PerfectQuality.diminished);
+  static const perfectEleventh = Interval.perfect(11, PerfectQuality.perfect);
+  static const augmentedEleventh =
+      Interval.perfect(11, PerfectQuality.augmented);
+
+  static const minorThirteenth = Interval.imperfect(13, ImperfectQuality.minor);
+  static const majorThirteenth = Interval.imperfect(13, ImperfectQuality.major);
+
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
