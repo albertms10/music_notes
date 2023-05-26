@@ -27,6 +27,32 @@ void main() {
       });
     });
 
+    group('.rootTriad', () {
+      test('should return the root triad of this ChordPattern', () {
+        expect(
+          const ChordPattern([
+            Interval.majorThird,
+            Interval.augmentedFifth,
+            Interval.majorSeventh,
+          ]).rootTriad,
+          ChordPattern.augmentedTriad,
+        );
+        expect(ChordPattern.majorTriad.rootTriad, ChordPattern.majorTriad);
+        expect(
+          ChordPattern.minorTriad.add7().add9().rootTriad,
+          ChordPattern.minorTriad,
+        );
+        expect(
+          const ChordPattern([
+            Interval.minorThird,
+            Interval.diminishedFifth,
+            Interval.diminishedSeventh,
+          ]).rootTriad,
+          ChordPattern.diminishedTriad,
+        );
+      });
+    });
+
     group('.isAugmented', () {
       test('should return whether this ChordPattern is augmented', () {
         expect(ChordPattern.augmentedTriad.isAugmented, isTrue);

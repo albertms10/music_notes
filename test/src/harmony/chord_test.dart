@@ -3,6 +3,17 @@ import 'package:test/test.dart';
 
 void main() {
   group('Chord', () {
+    group('.root', () {
+      test('should return the root of this Chord', () {
+        expect(ChordPattern.majorTriad.from(Note.f).root, Note.f);
+        expect(
+          Chord([Note.d.inOctave(3), Note.f.inOctave(3), Note.a.inOctave(3)])
+              .root,
+          Note.d.inOctave(3),
+        );
+      });
+    });
+
     group('.pattern', () {
       test('should return the ChordPattern for this Chord', () {
         expect(
