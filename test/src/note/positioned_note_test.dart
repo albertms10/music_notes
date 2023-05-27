@@ -694,12 +694,14 @@ void main() {
         final collection = {
           Note.c.inOctave(4),
           Note.a.flat.inOctave(2),
+          Note.d.inOctave(4),
           Note.g.sharp.inOctave(5),
         };
         collection.addAll(collection);
         expect(collection.toList(), [
           Note.c.inOctave(4),
           Note.a.flat.inOctave(2),
+          Note.d.inOctave(4),
           Note.g.sharp.inOctave(5),
         ]);
       });

@@ -163,7 +163,7 @@ final class PositionedNote
       other is PositionedNote && note == other.note && octave == other.octave;
 
   @override
-  int get hashCode => Object.hash(super.hashCode, octave);
+  int get hashCode => Object.hash(note, octave);
 
   @override
   int compareTo(PositionedNote other) => compareMultiple([
