@@ -690,6 +690,32 @@ void main() {
     });
 
     group('.hashCode', () {
+      test('should return the same hashCode for equal PositionedNotes', () {
+        expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
+        expect(
+          const PositionedNote(Note.a, 3).hashCode,
+          const PositionedNote(Note.a, 3).hashCode,
+        );
+      });
+
+      test(
+        'should return different hashCodes for different PositionedNotes',
+        () {
+          expect(
+            Note.c.inOctave(4).hashCode,
+            isNot(equals(Note.c.inOctave(5).hashCode)),
+          );
+          expect(
+            const PositionedNote(Note.a, 3).hashCode,
+            isNot(equals(const PositionedNote(Note.b, 3).hashCode)),
+          );
+          expect(
+            Note.d.inOctave(6).hashCode,
+            isNot(equals(Note.c.inOctave(5).hashCode)),
+          );
+        },
+      );
+
       test('should ignore equal PositionedNote instances in a Set', () {
         final collection = {
           Note.c.inOctave(4),
