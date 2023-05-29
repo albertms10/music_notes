@@ -515,6 +515,27 @@ void main() {
           Note.c.inOctave(4).transposeBy(Interval.majorThirteenth),
           Note.a.inOctave(5),
         );
+
+        expect(
+          Note.c
+              .inOctave(4)
+              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.inOctave(6),
+        );
+
+        expect(
+          Note.c
+              .inOctave(4)
+              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.inOctave(7),
+        );
+
+        expect(
+          Note.c
+              .inOctave(4)
+              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.inOctave(8),
+        );
       });
     });
 
