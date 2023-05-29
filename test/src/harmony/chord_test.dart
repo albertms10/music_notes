@@ -36,6 +36,83 @@ void main() {
       });
     });
 
+    group('.transposeBy()', () {
+      test('should return this Chord transposed by Interval', () {
+        expect(
+          ChordPattern.majorTriad
+              .add9(ImperfectQuality.minor)
+              .from(Note.c)
+              .transposeBy(Interval.majorSecond),
+          Chord([Note.d, Note.f.sharp, Note.a, Note.e.flat]),
+        );
+        expect(
+          ChordPattern.minorTriad
+              .add7(ImperfectQuality.major)
+              .from(Note.e.flat)
+              .transposeBy(Interval.minorThird),
+          Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat, Note.f]),
+        );
+
+        expect(
+          ChordPattern.augmentedTriad
+              .add7(ImperfectQuality.major)
+              .add9()
+              .from(Note.g.inOctave(3))
+              .transposeBy(Interval.augmentedFourth),
+          Chord([
+            Note.c.sharp.inOctave(4),
+            Note.e.sharp.inOctave(4),
+            Note.g.sharp.sharp.inOctave(4),
+            Note.b.sharp.inOctave(4),
+            Note.d.sharp.inOctave(5),
+          ]),
+        );
+        expect(
+          ChordPattern.augmentedTriad
+              .add7(ImperfectQuality.major)
+              .add9()
+              .from(Note.g.flat.inOctave(3))
+              .transposeBy(Interval.augmentedFourth),
+          Chord([
+            Note.c.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.sharp.inOctave(4),
+            Note.b.inOctave(4),
+            Note.d.inOctave(5),
+          ]),
+        );
+        expect(
+          ChordPattern.augmentedTriad
+              .add7()
+              .add9(ImperfectQuality.minor)
+              .from(Note.g.sharp.inOctave(3))
+              .transposeBy(Interval.augmentedFourth),
+          Chord([
+            Note.c.sharp.sharp.inOctave(4),
+            // TODO(albertms10): Failing test: should be `.inOctave(4)`.
+            Note.e.sharp.sharp.inOctave(3),
+            Note.g.sharp.sharp.sharp.inOctave(4),
+            Note.b.sharp.inOctave(4),
+            Note.d.sharp.inOctave(5),
+          ]),
+        );
+        expect(
+          ChordPattern.augmentedTriad
+              .add7(ImperfectQuality.major)
+              .add9()
+              .from(Note.g.inOctave(3))
+              .transposeBy(Interval.diminishedFifth),
+          Chord([
+            Note.d.flat.inOctave(4),
+            Note.f.inOctave(4),
+            Note.a.inOctave(4),
+            Note.c.inOctave(5),
+            Note.e.flat.inOctave(5),
+          ]),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Chord', () {
         expect(

@@ -1,6 +1,6 @@
 part of '../../music_notes.dart';
 
-class Chord<T extends Scalable<T>> {
+class Chord<T extends Scalable<T>> implements Transposable<Chord<T>> {
   /// The [Scalable<T>] items this [Chord] is built of.
   final List<T> items;
 
@@ -22,6 +22,25 @@ class Chord<T extends Scalable<T>> {
         // We skip the root of the chord.
         for (final scalable in items.skip(1)) root.interval(scalable),
       ]);
+
+  /// Returns a transposed [Chord] by [interval] from this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.minorThird)
+  ///   == const Chord([Note.c, Note.e.flat, Note.g])
+  ///
+  /// ChordPattern.majorTriad.from(Note.g.inOctave(4))
+  ///   .transposeBy(Interval.majorThird)
+  ///     == const Chord([
+  ///       Note.b.inOctave(4),
+  ///       Note.d.sharp.inOctave(5),
+  ///       Note.f.sharp.inOctave(5)
+  ///     ])
+  /// ```
+  @override
+  Chord<T> transposeBy(Interval interval) =>
+      Chord(items.map((item) => item.transposeBy(interval)).toList());
 
   @override
   String toString() => '$root ${pattern.abbreviation} (${items.join(' ')})';
