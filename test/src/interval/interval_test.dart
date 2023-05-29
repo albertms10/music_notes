@@ -163,6 +163,11 @@ void main() {
           const Interval.perfect(22, PerfectQuality.perfect).semitones,
           36,
         );
+
+        expect(
+          const Interval.perfect(29, PerfectQuality.perfect).semitones,
+          48,
+        );
       });
     });
 
@@ -238,6 +243,18 @@ void main() {
         expect(Interval.diminishedOctave.inverted, Interval.augmentedUnison);
         expect(Interval.perfectOctave.inverted, Interval.perfectUnison);
         expect(Interval.augmentedOctave.inverted, Interval.diminishedUnison);
+      });
+    });
+
+    group('.simplified', () {
+      test('should return the simplified of this Interval', () {
+        expect(Interval.perfectUnison.simplified, Interval.perfectUnison);
+        expect(Interval.majorThird.simplified, Interval.majorThird);
+        expect(Interval.perfectOctave.simplified, Interval.perfectOctave);
+        expect(Interval.augmentedOctave.simplified, Interval.augmentedOctave);
+        expect(Interval.minorNinth.simplified, Interval.minorSecond);
+        expect(Interval.perfectEleventh.simplified, Interval.perfectFourth);
+        expect(Interval.majorThirteenth.simplified, Interval.majorSixth);
       });
     });
 
