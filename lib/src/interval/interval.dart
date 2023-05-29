@@ -183,6 +183,16 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
 
+  /// Returns the simplified of this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.minorNinth.simplified == Interval.minorSecond
+  /// Interval.perfectEleventh.simplified == Interval.perfectFourth
+  /// Interval.majorThird.simplified == Interval.majorThird
+  /// ```
+  Interval get simplified => Interval._(size.simplified, quality);
+
   /// Adds [other] to this [Interval].
   ///
   /// Example:
