@@ -249,6 +249,43 @@ final class ScalePattern {
         _descendingIntervalSteps != null ? intervalSteps : null,
       );
 
+  /// Returns the [ChordPattern] for each scale degree in this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.degreePatterns == const [
+  ///   ChordPattern.majorTriad,
+  ///   ChordPattern.minorTriad,
+  ///   ChordPattern.minorTriad,
+  ///   ChordPattern.majorTriad,
+  ///   ChordPattern.majorTriad,
+  ///   ChordPattern.minorTriad,
+  ///   ChordPattern.diminishedTriad,
+  /// ]
+  /// ```
+  List<ChordPattern> get degreePatterns => [
+        for (var i = 1; i <= intervalSteps.length; i++)
+          degreePattern(ScaleDegree(i)),
+      ];
+
+  /// Returns the [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.degreePattern(ScaleDegree.i) == ChordPattern.majorTriad
+  /// ScalePattern.major.degreePattern(ScaleDegree.vii)
+  ///   == ChordPattern.diminishedTriad
+  /// ScalePattern.naturalMinor.degreePattern(ScaleDegree.iv)
+  ///   == ChordPattern.minorTriad
+  /// ```
+  ChordPattern degreePattern(ScaleDegree scaleDegree) =>
+      ChordPattern.intervalSteps([
+        intervalSteps[(scaleDegree.degree - 1) % intervalSteps.length] +
+            intervalSteps[(scaleDegree.degree) % intervalSteps.length],
+        intervalSteps[(scaleDegree.degree + 1) % intervalSteps.length] +
+            intervalSteps[(scaleDegree.degree + 2) % intervalSteps.length],
+      ]);
+
   /// Returns the name associated with this [ScalePattern].
   ///
   /// ```dart

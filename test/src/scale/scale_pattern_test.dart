@@ -343,6 +343,115 @@ void main() {
       });
     });
 
+    group('.degreePatterns', () {
+      test(
+        'should return the ChordPattern for each scale degree of this '
+        'ScalePattern',
+        () {
+          expect(ScalePattern.major.degreePatterns, const [
+            ChordPattern.majorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.diminishedTriad,
+          ]);
+          expect(ScalePattern.naturalMinor.degreePatterns, const [
+            ChordPattern.minorTriad,
+            ChordPattern.diminishedTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.majorTriad,
+          ]);
+          expect(ScalePattern.harmonicMinor.degreePatterns, const [
+            ChordPattern.minorTriad,
+            ChordPattern.diminishedTriad,
+            ChordPattern.augmentedTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.diminishedTriad,
+          ]);
+          expect(ScalePattern.melodicMinor.degreePatterns, const [
+            ChordPattern.minorTriad,
+            ChordPattern.minorTriad,
+            ChordPattern.augmentedTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.majorTriad,
+            ChordPattern.diminishedTriad,
+            ChordPattern.diminishedTriad,
+          ]);
+        },
+      );
+    });
+
+    group('.degreePattern', () {
+      test(
+        'should return the ChordPattern for the ScaleDegree of this '
+        'ScalePattern',
+        () {
+          expect(
+            ScalePattern.major.degreePattern(ScaleDegree.i),
+            ChordPattern.majorTriad,
+          );
+          expect(
+            ScalePattern.major.degreePattern(ScaleDegree.vi),
+            ChordPattern.minorTriad,
+          );
+          expect(
+            ScalePattern.major.degreePattern(ScaleDegree.vii),
+            ChordPattern.diminishedTriad,
+          );
+
+          expect(
+            ScalePattern.naturalMinor.degreePattern(ScaleDegree.i),
+            ChordPattern.minorTriad,
+          );
+          expect(
+            ScalePattern.naturalMinor.degreePattern(ScaleDegree.ii),
+            ChordPattern.diminishedTriad,
+          );
+          expect(
+            ScalePattern.naturalMinor.degreePattern(ScaleDegree.v),
+            ChordPattern.minorTriad,
+          );
+          expect(
+            ScalePattern.naturalMinor.degreePattern(ScaleDegree.vii),
+            ChordPattern.majorTriad,
+          );
+
+          expect(
+            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.ii),
+            ChordPattern.diminishedTriad,
+          );
+          expect(
+            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.iii),
+            ChordPattern.augmentedTriad,
+          );
+          expect(
+            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.v),
+            ChordPattern.majorTriad,
+          );
+
+          expect(
+            ScalePattern.melodicMinor.degreePattern(ScaleDegree.ii),
+            ChordPattern.minorTriad,
+          );
+          expect(
+            ScalePattern.melodicMinor.degreePattern(ScaleDegree.iii),
+            ChordPattern.augmentedTriad,
+          );
+          expect(
+            ScalePattern.melodicMinor.degreePattern(ScaleDegree.v),
+            ChordPattern.majorTriad,
+          );
+        },
+      );
+    });
+
     group('.name', () {
       test('should return the name of this ScalePattern', () {
         expect(ScalePattern.ionian.name, 'Major (ionian)');

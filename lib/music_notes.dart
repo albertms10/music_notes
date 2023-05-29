@@ -27,6 +27,7 @@ part 'src/note/note.dart';
 part 'src/note/positioned_note.dart';
 part 'src/scalable.dart';
 part 'src/scale/scale.dart';
+part 'src/scale/scale_degree.dart';
 part 'src/scale/scale_pattern.dart';
 part 'src/tonality/key_signature.dart';
 part 'src/tonality/mode.dart';
