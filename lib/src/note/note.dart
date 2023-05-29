@@ -96,6 +96,42 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   Tonality get minor => Tonality(this, TonalMode.minor);
 
+  /// Returns the [ChordPattern.augmentedTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.augmentedTriad == Chord([Note.d.flat, Note.f, Note.a])
+  /// Note.g.augmentedTriad == Chord([Note.g, Note.b, Note.d.sharp])
+  /// ```
+  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
+
+  /// Returns the [ChordPattern.majorTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.majorTriad == Chord([Note.d, Note.f.sharp, Note.a])
+  /// Note.a.flat.majorTriad == Chord([Note.a.flat, Note.c, Note.e.flat])
+  /// ```
+  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+
+  /// Returns the [ChordPattern.minorTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.minorTriad == Chord([Note.e, Note.g, Note.b])
+  /// Note.f.sharp.minorTriad == Chord([Note.f.sharp, Note.a, Note.c.sharp])
+  /// ```
+  Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
+
+  /// Returns the [ChordPattern.diminishedTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.diminishedTriad == Chord([Note.a, Note.c, Note.e.flat])
+  /// Note.b.diminishedTriad == Chord([Note.b, Note.d, Note.f])
+  /// ```
+  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:

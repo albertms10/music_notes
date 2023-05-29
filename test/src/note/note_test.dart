@@ -106,6 +106,59 @@ void main() {
       });
     });
 
+    group('.augmentedTriad', () {
+      test('should return the augmented triad on this Note', () {
+        expect(Note.c.augmentedTriad, Chord([Note.c, Note.e, Note.g.sharp]));
+        expect(
+          Note.a.augmentedTriad,
+          Chord([Note.a, Note.c.sharp, Note.e.sharp]),
+        );
+        expect(
+          Note.b.augmentedTriad,
+          Chord([Note.b, Note.d.sharp, Note.f.sharp.sharp]),
+        );
+      });
+    });
+
+    group('.majorTriad', () {
+      test('should return the major triad on this Note', () {
+        expect(Note.c.majorTriad, const Chord([Note.c, Note.e, Note.g]));
+        expect(
+          Note.e.flat.majorTriad,
+          Chord([Note.e.flat, Note.g, Note.b.flat]),
+        );
+        expect(
+          Note.b.majorTriad,
+          Chord([Note.b, Note.d.sharp, Note.f.sharp]),
+        );
+      });
+    });
+
+    group('.minorTriad', () {
+      test('should return the minor triad on this Note', () {
+        expect(
+          Note.d.flat.minorTriad,
+          Chord([Note.d.flat, Note.f.flat, Note.a.flat]),
+        );
+        expect(
+          Note.g.sharp.minorTriad,
+          Chord([Note.g.sharp, Note.b, Note.d.sharp]),
+        );
+        expect(Note.a.minorTriad, const Chord([Note.a, Note.c, Note.e]));
+      });
+    });
+
+    group('.diminishedTriad', () {
+      test('should return the diminished triad on this Note', () {
+        expect(Note.e.diminishedTriad, Chord([Note.e, Note.g, Note.b.flat]));
+        expect(
+          Note.g.flat.diminishedTriad,
+          Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat.flat]),
+        );
+        expect(Note.b.diminishedTriad, const Chord([Note.b, Note.d, Note.f]));
+      });
+    });
+
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
         expect(Note.f.flat.circleOfFifthsDistance, -8);
