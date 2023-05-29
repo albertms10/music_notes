@@ -55,8 +55,13 @@ extension IntervalSizeExtension on int {
   int get semitones {
     assert(this != 0, 'Size must be non-zero');
 
-    return (_sizeToSemitones[abs()] ??
-            (chromaticDivisions + _sizeToSemitones[simplified.abs()]!)) *
+    final simplifiedAbs = simplified.abs();
+    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
+
+    // We exclude perfect octaves (simplified as 8) from the lookup because we
+    // want to consider them as 0 (as they were modulo 8).
+    return (_sizeToSemitones[simplifiedAbs == 8 ? 1 : simplifiedAbs]! +
+            octaveShift) *
         sign;
   }
 

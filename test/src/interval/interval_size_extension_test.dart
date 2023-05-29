@@ -27,6 +27,7 @@ void main() {
           expect(IntervalSizeExtension.fromSemitones(22), 14);
           expect(IntervalSizeExtension.fromSemitones(24), 15);
           expect(IntervalSizeExtension.fromSemitones(36), 22);
+          expect(IntervalSizeExtension.fromSemitones(48), 29);
         },
       );
 
@@ -73,14 +74,15 @@ void main() {
         expect(15.semitones, 24);
 
         // TODO(albertms10): Failing tests. See #132.
-        // expect(16.semitones, 25);
-        // expect(17.semitones, 27);
-        // expect(18.semitones, 29);
-        // expect(19.semitones, 30);
-        // expect(20.semitones, 32);
-        // expect(21.semitones, 34);
-        // expect(22.semitones, 36);
-        // expect(29.semitones, 48);
+        expect(16.semitones, 25);
+        expect(17.semitones, 27);
+        expect(18.semitones, 29);
+        expect(19.semitones, 31);
+        expect(20.semitones, 32);
+        expect(21.semitones, 34);
+        expect(22.semitones, 36);
+
+        expect(29.semitones, 48);
       });
     });
 
