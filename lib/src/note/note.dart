@@ -206,14 +206,14 @@ final class Note implements Comparable<Note>, Scalable<Note> {
         ? transposedBaseNote.positiveDifference(baseNote)
         : baseNote.positiveDifference(transposedBaseNote);
 
+    final accidentalSemitones = (accidental.semitones * interval.size.sign) +
+        ((interval.semitones * interval.size.sign) - positiveDifference);
+    final semitonesOctaveMod = accidentalSemitones -
+        chromaticDivisions * (interval.size._sizeAbsShift ~/ 8);
+
     return Note(
       transposedBaseNote,
-      Accidental(
-        ((accidental.semitones * interval.size.sign) +
-                ((interval.semitones * interval.size.sign) -
-                    positiveDifference)) *
-            interval.size.sign,
-      ),
+      Accidental(semitonesOctaveMod * interval.size.sign),
     );
   }
 
