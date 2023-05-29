@@ -27,6 +27,24 @@ class ChordPattern {
     Interval.diminishedFifth,
   ]);
 
+  /// Creates a new [ChordPattern] from [intervalSteps].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.intervalSteps([Interval.minorThird, Interval.majorThird])
+  ///   == ChordPattern.minorTriad
+  ///
+  /// ChordPattern.intervalSteps([Interval.majorThird, Interval.majorThird])
+  ///   == ChordPattern.augmentedTriad
+  /// ```
+  factory ChordPattern.intervalSteps(List<Interval> intervalSteps) =>
+      ChordPattern(
+        intervalSteps.skip(1).fold(
+          [intervalSteps.first],
+          (steps, interval) => [...steps, interval + steps.last],
+        ),
+      );
+
   /// Returns the [Chord<T>] from [scalable].
   ///
   /// Example:

@@ -3,6 +3,34 @@ import 'package:test/test.dart';
 
 void main() {
   group('ChordPattern', () {
+    group('.intervalSteps()', () {
+      test('should create a new Chord from interval steps', () {
+        expect(
+          ChordPattern.intervalSteps(const [
+            Interval.minorThird,
+            Interval.majorThird,
+          ]),
+          ChordPattern.minorTriad,
+        );
+        expect(
+          ChordPattern.intervalSteps(const [
+            Interval.majorThird,
+            Interval.majorThird,
+            Interval.minorThird,
+          ]),
+          ChordPattern.augmentedTriad.add7(ImperfectQuality.major),
+        );
+        expect(
+          ChordPattern.intervalSteps(const [
+            Interval.majorThird,
+            Interval.minorThird,
+            Interval.perfectFifth,
+          ]),
+          ChordPattern.majorTriad.add9(),
+        );
+      });
+    });
+
     group('.from()', () {
       test('should return the Chord from this ChordPattern', () {
         expect(
@@ -12,6 +40,10 @@ void main() {
         expect(
           ChordPattern.minorTriad.add7().from(Note.f),
           Chord([Note.f, Note.a.flat, Note.c, Note.e.flat]),
+        );
+        expect(
+          ChordPattern.majorTriad.add7().add9().from(Note.d),
+          Chord([Note.d, Note.f.sharp, Note.a, Note.c, Note.e]),
         );
         expect(
           ChordPattern.diminishedTriad
