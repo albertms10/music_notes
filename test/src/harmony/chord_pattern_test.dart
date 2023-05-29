@@ -6,20 +6,27 @@ void main() {
     group('.intervalSteps()', () {
       test('should create a new Chord from interval steps', () {
         expect(
-          ChordPattern.intervalSteps(
-            const [Interval.minorThird, Interval.majorThird],
-          ),
+          ChordPattern.intervalSteps(const [
+            Interval.minorThird,
+            Interval.majorThird,
+          ]),
           ChordPattern.minorTriad,
         );
         expect(
-          ChordPattern.intervalSteps(
-            const [
-              Interval.majorThird,
-              Interval.majorThird,
-              Interval.minorThird,
-            ],
-          ),
+          ChordPattern.intervalSteps(const [
+            Interval.majorThird,
+            Interval.majorThird,
+            Interval.minorThird,
+          ]),
           ChordPattern.augmentedTriad.add7(ImperfectQuality.major),
+        );
+        expect(
+          ChordPattern.intervalSteps(const [
+            Interval.majorThird,
+            Interval.minorThird,
+            Interval.perfectFifth,
+          ]),
+          ChordPattern.majorTriad.add9(),
         );
       });
     });
