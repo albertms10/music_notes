@@ -471,6 +471,50 @@ void main() {
           Note.c.inOctave(4).transposeBy(-Interval.augmentedSeventh),
           Note.d.flat.flat.inOctave(3),
         );
+
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.diminishedOctave),
+          Note.c.flat.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.perfectOctave),
+          Note.c.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.augmentedOctave),
+          Note.c.sharp.inOctave(5),
+        );
+
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.minorNinth),
+          Note.d.flat.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.majorNinth),
+          Note.d.inOctave(5),
+        );
+
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.diminishedEleventh),
+          Note.f.flat.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.perfectEleventh),
+          Note.f.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.augmentedEleventh),
+          Note.f.sharp.inOctave(5),
+        );
+
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.minorThirteenth),
+          Note.a.flat.inOctave(5),
+        );
+        expect(
+          Note.c.inOctave(4).transposeBy(Interval.majorThirteenth),
+          Note.a.inOctave(5),
+        );
       });
     });
 
