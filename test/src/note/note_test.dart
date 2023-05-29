@@ -279,6 +279,38 @@ void main() {
           Note.c.transposeBy(-Interval.augmentedSeventh),
           Note.d.flat.flat,
         );
+
+        expect(Note.c.transposeBy(Interval.diminishedOctave), Note.c.flat);
+        expect(Note.c.transposeBy(Interval.perfectOctave), Note.c);
+        expect(Note.c.transposeBy(Interval.augmentedOctave), Note.c.sharp);
+
+        expect(Note.c.transposeBy(Interval.minorNinth), Note.d.flat);
+        expect(Note.c.transposeBy(Interval.majorNinth), Note.d);
+
+        expect(Note.c.transposeBy(Interval.diminishedEleventh), Note.f.flat);
+        expect(Note.c.transposeBy(Interval.perfectEleventh), Note.f);
+        expect(Note.c.transposeBy(Interval.augmentedEleventh), Note.f.sharp);
+
+        expect(Note.c.transposeBy(Interval.minorThirteenth), Note.a.flat);
+        expect(Note.c.transposeBy(Interval.majorThirteenth), Note.a);
+
+        expect(
+          Note.c
+              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c,
+        );
+
+        expect(
+          Note.c
+              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c,
+        );
+
+        expect(
+          Note.c
+              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c,
+        );
       });
     });
 
