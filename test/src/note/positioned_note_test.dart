@@ -230,11 +230,16 @@ void main() {
             Note.c.inOctave(3).interval(Note.c.inOctave(5)),
             const Interval.perfect(15, PerfectQuality.perfect),
           );
-          // TODO(albertms10): Failing test. See #132.
-          // expect(
-          //   Note.c.inOctave(3).interval(Note.c.inOctave(6)),
-          //   const Interval.perfect(22, PerfectQuality.perfect),
-          // );
+
+          expect(
+            Note.c.inOctave(3).interval(Note.c.inOctave(6)),
+            const Interval.perfect(22, PerfectQuality.perfect),
+          );
+
+          expect(
+            Note.c.inOctave(2).interval(Note.c.inOctave(6)),
+            const Interval.perfect(29, PerfectQuality.perfect),
+          );
 
           // TODO(albertms10): add test case for:
           //  `Note.c.inOctave(4).interval(Note.b.sharp.inOctave(4))`.
