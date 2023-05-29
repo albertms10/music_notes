@@ -49,10 +49,10 @@ class ChordPattern {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.from(Note.c)
+  /// ChordPattern.majorTriad.on(Note.c)
   ///   == const Chord([Note.c, Note.e, Note.g])
   /// ```
-  Chord<T> from<T extends Scalable<T>>(T scalable) => Chord(
+  Chord<T> on<T extends Scalable<T>>(T scalable) => Chord(
         intervals.fold(
           [scalable],
           (chordItems, interval) =>

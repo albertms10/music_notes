@@ -207,19 +207,19 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.from(Note.c)
+  /// ScalePattern.major.on(Note.c)
   ///   == const Scale([Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c])
   ///
-  /// ScalePattern.naturalMinor.from(Note.a)
+  /// ScalePattern.naturalMinor.on(Note.a)
   ///   == const Scale([Note.a, Note.b, Note.c, Note.d, Note.e, Note.f, Note.g,
   ///        Note.a])
   ///
-  /// ScalePattern.melodicMinor.from(Note.c)
+  /// ScalePattern.melodicMinor.on(Note.c)
   ///   == Scale([Note.c, Note.d, Note.e.flat, Note.f, Note.g, Note.a, Note.b,
   ///        Note.c])
   /// ```
-  Scale<T> from<T extends Scalable<T>>(T scalable) => Scale(
+  Scale<T> on<T extends Scalable<T>>(T scalable) => Scale(
         intervalSteps.fold(
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],

@@ -5,13 +5,13 @@ void main() {
   group('Scale', () {
     group('.pattern', () {
       test('should return the ScalePattern of this Scale', () {
-        expect(ScalePattern.aeolian.from(Note.c).pattern, ScalePattern.aeolian);
+        expect(ScalePattern.aeolian.on(Note.c).pattern, ScalePattern.aeolian);
         expect(
-          ScalePattern.harmonicMinor.from(Note.f.sharp).pattern,
+          ScalePattern.harmonicMinor.on(Note.f.sharp).pattern,
           ScalePattern.harmonicMinor,
         );
         expect(
-          ScalePattern.melodicMinor.from(Note.a.flat).pattern,
+          ScalePattern.melodicMinor.on(Note.a.flat).pattern,
           ScalePattern.melodicMinor,
         );
       });
@@ -33,7 +33,7 @@ void main() {
           ]),
         );
         expect(
-          ScalePattern.naturalMinor.from(Note.g.inOctave(5)).reversed,
+          ScalePattern.naturalMinor.on(Note.g.inOctave(5)).reversed,
           Scale([
             Note.g.inOctave(6),
             Note.f.inOctave(6),
@@ -51,20 +51,20 @@ void main() {
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(
-          ScalePattern.major.from(Note.c).transposeBy(Interval.majorThird),
-          ScalePattern.major.from(Note.e),
+          ScalePattern.major.on(Note.c).transposeBy(Interval.majorThird),
+          ScalePattern.major.on(Note.e),
         );
         expect(
           ScalePattern.naturalMinor
-              .from(Note.d.flat)
+              .on(Note.d.flat)
               .transposeBy(-Interval.minorThird),
-          ScalePattern.naturalMinor.from(Note.b.flat),
+          ScalePattern.naturalMinor.on(Note.b.flat),
         );
         expect(
           ScalePattern.melodicMinor
-              .from(Note.g.sharp)
+              .on(Note.g.sharp)
               .transposeBy(Interval.perfectFifth),
-          ScalePattern.melodicMinor.from(Note.d.sharp),
+          ScalePattern.melodicMinor.on(Note.d.sharp),
         );
       });
     });
@@ -72,28 +72,28 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Scale', () {
         expect(
-          ScalePattern.major.from(Note.b.flat).toString(),
+          ScalePattern.major.on(Note.b.flat).toString(),
           'B♭ Major (ionian) (B♭ C D E♭ F G A B♭)',
         );
         expect(
-          ScalePattern.naturalMinor.from(Note.c.sharp).toString(),
+          ScalePattern.naturalMinor.on(Note.c.sharp).toString(),
           'C♯ Natural minor (aeolian) (C♯ D♯ E F♯ G♯ A B C♯)',
         );
         expect(
-          ScalePattern.melodicMinor.from(Note.c).toString(),
+          ScalePattern.melodicMinor.on(Note.c).toString(),
           'C Melodic minor (C D E♭ F G A B C, C B♭ A♭ G F E♭ D C)',
         );
         expect(
-          ScalePattern.melodicMinor.from(Note.a.inOctave(4)).toString(),
+          ScalePattern.melodicMinor.on(Note.a.inOctave(4)).toString(),
           'A4 Melodic minor '
           '(A4 B4 C5 D5 E5 F♯5 G♯5 A5, A5 G5 F5 E5 D5 C5 B4 A4)',
         );
         expect(
-          ScalePattern.majorPentatonic.from(Note.d.inOctave(3)).toString(),
+          ScalePattern.majorPentatonic.on(Note.d.inOctave(3)).toString(),
           'D3 Major pentatonic (D3 E3 F♯3 A3 B3 D4)',
         );
         expect(
-          ScalePattern.minorPentatonic.from(EnharmonicNote.f).toString(),
+          ScalePattern.minorPentatonic.on(EnharmonicNote.f).toString(),
           '6 {E♯, F, G𝄫} Minor pentatonic (6 {E♯, F, G𝄫} 9 {G♯, A♭} '
           '11 {A♯, B♭} 1 {C, D𝄫, B♯} 4 {D♯, E♭} 6 {E♯, F, G𝄫})',
         );

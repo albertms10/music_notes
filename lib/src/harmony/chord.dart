@@ -30,7 +30,7 @@ class Chord<T extends Scalable<T>> implements Transposable<Chord<T>> {
   /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.minorThird)
   ///   == const Chord([Note.c, Note.e.flat, Note.g])
   ///
-  /// ChordPattern.majorTriad.from(Note.g.inOctave(4))
+  /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
   ///   .transposeBy(Interval.majorThird)
   ///     == const Chord([
   ///       Note.b.inOctave(4),

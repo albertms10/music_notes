@@ -31,24 +31,24 @@ void main() {
       });
     });
 
-    group('.from()', () {
+    group('.on()', () {
       test('should return the Chord from this ChordPattern', () {
         expect(
-          ChordPattern.majorTriad.from(Note.e),
+          ChordPattern.majorTriad.on(Note.e),
           Chord([Note.e, Note.g.sharp, Note.b]),
         );
         expect(
-          ChordPattern.minorTriad.add7().from(Note.f),
+          ChordPattern.minorTriad.add7().on(Note.f),
           Chord([Note.f, Note.a.flat, Note.c, Note.e.flat]),
         );
         expect(
-          ChordPattern.majorTriad.add7().add9().from(Note.d),
+          ChordPattern.majorTriad.add7().add9().on(Note.d),
           Chord([Note.d, Note.f.sharp, Note.a, Note.c, Note.e]),
         );
         expect(
           ChordPattern.diminishedTriad
               .add7(ImperfectQuality.diminished)
-              .from(Note.b.flat.inOctave(4)),
+              .on(Note.b.flat.inOctave(4)),
           Chord([
             Note.b.flat.inOctave(4),
             Note.d.flat.inOctave(5),

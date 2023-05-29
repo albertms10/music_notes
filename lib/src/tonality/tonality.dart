@@ -54,7 +54,7 @@ final class Tonality implements Comparable<Tonality> {
   /// Note.e.minor.scale == Scale([Note.e, Note.f.sharp, Note.g, Note.a, Note.b,
   ///   Note.d, Note.d, Note.e])
   /// ```
-  Scale<Note> get scale => mode.scale.from(note);
+  Scale<Note> get scale => mode.scale.on(note);
 
   @override
   String toString() => '$note ${mode.name}';
