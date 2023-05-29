@@ -87,6 +87,122 @@ void main() {
       );
     });
 
+    group('.augmentedTriad', () {
+      test('should return the augmented triad on this PositionedNote', () {
+        expect(
+          Note.c.inOctave(4).augmentedTriad,
+          Chord([
+            Note.c.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.sharp.inOctave(4),
+          ]),
+        );
+        expect(
+          Note.a.inOctave(3).augmentedTriad,
+          Chord([
+            Note.a.inOctave(3),
+            Note.c.sharp.inOctave(4),
+            Note.e.sharp.inOctave(4),
+          ]),
+        );
+        expect(
+          Note.b.inOctave(5).augmentedTriad,
+          Chord([
+            Note.b.inOctave(5),
+            Note.d.sharp.inOctave(6),
+            Note.f.sharp.sharp.inOctave(6),
+          ]),
+        );
+      });
+    });
+
+    group('.majorTriad', () {
+      test('should return the major triad on this PositionedNote', () {
+        expect(
+          Note.c.inOctave(4).majorTriad,
+          Chord([
+            Note.c.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.inOctave(4),
+          ]),
+        );
+        expect(
+          Note.e.flat.inOctave(3).majorTriad,
+          Chord([
+            Note.e.flat.inOctave(3),
+            Note.g.inOctave(3),
+            Note.b.flat.inOctave(3),
+          ]),
+        );
+        expect(
+          Note.b.inOctave(3).majorTriad,
+          Chord([
+            Note.b.inOctave(3),
+            Note.d.sharp.inOctave(4),
+            Note.f.sharp.inOctave(4),
+          ]),
+        );
+      });
+    });
+
+    group('.minorTriad', () {
+      test('should return the minor triad on this PositionedNote', () {
+        expect(
+          Note.d.flat.inOctave(5).minorTriad,
+          Chord([
+            Note.d.flat.inOctave(5),
+            Note.f.flat.inOctave(5),
+            Note.a.flat.inOctave(5),
+          ]),
+        );
+        expect(
+          Note.g.sharp.inOctave(4).minorTriad,
+          Chord([
+            Note.g.sharp.inOctave(4),
+            Note.b.inOctave(4),
+            Note.d.sharp.inOctave(5),
+          ]),
+        );
+        expect(
+          Note.a.inOctave(3).minorTriad,
+          Chord([
+            Note.a.inOctave(3),
+            Note.c.inOctave(4),
+            Note.e.inOctave(4),
+          ]),
+        );
+      });
+    });
+
+    group('.diminishedTriad', () {
+      test('should return the diminished triad on this PositionedNote', () {
+        expect(
+          Note.e.inOctave(4).diminishedTriad,
+          Chord([
+            Note.e.inOctave(4),
+            Note.g.inOctave(4),
+            Note.b.flat.inOctave(4),
+          ]),
+        );
+        expect(
+          Note.g.flat.inOctave(2).diminishedTriad,
+          Chord([
+            Note.g.flat.inOctave(2),
+            Note.b.flat.flat.inOctave(2),
+            Note.d.flat.flat.inOctave(3),
+          ]),
+        );
+        expect(
+          Note.b.inOctave(5).diminishedTriad,
+          Chord([
+            Note.b.inOctave(5),
+            Note.d.inOctave(6),
+            Note.f.inOctave(6),
+          ]),
+        );
+      });
+    });
+
     group('.interval()', () {
       test(
         'should return the Interval between this PositionedNote and other',
