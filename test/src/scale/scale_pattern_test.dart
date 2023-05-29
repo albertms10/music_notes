@@ -59,125 +59,116 @@ void main() {
         );
       });
 
-      test(
-        'should return the natural minor Scale on Note',
-        () {
-          expect(
-            ScalePattern.naturalMinor.on(Note.d.sharp.inOctave(5)),
-            Scale([
-              Note.d.sharp.inOctave(5),
-              Note.e.sharp.inOctave(5),
-              Note.f.sharp.inOctave(5),
-              Note.g.sharp.inOctave(5),
-              Note.a.sharp.inOctave(5),
-              Note.b.inOctave(5),
-              Note.c.sharp.inOctave(6),
-              Note.d.sharp.inOctave(6),
-            ]),
-          );
-          expect(
-            ScalePattern.naturalMinor.on(Note.d),
-            Scale([
-              Note.d,
-              Note.e,
-              Note.f,
-              Note.g,
-              Note.a,
-              Note.b.flat,
-              Note.c,
-              Note.d,
-            ]),
-          );
-        },
-      );
+      test('should return the natural minor Scale on Note', () {
+        expect(
+          ScalePattern.naturalMinor.on(Note.d.sharp.inOctave(5)),
+          Scale([
+            Note.d.sharp.inOctave(5),
+            Note.e.sharp.inOctave(5),
+            Note.f.sharp.inOctave(5),
+            Note.g.sharp.inOctave(5),
+            Note.a.sharp.inOctave(5),
+            Note.b.inOctave(5),
+            Note.c.sharp.inOctave(6),
+            Note.d.sharp.inOctave(6),
+          ]),
+        );
+        expect(
+          ScalePattern.naturalMinor.on(Note.d),
+          Scale([
+            Note.d,
+            Note.e,
+            Note.f,
+            Note.g,
+            Note.a,
+            Note.b.flat,
+            Note.c,
+            Note.d,
+          ]),
+        );
+      });
 
-      test(
-        'should return the harmonic minor Scale on Note',
-        () {
-          expect(
-            ScalePattern.harmonicMinor.on(Note.b.flat.inOctave(4)),
-            Scale([
-              Note.b.flat.inOctave(4),
-              Note.c.inOctave(5),
-              Note.d.flat.inOctave(5),
-              Note.e.flat.inOctave(5),
-              Note.f.inOctave(5),
-              Note.g.flat.inOctave(5),
-              Note.a.inOctave(5),
-              Note.b.flat.inOctave(5),
-            ]),
-          );
-          expect(
-            ScalePattern.harmonicMinor.on(Note.d),
-            Scale([
+      test('should return the harmonic minor Scale on Note', () {
+        expect(
+          ScalePattern.harmonicMinor.on(Note.b.flat.inOctave(4)),
+          Scale([
+            Note.b.flat.inOctave(4),
+            Note.c.inOctave(5),
+            Note.d.flat.inOctave(5),
+            Note.e.flat.inOctave(5),
+            Note.f.inOctave(5),
+            Note.g.flat.inOctave(5),
+            Note.a.inOctave(5),
+            Note.b.flat.inOctave(5),
+          ]),
+        );
+        expect(
+          ScalePattern.harmonicMinor.on(Note.d),
+          Scale([
+            Note.d,
+            Note.e,
+            Note.f,
+            Note.g,
+            Note.a,
+            Note.b.flat,
+            Note.c.sharp,
+            Note.d,
+          ]),
+        );
+      });
+
+      test('should return the melodic minor Scale on Note', () {
+        expect(
+          ScalePattern.melodicMinor.on(Note.d),
+          Scale(
+            [
               Note.d,
               Note.e,
               Note.f,
               Note.g,
               Note.a,
-              Note.b.flat,
+              Note.b,
               Note.c.sharp,
               Note.d,
-            ]),
-          );
-        },
-      );
-
-      test(
-        'should return the melodic minor Scale on Note',
-        () {
-          expect(
-            ScalePattern.melodicMinor.on(Note.d),
-            Scale(
-              [
-                Note.d,
-                Note.e,
-                Note.f,
-                Note.g,
-                Note.a,
-                Note.b,
-                Note.c.sharp,
-                Note.d,
-              ],
-              [
-                Note.d,
-                Note.c,
-                Note.b.flat,
-                Note.a,
-                Note.g,
-                Note.f,
-                Note.e,
-                Note.d,
-              ],
-            ),
-          );
-          expect(
-            ScalePattern.melodicMinor.on(Note.g.sharp.inOctave(1)),
-            Scale(
-              [
-                Note.g.sharp.inOctave(1),
-                Note.a.sharp.inOctave(1),
-                Note.b.inOctave(1),
-                Note.c.sharp.inOctave(2),
-                Note.d.sharp.inOctave(2),
-                Note.e.sharp.inOctave(2),
-                Note.f.sharp.sharp.inOctave(2),
-                Note.g.sharp.inOctave(2),
-              ],
-              [
-                Note.g.sharp.inOctave(2),
-                Note.f.sharp.inOctave(2),
-                Note.e.inOctave(2),
-                Note.d.sharp.inOctave(2),
-                Note.c.sharp.inOctave(2),
-                Note.b.inOctave(1),
-                Note.a.sharp.inOctave(1),
-                Note.g.sharp.inOctave(1),
-              ],
-            ),
-          );
-        },
-      );
+            ],
+            [
+              Note.d,
+              Note.c,
+              Note.b.flat,
+              Note.a,
+              Note.g,
+              Note.f,
+              Note.e,
+              Note.d,
+            ],
+          ),
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.g.sharp.inOctave(1)),
+          Scale(
+            [
+              Note.g.sharp.inOctave(1),
+              Note.a.sharp.inOctave(1),
+              Note.b.inOctave(1),
+              Note.c.sharp.inOctave(2),
+              Note.d.sharp.inOctave(2),
+              Note.e.sharp.inOctave(2),
+              Note.f.sharp.sharp.inOctave(2),
+              Note.g.sharp.inOctave(2),
+            ],
+            [
+              Note.g.sharp.inOctave(2),
+              Note.f.sharp.inOctave(2),
+              Note.e.inOctave(2),
+              Note.d.sharp.inOctave(2),
+              Note.c.sharp.inOctave(2),
+              Note.b.inOctave(1),
+              Note.a.sharp.inOctave(1),
+              Note.g.sharp.inOctave(1),
+            ],
+          ),
+        );
+      });
 
       test('should return the whole-tone Scale on Note', () {
         expect(
@@ -275,51 +266,45 @@ void main() {
         );
       });
 
-      test(
-        'should return the major pentatonic Scale on Note',
-        () {
-          expect(
-            ScalePattern.majorPentatonic.on(Note.c),
-            const Scale([Note.c, Note.d, Note.e, Note.g, Note.a, Note.c]),
-          );
-          expect(
-            ScalePattern.majorPentatonic.on(Note.f.sharp),
-            Scale([
-              Note.f.sharp,
-              Note.g.sharp,
-              Note.a.sharp,
-              Note.c.sharp,
-              Note.d.sharp,
-              Note.f.sharp,
-            ]),
-          );
-          expect(
-            ScalePattern.majorPentatonic.on(EnharmonicNote.fSharp),
-            const Scale([
-              EnharmonicNote.fSharp,
-              EnharmonicNote.gSharp,
-              EnharmonicNote.aSharp,
-              EnharmonicNote.cSharp,
-              EnharmonicNote.dSharp,
-              EnharmonicNote.fSharp,
-            ]),
-          );
-        },
-      );
+      test('should return the major pentatonic Scale on Note', () {
+        expect(
+          ScalePattern.majorPentatonic.on(Note.c),
+          const Scale([Note.c, Note.d, Note.e, Note.g, Note.a, Note.c]),
+        );
+        expect(
+          ScalePattern.majorPentatonic.on(Note.f.sharp),
+          Scale([
+            Note.f.sharp,
+            Note.g.sharp,
+            Note.a.sharp,
+            Note.c.sharp,
+            Note.d.sharp,
+            Note.f.sharp,
+          ]),
+        );
+        expect(
+          ScalePattern.majorPentatonic.on(EnharmonicNote.fSharp),
+          const Scale([
+            EnharmonicNote.fSharp,
+            EnharmonicNote.gSharp,
+            EnharmonicNote.aSharp,
+            EnharmonicNote.cSharp,
+            EnharmonicNote.dSharp,
+            EnharmonicNote.fSharp,
+          ]),
+        );
+      });
 
-      test(
-        'should return the minor pentatonic Scale on Note',
-        () {
-          expect(
-            ScalePattern.minorPentatonic.on(Note.a),
-            const Scale([Note.a, Note.c, Note.d, Note.e, Note.g, Note.a]),
-          );
-          expect(
-            ScalePattern.minorPentatonic.on(Note.g),
-            Scale([Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g]),
-          );
-        },
-      );
+      test('should return the minor pentatonic Scale on Note', () {
+        expect(
+          ScalePattern.minorPentatonic.on(Note.a),
+          const Scale([Note.a, Note.c, Note.d, Note.e, Note.g, Note.a]),
+        );
+        expect(
+          ScalePattern.minorPentatonic.on(Note.g),
+          Scale([Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g]),
+        );
+      });
     });
 
     group('.mirrored', () {
