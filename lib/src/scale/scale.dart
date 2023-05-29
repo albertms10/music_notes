@@ -27,7 +27,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.aeolian.from(Note.a).reversed
+  /// ScalePattern.aeolian.on(Note.a).reversed
   ///   == Scale([Note.a, Note.g, Note.f, Note.e, Note.d, Note.c, Note.b,
   ///        Note.a])
   /// ```
@@ -38,8 +38,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.from(Note.c).transposeBy(Interval.minorThird)
-  ///   == ScalePattern.major.from(Note.e.flat)
+  /// ScalePattern.major.on(Note.c).transposeBy(Interval.minorThird)
+  ///   == ScalePattern.major.on(Note.e.flat)
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(

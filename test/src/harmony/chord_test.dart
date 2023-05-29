@@ -5,7 +5,7 @@ void main() {
   group('Chord', () {
     group('.root', () {
       test('should return the root of this Chord', () {
-        expect(ChordPattern.majorTriad.from(Note.f).root, Note.f);
+        expect(ChordPattern.majorTriad.on(Note.f).root, Note.f);
         expect(
           Chord([Note.d.inOctave(3), Note.f.inOctave(3), Note.a.inOctave(3)])
               .root,
@@ -17,7 +17,7 @@ void main() {
     group('.pattern', () {
       test('should return the ChordPattern for this Chord', () {
         expect(
-          ChordPattern.majorTriad.from(Note.c).pattern,
+          ChordPattern.majorTriad.on(Note.c).pattern,
           ChordPattern.majorTriad,
         );
         expect(
@@ -41,14 +41,14 @@ void main() {
         expect(
           ChordPattern.majorTriad
               .add9(ImperfectQuality.minor)
-              .from(Note.c)
+              .on(Note.c)
               .transposeBy(Interval.majorSecond),
           Chord([Note.d, Note.f.sharp, Note.a, Note.e.flat]),
         );
         expect(
           ChordPattern.minorTriad
               .add7(ImperfectQuality.major)
-              .from(Note.e.flat)
+              .on(Note.e.flat)
               .transposeBy(Interval.minorThird),
           Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat, Note.f]),
         );
@@ -57,7 +57,7 @@ void main() {
           ChordPattern.augmentedTriad
               .add7(ImperfectQuality.major)
               .add9()
-              .from(Note.g.inOctave(3))
+              .on(Note.g.inOctave(3))
               .transposeBy(Interval.augmentedFourth),
           Chord([
             Note.c.sharp.inOctave(4),
@@ -71,7 +71,7 @@ void main() {
           ChordPattern.augmentedTriad
               .add7(ImperfectQuality.major)
               .add9()
-              .from(Note.g.flat.inOctave(3))
+              .on(Note.g.flat.inOctave(3))
               .transposeBy(Interval.augmentedFourth),
           Chord([
             Note.c.inOctave(4),
@@ -85,7 +85,7 @@ void main() {
           ChordPattern.augmentedTriad
               .add7()
               .add9(ImperfectQuality.minor)
-              .from(Note.g.sharp.inOctave(3))
+              .on(Note.g.sharp.inOctave(3))
               .transposeBy(Interval.augmentedFourth),
           Chord([
             Note.c.sharp.sharp.inOctave(4),
@@ -100,7 +100,7 @@ void main() {
           ChordPattern.augmentedTriad
               .add7(ImperfectQuality.major)
               .add9()
-              .from(Note.g.inOctave(3))
+              .on(Note.g.inOctave(3))
               .transposeBy(Interval.diminishedFifth),
           Chord([
             Note.d.flat.inOctave(4),
@@ -116,7 +116,7 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Chord', () {
         expect(
-          ChordPattern.majorTriad.from(Note.d).toString(),
+          ChordPattern.majorTriad.on(Note.d).toString(),
           'D maj. (D F♯ A)',
         );
         expect(
@@ -124,10 +124,7 @@ void main() {
           'G♯ min. (G♯ B D♯)',
         );
         expect(
-          ChordPattern.augmentedTriad
-              .add7()
-              .from(Note.c.inOctave(3))
-              .toString(),
+          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).toString(),
           'C3 aug. (C3 E3 G♯3 B♭3)',
         );
       });
@@ -137,14 +134,14 @@ void main() {
       test('should ignore equal Chord instances in a Set', () {
         final collection = {
           const Chord([Note.c, Note.e, Note.g]),
-          ChordPattern.minorTriad.from(Note.g),
-          ChordPattern.augmentedTriad.from(Note.d),
+          ChordPattern.minorTriad.on(Note.g),
+          ChordPattern.augmentedTriad.on(Note.d),
         };
         collection.addAll(collection);
         expect(collection.toList(), [
           const Chord([Note.c, Note.e, Note.g]),
-          ChordPattern.minorTriad.from(Note.g),
-          ChordPattern.augmentedTriad.from(Note.d),
+          ChordPattern.minorTriad.on(Note.g),
+          ChordPattern.augmentedTriad.on(Note.d),
         ]);
       });
     });
