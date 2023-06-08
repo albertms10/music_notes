@@ -388,7 +388,7 @@ void main() {
       );
     });
 
-    group('.degreePattern', () {
+    group('.degreePattern()', () {
       test(
         'should return the ChordPattern for the ScaleDegree of this '
         'ScalePattern',

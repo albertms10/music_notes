@@ -48,6 +48,52 @@ void main() {
       });
     });
 
+    group('.degrees', () {
+      test('should return the Chord for each ScaleDegree of this Scale', () {
+        expect(ScalePattern.major.on(Note.c.sharp).degrees, [
+          Note.c.sharp.majorTriad,
+          Note.d.sharp.minorTriad,
+          Note.e.sharp.minorTriad,
+          Note.f.sharp.majorTriad,
+          Note.g.sharp.majorTriad,
+          Note.a.sharp.minorTriad,
+          Note.b.sharp.diminishedTriad,
+          Note.c.sharp.majorTriad,
+        ]);
+        expect(ScalePattern.harmonicMinor.on(Note.f).degrees, [
+          Note.f.minorTriad,
+          Note.g.diminishedTriad,
+          Note.a.flat.augmentedTriad,
+          Note.b.flat.minorTriad,
+          Note.c.majorTriad,
+          Note.d.flat.majorTriad,
+          Note.e.diminishedTriad,
+          Note.f.minorTriad,
+        ]);
+      });
+    });
+
+    group('.degree()', () {
+      test('should return the Chord for the ScaleDegree of this Scale', () {
+        expect(
+          ScalePattern.major.on(Note.c).degree(ScaleDegree.ii),
+          Note.d.minorTriad,
+        );
+        expect(
+          ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.vii),
+          Note.c.majorTriad,
+        );
+        expect(
+          ScalePattern.harmonicMinor.on(Note.f.sharp).degree(ScaleDegree.iii),
+          Note.a.augmentedTriad,
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.a.flat).degree(ScaleDegree.vi),
+          Note.f.diminishedTriad,
+        );
+      });
+    });
+
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(

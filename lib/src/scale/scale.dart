@@ -34,6 +34,35 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> get reversed =>
       Scale(descendingItems, _descendingItems != null ? items : null);
 
+  /// Returns the [Chord] for each [ScaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.on(Note.a).degrees == [
+  ///   Note.a.majorTriad,
+  ///   Note.b.minorTriad,
+  ///   Note.c.sharp.minorTriad,
+  ///   Note.d.majorTriad,
+  ///   Note.e.majorTriad,
+  ///   Note.f.sharp.minorTriad,
+  ///   Note.g.sharp.diminishedTriad,
+  /// ]
+  /// ```
+  List<Chord<T>> get degrees =>
+      [for (var i = 1; i <= items.length; i++) degree(ScaleDegree(i))];
+
+  /// Returns the [Chord] for the [scaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.on(Note.g).degree(ScaleDegree.vi)
+  ///   == Note.b.minorTriad
+  /// ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.ii)
+  ///   == Note.d.diminishedTriad
+  /// ```
+  Chord<T> degree(ScaleDegree scaleDegree) =>
+      pattern.degreePattern(scaleDegree).on(items[scaleDegree.degree - 1]);
+
   /// Returns this [Scale] transposed by [interval].
   ///
   /// Example:
