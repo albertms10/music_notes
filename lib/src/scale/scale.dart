@@ -49,7 +49,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ]
   /// ```
   List<Chord<T>> get degrees =>
-      [for (var i = 1; i <= items.length; i++) degree(ScaleDegree(i))];
+      [for (var i = 1; i < items.length; i++) degree(ScaleDegree(i))];
 
   /// Returns the [Chord] for the [scaleDegree] of this [Scale].
   ///

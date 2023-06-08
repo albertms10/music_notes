@@ -58,7 +58,6 @@ void main() {
           Note.g.sharp.majorTriad,
           Note.a.sharp.minorTriad,
           Note.b.sharp.diminishedTriad,
-          Note.c.sharp.majorTriad,
         ]);
         expect(ScalePattern.harmonicMinor.on(Note.f).degrees, [
           Note.f.minorTriad,
@@ -68,7 +67,6 @@ void main() {
           Note.c.majorTriad,
           Note.d.flat.majorTriad,
           Note.e.diminishedTriad,
-          Note.f.minorTriad,
         ]);
       });
     });
