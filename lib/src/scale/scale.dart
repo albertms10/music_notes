@@ -38,7 +38,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.a).degrees == [
+  /// Note.a.major.scale.degreeChords == [
   ///   Note.a.majorTriad,
   ///   Note.b.minorTriad,
   ///   Note.c.sharp.minorTriad,
@@ -55,10 +55,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.g).degree(ScaleDegree.vi)
-  ///   == Note.b.minorTriad
-  /// ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.ii)
-  ///   == Note.d.diminishedTriad
+  /// Note.g.major.scale.degreeChord(ScaleDegree.vi) == Note.b.minorTriad
+  /// Note.d.minor.scale.degreeChord(ScaleDegree.ii) == Note.d.diminishedTriad
   /// ```
   Chord<T> degree(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(items[scaleDegree.degree - 1]);
@@ -67,8 +65,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.c).transposeBy(Interval.minorThird)
-  ///   == ScalePattern.major.on(Note.e.flat)
+  /// Note.c.major.scale.transposeBy(Interval.minorThird)
+  ///   == Note.e.flat.major.scale
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(

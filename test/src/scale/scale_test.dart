@@ -50,7 +50,7 @@ void main() {
 
     group('.degrees', () {
       test('should return the Chord for each ScaleDegree of this Scale', () {
-        expect(ScalePattern.major.on(Note.c.sharp).degrees, [
+        expect(Note.c.sharp.major.scale.degreeChords, [
           Note.c.sharp.majorTriad,
           Note.d.sharp.minorTriad,
           Note.e.sharp.minorTriad,
@@ -74,11 +74,11 @@ void main() {
     group('.degree()', () {
       test('should return the Chord for the ScaleDegree of this Scale', () {
         expect(
-          ScalePattern.major.on(Note.c).degree(ScaleDegree.ii),
+          Note.c.major.scale.degreeChord(ScaleDegree.ii),
           Note.d.minorTriad,
         );
         expect(
-          ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.vii),
+          Note.d.minor.scale.degreeChord(ScaleDegree.vii),
           Note.c.majorTriad,
         );
         expect(
@@ -95,14 +95,12 @@ void main() {
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(
-          ScalePattern.major.on(Note.c).transposeBy(Interval.majorThird),
-          ScalePattern.major.on(Note.e),
+          Note.c.major.scale.transposeBy(Interval.majorThird),
+          Note.e.major.scale,
         );
         expect(
-          ScalePattern.naturalMinor
-              .on(Note.d.flat)
-              .transposeBy(-Interval.minorThird),
-          ScalePattern.naturalMinor.on(Note.b.flat),
+          Note.d.flat.minor.scale.transposeBy(-Interval.minorThird),
+          Note.b.flat.minor.scale,
         );
         expect(
           ScalePattern.melodicMinor
@@ -116,11 +114,11 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Scale', () {
         expect(
-          ScalePattern.major.on(Note.b.flat).toString(),
+          Note.b.flat.major.scale.toString(),
           'B♭ Major (ionian) (B♭ C D E♭ F G A B♭)',
         );
         expect(
-          ScalePattern.naturalMinor.on(Note.c.sharp).toString(),
+          Note.c.sharp.minor.scale.toString(),
           'C♯ Natural minor (aeolian) (C♯ D♯ E F♯ G♯ A B C♯)',
         );
         expect(
