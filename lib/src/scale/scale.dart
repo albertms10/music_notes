@@ -4,7 +4,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// The [Scalable] degrees that define this [Scale].
   final List<T> degrees;
 
-  /// The descending [Scalable] items that define this [Scale] (if different).
+  /// The descending [Scalable] degrees that define this [Scale] (if different).
   final List<T>? _descendingDegrees;
 
   /// Creates a new [Scale] instance from [degrees].
