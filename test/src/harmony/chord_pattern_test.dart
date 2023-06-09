@@ -150,6 +150,89 @@ void main() {
       });
     });
 
+    group('.modifiers', () {
+      test(
+        'should return the list of modifier Intervals from the root note',
+        () {
+          expect(ChordPattern.majorTriad.modifiers, const <Interval>[]);
+          expect(
+            ChordPattern.minorTriad.add6().add9().modifiers,
+            const [Interval.majorSixth, Interval.majorNinth],
+          );
+          expect(
+            ChordPattern.augmentedTriad.sus2().add7().add13().modifiers,
+            const [Interval.minorSeventh, Interval.majorThirteenth],
+          );
+        },
+      );
+    });
+
+    group('.augmented', () {
+      test('should return a new ChordPattern with an augmented root triad', () {
+        expect(
+          ChordPattern.minorTriad.augmented,
+          ChordPattern.augmentedTriad,
+        );
+        expect(
+          ChordPattern.majorTriad.add7().add9().augmented,
+          const ChordPattern([
+            Interval.majorThird,
+            Interval.augmentedFifth,
+            Interval.minorSeventh,
+            Interval.majorNinth,
+          ]),
+        );
+      });
+    });
+
+    group('.major', () {
+      test('should return a new ChordPattern with a major root triad', () {
+        expect(ChordPattern.minorTriad.major, ChordPattern.majorTriad);
+        expect(
+          ChordPattern.minorTriad.add7().add9().major,
+          const ChordPattern([
+            Interval.majorThird,
+            Interval.perfectFifth,
+            Interval.minorSeventh,
+            Interval.majorNinth,
+          ]),
+        );
+      });
+    });
+
+    group('.minor', () {
+      test('should return a new ChordPattern with a minor root triad', () {
+        expect(ChordPattern.augmentedTriad.minor, ChordPattern.minorTriad);
+        expect(
+          ChordPattern.majorTriad.add7().add9().minor,
+          const ChordPattern([
+            Interval.minorThird,
+            Interval.perfectFifth,
+            Interval.minorSeventh,
+            Interval.majorNinth,
+          ]),
+        );
+      });
+    });
+
+    group('.diminished', () {
+      test('should return a new ChordPattern with a diminished root triad', () {
+        expect(
+          ChordPattern.majorTriad.diminished,
+          ChordPattern.diminishedTriad,
+        );
+        expect(
+          ChordPattern.augmentedTriad.add7().add9().diminished,
+          const ChordPattern([
+            Interval.minorThird,
+            Interval.diminishedFifth,
+            Interval.minorSeventh,
+            Interval.majorNinth,
+          ]),
+        );
+      });
+    });
+
     group('.sus2()', () {
       test('should turn this ChordPattern into a suspended 2nd chord', () {
         expect(

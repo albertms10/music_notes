@@ -98,6 +98,75 @@ class ChordPattern {
   /// Whether this [ChordPattern] is [ImperfectQuality.diminished].
   bool get isDiminished => rootTriad == diminishedTriad;
 
+  /// Returns the list of modifier [Interval]s from the root note.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().add9().modifiers
+  ///   == const [Interval.minorSeventh, Interval.majorNinth]
+  /// ```
+  List<Interval> get modifiers => intervals.skip(2).toList();
+
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.augmented] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().augmented
+  ///   == const ChordPattern([
+  ///        Interval.majorThird,
+  ///        Interval.augmentedFifth,
+  ///        Interval.minorSeventh
+  ///      ])
+  /// ```
+  ChordPattern get augmented =>
+      ChordPattern([...augmentedTriad.intervals, ...modifiers]);
+
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.major] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.minorTriad.add7().major
+  ///   == const ChordPattern([
+  ///        Interval.majorThird,
+  ///        Interval.perfectFifth,
+  ///        Interval.minorSeventh
+  ///      ])
+  /// ```
+  ChordPattern get major =>
+      ChordPattern([...majorTriad.intervals, ...modifiers]);
+
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.minor] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().minor
+  ///   == const ChordPattern([
+  ///        Interval.minorThird,
+  ///        Interval.perfectFifth,
+  ///        Interval.minorSeventh
+  ///      ])
+  /// ```
+  ChordPattern get minor =>
+      ChordPattern([...minorTriad.intervals, ...modifiers]);
+
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.diminished] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().diminished
+  ///   == const ChordPattern([
+  ///        Interval.minorThird,
+  ///        Interval.diminishedFifth,
+  ///        Interval.minorSeventh
+  ///      ])
+  /// ```
+  ChordPattern get diminished =>
+      ChordPattern([...diminishedTriad.intervals, ...modifiers]);
+
   /// Returns a new [ChordPattern] with a suspended [Interval.majorSecond].
   ChordPattern sus2() => add(Interval.majorSecond, replaceSizes: const [3, 4]);
 
