@@ -128,10 +128,10 @@ class ChordPattern {
   /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
   /// ```
   String get abbreviation => switch (this) {
-        _ when isAugmented => 'aug.',
-        _ when isMajor => 'maj.',
-        _ when isMinor => 'min.',
-        _ when isDiminished => 'dim.',
+        final chord when chord.isAugmented => 'aug.',
+        final chord when chord.isMajor => 'maj.',
+        final chord when chord.isMinor => 'min.',
+        final chord when chord.isDiminished => 'dim.',
         _ => '?',
       };
 
