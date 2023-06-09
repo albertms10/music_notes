@@ -21,6 +21,66 @@ void main() {
       });
     });
 
+    group('.raised', () {
+      test('should return this ScaleDegree raised by 1 semitone', () {
+        expect(ScaleDegree.vi.raised, const ScaleDegree(6, semitonesDelta: 1));
+        expect(
+          ScaleDegree.ii.raised.raised,
+          const ScaleDegree(2, semitonesDelta: 2),
+        );
+        expect(ScaleDegree.ii.raised.lowered, ScaleDegree.ii);
+      });
+    });
+
+    group('.lowered', () {
+      test('should return this ScaleDegree lowered by 1 semitone', () {
+        expect(
+          ScaleDegree.ii.lowered,
+          const ScaleDegree(2, semitonesDelta: -1),
+        );
+        expect(
+          ScaleDegree.vi.lowered.lowered,
+          const ScaleDegree(6, semitonesDelta: -2),
+        );
+        expect(ScaleDegree.iii.lowered.raised, ScaleDegree.iii);
+      });
+    });
+
+    group('.major', () {
+      test('should return this ScaleDegree as major', () {
+        expect(
+          ScaleDegree.ii.major,
+          const ScaleDegree(2, quality: ImperfectQuality.major),
+        );
+        expect(
+          ScaleDegree.vi.minor.major,
+          const ScaleDegree(6, quality: ImperfectQuality.major),
+        );
+      });
+    });
+
+    group('.minor', () {
+      test('should return this ScaleDegree as minor', () {
+        expect(
+          ScaleDegree.ii.minor,
+          const ScaleDegree(2, quality: ImperfectQuality.minor),
+        );
+        expect(
+          ScaleDegree.neapolitanSixth.minor,
+          const ScaleDegree(
+            2,
+            quality: ImperfectQuality.minor,
+            inversion: 1,
+            semitonesDelta: -1,
+          ),
+        );
+        expect(
+          ScaleDegree.iv.major.minor,
+          const ScaleDegree(4, quality: ImperfectQuality.minor),
+        );
+      });
+    });
+
     group('.toString()', () {
       test(
         'should return the string representation of this ScaleDegree',
