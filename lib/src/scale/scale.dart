@@ -1,17 +1,18 @@
 part of '../../music_notes.dart';
 
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
-  /// The [Scalable] items that define this [Scale].
-  final List<T> items;
+  /// The [Scalable] degrees that define this [Scale].
+  final List<T> degrees;
 
   /// The descending [Scalable] items that define this [Scale] (if different).
-  final List<T>? _descendingItems;
+  final List<T>? _descendingDegrees;
 
-  /// Creates a new [Scale] instance from [items].
-  const Scale(this.items, [this._descendingItems]);
+  /// Creates a new [Scale] instance from [degrees].
+  const Scale(this.degrees, [this._descendingDegrees]);
 
-  /// The descending [Scalable] items that define this [Scale].
-  List<T> get descendingItems => _descendingItems ?? items.reversed.toList();
+  /// The descending [Scalable] degrees that define this [Scale].
+  List<T> get descendingDegrees =>
+      _descendingDegrees ?? degrees.reversed.toList();
 
   /// Returns the [ScalePattern] of this [Scale].
   ///
@@ -21,7 +22,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern =>
-      ScalePattern(items.intervals, _descendingItems?.descendingIntervals);
+      ScalePattern(degrees.intervals, _descendingDegrees?.descendingIntervals);
 
   /// Returns the reversed of this [Scale].
   ///
@@ -32,7 +33,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///        Note.a])
   /// ```
   Scale<T> get reversed =>
-      Scale(descendingItems, _descendingItems != null ? items : null);
+      Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
 
   /// Returns the [Chord] for each [ScaleDegree] of this [Scale].
   ///
@@ -49,7 +50,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ]
   /// ```
   List<Chord<T>> get degreeChords =>
-      [for (var i = 1; i < items.length; i++) degreeChord(ScaleDegree(i))];
+      [for (var i = 1; i < degrees.length; i++) degreeChord(ScaleDegree(i))];
 
   /// Returns the [T] for the [scaleDegree] of this [Scale].
   ///
@@ -60,7 +61,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = items[scaleDegree.degree - 1];
+    final scalable = degrees[scaleDegree.degree - 1];
     if (scaleDegree.semitonesDelta == 0) return scalable;
 
     return scalable.transposeBy(
@@ -90,28 +91,29 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        items.transposeBy(interval),
-        _descendingItems?.transposeBy(interval),
+        degrees.transposeBy(interval),
+        _descendingDegrees?.transposeBy(interval),
       );
 
   @override
-  String toString() => '${items.first} ${pattern.name} (${items.join(' ')}'
-      '${_descendingItems != null ? ', ${_descendingItems!.join(' ')}' : ''})';
+  String toString() => '${degrees.first} ${pattern.name} (${degrees.join(' ')}'
+      '${_descendingDegrees != null ? ', '
+          '${_descendingDegrees!.join(' ')}' : ''})';
 
   @override
   bool operator ==(Object other) =>
       other is Scale<T> &&
-      ListEquality<T>().equals(items, other.items) &&
-      ListEquality<T>().equals(_descendingItems, other._descendingItems);
+      ListEquality<T>().equals(degrees, other.degrees) &&
+      ListEquality<T>().equals(_descendingDegrees, other._descendingDegrees);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(items),
-        _descendingItems != null ? Object.hashAll(_descendingItems!) : null,
+        Object.hashAll(degrees),
+        _descendingDegrees != null ? Object.hashAll(_descendingDegrees!) : null,
       );
 }
 
-extension _ListScalableExtension<T extends Scalable<T>> on List<T> {
+extension<T extends Scalable<T>> on List<T> {
   /// Returns the [Interval] list between this [List<Scalable<T>>].
   List<Interval> get intervals =>
       [for (var i = 0; i < length - 1; i++) this[i].interval(this[i + 1])];
