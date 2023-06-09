@@ -60,17 +60,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    var scalable = items[scaleDegree.degree - 1];
-    if (scaleDegree.semitonesDelta != 0) {
-      scalable = scalable.transposeBy(
-        Interval.perfect(
-          1,
-          PerfectQuality(scaleDegree.semitonesDelta.abs()),
-        ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
-      );
-    }
+    final scalable = items[scaleDegree.degree - 1];
+    if (scaleDegree.semitonesDelta == 0) return scalable;
 
-    return scalable;
+    return scalable.transposeBy(
+      Interval.perfect(
+        1,
+        PerfectQuality(scaleDegree.semitonesDelta.abs()),
+      ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
+    );
   }
 
   /// Returns the [Chord] for the [scaleDegree] of this [Scale].
