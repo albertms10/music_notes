@@ -48,7 +48,7 @@ void main() {
       });
     });
 
-    group('.degrees', () {
+    group('.degreeChords', () {
       test('should return the Chord for each ScaleDegree of this Scale', () {
         expect(Note.c.sharp.major.scale.degreeChords, [
           Note.c.sharp.majorTriad,
@@ -59,7 +59,7 @@ void main() {
           Note.a.sharp.minorTriad,
           Note.b.sharp.diminishedTriad,
         ]);
-        expect(ScalePattern.harmonicMinor.on(Note.f).degrees, [
+        expect(ScalePattern.harmonicMinor.on(Note.f).degreeChords, [
           Note.f.minorTriad,
           Note.g.diminishedTriad,
           Note.a.flat.augmentedTriad,
@@ -72,6 +72,26 @@ void main() {
     });
 
     group('.degree()', () {
+      test('should return the Scalable for the ScaleDegree of this Scale', () {
+        expect(Note.c.major.scale.degree(ScaleDegree.ii), Note.d);
+        expect(Note.d.minor.scale.degree(ScaleDegree.vii), Note.c);
+        expect(
+          ScalePattern.harmonicMinor.on(Note.f.sharp).degree(ScaleDegree.iii),
+          Note.a,
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.a.flat).degree(ScaleDegree.vi),
+          Note.f,
+        );
+
+        expect(
+          Note.c.major.scale.degree(ScaleDegree.neapolitanSixth),
+          Note.d.flat,
+        );
+      });
+    });
+
+    group('.degreeChord()', () {
       test('should return the Chord for the ScaleDegree of this Scale', () {
         expect(
           Note.c.major.scale.degreeChord(ScaleDegree.ii),
@@ -82,12 +102,20 @@ void main() {
           Note.c.majorTriad,
         );
         expect(
-          ScalePattern.harmonicMinor.on(Note.f.sharp).degree(ScaleDegree.iii),
+          ScalePattern.harmonicMinor
+              .on(Note.f.sharp)
+              .degreeChord(ScaleDegree.iii),
           Note.a.augmentedTriad,
         );
         expect(
-          ScalePattern.melodicMinor.on(Note.a.flat).degree(ScaleDegree.vi),
+          ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(ScaleDegree.vi),
           Note.f.diminishedTriad,
+        );
+
+        expect(
+          Note.c.major.scale.degreeChord(ScaleDegree.neapolitanSixth),
+          // TODO(albertms10): take the inversion into account.
+          Note.d.flat.majorTriad,
         );
       });
     });

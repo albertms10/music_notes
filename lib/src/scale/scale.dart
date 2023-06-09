@@ -48,8 +48,30 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> get degrees =>
-      [for (var i = 1; i < items.length; i++) degree(ScaleDegree(i))];
+  List<Chord<T>> get degreeChords =>
+      [for (var i = 1; i < items.length; i++) degreeChord(ScaleDegree(i))];
+
+  /// Returns the [T] for the [scaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.degree(ScaleDegree.ii.lowered) == Note.d.flat
+  /// Note.c.minor.scale.degree(ScaleDegree.v) == Note.g
+  /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
+  /// ```
+  T degree(ScaleDegree scaleDegree) {
+    var scalable = items[scaleDegree.degree - 1];
+    if (scaleDegree.semitonesDelta != 0) {
+      scalable = scalable.transposeBy(
+        Interval.perfect(
+          1,
+          PerfectQuality(scaleDegree.semitonesDelta.abs()),
+        ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
+      );
+    }
+
+    return scalable;
+  }
 
   /// Returns the [Chord] for the [scaleDegree] of this [Scale].
   ///
@@ -58,8 +80,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.g.major.scale.degreeChord(ScaleDegree.vi) == Note.b.minorTriad
   /// Note.d.minor.scale.degreeChord(ScaleDegree.ii) == Note.d.diminishedTriad
   /// ```
-  Chord<T> degree(ScaleDegree scaleDegree) =>
-      pattern.degreePattern(scaleDegree).on(items[scaleDegree.degree - 1]);
+  Chord<T> degreeChord(ScaleDegree scaleDegree) =>
+      pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
   /// Returns this [Scale] transposed by [interval].
   ///
