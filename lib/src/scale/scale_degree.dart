@@ -1,14 +1,14 @@
 part of '../../music_notes.dart';
 
 class ScaleDegree implements Comparable<ScaleDegree> {
-  final int degree;
+  final int ordinal;
   final int inversion;
   final ImperfectQuality? quality;
   final int semitonesDelta;
 
   /// Creates a new [ScaleDegree].
   const ScaleDegree(
-    this.degree, {
+    this.ordinal, {
     this.quality,
     this.inversion = 0,
     this.semitonesDelta = 0,
@@ -53,7 +53,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.vi.raised == const ScaleDegree(6, semitonesDelta: 1)
   /// ```
   ScaleDegree get raised => ScaleDegree(
-        degree,
+        ordinal,
         quality: quality,
         inversion: inversion,
         semitonesDelta: semitonesDelta + 1,
@@ -66,7 +66,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.ii.lowered == const ScaleDegree(2, semitonesDelta: -1)
   /// ```
   ScaleDegree get lowered => ScaleDegree(
-        degree,
+        ordinal,
         quality: quality,
         inversion: inversion,
         semitonesDelta: semitonesDelta - 1,
@@ -80,7 +80,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
   /// ```
   ScaleDegree get major => ScaleDegree(
-        degree,
+        ordinal,
         quality: ImperfectQuality.major,
         inversion: inversion,
         semitonesDelta: semitonesDelta,
@@ -94,7 +94,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
   /// ```
   ScaleDegree get minor => ScaleDegree(
-        degree,
+        ordinal,
         quality: ImperfectQuality.minor,
         inversion: inversion,
         semitonesDelta: semitonesDelta,
@@ -106,7 +106,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     if (semitonesDelta != 0) {
       buffer.write(Accidental(semitonesDelta).symbol);
     }
-    final romanNumeral = switch (degree) {
+    final romanNumeral = switch (ordinal) {
       1 => 'I',
       2 => 'II',
       3 => 'III',
@@ -136,17 +136,17 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   @override
   bool operator ==(Object other) =>
       other is ScaleDegree &&
-      degree == other.degree &&
+      ordinal == other.ordinal &&
       inversion == other.inversion &&
       quality == other.quality &&
       semitonesDelta == other.semitonesDelta;
 
   @override
-  int get hashCode => Object.hash(degree, inversion, quality, semitonesDelta);
+  int get hashCode => Object.hash(ordinal, inversion, quality, semitonesDelta);
 
   @override
   int compareTo(ScaleDegree other) => compareMultiple([
-        () => degree.compareTo(other.degree),
+        () => ordinal.compareTo(other.ordinal),
         () => semitonesDelta.compareTo(other.semitonesDelta),
         () => inversion.compareTo(other.inversion),
         () {

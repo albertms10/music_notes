@@ -315,10 +315,10 @@ final class ScalePattern {
 
     // Calculate the diatonic pattern from this Scale's `intervalSteps`.
     return ChordPattern.intervalSteps([
-      intervalSteps[(scaleDegree.degree - 1) % intervalSteps.length] +
-          intervalSteps[(scaleDegree.degree) % intervalSteps.length],
-      intervalSteps[(scaleDegree.degree + 1) % intervalSteps.length] +
-          intervalSteps[(scaleDegree.degree + 2) % intervalSteps.length],
+      intervalSteps[(scaleDegree.ordinal - 1) % intervalSteps.length] +
+          intervalSteps[(scaleDegree.ordinal) % intervalSteps.length],
+      intervalSteps[(scaleDegree.ordinal + 1) % intervalSteps.length] +
+          intervalSteps[(scaleDegree.ordinal + 2) % intervalSteps.length],
     ]);
   }
 
