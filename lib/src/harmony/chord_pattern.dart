@@ -45,6 +45,24 @@ class ChordPattern {
         ),
       );
 
+  /// Creates a new [ChordPattern] from the given [quality].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.fromQuality(ImperfectQuality.augmented)
+  ///   == ChordPattern.augmentedTriad
+  /// ChordPattern.fromQuality(ImperfectQuality.minor)
+  ///   == ChordPattern.minorTriad
+  /// ```
+  factory ChordPattern.fromQuality(ImperfectQuality quality) =>
+      switch (quality) {
+        ImperfectQuality.augmented => augmentedTriad,
+        ImperfectQuality.major => majorTriad,
+        ImperfectQuality.minor => minorTriad,
+        ImperfectQuality.diminished => diminishedTriad,
+        _ => majorTriad,
+      };
+
   /// Returns the [Chord<T>] from [scalable].
   ///
   /// Example:
@@ -128,10 +146,10 @@ class ChordPattern {
   /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
   /// ```
   String get abbreviation => switch (this) {
-        _ when isAugmented => 'aug.',
-        _ when isMajor => 'maj.',
-        _ when isMinor => 'min.',
-        _ when isDiminished => 'dim.',
+        final chord when chord.isAugmented => 'aug.',
+        final chord when chord.isMajor => 'maj.',
+        final chord when chord.isMinor => 'min.',
+        final chord when chord.isDiminished => 'dim.',
         _ => '?',
       };
 

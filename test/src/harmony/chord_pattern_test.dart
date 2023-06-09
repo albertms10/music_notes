@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('ChordPattern', () {
     group('.intervalSteps()', () {
-      test('should create a new Chord from interval steps', () {
+      test('should create a new ChordPattern from interval steps', () {
         expect(
           ChordPattern.intervalSteps(const [
             Interval.minorThird,
@@ -27,6 +27,27 @@ void main() {
             Interval.perfectFifth,
           ]),
           ChordPattern.majorTriad.add9(),
+        );
+      });
+    });
+
+    group('.fromQuality()', () {
+      test('should create a new ChordPattern from the given Quality', () {
+        expect(
+          ChordPattern.fromQuality(ImperfectQuality.augmented),
+          ChordPattern.augmentedTriad,
+        );
+        expect(
+          ChordPattern.fromQuality(ImperfectQuality.major),
+          ChordPattern.majorTriad,
+        );
+        expect(
+          ChordPattern.fromQuality(ImperfectQuality.minor),
+          ChordPattern.minorTriad,
+        );
+        expect(
+          ChordPattern.fromQuality(ImperfectQuality.diminished),
+          ChordPattern.diminishedTriad,
         );
       });
     });
