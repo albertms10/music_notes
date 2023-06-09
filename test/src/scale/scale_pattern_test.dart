@@ -3,6 +3,30 @@ import 'package:test/test.dart';
 
 void main() {
   group('ScalePattern', () {
+    group('.fromChordPattern()', () {
+      test(
+        'should create a new ScalePattern from the given ChordPattern',
+        () {
+          expect(
+            ScalePattern.fromChordPattern(ChordPattern.augmentedTriad),
+            ScalePattern.lydianAugmented,
+          );
+          expect(
+            ScalePattern.fromChordPattern(ChordPattern.majorTriad),
+            ScalePattern.major,
+          );
+          expect(
+            ScalePattern.fromChordPattern(ChordPattern.minorTriad),
+            ScalePattern.naturalMinor,
+          );
+          expect(
+            ScalePattern.fromChordPattern(ChordPattern.diminishedTriad),
+            ScalePattern.locrian,
+          );
+        },
+      );
+    });
+
     group('.on()', () {
       test('should return the major Scale on Note', () {
         expect(

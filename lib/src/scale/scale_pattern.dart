@@ -59,6 +59,17 @@ final class ScalePattern {
     Interval.minorSecond,
   ]);
 
+  /// ![C Lydian augmented scale](https://upload.wikimedia.org/score/3/b/3b5vj7v08y1yuemdmewgxuuid25oezn/3b5vj7v0.png).
+  static const lydianAugmented = ScalePattern([
+    Interval.majorSecond,
+    Interval.majorSecond,
+    Interval.majorSecond,
+    Interval.majorSecond,
+    Interval.minorSecond,
+    Interval.majorSecond,
+    Interval.minorSecond,
+  ]);
+
   /// ![C Mixolydian scale](https://upload.wikimedia.org/score/s/j/sjbifo4dqsa0aozgvdr38c2z8qq3f9k/sjbifo4d.png).
   static const mixolydian = ScalePattern([
     Interval.majorSecond,
@@ -198,6 +209,25 @@ final class ScalePattern {
     Interval.majorSecond,
     Interval.minorSecond,
   ]);
+
+  /// Creates a new [ScalePattern] from the given [chordPattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.fromChordPattern(ChordPattern.majorTriad)
+  ///   == ScalePattern.major
+  /// ScalePattern.fromChordPattern(ChordPattern.minorTriad)
+  ///   == ScalePattern.naturalMinor
+  /// ```
+  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) =>
+      switch (chordPattern) {
+        final chord when chord.isAugmented => lydianAugmented,
+        final chord when chord.isMajor => major,
+        final chord when chord.isMinor => naturalMinor,
+        final chord when chord.isDiminished => locrian,
+        // TODO(albertms10): add support for other triad constructions.
+        _ => major,
+      };
 
   /// The descending interval steps that define this [ScalePattern].
   List<Interval> get descendingIntervalSteps =>
