@@ -313,12 +313,15 @@ final class ScalePattern {
       return ChordPattern.fromQuality(scaleDegree.quality!);
     }
 
+    Interval step(int ordinal) =>
+        intervalSteps[(ordinal - 1) % intervalSteps.length];
+
+    Interval addNextStep(int ordinal) => step(ordinal) + step(ordinal + 1);
+
     // Calculate the diatonic pattern from this Scale's `intervalSteps`.
     return ChordPattern.intervalSteps([
-      intervalSteps[(scaleDegree.ordinal - 1) % intervalSteps.length] +
-          intervalSteps[(scaleDegree.ordinal) % intervalSteps.length],
-      intervalSteps[(scaleDegree.ordinal + 1) % intervalSteps.length] +
-          intervalSteps[(scaleDegree.ordinal + 2) % intervalSteps.length],
+      addNextStep(scaleDegree.ordinal),
+      addNextStep(scaleDegree.ordinal + 2),
     ]);
   }
 
