@@ -16,8 +16,12 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 
   static const i = ScaleDegree(1);
   static const ii = ScaleDegree(2);
-  static const neapolitanSixth =
-      ScaleDegree(2, inversion: 1, semitonesDelta: -1);
+  static const neapolitanSixth = ScaleDegree(
+    2,
+    quality: ImperfectQuality.major,
+    inversion: 1,
+    semitonesDelta: -1,
+  );
   static const iii = ScaleDegree(3);
   static const iv = ScaleDegree(4);
   static const v = ScaleDegree(5);
@@ -28,7 +32,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.ii.isRaised == false
+  /// ScaleDegree.ii.raised.isRaised == true
   /// ScaleDegree.neapolitanSixth.isRaised == false
   /// ```
   bool get isRaised => semitonesDelta > 0;
@@ -41,6 +45,60 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.neapolitanSixth.isLowered == true
   /// ```
   bool get isLowered => semitonesDelta < 0;
+
+  /// Returns this [ScaleDegree] raised by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vi.raised == const ScaleDegree(6, semitonesDelta: 1)
+  /// ```
+  ScaleDegree get raised => ScaleDegree(
+        degree,
+        quality: quality,
+        inversion: inversion,
+        semitonesDelta: semitonesDelta + 1,
+      );
+
+  /// Returns this [ScaleDegree] lowered by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.ii.lowered == const ScaleDegree(2, semitonesDelta: -1)
+  /// ```
+  ScaleDegree get lowered => ScaleDegree(
+        degree,
+        quality: quality,
+        inversion: inversion,
+        semitonesDelta: semitonesDelta - 1,
+      );
+
+  /// Returns this [ScaleDegree] as [ImperfectQuality.major].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.ii.major
+  ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
+  /// ```
+  ScaleDegree get major => ScaleDegree(
+        degree,
+        quality: ImperfectQuality.major,
+        inversion: inversion,
+        semitonesDelta: semitonesDelta,
+      );
+
+  /// Returns this [ScaleDegree] as [ImperfectQuality.minor].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.v.minor
+  ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
+  /// ```
+  ScaleDegree get minor => ScaleDegree(
+        degree,
+        quality: ImperfectQuality.minor,
+        inversion: inversion,
+        semitonesDelta: semitonesDelta,
+      );
 
   @override
   String toString() {
