@@ -61,7 +61,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = degrees[scaleDegree.degree - 1];
+    final scalable = degrees[scaleDegree.ordinal - 1];
     if (scaleDegree.semitonesDelta == 0) return scalable;
 
     return scalable.transposeBy(
