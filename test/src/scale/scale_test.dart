@@ -48,9 +48,9 @@ void main() {
       });
     });
 
-    group('.degrees', () {
+    group('.degreeChords', () {
       test('should return the Chord for each ScaleDegree of this Scale', () {
-        expect(ScalePattern.major.on(Note.c.sharp).degrees, [
+        expect(Note.c.sharp.major.scale.degreeChords, [
           Note.c.sharp.majorTriad,
           Note.d.sharp.minorTriad,
           Note.e.sharp.minorTriad,
@@ -59,7 +59,7 @@ void main() {
           Note.a.sharp.minorTriad,
           Note.b.sharp.diminishedTriad,
         ]);
-        expect(ScalePattern.harmonicMinor.on(Note.f).degrees, [
+        expect(ScalePattern.harmonicMinor.on(Note.f).degreeChords, [
           Note.f.minorTriad,
           Note.g.diminishedTriad,
           Note.a.flat.augmentedTriad,
@@ -72,22 +72,50 @@ void main() {
     });
 
     group('.degree()', () {
-      test('should return the Chord for the ScaleDegree of this Scale', () {
-        expect(
-          ScalePattern.major.on(Note.c).degree(ScaleDegree.ii),
-          Note.d.minorTriad,
-        );
-        expect(
-          ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.vii),
-          Note.c.majorTriad,
-        );
+      test('should return the Scalable for the ScaleDegree of this Scale', () {
+        expect(Note.c.major.scale.degree(ScaleDegree.ii), Note.d);
+        expect(Note.d.minor.scale.degree(ScaleDegree.vii), Note.c);
         expect(
           ScalePattern.harmonicMinor.on(Note.f.sharp).degree(ScaleDegree.iii),
-          Note.a.augmentedTriad,
+          Note.a,
         );
         expect(
           ScalePattern.melodicMinor.on(Note.a.flat).degree(ScaleDegree.vi),
+          Note.f,
+        );
+
+        expect(
+          Note.c.major.scale.degree(ScaleDegree.neapolitanSixth),
+          Note.d.flat,
+        );
+      });
+    });
+
+    group('.degreeChord()', () {
+      test('should return the Chord for the ScaleDegree of this Scale', () {
+        expect(
+          Note.c.major.scale.degreeChord(ScaleDegree.ii),
+          Note.d.minorTriad,
+        );
+        expect(
+          Note.d.minor.scale.degreeChord(ScaleDegree.vii),
+          Note.c.majorTriad,
+        );
+        expect(
+          ScalePattern.harmonicMinor
+              .on(Note.f.sharp)
+              .degreeChord(ScaleDegree.iii),
+          Note.a.augmentedTriad,
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(ScaleDegree.vi),
           Note.f.diminishedTriad,
+        );
+
+        expect(
+          Note.c.major.scale.degreeChord(ScaleDegree.neapolitanSixth),
+          // TODO(albertms10): take the inversion into account.
+          Note.d.flat.majorTriad,
         );
       });
     });
@@ -95,14 +123,12 @@ void main() {
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(
-          ScalePattern.major.on(Note.c).transposeBy(Interval.majorThird),
-          ScalePattern.major.on(Note.e),
+          Note.c.major.scale.transposeBy(Interval.majorThird),
+          Note.e.major.scale,
         );
         expect(
-          ScalePattern.naturalMinor
-              .on(Note.d.flat)
-              .transposeBy(-Interval.minorThird),
-          ScalePattern.naturalMinor.on(Note.b.flat),
+          Note.d.flat.minor.scale.transposeBy(-Interval.minorThird),
+          Note.b.flat.minor.scale,
         );
         expect(
           ScalePattern.melodicMinor
@@ -116,11 +142,11 @@ void main() {
     group('.toString()', () {
       test('should return the string representation of this Scale', () {
         expect(
-          ScalePattern.major.on(Note.b.flat).toString(),
+          Note.b.flat.major.scale.toString(),
           'B♭ Major (ionian) (B♭ C D E♭ F G A B♭)',
         );
         expect(
-          ScalePattern.naturalMinor.on(Note.c.sharp).toString(),
+          Note.c.sharp.minor.scale.toString(),
           'C♯ Natural minor (aeolian) (C♯ D♯ E F♯ G♯ A B C♯)',
         );
         expect(

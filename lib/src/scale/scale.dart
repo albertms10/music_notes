@@ -38,7 +38,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.a).degrees == [
+  /// Note.a.major.scale.degreeChords == [
   ///   Note.a.majorTriad,
   ///   Note.b.minorTriad,
   ///   Note.c.sharp.minorTriad,
@@ -48,27 +48,45 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> get degrees =>
-      [for (var i = 1; i < items.length; i++) degree(ScaleDegree(i))];
+  List<Chord<T>> get degreeChords =>
+      [for (var i = 1; i < items.length; i++) degreeChord(ScaleDegree(i))];
+
+  /// Returns the [T] for the [scaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.degree(ScaleDegree.ii.lowered) == Note.d.flat
+  /// Note.c.minor.scale.degree(ScaleDegree.v) == Note.g
+  /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
+  /// ```
+  T degree(ScaleDegree scaleDegree) {
+    final scalable = items[scaleDegree.degree - 1];
+    if (scaleDegree.semitonesDelta == 0) return scalable;
+
+    return scalable.transposeBy(
+      Interval.perfect(
+        1,
+        PerfectQuality(scaleDegree.semitonesDelta.abs()),
+      ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
+    );
+  }
 
   /// Returns the [Chord] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.g).degree(ScaleDegree.vi)
-  ///   == Note.b.minorTriad
-  /// ScalePattern.naturalMinor.on(Note.d).degree(ScaleDegree.ii)
-  ///   == Note.d.diminishedTriad
+  /// Note.g.major.scale.degreeChord(ScaleDegree.vi) == Note.b.minorTriad
+  /// Note.d.minor.scale.degreeChord(ScaleDegree.ii) == Note.d.diminishedTriad
   /// ```
-  Chord<T> degree(ScaleDegree scaleDegree) =>
-      pattern.degreePattern(scaleDegree).on(items[scaleDegree.degree - 1]);
+  Chord<T> degreeChord(ScaleDegree scaleDegree) =>
+      pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
   /// Returns this [Scale] transposed by [interval].
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(Note.c).transposeBy(Interval.minorThird)
-  ///   == ScalePattern.major.on(Note.e.flat)
+  /// Note.c.major.scale.transposeBy(Interval.minorThird)
+  ///   == Note.e.flat.major.scale
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
