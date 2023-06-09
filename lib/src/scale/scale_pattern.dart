@@ -278,13 +278,19 @@ final class ScalePattern {
   /// ScalePattern.naturalMinor.degreePattern(ScaleDegree.iv)
   ///   == ChordPattern.minorTriad
   /// ```
-  ChordPattern degreePattern(ScaleDegree scaleDegree) =>
-      ChordPattern.intervalSteps([
-        intervalSteps[(scaleDegree.degree - 1) % intervalSteps.length] +
-            intervalSteps[(scaleDegree.degree) % intervalSteps.length],
-        intervalSteps[(scaleDegree.degree + 1) % intervalSteps.length] +
-            intervalSteps[(scaleDegree.degree + 2) % intervalSteps.length],
-      ]);
+  ChordPattern degreePattern(ScaleDegree scaleDegree) {
+    if (scaleDegree.quality != null) {
+      return ChordPattern.fromQuality(scaleDegree.quality!);
+    }
+
+    // Calculate the diatonic pattern from this Scale's `intervalSteps`.
+    return ChordPattern.intervalSteps([
+      intervalSteps[(scaleDegree.degree - 1) % intervalSteps.length] +
+          intervalSteps[(scaleDegree.degree) % intervalSteps.length],
+      intervalSteps[(scaleDegree.degree + 1) % intervalSteps.length] +
+          intervalSteps[(scaleDegree.degree + 2) % intervalSteps.length],
+    ]);
+  }
 
   /// Returns the name associated with this [ScalePattern].
   ///
