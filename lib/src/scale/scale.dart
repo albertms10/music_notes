@@ -1,16 +1,17 @@
 part of '../../music_notes.dart';
 
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
-  /// The [Scalable] degrees that define this [Scale<T>].
+  /// The [Scalable<T>] degrees that define this [Scale<T>].
   final List<T> degrees;
 
-  /// The descending [Scalable] degrees that define this [Scale<T>] (if different).
+  /// The descending [Scalable<T>] degrees that define this [Scale<T>] (if
+  /// different).
   final List<T>? _descendingDegrees;
 
   /// Creates a new [Scale<T>] instance from [degrees].
   const Scale(this.degrees, [this._descendingDegrees]);
 
-  /// The descending [Scalable] degrees that define this [Scale<T>].
+  /// The descending [Scalable<T>] degrees that define this [Scale<T>].
   List<T> get descendingDegrees =>
       _descendingDegrees ?? degrees.reversed.toList();
 
