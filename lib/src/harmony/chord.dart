@@ -12,16 +12,19 @@ class Chord<T extends Scalable<T>> implements Transposable<Chord<T>> {
 
   /// Returns the [ChordPattern] for this [Chord].
   ///
+  /// The pattern is calculated based on the intervals between the notes rather
+  /// than from the root note. This approach helps differentiate compound
+  /// intervals (e.g., [Interval.majorNinth]) from simple intervals (e.g.,
+  /// [Interval.majorSecond]) in chords where distance is not explicit (e.g.,
+  /// [Note] based chords rather than [PositionedNote] based).
+  ///
   /// Example:
   /// ```dart
   /// const Chord([Note.a, Note.c, Note.e]).pattern == ChordPattern.minorTriad
-  /// const Chord([Note.g, Note.b, Note.d, Note.f]).pattern
-  ///   == ChordPattern.majorTriad.add7()
+  /// const Chord([Note.g, Note.b, Note.d, Note.f, Note.a]).pattern
+  ///   == ChordPattern.majorTriad.add7().add9()
   /// ```
-  ChordPattern get pattern => ChordPattern([
-        // We skip the root of the chord.
-        for (final scalable in items.skip(1)) root.interval(scalable),
-      ]);
+  ChordPattern get pattern => ChordPattern.intervalSteps(items.intervals);
 
   /// Returns a transposed [Chord] by [interval] from this [Chord].
   ///
