@@ -40,6 +40,193 @@ void main() {
       });
     });
 
+    group('.modifiers', () {
+      test('should return the list of modifiers from the root note', () {
+        expect(Note.c.majorTriad.modifiers, const <Interval>[]);
+        expect(
+          Note.d.majorTriad.add6().add9().modifiers,
+          const [Note.b, Note.e],
+        );
+        expect(
+          Note.e.flat.diminishedTriad.sus2().add7().add13().modifiers,
+          [Note.d.flat, Note.c],
+        );
+      });
+    });
+
+    group('.augmented', () {
+      test('should return a new Chord with an augmented root triad', () {
+        expect(Note.c.majorTriad.augmented, Note.c.augmentedTriad);
+        expect(
+          Note.f.majorTriad.add7().add9().augmented,
+          Chord([Note.f, Note.a, Note.c.sharp, Note.e.flat, Note.g]),
+        );
+      });
+    });
+
+    group('.major', () {
+      test('should return a new Chord with a major root triad', () {
+        expect(Note.g.minorTriad.major, Note.g.majorTriad);
+        expect(
+          Note.a.flat.minorTriad.add7().add9().major,
+          Chord([Note.a.flat, Note.c, Note.e.flat, Note.g.flat, Note.b.flat]),
+        );
+      });
+    });
+
+    group('.minor', () {
+      test('should return a new Chord with a minor root triad', () {
+        expect(Note.f.sharp.augmentedTriad.minor, Note.f.sharp.minorTriad);
+        expect(
+          Note.a.majorTriad.add7().add9().minor,
+          const Chord([Note.a, Note.c, Note.e, Note.g, Note.b]),
+        );
+      });
+    });
+
+    group('.diminished', () {
+      test('should return a new Chord with a diminished root triad', () {
+        expect(Note.g.flat.majorTriad.diminished, Note.g.flat.diminishedTriad);
+        expect(
+          Note.g.sharp.augmentedTriad.add7().add9().diminished,
+          Chord([Note.g.sharp, Note.b, Note.d, Note.f.sharp, Note.a.sharp]),
+        );
+      });
+    });
+
+    group('.sus2()', () {
+      test('should turn this Chord into a suspended 2nd Chord', () {
+        expect(Note.c.majorTriad.sus2(), const Chord([Note.c, Note.d, Note.g]));
+        expect(
+          Note.d.minorTriad.sus4().sus2(),
+          const Chord([Note.d, Note.e, Note.a]),
+        );
+        expect(
+          Note.a.majorTriad.sus2().sus2(),
+          const Chord([Note.a, Note.b, Note.e]),
+        );
+        expect(
+          Note.f.sharp.minorTriad.add7().sus2(),
+          Chord([Note.f.sharp, Note.g.sharp, Note.c.sharp, Note.e]),
+        );
+      });
+    });
+
+    group('.sus4()', () {
+      test('should turn this Chord into a suspended 4th Chord', () {
+        expect(
+          Note.d.flat.majorTriad.sus4(),
+          Chord([Note.d.flat, Note.g.flat, Note.a.flat]),
+        );
+        expect(
+          Note.f.minorTriad.sus2().sus4(),
+          Chord([Note.f, Note.b.flat, Note.c]),
+        );
+        expect(
+          Note.e.majorTriad.sus4().sus4(),
+          const Chord([Note.e, Note.a, Note.b]),
+        );
+        expect(
+          Note.g.minorTriad.add7().sus4(),
+          const Chord([Note.g, Note.c, Note.d, Note.f]),
+        );
+      });
+    });
+
+    group('.add6()', () {
+      test('should add a 6th Interval to this Chord', () {
+        expect(
+          Note.c.majorTriad.add6(),
+          const Chord([Note.c, Note.e, Note.g, Note.a]),
+        );
+        expect(
+          Note.e.majorTriad.sus2().add6(),
+          Chord([Note.e, Note.f.sharp, Note.b, Note.c.sharp]),
+        );
+        expect(
+          Note.f.minorTriad.sus2().add6(ImperfectQuality.minor),
+          Chord([Note.f, Note.g, Note.c, Note.d.flat]),
+        );
+        expect(
+          Note.f.sharp.minorTriad.add6(ImperfectQuality.minor).add9(),
+          Chord([Note.f.sharp, Note.a, Note.c.sharp, Note.d, Note.g.sharp]),
+        );
+      });
+    });
+
+    group('.add7()', () {
+      test('should add a 7th Interval to this Chord', () {
+        expect(
+          Note.a.majorTriad.add7(),
+          Chord([Note.a, Note.c.sharp, Note.e, Note.g]),
+        );
+        expect(
+          Note.a.minorTriad.sus2().add7(),
+          const Chord([Note.a, Note.b, Note.e, Note.g]),
+        );
+        expect(
+          Note.b.majorTriad.sus2().add7(ImperfectQuality.major),
+          Chord([Note.b, Note.c.sharp, Note.f.sharp, Note.a.sharp]),
+        );
+        expect(
+          Note.c.minorTriad.add7(ImperfectQuality.major),
+          Chord([Note.c, Note.e.flat, Note.g, Note.b]),
+        );
+      });
+    });
+
+    group('.add9()', () {
+      test('should add a 9th Interval to this Chord', () {
+        expect(
+          Note.d.majorTriad.add9(),
+          Chord([Note.d, Note.f.sharp, Note.a, Note.e]),
+        );
+        expect(
+          Note.d.sharp.minorTriad.sus4().add9(),
+          Chord([Note.d.sharp, Note.g.sharp, Note.a.sharp, Note.e.sharp]),
+        );
+        expect(
+          Note.f.majorTriad.sus2().add9(ImperfectQuality.minor),
+          Chord([Note.f, Note.g, Note.c, Note.g.flat]),
+        );
+        expect(
+          Note.g.flat.minorTriad.add9(ImperfectQuality.minor),
+          Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat, Note.a.flat.flat]),
+        );
+      });
+    });
+
+    group('.add11()', () {
+      test('should add an 11th Interval to this Chord', () {
+        expect(
+          Note.g.majorTriad.add11(),
+          const Chord([Note.g, Note.b, Note.d, Note.c]),
+        );
+        expect(
+          Note.c.sharp.minorTriad.add7().add9().add11(),
+          Chord([
+            Note.c.sharp,
+            Note.e,
+            Note.g.sharp,
+            Note.b,
+            Note.d.sharp,
+            Note.f.sharp,
+          ]),
+        );
+        expect(
+          Note.d.majorTriad
+              .sus2()
+              .add9(ImperfectQuality.minor)
+              .add11(PerfectQuality.diminished),
+          Chord([Note.d, Note.e, Note.a, Note.e.flat, Note.g.flat]),
+        );
+        expect(
+          Note.c.flat.minorTriad.add11(PerfectQuality.augmented),
+          Chord([Note.c.flat, Note.e.flat.flat, Note.g.flat, Note.f]),
+        );
+      });
+    });
+
     group('.transposeBy()', () {
       test('should return this Chord transposed by Interval', () {
         expect(

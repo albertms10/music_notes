@@ -35,7 +35,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> get reversed =>
       Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
 
-  /// Returns the [Chord] for each [ScaleDegree] of this [Scale].
+  /// Returns the [Chord<T>] for each [ScaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -72,7 +72,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
     );
   }
 
-  /// Returns the [Chord] for the [scaleDegree] of this [Scale].
+  /// Returns the [Chord<T>] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
