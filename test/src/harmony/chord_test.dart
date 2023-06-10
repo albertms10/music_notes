@@ -33,6 +33,10 @@ void main() {
           ]).pattern,
           ChordPattern.augmentedTriad.add7(ImperfectQuality.major),
         );
+        expect(
+          const Chord([Note.c, Note.e, Note.g, Note.b, Note.d, Note.f]).pattern,
+          ChordPattern.majorTriad.add7(ImperfectQuality.major).add9().add11(),
+        );
       });
     });
 
