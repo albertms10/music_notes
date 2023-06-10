@@ -1,16 +1,18 @@
 part of '../../music_notes.dart';
 
-class Chord<T extends Scalable<T>> implements Transposable<Chord<T>> {
-  /// The [Scalable<T>] items this [Chord] is built of.
+class Chord<T extends Scalable<T>>
+    with Chordable<Chord<T>>
+    implements Transposable<Chord<T>> {
+  /// The [Scalable<T>] items this [Chord<T>] is built of.
   final List<T> items;
 
-  /// Creates a new [Chord] from [items].
+  /// Creates a new [Chord<T>] from [items].
   const Chord(this.items);
 
-  /// The root [Scalable<T>] of this [Chord].
+  /// The root [Scalable<T>] of this [Chord<T>].
   T get root => items.first;
 
-  /// Returns the [ChordPattern] for this [Chord].
+  /// Returns the [ChordPattern] for this [Chord<T>].
   ///
   /// The pattern is calculated based on the intervals between the notes rather
   /// than from the root note. This approach helps differentiate compound
@@ -26,7 +28,65 @@ class Chord<T extends Scalable<T>> implements Transposable<Chord<T>> {
   /// ```
   ChordPattern get pattern => ChordPattern.intervalSteps(items.intervals);
 
-  /// Returns a transposed [Chord] by [interval] from this [Chord].
+  /// Returns the list of modifier [T]s from the root note.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.majorTriad.add7().add9().modifiers == const [Note.g, Note.b]
+  /// ```
+  List<T> get modifiers => items.skip(3).toList();
+
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.augmented] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.add7().augmented
+  ///   == Chord([Note.c, Note.e, Note.g.sharp, Note.b.flat])
+  /// ```
+  @override
+  Chord<T> get augmented =>
+      Chord([...ChordPattern.augmentedTriad.on(root).items, ...modifiers]);
+
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.major] root triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.minorTriad.add7().major
+  ///   == Chord([Note.c, Note.e, Note.g, Note.b.flat])
+  /// ```
+  @override
+  Chord<T> get major =>
+      Chord([...ChordPattern.majorTriad.on(root).items, ...modifiers]);
+
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.minor] root triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.add7().minor
+  ///   == Chord([Note.c, Note.e.flat, Note.g, Note.b.flat])
+  /// ```
+  @override
+  Chord<T> get minor =>
+      Chord([...ChordPattern.minorTriad.on(root).items, ...modifiers]);
+
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.diminished] root triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.add7().diminished
+  ///   == Chord([Note.c, Note.e.flat, Note.g.flat, Note.b.flat])
+  /// ```
+  @override
+  Chord<T> get diminished =>
+      Chord([...ChordPattern.diminishedTriad.on(root).items, ...modifiers]);
+
+  /// Returns a new [Chord<T>] adding [interval].
+  @override
+  Chord<T> add(Interval interval, {List<int>? replaceSizes}) =>
+      pattern.add(interval, replaceSizes: replaceSizes).on(root);
+
+  /// Returns a transposed [Chord<T>] by [interval] from this [Chord<T>].
   ///
   /// Example:
   /// ```dart

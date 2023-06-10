@@ -1,6 +1,6 @@
 part of '../../music_notes.dart';
 
-class ChordPattern {
+class ChordPattern with Chordable<ChordPattern> {
   /// The intervals from the root note.
   final List<Interval> intervals;
 
@@ -119,6 +119,7 @@ class ChordPattern {
   ///        Interval.minorSeventh
   ///      ])
   /// ```
+  @override
   ChordPattern get augmented =>
       ChordPattern([...augmentedTriad.intervals, ...modifiers]);
 
@@ -134,6 +135,7 @@ class ChordPattern {
   ///        Interval.minorSeventh
   ///      ])
   /// ```
+  @override
   ChordPattern get major =>
       ChordPattern([...majorTriad.intervals, ...modifiers]);
 
@@ -149,6 +151,7 @@ class ChordPattern {
   ///        Interval.minorSeventh
   ///      ])
   /// ```
+  @override
   ChordPattern get minor =>
       ChordPattern([...minorTriad.intervals, ...modifiers]);
 
@@ -164,37 +167,12 @@ class ChordPattern {
   ///        Interval.minorSeventh
   ///      ])
   /// ```
+  @override
   ChordPattern get diminished =>
       ChordPattern([...diminishedTriad.intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] with a suspended [Interval.majorSecond].
-  ChordPattern sus2() => add(Interval.majorSecond, replaceSizes: const [3, 4]);
-
-  /// Returns a new [ChordPattern] with a suspended [Interval.perfectFourth].
-  ChordPattern sus4() =>
-      add(Interval.perfectFourth, replaceSizes: const [2, 3]);
-
-  /// Returns a new [ChordPattern] adding a [quality] 6th.
-  ChordPattern add6([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(6, quality));
-
-  /// Returns a new [ChordPattern] adding a [quality] 7th.
-  ChordPattern add7([ImperfectQuality quality = ImperfectQuality.minor]) =>
-      add(Interval.imperfect(7, quality));
-
-  /// Returns a new [ChordPattern] adding a [quality] 9th.
-  ChordPattern add9([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(9, quality));
-
-  /// Returns a new [ChordPattern] adding an [quality] 11th.
-  ChordPattern add11([PerfectQuality quality = PerfectQuality.perfect]) =>
-      add(Interval.perfect(11, quality));
-
-  /// Returns a new [ChordPattern] adding a [quality] 13th.
-  ChordPattern add13([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(13, quality));
-
   /// Returns a new [ChordPattern] adding [interval].
+  @override
   ChordPattern add(Interval interval, {List<int>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
     final filteredIntervals = intervals.whereNot(

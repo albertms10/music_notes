@@ -3,10 +3,10 @@ part of '../music_notes.dart';
 @immutable
 abstract interface class Enharmonic<T> implements Comparable<Enharmonic<T>> {
   /// The number of semitones of the common chromatic pitch of this
-  /// [Enharmonic].
+  /// [Enharmonic<T>].
   final int semitones;
 
-  /// Creates a new [Enharmonic].
+  /// Creates a new [Enharmonic<T>].
   const Enharmonic(this.semitones);
 
   /// Returns the different spellings sharing the same number of [semitones].
