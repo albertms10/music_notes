@@ -15,6 +15,7 @@ part 'src/chordable.dart';
 part 'src/enharmonic.dart';
 part 'src/harmony/chord.dart';
 part 'src/harmony/chord_pattern.dart';
+part 'src/harmony/harmonic_function.dart';
 part 'src/interval/enharmonic_interval.dart';
 part 'src/interval/interval.dart';
 part 'src/interval/interval_size_extension.dart';
