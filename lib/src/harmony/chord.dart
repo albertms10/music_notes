@@ -12,7 +12,7 @@ class Chord<T extends Scalable<T>>
   /// The root [Scalable<T>] of this [Chord<T>].
   T get root => items.first;
 
-  /// Returns the [ChordPattern] for this [Chord].
+  /// Returns the [ChordPattern] for this [Chord<T>].
   ///
   /// The pattern is calculated based on the intervals between the notes rather
   /// than from the root note. This approach helps differentiate compound
