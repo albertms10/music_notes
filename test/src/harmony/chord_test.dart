@@ -227,6 +227,60 @@ void main() {
       });
     });
 
+    group('.add13()', () {
+      test('should add an 13th Interval to this Chord', () {
+        expect(
+          Note.a.sharp.diminishedTriad.add13(),
+          Chord([Note.a.sharp, Note.c.sharp, Note.e, Note.f.sharp.sharp]),
+        );
+        expect(
+          Note.g.minorTriad.add7().add9().add11().add13(),
+          Chord([Note.g, Note.b.flat, Note.d, Note.f, Note.a, Note.c, Note.e]),
+        );
+        expect(
+          Note.a.flat.majorTriad
+              .add9(ImperfectQuality.minor)
+              .add11(PerfectQuality.augmented)
+              .sus2()
+              .add13(ImperfectQuality.minor),
+          Chord([
+            Note.a.flat,
+            Note.b.flat,
+            Note.e.flat,
+            Note.b.flat.flat,
+            Note.d,
+            Note.f.flat,
+          ]),
+        );
+        expect(
+          Note.c.flat.minorTriad.add13(ImperfectQuality.minor),
+          Chord([Note.c.flat, Note.e.flat.flat, Note.g.flat, Note.a.flat.flat]),
+        );
+      });
+    });
+
+    group('.add()', () {
+      test('should add an Interval to this Chord', () {
+        expect(
+          Note.c.majorTriad.add(Interval.majorSeventh),
+          const Chord([Note.c, Note.e, Note.g, Note.b]),
+        );
+      });
+
+      test('should ignore any previous Interval size in this ChordPattern', () {
+        expect(
+          Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp])
+              .add(Interval.majorSeventh),
+          Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp]),
+        );
+        expect(
+          const Chord([Note.f, Note.a, Note.c, Note.e])
+              .add(Interval.minorSeventh),
+          Chord([Note.f, Note.a, Note.c, Note.e.flat]),
+        );
+      });
+    });
+
     group('.transposeBy()', () {
       test('should return this Chord transposed by Interval', () {
         expect(
