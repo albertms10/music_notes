@@ -1,6 +1,6 @@
 name: music_notes
 description: Music notes library
-version: 0.8.0
+version: 0.9.0
 
 repository: https://github.com/albertms10/music_notes.git
 
@@ -13,5 +13,5 @@ dependencies:
   test: any
 
 dev_dependencies:
-  dart_code_metrics: ^5.7.4
+  dart_code_metrics: ^5.7.5
   very_good_analysis: ^5.0.0+1
