@@ -14,6 +14,6 @@ final Set<EnharmonicNote> chromaticScale = SplayTreeSet<EnharmonicNote>.of({
 final List<EnharmonicNote> circleOfFifths = [
   for (var i = -1; i < chromaticDivisions - 1; i++)
     chromaticScale.elementAt(
-      (i * Interval.perfectFifth.semitones).chromaticMod,
+      (i * Interval.P5.semitones).chromaticMod,
     ),
 ];

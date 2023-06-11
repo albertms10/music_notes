@@ -13,11 +13,11 @@ mixin Chordable<T> {
   /// Returns a new [T] with an [ImperfectQuality.diminished] root triad.
   T get diminished;
 
-  /// Returns a new [T] with a suspended [Interval.majorSecond].
-  T sus2() => add(Interval.majorSecond, replaceSizes: const [3, 4]);
+  /// Returns a new [T] with a suspended [Interval.M2].
+  T sus2() => add(Interval.M2, replaceSizes: const [3, 4]);
 
-  /// Returns a new [T] with a suspended [Interval.perfectFourth].
-  T sus4() => add(Interval.perfectFourth, replaceSizes: const [2, 3]);
+  /// Returns a new [T] with a suspended [Interval.P4].
+  T sus4() => add(Interval.P4, replaceSizes: const [2, 3]);
 
   /// Returns a new [T] adding a [quality] 6th.
   T add6([ImperfectQuality quality = ImperfectQuality.major]) =>

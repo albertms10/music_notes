@@ -123,17 +123,15 @@ void main() {
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(
-          Note.c.major.scale.transposeBy(Interval.majorThird),
+          Note.c.major.scale.transposeBy(Interval.M3),
           Note.e.major.scale,
         );
         expect(
-          Note.d.flat.minor.scale.transposeBy(-Interval.minorThird),
+          Note.d.flat.minor.scale.transposeBy(-Interval.m3),
           Note.b.flat.minor.scale,
         );
         expect(
-          ScalePattern.melodicMinor
-              .on(Note.g.sharp)
-              .transposeBy(Interval.perfectFifth),
+          ScalePattern.melodicMinor.on(Note.g.sharp).transposeBy(Interval.P5),
           ScalePattern.melodicMinor.on(Note.d.sharp),
         );
       });

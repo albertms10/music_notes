@@ -1,21 +1,23 @@
+// ignore_for_file: constant_identifier_names
+
 part of '../../music_notes.dart';
 
 final class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
-  static const perfectUnison = EnharmonicInterval(0);
-  static const minorSecond = EnharmonicInterval(1);
-  static const majorSecond = EnharmonicInterval(2);
-  static const minorThird = EnharmonicInterval(3);
-  static const majorThird = EnharmonicInterval(4);
-  static const perfectFourth = EnharmonicInterval(5);
+  static const P1 = EnharmonicInterval(0);
+  static const m2 = EnharmonicInterval(1);
+  static const M2 = EnharmonicInterval(2);
+  static const m3 = EnharmonicInterval(3);
+  static const M3 = EnharmonicInterval(4);
+  static const P4 = EnharmonicInterval(5);
   static const tritone = EnharmonicInterval(6);
-  static const perfectFifth = EnharmonicInterval(7);
-  static const minorSixth = EnharmonicInterval(8);
-  static const majorSixth = EnharmonicInterval(9);
-  static const minorSeventh = EnharmonicInterval(10);
-  static const majorSeventh = EnharmonicInterval(11);
-  static const perfectOctave = EnharmonicInterval(12);
+  static const P5 = EnharmonicInterval(7);
+  static const m6 = EnharmonicInterval(8);
+  static const M6 = EnharmonicInterval(9);
+  static const m7 = EnharmonicInterval(10);
+  static const M7 = EnharmonicInterval(11);
+  static const P8 = EnharmonicInterval(12);
 
   @override
   Set<Interval> get spellings {
@@ -44,8 +46,8 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.majorSecond.isDescending == false
-  /// (-EnharmonicInterval.perfectFourth).isDescending == true
+  /// EnharmonicInterval.M2.isDescending == false
+  /// (-EnharmonicInterval.P4).isDescending == true
   /// ```
   bool get isDescending => semitones.isNegative;
 
@@ -53,14 +55,14 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.minorSecond.descending()
-  ///   == -EnharmonicIntervalInterval.minorSecond
-  /// EnharmonicInterval.majorThird.descending(isDescending: false)
-  ///   == EnharmonicIntervalInterval.majorThird
-  /// (-EnharmonicIntervalInterval.perfectFifth).descending()
-  ///   == -EnharmonicIntervalInterval.perfectFifth
-  /// (-EnharmonicIntervalInterval.majorSeventh).descending(isDescending: false)
-  ///   == EnharmonicIntervalInterval.majorSeventh
+  /// EnharmonicInterval.m2.descending()
+  ///   == -EnharmonicIntervalInterval.m2
+  /// EnharmonicInterval.M3.descending(isDescending: false)
+  ///   == EnharmonicIntervalInterval.M3
+  /// (-EnharmonicIntervalInterval.P5).descending()
+  ///   == -EnharmonicIntervalInterval.P5
+  /// (-EnharmonicIntervalInterval.M7).descending(isDescending: false)
+  ///   == EnharmonicIntervalInterval.M7
   /// ```
   EnharmonicInterval descending({bool isDescending = true}) =>
       this.isDescending != isDescending ? -this : EnharmonicInterval(semitones);
@@ -69,11 +71,11 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.tritone + EnharmonicInterval.minorSecond
-  ///   == EnharmonicInterval.perfectFifth
+  /// EnharmonicInterval.tritone + EnharmonicInterval.m2
+  ///   == EnharmonicInterval.P5
   ///
-  /// EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth
-  ///   == EnharmonicInterval.perfectOctave
+  /// EnharmonicInterval.M3 + EnharmonicInterval.m6
+  ///   == EnharmonicInterval.P8
   /// ```
   EnharmonicInterval operator +(EnharmonicInterval other) =>
       EnharmonicInterval(semitones + other.semitones);
@@ -82,10 +84,10 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird
-  ///   == EnharmonicInterval.majorSecond
+  /// EnharmonicInterval.P4 - EnharmonicInterval.m3
+  ///   == EnharmonicInterval.M2
   ///
-  /// EnharmonicInterval.minorThird - EnharmonicInterval.tritone
+  /// EnharmonicInterval.m3 - EnharmonicInterval.tritone
   ///   == const EnharmonicInterval(-3)
   /// ```
   EnharmonicInterval operator -(EnharmonicInterval other) =>
@@ -95,9 +97,9 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// -EnharmonicInterval.minorThird == const EnharmonicInterval(-3)
-  /// -EnharmonicInterval.perfectUnison == EnharmonicInterval.perfectUnison
-  /// -const EnharmonicInterval(-7) == EnharmonicInterval.perfectFifth
+  /// -EnharmonicInterval.m3 == const EnharmonicInterval(-3)
+  /// -EnharmonicInterval.P1 == EnharmonicInterval.P1
+  /// -const EnharmonicInterval(-7) == EnharmonicInterval.P5
   /// ```
   EnharmonicInterval operator -() => EnharmonicInterval(-semitones);
 
@@ -105,9 +107,9 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.perfectFourth * -1 == -EnharmonicInterval.perfectFourth
-  /// EnharmonicInterval.majorSixth * 0 == EnharmonicInterval.perfectUnison
-  /// EnharmonicInterval.minorThird * 2 == EnharmonicInterval.tritone
+  /// EnharmonicInterval.P4 * -1 == -EnharmonicInterval.P4
+  /// EnharmonicInterval.M6 * 0 == EnharmonicInterval.P1
+  /// EnharmonicInterval.m3 * 2 == EnharmonicInterval.tritone
   /// ```
   EnharmonicInterval operator *(int factor) =>
       EnharmonicInterval(semitones * factor);

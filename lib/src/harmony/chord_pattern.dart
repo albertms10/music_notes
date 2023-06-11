@@ -8,33 +8,33 @@ class ChordPattern with Chordable<ChordPattern> {
   const ChordPattern(this.intervals);
 
   static const augmentedTriad = ChordPattern([
-    Interval.majorThird,
-    Interval.augmentedFifth,
+    Interval.M3,
+    Interval.A5,
   ]);
 
   static const majorTriad = ChordPattern([
-    Interval.majorThird,
-    Interval.perfectFifth,
+    Interval.M3,
+    Interval.P5,
   ]);
 
   static const minorTriad = ChordPattern([
-    Interval.minorThird,
-    Interval.perfectFifth,
+    Interval.m3,
+    Interval.P5,
   ]);
 
   static const diminishedTriad = ChordPattern([
-    Interval.minorThird,
-    Interval.diminishedFifth,
+    Interval.m3,
+    Interval.d5,
   ]);
 
   /// Creates a new [ChordPattern] from [intervalSteps].
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.intervalSteps([Interval.minorThird, Interval.majorThird])
+  /// ChordPattern.intervalSteps([Interval.m3, Interval.M3])
   ///   == ChordPattern.minorTriad
   ///
-  /// ChordPattern.intervalSteps([Interval.majorThird, Interval.majorThird])
+  /// ChordPattern.intervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
   factory ChordPattern.intervalSteps(List<Interval> intervalSteps) =>
@@ -103,7 +103,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().add9().modifiers
-  ///   == const [Interval.minorSeventh, Interval.majorNinth]
+  ///   == const [Interval.m7, Interval.M9]
   /// ```
   List<Interval> get modifiers => intervals.skip(2).toList();
 
@@ -114,9 +114,9 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```dart
   /// ChordPattern.majorTriad.add7().augmented
   ///   == const ChordPattern([
-  ///        Interval.majorThird,
-  ///        Interval.augmentedFifth,
-  ///        Interval.minorSeventh
+  ///        Interval.M3,
+  ///        Interval.A5,
+  ///        Interval.m7
   ///      ])
   /// ```
   @override
@@ -130,9 +130,9 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```dart
   /// ChordPattern.minorTriad.add7().major
   ///   == const ChordPattern([
-  ///        Interval.majorThird,
-  ///        Interval.perfectFifth,
-  ///        Interval.minorSeventh
+  ///        Interval.M3,
+  ///        Interval.P5,
+  ///        Interval.m7
   ///      ])
   /// ```
   @override
@@ -146,9 +146,9 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```dart
   /// ChordPattern.majorTriad.add7().minor
   ///   == const ChordPattern([
-  ///        Interval.minorThird,
-  ///        Interval.perfectFifth,
-  ///        Interval.minorSeventh
+  ///        Interval.m3,
+  ///        Interval.P5,
+  ///        Interval.m7
   ///      ])
   /// ```
   @override
@@ -162,9 +162,9 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```dart
   /// ChordPattern.majorTriad.add7().diminished
   ///   == const ChordPattern([
-  ///        Interval.minorThird,
-  ///        Interval.diminishedFifth,
-  ///        Interval.minorSeventh
+  ///        Interval.m3,
+  ///        Interval.d5,
+  ///        Interval.m7
   ///      ])
   /// ```
   @override

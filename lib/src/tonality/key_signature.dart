@@ -47,8 +47,8 @@ final class KeySignature implements Comparable<KeySignature> {
   /// const KeySignature(2, Accidental.sharp).majorNote == Note.d
   /// ```
   Note get majorNote {
-    final fifthInterval = Interval.perfectFifth
-        .descending(isDescending: accidental == Accidental.flat);
+    final fifthInterval =
+        Interval.P5.descending(isDescending: accidental == Accidental.flat);
 
     return EnharmonicNote(
       (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,

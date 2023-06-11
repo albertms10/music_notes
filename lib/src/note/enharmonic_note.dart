@@ -118,7 +118,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// Example:
   /// ```dart
   /// EnharmonicNote.c.transposeBy(Interval.tritone) == EnharmonicNote.fSharp
-  /// EnharmonicNote.a.transposeBy(-Interval.majorSecond) == EnharmonicNote.g
+  /// EnharmonicNote.a.transposeBy(-Interval.M2) == EnharmonicNote.g
   /// ```
   @override
   EnharmonicNote transposeBy(Interval interval) =>
@@ -128,9 +128,9 @@ final class EnharmonicNote extends Enharmonic<Note>
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicNote.c.interval(EnharmonicNote.e) == Interval.majorThird
+  /// EnharmonicNote.c.interval(EnharmonicNote.e) == Interval.M3
   /// EnharmonicNote.gSharp.interval(EnharmonicNote.d)
-  ///   == Interval.augmentedFourth
+  ///   == Interval.A4
   /// ```
   @override
   Interval interval(EnharmonicNote other) {
@@ -149,10 +149,8 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g) == 4
   /// ```
   int shortestFifthsDistance(EnharmonicNote other) {
-    final distanceAbove =
-        enharmonicIntervalDistance(other, Interval.perfectFifth);
-    final distanceBelow =
-        enharmonicIntervalDistance(other, -Interval.perfectFifth);
+    final distanceAbove = enharmonicIntervalDistance(other, Interval.P5);
+    final distanceBelow = enharmonicIntervalDistance(other, -Interval.P5);
     final minDistance = math.min(distanceAbove, distanceBelow);
 
     return minDistance * (minDistance == distanceAbove ? 1 : -1);
@@ -165,12 +163,12 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// ```dart
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     Interval.perfectFifth,
+  ///     Interval.P5,
   ///   ) == 10
   ///
   /// EnharmonicNote.e.enharmonicIntervalDistance(
   ///     EnharmonicNote.d,
-  ///     -Interval.perfectFifth,
+  ///     -Interval.P5,
   ///   ) == 2
   /// ```
   int enharmonicIntervalDistance(

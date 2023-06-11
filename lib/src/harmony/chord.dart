@@ -16,8 +16,8 @@ class Chord<T extends Scalable<T>>
   ///
   /// The pattern is calculated based on the intervals between the notes rather
   /// than from the root note. This approach helps differentiate compound
-  /// intervals (e.g., [Interval.majorNinth]) from simple intervals (e.g.,
-  /// [Interval.majorSecond]) in chords where distance is not explicit (e.g.,
+  /// intervals (e.g., [Interval.M9]) from simple intervals (e.g.,
+  /// [Interval.M2]) in chords where distance is not explicit (e.g.,
   /// [Note] based chords rather than [PositionedNote] based).
   ///
   /// Example:
@@ -90,11 +90,11 @@ class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.minorThird)
+  /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.m3)
   ///   == const Chord([Note.c, Note.e.flat, Note.g])
   ///
   /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
-  ///   .transposeBy(Interval.majorThird)
+  ///   .transposeBy(Interval.M3)
   ///     == const Chord([
   ///       Note.b.inOctave(4),
   ///       Note.d.sharp.inOctave(5),

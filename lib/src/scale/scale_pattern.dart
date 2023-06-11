@@ -17,90 +17,90 @@ final class ScalePattern {
 
   /// ![C Ionian scale](https://upload.wikimedia.org/score/p/2/p2fun2296uif26uyy61yxjli7ocfq9d/p2fun229.png).
   static const ionian = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
   ]);
 
   /// ![C Dorian scale](https://upload.wikimedia.org/score/g/y/gydc9ka2vd8tdso0yv7qf15vu7axtr8/gydc9ka2.png).
   static const dorian = ScalePattern([
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
   ]);
 
   /// ![C Phrygian scale](https://upload.wikimedia.org/score/o/l/oljahwegklc7tqhe1gpekwo6sro4xkm/oljahweg.png).
   static const phrygian = ScalePattern([
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
   ]);
 
   /// ![C Lydian scale](https://upload.wikimedia.org/score/0/c/0cg9y4ajzy2jwu8s2887oaq4fwkwbqs/0cg9y4aj.png).
   static const lydian = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
   ]);
 
   /// ![C Lydian augmented scale](https://upload.wikimedia.org/score/3/b/3b5vj7v08y1yuemdmewgxuuid25oezn/3b5vj7v0.png).
   static const lydianAugmented = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
   ]);
 
   /// ![C Mixolydian scale](https://upload.wikimedia.org/score/s/j/sjbifo4dqsa0aozgvdr38c2z8qq3f9k/sjbifo4d.png).
   static const mixolydian = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
   ]);
 
   /// ![C Aeolian scale](https://upload.wikimedia.org/score/c/s/cseytu8cn39n7a6wp4j23dfqjdnsan7/cseytu8c.png).
   static const aeolian = ScalePattern([
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
   ]);
 
   /// ![C Locrian scale](https://upload.wikimedia.org/score/a/5/a54xaj67nftcpgw3wgsaxqjcfnwram5/a54xaj67.png).
   static const locrian = ScalePattern([
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
   ]);
 
   /// ![C Major scale](https://upload.wikimedia.org/score/1/4/149hxowm0jnjun0byp4xzvq7h12ndfg/149hxowm.png).
@@ -111,34 +111,34 @@ final class ScalePattern {
 
   /// ![C Harmonic minor scale](https://upload.wikimedia.org/score/7/3/73zt4ivl6l561j0n2a1qp68d51l2yug/73zt4ivl.png).
   static const harmonicMinor = ScalePattern([
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.augmentedSecond,
-    Interval.minorSecond,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.M2,
+    Interval.m2,
+    Interval.A2,
+    Interval.m2,
   ]);
 
   /// ![C Melodic minor scale](https://upload.wikimedia.org/score/9/2/92i6sjg41ji8y1ab881a1pcq1u3hr0p/92i6sjg4.png).
   static const melodicMinor = ScalePattern(
     [
-      Interval.majorSecond,
-      Interval.minorSecond,
-      Interval.majorSecond,
-      Interval.majorSecond,
-      Interval.majorSecond,
-      Interval.majorSecond,
-      Interval.minorSecond,
+      Interval.M2,
+      Interval.m2,
+      Interval.M2,
+      Interval.M2,
+      Interval.M2,
+      Interval.M2,
+      Interval.m2,
     ],
     [
-      Interval.majorSecond,
-      Interval.majorSecond,
-      Interval.minorSecond,
-      Interval.majorSecond,
-      Interval.majorSecond,
-      Interval.minorSecond,
-      Interval.majorSecond,
+      Interval.M2,
+      Interval.M2,
+      Interval.m2,
+      Interval.M2,
+      Interval.M2,
+      Interval.m2,
+      Interval.M2,
     ],
   );
 
@@ -146,52 +146,52 @@ final class ScalePattern {
   ///
   /// ![C Chromatic scale](https://upload.wikimedia.org/score/m/u/mu2yiewo9c4oa1bzfg20dg3ltwd5iu3/mu2yiewo.png).
   static const chromatic = ScalePattern([
-    Interval.augmentedUnison,
-    Interval.minorSecond,
-    Interval.augmentedUnison,
-    Interval.minorSecond,
-    Interval.minorSecond,
-    Interval.augmentedUnison,
-    Interval.minorSecond,
-    Interval.augmentedUnison,
-    Interval.minorSecond,
-    Interval.augmentedUnison,
-    Interval.minorSecond,
-    Interval.minorSecond,
+    Interval.A1,
+    Interval.m2,
+    Interval.A1,
+    Interval.m2,
+    Interval.m2,
+    Interval.A1,
+    Interval.m2,
+    Interval.A1,
+    Interval.m2,
+    Interval.A1,
+    Interval.m2,
+    Interval.m2,
   ]);
 
   /// See [Whole-tone scale](https://en.wikipedia.org/wiki/Whole-tone_scale).
   ///
   /// ![C Whole-tone scale](https://upload.wikimedia.org/score/l/c/lcqo121bdjjfsvvxcp86l59yaa46v8o/lcqo121b.png).
   static const wholeTone = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.diminishedThird,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.M2,
+    Interval.d3,
   ]);
 
   /// See [Pentatonic scale](https://en.wikipedia.org/wiki/Pentatonic_scale).
   ///
   /// ![C Major pentatonic scale](https://upload.wikimedia.org/score/j/7/j7cn43w4nuz0j5imzs8ijatkfxh1x0h/j7cn43w4.png).
   static const majorPentatonic = ScalePattern([
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorThird,
-    Interval.majorSecond,
-    Interval.minorThird,
+    Interval.M2,
+    Interval.M2,
+    Interval.m3,
+    Interval.M2,
+    Interval.m3,
   ]);
 
   /// See [Pentatonic scale](https://en.wikipedia.org/wiki/Pentatonic_scale).
   ///
   /// ![A Minor pentatonic scale](https://upload.wikimedia.org/score/s/c/sc9aoxty66zu9ccwp6qclwcuuai6pjz/sc9aoxty.png).
   static const minorPentatonic = ScalePattern([
-    Interval.minorThird,
-    Interval.majorSecond,
-    Interval.majorSecond,
-    Interval.minorThird,
-    Interval.majorSecond,
+    Interval.m3,
+    Interval.M2,
+    Interval.M2,
+    Interval.m3,
+    Interval.M2,
   ]);
 
   /// See [Octatonic scale](https://en.wikipedia.org/wiki/Octatonic_scale).
@@ -200,14 +200,14 @@ final class ScalePattern {
   ///
   /// ![C Octatonic scale](https://upload.wikimedia.org/score/3/k/3k5luxd4mjag2z377hvt9gg3njf0882/3k5luxd4.png).
   static const octatonic = ScalePattern([
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
-    Interval.majorSecond,
-    Interval.minorSecond,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
   ]);
 
   /// Creates a new [ScalePattern] from the given [chordPattern].
