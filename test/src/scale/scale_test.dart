@@ -120,6 +120,77 @@ void main() {
       });
     });
 
+    group('.functionChord()', () {
+      test(
+        'should return the Chord for the HarmonicFunction of this Scale',
+        () {
+          expect(
+            Note.c.major.scale.functionChord(HarmonicFunction.tonic),
+            Note.c.majorTriad,
+          );
+          expect(
+            Note.d.major.scale.functionChord(HarmonicFunction.vii),
+            Note.c.sharp.diminishedTriad,
+          );
+
+          expect(
+            Note.g.major.scale.functionChord(
+              HarmonicFunction.dominantV / HarmonicFunction.dominantV,
+            ),
+            Note.a.majorTriad,
+          );
+          expect(
+            Note.f.major.scale
+                .functionChord(HarmonicFunction.iv / HarmonicFunction.vi),
+            Note.g.minorTriad,
+          );
+          expect(
+            Note.b.flat.major.scale
+                .functionChord(HarmonicFunction.vi / HarmonicFunction.iv),
+            Note.c.minorTriad,
+          );
+          expect(
+            Note.c.sharp.minor.scale.functionChord(
+              HarmonicFunction.ii / HarmonicFunction.dominantV,
+            ),
+            Note.a.sharp.minorTriad,
+          );
+
+          expect(
+            Note.d.flat.major.scale.functionChord(
+              HarmonicFunction.ii /
+                  HarmonicFunction.vi /
+                  HarmonicFunction.dominantV,
+            ),
+            Note.g.diminishedTriad,
+          );
+          expect(
+            Note.b.major.scale.functionChord(
+              HarmonicFunction.iv / HarmonicFunction.iv / HarmonicFunction.iv,
+            ),
+            Note.d.majorTriad,
+          );
+          expect(
+            Note.a.major.scale.functionChord(
+              HarmonicFunction.dominantV /
+                  HarmonicFunction.dominantV /
+                  HarmonicFunction.dominantV,
+            ),
+            Note.f.sharp.majorTriad,
+          );
+          expect(
+            Note.e.flat.major.scale.functionChord(
+              HarmonicFunction.dominantV /
+                  HarmonicFunction.dominantV /
+                  HarmonicFunction.dominantV /
+                  HarmonicFunction.dominantV,
+            ),
+            Note.g.majorTriad,
+          );
+        },
+      );
+    });
+
     group('.transposeBy()', () {
       test('should return this Scale transposed by Interval', () {
         expect(
