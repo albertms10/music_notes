@@ -327,6 +327,7 @@ final class ScalePattern {
 
   /// Returns the name associated with this [ScalePattern].
   ///
+  /// Example:
   /// ```dart
   /// ScalePattern.mixolydian.name == 'Mixolydian'
   /// ScalePattern.chromatic.name == 'Chromatic'

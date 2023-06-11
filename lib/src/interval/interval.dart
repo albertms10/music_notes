@@ -205,10 +205,8 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// -Interval.m3
-  ///   == const Interval.imperfect(-3, ImperfectQuality.minor)
-  /// -const Interval.perfect(-5, PerfectQuality.perfect)
-  ///   == Interval.P5
+  /// -Interval.m3 == const Interval.imperfect(-3, ImperfectQuality.minor)
+  /// -const Interval.perfect(-5, PerfectQuality.perfect) == Interval.P5
   /// ```
   Interval operator -() => Interval._(-size, quality);
 

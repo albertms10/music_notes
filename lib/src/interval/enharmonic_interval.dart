@@ -74,8 +74,7 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   /// EnharmonicInterval.tritone + EnharmonicInterval.m2
   ///   == EnharmonicInterval.P5
   ///
-  /// EnharmonicInterval.M3 + EnharmonicInterval.m6
-  ///   == EnharmonicInterval.P8
+  /// EnharmonicInterval.M3 + EnharmonicInterval.m6 == EnharmonicInterval.P8
   /// ```
   EnharmonicInterval operator +(EnharmonicInterval other) =>
       EnharmonicInterval(semitones + other.semitones);
@@ -84,8 +83,7 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// EnharmonicInterval.P4 - EnharmonicInterval.m3
-  ///   == EnharmonicInterval.M2
+  /// EnharmonicInterval.P4 - EnharmonicInterval.m3 == EnharmonicInterval.M2
   ///
   /// EnharmonicInterval.m3 - EnharmonicInterval.tritone
   ///   == const EnharmonicInterval(-3)

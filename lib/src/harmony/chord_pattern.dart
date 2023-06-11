@@ -7,25 +7,10 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Creates a new [ChordPattern] from [intervals].
   const ChordPattern(this.intervals);
 
-  static const augmentedTriad = ChordPattern([
-    Interval.M3,
-    Interval.A5,
-  ]);
-
-  static const majorTriad = ChordPattern([
-    Interval.M3,
-    Interval.P5,
-  ]);
-
-  static const minorTriad = ChordPattern([
-    Interval.m3,
-    Interval.P5,
-  ]);
-
-  static const diminishedTriad = ChordPattern([
-    Interval.m3,
-    Interval.d5,
-  ]);
+  static const augmentedTriad = ChordPattern([Interval.M3, Interval.A5]);
+  static const majorTriad = ChordPattern([Interval.M3, Interval.P5]);
+  static const minorTriad = ChordPattern([Interval.m3, Interval.P5]);
+  static const diminishedTriad = ChordPattern([Interval.m3, Interval.d5]);
 
   /// Creates a new [ChordPattern] from [intervalSteps].
   ///
@@ -113,11 +98,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().augmented
-  ///   == const ChordPattern([
-  ///        Interval.M3,
-  ///        Interval.A5,
-  ///        Interval.m7
-  ///      ])
+  ///   == const ChordPattern([Interval.M3, Interval.A5, Interval.m7])
   /// ```
   @override
   ChordPattern get augmented =>
@@ -129,11 +110,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.minorTriad.add7().major
-  ///   == const ChordPattern([
-  ///        Interval.M3,
-  ///        Interval.P5,
-  ///        Interval.m7
-  ///      ])
+  ///   == const ChordPattern([Interval.M3, Interval.P5, Interval.m7])
   /// ```
   @override
   ChordPattern get major =>
@@ -145,11 +122,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().minor
-  ///   == const ChordPattern([
-  ///        Interval.m3,
-  ///        Interval.P5,
-  ///        Interval.m7
-  ///      ])
+  ///   == const ChordPattern([Interval.m3, Interval.P5, Interval.m7])
   /// ```
   @override
   ChordPattern get minor =>
@@ -161,11 +134,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().diminished
-  ///   == const ChordPattern([
-  ///        Interval.m3,
-  ///        Interval.d5,
-  ///        Interval.m7
-  ///      ])
+  ///   == const ChordPattern([Interval.m3, Interval.d5, Interval.m7])
   /// ```
   @override
   ChordPattern get diminished =>

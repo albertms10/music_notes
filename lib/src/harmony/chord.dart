@@ -96,10 +96,10 @@ class Chord<T extends Scalable<T>>
   /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
   ///   .transposeBy(Interval.M3)
   ///     == const Chord([
-  ///       Note.b.inOctave(4),
-  ///       Note.d.sharp.inOctave(5),
-  ///       Note.f.sharp.inOctave(5)
-  ///     ])
+  ///          Note.b.inOctave(4),
+  ///          Note.d.sharp.inOctave(5),
+  ///          Note.f.sharp.inOctave(5)
+  ///        ])
   /// ```
   @override
   Chord<T> transposeBy(Interval interval) =>

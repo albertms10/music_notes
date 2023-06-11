@@ -129,8 +129,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// Example:
   /// ```dart
   /// EnharmonicNote.c.interval(EnharmonicNote.e) == Interval.M3
-  /// EnharmonicNote.gSharp.interval(EnharmonicNote.d)
-  ///   == Interval.A4
+  /// EnharmonicNote.gSharp.interval(EnharmonicNote.d) == Interval.A4
   /// ```
   @override
   Interval interval(EnharmonicNote other) {
