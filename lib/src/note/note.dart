@@ -32,7 +32,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
     final note = KeySignature(accidentals, accidental).majorNote;
     if (mode == TonalMode.major) return note;
 
-    return note.transposeBy(-Interval.minorThird);
+    return note.transposeBy(-Interval.m3);
   }
 
   /// [Comparator] for [Note]s by fifths distance.
@@ -159,15 +159,14 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
   /// Note.a.flat.fifthsDistanceWith(Note.d.flat) == -1
   /// ```
-  int fifthsDistanceWith(Note other) =>
-      intervalDistance(other, Interval.perfectFifth);
+  int fifthsDistanceWith(Note other) => intervalDistance(other, Interval.P5);
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [other].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.intervalDistance(Note.d, Interval.perfectFifth) == 2
+  /// Note.c.intervalDistance(Note.d, Interval.P5) == 2
   /// ```
   int intervalDistance(Note other, Interval interval) {
     final distanceFlat = _runSemitonesDistance(
@@ -215,8 +214,8 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.interval(Note.d) == Interval.minorSecond
-  /// Note.d.interval(Note.a.flat) == Interval.diminishedFifth
+  /// Note.c.interval(Note.d) == Interval.m2
+  /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
   Interval interval(Note other) {
@@ -233,7 +232,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.transposeBy(Interval.tritone) == Note.f.sharp
-  /// Note.a.transposeBy(-Interval.majorSecond) == Note.g
+  /// Note.a.transposeBy(-Interval.M2) == Note.g
   /// ```
   @override
   Note transposeBy(Interval interval) {

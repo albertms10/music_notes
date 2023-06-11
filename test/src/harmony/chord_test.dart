@@ -262,20 +262,18 @@ void main() {
     group('.add()', () {
       test('should add an Interval to this Chord', () {
         expect(
-          Note.c.majorTriad.add(Interval.majorSeventh),
+          Note.c.majorTriad.add(Interval.M7),
           const Chord([Note.c, Note.e, Note.g, Note.b]),
         );
       });
 
       test('should ignore any previous Interval size in this ChordPattern', () {
         expect(
-          Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp])
-              .add(Interval.majorSeventh),
+          Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp]).add(Interval.M7),
           Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp]),
         );
         expect(
-          const Chord([Note.f, Note.a, Note.c, Note.e])
-              .add(Interval.minorSeventh),
+          const Chord([Note.f, Note.a, Note.c, Note.e]).add(Interval.m7),
           Chord([Note.f, Note.a, Note.c, Note.e.flat]),
         );
       });
@@ -287,14 +285,14 @@ void main() {
           ChordPattern.majorTriad
               .add9(ImperfectQuality.minor)
               .on(Note.c)
-              .transposeBy(Interval.majorSecond),
+              .transposeBy(Interval.M2),
           Chord([Note.d, Note.f.sharp, Note.a, Note.e.flat]),
         );
         expect(
           ChordPattern.minorTriad
               .add7(ImperfectQuality.major)
               .on(Note.e.flat)
-              .transposeBy(Interval.minorThird),
+              .transposeBy(Interval.m3),
           Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat, Note.f]),
         );
 
@@ -303,7 +301,7 @@ void main() {
               .add7(ImperfectQuality.major)
               .add9()
               .on(Note.g.inOctave(3))
-              .transposeBy(Interval.augmentedFourth),
+              .transposeBy(Interval.A4),
           Chord([
             Note.c.sharp.inOctave(4),
             Note.e.sharp.inOctave(4),
@@ -317,7 +315,7 @@ void main() {
               .add7(ImperfectQuality.major)
               .add9()
               .on(Note.g.flat.inOctave(3))
-              .transposeBy(Interval.augmentedFourth),
+              .transposeBy(Interval.A4),
           Chord([
             Note.c.inOctave(4),
             Note.e.inOctave(4),
@@ -331,7 +329,7 @@ void main() {
               .add7()
               .add9(ImperfectQuality.minor)
               .on(Note.g.sharp.inOctave(3))
-              .transposeBy(Interval.augmentedFourth),
+              .transposeBy(Interval.A4),
           Chord([
             Note.c.sharp.sharp.inOctave(4),
             // TODO(albertms10): Failing test: should be `.inOctave(4)`.
@@ -346,7 +344,7 @@ void main() {
               .add7(ImperfectQuality.major)
               .add9()
               .on(Note.g.inOctave(3))
-              .transposeBy(Interval.diminishedFifth),
+              .transposeBy(Interval.d5),
           Chord([
             Note.d.flat.inOctave(4),
             Note.f.inOctave(4),

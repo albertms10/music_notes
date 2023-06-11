@@ -10,133 +10,116 @@ void main() {
         'should return the correct Interval spellings for this '
         'EnharmonicInterval',
         () {
-          expect(EnharmonicInterval.perfectUnison.spellings, {
-            Interval.perfectUnison,
-            Interval.diminishedSecond,
-          });
+          expect(EnharmonicInterval.P1.spellings, {Interval.P1, Interval.d2});
           // TODO(albertms10): Failing test: descending P1 interval.
-          expect((-EnharmonicInterval.perfectUnison).spellings, {
-            Interval.perfectUnison,
-            Interval.diminishedSecond,
-          });
-          expect(EnharmonicInterval.minorSecond.spellings, {
-            Interval.augmentedUnison,
-            Interval.minorSecond,
+          expect(
+            (-EnharmonicInterval.P1).spellings,
+            {Interval.P1, Interval.d2},
+          );
+          expect(EnharmonicInterval.m2.spellings, {
+            Interval.A1,
+            Interval.m2,
             const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSecond).spellings, {
-            -Interval.augmentedUnison,
-            -Interval.minorSecond,
+          expect((-EnharmonicInterval.m2).spellings, {
+            -Interval.A1,
+            -Interval.m2,
             -const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSecond.spellings, {
-            Interval.majorSecond,
-            Interval.diminishedThird,
-          });
-          expect((-EnharmonicInterval.majorSecond).spellings, {
-            -Interval.majorSecond,
-            -Interval.diminishedThird,
-          });
-          expect(EnharmonicInterval.minorThird.spellings, {
-            Interval.augmentedSecond,
-            Interval.minorThird,
+          expect(EnharmonicInterval.M2.spellings, {Interval.M2, Interval.d3});
+          expect(
+            (-EnharmonicInterval.M2).spellings,
+            {-Interval.M2, -Interval.d3},
+          );
+          expect(EnharmonicInterval.m3.spellings, {
+            Interval.A2,
+            Interval.m3,
             const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorThird).spellings, {
-            -Interval.augmentedSecond,
-            -Interval.minorThird,
+          expect((-EnharmonicInterval.m3).spellings, {
+            -Interval.A2,
+            -Interval.m3,
             -const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorThird.spellings, {
-            Interval.majorThird,
-            Interval.diminishedFourth,
-          });
-          expect((-EnharmonicInterval.majorThird).spellings, {
-            -Interval.majorThird,
-            -Interval.diminishedFourth,
-          });
-          expect(EnharmonicInterval.perfectFourth.spellings, {
-            Interval.augmentedThird,
-            Interval.perfectFourth,
+          expect(EnharmonicInterval.M3.spellings, {Interval.M3, Interval.d4});
+          expect(
+            (-EnharmonicInterval.M3).spellings,
+            {-Interval.M3, -Interval.d4},
+          );
+          expect(EnharmonicInterval.P4.spellings, {
+            Interval.A3,
+            Interval.P4,
             const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.perfectFourth).spellings, {
-            -Interval.augmentedThird,
-            -Interval.perfectFourth,
+          expect((-EnharmonicInterval.P4).spellings, {
+            -Interval.A3,
+            -Interval.P4,
             -const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.tritone.spellings, {
-            Interval.augmentedFourth,
-            Interval.diminishedFifth,
-          });
-          expect((-EnharmonicInterval.tritone).spellings, {
-            -Interval.augmentedFourth,
-            -Interval.diminishedFifth,
-          });
-          expect(EnharmonicInterval.perfectFifth.spellings, {
+          expect(
+            EnharmonicInterval.tritone.spellings,
+            {Interval.A4, Interval.d5},
+          );
+          expect(
+            (-EnharmonicInterval.tritone).spellings,
+            {-Interval.A4, -Interval.d5},
+          );
+          expect(EnharmonicInterval.P5.spellings, {
             const Interval.perfect(4, PerfectQuality.doublyAugmented),
-            Interval.perfectFifth,
-            Interval.diminishedSixth,
+            Interval.P5,
+            Interval.d6,
           });
-          expect((-EnharmonicInterval.perfectFifth).spellings, {
+          expect((-EnharmonicInterval.P5).spellings, {
             -const Interval.perfect(4, PerfectQuality.doublyAugmented),
-            -Interval.perfectFifth,
-            -Interval.diminishedSixth,
+            -Interval.P5,
+            -Interval.d6,
           });
-          expect(EnharmonicInterval.minorSixth.spellings, {
-            Interval.augmentedFifth,
-            Interval.minorSixth,
+          expect(EnharmonicInterval.m6.spellings, {
+            Interval.A5,
+            Interval.m6,
             const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSixth).spellings, {
-            -Interval.augmentedFifth,
-            -Interval.minorSixth,
+          expect((-EnharmonicInterval.m6).spellings, {
+            -Interval.A5,
+            -Interval.m6,
             -const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSixth.spellings, {
-            Interval.majorSixth,
-            Interval.diminishedSeventh,
-          });
-          expect((-EnharmonicInterval.majorSixth).spellings, {
-            -Interval.majorSixth,
-            -Interval.diminishedSeventh,
-          });
-          expect(EnharmonicInterval.minorSeventh.spellings, {
-            Interval.augmentedSixth,
-            Interval.minorSeventh,
+          expect(EnharmonicInterval.M6.spellings, {Interval.M6, Interval.d7});
+          expect(
+            (-EnharmonicInterval.M6).spellings,
+            {-Interval.M6, -Interval.d7},
+          );
+          expect(EnharmonicInterval.m7.spellings, {
+            Interval.A6,
+            Interval.m7,
             const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.minorSeventh).spellings, {
-            -Interval.augmentedSixth,
-            -Interval.minorSeventh,
+          expect((-EnharmonicInterval.m7).spellings, {
+            -Interval.A6,
+            -Interval.m7,
             -const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.majorSeventh.spellings, {
-            Interval.majorSeventh,
-            Interval.diminishedOctave,
-          });
-          expect((-EnharmonicInterval.majorSeventh).spellings, {
-            -Interval.majorSeventh,
-            -Interval.diminishedOctave,
-          });
-          expect(EnharmonicInterval.perfectOctave.spellings, {
-            Interval.augmentedSeventh,
-            Interval.perfectOctave,
-            const Interval.imperfect(9, ImperfectQuality.diminished),
-          });
-          expect((-EnharmonicInterval.perfectOctave).spellings, {
-            -Interval.augmentedSeventh,
-            -Interval.perfectOctave,
-            -const Interval.imperfect(9, ImperfectQuality.diminished),
-          });
+          expect(EnharmonicInterval.M7.spellings, {Interval.M7, Interval.d8});
+          expect(
+            (-EnharmonicInterval.M7).spellings,
+            {-Interval.M7, -Interval.d8},
+          );
+          expect(
+            EnharmonicInterval.P8.spellings,
+            {Interval.A7, Interval.P8, Interval.d9},
+          );
+          expect(
+            (-EnharmonicInterval.P8).spellings,
+            {-Interval.A7, -Interval.P8, -Interval.d9},
+          );
           expect(const EnharmonicInterval(13).spellings, {
-            Interval.augmentedOctave,
-            Interval.minorNinth,
+            Interval.A8,
+            Interval.m9,
             const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
           expect(const EnharmonicInterval(-13).spellings, {
-            -Interval.augmentedOctave,
-            -Interval.minorNinth,
+            -Interval.A8,
+            -Interval.m9,
             -const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
         },
@@ -145,8 +128,8 @@ void main() {
 
     group('.isDescending', () {
       test('should return whether this EnharmonicInterval is descending', () {
-        expect(EnharmonicInterval.minorThird.isDescending, isFalse);
-        expect((-EnharmonicInterval.perfectFifth).isDescending, isTrue);
+        expect(EnharmonicInterval.m3.isDescending, isFalse);
+        expect((-EnharmonicInterval.P5).isDescending, isTrue);
       });
     });
 
@@ -154,35 +137,29 @@ void main() {
       test(
         'should return the descending EnharmonicInterval based on isDescending',
         () {
+          expect(EnharmonicInterval.M2.descending(), -EnharmonicInterval.M2);
           expect(
-            EnharmonicInterval.majorSecond.descending(),
-            -EnharmonicInterval.majorSecond,
+            EnharmonicInterval.m3.descending(isDescending: false),
+            EnharmonicInterval.m3,
           );
           expect(
-            EnharmonicInterval.minorThird.descending(isDescending: false),
-            EnharmonicInterval.minorThird,
+            (-EnharmonicInterval.m6).descending(isDescending: false),
+            EnharmonicInterval.m6,
           );
-          expect(
-            (-EnharmonicInterval.minorSixth).descending(isDescending: false),
-            EnharmonicInterval.minorSixth,
-          );
-          expect(
-            (-EnharmonicInterval.perfectOctave).descending(),
-            -EnharmonicInterval.perfectOctave,
-          );
+          expect((-EnharmonicInterval.P8).descending(), -EnharmonicInterval.P8);
         },
       );
 
       test(
         'should return a copy of this EnharmonicInterval based on isDescending',
         () {
-          const ascendingInterval = EnharmonicInterval.perfectFourth;
+          const ascendingInterval = EnharmonicInterval.P4;
           expect(
             identical(ascendingInterval.descending(), ascendingInterval),
             isFalse,
           );
 
-          final descendingInterval = -EnharmonicInterval.minorThird;
+          final descendingInterval = -EnharmonicInterval.m3;
           expect(
             identical(descendingInterval.descending(), descendingInterval),
             isFalse,
@@ -194,31 +171,31 @@ void main() {
     group('operator +()', () {
       test('should add other to this EnharmonicInterval', () {
         expect(
-          EnharmonicInterval.perfectUnison + EnharmonicInterval.majorSecond,
-          EnharmonicInterval.majorSecond,
+          EnharmonicInterval.P1 + EnharmonicInterval.M2,
+          EnharmonicInterval.M2,
         );
         expect(
-          EnharmonicInterval.tritone + EnharmonicInterval.minorSecond,
-          EnharmonicInterval.perfectFifth,
+          EnharmonicInterval.tritone + EnharmonicInterval.m2,
+          EnharmonicInterval.P5,
         );
         expect(
           EnharmonicInterval.tritone + EnharmonicInterval.tritone,
-          EnharmonicInterval.perfectOctave,
+          EnharmonicInterval.P8,
         );
         expect(
-          EnharmonicInterval.minorSecond + -EnharmonicInterval.minorSecond,
-          EnharmonicInterval.perfectUnison,
+          EnharmonicInterval.m2 + -EnharmonicInterval.m2,
+          EnharmonicInterval.P1,
         );
         expect(
-          -EnharmonicInterval.majorThird + -EnharmonicInterval.minorThird,
-          -EnharmonicInterval.perfectFifth,
+          -EnharmonicInterval.M3 + -EnharmonicInterval.m3,
+          -EnharmonicInterval.P5,
         );
         expect(
-          EnharmonicInterval.majorThird + EnharmonicInterval.minorSixth,
-          EnharmonicInterval.perfectOctave,
+          EnharmonicInterval.M3 + EnharmonicInterval.m6,
+          EnharmonicInterval.P8,
         );
         expect(
-          EnharmonicInterval.perfectFifth + EnharmonicInterval.tritone,
+          EnharmonicInterval.P5 + EnharmonicInterval.tritone,
           const EnharmonicInterval(13),
         );
       });
@@ -227,56 +204,44 @@ void main() {
     group('operator -()', () {
       test('should subtract other from this EnharmonicInterval', () {
         expect(
-          EnharmonicInterval.perfectFourth - EnharmonicInterval.minorThird,
-          EnharmonicInterval.majorSecond,
+          EnharmonicInterval.P4 - EnharmonicInterval.m3,
+          EnharmonicInterval.M2,
         );
         expect(
-          EnharmonicInterval.perfectOctave - EnharmonicInterval.tritone,
+          EnharmonicInterval.P8 - EnharmonicInterval.tritone,
           EnharmonicInterval.tritone,
         );
         expect(
-          EnharmonicInterval.majorSixth - EnharmonicInterval.majorSixth,
-          EnharmonicInterval.perfectUnison,
+          EnharmonicInterval.M6 - EnharmonicInterval.M6,
+          EnharmonicInterval.P1,
         );
         expect(
-          -EnharmonicInterval.minorThird - EnharmonicInterval.majorSecond,
-          -EnharmonicInterval.perfectFourth,
+          -EnharmonicInterval.m3 - EnharmonicInterval.M2,
+          -EnharmonicInterval.P4,
         );
         expect(
-          -EnharmonicInterval.minorThird - -EnharmonicInterval.perfectFourth,
-          EnharmonicInterval.majorSecond,
+          -EnharmonicInterval.m3 - -EnharmonicInterval.P4,
+          EnharmonicInterval.M2,
         );
         expect(
-          EnharmonicInterval.minorThird - EnharmonicInterval.tritone,
+          EnharmonicInterval.m3 - EnharmonicInterval.tritone,
           const EnharmonicInterval(-3),
         );
       });
 
       test('should return the negation of this EnharmonicInterval', () {
-        expect(-EnharmonicInterval.minorThird, const EnharmonicInterval(-3));
+        expect(-EnharmonicInterval.m3, const EnharmonicInterval(-3));
         expect(-const EnharmonicInterval(-6), EnharmonicInterval.tritone);
-        expect(
-          -EnharmonicInterval.perfectUnison,
-          EnharmonicInterval.perfectUnison,
-        );
+        expect(-EnharmonicInterval.P1, EnharmonicInterval.P1);
       });
     });
 
     group('operator *()', () {
       test('should multiply this EnharmonicInterval with factor', () {
-        expect(
-          EnharmonicInterval.perfectFourth * -1,
-          -EnharmonicInterval.perfectFourth,
-        );
-        expect(
-          -EnharmonicInterval.perfectFifth * -1,
-          EnharmonicInterval.perfectFifth,
-        );
-        expect(
-          EnharmonicInterval.majorThird * 0,
-          EnharmonicInterval.perfectUnison,
-        );
-        expect(EnharmonicInterval.minorThird * 2, EnharmonicInterval.tritone);
+        expect(EnharmonicInterval.P4 * -1, -EnharmonicInterval.P4);
+        expect(-EnharmonicInterval.P5 * -1, EnharmonicInterval.P5);
+        expect(EnharmonicInterval.M3 * 0, EnharmonicInterval.P1);
+        expect(EnharmonicInterval.m3 * 2, EnharmonicInterval.tritone);
       });
     });
 
@@ -284,11 +249,11 @@ void main() {
       test(
         'should return a string representation of this EnharmonicInterval',
         () {
-          expect(EnharmonicInterval.perfectUnison.toString(), '0 {P1, d2}');
-          expect(EnharmonicInterval.majorThird.toString(), '4 {M3, d4}');
-          expect(EnharmonicInterval.minorSixth.toString(), '8 {A5, m6, dd7}');
+          expect(EnharmonicInterval.P1.toString(), '0 {P1, d2}');
+          expect(EnharmonicInterval.M3.toString(), '4 {M3, d4}');
+          expect(EnharmonicInterval.m6.toString(), '8 {A5, m6, dd7}');
           expect(
-            (-EnharmonicInterval.majorSixth).toString(),
+            (-EnharmonicInterval.M6).toString(),
             'desc 9 {desc d7, desc M6}',
           );
         },
@@ -297,15 +262,12 @@ void main() {
 
     group('.hashCode', () {
       test('should ignore equal EnharmonicInterval instances in a Set', () {
-        final collection = {
-          EnharmonicInterval.perfectUnison,
-          EnharmonicInterval.majorThird,
-        };
+        final collection = {EnharmonicInterval.P1, EnharmonicInterval.M3};
         collection.addAll(collection);
-        expect(collection.toList(), const [
-          EnharmonicInterval.perfectUnison,
-          EnharmonicInterval.majorThird,
-        ]);
+        expect(
+          collection.toList(),
+          const [EnharmonicInterval.P1, EnharmonicInterval.M3],
+        );
       });
     });
 
@@ -314,14 +276,14 @@ void main() {
         'should correctly sort EnharmonicInterval items in a collection',
         () {
           final orderedSet = SplayTreeSet<EnharmonicInterval>.of(const [
-            EnharmonicInterval.minorSecond,
-            EnharmonicInterval.majorThird,
-            EnharmonicInterval.perfectUnison,
+            EnharmonicInterval.m2,
+            EnharmonicInterval.M3,
+            EnharmonicInterval.P1,
           ]);
           expect(orderedSet.toList(), const [
-            EnharmonicInterval.perfectUnison,
-            EnharmonicInterval.minorSecond,
-            EnharmonicInterval.majorThird,
+            EnharmonicInterval.P1,
+            EnharmonicInterval.m2,
+            EnharmonicInterval.M3,
           ]);
         },
       );

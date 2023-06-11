@@ -132,10 +132,9 @@ final class PositionedNote
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).transposeBy(Interval.perfectFifth)
-  ///   == Note.d.inOctave(5)
-  /// Note.d.flat.inOctave(2).transposeBy(-Interval.majorSecond)
-  ///   == Note(BaseNote.c, Accidental.flat).inOctave(2)
+  /// Note.g.inOctave(4).transposeBy(Interval.P5) == Note.d.inOctave(5)
+  /// Note.d.flat.inOctave(2).transposeBy(-Interval.M2)
+  ///   == Note.c.flat.inOctave(2)
   /// ```
   @override
   PositionedNote transposeBy(Interval interval) {
@@ -158,9 +157,8 @@ final class PositionedNote
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.perfectFifth
-  /// Note.d.inOctave(3).interval(Note.a.flat.inOctave(4))
-  ///   == Interval.diminishedFifth
+  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
+  /// Note.d.inOctave(3).interval(Note.a.flat.inOctave(4)) == Interval.d5
   /// ```
   @override
   Interval interval(PositionedNote other) {

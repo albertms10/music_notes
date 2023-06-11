@@ -27,7 +27,7 @@ final class Tonality implements Comparable<Tonality> {
   /// ```
   Tonality get relative => Tonality(
         note.transposeBy(
-          Interval.minorThird.descending(isDescending: mode == TonalMode.major),
+          Interval.m3.descending(isDescending: mode == TonalMode.major),
         ),
         mode.opposite,
       );

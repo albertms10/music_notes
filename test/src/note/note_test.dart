@@ -225,42 +225,42 @@ void main() {
 
     group('.interval()', () {
       test('should return the Interval between this Note and other', () {
-        expect(Note.c.interval(Note.c), Interval.perfectUnison);
-        expect(Note.c.interval(Note.c.sharp), Interval.augmentedUnison);
-        expect(Note.f.flat.interval(Note.f), Interval.augmentedUnison);
+        expect(Note.c.interval(Note.c), Interval.P1);
+        expect(Note.c.interval(Note.c.sharp), Interval.A1);
+        expect(Note.f.flat.interval(Note.f), Interval.A1);
 
-        expect(Note.c.interval(Note.d.flat.flat), Interval.diminishedSecond);
-        expect(Note.f.flat.interval(Note.g.flat.flat), Interval.minorSecond);
-        expect(Note.c.interval(Note.d.flat), Interval.minorSecond);
-        expect(Note.c.interval(Note.d), Interval.majorSecond);
-        expect(Note.c.interval(Note.d.sharp), Interval.augmentedSecond);
+        expect(Note.c.interval(Note.d.flat.flat), Interval.d2);
+        expect(Note.f.flat.interval(Note.g.flat.flat), Interval.m2);
+        expect(Note.c.interval(Note.d.flat), Interval.m2);
+        expect(Note.c.interval(Note.d), Interval.M2);
+        expect(Note.c.interval(Note.d.sharp), Interval.A2);
 
-        expect(Note.c.interval(Note.e.flat.flat), Interval.diminishedThird);
-        expect(Note.c.interval(Note.e.flat), Interval.minorThird);
-        expect(Note.c.interval(Note.e), Interval.majorThird);
-        expect(Note.g.interval(Note.b), Interval.majorThird);
-        expect(Note.b.flat.interval(Note.d), Interval.majorThird);
-        expect(Note.c.interval(Note.e.sharp), Interval.augmentedThird);
+        expect(Note.c.interval(Note.e.flat.flat), Interval.d3);
+        expect(Note.c.interval(Note.e.flat), Interval.m3);
+        expect(Note.c.interval(Note.e), Interval.M3);
+        expect(Note.g.interval(Note.b), Interval.M3);
+        expect(Note.b.flat.interval(Note.d), Interval.M3);
+        expect(Note.c.interval(Note.e.sharp), Interval.A3);
 
-        expect(Note.c.interval(Note.f.flat), Interval.diminishedFourth);
-        expect(Note.c.interval(Note.f), Interval.perfectFourth);
-        expect(Note.g.sharp.interval(Note.c.sharp), Interval.perfectFourth);
-        expect(Note.a.flat.interval(Note.d), Interval.augmentedFourth);
-        expect(Note.c.interval(Note.f.sharp), Interval.augmentedFourth);
+        expect(Note.c.interval(Note.f.flat), Interval.d4);
+        expect(Note.c.interval(Note.f), Interval.P4);
+        expect(Note.g.sharp.interval(Note.c.sharp), Interval.P4);
+        expect(Note.a.flat.interval(Note.d), Interval.A4);
+        expect(Note.c.interval(Note.f.sharp), Interval.A4);
 
-        expect(Note.c.interval(Note.g.flat), Interval.diminishedFifth);
-        expect(Note.c.interval(Note.g), Interval.perfectFifth);
-        expect(Note.c.interval(Note.g.sharp), Interval.augmentedFifth);
+        expect(Note.c.interval(Note.g.flat), Interval.d5);
+        expect(Note.c.interval(Note.g), Interval.P5);
+        expect(Note.c.interval(Note.g.sharp), Interval.A5);
 
-        expect(Note.c.interval(Note.a.flat.flat), Interval.diminishedSixth);
-        expect(Note.c.interval(Note.a.flat), Interval.minorSixth);
-        expect(Note.c.interval(Note.a), Interval.majorSixth);
-        expect(Note.c.interval(Note.a.sharp), Interval.augmentedSixth);
+        expect(Note.c.interval(Note.a.flat.flat), Interval.d6);
+        expect(Note.c.interval(Note.a.flat), Interval.m6);
+        expect(Note.c.interval(Note.a), Interval.M6);
+        expect(Note.c.interval(Note.a.sharp), Interval.A6);
 
-        expect(Note.c.interval(Note.b.flat.flat), Interval.diminishedSeventh);
-        expect(Note.c.interval(Note.b.flat), Interval.minorSeventh);
-        expect(Note.c.interval(Note.b), Interval.majorSeventh);
-        expect(Note.b.interval(Note.a.sharp), Interval.majorSeventh);
+        expect(Note.c.interval(Note.b.flat.flat), Interval.d7);
+        expect(Note.c.interval(Note.b.flat), Interval.m7);
+        expect(Note.c.interval(Note.b), Interval.M7);
+        expect(Note.b.interval(Note.a.sharp), Interval.M7);
 
         // TODO(albertms10): Failing test:
         //  `Note.c.interval(Note.b.sharp)`.
@@ -269,83 +269,80 @@ void main() {
 
     group('.transposeBy()', () {
       test('should return this Note transposed by Interval', () {
-        expect(Note.c.transposeBy(Interval.diminishedUnison), Note.c.flat);
-        expect(Note.c.transposeBy(-Interval.diminishedUnison), Note.c.sharp);
-        expect(Note.c.transposeBy(Interval.perfectUnison), Note.c);
-        expect(Note.c.transposeBy(-Interval.perfectUnison), Note.c);
-        expect(Note.c.transposeBy(Interval.augmentedUnison), Note.c.sharp);
-        expect(Note.c.transposeBy(-Interval.augmentedUnison), Note.c.flat);
+        expect(Note.c.transposeBy(Interval.d1), Note.c.flat);
+        expect(Note.c.transposeBy(-Interval.d1), Note.c.sharp);
+        expect(Note.c.transposeBy(Interval.P1), Note.c);
+        expect(Note.c.transposeBy(-Interval.P1), Note.c);
+        expect(Note.c.transposeBy(Interval.A1), Note.c.sharp);
+        expect(Note.c.transposeBy(-Interval.A1), Note.c.flat);
 
-        expect(Note.c.transposeBy(Interval.diminishedSecond), Note.d.flat.flat);
-        expect(Note.c.transposeBy(-Interval.diminishedSecond), Note.b.sharp);
-        expect(Note.c.transposeBy(Interval.minorSecond), Note.d.flat);
-        expect(Note.c.transposeBy(-Interval.minorSecond), Note.b);
-        expect(Note.c.transposeBy(Interval.majorSecond), Note.d);
-        expect(Note.c.transposeBy(-Interval.majorSecond), Note.b.flat);
-        expect(Note.c.transposeBy(Interval.augmentedSecond), Note.d.sharp);
-        expect(Note.c.transposeBy(-Interval.augmentedSecond), Note.b.flat.flat);
+        expect(Note.c.transposeBy(Interval.d2), Note.d.flat.flat);
+        expect(Note.c.transposeBy(-Interval.d2), Note.b.sharp);
+        expect(Note.c.transposeBy(Interval.m2), Note.d.flat);
+        expect(Note.c.transposeBy(-Interval.m2), Note.b);
+        expect(Note.c.transposeBy(Interval.M2), Note.d);
+        expect(Note.c.transposeBy(-Interval.M2), Note.b.flat);
+        expect(Note.c.transposeBy(Interval.A2), Note.d.sharp);
+        expect(Note.c.transposeBy(-Interval.A2), Note.b.flat.flat);
 
-        expect(Note.e.transposeBy(Interval.minorThird), Note.g);
-        expect(Note.e.transposeBy(-Interval.minorThird), Note.c.sharp);
-        expect(Note.e.transposeBy(Interval.majorThird), Note.g.sharp);
-        expect(Note.e.transposeBy(-Interval.majorThird), Note.c);
-        expect(Note.a.flat.transposeBy(Interval.minorThird), Note.c.flat);
-        expect(Note.a.flat.transposeBy(-Interval.minorThird), Note.f);
-        expect(Note.a.flat.transposeBy(Interval.majorThird), Note.c);
-        expect(Note.a.flat.transposeBy(-Interval.majorThird), Note.f.flat);
+        expect(Note.e.transposeBy(Interval.m3), Note.g);
+        expect(Note.e.transposeBy(-Interval.m3), Note.c.sharp);
+        expect(Note.e.transposeBy(Interval.M3), Note.g.sharp);
+        expect(Note.e.transposeBy(-Interval.M3), Note.c);
+        expect(Note.a.flat.transposeBy(Interval.m3), Note.c.flat);
+        expect(Note.a.flat.transposeBy(-Interval.m3), Note.f);
+        expect(Note.a.flat.transposeBy(Interval.M3), Note.c);
+        expect(Note.a.flat.transposeBy(-Interval.M3), Note.f.flat);
 
-        expect(Note.f.transposeBy(Interval.diminishedFourth), Note.b.flat.flat);
-        expect(Note.f.transposeBy(-Interval.diminishedFourth), Note.c.sharp);
-        expect(Note.f.transposeBy(Interval.perfectFourth), Note.b.flat);
-        expect(Note.f.transposeBy(-Interval.perfectFourth), Note.c);
-        expect(Note.f.transposeBy(Interval.augmentedFourth), Note.b);
-        expect(Note.f.transposeBy(-Interval.augmentedFourth), Note.c.flat);
-        expect(Note.a.transposeBy(Interval.diminishedFourth), Note.d.flat);
-        expect(Note.a.transposeBy(-Interval.diminishedFourth), Note.e.sharp);
-        expect(Note.a.transposeBy(Interval.perfectFourth), Note.d);
-        expect(Note.a.transposeBy(-Interval.perfectFourth), Note.e);
-        expect(Note.a.transposeBy(Interval.augmentedFourth), Note.d.sharp);
-        expect(Note.a.transposeBy(-Interval.augmentedFourth), Note.e.flat);
+        expect(Note.f.transposeBy(Interval.d4), Note.b.flat.flat);
+        expect(Note.f.transposeBy(-Interval.d4), Note.c.sharp);
+        expect(Note.f.transposeBy(Interval.P4), Note.b.flat);
+        expect(Note.f.transposeBy(-Interval.P4), Note.c);
+        expect(Note.f.transposeBy(Interval.A4), Note.b);
+        expect(Note.f.transposeBy(-Interval.A4), Note.c.flat);
+        expect(Note.a.transposeBy(Interval.d4), Note.d.flat);
+        expect(Note.a.transposeBy(-Interval.d4), Note.e.sharp);
+        expect(Note.a.transposeBy(Interval.P4), Note.d);
+        expect(Note.a.transposeBy(-Interval.P4), Note.e);
+        expect(Note.a.transposeBy(Interval.A4), Note.d.sharp);
+        expect(Note.a.transposeBy(-Interval.A4), Note.e.flat);
 
-        expect(Note.d.transposeBy(Interval.diminishedFifth), Note.a.flat);
-        expect(Note.d.transposeBy(-Interval.diminishedFifth), Note.g.sharp);
-        expect(Note.d.transposeBy(Interval.perfectFifth), Note.a);
-        expect(Note.d.transposeBy(-Interval.perfectFifth), Note.g);
-        expect(Note.d.transposeBy(Interval.augmentedFifth), Note.a.sharp);
-        expect(Note.d.transposeBy(-Interval.augmentedFifth), Note.g.flat);
+        expect(Note.d.transposeBy(Interval.d5), Note.a.flat);
+        expect(Note.d.transposeBy(-Interval.d5), Note.g.sharp);
+        expect(Note.d.transposeBy(Interval.P5), Note.a);
+        expect(Note.d.transposeBy(-Interval.P5), Note.g);
+        expect(Note.d.transposeBy(Interval.A5), Note.a.sharp);
+        expect(Note.d.transposeBy(-Interval.A5), Note.g.flat);
 
-        expect(Note.d.transposeBy(Interval.minorSixth), Note.b.flat);
-        expect(Note.d.transposeBy(-Interval.minorSixth), Note.f.sharp);
-        expect(Note.d.transposeBy(Interval.majorSixth), Note.b);
-        expect(Note.d.transposeBy(-Interval.majorSixth), Note.f);
-        expect(Note.f.sharp.transposeBy(Interval.minorSixth), Note.d);
-        expect(Note.f.sharp.transposeBy(-Interval.minorSixth), Note.a.sharp);
-        expect(Note.f.sharp.transposeBy(Interval.majorSixth), Note.d.sharp);
-        expect(Note.f.sharp.transposeBy(-Interval.majorSixth), Note.a);
+        expect(Note.d.transposeBy(Interval.m6), Note.b.flat);
+        expect(Note.d.transposeBy(-Interval.m6), Note.f.sharp);
+        expect(Note.d.transposeBy(Interval.M6), Note.b);
+        expect(Note.d.transposeBy(-Interval.M6), Note.f);
+        expect(Note.f.sharp.transposeBy(Interval.m6), Note.d);
+        expect(Note.f.sharp.transposeBy(-Interval.m6), Note.a.sharp);
+        expect(Note.f.sharp.transposeBy(Interval.M6), Note.d.sharp);
+        expect(Note.f.sharp.transposeBy(-Interval.M6), Note.a);
 
-        expect(Note.c.transposeBy(Interval.minorSeventh), Note.b.flat);
-        expect(Note.c.transposeBy(-Interval.minorSeventh), Note.d);
-        expect(Note.c.transposeBy(Interval.majorSeventh), Note.b);
-        expect(Note.c.transposeBy(-Interval.majorSeventh), Note.d.flat);
-        expect(Note.c.transposeBy(Interval.augmentedSeventh), Note.b.sharp);
-        expect(
-          Note.c.transposeBy(-Interval.augmentedSeventh),
-          Note.d.flat.flat,
-        );
+        expect(Note.c.transposeBy(Interval.m7), Note.b.flat);
+        expect(Note.c.transposeBy(-Interval.m7), Note.d);
+        expect(Note.c.transposeBy(Interval.M7), Note.b);
+        expect(Note.c.transposeBy(-Interval.M7), Note.d.flat);
+        expect(Note.c.transposeBy(Interval.A7), Note.b.sharp);
+        expect(Note.c.transposeBy(-Interval.A7), Note.d.flat.flat);
 
-        expect(Note.c.transposeBy(Interval.diminishedOctave), Note.c.flat);
-        expect(Note.c.transposeBy(Interval.perfectOctave), Note.c);
-        expect(Note.c.transposeBy(Interval.augmentedOctave), Note.c.sharp);
+        expect(Note.c.transposeBy(Interval.d8), Note.c.flat);
+        expect(Note.c.transposeBy(Interval.P8), Note.c);
+        expect(Note.c.transposeBy(Interval.A8), Note.c.sharp);
 
-        expect(Note.c.transposeBy(Interval.minorNinth), Note.d.flat);
-        expect(Note.c.transposeBy(Interval.majorNinth), Note.d);
+        expect(Note.c.transposeBy(Interval.m9), Note.d.flat);
+        expect(Note.c.transposeBy(Interval.M9), Note.d);
 
-        expect(Note.c.transposeBy(Interval.diminishedEleventh), Note.f.flat);
-        expect(Note.c.transposeBy(Interval.perfectEleventh), Note.f);
-        expect(Note.c.transposeBy(Interval.augmentedEleventh), Note.f.sharp);
+        expect(Note.c.transposeBy(Interval.d11), Note.f.flat);
+        expect(Note.c.transposeBy(Interval.P11), Note.f);
+        expect(Note.c.transposeBy(Interval.A11), Note.f.sharp);
 
-        expect(Note.c.transposeBy(Interval.minorThirteenth), Note.a.flat);
-        expect(Note.c.transposeBy(Interval.majorThirteenth), Note.a);
+        expect(Note.c.transposeBy(Interval.m13), Note.a.flat);
+        expect(Note.c.transposeBy(Interval.M13), Note.a);
 
         expect(
           Note.c

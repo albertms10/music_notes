@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 part of '../../music_notes.dart';
 
 /// Distance between two notes.
@@ -16,64 +18,55 @@ final class Interval implements Comparable<Interval> {
   const Interval._(this.size, this.quality)
       : assert(size != 0, 'Size must be non-zero');
 
-  static const diminishedUnison =
-      Interval.perfect(1, PerfectQuality.diminished);
-  static const perfectUnison = Interval.perfect(1, PerfectQuality.perfect);
-  static const augmentedUnison = Interval.perfect(1, PerfectQuality.augmented);
+  static const d1 = Interval.perfect(1, PerfectQuality.diminished);
+  static const P1 = Interval.perfect(1, PerfectQuality.perfect);
+  static const A1 = Interval.perfect(1, PerfectQuality.augmented);
 
-  static const diminishedSecond =
-      Interval.imperfect(2, ImperfectQuality.diminished);
-  static const minorSecond = Interval.imperfect(2, ImperfectQuality.minor);
-  static const majorSecond = Interval.imperfect(2, ImperfectQuality.major);
-  static const augmentedSecond =
-      Interval.imperfect(2, ImperfectQuality.augmented);
+  static const d2 = Interval.imperfect(2, ImperfectQuality.diminished);
+  static const m2 = Interval.imperfect(2, ImperfectQuality.minor);
+  static const M2 = Interval.imperfect(2, ImperfectQuality.major);
+  static const A2 = Interval.imperfect(2, ImperfectQuality.augmented);
 
-  static const diminishedThird =
-      Interval.imperfect(3, ImperfectQuality.diminished);
-  static const minorThird = Interval.imperfect(3, ImperfectQuality.minor);
-  static const majorThird = Interval.imperfect(3, ImperfectQuality.major);
-  static const augmentedThird =
-      Interval.imperfect(3, ImperfectQuality.augmented);
+  static const d3 = Interval.imperfect(3, ImperfectQuality.diminished);
+  static const m3 = Interval.imperfect(3, ImperfectQuality.minor);
+  static const M3 = Interval.imperfect(3, ImperfectQuality.major);
+  static const A3 = Interval.imperfect(3, ImperfectQuality.augmented);
 
-  static const diminishedFourth =
-      Interval.perfect(4, PerfectQuality.diminished);
-  static const perfectFourth = Interval.perfect(4, PerfectQuality.perfect);
-  static const augmentedFourth = Interval.perfect(4, PerfectQuality.augmented);
+  static const d4 = Interval.perfect(4, PerfectQuality.diminished);
+  static const P4 = Interval.perfect(4, PerfectQuality.perfect);
+  static const A4 = Interval.perfect(4, PerfectQuality.augmented);
 
-  static const diminishedFifth = Interval.perfect(5, PerfectQuality.diminished);
-  static const perfectFifth = Interval.perfect(5, PerfectQuality.perfect);
-  static const augmentedFifth = Interval.perfect(5, PerfectQuality.augmented);
+  static const d5 = Interval.perfect(5, PerfectQuality.diminished);
+  static const P5 = Interval.perfect(5, PerfectQuality.perfect);
+  static const A5 = Interval.perfect(5, PerfectQuality.augmented);
 
-  static const diminishedSixth =
-      Interval.imperfect(6, ImperfectQuality.diminished);
-  static const minorSixth = Interval.imperfect(6, ImperfectQuality.minor);
-  static const majorSixth = Interval.imperfect(6, ImperfectQuality.major);
-  static const augmentedSixth =
-      Interval.imperfect(6, ImperfectQuality.augmented);
+  static const d6 = Interval.imperfect(6, ImperfectQuality.diminished);
+  static const m6 = Interval.imperfect(6, ImperfectQuality.minor);
+  static const M6 = Interval.imperfect(6, ImperfectQuality.major);
+  static const A6 = Interval.imperfect(6, ImperfectQuality.augmented);
 
-  static const diminishedSeventh =
-      Interval.imperfect(7, ImperfectQuality.diminished);
-  static const minorSeventh = Interval.imperfect(7, ImperfectQuality.minor);
-  static const majorSeventh = Interval.imperfect(7, ImperfectQuality.major);
-  static const augmentedSeventh =
-      Interval.imperfect(7, ImperfectQuality.augmented);
+  static const d7 = Interval.imperfect(7, ImperfectQuality.diminished);
+  static const m7 = Interval.imperfect(7, ImperfectQuality.minor);
+  static const M7 = Interval.imperfect(7, ImperfectQuality.major);
+  static const A7 = Interval.imperfect(7, ImperfectQuality.augmented);
 
-  static const diminishedOctave =
-      Interval.perfect(8, PerfectQuality.diminished);
-  static const perfectOctave = Interval.perfect(8, PerfectQuality.perfect);
-  static const augmentedOctave = Interval.perfect(8, PerfectQuality.augmented);
+  static const d8 = Interval.perfect(8, PerfectQuality.diminished);
+  static const P8 = Interval.perfect(8, PerfectQuality.perfect);
+  static const A8 = Interval.perfect(8, PerfectQuality.augmented);
 
-  static const minorNinth = Interval.imperfect(9, ImperfectQuality.minor);
-  static const majorNinth = Interval.imperfect(9, ImperfectQuality.major);
+  static const d9 = Interval.imperfect(9, ImperfectQuality.diminished);
+  static const m9 = Interval.imperfect(9, ImperfectQuality.minor);
+  static const M9 = Interval.imperfect(9, ImperfectQuality.major);
+  static const A9 = Interval.imperfect(9, ImperfectQuality.augmented);
 
-  static const diminishedEleventh =
-      Interval.perfect(11, PerfectQuality.diminished);
-  static const perfectEleventh = Interval.perfect(11, PerfectQuality.perfect);
-  static const augmentedEleventh =
-      Interval.perfect(11, PerfectQuality.augmented);
+  static const d11 = Interval.perfect(11, PerfectQuality.diminished);
+  static const P11 = Interval.perfect(11, PerfectQuality.perfect);
+  static const A11 = Interval.perfect(11, PerfectQuality.augmented);
 
-  static const minorThirteenth = Interval.imperfect(13, ImperfectQuality.minor);
-  static const majorThirteenth = Interval.imperfect(13, ImperfectQuality.major);
+  static const d13 = Interval.imperfect(13, ImperfectQuality.diminished);
+  static const m13 = Interval.imperfect(13, ImperfectQuality.minor);
+  static const M13 = Interval.imperfect(13, ImperfectQuality.major);
+  static const A13 = Interval.imperfect(13, ImperfectQuality.augmented);
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
@@ -111,10 +104,10 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.fromSemitonesQuality(4) == Interval.minorThird
-  /// Interval.fromSemitonesQuality(7) == Interval.augmentedFourth
+  /// Interval.fromSemitonesQuality(4) == Interval.m3
+  /// Interval.fromSemitonesQuality(7) == Interval.A4
   /// Interval.fromSemitonesQuality(7, PerfectQuality.diminished)
-  ///   == Interval.diminishedFifth
+  ///   == Interval.d5
   /// ```
   factory Interval.fromSemitonesQuality(
     int semitones, [
@@ -142,10 +135,10 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.majorSecond.semitones == 2
-  /// Interval.diminishedFifth.semitones == 6
-  /// Interval.augmentedFourth.semitones == 6
-  /// (-Interval.majorThird).semitones == -4
+  /// Interval.M2.semitones == 2
+  /// Interval.d5.semitones == 6
+  /// Interval.A4.semitones == 6
+  /// (-Interval.M3).semitones == -4
   /// ```
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
@@ -153,9 +146,9 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.majorSecond.isDescending == false
-  /// (-Interval.perfectFourth).isDescending == true
-  /// Interval.diminishedUnison.isDescending == false
+  /// Interval.M2.isDescending == false
+  /// (-Interval.P4).isDescending == true
+  /// Interval.d1.isDescending == false
   /// ```
   bool get isDescending => size.isNegative;
 
@@ -163,11 +156,11 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.minorSecond.descending() == -Interval.minorSecond
-  /// Interval.majorThird.descending(isDescending: false) == Interval.majorThird
-  /// (-Interval.perfectFifth).descending() == -Interval.perfectFifth
-  /// (-Interval.majorSeventh).descending(isDescending: false)
-  ///   == Interval.majorSeventh
+  /// Interval.m2.descending() == -Interval.m2
+  /// Interval.M3.descending(isDescending: false) == Interval.M3
+  /// (-Interval.P5).descending() == -Interval.P5
+  /// (-Interval.M7).descending(isDescending: false)
+  ///   == Interval.M7
   /// ```
   Interval descending({bool isDescending = true}) =>
       this.isDescending != isDescending ? -this : Interval._(size, quality);
@@ -176,10 +169,10 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.minorThird.inverted == Interval.majorSixth
-  /// Interval.augmentedFourth.inverted == Interval.diminishedFifth
-  /// Interval.majorSeventh.inverted == Interval.minorSecond
-  /// Interval.perfectUnison.inverted == Interval.perfectOctave
+  /// Interval.m3.inverted == Interval.M6
+  /// Interval.A4.inverted == Interval.d5
+  /// Interval.M7.inverted == Interval.m2
+  /// Interval.P1.inverted == Interval.P8
   /// ```
   Interval get inverted => Interval._(size.inverted, quality.inverted);
 
@@ -187,9 +180,9 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.minorNinth.simplified == Interval.minorSecond
-  /// Interval.perfectEleventh.simplified == Interval.perfectFourth
-  /// Interval.majorThird.simplified == Interval.majorThird
+  /// Interval.m9.simplified == Interval.m2
+  /// Interval.P11.simplified == Interval.P4
+  /// Interval.M3.simplified == Interval.M3
   /// ```
   Interval get simplified => Interval._(size.simplified, quality);
 
@@ -197,9 +190,9 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.minorSecond + Interval.minorSecond == Interval.diminishedThird
-  /// Interval.minorSecond + Interval.majorSecond == Interval.minorThird
-  /// Interval.majorSecond + Interval.perfectFourth == Interval.perfectFifth
+  /// Interval.m2 + Interval.m2 == Interval.d3
+  /// Interval.m2 + Interval.M2 == Interval.m3
+  /// Interval.M2 + Interval.P4 == Interval.P5
   /// ```
   Interval operator +(Interval other) {
     final initialNote = Note.c.inOctave(4);
@@ -212,10 +205,8 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// -Interval.minorThird
-  ///   == const Interval.imperfect(-3, ImperfectQuality.minor)
-  /// -const Interval.perfect(-5, PerfectQuality.perfect)
-  ///   == Interval.perfectFifth
+  /// -Interval.m3 == const Interval.imperfect(-3, ImperfectQuality.minor)
+  /// -const Interval.perfect(-5, PerfectQuality.perfect) == Interval.P5
   /// ```
   Interval operator -() => Interval._(-size, quality);
 
