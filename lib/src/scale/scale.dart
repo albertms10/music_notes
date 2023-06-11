@@ -83,6 +83,28 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
+  /// Returns the [Chord<T>] for the [harmonicFunction] of this [Scale<T>].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.major.scale.functionChord(ScaleDegree.v / ScaleDegree.v)
+  ///   == Note.a.majorTriad
+  /// Note.b.flat.minor.scale.functionChord(ScaleDegree.ii / ScaleDegree.v)
+  ///   == Note.g.minorTriad
+  /// ```
+  Chord<T> functionChord(HarmonicFunction harmonicFunction) =>
+      harmonicFunction.scaleDegrees
+          .skip(1)
+          .toList()
+          .reversed
+          .fold(
+            this,
+            (scale, scaleDegree) => ScalePattern.fromChordPattern(
+              scale.pattern.degreePattern(scaleDegree),
+            ).on(scale.degree(scaleDegree)),
+          )
+          .degreeChord(harmonicFunction.scaleDegrees.first);
+
   /// Returns this [Scale<T>] transposed by [interval].
   ///
   /// Example:
