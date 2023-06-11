@@ -129,7 +129,7 @@ void main() {
             Note.c.majorTriad,
           );
           expect(
-            Note.d.major.scale.functionChord(HarmonicFunction.dominantVII),
+            Note.d.major.scale.functionChord(HarmonicFunction.vii),
             Note.c.sharp.diminishedTriad,
           );
 
@@ -140,15 +140,13 @@ void main() {
             Note.a.majorTriad,
           );
           expect(
-            Note.f.major.scale.functionChord(
-              HarmonicFunction.subdominantIV / HarmonicFunction.vi,
-            ),
+            Note.f.major.scale
+                .functionChord(HarmonicFunction.iv / HarmonicFunction.vi),
             Note.g.minorTriad,
           );
           expect(
-            Note.b.flat.major.scale.functionChord(
-              HarmonicFunction.vi / HarmonicFunction.subdominantIV,
-            ),
+            Note.b.flat.major.scale
+                .functionChord(HarmonicFunction.vi / HarmonicFunction.iv),
             Note.c.minorTriad,
           );
           expect(
@@ -168,9 +166,7 @@ void main() {
           );
           expect(
             Note.b.major.scale.functionChord(
-              HarmonicFunction.subdominantIV /
-                  HarmonicFunction.subdominantIV /
-                  HarmonicFunction.subdominantIV,
+              HarmonicFunction.iv / HarmonicFunction.iv / HarmonicFunction.iv,
             ),
             Note.d.majorTriad,
           );
