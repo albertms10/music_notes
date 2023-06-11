@@ -20,8 +20,8 @@ class HarmonicFunction {
   @override
   String toString() => scaleDegrees.join('/');
 
-  /// Returns the [HarmonicFunction] relating this [HarmonicFunction] to
-  /// [harmonicFunction].
+  /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
+  /// [other].
   ///
   /// Example:
   /// ```dart
@@ -32,6 +32,15 @@ class HarmonicFunction {
   ///        ScaleDegree.v.major, ScaleDegree.v.major, ScaleDegree.v.major,
   ///      ])
   /// ```
-  HarmonicFunction operator /(HarmonicFunction harmonicFunction) =>
-      HarmonicFunction([...scaleDegrees, ...harmonicFunction.scaleDegrees]);
+  HarmonicFunction operator /(HarmonicFunction other) =>
+      HarmonicFunction([...scaleDegrees, ...other.scaleDegrees]);
+
+  @override
+  bool operator ==(Object other) =>
+      other is HarmonicFunction &&
+      const ListEquality<ScaleDegree>()
+          .equals(scaleDegrees, other.scaleDegrees);
+
+  @override
+  int get hashCode => Object.hashAll(scaleDegrees);
 }
