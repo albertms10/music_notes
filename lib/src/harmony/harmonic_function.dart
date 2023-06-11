@@ -25,9 +25,9 @@ class HarmonicFunction {
   ///
   /// Example:
   /// ```dart
-  /// HarmonicFunction.dominant /
-  ///   HarmonicFunction.dominant /
-  ///   HarmonicFunction.dominant
+  /// HarmonicFunction.dominantV /
+  ///   HarmonicFunction.dominantV /
+  ///   HarmonicFunction.dominantV
   ///   == HarmonicFunction([
   ///        ScaleDegree.v.major, ScaleDegree.v.major, ScaleDegree.v.major,
   ///      ])
