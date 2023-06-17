@@ -58,6 +58,6 @@ jobs:
           dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
 
       - name: Coveralls upload
-        uses: coverallsapp/github-action@67662d24394fd74bffcf7b462d1b432814159afd # v2.0.0
+        uses: coverallsapp/github-action@c7885c00cb7ec0b8f9f5ff3f53cddb980f7a4412 # v2.2.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
