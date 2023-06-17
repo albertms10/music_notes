@@ -66,6 +66,28 @@ class PerfectQuality extends Quality {
   static const PerfectQuality doublyAugmented = PerfectQuality(2);
   static const PerfectQuality triplyAugmented = PerfectQuality(3);
 
+  /// Parse [source] as a [PerfectQuality] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [PerfectQuality], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.parse('P') == PerfectQuality.perfect
+  /// PerfectQuality.parse('AA') == PerfectQuality.doublyAugmented
+  /// PerfectQuality.parse('z') // throws a FormatException
+  /// ```
+  factory PerfectQuality.parse(String source) {
+    final qualityParts = source.split('');
+
+    return switch (qualityParts.first) {
+      'A' => PerfectQuality(qualityParts.length),
+      'P' => PerfectQuality.perfect,
+      'd' => PerfectQuality(-qualityParts.length),
+      _ => throw FormatException('Invalid perfect Interval', source),
+    };
+  }
+
   @override
   String? get abbreviation => switch (semitones) {
         -3 => 'ddd',
@@ -111,6 +133,29 @@ class ImperfectQuality extends Quality {
   static const ImperfectQuality augmented = ImperfectQuality(2);
   static const ImperfectQuality doublyAugmented = ImperfectQuality(3);
   static const ImperfectQuality triplyAugmented = ImperfectQuality(4);
+
+  /// Parse [source] as a [ImperfectQuality] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ImperfectQuality], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.parse('M') == ImperfectQuality.major
+  /// ImperfectQuality.parse('d') == ImperfectQuality.diminished
+  /// ImperfectQuality.parse('z') // throws a FormatException
+  /// ```
+  factory ImperfectQuality.parse(String source) {
+    final qualityParts = source.split('');
+
+    return switch (qualityParts.first) {
+      'A' => ImperfectQuality(qualityParts.length + 1),
+      'M' => ImperfectQuality.major,
+      'm' => ImperfectQuality.minor,
+      'd' => ImperfectQuality(-qualityParts.length),
+      _ => throw FormatException('Invalid imperfect Interval', source),
+    };
+  }
 
   @override
   String? get abbreviation => switch (semitones) {

@@ -12,6 +12,63 @@ final class PositionedNote
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
   const PositionedNote(this.note, [this.octave = 4]);
 
+  static const _superPrime = '′';
+  static const _subPrime = '͵';
+
+  /// Parse [source] as a [PositionedNote] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [PositionedNote], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// PositionedNote.parse('F#3') == Note.f.sharp.inOctave(3)
+  /// PositionedNote.parse("c'") == Note.c.inOctave(4)
+  /// PositionedNote.parse('z') // throws a FormatException
+  /// ```
+  factory PositionedNote.parse(String source) {
+    final scientificNotationMatch =
+        RegExp(r'(.+?)([-]?\d+)').firstMatch(source);
+    if (scientificNotationMatch != null) {
+      return PositionedNote(
+        Note.parse(scientificNotationMatch[1]!),
+        int.parse(scientificNotationMatch[2]!),
+      );
+    }
+
+    final helmholtzNotationMatch = RegExp("(^[A-Ga-g${const [
+      Accidental._doubleSharpSymbol,
+      Accidental._sharpSymbol,
+      Accidental._flatSymbol,
+      Accidental._doubleFlatSymbol,
+      'x',
+      '#',
+      'b',
+    ].join()}]+)(,+|'+|$_subPrime+|$_superPrime+)?\$")
+        .firstMatch(source);
+
+    if (helmholtzNotationMatch != null) {
+      const middleOctave = 3;
+      final notePart = helmholtzNotationMatch[1]!;
+      final primes = helmholtzNotationMatch[2]?.split('');
+
+      return PositionedNote(
+        Note.parse(notePart),
+        notePart[0].isUpperCase
+            ? switch (primes?.first) {
+                ',' || _subPrime => middleOctave - primes!.length - 1,
+                _ => middleOctave - 1,
+              }
+            : switch (primes?.first) {
+                "'" || _superPrime => middleOctave + primes!.length,
+                _ => middleOctave,
+              },
+      );
+    }
+
+    throw FormatException('Invalid PositionedNote', source);
+  }
+
   /// Returns the [octave] that corresponds to the semitones from root height.
   ///
   /// Example:
@@ -223,16 +280,12 @@ final class PositionedNote
         note.accidental != Accidental.natural ? note.accidental.symbol : '';
 
     if (octave >= 3) {
-      const superPrime = '′';
-
       return '${note.baseNote.name}$accidentalSymbol'
-          '${superPrime * (octave - 3)}';
+          '${_superPrime * (octave - 3)}';
     }
 
-    const subPrime = '͵';
-
     return '${note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${subPrime * (octave - 2).abs()}';
+        '${_subPrime * (octave - 2).abs()}';
   }
 
   @override

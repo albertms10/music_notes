@@ -131,6 +131,28 @@ final class Interval implements Comparable<Interval> {
         .first;
   }
 
+  /// Parse [source] as an [Interval] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Interval], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.parse('m3') == Interval.m3
+  /// Interval.parse('P5') == Interval.perfectFifth
+  /// Interval.parse('z') // throws a FormatException
+  /// ```
+  factory Interval.parse(String source) {
+    final match = RegExp(r'(\w+?)(\d+)').firstMatch(source);
+    if (match == null) throw FormatException('Invalid Interval', source);
+
+    final size = int.parse(match[2]!);
+    final parseFactory =
+        size.isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
+
+    return Interval._(size, parseFactory(match[1]!));
+  }
+
   /// Returns the number of semitones of this [Interval].
   ///
   /// Example:

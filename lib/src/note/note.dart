@@ -35,6 +35,22 @@ final class Note implements Comparable<Note>, Scalable<Note> {
     return note.transposeBy(-Interval.m3);
   }
 
+  /// Parse [source] as a [Note] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Note], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.parse('Bb') == Note.b.flat
+  /// Note.parse('c') == Note.c
+  /// Note.parse('z') // throws a FormatException
+  /// ```
+  factory Note.parse(String source) => Note(
+        BaseNote.parse(source[0]),
+        Accidental.parse(source.length > 1 ? source.substring(1) : ''),
+      );
+
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
       a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
