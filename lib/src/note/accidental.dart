@@ -39,7 +39,7 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.parse('z') // throws a FormatException
   /// ```
   factory Accidental.parse(String source) {
-    // Safely split UTF-16 characters using `runes`.
+    // Safely split UTF-16 code units using `runes`.
     final value = source.runes.fold(
       0,
       (acc, rune) =>
