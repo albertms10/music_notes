@@ -10,7 +10,6 @@ import 'package:meta/meta.dart' show immutable;
 import 'utils/int_mod_extension.dart';
 import 'utils/iterable.dart';
 import 'utils/num_extension.dart';
-import 'utils/string_extension.dart';
 
 part 'src/chordable.dart';
 part 'src/enharmonic.dart';
