@@ -101,6 +101,49 @@ void main() {
       });
     });
 
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => Interval.parse('x'), throwsFormatException);
+        expect(() => Interval.parse('x4'), throwsFormatException);
+        expect(() => Interval.parse('x6'), throwsFormatException);
+      });
+
+      test('should parse source as an Interval and return its value', () {
+        expect(
+          Interval.parse('AA4'),
+          const Interval.perfect(4, PerfectQuality.doublyAugmented),
+        );
+        expect(Interval.parse('A5'), Interval.A5);
+        expect(Interval.parse('P1'), Interval.P1);
+        expect(
+          Interval.parse('P22'),
+          const Interval.perfect(22, PerfectQuality.perfect),
+        );
+        expect(Interval.parse('d5'), Interval.d5);
+        expect(
+          Interval.parse('dd8'),
+          const Interval.perfect(8, PerfectQuality.doublyDiminished),
+        );
+
+        expect(
+          Interval.parse('AA3'),
+          const Interval.imperfect(3, ImperfectQuality.doublyAugmented),
+        );
+        expect(Interval.parse('A6'), Interval.A6);
+        expect(Interval.parse('M3'), Interval.M3);
+        expect(
+          Interval.parse('M16'),
+          const Interval.imperfect(16, ImperfectQuality.major),
+        );
+        expect(Interval.parse('m2'), Interval.m2);
+        expect(Interval.parse('d7'), Interval.d7);
+        expect(
+          Interval.parse('dd9'),
+          const Interval.imperfect(9, ImperfectQuality.doublyDiminished),
+        );
+      });
+    });
+
     group('.semitones', () {
       test('should return the number of semitones of this Interval', () {
         expect(Interval.d1.semitones, -1);

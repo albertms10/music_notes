@@ -37,6 +37,28 @@ enum BaseNote {
   static BaseNote fromOrdinal(int ordinal) =>
       BaseNote.values[ordinal.nModExcludeZero(BaseNote.values.length) - 1];
 
+  /// Parse [source] as a [BaseNote] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [BaseNote], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// BaseNote.parse('B') == BaseNote.b
+  /// BaseNote.parse('a') == BaseNote.a
+  /// BaseNote.parse('z') // throws a FormatException
+  /// ```
+  factory BaseNote.parse(String source) => switch (source.toLowerCase()) {
+        'a' => a,
+        'b' => b,
+        'c' => c,
+        'd' => d,
+        'e' => e,
+        'f' => f,
+        'g' => g,
+        _ => throw FormatException('Invalid BaseNote', source, 0),
+      };
+
   /// Returns the ordinal number of this [BaseNote] enum item.
   ///
   /// Example:

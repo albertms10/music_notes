@@ -5,6 +5,40 @@ import 'package:test/test.dart';
 
 void main() {
   group('PositionedNote', () {
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => PositionedNote.parse('x'), throwsFormatException);
+        expect(() => PositionedNote.parse('invalid'), throwsFormatException);
+      });
+
+      test('should parse source as a PositionedNote and return its value', () {
+        expect(PositionedNote.parse('A4'), Note.a.inOctave(4));
+        expect(PositionedNote.parse('d3'), Note.d.inOctave(3));
+        expect(PositionedNote.parse('C-1'), Note.c.inOctave(-1));
+        expect(PositionedNote.parse('bb-1'), Note.b.flat.inOctave(-1));
+        expect(PositionedNote.parse('G#6'), Note.g.sharp.inOctave(6));
+        expect(PositionedNote.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
+
+        expect(PositionedNote.parse('C͵͵͵'), Note.c.inOctave(-1));
+        expect(PositionedNote.parse('C,,'), Note.c.inOctave(0));
+        expect(PositionedNote.parse('Gb,'), Note.g.flat.inOctave(1));
+        expect(PositionedNote.parse('A'), Note.a.inOctave(2));
+        expect(PositionedNote.parse('f'), Note.f.inOctave(3));
+        expect(PositionedNote.parse("d#'"), Note.d.sharp.inOctave(4));
+        expect(PositionedNote.parse("ebb''"), Note.e.flat.flat.inOctave(5));
+        expect(PositionedNote.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+
+        expect(
+          PositionedNote.parse(Note.b.flat.flat.inOctave(-2).scientificName),
+          Note.b.flat.flat.inOctave(-2),
+        );
+        expect(
+          PositionedNote.parse(Note.a.sharp.inOctave(7).helmholtzName),
+          Note.a.sharp.inOctave(7),
+        );
+      });
+    });
+
     group('.octaveFromSemitones', () {
       test(
         'should return the octave that corresponds to the semitones from root '

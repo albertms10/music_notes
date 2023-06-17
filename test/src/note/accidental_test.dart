@@ -19,6 +19,39 @@ void main() {
       });
     });
 
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => Accidental.parse('invalid'), throwsFormatException);
+      });
+
+      test('should parse source as an Accidental and return its value', () {
+        expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
+        expect(Accidental.parse('#xx'), const Accidental(5));
+        expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
+        expect(Accidental.parse('xx'), const Accidental(4));
+        expect(Accidental.parse('♯𝄪'), Accidental.tripleSharp);
+        expect(Accidental.parse('#x'), Accidental.tripleSharp);
+        expect(Accidental.parse('𝄪'), Accidental.doubleSharp);
+        expect(Accidental.parse('x'), Accidental.doubleSharp);
+        expect(Accidental.parse('♯'), Accidental.sharp);
+        expect(Accidental.parse('#'), Accidental.sharp);
+
+        expect(Accidental.parse(''), Accidental.natural);
+        expect(Accidental.parse('♮'), Accidental.natural);
+
+        expect(Accidental.parse('♭'), Accidental.flat);
+        expect(Accidental.parse('b'), Accidental.flat);
+        expect(Accidental.parse('𝄫'), Accidental.doubleFlat);
+        expect(Accidental.parse('bb'), Accidental.doubleFlat);
+        expect(Accidental.parse('♭𝄫'), Accidental.tripleFlat);
+        expect(Accidental.parse('bbb'), Accidental.tripleFlat);
+        expect(Accidental.parse('𝄫𝄫'), const Accidental(-4));
+        expect(Accidental.parse('bbbb'), const Accidental(-4));
+        expect(Accidental.parse('♭𝄫𝄫'), const Accidental(-5));
+        expect(Accidental.parse('bbbbb'), const Accidental(-5));
+      });
+    });
+
     group('.name', () {
       test('should return the name of this Accidental', () {
         expect(const Accidental(4).name, isNull);

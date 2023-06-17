@@ -3,6 +3,30 @@ import 'package:test/test.dart';
 
 void main() {
   group('BaseNote', () {
+    test('should throw a FormatException when source is invalid', () {
+      expect(() => BaseNote.parse('x'), throwsFormatException);
+    });
+
+    group('.parse()', () {
+      test('should parse source as a BaseNote and return its value', () {
+        expect(BaseNote.parse('a'), BaseNote.a);
+        expect(BaseNote.parse('b'), BaseNote.b);
+        expect(BaseNote.parse('c'), BaseNote.c);
+        expect(BaseNote.parse('d'), BaseNote.d);
+        expect(BaseNote.parse('e'), BaseNote.e);
+        expect(BaseNote.parse('f'), BaseNote.f);
+        expect(BaseNote.parse('g'), BaseNote.g);
+
+        expect(BaseNote.parse('A'), BaseNote.a);
+        expect(BaseNote.parse('B'), BaseNote.b);
+        expect(BaseNote.parse('C'), BaseNote.c);
+        expect(BaseNote.parse('D'), BaseNote.d);
+        expect(BaseNote.parse('E'), BaseNote.e);
+        expect(BaseNote.parse('F'), BaseNote.f);
+        expect(BaseNote.parse('G'), BaseNote.g);
+      });
+    });
+
     group('.intervalSize()', () {
       test(
         'should return the Interval size between this BaseNote and other',

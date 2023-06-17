@@ -50,6 +50,42 @@ void main() {
       });
     });
 
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => PerfectQuality.parse('x'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('x'), throwsFormatException);
+      });
+
+      test(
+        'should parse source as a PerfectQuality and return its value',
+        () {
+          expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
+          expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
+          expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
+          expect(PerfectQuality.parse('d'), PerfectQuality.diminished);
+          expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
+        },
+      );
+
+      test(
+        'should parse source as an ImperfectQuality and return its value',
+        () {
+          expect(
+            ImperfectQuality.parse('AAA'),
+            ImperfectQuality.triplyAugmented,
+          );
+          expect(ImperfectQuality.parse('A'), ImperfectQuality.augmented);
+          expect(ImperfectQuality.parse('M'), ImperfectQuality.major);
+          expect(ImperfectQuality.parse('m'), ImperfectQuality.minor);
+          expect(ImperfectQuality.parse('d'), ImperfectQuality.diminished);
+          expect(
+            ImperfectQuality.parse('ddd'),
+            ImperfectQuality.triplyDiminished,
+          );
+        },
+      );
+    });
+
     group('.inverted', () {
       test('should return the inverted of this Quality', () {
         expect(

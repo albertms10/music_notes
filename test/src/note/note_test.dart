@@ -5,6 +5,25 @@ import 'package:test/test.dart';
 
 void main() {
   group('Note', () {
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => Note.parse('x'), throwsFormatException);
+      });
+
+      test('should parse source as a Note and return its value', () {
+        expect(Note.parse('d'), Note.d);
+        expect(Note.parse('g'), Note.g);
+        expect(Note.parse('Bb'), Note.b.flat);
+        expect(Note.parse('bb'), Note.b.flat);
+        expect(Note.parse('f♯'), Note.f.sharp);
+        expect(Note.parse('d#'), Note.d.sharp);
+        expect(Note.parse('A♭'), Note.a.flat);
+        expect(Note.parse('abb'), Note.a.flat.flat);
+        expect(Note.parse('cx'), Note.c.sharp.sharp);
+        expect(Note.parse('e#x'), Note.e.sharp.sharp.sharp);
+      });
+    });
+
     group('.semitones', () {
       test('should return the semitones value of this Note', () {
         expect(Note.b.sharp.semitones, 1);

@@ -27,6 +27,36 @@ final class Accidental implements Comparable<Accidental> {
   static const String _flatSymbol = '♭';
   static const String _doubleFlatSymbol = '𝄫';
 
+  /// Parse [source] as an [Accidental] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Accidental], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.parse('♭') == Accidental.flat
+  /// Accidental.parse('x') == Accidental.doubleSharp
+  /// Accidental.parse('z') // throws a FormatException
+  /// ```
+  factory Accidental.parse(String source) {
+    // Safely split UTF-16 code units using `runes`.
+    final value = source.runes.fold(
+      0,
+      (acc, rune) =>
+          acc +
+          switch (String.fromCharCode(rune)) {
+            _doubleSharpSymbol || 'x' => 2,
+            _sharpSymbol || '#' => 1,
+            _naturalSymbol || '' => 0,
+            _flatSymbol || 'b' => -1,
+            _doubleFlatSymbol => -2,
+            _ => throw FormatException('Invalid Accidental', source),
+          },
+    );
+
+    return Accidental(value);
+  }
+
   /// The name of this [Accidental].
   ///
   /// Example:
