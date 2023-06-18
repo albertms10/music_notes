@@ -156,39 +156,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.a.flat.fifthsDistanceWith(Note.d.flat) == -1
   /// ```
   int fifthsDistanceWith(Note other) =>
-      shortestIntervalDistance(other, Interval.P5);
-
-  /// Returns the iteration distance of an [interval] between
-  /// this [Note] and [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.shortestIntervalDistance(Note.d, Interval.P5) == 2
-  /// ```
-  int shortestIntervalDistance(Note other, Interval interval) {
-    final distanceFlat = _semitonesDistance(other, interval.inverted);
-    final distanceSharp = _semitonesDistance(other, interval);
-
-    return distanceFlat < distanceSharp ? -distanceFlat : distanceSharp;
-  }
-
-  /// Returns the iteration distance of [interval] between this [Note] and
-  /// [other].
-  ///
-  /// It is mainly used by [shortestIntervalDistance].
-  int _semitonesDistance(Note other, Interval interval) {
-    if (this == other) return 0;
-
-    var distance = 1;
-    var tempNote = transposeBy(interval);
-    const maxIteration = 50;
-    while (tempNote != other && distance < maxIteration) {
-      distance++;
-      tempNote = tempNote.transposeBy(interval);
-    }
-
-    return distance;
-  }
+      Interval.P5.distanceBetween(this, other);
 
   /// Returns the exact interval between this [Note] and [other].
   ///

@@ -208,6 +208,26 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get simplified => Interval._(size.simplified, quality);
 
+  /// Returns the iteration distance of this [Interval] between [note1] and
+  /// [note2].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.distanceBetween(Note.c, Note.d) == 2
+  /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 4
+  /// ```
+  int distanceBetween(Note note1, Note note2) {
+    var distance = 0;
+    var (ascendingNote, descendingNote) = (note1, note1);
+    while (true) {
+      if (ascendingNote == note2) return distance;
+      if (descendingNote == note2) return -distance;
+      distance++;
+      ascendingNote = ascendingNote.transposeBy(this);
+      descendingNote = descendingNote.transposeBy(inverted);
+    }
+  }
+
   /// Adds [other] to this [Interval].
   ///
   /// Example:
