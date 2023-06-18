@@ -214,7 +214,9 @@ final class Interval implements Comparable<Interval> {
   /// Example:
   /// ```dart
   /// Interval.P5.distanceBetween(Note.c, Note.d) == 2
-  /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 4
+  /// Interval.P5.distanceBetween(Note.a, Note.g) == -2
+  /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d) == -4
+  /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 3
   /// ```
   int distanceBetween(Note note1, Note note2) {
     var distance = 0;
