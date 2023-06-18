@@ -7,9 +7,6 @@ final class Tonality implements Comparable<Tonality> {
 
   const Tonality(this.note, this.mode);
 
-  factory Tonality.fromDistance(int distance, TonalMode mode) =>
-      Tonality(Note.fromDistance(distance, mode), mode);
-
   /// Returns the [TonalMode.major] or [TonalMode.minor] relative [Tonality]
   /// of this [Tonality].
   ///

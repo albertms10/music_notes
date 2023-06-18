@@ -45,23 +45,6 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   int get distance => notes.length * (accidental == Accidental.flat ? -1 : 1);
 
-  /// Returns the [Note] that corresponds to the major [Tonality] of this
-  /// [KeySignature].
-  ///
-  /// Example:
-  /// ```dart
-  /// KeySignature.fromDistance(0).majorNote == Note.c
-  /// KeySignature.fromDistance(2).majorNote == Note.d
-  /// ```
-  Note get majorNote {
-    final fifthInterval =
-        Interval.P5.descending(isDescending: accidental == Accidental.flat);
-
-    return EnharmonicNote(
-      (fifthInterval.semitones * notes.length + 1).chromaticModExcludeZero,
-    ).resolveClosestSpelling(accidental.increment(notes.length ~/ 9));
-  }
-
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
   /// [mode].
   ///
@@ -70,20 +53,35 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.fromDistance(0).tonality(TonalMode.major) == Note.c.major
   /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality tonality(TonalMode mode) => Tonality.fromDistance(distance, mode);
+  Tonality tonality(TonalMode mode) {
+    final cachedTonalities = tonalities;
+
+    return switch (mode) {
+      TonalMode.major => cachedTonalities.major,
+      TonalMode.minor => cachedTonalities.minor,
+    };
+  }
 
   /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.fromDistance(-2).tonalities == {
-  ///   Note.b.flat.major,
-  ///   Note.g.minor,
-  /// }
+  /// KeySignature.fromDistance(-2).tonalities == (
+  ///   major: Note.b.flat.major,
+  ///   minor: Note.g.minor,
+  /// )
   /// ```
-  Set<Tonality> get tonalities =>
-      {tonality(TonalMode.major), tonality(TonalMode.minor)};
+  ({Tonality major, Tonality minor}) get tonalities {
+    final interval = distance.isNegative ? Interval.P4 : Interval.P5;
+    final rootNote = List.filled(distance.abs(), null)
+        .fold(Note.c, (note, _) => note.transposeBy(interval));
+
+    return (
+      major: rootNote.major,
+      minor: rootNote.transposeBy(-Interval.m3).minor
+    );
+  }
 
   @override
   String toString() {
