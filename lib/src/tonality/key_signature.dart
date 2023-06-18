@@ -2,57 +2,62 @@ part of '../../music_notes.dart';
 
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
-  final int accidentals;
-  final Accidental accidental;
+  final List<Note> notes;
 
-  const KeySignature(this.accidentals, [this.accidental = Accidental.natural])
-      : assert(accidentals >= 0, 'Provide a positive number or zero'),
-        assert(
-          identical(accidental, Accidental.flat) ||
-              identical(accidental, Accidental.natural) ||
-              identical(accidental, Accidental.sharp),
-          'Provide a valid accidental for a key signature',
-        ),
-        assert(
-          (accidentals == 0) ^ !identical(accidental, Accidental.natural),
-          'Provide an accidental when accidentals is greater than 0',
-        );
+  /// Creates a new [KeySignature] from [notes].
+  const KeySignature(this.notes);
 
-  KeySignature.fromDistance(int distance)
-      : this(
-          distance.abs(),
-          distance == 0
-              ? Accidental.natural
-              : distance.isNegative
-                  ? Accidental.flat
-                  : Accidental.sharp,
-        );
+  /// Creates a new [KeySignature] from fifths [distance].
+  factory KeySignature.fromDistance(int distance) {
+    if (distance == 0) return const KeySignature([]);
+
+    final interval = distance.isNegative ? Interval.P4 : Interval.P5;
+    final startingNote = distance.isNegative ? Note.b.flat : Note.f.sharp;
+
+    return KeySignature(
+      List.filled(distance.abs() - 1, null).fold(
+        [startingNote],
+        (notes, _) => [...notes, notes.last.transposeBy(interval)],
+      ),
+    );
+  }
+
+  /// Returns the main Accidental of this [KeySignature].
+  ///
+  /// Example:
+  /// ```dart
+  /// const KeySignature([Note.f.sharp, Note.c.sharp]).accidental
+  ///   == Accidental.sharp
+  /// const KeySignature([Note.b.flat]).accidental == Accidental.flat
+  /// ```
+  Accidental get accidental =>
+      notes.firstOrNull?.accidental ?? Accidental.natural;
 
   /// Returns the fifths distance of this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(0).distance == 0
-  /// const KeySignature(3, Accidental.sharp).distance == 3
-  /// const KeySignature(4, Accidental.flat).distance == -4
+  /// KeySignature.fromDistance(0).distance == 0
+  /// KeySignature.fromDistance(3).distance == 3
+  /// KeySignature.fromDistance(-4).distance == -4
   /// ```
-  int get distance => accidentals * (accidental == Accidental.flat ? -1 : 1);
+  int get distance => notes.length * (accidental == Accidental.flat ? -1 : 1);
 
   /// Returns the [Note] that corresponds to the major [Tonality] of this
   /// [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(0).majorNote == Note.c
-  /// const KeySignature(2, Accidental.sharp).majorNote == Note.d
+  /// KeySignature.fromDistance(0).majorNote == Note.c
+  /// KeySignature.fromDistance(2).majorNote == Note.d
   /// ```
   Note get majorNote {
     final fifthInterval =
         Interval.P5.descending(isDescending: accidental == Accidental.flat);
 
     return EnharmonicNote(
-      (fifthInterval.semitones * accidentals + 1).chromaticModExcludeZero,
-    ).resolveClosestSpelling(accidental.increment(accidentals ~/ 9));
+      (fifthInterval.semitones * notes.length + 1).chromaticModExcludeZero,
+    ).resolveClosestSpelling(accidental.increment(notes.length ~/ 9));
   }
 
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
@@ -60,19 +65,17 @@ final class KeySignature implements Comparable<KeySignature> {
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(0).tonality(TonalMode.major) == Note.c.major
-  /// const KeySignature(2, Accidental.flat).tonality(TonalMode.minor)
-  ///   == Note.g.minor
+  /// KeySignature.fromDistance(0).tonality(TonalMode.major) == Note.c.major
+  /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality tonality(TonalMode mode) =>
-      Tonality.fromAccidentals(accidentals, mode, accidental);
+  Tonality tonality(TonalMode mode) => Tonality.fromDistance(distance, mode);
 
   /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature(2, Accidental.flat).tonalities == {
+  /// KeySignature.fromDistance(-2).tonalities == {
   ///   Note.b.flat.major,
   ///   Note.g.minor,
   /// }
@@ -82,15 +85,17 @@ final class KeySignature implements Comparable<KeySignature> {
 
   @override
   String toString() {
-    if (accidentals == 0) return '$accidentals ${accidental.symbol}';
+    if (notes.isEmpty) {
+      return '${notes.length} ${accidental.symbol}';
+    }
 
     final list = <String>[];
     final notesLength = BaseNote.values.length;
-    final iterations = (accidentals / notesLength).ceil();
+    final iterations = (notes.length / notesLength).ceil();
 
     for (var i = 1; i <= iterations; i++) {
       final n = i == iterations
-          ? accidentals.nModExcludeZero(notesLength)
+          ? notes.length.nModExcludeZero(notesLength)
           : notesLength;
 
       list.add('$n ${accidental.increment(i - 1).symbol}');
@@ -102,17 +107,16 @@ final class KeySignature implements Comparable<KeySignature> {
   @override
   bool operator ==(Object other) =>
       other is KeySignature &&
-      accidentals == other.accidentals &&
-      accidental == other.accidental;
+      const ListEquality<Note>().equals(notes, other.notes);
 
   @override
-  int get hashCode => Object.hash(accidentals, accidental);
+  int get hashCode => Object.hash(notes, accidental);
 
   @override
   int compareTo(KeySignature other) => compareMultiple([
         () => accidental.compareTo(other.accidental),
         () =>
-            accidentals.compareTo(other.accidentals) *
+            notes.length.compareTo(other.notes.length) *
             (accidental.semitones.isNegative ? -1 : 1),
       ]);
 }

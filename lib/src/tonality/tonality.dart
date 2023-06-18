@@ -7,15 +7,8 @@ final class Tonality implements Comparable<Tonality> {
 
   const Tonality(this.note, this.mode);
 
-  factory Tonality.fromAccidentals(
-    int accidentals,
-    TonalMode mode, [
-    Accidental accidental = Accidental.natural,
-  ]) =>
-      Tonality(
-        Note.fromTonalityAccidentals(accidentals, mode, accidental),
-        mode,
-      );
+  factory Tonality.fromDistance(int distance, TonalMode mode) =>
+      Tonality(Note.fromDistance(distance, mode), mode);
 
   /// Returns the [TonalMode.major] or [TonalMode.minor] relative [Tonality]
   /// of this [Tonality].
@@ -36,12 +29,12 @@ final class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.keySignature == const KeySignature(0)
-  /// Note.a.major.keySignature == const KeySignature(3, Accidental.sharp)
-  /// Note.g.flat.major.keySignature == const KeySignature(6, Accidental.flat)
+  /// Note.c.major.keySignature == KeySignature.fromDistance(0)
+  /// Note.a.major.keySignature == KeySignature.fromDistance(3)
+  /// Note.g.flat.major.keySignature == KeySignature.fromDistance(-6)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
-        Tonality.fromAccidentals(0, mode).note.fifthsDistanceWith(note),
+        Tonality.fromDistance(0, mode).note.fifthsDistanceWith(note),
       );
 
   /// Returns the scale notes of this [Tonality].

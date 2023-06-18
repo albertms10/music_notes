@@ -5,54 +5,43 @@ import 'package:test/test.dart';
 
 void main() {
   group('KeySignature', () {
-    group('constructor', () {
-      test('should throw an assertion error when arguments are incorrect', () {
-        expect(() => KeySignature(-1), throwsA(isA<AssertionError>()));
-        expect(() => KeySignature(1), throwsA(isA<AssertionError>()));
-        expect(
-          () => KeySignature(0, Accidental.sharp),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => KeySignature(1, Accidental.doubleFlat),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => KeySignature(2, Accidental.tripleSharp),
-          throwsA(isA<AssertionError>()),
-        );
-      });
-    });
-
     group('.fromDistance()', () {
       test('should create a new KeySignature from the given distance', () {
         expect(
-          KeySignature.fromDistance(-5),
-          const KeySignature(5, Accidental.flat),
+          KeySignature.fromDistance(-6),
+          KeySignature([
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+            Note.c.flat,
+          ]),
         );
+        expect(KeySignature.fromDistance(-1), KeySignature([Note.b.flat]));
+        expect(KeySignature.fromDistance(0), const KeySignature([]));
+        expect(KeySignature.fromDistance(1), KeySignature([Note.f.sharp]));
         expect(
-          KeySignature.fromDistance(-1),
-          const KeySignature(1, Accidental.flat),
-        );
-        expect(KeySignature.fromDistance(0), const KeySignature(0));
-        expect(
-          KeySignature.fromDistance(1),
-          const KeySignature(1, Accidental.sharp),
-        );
-        expect(
-          KeySignature.fromDistance(5),
-          const KeySignature(5, Accidental.sharp),
+          KeySignature.fromDistance(6),
+          KeySignature([
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+            Note.e.sharp,
+          ]),
         );
       });
     });
 
     group('.distance', () {
       test('should return the fifths distance of this KeySignature', () {
-        expect(const KeySignature(7, Accidental.flat).distance, -7);
-        expect(const KeySignature(2, Accidental.flat).distance, -2);
-        expect(const KeySignature(0).distance, 0);
-        expect(const KeySignature(1, Accidental.sharp).distance, 1);
-        expect(const KeySignature(5, Accidental.sharp).distance, 5);
+        expect(KeySignature.fromDistance(-7).distance, -7);
+        expect(KeySignature.fromDistance(-2).distance, -2);
+        expect(KeySignature.fromDistance(0).distance, 0);
+        expect(KeySignature.fromDistance(1).distance, 1);
+        expect(KeySignature.fromDistance(5).distance, 5);
       });
     });
 
@@ -61,15 +50,15 @@ void main() {
         'should return the Note that corresponds to the major Tonality of '
         'this KeySignature',
         () {
-          expect(const KeySignature(4, Accidental.flat).majorNote, Note.a.flat);
-          expect(const KeySignature(3, Accidental.flat).majorNote, Note.e.flat);
-          expect(const KeySignature(2, Accidental.flat).majorNote, Note.b.flat);
-          expect(const KeySignature(1, Accidental.flat).majorNote, Note.f);
-          expect(const KeySignature(0).majorNote, Note.c);
-          expect(const KeySignature(1, Accidental.sharp).majorNote, Note.g);
-          expect(const KeySignature(2, Accidental.sharp).majorNote, Note.d);
-          expect(const KeySignature(3, Accidental.sharp).majorNote, Note.a);
-          expect(const KeySignature(4, Accidental.sharp).majorNote, Note.e);
+          expect(KeySignature.fromDistance(-4).majorNote, Note.a.flat);
+          expect(KeySignature.fromDistance(-3).majorNote, Note.e.flat);
+          expect(KeySignature.fromDistance(-2).majorNote, Note.b.flat);
+          expect(KeySignature.fromDistance(-1).majorNote, Note.f);
+          expect(KeySignature.fromDistance(0).majorNote, Note.c);
+          expect(KeySignature.fromDistance(1).majorNote, Note.g);
+          expect(KeySignature.fromDistance(2).majorNote, Note.d);
+          expect(KeySignature.fromDistance(3).majorNote, Note.a);
+          expect(KeySignature.fromDistance(4).majorNote, Note.e);
         },
       );
     });
@@ -77,43 +66,43 @@ void main() {
     group('.tonality()', () {
       test('should return the Tonality from TonalMode', () {
         expect(
-          const KeySignature(4, Accidental.flat).tonality(TonalMode.major),
+          KeySignature.fromDistance(-4).tonality(TonalMode.major),
           Note.a.flat.major,
         );
         expect(
-          const KeySignature(4, Accidental.flat).tonality(TonalMode.minor),
+          KeySignature.fromDistance(-4).tonality(TonalMode.minor),
           Note.f.minor,
         );
         expect(
-          const KeySignature(2, Accidental.flat).tonality(TonalMode.major),
+          KeySignature.fromDistance(-2).tonality(TonalMode.major),
           Note.b.flat.major,
         );
         expect(
-          const KeySignature(2, Accidental.flat).tonality(TonalMode.minor),
+          KeySignature.fromDistance(-2).tonality(TonalMode.minor),
           Note.g.minor,
         );
         expect(
-          const KeySignature(0).tonality(TonalMode.major),
+          KeySignature.fromDistance(0).tonality(TonalMode.major),
           Note.c.major,
         );
         expect(
-          const KeySignature(0).tonality(TonalMode.minor),
+          KeySignature.fromDistance(0).tonality(TonalMode.minor),
           Note.a.minor,
         );
         expect(
-          const KeySignature(1, Accidental.sharp).tonality(TonalMode.major),
+          KeySignature.fromDistance(1).tonality(TonalMode.major),
           Note.g.major,
         );
         expect(
-          const KeySignature(1, Accidental.sharp).tonality(TonalMode.minor),
+          KeySignature.fromDistance(1).tonality(TonalMode.minor),
           Note.e.minor,
         );
         expect(
-          const KeySignature(5, Accidental.sharp).tonality(TonalMode.major),
+          KeySignature.fromDistance(5).tonality(TonalMode.major),
           Note.b.major,
         );
         expect(
-          const KeySignature(5, Accidental.sharp).tonality(TonalMode.minor),
+          KeySignature.fromDistance(5).tonality(TonalMode.minor),
           Note.g.sharp.minor,
         );
       });
@@ -121,87 +110,87 @@ void main() {
 
     group('.tonalities', () {
       test('should return the Set of tonalities for this KeySignature', () {
-        expect(const KeySignature(10, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-10).tonalities, {
           Note.e.flat.flat.major,
           Note.c.flat.minor,
         });
-        expect(const KeySignature(9, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-9).tonalities, {
           Note.b.flat.flat.major,
           Note.g.flat.minor,
         });
-        expect(const KeySignature(8, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-8).tonalities, {
           Note.f.flat.major,
           Note.d.flat.minor,
         });
-        expect(const KeySignature(7, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-7).tonalities, {
           Note.c.flat.major,
           Note.a.flat.minor,
         });
-        expect(const KeySignature(6, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-6).tonalities, {
           Note.g.flat.major,
           Note.e.flat.minor,
         });
-        expect(const KeySignature(5, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-5).tonalities, {
           Note.d.flat.major,
           Note.b.flat.minor,
         });
-        expect(const KeySignature(4, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-4).tonalities, {
           Note.a.flat.major,
           Note.f.minor,
         });
-        expect(const KeySignature(3, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-3).tonalities, {
           Note.e.flat.major,
           Note.c.minor,
         });
-        expect(const KeySignature(2, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-2).tonalities, {
           Note.b.flat.major,
           Note.g.minor,
         });
-        expect(const KeySignature(1, Accidental.flat).tonalities, {
+        expect(KeySignature.fromDistance(-1).tonalities, {
           Note.f.major,
           Note.d.minor,
         });
-        expect(const KeySignature(0).tonalities, {
+        expect(KeySignature.fromDistance(0).tonalities, {
           Note.c.major,
           Note.a.minor,
         });
-        expect(const KeySignature(1, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(1).tonalities, {
           Note.g.major,
           Note.e.minor,
         });
-        expect(const KeySignature(2, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(2).tonalities, {
           Note.d.major,
           Note.b.minor,
         });
-        expect(const KeySignature(3, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(3).tonalities, {
           Note.a.major,
           Note.f.sharp.minor,
         });
-        expect(const KeySignature(4, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(4).tonalities, {
           Note.e.major,
           Note.c.sharp.minor,
         });
-        expect(const KeySignature(5, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(5).tonalities, {
           Note.b.major,
           Note.g.sharp.minor,
         });
-        expect(const KeySignature(6, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(6).tonalities, {
           Note.f.sharp.major,
           Note.d.sharp.minor,
         });
-        expect(const KeySignature(7, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(7).tonalities, {
           Note.c.sharp.major,
           Note.a.sharp.minor,
         });
-        expect(const KeySignature(8, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(8).tonalities, {
           Note.g.sharp.major,
           Note.e.sharp.minor,
         });
-        expect(const KeySignature(9, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(9).tonalities, {
           Note.d.sharp.major,
           Note.b.sharp.minor,
         });
-        expect(const KeySignature(10, Accidental.sharp).tonalities, {
+        expect(KeySignature.fromDistance(10).tonalities, {
           Note.a.sharp.major,
           Note.f.sharp.sharp.minor,
         });
@@ -212,37 +201,25 @@ void main() {
       test(
         'should return the string representation of this KeySignature',
         () {
-          expect(
-            const KeySignature(10, Accidental.flat).toString(),
-            '7 ♭, 3 𝄫',
-          );
-          expect(
-            const KeySignature(8, Accidental.flat).toString(),
-            '7 ♭, 1 𝄫',
-          );
-          expect(const KeySignature(7, Accidental.flat).toString(), '7 ♭');
-          expect(const KeySignature(6, Accidental.flat).toString(), '6 ♭');
-          expect(const KeySignature(5, Accidental.flat).toString(), '5 ♭');
-          expect(const KeySignature(4, Accidental.flat).toString(), '4 ♭');
-          expect(const KeySignature(3, Accidental.flat).toString(), '3 ♭');
-          expect(const KeySignature(2, Accidental.flat).toString(), '2 ♭');
-          expect(const KeySignature(1, Accidental.flat).toString(), '1 ♭');
-          expect(const KeySignature(0).toString(), '0 ♮');
-          expect(const KeySignature(1, Accidental.sharp).toString(), '1 ♯');
-          expect(const KeySignature(2, Accidental.sharp).toString(), '2 ♯');
-          expect(const KeySignature(3, Accidental.sharp).toString(), '3 ♯');
-          expect(const KeySignature(4, Accidental.sharp).toString(), '4 ♯');
-          expect(const KeySignature(5, Accidental.sharp).toString(), '5 ♯');
-          expect(const KeySignature(6, Accidental.sharp).toString(), '6 ♯');
-          expect(const KeySignature(7, Accidental.sharp).toString(), '7 ♯');
-          expect(
-            const KeySignature(8, Accidental.sharp).toString(),
-            '7 ♯, 1 𝄪',
-          );
-          expect(
-            const KeySignature(10, Accidental.sharp).toString(),
-            '7 ♯, 3 𝄪',
-          );
+          expect(KeySignature.fromDistance(-10).toString(), '7 ♭, 3 𝄫');
+          expect(KeySignature.fromDistance(-8).toString(), '7 ♭, 1 𝄫');
+          expect(KeySignature.fromDistance(-7).toString(), '7 ♭');
+          expect(KeySignature.fromDistance(-6).toString(), '6 ♭');
+          expect(KeySignature.fromDistance(-5).toString(), '5 ♭');
+          expect(KeySignature.fromDistance(-4).toString(), '4 ♭');
+          expect(KeySignature.fromDistance(-3).toString(), '3 ♭');
+          expect(KeySignature.fromDistance(-2).toString(), '2 ♭');
+          expect(KeySignature.fromDistance(-1).toString(), '1 ♭');
+          expect(KeySignature.fromDistance(0).toString(), '0 ♮');
+          expect(KeySignature.fromDistance(1).toString(), '1 ♯');
+          expect(KeySignature.fromDistance(2).toString(), '2 ♯');
+          expect(KeySignature.fromDistance(3).toString(), '3 ♯');
+          expect(KeySignature.fromDistance(4).toString(), '4 ♯');
+          expect(KeySignature.fromDistance(5).toString(), '5 ♯');
+          expect(KeySignature.fromDistance(6).toString(), '6 ♯');
+          expect(KeySignature.fromDistance(7).toString(), '7 ♯');
+          expect(KeySignature.fromDistance(8).toString(), '7 ♯, 1 𝄪');
+          expect(KeySignature.fromDistance(10).toString(), '7 ♯, 3 𝄪');
         },
       );
     });
@@ -250,32 +227,32 @@ void main() {
     group('.hashCode', () {
       test('should ignore equal KeySignature instances in a Set', () {
         final collection = {
-          const KeySignature(0),
-          const KeySignature(1, Accidental.sharp),
+          const KeySignature([]),
+          KeySignature([Note.f.sharp]),
         };
         collection.addAll(collection);
-        expect(collection.toList(), const [
-          KeySignature(0),
-          KeySignature(1, Accidental.sharp),
+        expect(collection.toList(), [
+          const KeySignature([]),
+          KeySignature([Note.f.sharp]),
         ]);
       });
     });
 
     group('.compareTo()', () {
       test('should correctly sort KeySignature items in a collection', () {
-        final orderedSet = SplayTreeSet<KeySignature>.of(const [
-          KeySignature(3, Accidental.flat),
-          KeySignature(0),
-          KeySignature(6, Accidental.flat),
-          KeySignature(4, Accidental.sharp),
-          KeySignature(3, Accidental.sharp),
+        final orderedSet = SplayTreeSet<KeySignature>.of([
+          KeySignature.fromDistance(-3),
+          KeySignature.fromDistance(0),
+          KeySignature.fromDistance(-6),
+          KeySignature.fromDistance(4),
+          KeySignature.fromDistance(3),
         ]);
-        expect(orderedSet.toList(), const [
-          KeySignature(6, Accidental.flat),
-          KeySignature(3, Accidental.flat),
-          KeySignature(0),
-          KeySignature(3, Accidental.sharp),
-          KeySignature(4, Accidental.sharp),
+        expect(orderedSet.toList(), [
+          KeySignature.fromDistance(-6),
+          KeySignature.fromDistance(-3),
+          KeySignature.fromDistance(0),
+          KeySignature.fromDistance(3),
+          KeySignature.fromDistance(4),
         ]);
       });
     });
