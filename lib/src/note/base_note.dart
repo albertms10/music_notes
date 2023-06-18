@@ -48,16 +48,16 @@ enum BaseNote {
   /// BaseNote.parse('a') == BaseNote.a
   /// BaseNote.parse('z') // throws a FormatException
   /// ```
-  factory BaseNote.parse(String source) => switch (source.toLowerCase()) {
-        'a' => a,
-        'b' => b,
-        'c' => c,
-        'd' => d,
-        'e' => e,
-        'f' => f,
-        'g' => g,
-        _ => throw FormatException('Invalid BaseNote', source, 0),
-      };
+  factory BaseNote.parse(String source) {
+    try {
+      return values.byName(source.toLowerCase());
+    } catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        FormatException('Invalid BaseNote', source, 0),
+        stackTrace,
+      );
+    }
+  }
 
   /// Returns the ordinal number of this [BaseNote] enum item.
   ///
