@@ -7,9 +7,11 @@ final class KeySignature implements Comparable<KeySignature> {
   /// Creates a new [KeySignature] from [notes].
   const KeySignature(this.notes);
 
+  static const empty = KeySignature([]);
+
   /// Creates a new [KeySignature] from fifths [distance].
   factory KeySignature.fromDistance(int distance) {
-    if (distance == 0) return const KeySignature([]);
+    if (distance == 0) return empty;
 
     final interval = distance.isNegative ? Interval.P4 : Interval.P5;
     final startingNote = distance.isNegative ? Note.b.flat : Note.f.sharp;
