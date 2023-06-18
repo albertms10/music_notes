@@ -128,6 +128,63 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
+  /// Returns the respelled [Note] by [baseNote] while keeping the same
+  /// number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.sharp.respellByBaseNote(BaseNote.d) == Note.d.flat
+  /// Note.f.respellByBaseNote(BaseNote.e) == Note.e.sharp
+  /// Note.g.respellByBaseNote(BaseNote.a) == Note.a.flat.flat
+  /// ```
+  Note respellByBaseNote(BaseNote baseNote) {
+    final rawSemitones = semitones - baseNote.value;
+    final deltaSemitones = rawSemitones +
+        (rawSemitones.abs() > (chromaticDivisions * 0.5)
+            ? chromaticDivisions * -rawSemitones.sign
+            : 0);
+
+    return Note(baseNote, Accidental(deltaSemitones));
+  }
+
+  /// Returns this [Note] respelled upwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.sharp.respelledUpwards == Note.a.flat
+  /// Note.e.sharp.respelledUpwards == Note.f
+  /// ```
+  Note get respelledUpwards =>
+      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + 1));
+
+  /// Returns this [Note] respelled downwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.respelledDownwards == Note.f.sharp
+  /// Note.c.respelledDownwards == Note.b.sharp
+  /// ```
+  Note get respelledDownwards =>
+      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal - 1));
+
+  /// Returns the respelled [Note] by [accidental] while keeping the same
+  /// number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.flat.respellByAccidental(Accidental.sharp) == Note.d.sharp
+  /// Note.b.respellByAccidental(Accidental.flat) == Note.c.flat
+  /// Note.g.respellByAccidental(Accidental.sharp) == null
+  /// ```
+  Note? respellByAccidental(Accidental accidental) {
+    final baseNote = BaseNote.fromValue(semitones - accidental.semitones);
+    if (baseNote == null) return null;
+
+    return Note(baseNote, accidental);
+  }
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
