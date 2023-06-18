@@ -15,21 +15,16 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   static const Note a = Note(BaseNote.a);
   static const Note b = Note(BaseNote.b);
 
-  /// Returns the [Note] from the [Tonality] given its [accidentals] number,
-  /// [mode] and optional [accidental].
+  /// Returns the [Note] from the [Tonality] given its fifths [distance] and
+  /// [mode].
   ///
   /// Example:
   /// ```dart
-  /// Note.fromTonalityAccidentals(2, TonalMode.major, Accidental.sharp)
-  ///   == Note.d
-  /// Note.fromTonalityAccidentals(0, TonalMode.minor) == Note.a
+  /// Note.fromDistance(2, TonalMode.major) == Note.d
+  /// Note.fromDistance(0, TonalMode.minor) == Note.a
   /// ```
-  factory Note.fromTonalityAccidentals(
-    int accidentals,
-    TonalMode mode, [
-    Accidental accidental = Accidental.natural,
-  ]) {
-    final note = KeySignature(accidentals, accidental).majorNote;
+  factory Note.fromDistance(int distance, TonalMode mode) {
+    final note = KeySignature.fromDistance(distance).majorNote;
     if (mode == TonalMode.major) return note;
 
     return note.transposeBy(-Interval.m3);

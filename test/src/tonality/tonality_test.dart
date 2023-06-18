@@ -17,41 +17,53 @@ void main() {
 
     group('.keySignature', () {
       test('should return the KeySignature of this Tonality', () {
-        expect(Note.c.major.keySignature, const KeySignature(0));
-        expect(Note.a.minor.keySignature, const KeySignature(0));
+        expect(Note.c.major.keySignature, const KeySignature([]));
+        expect(Note.a.minor.keySignature, const KeySignature([]));
 
-        expect(
-          Note.g.major.keySignature,
-          const KeySignature(1, Accidental.sharp),
-        );
-        expect(
-          Note.e.minor.keySignature,
-          const KeySignature(1, Accidental.sharp),
-        );
-        expect(
-          Note.f.major.keySignature,
-          const KeySignature(1, Accidental.flat),
-        );
-        expect(
-          Note.d.minor.keySignature,
-          const KeySignature(1, Accidental.flat),
-        );
+        expect(Note.g.major.keySignature, KeySignature([Note.f.sharp]));
+        expect(Note.e.minor.keySignature, KeySignature([Note.f.sharp]));
+        expect(Note.f.major.keySignature, KeySignature([Note.b.flat]));
+        expect(Note.d.minor.keySignature, KeySignature([Note.b.flat]));
 
         expect(
           Note.b.major.keySignature,
-          const KeySignature(5, Accidental.sharp),
+          KeySignature([
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+          ]),
         );
         expect(
           Note.g.sharp.minor.keySignature,
-          const KeySignature(5, Accidental.sharp),
+          KeySignature([
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+          ]),
         );
         expect(
           Note.d.flat.major.keySignature,
-          const KeySignature(5, Accidental.flat),
+          KeySignature([
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+          ]),
         );
         expect(
           Note.b.flat.minor.keySignature,
-          const KeySignature(5, Accidental.flat),
+          KeySignature([
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+          ]),
         );
       });
     });
