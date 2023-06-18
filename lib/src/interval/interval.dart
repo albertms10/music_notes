@@ -220,7 +220,8 @@ final class Interval implements Comparable<Interval> {
   /// ```
   int distanceBetween(Note note1, Note note2) {
     var distance = 0;
-    var (ascendingNote, descendingNote) = (note1, note1);
+    var ascendingNote = note1;
+    var descendingNote = note1;
     while (true) {
       if (ascendingNote == note2) return distance;
       if (descendingNote == note2) return -distance;
