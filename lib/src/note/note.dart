@@ -148,59 +148,43 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   int get circleOfFifthsDistance =>
       Tonality(this, TonalMode.major).keySignature.distance;
 
-  /// Returns the exact fifths distance between this and [other].
+  /// Returns the exact fifths distance between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
   /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
   /// Note.a.flat.fifthsDistanceWith(Note.d.flat) == -1
   /// ```
-  int fifthsDistanceWith(Note other) => intervalDistance(other, Interval.P5);
+  int fifthsDistanceWith(Note other) =>
+      shortestIntervalDistance(other, Interval.P5);
 
   /// Returns the iteration distance of an [interval] between
   /// this [Note] and [other].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.intervalDistance(Note.d, Interval.P5) == 2
+  /// Note.c.shortestIntervalDistance(Note.d, Interval.P5) == 2
   /// ```
-  int intervalDistance(Note other, Interval interval) {
-    final distanceFlat = _runSemitonesDistance(
-      other,
-      interval.inverted.semitones,
-      Accidental.flat,
-    );
-    final distanceSharp = _runSemitonesDistance(
-      other,
-      interval.semitones,
-      Accidental.sharp,
-    );
+  int shortestIntervalDistance(Note other, Interval interval) {
+    final distanceFlat = _semitonesDistance(other, interval.inverted);
+    final distanceSharp = _semitonesDistance(other, interval);
 
     return distanceFlat < distanceSharp ? -distanceFlat : distanceSharp;
   }
 
-  /// Returns the iteration distance of an interval between
-  /// this [Note] and [other] with a [preferredAccidental].
+  /// Returns the iteration distance of [interval] between this [Note] and
+  /// [other].
   ///
-  /// It is mainly used by [intervalDistance].
-  int _runSemitonesDistance(
-    Note other,
-    int semitones,
-    Accidental preferredAccidental,
-  ) {
+  /// It is mainly used by [shortestIntervalDistance].
+  int _semitonesDistance(Note other, Interval interval) {
     if (this == other) return 0;
 
-    var distance = 0;
-    var currentPitch = this.semitones;
-
-    var tempNote = EnharmonicNote(currentPitch)
-        .resolveClosestSpelling(preferredAccidental);
-
-    while (tempNote != other && distance < chromaticDivisions) {
+    var distance = 1;
+    var tempNote = transposeBy(interval);
+    const maxIteration = 50;
+    while (tempNote != other && distance < maxIteration) {
       distance++;
-      currentPitch += semitones;
-      tempNote = EnharmonicNote(currentPitch.chromaticModExcludeZero)
-          .resolveClosestSpelling(preferredAccidental);
+      tempNote = tempNote.transposeBy(interval);
     }
 
     return distance;

@@ -200,8 +200,7 @@ void main() {
         expect(Note.d.sharp.circleOfFifthsDistance, 9);
         expect(Note.a.sharp.circleOfFifthsDistance, 10);
         expect(Note.e.sharp.circleOfFifthsDistance, 11);
-        // TODO(albertms10): Failing test: should return 12. See #149.
-        expect(Note.b.sharp.circleOfFifthsDistance, 0);
+        expect(Note.b.sharp.circleOfFifthsDistance, 12);
       });
     });
 
@@ -209,8 +208,12 @@ void main() {
       test(
         'should return the fifths distance between this Note and other',
         () {
-          // TODO(albertms10): Failing test: should return -9. See #149.
-          expect(Note.c.fifthsDistanceWith(Note.b.flat.flat), 12);
+          expect(Note.c.fifthsDistanceWith(Note.c.flat.flat), -14);
+          expect(Note.c.fifthsDistanceWith(Note.g.flat.flat), -13);
+          expect(Note.c.fifthsDistanceWith(Note.d.flat.flat), -12);
+          expect(Note.c.fifthsDistanceWith(Note.a.flat.flat), -11);
+          expect(Note.c.fifthsDistanceWith(Note.e.flat.flat), -10);
+          expect(Note.c.fifthsDistanceWith(Note.b.flat.flat), -9);
           expect(Note.c.fifthsDistanceWith(Note.f.flat), -8);
           expect(Note.c.fifthsDistanceWith(Note.c.flat), -7);
           expect(Note.c.fifthsDistanceWith(Note.g.flat), -6);
@@ -231,13 +234,19 @@ void main() {
           expect(Note.c.fifthsDistanceWith(Note.d.sharp), 9);
           expect(Note.c.fifthsDistanceWith(Note.a.sharp), 10);
           expect(Note.c.fifthsDistanceWith(Note.e.sharp), 11);
-          // TODO(albertms10): Failing test: should return 12. See #149.
-          expect(Note.c.fifthsDistanceWith(Note.b.sharp), 0);
+          expect(Note.c.fifthsDistanceWith(Note.b.sharp), 12);
+          expect(Note.c.fifthsDistanceWith(Note.f.sharp.sharp), 13);
+          expect(Note.c.fifthsDistanceWith(Note.c.sharp.sharp), 14);
 
           expect(Note.a.flat.fifthsDistanceWith(Note.d.flat), -1);
-          // TODO(albertms10): Failing test: should return 1. See #149.
-          expect(Note.a.flat.fifthsDistanceWith(Note.e.flat), -11);
+          expect(Note.a.flat.fifthsDistanceWith(Note.e.flat), 1);
+          expect(Note.a.flat.fifthsDistanceWith(Note.d), 6);
           expect(Note.a.flat.fifthsDistanceWith(Note.c.sharp), 11);
+
+          expect(Note.f.sharp.fifthsDistanceWith(Note.d.sharp.sharp), 10);
+          expect(Note.f.sharp.fifthsDistanceWith(Note.f), -7);
+          expect(Note.f.sharp.fifthsDistanceWith(Note.d.flat), -11);
+          expect(Note.f.sharp.fifthsDistanceWith(Note.g.flat.flat), -19);
         },
       );
     });
@@ -445,8 +454,7 @@ void main() {
             Note.c,
             Note.d,
             Note.g.sharp,
-            // TODO(albertms10): Failing test. See #149.
-            // Note.b.sharp,
+            Note.b.sharp,
           ]);
         },
       );
