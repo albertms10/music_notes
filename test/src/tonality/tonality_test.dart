@@ -17,8 +17,8 @@ void main() {
 
     group('.keySignature', () {
       test('should return the KeySignature of this Tonality', () {
-        expect(Note.c.major.keySignature, const KeySignature([]));
-        expect(Note.a.minor.keySignature, const KeySignature([]));
+        expect(Note.c.major.keySignature, KeySignature.empty);
+        expect(Note.a.minor.keySignature, KeySignature.empty);
 
         expect(Note.g.major.keySignature, KeySignature([Note.f.sharp]));
         expect(Note.e.minor.keySignature, KeySignature([Note.f.sharp]));

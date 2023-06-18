@@ -19,7 +19,7 @@ void main() {
           ]),
         );
         expect(KeySignature.fromDistance(-1), KeySignature([Note.b.flat]));
-        expect(KeySignature.fromDistance(0), const KeySignature([]));
+        expect(KeySignature.fromDistance(0), KeySignature.empty);
         expect(KeySignature.fromDistance(1), KeySignature([Note.f.sharp]));
         expect(
           KeySignature.fromDistance(6),
@@ -227,12 +227,12 @@ void main() {
     group('.hashCode', () {
       test('should ignore equal KeySignature instances in a Set', () {
         final collection = {
-          const KeySignature([]),
+          KeySignature.empty,
           KeySignature([Note.f.sharp]),
         };
         collection.addAll(collection);
         expect(collection.toList(), [
-          const KeySignature([]),
+          KeySignature.empty,
           KeySignature([Note.f.sharp]),
         ]);
       });
