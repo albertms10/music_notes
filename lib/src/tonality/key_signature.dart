@@ -17,10 +17,7 @@ final class KeySignature implements Comparable<KeySignature> {
     final startingNote = distance.isNegative ? Note.b.flat : Note.f.sharp;
 
     return KeySignature(
-      List.filled(distance.abs() - 1, null).fold(
-        [startingNote],
-        (notes, _) => [...notes, notes.last.transposeBy(interval)],
-      ),
+      interval.circleFrom(startingNote, distance: distance.incrementBy(-1)),
     );
   }
 
@@ -74,8 +71,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   ({Tonality major, Tonality minor}) get tonalities {
     final interval = distance.isNegative ? Interval.P4 : Interval.P5;
-    final rootNote = List.filled(distance.abs(), null)
-        .fold(Note.c, (note, _) => note.transposeBy(interval));
+    final rootNote = interval.circleFrom(Note.c, distance: distance).last;
 
     return (
       major: rootNote.major,

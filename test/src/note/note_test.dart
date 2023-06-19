@@ -256,6 +256,104 @@ void main() {
       );
     });
 
+    group('.circleOfFifths()', () {
+      test(
+        'should return the circle of fifths starting from this Note',
+        () {
+          final (sharps: sharpsFromC, flats: flatsFromC) =
+              Note.c.circleOfFifths();
+          expect(
+            sharpsFromC,
+            [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
+          );
+          expect(flatsFromC, [
+            Note.f,
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+          ]);
+
+          final (sharps: sharpsFromA, flats: flatsFromA) =
+              Note.a.circleOfFifths(distance: 7);
+          expect(
+            sharpsFromA,
+            [
+              Note.e,
+              Note.b,
+              Note.f.sharp,
+              Note.c.sharp,
+              Note.g.sharp,
+              Note.d.sharp,
+              Note.a.sharp,
+            ],
+          );
+          expect(
+            flatsFromA,
+            [
+              Note.d,
+              Note.g,
+              Note.c,
+              Note.f,
+              Note.b.flat,
+              Note.e.flat,
+              Note.a.flat,
+            ],
+          );
+        },
+      );
+    });
+
+    group('.flatCircleOfFifths()', () {
+      test(
+        'should return the flattened version of the circle of fifths',
+        () {
+          expect(Note.c.flatCircleOfFifths(), [
+            Note.g.flat,
+            Note.d.flat,
+            Note.a.flat,
+            Note.e.flat,
+            Note.b.flat,
+            Note.f,
+            Note.c,
+            Note.g,
+            Note.d,
+            Note.a,
+            Note.e,
+            Note.b,
+            Note.f.sharp,
+          ]);
+          expect(Note.a.flatCircleOfFifths(distance: 7), [
+            Note.a.flat,
+            Note.e.flat,
+            Note.b.flat,
+            Note.f,
+            Note.c,
+            Note.g,
+            Note.d,
+            Note.a,
+            Note.e,
+            Note.b,
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+          ]);
+          expect(Note.e.flat.flatCircleOfFifths(distance: 3), [
+            Note.g.flat,
+            Note.d.flat,
+            Note.a.flat,
+            Note.e.flat,
+            Note.b.flat,
+            Note.f,
+            Note.c,
+          ]);
+        },
+      );
+    });
+
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
         expect(Note.f.flat.circleOfFifthsDistance, -8);

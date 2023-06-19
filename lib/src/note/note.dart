@@ -207,6 +207,61 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   PositionedNote inOctave(int octave) => PositionedNote(this, octave);
 
+  /// Returns the circle of fifths starting from this [Note] up to [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.circleOfFifths(distance: 4) == (
+  ///   sharps: [Note.g, Note.d, Note.a, Note.e],
+  ///   flats: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat],
+  /// )
+  ///
+  /// Note.a.circleOfFifths(distance: 4) == (
+  ///   sharps: [Note.e, Note.b, Note.f.sharp, Note.c.sharp],
+  ///   flats: [Note.d, Note.g, Note.c, Note.f],
+  /// )
+  /// ```
+  /// ---
+  /// See also:
+  /// * [flatCircleOfFifths] for a flattened version of [circleOfFifths].
+  ({List<Note> sharps, List<Note> flats}) circleOfFifths({
+    int distance = chromaticDivisions ~/ 2,
+  }) =>
+      (
+        sharps:
+            Interval.P5.circleFrom(this, distance: distance).skip(1).toList(),
+        flats: (-Interval.P5)
+            .circleFrom(this, distance: distance)
+            .skip(1)
+            .toList(),
+      );
+
+  /// Returns the flattened version of [circleOfFifths] from this [Note] up to
+  /// [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.flatCircleOfFifths(distance: 3)
+  ///   == [Note.e.flat, Note.b.flat, Note.f, Note.c, Note.g, Note.d, Note.a]
+  ///
+  /// Note.a.flatCircleOfFifths(distance: 3)
+  ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
+  /// ```
+  ///
+  /// It is equivalent to sorting an array of the same [Note]s using the
+  /// [compareByFifthsDistance] comparator.
+  ///
+  /// ```dart
+  /// Note.c.flatCircleOfFifths(distance: 3)
+  ///   == ScalePattern.dorian.on(Note.c).degrees
+  ///        .sorted(Note.compareByFifthsDistance)
+  /// ```
+  List<Note> flatCircleOfFifths({int distance = chromaticDivisions ~/ 2}) {
+    final (:flats, :sharps) = circleOfFifths(distance: distance);
+
+    return [...flats.reversed, this, ...sharps];
+  }
+
   /// Returns the distance in relation to the circle of fifths.
   ///
   /// Example:

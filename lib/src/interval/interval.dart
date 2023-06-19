@@ -231,6 +231,23 @@ final class Interval implements Comparable<Interval> {
     }
   }
 
+  /// Returns the circle of this [Interval] from [note] up to [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.circleFrom(Note.c, distance: 7)
+  ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
+  ///
+  /// Interval.P4.circleFrom(Note.c, distance: 6)
+  ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
+  /// ```
+  List<Note> circleFrom(Note note, {required int distance}) => distance == 0
+      ? [note]
+      : List.filled(distance.abs(), null).fold(
+          [note],
+          (notes, _) => [...notes, notes.last.transposeBy(this)],
+        );
+
   /// Adds [other] to this [Interval].
   ///
   /// Example:

@@ -292,6 +292,45 @@ void main() {
       });
     });
 
+    group('.circleFrom()', () {
+      test('should return the circle of this Interval', () {
+        expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
+        expect(
+          Interval.P5.circleFrom(Note.c, distance: 1),
+          const [Note.c, Note.g],
+        );
+        expect(
+          Interval.P5.circleFrom(Note.f.sharp, distance: 8),
+          [
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+            Note.e.sharp,
+            Note.b.sharp,
+            Note.f.sharp.sharp,
+            Note.c.sharp.sharp,
+          ],
+        );
+        expect(
+          Interval.P4.circleFrom(Note.b.flat, distance: 9),
+          [
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+            Note.c.flat,
+            Note.f.flat,
+            Note.b.flat.flat,
+            Note.e.flat.flat,
+            Note.a.flat.flat,
+          ],
+        );
+      });
+    });
+
     group('operator +()', () {
       test('should add other to this Interval', () {
         expect(Interval.P1 + Interval.P1, Interval.P1);
