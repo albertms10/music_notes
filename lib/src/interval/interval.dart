@@ -235,10 +235,10 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.circleFrom(Note.c, distance: 7)
+  /// Interval.P5.circleFrom(Note.c, distance: 6)
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: 6)
+  /// Interval.P4.circleFrom(Note.c, distance: 5)
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   /// ```
   List<Note> circleFrom(Note note, {required int distance}) => distance == 0

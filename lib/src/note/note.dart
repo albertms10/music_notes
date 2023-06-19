@@ -249,13 +249,17 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   ///
   /// It is equivalent to sorting an array of the same [Note]s using the
-  /// [compareByFifthsDistance] comparator.
+  /// [compareByFifthsDistance] comparator:
   ///
   /// ```dart
   /// Note.c.flatCircleOfFifths(distance: 3)
-  ///   == ScalePattern.dorian.on(Note.c).degrees
+  ///   == ScalePattern.dorian.on(Note.c).degrees.skip(1)
   ///        .sorted(Note.compareByFifthsDistance)
   /// ```
+  /// ---
+  /// See also:
+  /// * [circleOfFifths] for a different representation of the same circle of
+  ///   fifths.
   List<Note> flatCircleOfFifths({int distance = chromaticDivisions ~/ 2}) {
     final (:flats, :sharps) = circleOfFifths(distance: distance);
 
