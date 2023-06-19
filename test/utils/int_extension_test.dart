@@ -14,6 +14,9 @@ void main() {
         expect(10.incrementBy(-4), 6);
         expect((-10).incrementBy(4), -14);
         expect((-10).incrementBy(-4), -6);
+
+        expect(0.incrementBy(1), 1);
+        expect(0.incrementBy(-1), -1);
       });
     });
 

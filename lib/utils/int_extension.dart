@@ -10,7 +10,7 @@ extension IntExtension on int {
   /// 10.incrementBy(-2) == 8
   /// (-10).incrementBy(-2) == -8
   /// ```
-  int incrementBy(int step) => (abs() + step) * sign;
+  int incrementBy(int step) => (abs() + step) * (isNegative ? -1 : 1);
 
   /// Returns the modulus [chromaticDivisions] of this [int].
   ///
