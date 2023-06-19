@@ -1,8 +1,22 @@
-import 'package:music_notes/utils/int_mod_extension.dart';
+import 'package:music_notes/utils/int_extension.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('IntModExtension', () {
+  group('IntExtension', () {
+    group('.incrementBy()', () {
+      test('should return this int incremented by step', () {
+        expect(1.incrementBy(1), 2);
+        expect(1.incrementBy(-1), 0);
+        expect((-1).incrementBy(1), -2);
+        expect((-1).incrementBy(-1), 0);
+
+        expect(10.incrementBy(4), 14);
+        expect(10.incrementBy(-4), 6);
+        expect((-10).incrementBy(4), -14);
+        expect((-10).incrementBy(-4), -6);
+      });
+    });
+
     group('.chromaticMod', () {
       test('should return the correct modulus chromatic divisions', () {
         expect(4.chromaticMod, 4);
