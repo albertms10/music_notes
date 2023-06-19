@@ -178,6 +178,67 @@ void main() {
       });
     });
 
+    group('.respellByBaseNote()', () {
+      test('should return this Note respelled by BaseNote', () {
+        expect(Note.c.sharp.respellByBaseNote(BaseNote.d), Note.d.flat);
+        expect(Note.e.flat.respellByBaseNote(BaseNote.d), Note.d.sharp);
+        expect(Note.e.sharp.respellByBaseNote(BaseNote.f), Note.f);
+        expect(Note.f.flat.respellByBaseNote(BaseNote.e), Note.e);
+        expect(Note.c.respellByBaseNote(BaseNote.b), Note.b.sharp);
+        expect(Note.c.respellByBaseNote(BaseNote.d), Note.d.flat.flat);
+        expect(Note.b.respellByBaseNote(BaseNote.c), Note.c.flat);
+        expect(Note.b.respellByBaseNote(BaseNote.a), Note.a.sharp.sharp);
+      });
+    });
+
+    group('.respelledUpwards', () {
+      test('should return this Note respelled upwards', () {
+        expect(Note.c.respelledUpwards, Note.d.flat.flat);
+        expect(Note.c.sharp.respelledUpwards, Note.d.flat);
+        expect(Note.d.flat.respelledUpwards, Note.e.flat.flat.flat);
+        expect(Note.c.sharp.sharp.respelledUpwards, Note.d);
+        expect(Note.b.sharp.respelledUpwards, Note.c);
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('should return this Note respelled downwards', () {
+        expect(Note.c.respelledDownwards, Note.b.sharp);
+        expect(Note.c.sharp.respelledDownwards, Note.b.sharp.sharp);
+        expect(Note.d.flat.respelledDownwards, Note.c.sharp);
+        expect(Note.d.flat.flat.respelledDownwards, Note.c);
+        expect(Note.c.flat.respelledDownwards, Note.b);
+      });
+    });
+
+    group('.respellByBaseAccidental()', () {
+      test('should return this Note respelled by Accidental', () {
+        expect(Note.a.sharp.respellByAccidental(Accidental.flat), Note.b.flat);
+        expect(Note.g.flat.respellByAccidental(Accidental.sharp), Note.f.sharp);
+        expect(Note.c.flat.respellByAccidental(Accidental.natural), Note.b);
+        expect(Note.b.sharp.respellByAccidental(Accidental.natural), Note.c);
+        expect(Note.f.flat.respellByAccidental(Accidental.natural), Note.e);
+        expect(Note.e.sharp.respellByAccidental(Accidental.natural), Note.f);
+        expect(
+          Note.f.respellByAccidental(Accidental.doubleFlat),
+          Note.g.flat.flat,
+        );
+        expect(
+          Note.a.respellByAccidental(Accidental.doubleSharp),
+          Note.g.sharp.sharp,
+        );
+      });
+
+      test('should return null when no respelling is possible', () {
+        expect(Note.d.respellByAccidental(Accidental.sharp), isNull);
+        expect(Note.d.respellByAccidental(Accidental.flat), isNull);
+        expect(Note.e.respellByAccidental(Accidental.doubleFlat), isNull);
+        expect(Note.f.respellByAccidental(Accidental.doubleSharp), isNull);
+        expect(Note.b.respellByAccidental(Accidental.doubleFlat), isNull);
+        expect(Note.c.respellByAccidental(Accidental.doubleSharp), isNull);
+      });
+    });
+
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
         expect(Note.f.flat.circleOfFifthsDistance, -8);
