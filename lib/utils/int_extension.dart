@@ -1,6 +1,17 @@
 import 'package:music_notes/music_notes.dart';
 
-extension IntModExtension on int {
+extension IntExtension on int {
+  /// Returns this [int] incremented by [step].
+  ///
+  /// Example:
+  /// ```dart
+  /// 1.incrementBy(1) == 2
+  /// (-1).incrementBy(1) == -2
+  /// 10.incrementBy(-2) == 8
+  /// (-10).incrementBy(-2) == -8
+  /// ```
+  int incrementBy(int step) => (abs() + step) * (isNegative ? -1 : 1);
+
   /// Returns the modulus [chromaticDivisions] of this [int].
   ///
   /// Example:
