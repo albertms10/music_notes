@@ -239,6 +239,23 @@ void main() {
       });
     });
 
+    group('.respelledSimple', () {
+      test(
+        'should return this Note with the simplest Accidental spelling',
+        () {
+          expect(Note.c.respelledSimple, Note.c);
+          expect(Note.b.respelledSimple, Note.b);
+          expect(Note.d.flat.respelledSimple, Note.d.flat);
+          expect(Note.c.sharp.respelledSimple, Note.c.sharp);
+          expect(Note.e.sharp.respelledSimple, Note.f);
+          expect(Note.c.flat.respelledSimple, Note.b);
+          expect(Note.g.sharp.sharp.respelledSimple, Note.a);
+          expect(Note.a.flat.flat.flat.respelledSimple, Note.g.flat);
+          expect(Note.f.sharp.sharp.sharp.respelledSimple, Note.g.sharp);
+        },
+      );
+    });
+
     group('.circleOfFifthsDistance', () {
       test('should return the circle of fifths distance of this Note', () {
         expect(Note.f.flat.circleOfFifthsDistance, -8);

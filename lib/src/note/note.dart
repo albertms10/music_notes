@@ -185,6 +185,19 @@ final class Note implements Comparable<Note>, Scalable<Note> {
     return Note(baseNote, accidental);
   }
 
+  /// Returns this [Note] with the simplest [Accidental] spelling while keeping
+  /// the same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.sharp.respelledSimple == Note.f
+  /// Note.d.flat.flat.respelledSimple == Note.c
+  /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
+  /// ```
+  Note get respelledSimple =>
+      respellByAccidental(Accidental.natural) ??
+      respellByAccidental(Accidental(accidental.semitones.sign))!;
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
