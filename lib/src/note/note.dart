@@ -128,7 +128,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
-  /// Returns the respelled [Note] by [baseNote] while keeping the same
+  /// Returns this [Note] respelled by [baseNote] while keeping the same
   /// number of [semitones].
   ///
   /// Example:
@@ -169,7 +169,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   Note get respelledDownwards =>
       respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal - 1));
 
-  /// Returns the respelled [Note] by [accidental] while keeping the same
+  /// Returns this [Note] respelled by [accidental] while keeping the same
   /// number of [semitones].
   ///
   /// Example:
