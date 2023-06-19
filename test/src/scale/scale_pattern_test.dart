@@ -196,15 +196,15 @@ void main() {
 
       test('should return the whole-tone Scale on Note', () {
         expect(
-          ScalePattern.wholeTone.on(EnharmonicNote.c),
-          const Scale([
-            EnharmonicNote.c,
-            EnharmonicNote.d,
-            EnharmonicNote.e,
-            EnharmonicNote.fSharp,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.c,
+          ScalePattern.wholeTone.on(Note.c),
+          Scale([
+            Note.c,
+            Note.d,
+            Note.e,
+            Note.f.sharp,
+            Note.g.sharp,
+            Note.a.sharp,
+            Note.c,
           ]),
         );
         expect(
@@ -253,21 +253,21 @@ void main() {
           ]),
         );
         expect(
-          ScalePattern.chromatic.on(EnharmonicNote.cSharp),
-          const Scale([
-            EnharmonicNote.cSharp,
-            EnharmonicNote.d,
-            EnharmonicNote.dSharp,
-            EnharmonicNote.e,
-            EnharmonicNote.f,
-            EnharmonicNote.fSharp,
-            EnharmonicNote.g,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.a,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.b,
-            EnharmonicNote.c,
-            EnharmonicNote.cSharp,
+          ScalePattern.chromatic.on(Note.c.sharp),
+          Scale([
+            Note.c.sharp,
+            Note.c.sharp.sharp,
+            Note.d.sharp,
+            Note.d.sharp.sharp,
+            Note.e.sharp,
+            Note.f.sharp,
+            Note.f.sharp.sharp,
+            Note.g.sharp,
+            Note.g.sharp.sharp,
+            Note.a.sharp,
+            Note.a.sharp.sharp,
+            Note.b.sharp,
+            Note.c.sharp,
           ]),
         );
         expect(
@@ -307,14 +307,14 @@ void main() {
           ]),
         );
         expect(
-          ScalePattern.majorPentatonic.on(EnharmonicNote.fSharp),
-          const Scale([
-            EnharmonicNote.fSharp,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.cSharp,
-            EnharmonicNote.dSharp,
-            EnharmonicNote.fSharp,
+          ScalePattern.majorPentatonic.on(Note.f.sharp),
+          Scale([
+            Note.f.sharp,
+            Note.g.sharp,
+            Note.a.sharp,
+            Note.c.sharp,
+            Note.d.sharp,
+            Note.f.sharp,
           ]),
         );
       });

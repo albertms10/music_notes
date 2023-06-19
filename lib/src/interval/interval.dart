@@ -100,37 +100,6 @@ final class Interval implements Comparable<Interval> {
           ),
         );
 
-  /// Creates a new [Interval] from [semitones] and a [preferredQuality].
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.fromSemitonesQuality(4) == Interval.m3
-  /// Interval.fromSemitonesQuality(7) == Interval.A4
-  /// Interval.fromSemitonesQuality(7, PerfectQuality.diminished)
-  ///   == Interval.d5
-  /// ```
-  factory Interval.fromSemitonesQuality(
-    int semitones, [
-    Quality? preferredQuality,
-  ]) {
-    final intervals = EnharmonicInterval(semitones).spellings;
-
-    if (preferredQuality != null) {
-      final interval = intervals.firstWhereOrNull(
-        (interval) => interval.quality == preferredQuality,
-      );
-      if (interval != null) return interval;
-    }
-
-    // Find the Interval with the smaller Quality delta semitones.
-    return intervals
-        .sorted(
-          (a, b) =>
-              a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
-        )
-        .first;
-  }
-
   /// Parse [source] as an [Interval] and return its value.
   ///
   /// If the [source] string does not contain a valid [Interval], a

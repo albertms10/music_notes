@@ -232,9 +232,8 @@ void main() {
           'D3 Major pentatonic (D3 E3 F♯3 A3 B3 D4)',
         );
         expect(
-          ScalePattern.minorPentatonic.on(EnharmonicNote.f).toString(),
-          '6 {E♯, F, G𝄫} Minor pentatonic (6 {E♯, F, G𝄫} 9 {G♯, A♭} '
-          '11 {A♯, B♭} 1 {C, D𝄫, B♯} 4 {D♯, E♭} 6 {E♯, F, G𝄫})',
+          ScalePattern.minorPentatonic.on(Note.f).toString(),
+          'F Minor pentatonic (F A♭ B♭ C E♭ F)',
         );
       });
     });
