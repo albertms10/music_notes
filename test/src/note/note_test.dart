@@ -1,5 +1,6 @@
 import 'dart:collection' show SplayTreeSet;
 
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -350,6 +351,14 @@ void main() {
             Note.f,
             Note.c,
           ]);
+          expect(
+            Note.c.flatCircleOfFifths(distance: 3),
+            ScalePattern.dorian
+                .on(Note.c)
+                .degrees
+                .skip(1)
+                .sorted(Note.compareByFifthsDistance),
+          );
         },
       );
     });
