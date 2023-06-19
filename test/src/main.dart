@@ -6,7 +6,6 @@ import 'interval/interval_size_extension_test.dart'
     as interval_size_extension_test;
 import 'interval/interval_test.dart' as interval_test;
 import 'interval/quality_test.dart' as quality_test;
-import 'music_test.dart' as music_test;
 import 'note/accidental_test.dart' as accidental_test;
 import 'note/base_note_test.dart' as base_note_test;
 import 'note/enharmonic_note_test.dart' as enharmonic_note_test;
@@ -28,7 +27,6 @@ void main() {
   interval_size_extension_test.main();
   interval_test.main();
   quality_test.main();
-  music_test.main();
   accidental_test.main();
   base_note_test.main();
   enharmonic_note_test.main();
