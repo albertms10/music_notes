@@ -177,6 +177,19 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get simplified => Interval._(size.simplified, quality);
 
+  /// Returns this [Interval] respelled by [size] while keeping the same
+  /// number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.A4.respellBySize(5) == Interval.d5
+  /// Interval.d3.respellBySize(2) == Interval.M2
+  /// ```
+  Interval respellBySize(int size) => Interval._(
+        size,
+        Quality.fromInterval(size, semitones.abs() - size.semitones.abs()),
+      );
+
   /// Returns the iteration distance of this [Interval] between [note1] and
   /// [note2].
   ///
