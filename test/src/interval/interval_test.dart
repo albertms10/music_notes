@@ -292,6 +292,27 @@ void main() {
       });
     });
 
+    group('.respellBySize()', () {
+      test('should return this Interval respelled by size', () {
+        expect(Interval.A4.respellBySize(5), Interval.d5);
+        expect(Interval.d5.respellBySize(4), Interval.A4);
+        expect(Interval.M2.respellBySize(3), Interval.d3);
+        expect(
+          Interval.M3.respellBySize(5),
+          const Interval.perfect(5, PerfectQuality.triplyDiminished),
+        );
+        expect(Interval.P1.respellBySize(2), Interval.d2);
+        expect(Interval.m2.respellBySize(1), Interval.A1);
+
+        expect((-Interval.M3).respellBySize(-4), -Interval.d4);
+        expect((-Interval.d5).respellBySize(-4), -Interval.A4);
+        expect(
+          (-Interval.P4).respellBySize(-5),
+          const Interval.perfect(-5, PerfectQuality.doublyDiminished),
+        );
+      });
+    });
+
     group('.circleFrom()', () {
       test('should return the circle of this Interval', () {
         expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
