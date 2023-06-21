@@ -80,25 +80,7 @@ final class KeySignature implements Comparable<KeySignature> {
   }
 
   @override
-  String toString() {
-    if (notes.isEmpty) {
-      return '${notes.length} ${accidental.symbol}';
-    }
-
-    final list = <String>[];
-    final notesLength = BaseNote.values.length;
-    final iterations = (notes.length / notesLength).ceil();
-
-    for (var i = 1; i <= iterations; i++) {
-      final n = i == iterations
-          ? notes.length.nModExcludeZero(notesLength)
-          : notesLength;
-
-      list.add('$n ${accidental.increment(i - 1).symbol}');
-    }
-
-    return list.join(', ');
-  }
+  String toString() => '$distance (${notes.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
