@@ -183,25 +183,52 @@ void main() {
       test(
         'should return the string representation of this KeySignature',
         () {
-          expect(KeySignature.fromDistance(-10).toString(), '7 ♭, 3 𝄫');
-          expect(KeySignature.fromDistance(-8).toString(), '7 ♭, 1 𝄫');
-          expect(KeySignature.fromDistance(-7).toString(), '7 ♭');
-          expect(KeySignature.fromDistance(-6).toString(), '6 ♭');
-          expect(KeySignature.fromDistance(-5).toString(), '5 ♭');
-          expect(KeySignature.fromDistance(-4).toString(), '4 ♭');
-          expect(KeySignature.fromDistance(-3).toString(), '3 ♭');
-          expect(KeySignature.fromDistance(-2).toString(), '2 ♭');
-          expect(KeySignature.fromDistance(-1).toString(), '1 ♭');
-          expect(KeySignature.fromDistance(0).toString(), '0 ♮');
-          expect(KeySignature.fromDistance(1).toString(), '1 ♯');
-          expect(KeySignature.fromDistance(2).toString(), '2 ♯');
-          expect(KeySignature.fromDistance(3).toString(), '3 ♯');
-          expect(KeySignature.fromDistance(4).toString(), '4 ♯');
-          expect(KeySignature.fromDistance(5).toString(), '5 ♯');
-          expect(KeySignature.fromDistance(6).toString(), '6 ♯');
-          expect(KeySignature.fromDistance(7).toString(), '7 ♯');
-          expect(KeySignature.fromDistance(8).toString(), '7 ♯, 1 𝄪');
-          expect(KeySignature.fromDistance(10).toString(), '7 ♯, 3 𝄪');
+          expect(
+            KeySignature.fromDistance(-10).toString(),
+            '-10 (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫 E𝄫 A𝄫)',
+          );
+          expect(
+            KeySignature.fromDistance(-8).toString(),
+            '-8 (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫)',
+          );
+          expect(
+            KeySignature.fromDistance(-7).toString(),
+            '-7 (B♭ E♭ A♭ D♭ G♭ C♭ F♭)',
+          );
+          expect(
+            KeySignature.fromDistance(-6).toString(),
+            '-6 (B♭ E♭ A♭ D♭ G♭ C♭)',
+          );
+          expect(
+            KeySignature.fromDistance(-5).toString(),
+            '-5 (B♭ E♭ A♭ D♭ G♭)',
+          );
+          expect(KeySignature.fromDistance(-4).toString(), '-4 (B♭ E♭ A♭ D♭)');
+          expect(KeySignature.fromDistance(-3).toString(), '-3 (B♭ E♭ A♭)');
+          expect(KeySignature.fromDistance(-2).toString(), '-2 (B♭ E♭)');
+          expect(KeySignature.fromDistance(-1).toString(), '-1 (B♭)');
+          expect(KeySignature.fromDistance(0).toString(), '0 ()');
+          expect(KeySignature.fromDistance(1).toString(), '1 (F♯)');
+          expect(KeySignature.fromDistance(2).toString(), '2 (F♯ C♯)');
+          expect(KeySignature.fromDistance(3).toString(), '3 (F♯ C♯ G♯)');
+          expect(KeySignature.fromDistance(4).toString(), '4 (F♯ C♯ G♯ D♯)');
+          expect(KeySignature.fromDistance(5).toString(), '5 (F♯ C♯ G♯ D♯ A♯)');
+          expect(
+            KeySignature.fromDistance(6).toString(),
+            '6 (F♯ C♯ G♯ D♯ A♯ E♯)',
+          );
+          expect(
+            KeySignature.fromDistance(7).toString(),
+            '7 (F♯ C♯ G♯ D♯ A♯ E♯ B♯)',
+          );
+          expect(
+            KeySignature.fromDistance(8).toString(),
+            '8 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪)',
+          );
+          expect(
+            KeySignature.fromDistance(10).toString(),
+            '10 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪 C𝄪 G𝄪)',
+          );
         },
       );
     });
