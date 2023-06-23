@@ -1,7 +1,7 @@
 library music_notes;
 
 import 'dart:collection' show SplayTreeSet;
-import 'dart:math' as math show min, pow;
+import 'dart:math' as math show pow;
 
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality;

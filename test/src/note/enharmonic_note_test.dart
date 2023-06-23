@@ -309,21 +309,6 @@ void main() {
       });
     });
 
-    group('.shortestFifthsDistance()', () {
-      test('should return the shortest fifths distance from other', () {
-        expect(EnharmonicNote.c.shortestFifthsDistance(EnharmonicNote.c), 0);
-        expect(EnharmonicNote.c.shortestFifthsDistance(EnharmonicNote.e), 4);
-        expect(
-          EnharmonicNote.fSharp.shortestFifthsDistance(EnharmonicNote.a),
-          -3,
-        );
-        expect(
-          EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g),
-          4,
-        );
-      });
-    });
-
     group('operator *', () {
       test(
         'should return the pitch-class multiplication modulo 12 of this '
