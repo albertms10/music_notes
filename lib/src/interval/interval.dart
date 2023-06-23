@@ -256,18 +256,21 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Interval.P4.circleFrom(Note.c, distance: 5)
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
+  ///
+  /// Interval.P4.circleFrom(Note.c, distance: -3)
+  ///   == Interval.P5.circleFrom(Note.c, distance: 3)
   /// ```
   List<T> circleFrom<T extends Scalable<T>>(
     T scalable, {
     required int distance,
   }) =>
-      distance == 0
-          ? [scalable]
-          : List.filled(distance.abs(), null).fold(
-              [scalable],
-              (circleItems, _) =>
-                  [...circleItems, circleItems.last.transposeBy(this)],
-            );
+      List.filled(distance.abs(), null).fold(
+        [scalable],
+        (circleItems, _) => [
+          ...circleItems,
+          circleItems.last.transposeBy(distance.isNegative ? -this : this),
+        ],
+      );
 
   /// Adds [other] to this [Interval].
   ///

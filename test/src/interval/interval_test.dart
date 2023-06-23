@@ -384,6 +384,11 @@ void main() {
             Note.a.flat.flat,
           ],
         );
+
+        expect(
+          Interval.P4.circleFrom(Note.c, distance: -7),
+          Interval.P5.circleFrom(Note.c, distance: 7),
+        );
       });
     });
 
