@@ -187,4 +187,29 @@ final class EnharmonicNote extends Enharmonic<Note>
 
     return distance;
   }
+
+  /// Performs a pitch-class multiplication modulo 12 of this [EnharmonicNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// EnharmonicNote.cSharp * 7 == EnharmonicNote.g
+  /// EnharmonicNote.d * 7 == EnharmonicNote.d
+  ///
+  /// EnharmonicNote.cSharp * 5 == EnharmonicNote.f
+  /// EnharmonicNote.d * 5 == EnharmonicNote.aSharp
+  /// ```
+  ///
+  /// The multiplication by the two meaningful operations (5 and 7) gives us the
+  /// circle of fourths and fifths transform, respectively, when operated on a
+  /// chromatic scale as follows:
+  ///
+  /// ```dart
+  /// ScalePattern.chromatic.on(EnharmonicNote.c)
+  ///   .degrees.map((note) => note * 7)
+  ///     == Interval.P5.circleFrom(EnharmonicNote.c, distance: 12)
+  /// ```
+  ///
+  /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
+  EnharmonicNote operator *(int factor) =>
+      EnharmonicNote(((semitones - 1) * factor + 1).chromaticModExcludeZero);
 }

@@ -21,7 +21,7 @@ void main() {
     });
 
     group('.chromaticMod', () {
-      test('should return the correct modulus chromatic divisions', () {
+      test('should return the correct modulo chromatic divisions', () {
         expect(4.chromaticMod, 4);
         expect(14.chromaticMod, 2);
         expect((-5).chromaticMod, 7);
@@ -32,7 +32,7 @@ void main() {
 
     group('.chromaticModExcludeZero', () {
       test(
-        'should return the correct modulus chromatic divisions excluding zero',
+        'should return the correct modulo chromatic divisions excluding zero',
         () {
           expect(15.chromaticModExcludeZero, 3);
           expect(12.chromaticModExcludeZero, 12);
@@ -43,7 +43,7 @@ void main() {
 
     group('.nModExcludeZero()', () {
       test(
-        'should return the correct modulus excluding zero for a given int',
+        'should return the correct modulo excluding zero for a given int',
         () {
           expect(9.nModExcludeZero(3), 3);
           expect(0.nModExcludeZero(5), 5);

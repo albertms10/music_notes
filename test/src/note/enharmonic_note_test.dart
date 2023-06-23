@@ -324,6 +324,32 @@ void main() {
       });
     });
 
+    group('operator *', () {
+      test(
+        'should return the pitch-class multiplication modulo 12 of this '
+        'EnharmonicNote',
+        () {
+          expect(EnharmonicNote.cSharp * 7, EnharmonicNote.g);
+          expect(EnharmonicNote.d * 5, EnharmonicNote.aSharp);
+
+          expect(
+            ScalePattern.chromatic
+                .on(EnharmonicNote.c)
+                .degrees
+                .map((note) => note * 7),
+            Interval.P5.circleFrom(EnharmonicNote.c, distance: 12),
+          );
+          expect(
+            ScalePattern.chromatic
+                .on(EnharmonicNote.c)
+                .degrees
+                .map((note) => note * 5),
+            Interval.P5.circleFrom(EnharmonicNote.c, distance: -12),
+          );
+        },
+      );
+    });
+
     group('.toString()', () {
       test('should return a string representation of this EnharmonicNote', () {
         expect(EnharmonicNote.c.toString(), '1 {C, D𝄫, B♯}');

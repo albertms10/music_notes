@@ -12,7 +12,7 @@ extension IntExtension on int {
   /// ```
   int incrementBy(int step) => (abs() + step) * (isNegative ? -1 : 1);
 
-  /// Returns the modulus [chromaticDivisions] of this [int].
+  /// Returns the modulo [chromaticDivisions] of this [int].
   ///
   /// Example:
   /// ```dart
@@ -24,7 +24,7 @@ extension IntExtension on int {
   /// ```
   int get chromaticMod => this % chromaticDivisions;
 
-  /// Returns the modulus [chromaticDivisions] of this [int]. If this
+  /// Returns the modulo [chromaticDivisions] of this [int]. If this
   /// is 0, it returns [chromaticDivisions].
   ///
   /// Example:
@@ -35,7 +35,7 @@ extension IntExtension on int {
   /// ```
   int get chromaticModExcludeZero => nModExcludeZero(chromaticDivisions);
 
-  /// Returns the modulus [n] of this [int]. If this is 0, it returns [n].
+  /// Returns the modulo [n] of this [int]. If this is 0, it returns [n].
   ///
   /// Example:
   /// ```dart
