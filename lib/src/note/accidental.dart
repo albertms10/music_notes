@@ -40,7 +40,7 @@ final class Accidental implements Comparable<Accidental> {
   /// ```
   factory Accidental.parse(String source) {
     // Safely split UTF-16 code units using `runes`.
-    final value = source.runes.fold(
+    final semitones = source.runes.fold(
       0,
       (acc, rune) =>
           acc +
@@ -54,7 +54,7 @@ final class Accidental implements Comparable<Accidental> {
           },
     );
 
-    return Accidental(value);
+    return Accidental(semitones);
   }
 
   /// The name of this [Accidental].

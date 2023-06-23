@@ -13,7 +13,7 @@ enum BaseNote {
 
   const BaseNote(this.semitones);
 
-  /// Returns a [BaseNote] enum item that matches with [value]
+  /// Returns a [BaseNote] enum item that matches with [semitones]
   /// as in [BaseNote], otherwise returns `null`.
   ///
   /// Example:
@@ -22,8 +22,8 @@ enum BaseNote {
   /// BaseNote.fromSemitones(8) == BaseNote.g
   /// BaseNote.fromSemitones(11) == null
   /// ```
-  static BaseNote? fromSemitones(int value) => values.firstWhereOrNull(
-        (note) => value.chromaticModExcludeZero == note.semitones,
+  static BaseNote? fromSemitones(int semitones) => values.firstWhereOrNull(
+        (note) => semitones.chromaticModExcludeZero == note.semitones,
       );
 
   /// Returns a [BaseNote] enum item that matches with [ordinal].
