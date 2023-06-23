@@ -1,6 +1,7 @@
 part of '../../music_notes.dart';
 
 /// A note octave in the octave range.
+@immutable
 final class PositionedNote
     implements Comparable<PositionedNote>, Scalable<PositionedNote> {
   /// Which of the 12 notes inside the octave.

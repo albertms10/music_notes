@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 class HarmonicFunction {
   final List<ScaleDegree> scaleDegrees;
 

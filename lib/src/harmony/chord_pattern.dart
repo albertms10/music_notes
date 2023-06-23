@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 class ChordPattern with Chordable<ChordPattern> {
   /// The intervals from the root note.
   final List<Interval> intervals;

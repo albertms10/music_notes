@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 class ScaleDegree implements Comparable<ScaleDegree> {
   final int ordinal;
   final int inversion;

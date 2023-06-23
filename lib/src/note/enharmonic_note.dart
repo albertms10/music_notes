@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 final class EnharmonicNote extends Enharmonic<Note>
     implements Scalable<EnharmonicNote> {
   const EnharmonicNote(super.semitones)
@@ -186,4 +187,7 @@ final class EnharmonicNote extends Enharmonic<Note>
 
     return distance;
   }
+
+  EnharmonicNote operator *(int factor) =>
+      EnharmonicNote(((semitones - 1) * factor + 1).chromaticModExcludeZero);
 }
