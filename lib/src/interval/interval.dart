@@ -221,8 +221,8 @@ final class Interval implements Comparable<Interval> {
         Quality.fromInterval(size, semitones.abs() - size.semitones.abs()),
       );
 
-  /// Returns the iteration distance of this [Interval] between [note1] and
-  /// [note2].
+  /// Returns the iteration distance of this [Interval] between [scalable1] and
+  /// [scalable2].
   ///
   /// Example:
   /// ```dart
@@ -231,20 +231,23 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d) == -4
   /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 3
   /// ```
-  int distanceBetween(Note note1, Note note2) {
+  int distanceBetween<T extends Scalable<T>>(
+    Scalable<T> scalable1,
+    Scalable<T> scalable2,
+  ) {
     var distance = 0;
-    var ascendingNote = note1;
-    var descendingNote = note1;
+    var ascendingNote = scalable1;
+    var descendingNote = scalable1;
     while (true) {
-      if (ascendingNote == note2) return distance;
-      if (descendingNote == note2) return -distance;
+      if (ascendingNote == scalable2) return distance;
+      if (descendingNote == scalable2) return -distance;
       distance++;
       ascendingNote = ascendingNote.transposeBy(this);
       descendingNote = descendingNote.transposeBy(inverted);
     }
   }
 
-  /// Returns the circle of this [Interval] from [note] up to [distance].
+  /// Returns the circle of this [Interval] from [scalable] up to [distance].
   ///
   /// Example:
   /// ```dart
@@ -254,12 +257,17 @@ final class Interval implements Comparable<Interval> {
   /// Interval.P4.circleFrom(Note.c, distance: 5)
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   /// ```
-  List<Note> circleFrom(Note note, {required int distance}) => distance == 0
-      ? [note]
-      : List.filled(distance.abs(), null).fold(
-          [note],
-          (notes, _) => [...notes, notes.last.transposeBy(this)],
-        );
+  List<T> circleFrom<T extends Scalable<T>>(
+    T scalable, {
+    required int distance,
+  }) =>
+      distance == 0
+          ? [scalable]
+          : List.filled(distance.abs(), null).fold(
+              [scalable],
+              (circleItems, _) =>
+                  [...circleItems, circleItems.last.transposeBy(this)],
+            );
 
   /// Adds [other] to this [Interval].
   ///

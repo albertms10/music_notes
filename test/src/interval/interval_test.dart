@@ -313,12 +313,47 @@ void main() {
       });
     });
 
+    group('.distanceBetween()', () {
+      test('should return the distance between two Scalable instances', () {
+        expect(Interval.P5.distanceBetween(Note.c, Note.b.flat.flat), -9);
+        expect(Interval.P5.distanceBetween(Note.c, Note.b.flat), -2);
+        expect(
+          Interval.P5.distanceBetween(EnharmonicNote.d, EnharmonicNote.gSharp),
+          6,
+        );
+        expect(Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp), 13);
+
+        expect(
+          Interval.P4.distanceBetween(EnharmonicNote.dSharp, EnharmonicNote.c),
+          -3,
+        );
+        expect(Interval.P4.distanceBetween(Note.c, Note.c), 0);
+        expect(Interval.P4.distanceBetween(Note.c, Note.f), 1);
+        expect(
+          Interval.P4.distanceBetween(EnharmonicNote.c, EnharmonicNote.aSharp),
+          2,
+        );
+      });
+    });
+
     group('.circleFrom()', () {
       test('should return the circle of this Interval', () {
         expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
         expect(
           Interval.P5.circleFrom(Note.c, distance: 1),
           const [Note.c, Note.g],
+        );
+        expect(
+          Interval.P5.circleFrom(EnharmonicNote.c, distance: 6),
+          const [
+            EnharmonicNote.c,
+            EnharmonicNote.g,
+            EnharmonicNote.d,
+            EnharmonicNote.a,
+            EnharmonicNote.e,
+            EnharmonicNote.b,
+            EnharmonicNote.fSharp,
+          ],
         );
         expect(
           Interval.P5.circleFrom(Note.f.sharp, distance: 8),
