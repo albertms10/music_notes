@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// The [Scalable<T>] degrees that define this [Scale<T>].
   final List<T> degrees;
