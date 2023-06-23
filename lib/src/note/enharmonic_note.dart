@@ -187,7 +187,4 @@ final class EnharmonicNote extends Enharmonic<Note>
 
     return distance;
   }
-
-  EnharmonicNote operator *(int factor) =>
-      EnharmonicNote(((semitones - 1) * factor + 1).chromaticModExcludeZero);
 }
