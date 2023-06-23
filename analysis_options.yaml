@@ -69,11 +69,8 @@ analyzer:
     - dart_code_metrics
 
   errors:
-    avoid_equals_and_hash_code_on_mutable_classes: ignore
     public_member_api_docs: ignore
-    unused_element: ignore # See https://github.com/dart-lang/sdk/issues/49025
 
     # Style decisions
-    always_put_required_named_parameters_first: ignore
     always_use_package_imports: ignore
     sort_constructors_first: ignore

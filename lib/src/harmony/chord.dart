@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
     implements Transposable<Chord<T>> {

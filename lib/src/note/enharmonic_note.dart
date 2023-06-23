@@ -1,5 +1,6 @@
 part of '../../music_notes.dart';
 
+@immutable
 final class EnharmonicNote extends Enharmonic<Note>
     implements Scalable<EnharmonicNote> {
   const EnharmonicNote(super.semitones)

@@ -3,6 +3,7 @@ part of '../../music_notes.dart';
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
+@immutable
 final class ScalePattern {
   /// The interval steps that define this [ScalePattern].
   final List<Interval> intervalSteps;

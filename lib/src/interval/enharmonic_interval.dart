@@ -2,6 +2,7 @@
 
 part of '../../music_notes.dart';
 
+@immutable
 final class EnharmonicInterval extends Enharmonic<Interval> {
   const EnharmonicInterval(super.semitones);
 
