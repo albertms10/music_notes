@@ -44,7 +44,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.f.sharp.semitones == 7
   /// ```
   int get semitones =>
-      (baseNote.value + accidental.semitones).chromaticModExcludeZero;
+      (baseNote.semitones + accidental.semitones).chromaticModExcludeZero;
 
   /// Returns the difference in semitones between this [Note] and [other].
   ///
@@ -138,7 +138,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.g.respellByBaseNote(BaseNote.a) == Note.a.flat.flat
   /// ```
   Note respellByBaseNote(BaseNote baseNote) {
-    final rawSemitones = semitones - baseNote.value;
+    final rawSemitones = semitones - baseNote.semitones;
     final deltaSemitones = rawSemitones +
         (rawSemitones.abs() > (chromaticDivisions * 0.5)
             ? chromaticDivisions * -rawSemitones.sign
@@ -179,7 +179,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.g.respellByAccidental(Accidental.sharp) == null
   /// ```
   Note? respellByAccidental(Accidental accidental) {
-    final baseNote = BaseNote.fromValue(semitones - accidental.semitones);
+    final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
     if (baseNote == null) return null;
 
     return Note(baseNote, accidental);
@@ -345,6 +345,6 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   @override
   int compareTo(Note other) => compareMultiple([
         () => semitones.compareTo(other.semitones),
-        () => baseNote.value.compareTo(other.baseNote.value),
+        () => baseNote.semitones.compareTo(other.baseNote.semitones),
       ]);
 }
