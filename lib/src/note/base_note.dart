@@ -9,21 +9,21 @@ enum BaseNote {
   a(10),
   b(12);
 
-  final int value;
+  final int semitones;
 
-  const BaseNote(this.value);
+  const BaseNote(this.semitones);
 
-  /// Returns a [BaseNote] enum item that matches with [value]
+  /// Returns a [BaseNote] enum item that matches with [semitones]
   /// as in [BaseNote], otherwise returns `null`.
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.fromValue(3) == BaseNote.d
-  /// BaseNote.fromValue(8) == BaseNote.g
-  /// BaseNote.fromValue(11) == null
+  /// BaseNote.fromSemitones(3) == BaseNote.d
+  /// BaseNote.fromSemitones(8) == BaseNote.g
+  /// BaseNote.fromSemitones(11) == null
   /// ```
-  static BaseNote? fromValue(int value) => values.firstWhereOrNull(
-        (note) => value.chromaticModExcludeZero == note.value,
+  static BaseNote? fromSemitones(int semitones) => values.firstWhereOrNull(
+        (note) => semitones.chromaticModExcludeZero == note.semitones,
       );
 
   /// Returns a [BaseNote] enum item that matches with [ordinal].
@@ -34,7 +34,7 @@ enum BaseNote {
   /// BaseNote.fromOrdinal(7) == BaseNote.b
   /// BaseNote.fromOrdinal(10) == BaseNote.e
   /// ```
-  static BaseNote fromOrdinal(int ordinal) =>
+  factory BaseNote.fromOrdinal(int ordinal) =>
       BaseNote.values[ordinal.nModExcludeZero(BaseNote.values.length) - 1];
 
   /// Parse [source] as a [BaseNote] and return its value.
@@ -92,7 +92,7 @@ enum BaseNote {
   /// BaseNote.c.difference(BaseNote.e) == 4
   /// BaseNote.a.difference(BaseNote.d) == -7
   /// ```
-  int difference(BaseNote other) => other.value - value;
+  int difference(BaseNote other) => other.semitones - semitones;
 
   /// Returns the positive difference in semitones between this [BaseNote] enum
   /// item and [other].
@@ -125,6 +125,6 @@ enum BaseNote {
   BaseNote transposeBySize(int size) {
     assert(size != 0, 'Size must be non-zero');
 
-    return fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
+    return BaseNote.fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
   }
 }
