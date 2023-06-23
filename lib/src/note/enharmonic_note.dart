@@ -144,53 +144,6 @@ final class EnharmonicNote extends Enharmonic<Note>
     );
   }
 
-  /// Returns the shortest fifths distance between this and [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicNote.fSharp.shortestFifthsDistance(EnharmonicNote.a) == -3
-  /// EnharmonicNote.dSharp.shortestFifthsDistance(EnharmonicNote.g) == 4
-  /// ```
-  int shortestFifthsDistance(EnharmonicNote other) {
-    final distanceAbove = enharmonicIntervalDistance(other, Interval.P5);
-    final distanceBelow = enharmonicIntervalDistance(other, -Interval.P5);
-    final minDistance = math.min(distanceAbove, distanceBelow);
-
-    return minDistance * (minDistance == distanceAbove ? 1 : -1);
-  }
-
-  /// Returns the shortest iteration distance from [enharmonicNote]
-  /// to [interval].
-  ///
-  /// Example:
-  /// ```dart
-  /// EnharmonicNote.e.enharmonicIntervalDistance(
-  ///     EnharmonicNote.d,
-  ///     Interval.P5,
-  ///   ) == 10
-  ///
-  /// EnharmonicNote.e.enharmonicIntervalDistance(
-  ///     EnharmonicNote.d,
-  ///     -Interval.P5,
-  ///   ) == 2
-  /// ```
-  int enharmonicIntervalDistance(
-    EnharmonicNote enharmonicNote,
-    Interval interval,
-  ) {
-    var distance = 0;
-    var currentPitch = semitones;
-    var tempEnharmonicNote = EnharmonicNote(currentPitch);
-
-    while (tempEnharmonicNote != enharmonicNote) {
-      distance++;
-      currentPitch += interval.semitones;
-      tempEnharmonicNote = EnharmonicNote(currentPitch.chromaticModExcludeZero);
-    }
-
-    return distance;
-  }
-
   /// Performs a pitch-class multiplication modulo 12 of this [EnharmonicNote].
   ///
   /// Example:
