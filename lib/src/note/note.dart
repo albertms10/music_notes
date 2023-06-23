@@ -230,10 +230,8 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       (
         sharps:
             Interval.P5.circleFrom(this, distance: distance).skip(1).toList(),
-        flats: (-Interval.P5)
-            .circleFrom(this, distance: distance)
-            .skip(1)
-            .toList(),
+        flats:
+            Interval.P5.circleFrom(this, distance: -distance).skip(1).toList(),
       );
 
   /// Returns the flattened version of [circleOfFifths] from this [Note] up to
@@ -277,12 +275,13 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   int get circleOfFifthsDistance =>
       Tonality(this, TonalMode.major).keySignature.distance;
 
-  /// Returns the exact fifths distance between this [Note] and [other].
+  /// Returns the fifths distance between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
+  /// Note.c.fifthsDistanceWith(Note.e.flat) == -3
+  /// Note.f.sharp.fifthsDistanceWith(Note.b) == -1
   /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
-  /// Note.a.flat.fifthsDistanceWith(Note.d.flat) == -1
   /// ```
   int fifthsDistanceWith(Note other) =>
       Interval.P5.distanceBetween(this, other);

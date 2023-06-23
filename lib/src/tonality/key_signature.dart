@@ -13,11 +13,12 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final interval = distance.isNegative ? Interval.P4 : Interval.P5;
-    final startingNote = distance.isNegative ? Note.b.flat : Note.f.sharp;
+    final firstAccidentalNote =
+        distance.isNegative ? Note.b.flat : Note.f.sharp;
 
     return KeySignature(
-      interval.circleFrom(startingNote, distance: distance.incrementBy(-1)),
+      Interval.P5
+          .circleFrom(firstAccidentalNote, distance: distance.incrementBy(-1)),
     );
   }
 
@@ -70,8 +71,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// )
   /// ```
   ({Tonality major, Tonality minor}) get tonalities {
-    final interval = distance.isNegative ? Interval.P4 : Interval.P5;
-    final rootNote = interval.circleFrom(Note.c, distance: distance).last;
+    final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
 
     return (
       major: rootNote.major,
