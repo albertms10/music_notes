@@ -240,19 +240,25 @@ final class PositionedNote
   /// Note.a.inOctave(4).equalTemperamentFrequency() == const Frequency(440)
   /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
   ///
-  /// Note.b.flat.inOctave(4).equalTemperamentFrequency(const Frequency(338))
-  ///   == const Frequency(464.04)
+  /// Note.b.flat.inOctave(4).equalTemperamentFrequency(
+  ///   reference: const Frequency(338),
+  /// ) == const Frequency(464.04)
   ///
   /// Note.c.inOctave(4).equalTemperamentFrequency(
-  ///   const Frequency(256),
-  ///   Note.c.inOctave(4),
+  ///   reference: const Frequency(256),
+  ///   note: Note.c.inOctave(4),
   /// ) == const Frequency(256)
+  ///
+  /// Note.b.flat.inOctave(4).equalTemperamentFrequency(
+  ///   system: TuningSystem.edo19,
+  /// ) == const Frequency(456.35)
   /// ```
-  Frequency equalTemperamentFrequency([
+  Frequency equalTemperamentFrequency({
     Frequency reference = const Frequency(440),
     PositionedNote note = const PositionedNote(Note.a),
-  ]) =>
-      reference * math.pow(sqrt12_2, note.difference(this));
+    TuningSystem system = TuningSystem.edo12,
+  }) =>
+      reference * math.pow(system.ratio(), note.difference(this));
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
