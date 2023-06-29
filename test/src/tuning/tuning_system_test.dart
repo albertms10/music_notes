@@ -43,7 +43,7 @@ void main() {
       test(
         'should return the number of cents for semitones in this TuningSystem',
         () {
-          expect(TuningSystem.edo12.generatorCents, closeTo(700, 0.01));
+          expect(TuningSystem.edo12.generatorCents, 700);
           expect(TuningSystem.edo19.generatorCents, closeTo(694.74, 0.01));
         },
       );

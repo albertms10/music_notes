@@ -60,10 +60,10 @@ class TuningSystem {
   /// TuningSystem.edo19.cents() == 63.16
   /// ```
   double cents([int semitones = 1]) =>
-      TuningSystem.edo12.octaveDivisions *
-      100 *
       math.log(ratio(semitones)) /
-      math.log(2);
+      math.log(2) *
+      100 *
+      TuningSystem.edo12.octaveDivisions;
 
   /// Returns the number of cents for the generator at [Interval.P5] in this
   /// [TuningSystem].
