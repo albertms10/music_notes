@@ -248,17 +248,12 @@ final class PositionedNote
   ///   reference: const Frequency(256),
   ///   note: Note.c.inOctave(4),
   /// ) == const Frequency(256)
-  ///
-  /// Note.b.flat.inOctave(4).equalTemperamentFrequency(
-  ///   system: TuningSystem.edo19,
-  /// ) == const Frequency(456.35)
   /// ```
   Frequency equalTemperamentFrequency({
     Frequency reference = const Frequency(440),
     PositionedNote note = const PositionedNote(Note.a),
-    TuningSystem system = TuningSystem.edo12,
   }) =>
-      reference * math.pow(system.ratio(), note.difference(this));
+      reference * math.pow(TuningSystem.edo12.ratio(), note.difference(this));
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
