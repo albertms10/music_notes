@@ -33,19 +33,32 @@ class TuningSystem {
 
   /// Returns the equal divisions of the octave of this [TuningSystem].
   ///
-  /// See [EDO](https://en.xen.wiki/w/EDO).
+  /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
   int get octaveDivisions =>
       divisions.values.reduce((value, element) => value + element);
 
   /// Returns the [semitones] ratio for this [TuningSystem].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
+  ///
+  /// Example:
+  /// ```dart
+  /// TuningSystem.edo12.ratio() == 1.059463
+  /// TuningSystem.edo19.ratio() == 1.037155
+  /// ```
   double ratio([int semitones = 1]) =>
       math.pow(2, semitones / octaveDivisions).toDouble();
 
   /// Returns the number of cents for [semitones] in this [TuningSystem].
   ///
   /// See [Cent](https://en.wikipedia.org/wiki/Cent_(music)).
+  ///
+  /// Example:
+  /// ```dart
+  /// TuningSystem.edo12.cents() == 100
+  /// TuningSystem.edo12.cents(7) == 700
+  /// TuningSystem.edo19.cents() == 63.16
+  /// ```
   double cents([int semitones = 1]) =>
       TuningSystem.edo12.octaveDivisions *
       100 *
@@ -54,6 +67,12 @@ class TuningSystem {
 
   /// Returns the number of cents for the generator at [Interval.P5] in this
   /// [TuningSystem].
+  ///
+  /// Example:
+  /// ```dart
+  /// TuningSystem.edo12.generatorCents == 700
+  /// TuningSystem.edo19.generatorCents == 694.737
+  /// ```
   ///
   /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
   double get generatorCents {
