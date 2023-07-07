@@ -1,43 +1,5 @@
-![Dart CI](https://github.com/albertms10/music_notes/workflows/Dart%20CI/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/albertms10/music_notes/badge.svg?branch=main)](https://coveralls.io/github/albertms10/music_notes?branch=main)
-[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
-[![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
-[![package publisher](https://img.shields.io/pub/publisher/music_notes.svg)](https://pub.dev/packages/music_notes/publisher)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-
-A simple Dart library that provides a comprehensive set of utilities for working with music theory concepts through a beautifully crafted API.
-
-## Features
-
-- Chords, harmonic functions and circle of fifths
-- Intervals and qualities
-- Notes, frequencies, accidentals and enharmonic operations
-- Scales and scale degrees
-- Tonalities, key signatures and modes
-- Tuning systems (_work in progress_)
-
-## Installation
-
-Add the following line to your `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  music_notes: ^0.10.0
-```
-
-Then, run `flutter pub get` to fetch the package.
-
-## Usage
-
-Import the package into your Dart code:
-
-```dart
 import 'package:music_notes/music_notes.dart';
-```
 
-Now, you can start using the provided APIs to perform various music theory operations. Here's briefly how it looks:
-
-```dart
 void main() {
   // Notes
   Note.a.flat; // A♭
@@ -91,14 +53,3 @@ void main() {
       .degreeChord(ScaleDegree.v) // G min. (G B♭ D)
       .add9(); // G min. (G B♭ D A)
 }
-```
-
-For more detailed usage instructions and examples, please refer to the [API documentation](https://pub.dev/documentation/music_notes/latest/).
-
-## Contributing
-
-Contributions are welcome! If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/albertms10/music_notes/pulls).
-
-## License
-
-This package is released under the [MIT License](LICENSE).
