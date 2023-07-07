@@ -1,4 +1,17 @@
+## 0.10.1
+
+- ✨ feat(interval): take `distance` sign into account in `circleFrom` in [#199](https://github.com/albertms10/music_notes/pull/199)
+- ✨ feat(enharmonic_note): add pitch-class multiplication operator in [#200](https://github.com/albertms10/music_notes/pull/200)
+- ♻️ refactor(base_note): rename `fromSemitones` static method in [#201](https://github.com/albertms10/music_notes/pull/201)
+- 🔥 refactor(enharmonic_note)!: remove `shortestFifthsDistance` methods in [#202](https://github.com/albertms10/music_notes/pull/202)
+- ✨ feat(tuning_system): add class and test cases in [#203](https://github.com/albertms10/music_notes/pull/203)
+- 📖 docs(README): write main library documentation in [#204](https://github.com/albertms10/music_notes/pull/204)
+- ⬆️ chore(pubspec): pin dependencies versions in [#205](https://github.com/albertms10/music_notes/pull/205)
+- 📖 docs(README): remove publisher badge in [#206](https://github.com/albertms10/music_notes/pull/206)
+
 ## 0.10.0
+
+**Note:** the published versioned erroneously contained some changes from 0.10.1.
 
 - ♻️ refactor(interval): rename shorter static constants in [#177](https://github.com/albertms10/music_notes/pull/177)
 - ✨ feat(string_extension): add `isUpperCase` and `isLowerCase` getters in [#179](https://github.com/albertms10/music_notes/pull/179)
