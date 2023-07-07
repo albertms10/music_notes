@@ -8,9 +8,9 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  collection: any
-  meta: any
-  test: any
+  collection: ^1.17.2
+  meta: ^1.9.1
+  test: ^1.24.4
 
 dev_dependencies:
   dart_code_metrics: ^5.7.5
