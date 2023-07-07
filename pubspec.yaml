@@ -1,5 +1,5 @@
 name: music_notes
-description: Music notes library
+description: Comprehensive set of utilities for working with music theory concepts.
 version: 0.10.1
 
 repository: https://github.com/albertms10/music_notes.git
