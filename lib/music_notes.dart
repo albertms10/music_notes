@@ -1,7 +1,7 @@
 library music_notes;
 
 import 'dart:collection' show SplayTreeSet;
-import 'dart:math' as math show pow;
+import 'dart:math' as math show log, pow;
 
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality;
@@ -36,3 +36,4 @@ part 'src/tonality/key_signature.dart';
 part 'src/tonality/mode.dart';
 part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
+part 'src/tuning/tuning_system.dart';
