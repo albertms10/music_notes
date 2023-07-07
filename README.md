@@ -108,4 +108,4 @@ Contributions are welcome! If you encounter any issues or have suggestions for i
 
 ## License
 
-This package is released under the [MIT License](LICENSE).
+This package is released under the [BSD-3-Clause License](LICENSE).
