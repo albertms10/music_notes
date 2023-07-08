@@ -29,7 +29,7 @@ Now, you can use the provided APIs to perform various music theory operations. H
 void main() {
   // Notes
   Note.a.flat; // A♭
-  Note.c.sharp; // D♭
+  Note.c.sharp; // C♯
   Note.parse('fx'); // F𝄪
   PositionedNote.parse("g''"); // G5
   PositionedNote.parse('Bb3'); // B♭3
