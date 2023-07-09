@@ -202,8 +202,8 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(3) == const PositionedNote(Note.c, 3)
-  /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, 2)
+  /// Note.c.inOctave(3) == const PositionedNote(Note.c, octave: 3)
+  /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, octave: 2)
   /// ```
   PositionedNote inOctave(int octave) => PositionedNote(this, octave: octave);
 
