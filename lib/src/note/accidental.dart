@@ -114,8 +114,7 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.sharp.increment(1) == Accidental.doubleSharp
   /// Accidental.sharp.increment(-1) == Accidental.natural
   /// ```
-  Accidental increment(int n) =>
-      Accidental((semitones.abs() + n) * (semitones.isNegative ? -1 : 1));
+  Accidental increment(int n) => Accidental(semitones.incrementBy(n));
 
   @override
   String toString() => [

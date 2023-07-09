@@ -22,24 +22,25 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
 
   @override
   Set<Interval> get spellings {
-    final semitonesAbs = semitones.abs();
-    final sign = semitones.isNegative ? -1 : 1;
-    final size = IntervalSizeExtension.fromSemitones(semitonesAbs);
+    final size = IntervalSizeExtension.fromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        if (size > 1) Interval.fromSemitones((size - 1) * sign, semitones),
-        Interval.fromSemitones(size * sign, semitones),
-        Interval.fromSemitones((size + 1) * sign, semitones),
+        if (size.abs() > 1)
+          Interval.fromSemitones(size.incrementBy(-1), semitones),
+        Interval.fromSemitones(size, semitones),
+        Interval.fromSemitones(size.incrementBy(1), semitones),
       });
     }
 
-    final sizeBelow = IntervalSizeExtension.fromSemitones(semitonesAbs - 1);
-    final sizeAbove = IntervalSizeExtension.fromSemitones(semitonesAbs + 1);
+    final sizeBelow =
+        IntervalSizeExtension.fromSemitones(semitones.incrementBy(-1))!;
+    final sizeAbove =
+        IntervalSizeExtension.fromSemitones(semitones.incrementBy(1))!;
 
     return SplayTreeSet<Interval>.of({
-      Interval.fromSemitones(sizeBelow! * sign, semitones),
-      Interval.fromSemitones(sizeAbove! * sign, semitones),
+      Interval.fromSemitones(sizeBelow, semitones),
+      Interval.fromSemitones(sizeAbove, semitones),
     });
   }
 
