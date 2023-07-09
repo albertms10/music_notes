@@ -88,10 +88,12 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.major.scale.functionChord(ScaleDegree.v / ScaleDegree.v)
-  ///   == Note.a.majorTriad
-  /// Note.b.flat.minor.scale.functionChord(ScaleDegree.ii / ScaleDegree.v)
-  ///   == Note.g.minorTriad
+  /// Note.g.major.scale.functionChord(
+  ///   HarmonicFunction.dominantV / HarmonicFunction.dominantV,
+  /// ) == Note.a.majorTriad
+  /// Note.b.flat.minor.scale.functionChord(
+  ///   HarmonicFunction.ii / HarmonicFunction.dominantV,
+  /// ) == Note.g.minorTriad
   /// ```
   Chord<T> functionChord(HarmonicFunction harmonicFunction) =>
       harmonicFunction.scaleDegrees
