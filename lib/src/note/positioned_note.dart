@@ -11,7 +11,7 @@ final class PositionedNote
   final int octave;
 
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
-  const PositionedNote(this.note, [this.octave = 4]);
+  const PositionedNote(this.note, {required this.octave});
 
   static const _superPrime = '′';
   static const _subPrime = '͵';
@@ -33,7 +33,7 @@ final class PositionedNote
     if (scientificNotationMatch != null) {
       return PositionedNote(
         Note.parse(scientificNotationMatch[1]!),
-        int.parse(scientificNotationMatch[2]!),
+        octave: int.parse(scientificNotationMatch[2]!),
       );
     }
 
@@ -55,7 +55,7 @@ final class PositionedNote
 
       return PositionedNote(
         Note.parse(notePart),
-        notePart[0].isUpperCase
+        octave: notePart[0].isUpperCase
             ? switch (primes?.first) {
                 ',' || _subPrime => middleOctave - primes!.length - 1,
                 _ => middleOctave - 1,
@@ -250,7 +250,7 @@ final class PositionedNote
   /// ) == const Frequency(430.54)
   /// ```
   Frequency equalTemperamentFrequency({
-    PositionedNote reference = const PositionedNote(Note.a),
+    PositionedNote reference = const PositionedNote(Note.a, octave: 4),
     Frequency frequency = const Frequency(440),
   }) =>
       frequency * EqualTemperament.edo12.ratio(reference.difference(this));
