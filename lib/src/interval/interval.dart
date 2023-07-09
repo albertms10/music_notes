@@ -231,10 +231,7 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d) == -4
   /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 3
   /// ```
-  int distanceBetween<T extends Scalable<T>>(
-    Scalable<T> scalable1,
-    Scalable<T> scalable2,
-  ) {
+  int distanceBetween<T extends Scalable<T>>(T scalable1, T scalable2) {
     var distance = 0;
     var ascendingNote = scalable1;
     var descendingNote = scalable1;
