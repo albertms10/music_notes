@@ -205,7 +205,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.c.inOctave(3) == const PositionedNote(Note.c, 3)
   /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, 2)
   /// ```
-  PositionedNote inOctave(int octave) => PositionedNote(this, octave);
+  PositionedNote inOctave(int octave) => PositionedNote(this, octave: octave);
 
   /// Returns the circle of fifths starting from this [Note] up to [distance].
   ///
