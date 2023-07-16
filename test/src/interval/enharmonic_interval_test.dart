@@ -5,119 +5,207 @@ import 'package:test/test.dart';
 
 void main() {
   group('EnharmonicInterval', () {
-    group('.spellings', () {
+    group('.spellings()', () {
       test(
         'should return the correct Interval spellings for this '
         'EnharmonicInterval',
         () {
-          expect(EnharmonicInterval.P1.spellings, {Interval.P1, Interval.d2});
-          // TODO(albertms10): Failing test: descending P1 interval.
+          expect(EnharmonicInterval.P1.spellings(), {Interval.P1});
           expect(
-            (-EnharmonicInterval.P1).spellings,
+            EnharmonicInterval.P1.spellings(distance: 1),
             {Interval.P1, Interval.d2},
           );
-          expect(EnharmonicInterval.m2.spellings, {
+
+          // TODO(albertms10): Failing test: descending P1 interval.
+          expect((-EnharmonicInterval.P1).spellings(), {Interval.P1});
+          expect(
+            (-EnharmonicInterval.P1).spellings(distance: 1),
+            {Interval.P1, Interval.d2},
+          );
+
+          expect(EnharmonicInterval.m2.spellings(), {Interval.m2});
+          expect(EnharmonicInterval.m2.spellings(distance: 1), {
             Interval.A1,
             Interval.m2,
             const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.m2).spellings, {
+
+          expect((-EnharmonicInterval.m2).spellings(), {-Interval.m2});
+          expect((-EnharmonicInterval.m2).spellings(distance: 1), {
             -Interval.A1,
             -Interval.m2,
             -const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.M2.spellings, {Interval.M2, Interval.d3});
+
+          expect(EnharmonicInterval.M2.spellings(), {Interval.M2, Interval.d3});
           expect(
-            (-EnharmonicInterval.M2).spellings,
+            EnharmonicInterval.M2.spellings(distance: 1),
+            {Interval.M2, Interval.d3},
+          );
+
+          expect(
+            (-EnharmonicInterval.M2).spellings(),
             {-Interval.M2, -Interval.d3},
           );
-          expect(EnharmonicInterval.m3.spellings, {
+          expect(
+            (-EnharmonicInterval.M2).spellings(distance: 1),
+            {-Interval.M2, -Interval.d3},
+          );
+
+          expect(EnharmonicInterval.m3.spellings(), {Interval.m3});
+          expect(EnharmonicInterval.m3.spellings(distance: 1), {
             Interval.A2,
             Interval.m3,
             const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.m3).spellings, {
+
+          expect((-EnharmonicInterval.m3).spellings(), {-Interval.m3});
+          expect((-EnharmonicInterval.m3).spellings(distance: 1), {
             -Interval.A2,
             -Interval.m3,
             -const Interval.perfect(4, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.M3.spellings, {Interval.M3, Interval.d4});
+
+          expect(EnharmonicInterval.M3.spellings(), {Interval.M3, Interval.d4});
           expect(
-            (-EnharmonicInterval.M3).spellings,
+            EnharmonicInterval.M3.spellings(distance: 1),
+            {Interval.M3, Interval.d4},
+          );
+
+          expect(
+            (-EnharmonicInterval.M3).spellings(),
             {-Interval.M3, -Interval.d4},
           );
-          expect(EnharmonicInterval.P4.spellings, {
+          expect(
+            (-EnharmonicInterval.M3).spellings(distance: 1),
+            {-Interval.M3, -Interval.d4},
+          );
+
+          expect(EnharmonicInterval.P4.spellings(), {Interval.P4});
+          expect(EnharmonicInterval.P4.spellings(distance: 1), {
             Interval.A3,
             Interval.P4,
             const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.P4).spellings, {
+
+          expect((-EnharmonicInterval.P4).spellings(), {-Interval.P4});
+          expect((-EnharmonicInterval.P4).spellings(distance: 1), {
             -Interval.A3,
             -Interval.P4,
             -const Interval.perfect(5, PerfectQuality.doublyDiminished),
           });
+
           expect(
-            EnharmonicInterval.tritone.spellings,
+            EnharmonicInterval.tritone.spellings(),
             {Interval.A4, Interval.d5},
           );
           expect(
-            (-EnharmonicInterval.tritone).spellings,
+            EnharmonicInterval.tritone.spellings(distance: 1),
+            {Interval.A4, Interval.d5},
+          );
+
+          expect(
+            (-EnharmonicInterval.tritone).spellings(),
             {-Interval.A4, -Interval.d5},
           );
-          expect(EnharmonicInterval.P5.spellings, {
+          expect(
+            (-EnharmonicInterval.tritone).spellings(distance: 1),
+            {-Interval.A4, -Interval.d5},
+          );
+
+          expect(EnharmonicInterval.P5.spellings(), {Interval.P5});
+          expect(EnharmonicInterval.P5.spellings(distance: 1), {
             const Interval.perfect(4, PerfectQuality.doublyAugmented),
             Interval.P5,
             Interval.d6,
           });
-          expect((-EnharmonicInterval.P5).spellings, {
+
+          expect((-EnharmonicInterval.P5).spellings(), {-Interval.P5});
+          expect((-EnharmonicInterval.P5).spellings(distance: 1), {
             -const Interval.perfect(4, PerfectQuality.doublyAugmented),
             -Interval.P5,
             -Interval.d6,
           });
-          expect(EnharmonicInterval.m6.spellings, {
+
+          expect(EnharmonicInterval.m6.spellings(), {Interval.m6});
+          expect(EnharmonicInterval.m6.spellings(distance: 1), {
             Interval.A5,
             Interval.m6,
             const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.m6).spellings, {
+
+          expect((-EnharmonicInterval.m6).spellings(), {-Interval.m6});
+          expect((-EnharmonicInterval.m6).spellings(distance: 1), {
             -Interval.A5,
             -Interval.m6,
             -const Interval.imperfect(7, ImperfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.M6.spellings, {Interval.M6, Interval.d7});
+
+          expect(EnharmonicInterval.M6.spellings(), {Interval.M6, Interval.d7});
           expect(
-            (-EnharmonicInterval.M6).spellings,
+            EnharmonicInterval.M6.spellings(distance: 1),
+            {Interval.M6, Interval.d7},
+          );
+
+          expect(
+            (-EnharmonicInterval.M6).spellings(),
             {-Interval.M6, -Interval.d7},
           );
-          expect(EnharmonicInterval.m7.spellings, {
+          expect(
+            (-EnharmonicInterval.M6).spellings(distance: 1),
+            {-Interval.M6, -Interval.d7},
+          );
+
+          expect(EnharmonicInterval.m7.spellings(), {Interval.m7});
+          expect(EnharmonicInterval.m7.spellings(distance: 1), {
             Interval.A6,
             Interval.m7,
             const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect((-EnharmonicInterval.m7).spellings, {
+
+          expect((-EnharmonicInterval.m7).spellings(), {-Interval.m7});
+          expect((-EnharmonicInterval.m7).spellings(distance: 1), {
             -Interval.A6,
             -Interval.m7,
             -const Interval.perfect(8, PerfectQuality.doublyDiminished),
           });
-          expect(EnharmonicInterval.M7.spellings, {Interval.M7, Interval.d8});
+
+          expect(EnharmonicInterval.M7.spellings(), {Interval.M7, Interval.d8});
           expect(
-            (-EnharmonicInterval.M7).spellings,
+            EnharmonicInterval.M7.spellings(distance: 1),
+            {Interval.M7, Interval.d8},
+          );
+
+          expect(
+            (-EnharmonicInterval.M7).spellings(),
             {-Interval.M7, -Interval.d8},
           );
           expect(
-            EnharmonicInterval.P8.spellings,
+            (-EnharmonicInterval.M7).spellings(distance: 1),
+            {-Interval.M7, -Interval.d8},
+          );
+
+          expect(EnharmonicInterval.P8.spellings(), {Interval.P8});
+          expect(
+            EnharmonicInterval.P8.spellings(distance: 1),
             {Interval.A7, Interval.P8, Interval.d9},
           );
+
+          expect((-EnharmonicInterval.P8).spellings(), {-Interval.P8});
           expect(
-            (-EnharmonicInterval.P8).spellings,
+            (-EnharmonicInterval.P8).spellings(distance: 1),
             {-Interval.A7, -Interval.P8, -Interval.d9},
           );
-          expect(const EnharmonicInterval(13).spellings, {
+
+          expect(const EnharmonicInterval(13).spellings(), {Interval.m9});
+          expect(const EnharmonicInterval(13).spellings(distance: 1), {
             Interval.A8,
             Interval.m9,
             const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
           });
-          expect(const EnharmonicInterval(-13).spellings, {
+
+          expect(const EnharmonicInterval(-13).spellings(), {-Interval.m9});
+          expect(const EnharmonicInterval(-13).spellings(distance: 1), {
             -Interval.A8,
             -Interval.m9,
             -const Interval.imperfect(10, ImperfectQuality.doublyDiminished),
@@ -249,9 +337,9 @@ void main() {
       test(
         'should return a string representation of this EnharmonicInterval',
         () {
-          expect(EnharmonicInterval.P1.toString(), '0 {P1, d2}');
+          expect(EnharmonicInterval.P1.toString(), '0 {P1}');
           expect(EnharmonicInterval.M3.toString(), '4 {M3, d4}');
-          expect(EnharmonicInterval.m6.toString(), '8 {A5, m6, dd7}');
+          expect(EnharmonicInterval.m6.toString(), '8 {m6}');
           expect(
             (-EnharmonicInterval.M6).toString(),
             'desc 9 {desc d7, desc M6}',

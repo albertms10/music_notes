@@ -15,46 +15,124 @@ void main() {
       );
     });
 
-    group('.spellings', () {
+    group('.spellings()', () {
       test(
         'should return the correct Note spellings for this EnharmonicNote',
         () {
-          expect(EnharmonicNote.c.spellings, {
+          expect(EnharmonicNote.c.spellings(), {Note.c});
+          expect(EnharmonicNote.c.spellings(distance: 1), {
             Note.b.sharp,
             Note.c,
             Note.d.flat.flat,
           });
-          expect(EnharmonicNote.cSharp.spellings, {Note.c.sharp, Note.d.flat});
-          expect(EnharmonicNote.d.spellings, {
+
+          expect(
+            EnharmonicNote.cSharp.spellings(),
+            {Note.c.sharp, Note.d.flat},
+          );
+          expect(
+            EnharmonicNote.cSharp.spellings(distance: 1),
+            {
+              Note.b.sharp.sharp,
+              Note.c.sharp,
+              Note.d.flat,
+              Note.e.flat.flat.flat,
+            },
+          );
+
+          expect(EnharmonicNote.d.spellings(), {Note.d});
+          expect(EnharmonicNote.d.spellings(distance: 1), {
             Note.c.sharp.sharp,
             Note.d,
             Note.e.flat.flat,
           });
-          expect(EnharmonicNote.dSharp.spellings, {Note.d.sharp, Note.e.flat});
-          expect(EnharmonicNote.e.spellings, {
+
+          expect(
+            EnharmonicNote.dSharp.spellings(),
+            {Note.d.sharp, Note.e.flat},
+          );
+          expect(
+            EnharmonicNote.dSharp.spellings(distance: 1),
+            {
+              Note.c.sharp.sharp.sharp,
+              Note.d.sharp,
+              Note.e.flat,
+              Note.f.flat.flat,
+            },
+          );
+
+          expect(EnharmonicNote.e.spellings(), {Note.e});
+          expect(EnharmonicNote.e.spellings(distance: 1), {
             Note.d.sharp.sharp,
             Note.e,
             Note.f.flat,
           });
-          expect(EnharmonicNote.f.spellings, {
+
+          expect(EnharmonicNote.f.spellings(), {Note.f});
+          expect(EnharmonicNote.f.spellings(distance: 1), {
             Note.e.sharp,
             Note.f,
             Note.g.flat.flat,
           });
-          expect(EnharmonicNote.fSharp.spellings, {Note.f.sharp, Note.g.flat});
-          expect(EnharmonicNote.g.spellings, {
+
+          expect(
+            EnharmonicNote.fSharp.spellings(),
+            {Note.f.sharp, Note.g.flat},
+          );
+          expect(
+            EnharmonicNote.fSharp.spellings(distance: 1),
+            {
+              Note.e.sharp.sharp,
+              Note.f.sharp,
+              Note.g.flat,
+              Note.a.flat.flat.flat,
+            },
+          );
+
+          expect(EnharmonicNote.g.spellings(), {Note.g});
+          expect(EnharmonicNote.g.spellings(distance: 1), {
             Note.f.sharp.sharp,
             Note.g,
             Note.a.flat.flat,
           });
-          expect(EnharmonicNote.gSharp.spellings, {Note.g.sharp, Note.a.flat});
-          expect(EnharmonicNote.a.spellings, {
+
+          expect(
+            EnharmonicNote.gSharp.spellings(),
+            {Note.g.sharp, Note.a.flat},
+          );
+          expect(
+            EnharmonicNote.gSharp.spellings(distance: 1),
+            {
+              Note.f.sharp.sharp.sharp,
+              Note.g.sharp,
+              Note.a.flat,
+              Note.b.flat.flat.flat,
+            },
+          );
+
+          expect(EnharmonicNote.a.spellings(), {Note.a});
+          expect(EnharmonicNote.a.spellings(distance: 1), {
             Note.g.sharp.sharp,
             Note.a,
             Note.b.flat.flat,
           });
-          expect(EnharmonicNote.aSharp.spellings, {Note.a.sharp, Note.b.flat});
-          expect(EnharmonicNote.b.spellings, {
+
+          expect(
+            EnharmonicNote.aSharp.spellings(),
+            {Note.a.sharp, Note.b.flat},
+          );
+          expect(
+            EnharmonicNote.aSharp.spellings(distance: 1),
+            {
+              Note.g.sharp.sharp.sharp,
+              Note.a.sharp,
+              Note.b.flat,
+              Note.c.flat.flat,
+            },
+          );
+
+          expect(EnharmonicNote.b.spellings(), {Note.b});
+          expect(EnharmonicNote.b.spellings(distance: 1), {
             Note.a.sharp.sharp,
             Note.b,
             Note.c.flat,
@@ -337,8 +415,8 @@ void main() {
 
     group('.toString()', () {
       test('should return a string representation of this EnharmonicNote', () {
-        expect(EnharmonicNote.c.toString(), '1 {C, D𝄫, B♯}');
-        expect(EnharmonicNote.g.toString(), '8 {F𝄪, G, A𝄫}');
+        expect(EnharmonicNote.c.toString(), '1 {C}');
+        expect(EnharmonicNote.g.toString(), '8 {G}');
         expect(EnharmonicNote.dSharp.toString(), '4 {D♯, E♭}');
       });
     });
