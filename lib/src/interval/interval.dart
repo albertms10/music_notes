@@ -113,17 +113,17 @@ final class Interval implements Comparable<Interval> {
     int semitones, [
     Quality? preferredQuality,
   ]) {
-    final intervals = EnharmonicInterval(semitones).spellings;
+    final spellings = EnharmonicInterval(semitones).spellings();
 
     if (preferredQuality != null) {
-      final interval = intervals.firstWhereOrNull(
+      final interval = spellings.firstWhereOrNull(
         (interval) => interval.quality == preferredQuality,
       );
       if (interval != null) return interval;
     }
 
     // Find the Interval with the smaller Quality delta semitones.
-    return intervals
+    return spellings
         .sorted(
           (a, b) =>
               a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),

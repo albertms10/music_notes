@@ -21,26 +21,34 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   static const P8 = EnharmonicInterval(12);
 
   @override
-  Set<Interval> get spellings {
+  Set<Interval> spellings({int distance = 0}) {
+    assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final size = IntervalSizeExtension.fromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        if (size.abs() > 1)
-          Interval.fromSemitones(size.incrementBy(-1), semitones),
         Interval.fromSemitones(size, semitones),
-        Interval.fromSemitones(size.incrementBy(1), semitones),
+        for (var i = 1; i <= distance; i++) ...[
+          if (size.incrementBy(-i) != 0)
+            Interval.fromSemitones(size.incrementBy(-i), semitones),
+          Interval.fromSemitones(size.incrementBy(i), semitones),
+        ],
       });
     }
 
-    final sizeBelow =
-        IntervalSizeExtension.fromSemitones(semitones.incrementBy(-1))!;
-    final sizeAbove =
-        IntervalSizeExtension.fromSemitones(semitones.incrementBy(1))!;
+    final distanceClamp = distance == 0 ? 1 : distance;
 
     return SplayTreeSet<Interval>.of({
-      Interval.fromSemitones(sizeBelow, semitones),
-      Interval.fromSemitones(sizeAbove, semitones),
+      for (var i = 1; i <= distanceClamp; i++) ...[
+        Interval.fromSemitones(
+          IntervalSizeExtension.fromSemitones(semitones.incrementBy(-i))!,
+          semitones,
+        ),
+        Interval.fromSemitones(
+          IntervalSizeExtension.fromSemitones(semitones.incrementBy(i))!,
+          semitones,
+        ),
+      ],
     });
   }
 
@@ -118,6 +126,6 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   String toString() {
     final descendingAbbreviation = isDescending ? 'desc ' : '';
 
-    return '$descendingAbbreviation${semitones.abs()} $spellings';
+    return '$descendingAbbreviation${semitones.abs()} ${spellings()}';
   }
 }

@@ -23,38 +23,34 @@ final class EnharmonicNote extends Enharmonic<Note>
   static const b = EnharmonicNote(12);
 
   @override
-  Set<Note> get spellings {
+  Set<Note> spellings({int distance = 0}) {
+    assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final baseNote = BaseNote.fromSemitones(semitones);
 
     if (baseNote != null) {
-      final baseNoteBelow = BaseNote.fromOrdinal(baseNote.ordinal - 1);
-      final baseNoteAbove = BaseNote.fromOrdinal(baseNote.ordinal + 1);
+      final note = Note(baseNote);
 
       return SplayTreeSet<Note>.of({
-        Note(
-          baseNoteBelow,
-          Accidental(
-            (baseNote.semitones - baseNoteBelow.semitones)
-                .chromaticModExcludeZero,
-          ),
-        ),
-        Note(baseNote),
-        Note(
-          baseNoteAbove,
-          Accidental(
-            baseNote.semitones -
-                baseNoteAbove.semitones -
-                (baseNote.semitones > baseNoteAbove.semitones
-                    ? chromaticDivisions
-                    : 0),
-          ),
-        ),
+        for (var i = 1; i <= distance; i++) ...[
+          note.respellByBaseNoteDistance(distance),
+          note.respellByBaseNoteDistance(-distance),
+        ],
+        note,
       });
     }
 
+    final aboveNote =
+        Note(BaseNote.fromSemitones(semitones - 1)!, Accidental.sharp);
+    final belowNote =
+        Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
+
     return SplayTreeSet<Note>.of({
-      Note(BaseNote.fromSemitones(semitones - 1)!, Accidental.sharp),
-      Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat),
+      for (var i = 1; i <= distance; i++) ...[
+        belowNote.respellByBaseNoteDistance(distance),
+        aboveNote.respellByBaseNoteDistance(-distance),
+      ],
+      aboveNote,
+      belowNote,
     });
   }
 
@@ -71,7 +67,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// EnharmonicNote.cSharp.resolveSpelling(Accidental.natural) // throws
   /// ```
   Note resolveSpelling([Accidental? withAccidental]) {
-    final matchedNote = spellings.firstWhereOrNull(
+    final matchedNote = spellings(distance: 1).firstWhereOrNull(
       (note) => note.accidental == withAccidental,
     );
     if (matchedNote != null) return matchedNote;
@@ -84,7 +80,7 @@ final class EnharmonicNote extends Enharmonic<Note>
       );
     }
 
-    return spellings
+    return spellings()
         // TODO(albertms10): return the note with the closest accidental #50.
         .sorted(
           (a, b) => a.accidental.semitones

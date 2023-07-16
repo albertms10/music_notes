@@ -9,11 +9,12 @@ abstract interface class Enharmonic<T> implements Comparable<Enharmonic<T>> {
   /// Creates a new [Enharmonic<T>].
   const Enharmonic(this.semitones);
 
-  /// Returns the different spellings sharing the same number of [semitones].
-  Set<T> get spellings;
+  /// Returns the different spellings at [distance] sharing the same number of
+  /// [semitones].
+  Set<T> spellings({int distance});
 
   @override
-  String toString() => '$semitones $spellings';
+  String toString() => '$semitones ${spellings()}';
 
   @override
   bool operator ==(Object other) =>
