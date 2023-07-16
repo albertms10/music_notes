@@ -27,6 +27,14 @@ final class Accidental implements Comparable<Accidental> {
   static const String _flatSymbol = '♭';
   static const String _doubleFlatSymbol = '𝄫';
 
+  static Map<int, List<String>> get _parsableSymbols => {
+        2: [_doubleSharpSymbol, 'x'],
+        1: [_sharpSymbol, '#'],
+        0: [_naturalSymbol, ''],
+        -1: [_flatSymbol, 'b'],
+        -2: [_doubleFlatSymbol, 'bb'],
+      };
+
   /// Parse [source] as an [Accidental] and return its value.
   ///
   /// If the [source] string does not contain a valid [Accidental], a
@@ -40,19 +48,18 @@ final class Accidental implements Comparable<Accidental> {
   /// ```
   factory Accidental.parse(String source) {
     // Safely split UTF-16 code units using `runes`.
-    final semitones = source.runes.fold(
-      0,
-      (acc, rune) =>
-          acc +
-          switch (String.fromCharCode(rune)) {
-            _doubleSharpSymbol || 'x' => 2,
-            _sharpSymbol || '#' => 1,
-            _naturalSymbol || '' => 0,
-            _flatSymbol || 'b' => -1,
-            _doubleFlatSymbol => -2,
-            _ => throw FormatException('Invalid Accidental', source),
-          },
-    );
+    final semitones = source.runes.fold(0, (acc, rune) {
+      final symbolSemitones = _parsableSymbols.entries
+          .firstWhereOrNull(
+            (entry) => entry.value.contains(String.fromCharCode(rune)),
+          )
+          ?.key;
+      if (symbolSemitones == null) {
+        throw FormatException('Invalid Accidental', source);
+      }
+
+      return acc + symbolSemitones;
+    });
 
     return Accidental(semitones);
   }
