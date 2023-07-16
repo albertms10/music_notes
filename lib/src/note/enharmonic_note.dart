@@ -31,11 +31,11 @@ final class EnharmonicNote extends Enharmonic<Note>
       final note = Note(baseNote);
 
       return SplayTreeSet<Note>.of({
+        note,
         for (var i = 1; i <= distance; i++) ...[
           note.respellByBaseNoteDistance(distance),
           note.respellByBaseNoteDistance(-distance),
         ],
-        note,
       });
     }
 
@@ -45,12 +45,12 @@ final class EnharmonicNote extends Enharmonic<Note>
         Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
 
     return SplayTreeSet<Note>.of({
+      aboveNote,
+      belowNote,
       for (var i = 1; i <= distance; i++) ...[
         belowNote.respellByBaseNoteDistance(distance),
         aboveNote.respellByBaseNoteDistance(-distance),
       ],
-      aboveNote,
-      belowNote,
     });
   }
 
