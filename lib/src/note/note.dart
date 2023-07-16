@@ -147,6 +147,17 @@ final class Note implements Comparable<Note>, Scalable<Note> {
     return Note(baseNote, Accidental(deltaSemitones));
   }
 
+  /// Returns this [Note] respelled by [BaseNote.ordinal] distance while keeping
+  /// the same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.respellByBaseNoteDistance(-1) == Note.f.sharp
+  /// Note.e.sharp.respellByBaseNoteDistance(2) == Note.g.flat.flat
+  /// ```
+  Note respellByBaseNoteDistance(int distance) =>
+      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
+
   /// Returns this [Note] respelled upwards while keeping the same number of
   /// [semitones].
   ///
@@ -155,8 +166,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.g.sharp.respelledUpwards == Note.a.flat
   /// Note.e.sharp.respelledUpwards == Note.f
   /// ```
-  Note get respelledUpwards =>
-      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + 1));
+  Note get respelledUpwards => respellByBaseNoteDistance(1);
 
   /// Returns this [Note] respelled downwards while keeping the same number of
   /// [semitones].
@@ -166,8 +176,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.g.flat.respelledDownwards == Note.f.sharp
   /// Note.c.respelledDownwards == Note.b.sharp
   /// ```
-  Note get respelledDownwards =>
-      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal - 1));
+  Note get respelledDownwards => respellByBaseNoteDistance(-1);
 
   /// Returns this [Note] respelled by [accidental] while keeping the same
   /// number of [semitones].
