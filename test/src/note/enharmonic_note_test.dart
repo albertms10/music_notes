@@ -415,9 +415,9 @@ void main() {
 
     group('.toString()', () {
       test('should return a string representation of this EnharmonicNote', () {
-        expect(EnharmonicNote.c.toString(), '1 {C}');
-        expect(EnharmonicNote.g.toString(), '8 {G}');
-        expect(EnharmonicNote.dSharp.toString(), '4 {D♯, E♭}');
+        expect(EnharmonicNote.c.toString(), '{C}');
+        expect(EnharmonicNote.g.toString(), '{G}');
+        expect(EnharmonicNote.dSharp.toString(), '{D♯, E♭}');
       });
     });
 
