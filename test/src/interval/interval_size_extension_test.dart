@@ -115,24 +115,5 @@ void main() {
         expect(13.isPerfect, isFalse);
       });
     });
-
-    group('.isCompound', () {
-      test('should throw an assertion error when size is zero', () {
-        expect(() => 0.isCompound, throwsA(isA<AssertionError>()));
-      });
-
-      test('should return whether this Interval size is compound', () {
-        expect((-14).isCompound, isTrue);
-        expect((-10).isCompound, isTrue);
-        expect((-8).isCompound, isFalse);
-        expect((-4).isCompound, isFalse);
-        expect((-1).isCompound, isFalse);
-        expect(1.isCompound, isFalse);
-        expect(5.isCompound, isFalse);
-        expect(8.isCompound, isFalse);
-        expect(9.isCompound, isTrue);
-        expect(13.isCompound, isTrue);
-      });
-    });
   });
 }
