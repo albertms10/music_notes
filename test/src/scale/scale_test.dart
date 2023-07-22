@@ -233,7 +233,7 @@ void main() {
         );
         expect(
           ScalePattern.minorPentatonic.on(EnharmonicNote.f).toString(),
-          '{F} Minor pentatonic ({F} {G♯, A♭} {A♯, B♭} {C} {D♯, E♭} {F})',
+          '{F} Minor pentatonic ({F} {G♯|A♭} {A♯|B♭} {C} {D♯|E♭} {F})',
         );
       });
     });

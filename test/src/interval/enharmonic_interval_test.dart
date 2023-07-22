@@ -338,9 +338,9 @@ void main() {
         'should return a string representation of this EnharmonicInterval',
         () {
           expect(EnharmonicInterval.P1.toString(), '{P1}');
-          expect(EnharmonicInterval.M3.toString(), '{M3, d4}');
+          expect(EnharmonicInterval.M3.toString(), '{M3|d4}');
           expect(EnharmonicInterval.m6.toString(), '{m6}');
-          expect((-EnharmonicInterval.M6).toString(), '{desc d7, desc M6}');
+          expect((-EnharmonicInterval.M6).toString(), '{desc d7|desc M6}');
         },
       );
     });
