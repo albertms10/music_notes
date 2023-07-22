@@ -292,6 +292,53 @@ void main() {
       });
     });
 
+    group('.isDissonant', () {
+      test('should return whether this Interval is dissonant', () {
+        expect((-Interval.A8).isDissonant, isTrue);
+        expect((-Interval.P8).isDissonant, isFalse);
+        expect((-Interval.d8).isDissonant, isTrue);
+        expect((-Interval.A7).isDissonant, isTrue);
+        expect((-Interval.M7).isDissonant, isTrue);
+        expect((-Interval.m7).isDissonant, isTrue);
+        expect((-Interval.d7).isDissonant, isTrue);
+        expect((-Interval.M6).isDissonant, isFalse);
+        expect((-Interval.m6).isDissonant, isFalse);
+        expect((-Interval.A5).isDissonant, isTrue);
+        expect((-Interval.P5).isDissonant, isFalse);
+        expect((-Interval.d5).isDissonant, isTrue);
+        expect((-Interval.A4).isDissonant, isTrue);
+        expect((-Interval.P4).isDissonant, isFalse);
+        expect((-Interval.d4).isDissonant, isTrue);
+        expect((-Interval.M3).isDissonant, isFalse);
+        expect((-Interval.m3).isDissonant, isFalse);
+        expect((-Interval.M2).isDissonant, isTrue);
+        expect((-Interval.m2).isDissonant, isTrue);
+        expect((-Interval.P1).isDissonant, isFalse);
+        expect(Interval.d1.isDissonant, isTrue);
+        expect(Interval.P1.isDissonant, isFalse);
+        expect(Interval.A1.isDissonant, isTrue);
+        expect(Interval.m2.isDissonant, isTrue);
+        expect(Interval.M2.isDissonant, isTrue);
+        expect(Interval.m3.isDissonant, isFalse);
+        expect(Interval.M3.isDissonant, isFalse);
+        expect(Interval.d4.isDissonant, isTrue);
+        expect(Interval.P4.isDissonant, isFalse);
+        expect(Interval.A4.isDissonant, isTrue);
+        expect(Interval.d5.isDissonant, isTrue);
+        expect(Interval.P5.isDissonant, isFalse);
+        expect(Interval.A5.isDissonant, isTrue);
+        expect(Interval.m6.isDissonant, isFalse);
+        expect(Interval.M6.isDissonant, isFalse);
+        expect(Interval.d7.isDissonant, isTrue);
+        expect(Interval.m7.isDissonant, isTrue);
+        expect(Interval.M7.isDissonant, isTrue);
+        expect(Interval.A7.isDissonant, isTrue);
+        expect(Interval.d8.isDissonant, isTrue);
+        expect(Interval.P8.isDissonant, isFalse);
+        expect(Interval.A8.isDissonant, isTrue);
+      });
+    });
+
     group('.respellBySize()', () {
       test('should return this Interval respelled by size', () {
         expect(Interval.A4.respellBySize(5), Interval.d5);
