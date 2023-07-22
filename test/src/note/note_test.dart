@@ -27,25 +27,25 @@ void main() {
 
     group('.semitones', () {
       test('should return the semitones value of this Note', () {
-        expect(Note.b.sharp.semitones, 1);
-        expect(Note.c.semitones, 1);
-        expect(Note.c.sharp.semitones, 2);
-        expect(Note.d.flat.semitones, 2);
-        expect(Note.d.semitones, 3);
-        expect(Note.d.sharp.semitones, 4);
-        expect(Note.e.flat.semitones, 4);
-        expect(Note.e.semitones, 5);
-        expect(Note.f.semitones, 6);
-        expect(Note.f.sharp.semitones, 7);
-        expect(Note.g.flat.semitones, 7);
-        expect(Note.g.semitones, 8);
-        expect(Note.g.sharp.semitones, 9);
-        expect(Note.a.flat.semitones, 9);
-        expect(Note.a.semitones, 10);
-        expect(Note.a.sharp.semitones, 11);
-        expect(Note.b.flat.semitones, 11);
-        expect(Note.b.semitones, 12);
-        expect(Note.c.flat.semitones, 12);
+        expect(Note.b.sharp.semitones, 0);
+        expect(Note.c.semitones, 0);
+        expect(Note.c.sharp.semitones, 1);
+        expect(Note.d.flat.semitones, 1);
+        expect(Note.d.semitones, 2);
+        expect(Note.d.sharp.semitones, 3);
+        expect(Note.e.flat.semitones, 3);
+        expect(Note.e.semitones, 4);
+        expect(Note.f.semitones, 5);
+        expect(Note.f.sharp.semitones, 6);
+        expect(Note.g.flat.semitones, 6);
+        expect(Note.g.semitones, 7);
+        expect(Note.g.sharp.semitones, 8);
+        expect(Note.a.flat.semitones, 8);
+        expect(Note.a.semitones, 9);
+        expect(Note.a.sharp.semitones, 10);
+        expect(Note.b.flat.semitones, 10);
+        expect(Note.b.semitones, 11);
+        expect(Note.c.flat.semitones, 11);
       });
     });
 
