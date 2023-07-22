@@ -222,11 +222,24 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.M3).simplified == -Interval.M3
   /// ```
   Interval get simplified {
-    if (!size.isCompound) return Interval._(size, quality);
+    if (!isCompound) return Interval._(size, quality);
     final simplifiedSize = size._sizeAbsShift.nModExcludeZero(8) * size.sign;
 
     return Interval._(simplifiedSize, quality);
   }
+
+  /// Returns whether this [Interval] is greater than an octave.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.isCompound == false
+  /// (-Interval.m6).isCompound == false
+  /// Interval.P8.isCompound == false
+  /// Interval.M9.isCompound == true
+  /// (-Interval.P11).isCompound == true
+  /// Interval.m13.isCompound == true
+  /// ```
+  bool get isCompound => size.abs() > 8;
 
   /// Whether this [Interval] is dissonant.
   ///
@@ -336,7 +349,7 @@ final class Interval implements Comparable<Interval> {
         quality.abbreviation ?? '[${quality.semitones.toDeltaString()}]';
     final naming = '$qualityAbbreviation${size.abs()}';
     final descendingAbbreviation = isDescending ? 'desc ' : '';
-    if (size.isCompound) {
+    if (isCompound) {
       return '$descendingAbbreviation$naming '
           '($qualityAbbreviation${simplified.size.abs()})';
     }

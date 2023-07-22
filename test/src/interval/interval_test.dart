@@ -343,6 +343,21 @@ void main() {
       });
     });
 
+    group('.isCompound', () {
+      test('should return whether this Interval is compound', () {
+        expect((-Interval.m13).isCompound, isTrue);
+        expect((-Interval.M9).isCompound, isTrue);
+        expect((-Interval.M7).isCompound, isFalse);
+        expect((-Interval.P4).isCompound, isFalse);
+        expect((-Interval.P1).isCompound, isFalse);
+        expect(Interval.P1.isCompound, isFalse);
+        expect(Interval.P5.isCompound, isFalse);
+        expect(Interval.P8.isCompound, isFalse);
+        expect(Interval.m9.isCompound, isTrue);
+        expect(Interval.M13.isCompound, isTrue);
+      });
+    });
+
     group('.isDissonant', () {
       test('should return whether this Interval is dissonant', () {
         expect((-Interval.A8).isDissonant, isTrue);

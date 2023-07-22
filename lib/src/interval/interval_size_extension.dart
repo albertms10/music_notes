@@ -99,6 +99,7 @@ extension IntervalSizeExtension on int {
   /// (-11).isCompound == true
   /// 13.isCompound == true
   /// ```
+  @Deprecated('Use [Interval.isCompound] instead.')
   bool get isCompound {
     assert(this != 0, 'Size must be non-zero');
 
