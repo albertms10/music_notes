@@ -14,7 +14,7 @@ abstract interface class Enharmonic<T> implements Comparable<Enharmonic<T>> {
   Set<T> spellings({int distance});
 
   @override
-  String toString() => '$semitones ${spellings()}';
+  String toString() => '${spellings()}';
 
   @override
   bool operator ==(Object other) =>

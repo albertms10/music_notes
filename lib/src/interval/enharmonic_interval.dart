@@ -121,11 +121,4 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   /// ```
   EnharmonicInterval operator *(int factor) =>
       EnharmonicInterval(semitones * factor);
-
-  @override
-  String toString() {
-    final descendingAbbreviation = isDescending ? 'desc ' : '';
-
-    return '$descendingAbbreviation${semitones.abs()} ${spellings()}';
-  }
 }
