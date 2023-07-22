@@ -259,6 +259,29 @@ void main() {
 
     group('.inverted', () {
       test('should return the inverted of this Interval', () {
+        expect((-Interval.M13).inverted, -Interval.m3);
+        expect((-Interval.m13).inverted, -Interval.M3);
+        expect((-Interval.P11).inverted, -Interval.P5);
+        expect((-Interval.M9).inverted, -Interval.m7);
+        expect((-Interval.m9).inverted, -Interval.M7);
+        expect((-Interval.A8).inverted, -Interval.d1);
+        expect((-Interval.P8).inverted, -Interval.P1);
+        expect((-Interval.d8).inverted, -Interval.A1);
+        expect((-Interval.M7).inverted, -Interval.m2);
+        expect((-Interval.m7).inverted, -Interval.M2);
+        expect((-Interval.M6).inverted, -Interval.m3);
+        expect((-Interval.m6).inverted, -Interval.M3);
+        expect((-Interval.A5).inverted, -Interval.d4);
+        expect((-Interval.d5).inverted, -Interval.A4);
+        expect((-Interval.A4).inverted, -Interval.d5);
+        expect((-Interval.d4).inverted, -Interval.A5);
+        expect((-Interval.M3).inverted, -Interval.m6);
+        expect((-Interval.m3).inverted, -Interval.M6);
+        expect((-Interval.M2).inverted, -Interval.m7);
+        expect((-Interval.m2).inverted, -Interval.M7);
+        expect((-Interval.A1).inverted, -Interval.d8);
+        expect((-Interval.P1).inverted, -Interval.P8);
+        expect((-Interval.d1).inverted, -Interval.A8);
         expect(Interval.d1.inverted, Interval.A8);
         expect(Interval.P1.inverted, Interval.P8);
         expect(Interval.A1.inverted, Interval.d8);
@@ -277,6 +300,11 @@ void main() {
         expect(Interval.d8.inverted, Interval.A1);
         expect(Interval.P8.inverted, Interval.P1);
         expect(Interval.A8.inverted, Interval.d1);
+        expect(Interval.m9.inverted, Interval.M7);
+        expect(Interval.M9.inverted, Interval.m7);
+        expect(Interval.P11.inverted, Interval.P5);
+        expect(Interval.m13.inverted, Interval.M3);
+        expect(Interval.M13.inverted, Interval.m3);
       });
     });
 
