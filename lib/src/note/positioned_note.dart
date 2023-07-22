@@ -13,19 +13,22 @@ final class PositionedNote
   /// Creates a new [PositionedNote] from [Note] arguments and [octave].
   const PositionedNote(this.note, {required this.octave});
 
-  static const _superPrime = '′';
-  static const _subPrime = '͵';
+  static const String _superPrime = '′';
+  static const String _superPrimeAlt = "'";
+  static const String _subPrime = '͵';
+  static const String _subPrimeAlt = ',';
+
+  static const List<String> _primeSymbols = [
+    _superPrime,
+    _superPrimeAlt,
+    _subPrime,
+    _subPrimeAlt,
+  ];
 
   static final _scientificNotationRegExp = RegExp(r'(.+?)([-]?\d+)');
-  static final _helmholtzNotationRegExp = RegExp("(^[A-Ga-g${const [
-    Accidental._doubleSharpSymbol,
-    Accidental._sharpSymbol,
-    Accidental._flatSymbol,
-    Accidental._doubleFlatSymbol,
-    'x',
-    '#',
-    'b',
-  ].join()}]+)(,+|'+|$_subPrime+|$_superPrime+)?\$");
+  static final _helmholtzNotationRegExp =
+      RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
+          '(${_primeSymbols.map((symbol) => '$symbol+').join('|')})?\$');
 
   /// Parse [source] as a [PositionedNote] and return its value.
   ///

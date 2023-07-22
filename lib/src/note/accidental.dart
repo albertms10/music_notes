@@ -22,16 +22,30 @@ final class Accidental implements Comparable<Accidental> {
   static const Accidental tripleFlat = Accidental(-3);
 
   static const String _doubleSharpSymbol = '𝄪';
+  static const String _doubleSharpSymbolAlt = 'x';
   static const String _sharpSymbol = '♯';
+  static const String _sharpSymbolAlt = '#';
   static const String _naturalSymbol = '♮';
   static const String _flatSymbol = '♭';
+  static const String _flatSymbolAlt = 'b';
   static const String _doubleFlatSymbol = '𝄫';
 
+  static const List<String> _symbols = [
+    _doubleSharpSymbol,
+    _doubleSharpSymbolAlt,
+    _sharpSymbol,
+    _sharpSymbolAlt,
+    _naturalSymbol,
+    _flatSymbol,
+    _flatSymbolAlt,
+    _doubleFlatSymbol,
+  ];
+
   static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
-        _doubleSharpSymbol || 'x' => 2,
-        _sharpSymbol || '#' => 1,
+        _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
+        _sharpSymbol || _sharpSymbolAlt => 1,
         _naturalSymbol || '' => 0,
-        _flatSymbol || 'b' => -1,
+        _flatSymbol || _flatSymbolAlt => -1,
         _doubleFlatSymbol => -2,
         _ => null,
       };
