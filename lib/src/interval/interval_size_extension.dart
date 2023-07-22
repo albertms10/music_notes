@@ -59,8 +59,8 @@ extension IntervalSizeExtension on int {
     final simplifiedAbs = simplified.abs();
     final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
 
-    // We exclude perfect octaves (simplified as 8) from the lookup because we
-    // want to consider them as 0 (as they were modulo 8).
+    // We exclude perfect octaves (simplified as 8) from the lookup to consider
+    // them 0 (as if they were modulo 8).
     return (_sizeToSemitones[simplifiedAbs == 8 ? 1 : simplifiedAbs]! +
             octaveShift) *
         sign;
@@ -74,7 +74,7 @@ extension IntervalSizeExtension on int {
     return sizeAbs + sizeAbs ~/ 8;
   }
 
-  /// Returns `true` if this [Interval.size] conforms a perfect interval.
+  /// Returns whether this [Interval.size] conforms a perfect interval.
   ///
   /// Example:
   /// ```dart
