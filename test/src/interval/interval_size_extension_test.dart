@@ -134,32 +134,5 @@ void main() {
         expect(13.isCompound, isTrue);
       });
     });
-
-    group('.simplified', () {
-      test('should throw an assertion error when size is zero', () {
-        expect(() => 0.simplified, throwsA(isA<AssertionError>()));
-      });
-
-      test('should return the simplified Interval size', () {
-        expect((-22).simplified, -8);
-        expect((-17).simplified, -3);
-        expect((-16).simplified, -2);
-        expect((-15).simplified, -8);
-        expect((-13).simplified, -6);
-        expect((-10).simplified, -3);
-        expect((-8).simplified, -8);
-        expect((-4).simplified, -4);
-        expect((-2).simplified, -2);
-        expect(2.simplified, 2);
-        expect(4.simplified, 4);
-        expect(8.simplified, 8);
-        expect(10.simplified, 3);
-        expect(13.simplified, 6);
-        expect(15.simplified, 8);
-        expect(16.simplified, 2);
-        expect(17.simplified, 3);
-        expect(22.simplified, 8);
-      });
-    });
   });
 }

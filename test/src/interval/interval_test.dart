@@ -310,6 +310,21 @@ void main() {
 
     group('.simplified', () {
       test('should return the simplified of this Interval', () {
+        expect(
+          const Interval.perfect(-22, PerfectQuality.perfect).simplified,
+          -Interval.P8,
+        );
+        expect(
+          const Interval.perfect(-15, PerfectQuality.perfect).simplified,
+          -Interval.P8,
+        );
+        expect((-Interval.M13).simplified, -Interval.M6);
+        expect((-Interval.P11).simplified, -Interval.P4);
+        expect((-Interval.m9).simplified, -Interval.m2);
+        expect((-Interval.A8).simplified, -Interval.A8);
+        expect((-Interval.P8).simplified, -Interval.P8);
+        expect((-Interval.M3).simplified, -Interval.M3);
+        expect((-Interval.P1).simplified, -Interval.P1);
         expect(Interval.P1.simplified, Interval.P1);
         expect(Interval.M3.simplified, Interval.M3);
         expect(Interval.P8.simplified, Interval.P8);
@@ -317,6 +332,14 @@ void main() {
         expect(Interval.m9.simplified, Interval.m2);
         expect(Interval.P11.simplified, Interval.P4);
         expect(Interval.M13.simplified, Interval.M6);
+        expect(
+          const Interval.perfect(15, PerfectQuality.perfect).simplified,
+          Interval.P8,
+        );
+        expect(
+          const Interval.perfect(22, PerfectQuality.perfect).simplified,
+          Interval.P8,
+        );
       });
     });
 
