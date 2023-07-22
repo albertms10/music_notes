@@ -30,17 +30,6 @@ void main() {
       });
     });
 
-    group('.chromaticModExcludeZero', () {
-      test(
-        'should return the correct modulo chromatic divisions excluding zero',
-        () {
-          expect(15.chromaticModExcludeZero, 3);
-          expect(12.chromaticModExcludeZero, 12);
-          expect(0.chromaticModExcludeZero, 12);
-        },
-      );
-    });
-
     group('.nModExcludeZero()', () {
       test(
         'should return the correct modulo excluding zero for a given int',

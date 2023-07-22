@@ -44,15 +44,20 @@ void main() {
         'should return the octave that corresponds to the semitones from root '
         'height',
         () {
-          expect(PositionedNote.octaveFromSemitones(-35), -3);
+          expect(PositionedNote.octaveFromSemitones(-37), -4);
+          expect(PositionedNote.octaveFromSemitones(-36), -3);
+          expect(PositionedNote.octaveFromSemitones(-25), -3);
+          expect(PositionedNote.octaveFromSemitones(-24), -2);
           expect(PositionedNote.octaveFromSemitones(-23), -2);
+          expect(PositionedNote.octaveFromSemitones(-12), -1);
           expect(PositionedNote.octaveFromSemitones(-11), -1);
           expect(PositionedNote.octaveFromSemitones(-1), -1);
-          // TODO(albertms10): Should 0 be considered a correct argument?
-          expect(PositionedNote.octaveFromSemitones(0), 0);
+          expect(PositionedNote.octaveFromSemitones(0), 0); // C
           expect(PositionedNote.octaveFromSemitones(1), 0);
+          expect(PositionedNote.octaveFromSemitones(11), 0);
+          expect(PositionedNote.octaveFromSemitones(12), 1);
           expect(PositionedNote.octaveFromSemitones(13), 1);
-          expect(PositionedNote.octaveFromSemitones(25), 2);
+          expect(PositionedNote.octaveFromSemitones(24), 2);
           expect(PositionedNote.octaveFromSemitones(34), 2);
           expect(PositionedNote.octaveFromSemitones(58), 4);
         },
@@ -61,29 +66,29 @@ void main() {
 
     group('.semitones', () {
       test('should return the semitones of this PositionedNote from C0', () {
-        expect(Note.c.inOctave(-4).semitones, -47);
-        expect(Note.a.inOctave(-4).semitones, -38);
-        expect(Note.c.inOctave(-3).semitones, -35);
-        expect(Note.c.inOctave(-2).semitones, -23);
-        expect(Note.c.inOctave(-1).semitones, -11);
-        expect(Note.d.inOctave(-1).semitones, -9);
-        expect(Note.e.inOctave(-1).semitones, -7);
-        expect(Note.f.inOctave(-1).semitones, -6);
-        expect(Note.g.inOctave(-1).semitones, -4);
-        expect(Note.a.inOctave(-1).semitones, -2);
-        expect(Note.b.inOctave(-1).semitones, 0);
-        expect(Note.c.inOctave(0).semitones, 1);
-        expect(Note.d.inOctave(0).semitones, 3);
-        expect(Note.e.inOctave(0).semitones, 5);
-        expect(Note.f.sharp.inOctave(0).semitones, 7);
-        expect(Note.g.flat.inOctave(0).semitones, 7);
-        expect(Note.a.inOctave(0).semitones, 10);
-        expect(Note.b.inOctave(0).semitones, 12);
-        expect(Note.c.inOctave(1).semitones, 13);
-        expect(Note.c.inOctave(2).semitones, 25);
-        expect(Note.a.inOctave(2).semitones, 34);
-        expect(Note.c.inOctave(3).semitones, 37);
-        expect(Note.a.inOctave(4).semitones, 58);
+        expect(Note.c.inOctave(-4).semitones, -48);
+        expect(Note.a.inOctave(-4).semitones, -39);
+        expect(Note.c.inOctave(-3).semitones, -36);
+        expect(Note.c.inOctave(-2).semitones, -24);
+        expect(Note.c.inOctave(-1).semitones, -12);
+        expect(Note.d.inOctave(-1).semitones, -10);
+        expect(Note.e.inOctave(-1).semitones, -8);
+        expect(Note.f.inOctave(-1).semitones, -7);
+        expect(Note.g.inOctave(-1).semitones, -5);
+        expect(Note.a.inOctave(-1).semitones, -3);
+        expect(Note.b.inOctave(-1).semitones, -1);
+        expect(Note.c.inOctave(0).semitones, 0);
+        expect(Note.d.inOctave(0).semitones, 2);
+        expect(Note.e.inOctave(0).semitones, 4);
+        expect(Note.f.sharp.inOctave(0).semitones, 6);
+        expect(Note.g.flat.inOctave(0).semitones, 6);
+        expect(Note.a.inOctave(0).semitones, 9);
+        expect(Note.b.inOctave(0).semitones, 11);
+        expect(Note.c.inOctave(1).semitones, 12);
+        expect(Note.c.inOctave(2).semitones, 24);
+        expect(Note.a.inOctave(2).semitones, 33);
+        expect(Note.c.inOctave(3).semitones, 36);
+        expect(Note.a.inOctave(4).semitones, 57);
       });
     });
 

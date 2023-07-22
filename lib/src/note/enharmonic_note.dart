@@ -5,22 +5,22 @@ final class EnharmonicNote extends Enharmonic<Note>
     implements Scalable<EnharmonicNote> {
   const EnharmonicNote(super.semitones)
       : assert(
-          semitones > 0 && semitones <= chromaticDivisions,
+          semitones >= 0 && semitones < chromaticDivisions,
           'Semitones must be in chromatic divisions range',
         );
 
-  static const c = EnharmonicNote(1);
-  static const cSharp = EnharmonicNote(2);
-  static const d = EnharmonicNote(3);
-  static const dSharp = EnharmonicNote(4);
-  static const e = EnharmonicNote(5);
-  static const f = EnharmonicNote(6);
-  static const fSharp = EnharmonicNote(7);
-  static const g = EnharmonicNote(8);
-  static const gSharp = EnharmonicNote(9);
-  static const a = EnharmonicNote(10);
-  static const aSharp = EnharmonicNote(11);
-  static const b = EnharmonicNote(12);
+  static const c = EnharmonicNote(0);
+  static const cSharp = EnharmonicNote(1);
+  static const d = EnharmonicNote(2);
+  static const dSharp = EnharmonicNote(3);
+  static const e = EnharmonicNote(4);
+  static const f = EnharmonicNote(5);
+  static const fSharp = EnharmonicNote(6);
+  static const g = EnharmonicNote(7);
+  static const gSharp = EnharmonicNote(8);
+  static const a = EnharmonicNote(9);
+  static const aSharp = EnharmonicNote(10);
+  static const b = EnharmonicNote(11);
 
   @override
   Set<Note> spellings({int distance = 0}) {
@@ -122,7 +122,7 @@ final class EnharmonicNote extends Enharmonic<Note>
   /// ```
   @override
   EnharmonicNote transposeBy(Interval interval) =>
-      EnharmonicNote((semitones + interval.semitones).chromaticModExcludeZero);
+      EnharmonicNote((semitones + interval.semitones).chromaticMod);
 
   /// Returns the [Interval] between this [EnharmonicNote] and [other].
   ///
@@ -163,5 +163,5 @@ final class EnharmonicNote extends Enharmonic<Note>
   ///
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
   EnharmonicNote operator *(int factor) =>
-      EnharmonicNote(((semitones - 1) * factor + 1).chromaticModExcludeZero);
+      EnharmonicNote((semitones * factor).chromaticMod);
 }

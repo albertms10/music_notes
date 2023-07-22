@@ -79,8 +79,7 @@ final class PositionedNote
   /// PositionedNote.octaveFromSemitones(49) == 4
   /// ```
   static int octaveFromSemitones(int semitones) =>
-      ((semitones.abs() - semitones.sign) * semitones.sign / chromaticDivisions)
-          .floor();
+      (semitones / chromaticDivisions).floor();
 
   /// Returns the number of semitones of this [PositionedNote] from C0 (root).
   ///

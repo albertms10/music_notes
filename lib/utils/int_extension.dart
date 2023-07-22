@@ -24,17 +24,6 @@ extension IntExtension on int {
   /// ```
   int get chromaticMod => this % chromaticDivisions;
 
-  /// Returns the modulo [chromaticDivisions] of this [int]. If this
-  /// is 0, it returns [chromaticDivisions].
-  ///
-  /// Example:
-  /// ```dart
-  /// 15.chromaticModExcludeZero == 3
-  /// 12.chromaticModExcludeZero == 12
-  /// 0.chromaticModExcludeZero == 12
-  /// ```
-  int get chromaticModExcludeZero => nModExcludeZero(chromaticDivisions);
-
   /// Returns the modulo [n] of this [int]. If this is 0, it returns [n].
   ///
   /// Example:

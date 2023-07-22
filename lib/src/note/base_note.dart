@@ -1,13 +1,13 @@
 part of '../../music_notes.dart';
 
 enum BaseNote {
-  c(1),
-  d(3),
-  e(5),
-  f(6),
-  g(8),
-  a(10),
-  b(12);
+  c(0),
+  d(2),
+  e(4),
+  f(5),
+  g(7),
+  a(9),
+  b(11);
 
   final int semitones;
 
@@ -18,13 +18,12 @@ enum BaseNote {
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.fromSemitones(3) == BaseNote.d
-  /// BaseNote.fromSemitones(8) == BaseNote.g
-  /// BaseNote.fromSemitones(11) == null
+  /// BaseNote.fromSemitones(2) == BaseNote.d
+  /// BaseNote.fromSemitones(7) == BaseNote.g
+  /// BaseNote.fromSemitones(10) == null
   /// ```
-  static BaseNote? fromSemitones(int semitones) => values.firstWhereOrNull(
-        (note) => semitones.chromaticModExcludeZero == note.semitones,
-      );
+  static BaseNote? fromSemitones(int semitones) => values
+      .firstWhereOrNull((note) => semitones.chromaticMod == note.semitones);
 
   /// Returns a [BaseNote] enum item that matches with [ordinal].
   ///
