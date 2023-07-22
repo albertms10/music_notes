@@ -206,7 +206,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.P11.inverted == Interval.P5
   /// ```
   Interval get inverted {
-    final diff = 9 - size.simplified.abs();
+    final diff = 9 - simplified.size.abs();
     final invertedSize = (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
 
     return Interval._(invertedSize, quality.inverted);
@@ -218,9 +218,15 @@ final class Interval implements Comparable<Interval> {
   /// ```dart
   /// Interval.m9.simplified == Interval.m2
   /// Interval.P11.simplified == Interval.P4
-  /// Interval.M3.simplified == Interval.M3
+  /// Interval.P8.simplified == Interval.P8
+  /// (-Interval.M3).simplified == -Interval.M3
   /// ```
-  Interval get simplified => Interval._(size.simplified, quality);
+  Interval get simplified {
+    if (!size.isCompound) return Interval._(size, quality);
+    final simplifiedSize = size._sizeAbsShift.nModExcludeZero(8) * size.sign;
+
+    return Interval._(simplifiedSize, quality);
+  }
 
   /// Whether this [Interval] is dissonant.
   ///
@@ -332,7 +338,7 @@ final class Interval implements Comparable<Interval> {
     final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (size.isCompound) {
       return '$descendingAbbreviation$naming '
-          '($qualityAbbreviation${size.simplified.abs()})';
+          '($qualityAbbreviation${simplified.size.abs()})';
     }
 
     return '$descendingAbbreviation$naming';

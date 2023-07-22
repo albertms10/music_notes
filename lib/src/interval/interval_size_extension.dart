@@ -55,6 +55,7 @@ extension IntervalSizeExtension on int {
   int get semitones {
     assert(this != 0, 'Size must be non-zero');
 
+    // ignore: deprecated_member_use_from_same_package
     final simplifiedAbs = simplified.abs();
     final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
 
@@ -113,6 +114,7 @@ extension IntervalSizeExtension on int {
   /// 8.simplified == 8
   /// (-22).simplified == -8
   /// ```
+  @Deprecated('Use [Interval.simplified] instead.')
   int get simplified {
     assert(this != 0, 'Size must be non-zero');
     if (!isCompound) return this;
