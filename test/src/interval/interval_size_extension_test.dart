@@ -161,26 +161,5 @@ void main() {
         expect(22.simplified, 8);
       });
     });
-
-    group('.inverted', () {
-      test('should throw an assertion error when size is zero', () {
-        expect(() => 0.inverted, throwsA(isA<AssertionError>()));
-      });
-
-      test('should return the inverted Interval size', () {
-        expect((-13).inverted, -3);
-        expect((-10).inverted, -6);
-        expect((-9).inverted, -7);
-        expect((-8).inverted, -1);
-        expect((-4).inverted, -5);
-        expect((-2).inverted, -7);
-        expect(2.inverted, 7);
-        expect(4.inverted, 5);
-        expect(8.inverted, 1);
-        expect(9.inverted, 7);
-        expect(10.inverted, 6);
-        expect(13.inverted, 3);
-      });
-    });
   });
 }

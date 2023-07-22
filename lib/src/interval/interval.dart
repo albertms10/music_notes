@@ -194,9 +194,23 @@ final class Interval implements Comparable<Interval> {
   /// Interval.m3.inverted == Interval.M6
   /// Interval.A4.inverted == Interval.d5
   /// Interval.M7.inverted == Interval.m2
-  /// Interval.P1.inverted == Interval.P8
+  /// (-Interval.P1).inverted == -Interval.P8
   /// ```
-  Interval get inverted => Interval._(size.inverted, quality.inverted);
+  ///
+  /// If this [Interval] is greater than an octave, the simplified inversion is
+  /// returned instead.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.m9 == Interval.M7
+  /// Interval.P11.inverted == Interval.P5
+  /// ```
+  Interval get inverted {
+    final diff = 9 - size.simplified.abs();
+    final invertedSize = (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
+
+    return Interval._(invertedSize, quality.inverted);
+  }
 
   /// Returns the simplified of this [Interval].
   ///

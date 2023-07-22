@@ -119,29 +119,4 @@ extension IntervalSizeExtension on int {
 
     return _sizeAbsShift.nModExcludeZero(8) * sign;
   }
-
-  /// Returns the inverted of this [Interval.size].
-  ///
-  /// Example:
-  /// ```dart
-  /// 7.inverted == 2
-  /// 4.inverted == 5
-  /// (-1).inverted == -8
-  /// ```
-  ///
-  /// If this [Interval.size] is greater than an octave, the simplified
-  /// inversion is returned instead.
-  ///
-  /// Example:
-  /// ```dart
-  /// 11.inverted == 5
-  /// 9.inverted == 7
-  /// ```
-  int get inverted {
-    assert(this != 0, 'Size must be non-zero');
-
-    final diff = 9 - simplified.abs();
-
-    return (diff.isNegative ? diff.abs() + 2 : diff) * sign;
-  }
 }
