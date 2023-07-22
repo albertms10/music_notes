@@ -135,43 +135,6 @@ void main() {
       });
     });
 
-    group('.isDissonant', () {
-      test('should throw an assertion error when size is zero', () {
-        expect(() => 0.isDissonant, throwsA(isA<AssertionError>()));
-      });
-
-      test('should return whether this Interval size is dissonant', () {
-        expect((-14).isDissonant, isTrue);
-        expect((-13).isDissonant, isFalse);
-        expect((-12).isDissonant, isFalse);
-        expect((-11).isDissonant, isFalse);
-        expect((-10).isDissonant, isFalse);
-        expect((-9).isDissonant, isTrue);
-        expect((-8).isDissonant, isFalse);
-        expect((-7).isDissonant, isTrue);
-        expect((-6).isDissonant, isFalse);
-        expect((-5).isDissonant, isFalse);
-        expect((-4).isDissonant, isFalse);
-        expect((-3).isDissonant, isFalse);
-        expect((-2).isDissonant, isTrue);
-        expect((-1).isDissonant, isFalse);
-        expect(1.isDissonant, isFalse);
-        expect(2.isDissonant, isTrue);
-        expect(3.isDissonant, isFalse);
-        expect(4.isDissonant, isFalse);
-        expect(5.isDissonant, isFalse);
-        expect(6.isDissonant, isFalse);
-        expect(7.isDissonant, isTrue);
-        expect(8.isDissonant, isFalse);
-        expect(9.isDissonant, isTrue);
-        expect(10.isDissonant, isFalse);
-        expect(11.isDissonant, isFalse);
-        expect(12.isDissonant, isFalse);
-        expect(13.isDissonant, isFalse);
-        expect(14.isDissonant, isTrue);
-      });
-    });
-
     group('.simplified', () {
       test('should throw an assertion error when size is zero', () {
         expect(() => 0.simplified, throwsA(isA<AssertionError>()));

@@ -208,6 +208,23 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get simplified => Interval._(size.simplified, quality);
 
+  /// Whether this [Interval] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P1.isDissonant == false
+  /// Interval.P5.isDissonant == false
+  /// Interval.d5.isDissonant == true
+  /// Interval.M7.isDissonant == true
+  /// (-Interval.m9).isDissonant == true
+  /// ```
+  bool get isDissonant =>
+      switch (quality) {
+        PerfectQuality(:final semitones) => semitones != 0,
+        ImperfectQuality(:final semitones) => semitones < 0 && semitones > 1,
+      } ||
+      const {2, 7}.contains(simplified.size.abs());
+
   /// Returns this [Interval] respelled by [size] while keeping the same
   /// number of [semitones].
   ///

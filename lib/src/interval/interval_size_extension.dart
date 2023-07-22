@@ -104,21 +104,6 @@ extension IntervalSizeExtension on int {
     return abs() > 8;
   }
 
-  /// Whether this [Interval.size] is dissonant.
-  ///
-  /// Example:
-  /// ```dart
-  /// 1.isDissonant == false
-  /// 5.isDissonant == false
-  /// 7.isDissonant == true
-  /// (-9).isDissonant == true
-  /// ```
-  bool get isDissonant {
-    assert(this != 0, 'Size must be non-zero');
-
-    return const {2, 7}.contains(simplified.abs());
-  }
-
   /// Returns the simplified version of this [Interval.size].
   ///
   /// Example:
