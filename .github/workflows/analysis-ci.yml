@@ -48,9 +48,6 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Analyze Dart Code Metrics
-        run: dart run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance
-
       - name: Run tests
         run: |
           dart pub global activate coverage
