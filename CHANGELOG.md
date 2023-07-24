@@ -1,3 +1,31 @@
+## 0.11.0
+
+- 📄 docs(README): update license badge in [#207](https://github.com/albertms10/music_notes/pull/207)
+- 📖 docs(README): fix typo in C♯ example in [#208](https://github.com/albertms10/music_notes/pull/208)
+- ♻️ refactor(positioned_note)!: make `octave` argument required in [#209](https://github.com/albertms10/music_notes/pull/209)
+- 📖 docs(note): update missing `inOctave` examples in [#210](https://github.com/albertms10/music_notes/pull/210)
+- ♻️ refactor: use `incrementBy` method in [#211](https://github.com/albertms10/music_notes/pull/211)
+- ♻️ refactor(interval): remove redundant `Scalable<T>` types in [#212](https://github.com/albertms10/music_notes/pull/212)
+- 📖 docs(scale): fix wrong `functionChord` examples in [#213](https://github.com/albertms10/music_notes/pull/213)
+- ✨ feat(note): add `respellByBaseNoteDistance` method in [#214](https://github.com/albertms10/music_notes/pull/214)
+- ✨ feat(enharmonic): allow providing `distance` to `spellings` in [#215](https://github.com/albertms10/music_notes/pull/215)
+- ♻️ refactor(accidental): extract parsable symbols from `parse` in [#216](https://github.com/albertms10/music_notes/pull/216)
+- chore(deps): bump coverallsapp/github-action from 2.2.0 to 2.2.1 by @dependabot in https://github.com/albertms10/music_notes/pull/217
+- ✨ feat(enharmonic): remove semitones from `toString` output in [#218](https://github.com/albertms10/music_notes/pull/218)
+- ✨ feat(enharmonic): use pipe `|` in `toString` output in [#219](https://github.com/albertms10/music_notes/pull/219)
+- 💥 refactor(note)!: rewrite semitones starting from 0 instead of 1 in [#220](https://github.com/albertms10/music_notes/pull/220)
+- ⚡ perf(positioned_note): extract `parse` expressions to static finals in [#221](https://github.com/albertms10/music_notes/pull/221)
+- 💥 feat(interval)!: move `isDissonant` getter from `IntervalSizeExtension` in [#222](https://github.com/albertms10/music_notes/pull/222)
+- ♻️ refactor(interval)!: move `inverted` logic from `IntervalSizeExtension` in [#223](https://github.com/albertms10/music_notes/pull/223)
+- ♻️ refactor(interval): move `simplified` from `IntervalSizeExtension` in [#224](https://github.com/albertms10/music_notes/pull/224)
+- ♻️ refactor(interval): move `isCompound` from `IntervalSizeExtension` in [#225](https://github.com/albertms10/music_notes/pull/225)
+- 📖 docs(interval_size_extension): improve `semitones` and `isPerfect` comments in [#226](https://github.com/albertms10/music_notes/pull/226)
+- 📌 chore(pubspec): downgrade `collection` to 1.17.1 to keep Flutter compatibility in [#228](https://github.com/albertms10/music_notes/pull/228)
+- ➖ chore(pubspec): remove `dart_code_metrics` dependency in [#229](https://github.com/albertms10/music_notes/pull/229)
+- 💥 refactor(interval)!: rewrite `IntervalSizeExtension` methods as private in [#227](https://github.com/albertms10/music_notes/pull/227)
+
+**Full Changelog**: [`v0.10.1...v0.11.0`](https://github.com/albertms10/music_notes/compare/v0.10.1...v0.11.0)
+
 ## 0.10.1
 
 - ✨ feat(interval): take `distance` sign into account in `circleFrom` in [#199](https://github.com/albertms10/music_notes/pull/199)
@@ -8,6 +36,8 @@
 - 📖 docs(README): write main library documentation in [#204](https://github.com/albertms10/music_notes/pull/204)
 - ⬆️ chore(pubspec): pin dependencies versions in [#205](https://github.com/albertms10/music_notes/pull/205)
 - 📖 docs(README): remove publisher badge in [#206](https://github.com/albertms10/music_notes/pull/206)
+
+**Full Changelog**: [`v0.10.0...v0.10.1`](https://github.com/albertms10/music_notes/compare/v0.10.0...v0.10.1)
 
 ## 0.10.0
 
@@ -33,6 +63,8 @@
 - ✨ feat(key_signature)!: rewrite `toString` method in [#196](https://github.com/albertms10/music_notes/pull/196)
 - ♻️ refactor(analysis): enable ignored lints in [#197](https://github.com/albertms10/music_notes/pull/197)
 - ✨ feat(interval): rewrite distance methods expecting `Scalable` arguments in [#198](https://github.com/albertms10/music_notes/pull/198)
+
+**Full Changelog**: [`v0.9.0...v0.10.0`](https://github.com/albertms10/music_notes/compare/v0.9.0...v0.10.0)
 
 ## 0.9.0
 
@@ -64,6 +96,8 @@
 - chore(pubspec): bump version 0.9.0 in [#178](https://github.com/albertms10/music_notes/pull/178)
 - feat(harmonic_function): add class and `Scale` method in [#176](https://github.com/albertms10/music_notes/pull/176)
 
+**Full Changelog**: [`v0.8.0...v0.9.0`](https://github.com/albertms10/music_notes/compare/v0.8.0...v0.9.0)
+
 ## 0.8.0
 
 - refactor(scale_pattern): rename class in [#128](https://github.com/albertms10/music_notes/pull/128)
@@ -87,6 +121,8 @@
 - refactor(note): rename `fifthsDistanceWith` method in [#148](https://github.com/albertms10/music_notes/pull/148)
 - test(note): reference failing tests related to #149 in [#150](https://github.com/albertms10/music_notes/pull/150)
 
+**Full Changelog**: [`v0.7.0...v0.8.0`](https://github.com/albertms10/music_notes/compare/v0.7.0...v0.8.0)
+
 ## 0.7.0
 
 - refactor: Extract Frequency in [#112](https://github.com/albertms10/music_notes/pull/112)
@@ -106,6 +142,8 @@
 - docs(note): migrate missing `PositionedNote` documentation in [#126](https://github.com/albertms10/music_notes/pull/126)
 - feat(note): add `sharp`, `flat` getters in [#127](https://github.com/albertms10/music_notes/pull/127)
 
+**Full Changelog**: [`v0.6.0...v0.7.0`](https://github.com/albertms10/music_notes/compare/v0.6.0...v0.7.0)
+
 ## 0.6.0
 
 - refactor(interval): extract and reuse `_sizeAbsShift` getter in [#97](https://github.com/albertms10/music_notes/pull/97)
@@ -117,6 +155,8 @@
 - feat(scale): add `descendingIntervalSteps` in [#104](https://github.com/albertms10/music_notes/pull/104)
 - chore: bump versions as of Dart SDK 3.0 in [#105](https://github.com/albertms10/music_notes/pull/105)
 
+**Full Changelog**: [`v0.5.1...v0.6.0`](https://github.com/albertms10/music_notes/compare/v0.5.1...v0.6.0)
+
 ## 0.5.1
 
 - feat(scale): allow passing `EnharmonicNote` to `fromNote` in [#91](https://github.com/albertms10/music_notes/pull/91)
@@ -125,6 +165,8 @@
 - refactor(enharmonic): rename `items` → `spellings` in [#94](https://github.com/albertms10/music_notes/pull/94)
 - fix(interval_size_extension): address `simplified` compound interval sizes in [#95](https://github.com/albertms10/music_notes/pull/95)
 - feat(interval): show simplified interval in `toString` in [#96](https://github.com/albertms10/music_notes/pull/96)
+
+**Full Changelog**: [`v0.5.0...v0.5.1`](https://github.com/albertms10/music_notes/compare/v0.5.0...v0.5.1)
 
 ## 0.5.0
 
@@ -155,6 +197,8 @@
 - refactor: replace `EnharmonicNote` with `Note` for `transposeBy` in [#88](https://github.com/albertms10/music_notes/pull/88)
 - fix(key_signature): use XOR in 0 accidentals assertions in [#89](https://github.com/albertms10/music_notes/pull/89)
 - refactor(note): rewrite `fromRawAccidentals` into `KeySignature.majorNote` in [#90](https://github.com/albertms10/music_notes/pull/90)
+
+**Full Changelog**: [`v0.4.0...v0.5.0`](https://github.com/albertms10/music_notes/compare/v0.4.0...v0.5.0)
 
 ## 0.4.0
 
@@ -199,6 +243,8 @@
 - test(tonality): add test cases for `relative`, `keySignature` methods in [#62](https://github.com/albertms10/music_notes/pull/62)
 - refactor(music_item): remove unnecessary private constructors in [#63](https://github.com/albertms10/music_notes/pull/63)
 
+**Full Changelog**: [`v0.3.0...v0.4.0`](https://github.com/albertms10/music_notes/compare/v0.3.0...v0.4.0)
+
 ## 0.3.0
 
 - chore: bump versions as of Dart SDK 2.19 in [#7](https://github.com/albertms10/music_notes/pull/7)
@@ -216,6 +262,8 @@
 - refactor(note): move fifths distance functions to class methods in [#19](https://github.com/albertms10/music_notes/pull/19)
 - perf(tests): run tests from index `main.dart` file in [#20](https://github.com/albertms10/music_notes/pull/20)
 - chore(pubspec): bump version 0.3.0 in [#21](https://github.com/albertms10/music_notes/pull/21)
+
+**Full Changelog**: [`v0.2.0...v0.3.0`](https://github.com/albertms10/music_notes/compare/v0.2.0...v0.3.0)
 
 ## 0.2.0
 
@@ -242,6 +290,10 @@
 - chore(deps): bump versions as of Dart SDK 2.16 in [#5](https://github.com/albertms10/music_notes/pull/5)
 - refactor(enums): replace `toText` with native `name` getter in [#6](https://github.com/albertms10/music_notes/pull/6)
 
+**Full Changelog**: [`v0.1.0...v0.2.0`](https://github.com/albertms10/music_notes/compare/v0.1.0...v0.2.0)
+
 ## 0.1.0
 
 Initial implementation of basic and fundamental operations with notes, intervals, tonalities and key signatures.
+
+**Full Changelog**: [`v0.1.0`](https://github.com/albertms10/music_notes/compare/68e419019f708f272fe4278b64a5a6dd5b43778e...v0.1.0)
