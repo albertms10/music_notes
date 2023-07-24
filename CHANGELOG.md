@@ -1,3 +1,9 @@
+## 0.11.1
+
+- 📌 chore(pubspec): downgrade `test` to 1.24.1 to keep Flutter compatibility in [#231](https://github.com/albertms10/music_notes/pull/231)
+
+**Full Changelog**: [`v0.11.0...v0.11.1`](https://github.com/albertms10/music_notes/compare/v0.11.0...v0.11.1)
+
 ## 0.11.0
 
 - 📄 docs(README): update license badge in [#207](https://github.com/albertms10/music_notes/pull/207)
@@ -10,7 +16,7 @@
 - ✨ feat(note): add `respellByBaseNoteDistance` method in [#214](https://github.com/albertms10/music_notes/pull/214)
 - ✨ feat(enharmonic): allow providing `distance` to `spellings` in [#215](https://github.com/albertms10/music_notes/pull/215)
 - ♻️ refactor(accidental): extract parsable symbols from `parse` in [#216](https://github.com/albertms10/music_notes/pull/216)
-- chore(deps): bump coverallsapp/github-action from 2.2.0 to 2.2.1 by @dependabot in https://github.com/albertms10/music_notes/pull/217
+- chore(deps): bump coverallsapp/github-action from 2.2.0 to 2.2.1 in [#217](https://github.com/albertms10/music_notes/pull/217)
 - ✨ feat(enharmonic): remove semitones from `toString` output in [#218](https://github.com/albertms10/music_notes/pull/218)
 - ✨ feat(enharmonic): use pipe `|` in `toString` output in [#219](https://github.com/albertms10/music_notes/pull/219)
 - 💥 refactor(note)!: rewrite semitones starting from 0 instead of 1 in [#220](https://github.com/albertms10/music_notes/pull/220)
