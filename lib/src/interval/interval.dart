@@ -70,7 +70,7 @@ final class Interval implements Comparable<Interval> {
 
   /// [Interval.size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
-  static const Map<int, int> sizeToSemitones = {
+  static const Map<int, int> _sizeToSemitones = {
     1: 0, // P
     2: 1, // m
     3: 3, // m
@@ -167,7 +167,7 @@ final class Interval implements Comparable<Interval> {
   }
 
   /// Returns the [Interval.size] that matches with [semitones]
-  /// in [sizeToSemitones], otherwise returns `null`.
+  /// in [_sizeToSemitones], otherwise returns `null`.
   ///
   /// Example:
   /// ```dart
@@ -178,12 +178,12 @@ final class Interval implements Comparable<Interval> {
   /// ```
   static int? sizeFromSemitones(int semitones) {
     final absoluteSemitones = semitones.abs();
-    final matchingSize = sizeToSemitones.keys.firstWhereOrNull(
+    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
       (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
               : absoluteSemitones.chromaticMod) ==
-          sizeToSemitones[size],
+          _sizeToSemitones[size],
     );
     if (matchingSize == null) return null;
     if (absoluteSemitones == 12) return matchingSize * semitones.sign;
@@ -412,7 +412,7 @@ extension _IntervalSize on int {
   /// corresponding [ImperfectQuality.minor] or [PerfectQuality.perfect]
   /// semitones.
   ///
-  /// See [Interval.sizeToSemitones].
+  /// See [Interval._sizeToSemitones].
   ///
   /// Example:
   /// ```dart
@@ -430,7 +430,7 @@ extension _IntervalSize on int {
     // them 0 (as if they were modulo 8).
     final size = simplifiedAbs == 8 ? 1 : simplifiedAbs;
 
-    return (Interval.sizeToSemitones[size]! + octaveShift) * sign;
+    return (Interval._sizeToSemitones[size]! + octaveShift) * sign;
   }
 
   /// Returns the absolute [Interval.size] value taking octave shift into
