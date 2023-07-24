@@ -20,7 +20,7 @@ sealed class Quality implements Comparable<Quality> {
   /// ```
   factory Quality.fromInterval(int size, int semitones) {
     final qualityConstructor =
-        size.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
+        size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
     return qualityConstructor(semitones);
   }

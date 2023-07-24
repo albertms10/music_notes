@@ -307,7 +307,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
 
     return Interval.fromDelta(
       intervalSize,
-      difference(other).chromaticMod - intervalSize.semitones,
+      difference(other).chromaticMod - intervalSize._semitones,
     );
   }
 

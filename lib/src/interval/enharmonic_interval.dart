@@ -23,7 +23,7 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
   @override
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final size = IntervalSizeExtension.fromSemitones(semitones);
+    final size = Interval.sizeFromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
@@ -41,11 +41,11 @@ final class EnharmonicInterval extends Enharmonic<Interval> {
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
         Interval.fromSemitones(
-          IntervalSizeExtension.fromSemitones(semitones.incrementBy(-i))!,
+          Interval.sizeFromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
         Interval.fromSemitones(
-          IntervalSizeExtension.fromSemitones(semitones.incrementBy(i))!,
+          Interval.sizeFromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
       ],

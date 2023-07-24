@@ -68,10 +68,23 @@ final class Interval implements Comparable<Interval> {
   static const M13 = Interval.imperfect(13, ImperfectQuality.major);
   static const A13 = Interval.imperfect(13, ImperfectQuality.augmented);
 
+  /// [Interval.size] to the corresponding [ImperfectQuality.minor] or
+  /// [PerfectQuality.perfect] semitones.
+  static const Map<int, int> _sizeToSemitones = {
+    1: 0, // P
+    2: 1, // m
+    3: 3, // m
+    4: 5, // P
+    5: 7, // P
+    6: 8, // m
+    7: 10, // m
+    8: 12, // P
+  };
+
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
-        // Copied from [IntervalSizeExtension.isPerfect] to allow const.
+        // Copied from [_IntervalSize._isPerfect] to allow const.
         assert(
           ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
           'Interval must be perfect',
@@ -80,7 +93,7 @@ final class Interval implements Comparable<Interval> {
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
-        // Copied from [IntervalSizeExtension.isPerfect] to allow const.
+        // Copied from [_IntervalSize._isPerfect] to allow const.
         assert(
           ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
           'Interval must be imperfect',
@@ -96,7 +109,7 @@ final class Interval implements Comparable<Interval> {
           size,
           Quality.fromInterval(
             size,
-            semitones * size.sign - size.semitones.abs(),
+            semitones * size.sign - size._semitones.abs(),
           ),
         );
 
@@ -148,9 +161,37 @@ final class Interval implements Comparable<Interval> {
 
     final size = int.parse(match[2]!);
     final parseFactory =
-        size.isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
+        size._isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
 
     return Interval._(size, parseFactory(match[1]!));
+  }
+
+  /// Returns the [Interval.size] that matches with [semitones]
+  /// in [_sizeToSemitones], otherwise returns `null`.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.sizeFromSemitones(8) == 6
+  /// Interval.sizeFromSemitones(0) == 1
+  /// Interval.sizeFromSemitones(-12) == -8
+  /// Interval.sizeFromSemitones(4) == null
+  /// ```
+  static int? sizeFromSemitones(int semitones) {
+    final absoluteSemitones = semitones.abs();
+    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
+      (size) =>
+          (absoluteSemitones == chromaticDivisions
+              ? chromaticDivisions
+              : absoluteSemitones.chromaticMod) ==
+          _sizeToSemitones[size],
+    );
+    if (matchingSize == null) return null;
+    if (absoluteSemitones == 12) return matchingSize * semitones.sign;
+
+    final absResult =
+        matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
+
+    return absResult * (semitones.isNegative ? -1 : 1);
   }
 
   /// Returns the number of semitones of this [Interval].
@@ -162,7 +203,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.semitones == 6
   /// (-Interval.M3).semitones == -4
   /// ```
-  int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
+  int get semitones => (size._semitones.abs() + quality.semitones) * size.sign;
 
   /// Whether this [Interval] is descending.
   ///
@@ -202,7 +243,7 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.m9 == Interval.M7
+  /// Interval.m9.inverted == Interval.M7
   /// Interval.P11.inverted == Interval.P5
   /// ```
   Interval get inverted {
@@ -221,12 +262,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.P8.simplified == Interval.P8
   /// (-Interval.M3).simplified == -Interval.M3
   /// ```
-  Interval get simplified {
-    if (!isCompound) return Interval._(size, quality);
-    final simplifiedSize = size._sizeAbsShift.nModExcludeZero(8) * size.sign;
-
-    return Interval._(simplifiedSize, quality);
-  }
+  Interval get simplified => Interval._(size._simplified, quality);
 
   /// Returns whether this [Interval] is greater than an octave.
   ///
@@ -239,7 +275,7 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P11).isCompound == true
   /// Interval.m13.isCompound == true
   /// ```
-  bool get isCompound => size.abs() > 8;
+  bool get isCompound => size._isCompound;
 
   /// Whether this [Interval] is dissonant.
   ///
@@ -268,7 +304,7 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval respellBySize(int size) => Interval._(
         size,
-        Quality.fromInterval(size, semitones.abs() - size.semitones.abs()),
+        Quality.fromInterval(size, semitones.abs() - size._semitones.abs()),
       );
 
   /// Returns the iteration distance of this [Interval] between [scalable1] and
@@ -369,4 +405,74 @@ final class Interval implements Comparable<Interval> {
         () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);
+}
+
+extension _IntervalSize on int {
+  /// Returns the number of semitones of this [Interval.size] for the
+  /// corresponding [ImperfectQuality.minor] or [PerfectQuality.perfect]
+  /// semitones.
+  ///
+  /// See [Interval._sizeToSemitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// 3._semitones == 3
+  /// 5._semitones == 7
+  /// (-5)._semitones == -7
+  /// 7._semitones == 10
+  /// 9._semitones == 13
+  /// (-9)._semitones == -13
+  /// ```
+  int get _semitones {
+    final simplifiedAbs = _simplified.abs();
+    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
+    // We exclude perfect octaves (simplified as 8) from the lookup to consider
+    // them 0 (as if they were modulo 8).
+    final size = simplifiedAbs == 8 ? 1 : simplifiedAbs;
+
+    return (Interval._sizeToSemitones[size]! + octaveShift) * sign;
+  }
+
+  /// Returns the absolute [Interval.size] value taking octave shift into
+  /// account.
+  int get _sizeAbsShift {
+    final sizeAbs = abs();
+
+    return sizeAbs + sizeAbs ~/ 8;
+  }
+
+  /// Returns whether this [Interval.size] conforms a perfect interval.
+  ///
+  /// Example:
+  /// ```dart
+  /// 5._isPerfect == true
+  /// 6._isPerfect == false
+  /// (-11)._isPerfect == true
+  /// ```
+  bool get _isPerfect => _sizeAbsShift % 4 < 2;
+
+  /// Returns whether this [Interval.size] is greater than an octave.
+  ///
+  /// Example:
+  /// ```dart
+  /// 5._isCompound == false
+  /// (-6)._isCompound == false
+  /// 8._isCompound == false
+  /// 9._isCompound == true
+  /// (-11)._isCompound == true
+  /// 13._isCompound == true
+  /// ```
+  bool get _isCompound => abs() > 8;
+
+  /// Returns the simplified version of this [Interval.size].
+  ///
+  /// Example:
+  /// ```dart
+  /// 13._simplified == 6
+  /// (-9)._simplified == -2
+  /// 8._simplified == 8
+  /// (-22)._simplified == -8
+  /// ```
+  int get _simplified =>
+      _isCompound ? _sizeAbsShift.nModExcludeZero(8) * sign : this;
 }
