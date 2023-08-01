@@ -46,8 +46,7 @@ class Chord<T extends Scalable<T>>
   ///   == Chord([Note.c, Note.e, Note.g.sharp, Note.b.flat])
   /// ```
   @override
-  Chord<T> get augmented =>
-      Chord([...ChordPattern.augmentedTriad.on(root).items, ...modifiers]);
+  Chord<T> get augmented => pattern.augmented.on(root);
 
   /// Returns a new [Chord<T>] with an [ImperfectQuality.major] root triad.
   ///
@@ -57,8 +56,7 @@ class Chord<T extends Scalable<T>>
   ///   == Chord([Note.c, Note.e, Note.g, Note.b.flat])
   /// ```
   @override
-  Chord<T> get major =>
-      Chord([...ChordPattern.majorTriad.on(root).items, ...modifiers]);
+  Chord<T> get major => pattern.major.on(root);
 
   /// Returns a new [Chord<T>] with an [ImperfectQuality.minor] root triad.
   ///
@@ -68,8 +66,7 @@ class Chord<T extends Scalable<T>>
   ///   == Chord([Note.c, Note.e.flat, Note.g, Note.b.flat])
   /// ```
   @override
-  Chord<T> get minor =>
-      Chord([...ChordPattern.minorTriad.on(root).items, ...modifiers]);
+  Chord<T> get minor => pattern.minor.on(root);
 
   /// Returns a new [Chord<T>] with an [ImperfectQuality.diminished] root triad.
   ///
@@ -79,8 +76,7 @@ class Chord<T extends Scalable<T>>
   ///   == Chord([Note.c, Note.e.flat, Note.g.flat, Note.b.flat])
   /// ```
   @override
-  Chord<T> get diminished =>
-      Chord([...ChordPattern.diminishedTriad.on(root).items, ...modifiers]);
+  Chord<T> get diminished => pattern.diminished.on(root);
 
   /// Returns a new [Chord<T>] adding [interval].
   @override
