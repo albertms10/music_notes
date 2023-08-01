@@ -19,7 +19,6 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```dart
   /// ChordPattern.intervalSteps([Interval.m3, Interval.M3])
   ///   == ChordPattern.minorTriad
-  ///
   /// ChordPattern.intervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
@@ -149,10 +148,7 @@ class ChordPattern with Chordable<ChordPattern> {
       (chordInterval) => sizesToReplace.contains(chordInterval.size),
     );
 
-    return ChordPattern(
-      // Keep the intervals sorted after these operations.
-      SplayTreeSet.of([...filteredIntervals, interval]).toList(),
-    );
+    return ChordPattern([...filteredIntervals, interval]..sort());
   }
 
   /// Returns the abbreviated quality representing this [ChordPattern].
