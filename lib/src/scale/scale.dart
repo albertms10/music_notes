@@ -23,8 +23,10 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// const Scale([Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
   ///   Note.c]) == ScalePattern.major
   /// ```
-  ScalePattern get pattern =>
-      ScalePattern(degrees.intervals, _descendingDegrees?.descendingIntervals);
+  ScalePattern get pattern => ScalePattern(
+        degrees._intervals,
+        _descendingDegrees?._descendingIntervals,
+      );
 
   /// Returns the reversed of this [Scale<T>].
   ///
@@ -116,8 +118,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        degrees.transposeBy(interval),
-        _descendingDegrees?.transposeBy(interval),
+        degrees._transposeBy(interval),
+        _descendingDegrees?._transposeBy(interval),
       );
 
   @override
@@ -136,18 +138,4 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
         Object.hashAll(degrees),
         _descendingDegrees != null ? Object.hashAll(_descendingDegrees!) : null,
       );
-}
-
-extension<T extends Scalable<T>> on List<T> {
-  /// Returns the [Interval] list between this [List<Scalable<T>>].
-  List<Interval> get intervals =>
-      [for (var i = 0; i < length - 1; i++) this[i].interval(this[i + 1])];
-
-  /// Returns the descending [Interval] list between this [List<Scalable<T>>].
-  List<Interval> get descendingIntervals =>
-      [for (var i = 0; i < length - 1; i++) this[i + 1].interval(this[i])];
-
-  /// Returns this [List<Scalable<T>>] transposed by [interval].
-  List<T> transposeBy(Interval interval) =>
-      [for (final item in this) item.transposeBy(interval)];
 }

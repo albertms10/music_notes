@@ -27,7 +27,7 @@ class Chord<T extends Scalable<T>>
   /// const Chord([Note.g, Note.b, Note.d, Note.f, Note.a]).pattern
   ///   == ChordPattern.majorTriad.add7().add9()
   /// ```
-  ChordPattern get pattern => ChordPattern.intervalSteps(items.intervals);
+  ChordPattern get pattern => ChordPattern.intervalSteps(items._intervals);
 
   /// Returns the list of modifier [T]s from the root note.
   ///
