@@ -18,7 +18,7 @@ void main() {
           const HarmonicFunction([ScaleDegree.vi, ScaleDegree.iv]),
         );
         expect(
-          HarmonicFunction.tonic / HarmonicFunction.ii / HarmonicFunction.iii,
+          HarmonicFunction.i / HarmonicFunction.ii / HarmonicFunction.iii,
           const HarmonicFunction(
             [ScaleDegree.i, ScaleDegree.ii, ScaleDegree.iii],
           ),
@@ -30,7 +30,7 @@ void main() {
       test(
         'should return the string representation of this HarmonicFunction',
         () {
-          expect(HarmonicFunction.tonic.toString(), 'I');
+          expect(HarmonicFunction.i.toString(), 'I');
           expect(HarmonicFunction.vii.toString(), 'VII');
           expect(
             (HarmonicFunction.dominantV / HarmonicFunction.dominantV)
@@ -51,8 +51,8 @@ void main() {
     group('.hashCode', () {
       test('should return the same hashCode for equal HarmonicFunctions', () {
         expect(
-          HarmonicFunction.tonic.hashCode,
-          HarmonicFunction.tonic.hashCode,
+          HarmonicFunction.i.hashCode,
+          HarmonicFunction.i.hashCode,
         );
         expect(
           HarmonicFunction.neapolitanSixth.hashCode,
@@ -64,7 +64,7 @@ void main() {
         'should return different hashCodes for different HarmonicFunctions',
         () {
           expect(
-            HarmonicFunction.tonic.hashCode,
+            HarmonicFunction.i.hashCode,
             isNot(equals(HarmonicFunction.ii.hashCode)),
           );
           expect(
@@ -76,14 +76,14 @@ void main() {
 
       test('should ignore equal HarmonicFunction instances in a Set', () {
         final collection = {
-          HarmonicFunction.tonic,
+          HarmonicFunction.i,
           HarmonicFunction.neapolitanSixth,
           HarmonicFunction.iii,
           HarmonicFunction.iv / HarmonicFunction.iv,
         };
         collection.addAll(collection);
         expect(collection.toList(), [
-          HarmonicFunction.tonic,
+          HarmonicFunction.i,
           HarmonicFunction.neapolitanSixth,
           HarmonicFunction.iii,
           HarmonicFunction.iv / HarmonicFunction.iv,

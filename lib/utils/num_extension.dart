@@ -1,3 +1,4 @@
+/// A num extension.
 extension NumExtension on num {
   /// Returns a delta string representation of this [num].
   ///

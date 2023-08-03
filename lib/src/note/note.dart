@@ -1,18 +1,36 @@
 part of '../../music_notes.dart';
 
+/// A musical note.
 @immutable
 final class Note implements Comparable<Note>, Scalable<Note> {
+  /// The base note that defines this [Note].
   final BaseNote baseNote;
+
+  /// The accidental that modifies the [baseNote].
   final Accidental accidental;
 
+  /// Creates a new [Note] from [baseNote] and [accidental].
   const Note(this.baseNote, [this.accidental = Accidental.natural]);
 
+  /// Note C.
   static const Note c = Note(BaseNote.c);
+
+  /// Note D.
   static const Note d = Note(BaseNote.d);
+
+  /// Note E.
   static const Note e = Note(BaseNote.e);
+
+  /// Note F.
   static const Note f = Note(BaseNote.f);
+
+  /// Note G.
   static const Note g = Note(BaseNote.g);
+
+  /// Note A.
   static const Note a = Note(BaseNote.a);
+
+  /// Note B.
   static const Note b = Note(BaseNote.b);
 
   /// Parse [source] as a [Note] and return its value.

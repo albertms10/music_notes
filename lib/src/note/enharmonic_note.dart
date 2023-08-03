@@ -1,25 +1,50 @@
 part of '../../music_notes.dart';
 
+/// A pitch class enharmonic note.
 @immutable
 final class EnharmonicNote extends Enharmonic<Note>
     implements Scalable<EnharmonicNote> {
+  /// Creates a new [EnharmonicNote] from [semitones].
   const EnharmonicNote(super.semitones)
       : assert(
           semitones >= 0 && semitones < chromaticDivisions,
           'Semitones must be in chromatic divisions range',
         );
 
+  /// Pitch class 0, which corresponds to [Note.c].
   static const c = EnharmonicNote(0);
+
+  /// Pitch class 1, which corresponds to [Note.c.sharp] or [Note.d.flat].
   static const cSharp = EnharmonicNote(1);
+
+  /// Pitch class 2, which corresponds to [Note.d].
   static const d = EnharmonicNote(2);
+
+  /// Pitch class 3, which corresponds to [Note.d.sharp] or [Note.e.flat].
   static const dSharp = EnharmonicNote(3);
+
+  /// Pitch class 4, which corresponds to [Note.e].
   static const e = EnharmonicNote(4);
+
+  /// Pitch class 5, which corresponds to [Note.f].
   static const f = EnharmonicNote(5);
+
+  /// Pitch class 6, which corresponds to [Note.f.sharp] or [Note.g.flat].
   static const fSharp = EnharmonicNote(6);
+
+  /// Pitch class 7, which corresponds to [Note.g].
   static const g = EnharmonicNote(7);
+
+  /// Pitch class 8, which corresponds to [Note.g.sharp] or [Note.g.flat].
   static const gSharp = EnharmonicNote(8);
+
+  /// Pitch class 9, which corresponds to [Note.a].
   static const a = EnharmonicNote(9);
+
+  /// Pitch class 10, which corresponds to [Note.a.sharp] or [Note.b.flat].
   static const aSharp = EnharmonicNote(10);
+
+  /// Pitch class 11, which corresponds to [Note.b].
   static const b = EnharmonicNote(11);
 
   @override

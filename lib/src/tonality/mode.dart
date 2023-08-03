@@ -5,6 +5,7 @@ part of '../../music_notes.dart';
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
 sealed class Mode implements Enum, Comparable<Mode> {
+  /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;
 
   /// The [Dorian Brightness Quotient](https://mynewmicrophone.com/dorian-brightness-quotient)
@@ -22,6 +23,7 @@ sealed class Mode implements Enum, Comparable<Mode> {
       ]);
 }
 
+/// Modes of a tonal system.
 enum TonalMode implements Mode {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
   major(ScalePattern.major, brightness: 2),
@@ -51,6 +53,7 @@ enum TonalMode implements Mode {
   int compareTo(Mode other) => Mode.compare(this, other);
 }
 
+/// Modes of a modal system.
 enum ModalMode implements Mode {
   /// See [Lydian mode](https://en.wikipedia.org/wiki/Lydian_mode).
   lydian(ScalePattern.lydian, brightness: 3),

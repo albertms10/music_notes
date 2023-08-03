@@ -9,8 +9,6 @@ linter:
 
 analyzer:
   errors:
-    public_member_api_docs: ignore
-
     # Style decisions
     always_use_package_imports: ignore
     sort_constructors_first: ignore

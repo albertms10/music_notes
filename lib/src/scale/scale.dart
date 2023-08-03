@@ -1,5 +1,8 @@
 part of '../../music_notes.dart';
 
+/// A set of musical notes ordered by fundamental frequency or pitch.
+///
+/// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
 @immutable
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// The [Scalable<T>] degrees that define this [Scale<T>].

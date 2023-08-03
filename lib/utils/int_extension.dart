@@ -1,5 +1,6 @@
 import 'package:music_notes/music_notes.dart';
 
+/// An int extension.
 extension IntExtension on int {
   /// Returns this [int] incremented by [step].
   ///

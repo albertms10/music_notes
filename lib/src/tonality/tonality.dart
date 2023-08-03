@@ -1,10 +1,15 @@
 part of '../../music_notes.dart';
 
+/// A musical tonality.
 @immutable
 final class Tonality implements Comparable<Tonality> {
+  /// The tonal center representing this [Tonality].
   final Note note;
+
+  /// The mode representing this [Tonality].
   final TonalMode mode;
 
+  /// Creates a new [Tonality] from [note] and [mode].
   const Tonality(this.note, this.mode);
 
   /// Returns the [TonalMode.major] or [TonalMode.minor] relative [Tonality]
