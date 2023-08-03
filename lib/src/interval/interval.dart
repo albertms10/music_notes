@@ -18,54 +18,121 @@ final class Interval implements Comparable<Interval> {
   const Interval._(this.size, this.quality)
       : assert(size != 0, 'Size must be non-zero');
 
+  /// A diminished unison [Interval].
   static const d1 = Interval.perfect(1, PerfectQuality.diminished);
+
+  /// A perfect unison [Interval].
   static const P1 = Interval.perfect(1, PerfectQuality.perfect);
+
+  /// An augmented unison [Interval].
   static const A1 = Interval.perfect(1, PerfectQuality.augmented);
 
+  /// A diminished second [Interval].
   static const d2 = Interval.imperfect(2, ImperfectQuality.diminished);
+
+  /// A minor second [Interval].
   static const m2 = Interval.imperfect(2, ImperfectQuality.minor);
+
+  /// A major second [Interval].
   static const M2 = Interval.imperfect(2, ImperfectQuality.major);
+
+  /// An augmented second [Interval].
   static const A2 = Interval.imperfect(2, ImperfectQuality.augmented);
 
+  /// A diminished third [Interval].
   static const d3 = Interval.imperfect(3, ImperfectQuality.diminished);
+
+  /// A minor third [Interval].
   static const m3 = Interval.imperfect(3, ImperfectQuality.minor);
+
+  /// A major third [Interval].
   static const M3 = Interval.imperfect(3, ImperfectQuality.major);
+
+  /// An augmented third [Interval].
   static const A3 = Interval.imperfect(3, ImperfectQuality.augmented);
 
+  /// A diminished fourth [Interval].
   static const d4 = Interval.perfect(4, PerfectQuality.diminished);
+
+  /// A perfect fourth [Interval].
   static const P4 = Interval.perfect(4, PerfectQuality.perfect);
+
+  /// An augmented fourth [Interval].
   static const A4 = Interval.perfect(4, PerfectQuality.augmented);
 
+  /// A diminished fifth [Interval].
   static const d5 = Interval.perfect(5, PerfectQuality.diminished);
+
+  /// A perfect fifth [Interval].
   static const P5 = Interval.perfect(5, PerfectQuality.perfect);
+
+  /// An augmented fifth [Interval].
   static const A5 = Interval.perfect(5, PerfectQuality.augmented);
 
+  /// A diminished sixth [Interval].
   static const d6 = Interval.imperfect(6, ImperfectQuality.diminished);
+
+  /// A minor sixth [Interval].
   static const m6 = Interval.imperfect(6, ImperfectQuality.minor);
+
+  /// A major sixth [Interval].
   static const M6 = Interval.imperfect(6, ImperfectQuality.major);
+
+  /// An augmented sixth [Interval].
   static const A6 = Interval.imperfect(6, ImperfectQuality.augmented);
 
+  /// A diminished seventh [Interval].
   static const d7 = Interval.imperfect(7, ImperfectQuality.diminished);
+
+  /// A minor seventh [Interval].
   static const m7 = Interval.imperfect(7, ImperfectQuality.minor);
+
+  /// A major seventh [Interval].
   static const M7 = Interval.imperfect(7, ImperfectQuality.major);
+
+  /// An augmented seventh [Interval].
   static const A7 = Interval.imperfect(7, ImperfectQuality.augmented);
 
+  /// A diminished octave [Interval].
   static const d8 = Interval.perfect(8, PerfectQuality.diminished);
+
+  /// A perfect octave [Interval].
   static const P8 = Interval.perfect(8, PerfectQuality.perfect);
+
+  /// An augmented octave [Interval].
   static const A8 = Interval.perfect(8, PerfectQuality.augmented);
 
+  /// A diminished ninth [Interval].
   static const d9 = Interval.imperfect(9, ImperfectQuality.diminished);
+
+  /// A minor ninth [Interval].
   static const m9 = Interval.imperfect(9, ImperfectQuality.minor);
+
+  /// A major ninth [Interval].
   static const M9 = Interval.imperfect(9, ImperfectQuality.major);
+
+  /// An augmented ninth [Interval].
   static const A9 = Interval.imperfect(9, ImperfectQuality.augmented);
 
+  /// A diminished eleventh [Interval].
   static const d11 = Interval.perfect(11, PerfectQuality.diminished);
+
+  /// A perfect eleventh [Interval].
   static const P11 = Interval.perfect(11, PerfectQuality.perfect);
+
+  /// An augmented eleventh [Interval].
   static const A11 = Interval.perfect(11, PerfectQuality.augmented);
 
+  /// A diminished thirteenth [Interval].
   static const d13 = Interval.imperfect(13, ImperfectQuality.diminished);
+
+  /// A minor thirteenth [Interval].
   static const m13 = Interval.imperfect(13, ImperfectQuality.minor);
+
+  /// A major thirteenth [Interval].
   static const M13 = Interval.imperfect(13, ImperfectQuality.major);
+
+  /// An augmented thirteenth [Interval].
   static const A13 = Interval.imperfect(13, ImperfectQuality.augmented);
 
   /// [Interval.size] to the corresponding [ImperfectQuality.minor] or

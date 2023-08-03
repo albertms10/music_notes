@@ -125,7 +125,7 @@ void main() {
         'should return the Chord for the HarmonicFunction of this Scale',
         () {
           expect(
-            Note.c.major.scale.functionChord(HarmonicFunction.tonic),
+            Note.c.major.scale.functionChord(HarmonicFunction.i),
             Note.c.majorTriad,
           );
           expect(

@@ -1,17 +1,20 @@
 part of '../../music_notes.dart';
 
+/// A tuning system representation.
 @immutable
 sealed class TuningSystem {
   /// Creates a new [TuningSystem].
   const TuningSystem();
 }
 
+/// A representation of an equal temperament tuning system.
 @immutable
 class EqualTemperament extends TuningSystem {
   /// The equal divisions of the octave between each [BaseNote] and the next
   /// one.
   final Map<BaseNote, int> divisions;
 
+  /// Creates a new [EqualTemperament] from [divisions].
   const EqualTemperament(this.divisions);
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).

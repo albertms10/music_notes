@@ -1,10 +1,18 @@
 part of '../../music_notes.dart';
 
+/// A scale degree.
 @immutable
 class ScaleDegree implements Comparable<ScaleDegree> {
+  /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
+
+  /// The inversion of the [Chord] above this [ScaleDegree].
   final int inversion;
+
+  /// The quality of the [Chord] above this [ScaleDegree].
   final ImperfectQuality? quality;
+
+  /// The semitones raising or lowering this [ScaleDegree]’s root note.
   final int semitonesDelta;
 
   /// Creates a new [ScaleDegree].
@@ -15,18 +23,33 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     this.semitonesDelta = 0,
   });
 
+  /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);
+
+  /// The II [ScaleDegree].
   static const ii = ScaleDegree(2);
+
+  /// The neapolitan sixth [ScaleDegree].
   static const neapolitanSixth = ScaleDegree(
     2,
     quality: ImperfectQuality.major,
     inversion: 1,
     semitonesDelta: -1,
   );
+
+  /// The III [ScaleDegree].
   static const iii = ScaleDegree(3);
+
+  /// The IV [ScaleDegree].
   static const iv = ScaleDegree(4);
+
+  /// The V [ScaleDegree].
   static const v = ScaleDegree(5);
+
+  /// The VI [ScaleDegree].
   static const vi = ScaleDegree(6);
+
+  /// The VII [ScaleDegree].
   static const vii = ScaleDegree(7);
 
   /// Whether this [ScaleDegree] is raised.

@@ -1,5 +1,6 @@
 part of '../music_notes.dart';
 
+/// A interface for items that can be enharmonically respelled.
 @immutable
 abstract interface class Enharmonic<T> implements Comparable<Enharmonic<T>> {
   /// The number of semitones of the common chromatic pitch of this

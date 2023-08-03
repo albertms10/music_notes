@@ -1,3 +1,4 @@
+/// A string extension.
 extension StringExtension on String {
   /// Whether this [String] is upper-cased.
   ///

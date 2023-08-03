@@ -1,12 +1,15 @@
 part of '../../music_notes.dart';
 
+/// A key signature.
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
+  /// The set of [Note] accidentals that define this [KeySignature].
   final List<Note> notes;
 
   /// Creates a new [KeySignature] from [notes].
   const KeySignature(this.notes);
 
+  /// An empty [KeySignature].
   static const empty = KeySignature([]);
 
   /// Creates a new [KeySignature] from fifths [distance].

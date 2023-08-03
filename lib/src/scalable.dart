@@ -1,5 +1,6 @@
 part of '../music_notes.dart';
 
+/// A interface for items that can form scales.
 abstract interface class Scalable<T> implements Transposable<T> {
   @override
   T transposeBy(Interval interval);

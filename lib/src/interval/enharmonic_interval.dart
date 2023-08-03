@@ -2,22 +2,62 @@
 
 part of '../../music_notes.dart';
 
+/// An enharmonic interval.
 @immutable
 final class EnharmonicInterval extends Enharmonic<Interval> {
+  /// Creates an [EnharmonicInterval] from [semitones].
   const EnharmonicInterval(super.semitones);
 
+  /// A distance of 0 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.P1].
   static const P1 = EnharmonicInterval(0);
+
+  /// A distance of 1 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.m2].
   static const m2 = EnharmonicInterval(1);
+
+  /// A distance of 2 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.M2].
   static const M2 = EnharmonicInterval(2);
+
+  /// A distance of 3 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.m3].
   static const m3 = EnharmonicInterval(3);
+
+  /// A distance of 4 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.M3].
   static const M3 = EnharmonicInterval(4);
+
+  /// A distance of 5 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.P4].
   static const P4 = EnharmonicInterval(5);
+
+  /// A distance of 6 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.A4] or [Interval.d5].
   static const tritone = EnharmonicInterval(6);
+
+  /// A distance of 7 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.P5].
   static const P5 = EnharmonicInterval(7);
+
+  /// A distance of 8 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.m6].
   static const m6 = EnharmonicInterval(8);
+
+  /// A distance of 9 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.M6].
   static const M6 = EnharmonicInterval(9);
+
+  /// A distance of 10 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.m7].
   static const m7 = EnharmonicInterval(10);
+
+  /// A distance of 11 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.M7].
   static const M7 = EnharmonicInterval(11);
+
+  /// A distance of 12 semitones [EnharmonicInterval], which corresponds to
+  /// [Interval.P8].
   static const P8 = EnharmonicInterval(12);
 
   @override

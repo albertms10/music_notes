@@ -1,21 +1,38 @@
 part of '../../music_notes.dart';
 
+/// A harmonic function.
 @immutable
 class HarmonicFunction {
+  /// The scale degrees that define this [HarmonicFunction].
   final List<ScaleDegree> scaleDegrees;
 
   /// Creates a new [HarmonicFunction] from [scaleDegrees].
   const HarmonicFunction(this.scaleDegrees);
 
-  static const tonic = HarmonicFunction([ScaleDegree.i]);
+  /// A I (tonic) degree [HarmonicFunction].
+  static const i = HarmonicFunction([ScaleDegree.i]);
+
+  /// A II degree [HarmonicFunction].
   static const ii = HarmonicFunction([ScaleDegree.ii]);
+
+  /// A neapolitan sixth [HarmonicFunction].
   static const neapolitanSixth =
       HarmonicFunction([ScaleDegree.neapolitanSixth]);
+
+  /// A III degree [HarmonicFunction].
   static const iii = HarmonicFunction([ScaleDegree.iii]);
+
+  /// A IV degree [HarmonicFunction].
   static const iv = HarmonicFunction([ScaleDegree.iv]);
+
+  /// A dominant V degree [HarmonicFunction].
   static const dominantV =
       HarmonicFunction([ScaleDegree(5, quality: ImperfectQuality.major)]);
+
+  /// A VI degree [HarmonicFunction].
   static const vi = HarmonicFunction([ScaleDegree.vi]);
+
+  /// A VII degree [HarmonicFunction].
   static const vii = HarmonicFunction([ScaleDegree.vii]);
 
   @override

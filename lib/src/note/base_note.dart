@@ -1,16 +1,32 @@
 part of '../../music_notes.dart';
 
+/// The base note names of the diatonic scale.
 enum BaseNote {
+  /// Note C.
   c(0),
+
+  /// Note D.
   d(2),
+
+  /// Note E.
   e(4),
+
+  /// Note F.
   f(5),
+
+  /// Note G.
   g(7),
+
+  /// Note A.
   a(9),
+
+  /// Note B.
   b(11);
 
+  /// The number of semitones that identify this [BaseNote].
   final int semitones;
 
+  /// Creates a new [BaseNote] from [semitones].
   const BaseNote(this.semitones);
 
   /// Returns a [BaseNote] enum item that matches with [semitones]
