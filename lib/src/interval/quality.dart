@@ -26,7 +26,7 @@ sealed class Quality implements Comparable<Quality> {
   }
 
   /// The textual abbreviation of this [Quality].
-  String? get abbreviation;
+  String get abbreviation;
 
   /// Returns the inverted version of this [Quality].
   Quality get inverted;
@@ -103,15 +103,10 @@ class PerfectQuality extends Quality {
   }
 
   @override
-  String? get abbreviation => switch (semitones) {
-        -3 => 'ddd',
-        -2 => 'dd',
-        -1 => 'd',
+  String get abbreviation => switch (semitones) {
+        < 0 => 'd' * semitones.abs(),
         0 => 'P',
-        1 => 'A',
-        2 => 'AA',
-        3 => 'AAA',
-        _ => null,
+        _ => 'A' * semitones,
       };
 
   /// Returns the inverted version of this [PerfectQuality].
@@ -188,16 +183,11 @@ class ImperfectQuality extends Quality {
   }
 
   @override
-  String? get abbreviation => switch (semitones) {
-        -3 => 'ddd',
-        -2 => 'dd',
-        -1 => 'd',
+  String get abbreviation => switch (semitones) {
+        < 0 => 'd' * semitones.abs(),
         0 => 'm',
         1 => 'M',
-        2 => 'A',
-        3 => 'AA',
-        4 => 'AAA',
-        _ => null,
+        _ => 'A' * (semitones - 1),
       };
 
   /// Returns the inverted version of this [ImperfectQuality].

@@ -614,11 +614,11 @@ void main() {
 
         expect(
           const Interval.perfect(5, PerfectQuality(-4)).toString(),
-          '[-4]5',
+          'dddd5',
         );
         expect(
           const Interval.imperfect(10, ImperfectQuality(6)).toString(),
-          '[+6]10 ([+6]3)',
+          'AAAAA10 (AAAAA3)',
         );
       });
     });
