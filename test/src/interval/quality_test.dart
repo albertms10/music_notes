@@ -53,7 +53,24 @@ void main() {
     group('.parse()', () {
       test('should throw a FormatException when source is invalid', () {
         expect(() => PerfectQuality.parse('x'), throwsFormatException);
+        expect(() => PerfectQuality.parse('a'), throwsFormatException);
+        expect(() => PerfectQuality.parse('Abc'), throwsFormatException);
+        expect(() => PerfectQuality.parse('abc'), throwsFormatException);
+        expect(() => PerfectQuality.parse('p'), throwsFormatException);
+        expect(() => PerfectQuality.parse('PP'), throwsFormatException);
+        expect(() => PerfectQuality.parse('D'), throwsFormatException);
+        expect(() => PerfectQuality.parse('Def'), throwsFormatException);
+        expect(() => PerfectQuality.parse('def'), throwsFormatException);
+
         expect(() => ImperfectQuality.parse('x'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('a'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('Abc'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('abc'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('mm'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('MM'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('D'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('Def'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('def'), throwsFormatException);
       });
 
       test(

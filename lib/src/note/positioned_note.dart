@@ -25,8 +25,8 @@ final class PositionedNote
     _subPrimeAlt,
   ];
 
-  static final _scientificNotationRegExp = RegExp(r'(.+?)([-]?\d+)');
-  static final _helmholtzNotationRegExp =
+  static final RegExp _scientificNotationRegExp = RegExp(r'(.+?)([-]?\d+)');
+  static final RegExp _helmholtzNotationRegExp =
       RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
           '(${_primeSymbols.map((symbol) => '$symbol+').join('|')})?\$');
 

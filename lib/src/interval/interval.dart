@@ -148,6 +148,8 @@ final class Interval implements Comparable<Interval> {
     8: 12, // P
   };
 
+  static final RegExp _intervalRegExp = RegExp(r'(\w+?)(\d+)');
+
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
       : assert(size != 0, 'Size must be non-zero'),
@@ -223,7 +225,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(String source) {
-    final match = RegExp(r'(\w+?)(\d+)').firstMatch(source);
+    final match = _intervalRegExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
     final size = int.parse(match[2]!);
