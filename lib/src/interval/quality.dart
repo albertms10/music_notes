@@ -102,7 +102,9 @@ class PerfectQuality extends Quality {
       'd' => PerfectQuality(-source.length),
       'P' => PerfectQuality.perfect,
       'A' => PerfectQuality(source.length),
+      // coverage:ignore-start => Dead code; should be of type Never
       _ => throw FormatException('Invalid PerfectQuality', source),
+      // coverage:ignore-end
     };
   }
 
@@ -186,7 +188,9 @@ class ImperfectQuality extends Quality {
       'm' => ImperfectQuality.minor,
       'M' => ImperfectQuality.major,
       'A' => ImperfectQuality(source.length + 1),
+      // coverage:ignore-start => Dead code; should be of type Never
       _ => throw FormatException('Invalid ImperfectQuality', source),
+      // coverage:ignore-end
     };
   }
 
