@@ -91,23 +91,14 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   Tonality get minor => Tonality(this, TonalMode.minor);
 
-  /// Returns the [ChordPattern.augmentedTriad] on this [Note].
+  /// Returns the [ChordPattern.diminishedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.augmentedTriad == Chord([Note.d.flat, Note.f, Note.a])
-  /// Note.g.augmentedTriad == Chord([Note.g, Note.b, Note.d.sharp])
+  /// Note.a.diminishedTriad == Chord([Note.a, Note.c, Note.e.flat])
+  /// Note.b.diminishedTriad == Chord([Note.b, Note.d, Note.f])
   /// ```
-  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
-
-  /// Returns the [ChordPattern.majorTriad] on this [Note].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.d.majorTriad == Chord([Note.d, Note.f.sharp, Note.a])
-  /// Note.a.flat.majorTriad == Chord([Note.a.flat, Note.c, Note.e.flat])
-  /// ```
-  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
   /// Returns the [ChordPattern.minorTriad] on this [Note].
   ///
@@ -118,14 +109,23 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// Returns the [ChordPattern.diminishedTriad] on this [Note].
+  /// Returns the [ChordPattern.majorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.diminishedTriad == Chord([Note.a, Note.c, Note.e.flat])
-  /// Note.b.diminishedTriad == Chord([Note.b, Note.d, Note.f])
+  /// Note.d.majorTriad == Chord([Note.d, Note.f.sharp, Note.a])
+  /// Note.a.flat.majorTriad == Chord([Note.a.flat, Note.c, Note.e.flat])
   /// ```
-  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+
+  /// Returns the [ChordPattern.augmentedTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.augmentedTriad == Chord([Note.d.flat, Note.f, Note.a])
+  /// Note.g.augmentedTriad == Chord([Note.g, Note.b, Note.d.sharp])
+  /// ```
+  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
   /// Returns this [Note] respelled by [baseNote] while keeping the same
   /// number of [semitones].

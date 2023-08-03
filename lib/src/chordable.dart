@@ -1,17 +1,18 @@
 part of '../music_notes.dart';
 
+/// A mixin for items that can form chords.
 mixin Chordable<T> {
-  /// Returns a new [T] with an [ImperfectQuality.augmented] root triad.
-  T get augmented;
-
-  /// Returns a new [T] with an [ImperfectQuality.major] root triad.
-  T get major;
+  /// Returns a new [T] with an [ImperfectQuality.diminished] root triad.
+  T get diminished;
 
   /// Returns a new [T] with an [ImperfectQuality.minor] root triad.
   T get minor;
 
-  /// Returns a new [T] with an [ImperfectQuality.diminished] root triad.
-  T get diminished;
+  /// Returns a new [T] with an [ImperfectQuality.major] root triad.
+  T get major;
+
+  /// Returns a new [T] with an [ImperfectQuality.augmented] root triad.
+  T get augmented;
 
   /// Returns a new [T] with a suspended [Interval.M2].
   T sus2() => add(Interval.M2, replaceSizes: const [3, 4]);
