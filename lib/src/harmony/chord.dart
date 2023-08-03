@@ -37,26 +37,15 @@ class Chord<T extends Scalable<T>>
   /// ```
   List<T> get modifiers => items.skip(3).toList();
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.augmented] root
-  /// triad.
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.diminished] root triad.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.majorTriad.add7().augmented
-  ///   == Chord([Note.c, Note.e, Note.g.sharp, Note.b.flat])
+  /// Note.c.majorTriad.add7().diminished
+  ///   == Chord([Note.c, Note.e.flat, Note.g.flat, Note.b.flat])
   /// ```
   @override
-  Chord<T> get augmented => pattern.augmented.on(root);
-
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.major] root triad.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.minorTriad.add7().major
-  ///   == Chord([Note.c, Note.e, Note.g, Note.b.flat])
-  /// ```
-  @override
-  Chord<T> get major => pattern.major.on(root);
+  Chord<T> get diminished => pattern.diminished.on(root);
 
   /// Returns a new [Chord<T>] with an [ImperfectQuality.minor] root triad.
   ///
@@ -68,15 +57,26 @@ class Chord<T extends Scalable<T>>
   @override
   Chord<T> get minor => pattern.minor.on(root);
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.diminished] root triad.
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.major] root triad.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.majorTriad.add7().diminished
-  ///   == Chord([Note.c, Note.e.flat, Note.g.flat, Note.b.flat])
+  /// Note.c.minorTriad.add7().major
+  ///   == Chord([Note.c, Note.e, Note.g, Note.b.flat])
   /// ```
   @override
-  Chord<T> get diminished => pattern.diminished.on(root);
+  Chord<T> get major => pattern.major.on(root);
+
+  /// Returns a new [Chord<T>] with an [ImperfectQuality.augmented] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.add7().augmented
+  ///   == Chord([Note.c, Note.e, Note.g.sharp, Note.b.flat])
+  /// ```
+  @override
+  Chord<T> get augmented => pattern.augmented.on(root);
 
   /// Returns a new [Chord<T>] adding [interval].
   @override

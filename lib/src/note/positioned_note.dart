@@ -106,46 +106,26 @@ final class PositionedNote
   /// ```
   int difference(PositionedNote other) => other.semitones - semitones;
 
-  /// Returns the [ChordPattern.augmentedTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.diminishedTriad] on this [PositionedNote].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.inOctave(4).augmentedTriad
+  /// Note.a.inOctave(3).diminishedTriad
   ///   == Chord([
-  ///        Note.d.flat.inOctave(4),
-  ///        Note.f.inOctave(4),
-  ///        Note.a.inOctave(4),
-  ///      ])
-  ///
-  /// Note.g.inOctave(5).augmentedTriad
-  ///   == Chord([
-  ///        Note.g.inOctave(5),
-  ///        Note.b.inOctave(5),
-  ///        Note.d.sharp.inOctave(6),
-  ///      ])
-  /// ```
-  Chord<PositionedNote> get augmentedTriad =>
-      ChordPattern.augmentedTriad.on(this);
-
-  /// Returns the [ChordPattern.majorTriad] on this [PositionedNote].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.d.inOctave(3).majorTriad
-  ///   == Chord([
-  ///        Note.d.inOctave(3),
-  ///        Note.f.sharp.inOctave(3),
   ///        Note.a.inOctave(3),
+  ///        Note.c.inOctave(4),
+  ///        Note.e.flat.inOctave(4),
   ///      ])
   ///
-  /// Note.a.flat.inOctave(4).majorTriad
+  /// Note.b.inOctave(3).diminishedTriad
   ///   == Chord([
-  ///        Note.a.flat.inOctave(4),
-  ///        Note.c.inOctave(5),
-  ///        Note.e.flat.inOctave(5),
+  ///        Note.b.inOctave(3),
+  ///        Note.d.inOctave(4),
+  ///        Note.f.inOctave(4),
   ///      ])
   /// ```
-  Chord<PositionedNote> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord<PositionedNote> get diminishedTriad =>
+      ChordPattern.diminishedTriad.on(this);
 
   /// Returns the [ChordPattern.minorTriad] on this [PositionedNote].
   ///
@@ -167,26 +147,46 @@ final class PositionedNote
   /// ```
   Chord<PositionedNote> get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// Returns the [ChordPattern.diminishedTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.majorTriad] on this [PositionedNote].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(3).diminishedTriad
+  /// Note.d.inOctave(3).majorTriad
   ///   == Chord([
+  ///        Note.d.inOctave(3),
+  ///        Note.f.sharp.inOctave(3),
   ///        Note.a.inOctave(3),
-  ///        Note.c.inOctave(4),
-  ///        Note.e.flat.inOctave(4),
   ///      ])
   ///
-  /// Note.b.inOctave(3).diminishedTriad
+  /// Note.a.flat.inOctave(4).majorTriad
   ///   == Chord([
-  ///        Note.b.inOctave(3),
-  ///        Note.d.inOctave(4),
-  ///        Note.f.inOctave(4),
+  ///        Note.a.flat.inOctave(4),
+  ///        Note.c.inOctave(5),
+  ///        Note.e.flat.inOctave(5),
   ///      ])
   /// ```
-  Chord<PositionedNote> get diminishedTriad =>
-      ChordPattern.diminishedTriad.on(this);
+  Chord<PositionedNote> get majorTriad => ChordPattern.majorTriad.on(this);
+
+  /// Returns the [ChordPattern.augmentedTriad] on this [PositionedNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.inOctave(4).augmentedTriad
+  ///   == Chord([
+  ///        Note.d.flat.inOctave(4),
+  ///        Note.f.inOctave(4),
+  ///        Note.a.inOctave(4),
+  ///      ])
+  ///
+  /// Note.g.inOctave(5).augmentedTriad
+  ///   == Chord([
+  ///        Note.g.inOctave(5),
+  ///        Note.b.inOctave(5),
+  ///        Note.d.sharp.inOctave(6),
+  ///      ])
+  /// ```
+  Chord<PositionedNote> get augmentedTriad =>
+      ChordPattern.augmentedTriad.on(this);
 
   /// Returns a transposed [PositionedNote] by [interval]
   /// from this [PositionedNote].

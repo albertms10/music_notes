@@ -8,10 +8,17 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Creates a new [ChordPattern] from [intervals].
   const ChordPattern(this.intervals);
 
-  static const augmentedTriad = ChordPattern([Interval.M3, Interval.A5]);
-  static const majorTriad = ChordPattern([Interval.M3, Interval.P5]);
-  static const minorTriad = ChordPattern([Interval.m3, Interval.P5]);
+  /// A diminished triad [ChordPattern].
   static const diminishedTriad = ChordPattern([Interval.m3, Interval.d5]);
+
+  /// A minor triad [ChordPattern].
+  static const minorTriad = ChordPattern([Interval.m3, Interval.P5]);
+
+  /// A major triad [ChordPattern].
+  static const majorTriad = ChordPattern([Interval.M3, Interval.P5]);
+
+  /// An augmented triad [ChordPattern].
+  static const augmentedTriad = ChordPattern([Interval.M3, Interval.A5]);
 
   /// Creates a new [ChordPattern] from [intervalSteps].
   ///
@@ -41,10 +48,10 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.fromQuality(ImperfectQuality quality) =>
       switch (quality) {
-        ImperfectQuality.augmented => augmentedTriad,
-        ImperfectQuality.major => majorTriad,
-        ImperfectQuality.minor => minorTriad,
         ImperfectQuality.diminished => diminishedTriad,
+        ImperfectQuality.minor => minorTriad,
+        ImperfectQuality.major => majorTriad,
+        ImperfectQuality.augmented => augmentedTriad,
         _ => majorTriad,
       };
 
@@ -71,17 +78,17 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   ChordPattern get rootTriad => ChordPattern(intervals.sublist(0, 2));
 
-  /// Whether this [ChordPattern] is [ImperfectQuality.augmented].
-  bool get isAugmented => rootTriad == augmentedTriad;
-
-  /// Whether this [ChordPattern] is [ImperfectQuality.major].
-  bool get isMajor => rootTriad == majorTriad;
+  /// Whether this [ChordPattern] is [ImperfectQuality.diminished].
+  bool get isDiminished => rootTriad == diminishedTriad;
 
   /// Whether this [ChordPattern] is [ImperfectQuality.minor].
   bool get isMinor => rootTriad == minorTriad;
 
-  /// Whether this [ChordPattern] is [ImperfectQuality.diminished].
-  bool get isDiminished => rootTriad == diminishedTriad;
+  /// Whether this [ChordPattern] is [ImperfectQuality.major].
+  bool get isMajor => rootTriad == majorTriad;
+
+  /// Whether this [ChordPattern] is [ImperfectQuality.augmented].
+  bool get isAugmented => rootTriad == augmentedTriad;
 
   /// Returns the list of modifier [Interval]s from the root note.
   ///
@@ -92,29 +99,17 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   List<Interval> get modifiers => intervals.skip(2).toList();
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.augmented] root
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.diminished] root
   /// triad.
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.add7().augmented
-  ///   == const ChordPattern([Interval.M3, Interval.A5, Interval.m7])
+  /// ChordPattern.majorTriad.add7().diminished
+  ///   == const ChordPattern([Interval.m3, Interval.d5, Interval.m7])
   /// ```
   @override
-  ChordPattern get augmented =>
-      ChordPattern([...augmentedTriad.intervals, ...modifiers]);
-
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.major] root
-  /// triad.
-  ///
-  /// Example:
-  /// ```dart
-  /// ChordPattern.minorTriad.add7().major
-  ///   == const ChordPattern([Interval.M3, Interval.P5, Interval.m7])
-  /// ```
-  @override
-  ChordPattern get major =>
-      ChordPattern([...majorTriad.intervals, ...modifiers]);
+  ChordPattern get diminished =>
+      ChordPattern([...diminishedTriad.intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] with an [ImperfectQuality.minor] root
   /// triad.
@@ -128,17 +123,29 @@ class ChordPattern with Chordable<ChordPattern> {
   ChordPattern get minor =>
       ChordPattern([...minorTriad.intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.diminished] root
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.major] root
   /// triad.
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.add7().diminished
-  ///   == const ChordPattern([Interval.m3, Interval.d5, Interval.m7])
+  /// ChordPattern.minorTriad.add7().major
+  ///   == const ChordPattern([Interval.M3, Interval.P5, Interval.m7])
   /// ```
   @override
-  ChordPattern get diminished =>
-      ChordPattern([...diminishedTriad.intervals, ...modifiers]);
+  ChordPattern get major =>
+      ChordPattern([...majorTriad.intervals, ...modifiers]);
+
+  /// Returns a new [ChordPattern] with an [ImperfectQuality.augmented] root
+  /// triad.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.add7().augmented
+  ///   == const ChordPattern([Interval.M3, Interval.A5, Interval.m7])
+  /// ```
+  @override
+  ChordPattern get augmented =>
+      ChordPattern([...augmentedTriad.intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] adding [interval].
   @override
@@ -159,10 +166,10 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
   /// ```
   String get abbreviation => switch (this) {
-        final chord when chord.isAugmented => 'aug.',
-        final chord when chord.isMajor => 'maj.',
-        final chord when chord.isMinor => 'min.',
         final chord when chord.isDiminished => 'dim.',
+        final chord when chord.isMinor => 'min.',
+        final chord when chord.isMajor => 'maj.',
+        final chord when chord.isAugmented => 'aug.',
         _ => '?',
       };
 
