@@ -97,12 +97,11 @@ class PerfectQuality extends Quality {
     if (!_perfectQualityRegExp.hasMatch(source)) {
       throw FormatException('Invalid PerfectQuality', source);
     }
-    final qualityParts = source.split('');
 
-    return switch (qualityParts.first) {
-      'd' => PerfectQuality(-qualityParts.length),
+    return switch (source[0]) {
+      'd' => PerfectQuality(-source.length),
       'P' => PerfectQuality.perfect,
-      'A' => PerfectQuality(qualityParts.length),
+      'A' => PerfectQuality(source.length),
       _ => throw FormatException('Invalid PerfectQuality', source),
     };
   }
@@ -181,13 +180,12 @@ class ImperfectQuality extends Quality {
     if (!_imperfectQualityRegExp.hasMatch(source)) {
       throw FormatException('Invalid PerfectQuality', source);
     }
-    final qualityParts = source.split('');
 
-    return switch (qualityParts.first) {
-      'd' => ImperfectQuality(-qualityParts.length),
+    return switch (source[0]) {
+      'd' => ImperfectQuality(-source.length),
       'm' => ImperfectQuality.minor,
       'M' => ImperfectQuality.major,
-      'A' => ImperfectQuality(qualityParts.length + 1),
+      'A' => ImperfectQuality(source.length + 1),
       _ => throw FormatException('Invalid ImperfectQuality', source),
     };
   }
