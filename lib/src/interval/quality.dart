@@ -80,6 +80,8 @@ class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const PerfectQuality triplyAugmented = PerfectQuality(3);
 
+  static final RegExp _perfectQualityRegExp = RegExp(r'^(d+|P|A+)$');
+
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [PerfectQuality], a
@@ -92,13 +94,14 @@ class PerfectQuality extends Quality {
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(String source) {
-    final qualityParts = source.split('');
+    if (!_perfectQualityRegExp.hasMatch(source)) {
+      throw FormatException('Invalid PerfectQuality', source);
+    }
 
-    return switch (qualityParts.first) {
-      'A' => PerfectQuality(qualityParts.length),
+    return switch (source[0]) {
+      'd' => PerfectQuality(-source.length),
       'P' => PerfectQuality.perfect,
-      'd' => PerfectQuality(-qualityParts.length),
-      _ => throw FormatException('Invalid perfect Interval', source),
+      _ /* 'A' */ => PerfectQuality(source.length),
     };
   }
 
@@ -159,6 +162,8 @@ class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const ImperfectQuality triplyAugmented = ImperfectQuality(4);
 
+  static final RegExp _imperfectQualityRegExp = RegExp(r'^(d+|m|M|A+)$');
+
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [ImperfectQuality], a
@@ -171,14 +176,15 @@ class ImperfectQuality extends Quality {
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(String source) {
-    final qualityParts = source.split('');
+    if (!_imperfectQualityRegExp.hasMatch(source)) {
+      throw FormatException('Invalid PerfectQuality', source);
+    }
 
-    return switch (qualityParts.first) {
-      'd' => ImperfectQuality(-qualityParts.length),
+    return switch (source[0]) {
+      'd' => ImperfectQuality(-source.length),
       'm' => ImperfectQuality.minor,
       'M' => ImperfectQuality.major,
-      'A' => ImperfectQuality(qualityParts.length + 1),
-      _ => throw FormatException('Invalid imperfect Interval', source),
+      _ /* 'A' */ => ImperfectQuality(source.length + 1),
     };
   }
 
