@@ -8,7 +8,18 @@ void main() {
     group('.parse()', () {
       test('should throw a FormatException when source is invalid', () {
         expect(() => PositionedNote.parse('x'), throwsFormatException);
-        expect(() => PositionedNote.parse('invalid'), throwsFormatException);
+        expect(() => PositionedNote.parse("A,'"), throwsFormatException);
+        expect(() => PositionedNote.parse('bb,'), throwsFormatException);
+        expect(() => PositionedNote.parse("F#'"), throwsFormatException);
+        expect(() => PositionedNote.parse("g''h"), throwsFormatException);
+        expect(() => PositionedNote.parse('C,d'), throwsFormatException);
+
+        expect(() => PositionedNote.parse('D5,'), throwsFormatException);
+        expect(() => PositionedNote.parse("d7'"), throwsFormatException);
+        expect(() => PositionedNote.parse("e'4"), throwsFormatException);
+        expect(() => PositionedNote.parse("'E3"), throwsFormatException);
+        expect(() => PositionedNote.parse('2a'), throwsFormatException);
+        expect(() => PositionedNote.parse('3B,'), throwsFormatException);
       });
 
       test('should parse source as a PositionedNote and return its value', () {

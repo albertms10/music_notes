@@ -25,7 +25,7 @@ final class PositionedNote
     _subPrimeAlt,
   ];
 
-  static final RegExp _scientificNotationRegExp = RegExp(r'(.+?)([-]?\d+)');
+  static final RegExp _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final RegExp _helmholtzNotationRegExp =
       RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
           '(${_primeSymbols.map((symbol) => '$symbol+').join('|')})?\$');
@@ -62,11 +62,13 @@ final class PositionedNote
         octave: notePart[0].isUpperCase
             ? switch (primes?.first) {
                 ',' || _subPrime => middleOctave - primes!.length - 1,
-                _ => middleOctave - 1,
+                '' || null => middleOctave - 1,
+                _ => throw FormatException('Invalid PositionedNote', source),
               }
             : switch (primes?.first) {
                 "'" || _superPrime => middleOctave + primes!.length,
-                _ => middleOctave,
+                '' || null => middleOctave,
+                _ => throw FormatException('Invalid PositionedNote', source),
               },
       );
     }
