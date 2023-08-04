@@ -56,21 +56,19 @@ final class PositionedNote
       const middleOctave = 3;
       final notePart = helmholtzNotationMatch[1]!;
       final primes = helmholtzNotationMatch[2]?.split('');
+      final octave = notePart[0].isUpperCase
+          ? switch (primes?.first) {
+              '' || null => middleOctave - 1,
+              ',' || _subPrime => middleOctave - primes!.length - 1,
+              _ => throw FormatException('Invalid PositionedNote', source),
+            }
+          : switch (primes?.first) {
+              '' || null => middleOctave,
+              "'" || _superPrime => middleOctave + primes!.length,
+              _ => throw FormatException('Invalid PositionedNote', source),
+            };
 
-      return PositionedNote(
-        Note.parse(notePart),
-        octave: notePart[0].isUpperCase
-            ? switch (primes?.first) {
-                ',' || _subPrime => middleOctave - primes!.length - 1,
-                '' || null => middleOctave - 1,
-                _ => throw FormatException('Invalid PositionedNote', source),
-              }
-            : switch (primes?.first) {
-                "'" || _superPrime => middleOctave + primes!.length,
-                '' || null => middleOctave,
-                _ => throw FormatException('Invalid PositionedNote', source),
-              },
-      );
+      return PositionedNote(Note.parse(notePart), octave: octave);
     }
 
     throw FormatException('Invalid PositionedNote', source);
