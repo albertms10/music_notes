@@ -7,11 +7,7 @@ part of '../../music_notes.dart';
 final class PitchClass extends Enharmonic<Note>
     implements Scalable<PitchClass> {
   /// Creates a new [PitchClass] from [semitones].
-  const PitchClass(super.semitones)
-      : assert(
-          semitones >= 0 && semitones < chromaticDivisions,
-          'Semitones must be in chromatic divisions range',
-        );
+  const PitchClass(int semitones) : super(semitones % chromaticDivisions);
 
   /// Pitch class 0, which corresponds to [Note.c].
   static const c = PitchClass(0);
@@ -149,7 +145,7 @@ final class PitchClass extends Enharmonic<Note>
   /// ```
   @override
   PitchClass transposeBy(Interval interval) =>
-      PitchClass((semitones + interval.semitones).chromaticMod);
+      PitchClass(semitones + interval.semitones);
 
   /// Returns the [Interval] between this [PitchClass] and [other].
   ///
@@ -206,6 +202,5 @@ final class PitchClass extends Enharmonic<Note>
   /// ```
   ///
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
-  PitchClass operator *(int factor) =>
-      PitchClass((semitones * factor).chromaticMod);
+  PitchClass operator *(int factor) => PitchClass(semitones * factor);
 }
