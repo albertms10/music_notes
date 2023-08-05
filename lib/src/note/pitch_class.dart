@@ -135,8 +135,7 @@ final class PitchClass extends Enharmonic<Note>
     }
   }
 
-  /// Returns a transposed [PitchClass] by [interval]
-  /// from this [PitchClass].
+  /// Returns a transposed [PitchClass] by [interval] from this [PitchClass].
   ///
   /// Example:
   /// ```dart
@@ -144,10 +143,12 @@ final class PitchClass extends Enharmonic<Note>
   /// PitchClass.a.transposeBy(-Interval.M2) == PitchClass.g
   /// ```
   @override
+  // TODO(albertms10): use [IntervalClass]. See #248.
   PitchClass transposeBy(Interval interval) =>
       PitchClass(semitones + interval.semitones);
 
-  /// Returns the [Interval] between this [PitchClass] and [other].
+  /// Returns the [IntervalClass] expressed as [Interval] between this
+  /// [PitchClass] and [other].
   ///
   /// Example:
   /// ```dart
@@ -155,6 +156,7 @@ final class PitchClass extends Enharmonic<Note>
   /// PitchClass.gSharp.interval(PitchClass.d) == Interval.A4
   /// ```
   @override
+  // TODO(albertms10): return [IntervalClass]. See #248.
   Interval interval(PitchClass other) {
     final difference = other.semitones - semitones;
 
@@ -180,7 +182,7 @@ final class PitchClass extends Enharmonic<Note>
         final semitones => '$semitones',
       };
 
-  /// Performs a pitch-class multiplication modulo 12 of this [PitchClass].
+  /// Performs a multiplication modulo 12 of this [PitchClass].
   ///
   /// Example:
   /// ```dart

@@ -195,7 +195,7 @@ final class Interval implements Comparable<Interval> {
     int semitones, [
     Quality? preferredQuality,
   ]) {
-    final spellings = EnharmonicInterval(semitones).spellings();
+    final spellings = IntervalClass(semitones).spellings();
 
     if (preferredQuality != null) {
       final interval = spellings.firstWhereOrNull(

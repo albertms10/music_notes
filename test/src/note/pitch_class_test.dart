@@ -7,10 +7,10 @@ void main() {
   group('PitchClass', () {
     group('constructor', () {
       test('should create a new PitchClass from semitones', () {
-        // ignore: prefer_const_constructors
-        expect(PitchClass(-2), PitchClass.aSharp);
-        // ignore: prefer_const_constructors
-        expect(PitchClass(13), PitchClass.cSharp);
+        // ignore: use_named_constants
+        expect(const PitchClass(-2), PitchClass.aSharp);
+        // ignore: use_named_constants
+        expect(const PitchClass(13), PitchClass.cSharp);
       });
     });
 
@@ -338,14 +338,14 @@ void main() {
         expect(PitchClass.gSharp.interval(PitchClass.d), Interval.A4);
         expect(PitchClass.c.interval(PitchClass.fSharp), Interval.A4);
 
-        expect(PitchClass.c.interval(PitchClass.g), Interval.P5);
-        expect(PitchClass.c.interval(PitchClass.gSharp), Interval.m6);
+        expect(PitchClass.c.interval(PitchClass.g), Interval.P4);
+        expect(PitchClass.c.interval(PitchClass.gSharp), Interval.M3);
 
-        expect(PitchClass.c.interval(PitchClass.a), Interval.M6);
-        expect(PitchClass.c.interval(PitchClass.aSharp), Interval.m7);
+        expect(PitchClass.c.interval(PitchClass.a), Interval.m3);
+        expect(PitchClass.c.interval(PitchClass.aSharp), Interval.M2);
 
-        expect(PitchClass.c.interval(PitchClass.b), Interval.M7);
-        expect(PitchClass.b.interval(PitchClass.aSharp), Interval.M7);
+        expect(PitchClass.c.interval(PitchClass.b), Interval.m2);
+        expect(PitchClass.b.interval(PitchClass.aSharp), Interval.m2);
       });
     });
 
