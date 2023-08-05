@@ -106,7 +106,7 @@ final class IntervalClass extends Enharmonic<Interval> {
   /// Example:
   /// ```dart
   /// IntervalClass.P4 * -1 == IntervalClass.P4
-  /// IntervalClass.M6 * 0 == IntervalClass.P1
+  /// IntervalClass.M2 * 0 == IntervalClass.P1
   /// IntervalClass.m3 * 2 == IntervalClass.tritone
   /// ```
   IntervalClass operator *(int factor) =>
