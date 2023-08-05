@@ -132,7 +132,7 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort EnharmonicNote items in a collection', () {
+      test('should correctly sort Accidental items in a collection', () {
         final orderedSet = SplayTreeSet<Accidental>.of(const [
           Accidental.doubleSharp,
           Accidental.natural,

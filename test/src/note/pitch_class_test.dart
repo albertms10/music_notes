@@ -1,0 +1,450 @@
+import 'dart:collection' show SplayTreeSet;
+
+import 'package:music_notes/music_notes.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('PitchClass', () {
+    group('constructor', () {
+      test(
+        'should throw an assertion error when arguments are incorrect',
+        () {
+          expect(() => PitchClass(-2), throwsA(isA<AssertionError>()));
+          expect(() => PitchClass(13), throwsA(isA<AssertionError>()));
+        },
+      );
+    });
+
+    group('.spellings()', () {
+      test(
+        'should return the correct Note spellings for this PitchClass',
+        () {
+          expect(PitchClass.c.spellings(), {Note.c});
+          expect(PitchClass.c.spellings(distance: 1), {
+            Note.b.sharp,
+            Note.c,
+            Note.d.flat.flat,
+          });
+
+          expect(
+            PitchClass.cSharp.spellings(),
+            {Note.c.sharp, Note.d.flat},
+          );
+          expect(
+            PitchClass.cSharp.spellings(distance: 1),
+            {
+              Note.b.sharp.sharp,
+              Note.c.sharp,
+              Note.d.flat,
+              Note.e.flat.flat.flat,
+            },
+          );
+
+          expect(PitchClass.d.spellings(), {Note.d});
+          expect(PitchClass.d.spellings(distance: 1), {
+            Note.c.sharp.sharp,
+            Note.d,
+            Note.e.flat.flat,
+          });
+
+          expect(
+            PitchClass.dSharp.spellings(),
+            {Note.d.sharp, Note.e.flat},
+          );
+          expect(
+            PitchClass.dSharp.spellings(distance: 1),
+            {
+              Note.c.sharp.sharp.sharp,
+              Note.d.sharp,
+              Note.e.flat,
+              Note.f.flat.flat,
+            },
+          );
+
+          expect(PitchClass.e.spellings(), {Note.e});
+          expect(PitchClass.e.spellings(distance: 1), {
+            Note.d.sharp.sharp,
+            Note.e,
+            Note.f.flat,
+          });
+
+          expect(PitchClass.f.spellings(), {Note.f});
+          expect(PitchClass.f.spellings(distance: 1), {
+            Note.e.sharp,
+            Note.f,
+            Note.g.flat.flat,
+          });
+
+          expect(
+            PitchClass.fSharp.spellings(),
+            {Note.f.sharp, Note.g.flat},
+          );
+          expect(
+            PitchClass.fSharp.spellings(distance: 1),
+            {
+              Note.e.sharp.sharp,
+              Note.f.sharp,
+              Note.g.flat,
+              Note.a.flat.flat.flat,
+            },
+          );
+
+          expect(PitchClass.g.spellings(), {Note.g});
+          expect(PitchClass.g.spellings(distance: 1), {
+            Note.f.sharp.sharp,
+            Note.g,
+            Note.a.flat.flat,
+          });
+
+          expect(
+            PitchClass.gSharp.spellings(),
+            {Note.g.sharp, Note.a.flat},
+          );
+          expect(
+            PitchClass.gSharp.spellings(distance: 1),
+            {
+              Note.f.sharp.sharp.sharp,
+              Note.g.sharp,
+              Note.a.flat,
+              Note.b.flat.flat.flat,
+            },
+          );
+
+          expect(PitchClass.a.spellings(), {Note.a});
+          expect(PitchClass.a.spellings(distance: 1), {
+            Note.g.sharp.sharp,
+            Note.a,
+            Note.b.flat.flat,
+          });
+
+          expect(
+            PitchClass.aSharp.spellings(),
+            {Note.a.sharp, Note.b.flat},
+          );
+          expect(
+            PitchClass.aSharp.spellings(distance: 1),
+            {
+              Note.g.sharp.sharp.sharp,
+              Note.a.sharp,
+              Note.b.flat,
+              Note.c.flat.flat,
+            },
+          );
+
+          expect(PitchClass.b.spellings(), {Note.b});
+          expect(PitchClass.b.spellings(distance: 1), {
+            Note.a.sharp.sharp,
+            Note.b,
+            Note.c.flat,
+          });
+        },
+      );
+    });
+
+    group('.resolveSpelling()', () {
+      test(
+        'should return the Note that matches with the accidental',
+        () {
+          expect(PitchClass.c.resolveSpelling(), Note.c);
+          expect(
+            PitchClass.c.resolveSpelling(Accidental.sharp),
+            Note.b.sharp,
+          );
+          expect(
+            PitchClass.c.resolveSpelling(Accidental.doubleFlat),
+            Note.d.flat.flat,
+          );
+
+          expect(PitchClass.cSharp.resolveSpelling(), Note.c.sharp);
+          expect(
+            PitchClass.cSharp.resolveSpelling(Accidental.flat),
+            Note.d.flat,
+          );
+
+          expect(PitchClass.d.resolveSpelling(), Note.d);
+          expect(
+            PitchClass.d.resolveSpelling(Accidental.doubleSharp),
+            Note.c.sharp.sharp,
+          );
+          expect(
+            PitchClass.d.resolveSpelling(Accidental.doubleFlat),
+            Note.e.flat.flat,
+          );
+
+          expect(PitchClass.dSharp.resolveSpelling(), Note.d.sharp);
+          expect(
+            PitchClass.dSharp.resolveSpelling(Accidental.flat),
+            Note.e.flat,
+          );
+
+          expect(PitchClass.e.resolveSpelling(), Note.e);
+          expect(
+            PitchClass.e.resolveSpelling(Accidental.doubleSharp),
+            Note.d.sharp.sharp,
+          );
+          expect(
+            PitchClass.e.resolveSpelling(Accidental.flat),
+            Note.f.flat,
+          );
+
+          expect(PitchClass.f.resolveSpelling(), Note.f);
+          expect(
+            PitchClass.f.resolveSpelling(Accidental.sharp),
+            Note.e.sharp,
+          );
+          expect(
+            PitchClass.f.resolveSpelling(Accidental.doubleFlat),
+            Note.g.flat.flat,
+          );
+
+          expect(PitchClass.fSharp.resolveSpelling(), Note.f.sharp);
+          expect(
+            PitchClass.fSharp.resolveSpelling(Accidental.flat),
+            Note.g.flat,
+          );
+
+          expect(PitchClass.g.resolveSpelling(), Note.g);
+          expect(
+            PitchClass.g.resolveSpelling(Accidental.doubleSharp),
+            Note.f.sharp.sharp,
+          );
+          expect(
+            PitchClass.g.resolveSpelling(Accidental.doubleFlat),
+            Note.a.flat.flat,
+          );
+
+          expect(PitchClass.gSharp.resolveSpelling(), Note.g.sharp);
+          expect(
+            PitchClass.gSharp.resolveSpelling(Accidental.flat),
+            Note.a.flat,
+          );
+
+          expect(PitchClass.a.resolveSpelling(), Note.a);
+          expect(
+            PitchClass.a.resolveSpelling(Accidental.doubleSharp),
+            Note.g.sharp.sharp,
+          );
+          expect(
+            PitchClass.a.resolveSpelling(Accidental.doubleFlat),
+            Note.b.flat.flat,
+          );
+
+          expect(PitchClass.aSharp.resolveSpelling(), Note.a.sharp);
+          expect(
+            PitchClass.aSharp.resolveSpelling(Accidental.flat),
+            Note.b.flat,
+          );
+
+          expect(PitchClass.b.resolveSpelling(), Note.b);
+          expect(
+            PitchClass.b.resolveSpelling(Accidental.doubleSharp),
+            Note.a.sharp.sharp,
+          );
+          expect(
+            PitchClass.b.resolveSpelling(Accidental.flat),
+            Note.c.flat,
+          );
+        },
+      );
+
+      test(
+        'should throw an ArgumentError when withAccidental does not match with '
+        'any Note',
+        () {
+          expect(
+            () => PitchClass.cSharp.resolveSpelling(Accidental.natural),
+            throwsArgumentError,
+          );
+          expect(
+            () => PitchClass.c.resolveSpelling(Accidental.flat),
+            throwsArgumentError,
+          );
+          expect(
+            () => PitchClass.d.resolveSpelling(Accidental.sharp),
+            throwsArgumentError,
+          );
+          expect(
+            () => PitchClass.a.resolveSpelling(Accidental.tripleFlat),
+            throwsArgumentError,
+          );
+        },
+      );
+    });
+
+    group('.resolveClosestSpelling()', () {
+      test(
+        'should return the Note that matches with the preferred accidental',
+        () {
+          expect(PitchClass.c.resolveClosestSpelling(), Note.c);
+          expect(
+            PitchClass.c.resolveClosestSpelling(Accidental.sharp),
+            Note.b.sharp,
+          );
+          expect(
+            PitchClass.c.resolveClosestSpelling(Accidental.doubleFlat),
+            Note.d.flat.flat,
+          );
+
+          expect(PitchClass.cSharp.resolveClosestSpelling(), Note.c.sharp);
+          expect(
+            PitchClass.cSharp.resolveClosestSpelling(Accidental.flat),
+            Note.d.flat,
+          );
+
+          // ... Similar to `.resolveSpelling()`.
+        },
+      );
+
+      test(
+        'should return the closest Note where a similar call to '
+        '.resolveSpelling() would throw',
+        () {
+          expect(
+            PitchClass.cSharp.resolveClosestSpelling(Accidental.natural),
+            Note.c.sharp,
+          );
+          expect(
+            PitchClass.c.resolveClosestSpelling(Accidental.flat),
+            Note.c,
+          );
+          expect(
+            PitchClass.d.resolveClosestSpelling(Accidental.sharp),
+            Note.d,
+          );
+          expect(
+            PitchClass.a.resolveClosestSpelling(Accidental.tripleFlat),
+            Note.a,
+          );
+        },
+      );
+    });
+
+    group('.interval()', () {
+      test('should return the Interval between this Note and other', () {
+        expect(PitchClass.c.interval(PitchClass.c), Interval.P1);
+        expect(PitchClass.c.interval(PitchClass.cSharp), Interval.m2);
+
+        expect(PitchClass.c.interval(PitchClass.d), Interval.M2);
+
+        expect(PitchClass.c.interval(PitchClass.dSharp), Interval.m3);
+        expect(PitchClass.c.interval(PitchClass.e), Interval.M3);
+        expect(PitchClass.g.interval(PitchClass.b), Interval.M3);
+        expect(PitchClass.aSharp.interval(PitchClass.d), Interval.M3);
+
+        expect(PitchClass.c.interval(PitchClass.f), Interval.P4);
+        expect(
+          PitchClass.gSharp.interval(PitchClass.cSharp),
+          Interval.P4,
+        );
+        expect(PitchClass.gSharp.interval(PitchClass.d), Interval.A4);
+        expect(PitchClass.c.interval(PitchClass.fSharp), Interval.A4);
+
+        expect(PitchClass.c.interval(PitchClass.g), Interval.P5);
+        expect(PitchClass.c.interval(PitchClass.gSharp), Interval.m6);
+
+        expect(PitchClass.c.interval(PitchClass.a), Interval.M6);
+        expect(PitchClass.c.interval(PitchClass.aSharp), Interval.m7);
+
+        expect(PitchClass.c.interval(PitchClass.b), Interval.M7);
+        expect(PitchClass.b.interval(PitchClass.aSharp), Interval.M7);
+      });
+    });
+
+    group('.transposeBy()', () {
+      test('should return this PitchClass transposed by Interval', () {
+        expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
+        expect(
+          PitchClass.c.transposeBy(-Interval.d1),
+          PitchClass.cSharp,
+        );
+        expect(PitchClass.c.transposeBy(Interval.P1), PitchClass.c);
+        expect(PitchClass.c.transposeBy(-Interval.P1), PitchClass.c);
+        expect(
+          PitchClass.c.transposeBy(Interval.A1),
+          PitchClass.cSharp,
+        );
+        expect(PitchClass.c.transposeBy(-Interval.A1), PitchClass.b);
+
+        expect(PitchClass.c.transposeBy(Interval.d2), PitchClass.c);
+        expect(PitchClass.c.transposeBy(-Interval.d2), PitchClass.c);
+        expect(
+          PitchClass.c.transposeBy(Interval.m2),
+          PitchClass.cSharp,
+        );
+        expect(PitchClass.c.transposeBy(-Interval.m2), PitchClass.b);
+
+        expect(
+          PitchClass.fSharp.transposeBy(Interval.M3),
+          PitchClass.aSharp,
+        );
+
+        expect(
+          PitchClass.fSharp.transposeBy(-Interval.P4),
+          PitchClass.cSharp,
+        );
+
+        expect(PitchClass.g.transposeBy(Interval.P8), PitchClass.g);
+      });
+    });
+
+    group('operator *', () {
+      test(
+        'should return the pitch-class multiplication modulo 12 of this '
+        'PitchClass',
+        () {
+          expect(PitchClass.cSharp * 7, PitchClass.g);
+          expect(PitchClass.d * 5, PitchClass.aSharp);
+
+          expect(
+            ScalePattern.chromatic
+                .on(PitchClass.c)
+                .degrees
+                .map((note) => note * 7),
+            Interval.P5.circleFrom(PitchClass.c, distance: 12),
+          );
+          expect(
+            ScalePattern.chromatic
+                .on(PitchClass.c)
+                .degrees
+                .map((note) => note * 5),
+            Interval.P5.circleFrom(PitchClass.c, distance: -12),
+          );
+        },
+      );
+    });
+
+    group('.toString()', () {
+      test('should return a string representation of this PitchClass', () {
+        expect(PitchClass.c.toString(), '{C}');
+        expect(PitchClass.g.toString(), '{G}');
+        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+      });
+    });
+
+    group('.hashCode', () {
+      test('should ignore equal PitchClass instances in a Set', () {
+        final collection = {PitchClass.f, PitchClass.aSharp};
+        collection.addAll(collection);
+        expect(
+          collection.toList(),
+          const [PitchClass.f, PitchClass.aSharp],
+        );
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort PitchClass items in a collection', () {
+        final orderedSet = SplayTreeSet<PitchClass>.of(const [
+          PitchClass.fSharp,
+          PitchClass.c,
+          PitchClass.d,
+        ]);
+        expect(orderedSet.toList(), const [
+          PitchClass.c,
+          PitchClass.d,
+          PitchClass.fSharp,
+        ]);
+      });
+    });
+  });
+}
