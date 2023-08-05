@@ -387,6 +387,23 @@ void main() {
       });
     });
 
+    group('.integerNotation', () {
+      test('should return the integer notation for this PitchClass', () {
+        expect(PitchClass.c.integerNotation, '0');
+        expect(PitchClass.cSharp.integerNotation, '1');
+        expect(PitchClass.d.integerNotation, '2');
+        expect(PitchClass.dSharp.integerNotation, '3');
+        expect(PitchClass.e.integerNotation, '4');
+        expect(PitchClass.f.integerNotation, '5');
+        expect(PitchClass.fSharp.integerNotation, '6');
+        expect(PitchClass.g.integerNotation, '7');
+        expect(PitchClass.gSharp.integerNotation, '8');
+        expect(PitchClass.a.integerNotation, '9');
+        expect(PitchClass.aSharp.integerNotation, 't');
+        expect(PitchClass.b.integerNotation, 'e');
+      });
+    });
+
     group('operator *', () {
       test(
         'should return the pitch-class multiplication modulo 12 of this '

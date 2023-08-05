@@ -167,6 +167,23 @@ final class PitchClass extends Enharmonic<Note>
     );
   }
 
+  /// Returns the integer notation for this [PitchClass].
+  ///
+  /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.c.integerNotation == '0'
+  /// PitchClass.f.integerNotation == '5'
+  /// PitchClass.aSharp.integerNotation == 't'
+  /// PitchClass.b.integerNotation == 'e'
+  /// ```
+  String get integerNotation => switch (semitones) {
+        10 => 't',
+        11 => 'e',
+        final semitones => '$semitones',
+      };
+
   /// Performs a pitch-class multiplication modulo 12 of this [PitchClass].
   ///
   /// Example:
