@@ -83,6 +83,7 @@ final class IntervalClass extends Enharmonic<Interval> {
   ///
   /// Example:
   /// ```dart
+  /// IntervalClass.m3 + IntervalClass.m3 == IntervalClass.tritone
   /// IntervalClass.tritone + IntervalClass.M2 == IntervalClass.M3
   /// IntervalClass.M3 + IntervalClass.P4 == IntervalClass.m3
   /// ```
@@ -94,9 +95,8 @@ final class IntervalClass extends Enharmonic<Interval> {
   /// Example:
   /// ```dart
   /// IntervalClass.P4 - IntervalClass.m3 == IntervalClass.M2
-  ///
-  /// IntervalClass.m3 - IntervalClass.tritone
-  ///   == const IntervalClass(-3)
+  /// IntervalClass.m3 - IntervalClass.tritone == IntervalClass.m3
+  /// IntervalClass.P1 - IntervalClass.m2 == IntervalClass.m2
   /// ```
   IntervalClass operator -(IntervalClass other) =>
       IntervalClass(semitones - other.semitones);
