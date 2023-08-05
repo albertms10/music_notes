@@ -474,19 +474,19 @@ void main() {
         expect(Interval.P5.distanceBetween(Note.c, Note.b.flat.flat), -9);
         expect(Interval.P5.distanceBetween(Note.c, Note.b.flat), -2);
         expect(
-          Interval.P5.distanceBetween(EnharmonicNote.d, EnharmonicNote.gSharp),
+          Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp),
           6,
         );
         expect(Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp), 13);
 
         expect(
-          Interval.P4.distanceBetween(EnharmonicNote.dSharp, EnharmonicNote.c),
+          Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c),
           -3,
         );
         expect(Interval.P4.distanceBetween(Note.c, Note.c), 0);
         expect(Interval.P4.distanceBetween(Note.c, Note.f), 1);
         expect(
-          Interval.P4.distanceBetween(EnharmonicNote.c, EnharmonicNote.aSharp),
+          Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp),
           2,
         );
       });
@@ -500,15 +500,15 @@ void main() {
           const [Note.c, Note.g],
         );
         expect(
-          Interval.P5.circleFrom(EnharmonicNote.c, distance: 6),
+          Interval.P5.circleFrom(PitchClass.c, distance: 6),
           const [
-            EnharmonicNote.c,
-            EnharmonicNote.g,
-            EnharmonicNote.d,
-            EnharmonicNote.a,
-            EnharmonicNote.e,
-            EnharmonicNote.b,
-            EnharmonicNote.fSharp,
+            PitchClass.c,
+            PitchClass.g,
+            PitchClass.d,
+            PitchClass.a,
+            PitchClass.e,
+            PitchClass.b,
+            PitchClass.fSharp,
           ],
         );
         expect(
