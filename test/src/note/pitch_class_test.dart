@@ -6,13 +6,12 @@ import 'package:test/test.dart';
 void main() {
   group('PitchClass', () {
     group('constructor', () {
-      test(
-        'should throw an assertion error when arguments are incorrect',
-        () {
-          expect(() => PitchClass(-2), throwsA(isA<AssertionError>()));
-          expect(() => PitchClass(13), throwsA(isA<AssertionError>()));
-        },
-      );
+      test('should create a new PitchClass from semitones', () {
+        // ignore: prefer_const_constructors
+        expect(PitchClass(-2), PitchClass.aSharp);
+        // ignore: prefer_const_constructors
+        expect(PitchClass(13), PitchClass.cSharp);
+      });
     });
 
     group('.spellings()', () {
@@ -320,7 +319,7 @@ void main() {
     });
 
     group('.interval()', () {
-      test('should return the Interval between this Note and other', () {
+      test('should return the Interval between this PitchClass and other', () {
         expect(PitchClass.c.interval(PitchClass.c), Interval.P1);
         expect(PitchClass.c.interval(PitchClass.cSharp), Interval.m2);
 
