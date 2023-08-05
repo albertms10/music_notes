@@ -1,7 +1,7 @@
 import 'harmony/chord_pattern_test.dart' as chord_pattern_test;
 import 'harmony/chord_test.dart' as chord_test;
 import 'harmony/harmonic_function_test.dart' as harmonic_function_test;
-import 'interval/enharmonic_interval_test.dart' as enharmonic_interval_test;
+import 'interval/interval_class_test.dart' as interval_class_test;
 import 'interval/interval_test.dart' as interval_test;
 import 'interval/quality_test.dart' as quality_test;
 import 'note/accidental_test.dart' as accidental_test;
@@ -22,7 +22,7 @@ void main() {
   chord_pattern_test.main();
   chord_test.main();
   harmonic_function_test.main();
-  enharmonic_interval_test.main();
+  interval_class_test.main();
   interval_test.main();
   quality_test.main();
   accidental_test.main();
