@@ -182,7 +182,8 @@ final class PitchClass extends Enharmonic<Note>
         final semitones => '$semitones',
       };
 
-  /// Performs a multiplication modulo 12 of this [PitchClass].
+  /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
+  /// [PitchClass].
   ///
   /// Example:
   /// ```dart

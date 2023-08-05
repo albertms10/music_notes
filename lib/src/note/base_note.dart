@@ -38,8 +38,9 @@ enum BaseNote {
   /// BaseNote.fromSemitones(7) == BaseNote.g
   /// BaseNote.fromSemitones(10) == null
   /// ```
-  static BaseNote? fromSemitones(int semitones) => values
-      .firstWhereOrNull((note) => semitones.chromaticMod == note.semitones);
+  static BaseNote? fromSemitones(int semitones) => values.firstWhereOrNull(
+        (note) => semitones % chromaticDivisions == note.semitones,
+      );
 
   /// Returns a [BaseNote] enum item that matches with [ordinal].
   ///
@@ -50,7 +51,7 @@ enum BaseNote {
   /// BaseNote.fromOrdinal(10) == BaseNote.e
   /// ```
   factory BaseNote.fromOrdinal(int ordinal) =>
-      BaseNote.values[ordinal.nModExcludeZero(BaseNote.values.length) - 1];
+      BaseNote.values[ordinal.nonZeroMod(BaseNote.values.length) - 1];
 
   /// Parse [source] as a [BaseNote] and return its value.
   ///
