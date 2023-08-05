@@ -20,25 +20,12 @@ void main() {
       });
     });
 
-    group('.chromaticMod', () {
-      test('should return the correct modulo chromatic divisions', () {
-        expect(4.chromaticMod, 4);
-        expect(14.chromaticMod, 2);
-        expect((-5).chromaticMod, 7);
-        expect(0.chromaticMod, 0);
-        expect(12.chromaticMod, 0);
+    group('.nonZeroMod()', () {
+      test('should return the correct non-zero modulo for a given int', () {
+        expect(9.nonZeroMod(3), 3);
+        expect(7.nonZeroMod(7), 7);
+        expect(0.nonZeroMod(5), 5);
       });
-    });
-
-    group('.nModExcludeZero()', () {
-      test(
-        'should return the correct modulo excluding zero for a given int',
-        () {
-          expect(9.nModExcludeZero(3), 3);
-          expect(0.nModExcludeZero(5), 5);
-          expect(7.nModExcludeZero(7), 7);
-        },
-      );
     });
   });
 }

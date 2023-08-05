@@ -6,7 +6,7 @@ part of '../../music_notes.dart';
 /// [PitchClass]es.
 ///
 /// The largest [IntervalClass] is [IntervalClass.tritone] (6) since any greater
-/// interval `n` may be reduced to `12 - n`.
+/// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
 @immutable
@@ -15,7 +15,7 @@ final class IntervalClass extends Enharmonic<Interval> {
   const IntervalClass(int semitones)
       : super(
           (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
-              ? 12 - (semitones % chromaticDivisions)
+              ? chromaticDivisions - (semitones % chromaticDivisions)
               : semitones % chromaticDivisions,
         );
 

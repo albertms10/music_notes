@@ -251,11 +251,13 @@ final class Interval implements Comparable<Interval> {
       (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
-              : absoluteSemitones.chromaticMod) ==
+              : absoluteSemitones % chromaticDivisions) ==
           _sizeToSemitones[size],
     );
     if (matchingSize == null) return null;
-    if (absoluteSemitones == 12) return matchingSize * semitones.sign;
+    if (absoluteSemitones == chromaticDivisions) {
+      return matchingSize * semitones.sign;
+    }
 
     final absResult =
         matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
@@ -541,5 +543,5 @@ extension _IntervalSize on int {
   /// (-22)._simplified == -8
   /// ```
   int get _simplified =>
-      _isCompound ? _sizeAbsShift.nModExcludeZero(8) * sign : this;
+      _isCompound ? _sizeAbsShift.nonZeroMod(8) * sign : this;
 }

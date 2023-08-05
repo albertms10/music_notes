@@ -61,7 +61,8 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.semitones == 2
   /// Note.f.sharp.semitones == 6
   /// ```
-  int get semitones => (baseNote.semitones + accidental.semitones).chromaticMod;
+  int get semitones =>
+      (baseNote.semitones + accidental.semitones) % chromaticDivisions;
 
   /// Returns the difference in semitones between this [Note] and [other].
   ///
@@ -325,7 +326,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
 
     return Interval.fromDelta(
       intervalSize,
-      difference(other).chromaticMod - intervalSize._semitones,
+      difference(other) % chromaticDivisions - intervalSize._semitones,
     );
   }
 
