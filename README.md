@@ -94,28 +94,28 @@ Note.c.circleOfFifths();
 
 ### Tonalities
 
-Create a `Tonality` or get it from a given note:
+Create a `Tonality` or get it from a given `Note`:
 
 ```dart
 Tonality(Note.e, TonalMode.minor); // E minor
 Note.a.flat.major; // A♭ major
 ```
 
-Know its key signature:
+Know its `KeySignature`:
 
 ```dart
 Note.d.major.keySignature; // 2 (F♯ C♯)
 Note.e.flat.minor.keySignature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
-And its relative tonality:
+And its relative `Tonality`:
 
 ```dart
 Note.d.major.relative; // B minor
 Note.c.minor.relative; // E♭ major
 ```
 
-### Key signature
+### Key signatures
 
 Create a `KeySignature`:
 
@@ -141,7 +141,7 @@ ScalePattern.majorPentatonic.on(Note.g.flat); // G♭ Major pentatonic (G♭ A�
 ScalePattern.wholeTone.on(Note.f); // F Whole-tone (F G A B C♯ D♯ F)
 ```
 
-Or get it from a tonality:
+Or get it from a `Tonality`:
 
 ```dart
 Note.a.flat.major.scale; // A♭ Major (ionian) (A♭ B♭ C D♭ E♭ F G A♭)
@@ -159,10 +159,16 @@ Note.c.major.scale.functionChord(
 
 ### Chords
 
+Create a `Chord` from a `ChordPattern`:
+
 ```dart
-Note.c.majorTriad; // C maj. (C E G)
 ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
 // D♯ aug. (D♯ F𝄪 A𝄪 G♯ B♯)
+```
+
+Or build id on top of a `Note`:
+
+```dart
 Note.f.minorTriad.add7().add9(ImperfectQuality.minor);
 // F min. (F A♭ C E♭ G♭)
 Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
@@ -171,12 +177,24 @@ Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
 
 ### Frequencies
 
-  // Frequencies
-  Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
-  Note.b.flat.inOctave(4).equalTemperamentFrequency(
-        referenceNote: Note.c.inOctave(4),
-        referenceFrequency: const Frequency(256),
-      ); // 456.1401436878537 Hz
+Get the `Frequency` of a `PositionedNote`:
+
+```dart
+Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
+Note.b.flat.inOctave(4).equalTemperamentFrequency(
+      referenceNote: Note.c.inOctave(4),
+      referenceFrequency: const Frequency(256),
+    ); // 456.1401436878537 Hz
+```
+
+Or even get the closest note from a given `Frequency`:
+
+```dart
+const Frequency(415).closestPositionedNote();
+// (G♯4, cents: -1.2706247484469828, hertz: -0.3046975799451275)
+```
+
+### In a nutshell
 
 ```dart
 ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
@@ -197,6 +215,7 @@ This library is inspired by a range of music theory projects.
 
 - [Teoria.js](https://github.com/saebekassebil/teoria)
 - [Tonal](https://github.com/tonaljs/tonal)
+- [Tonic](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 
