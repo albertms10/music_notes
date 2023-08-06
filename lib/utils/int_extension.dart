@@ -1,5 +1,3 @@
-import 'package:music_notes/music_notes.dart';
-
 /// An int extension.
 extension IntExtension on int {
   /// Returns this [int] incremented by [step].
@@ -13,29 +11,17 @@ extension IntExtension on int {
   /// ```
   int incrementBy(int step) => (abs() + step) * (isNegative ? -1 : 1);
 
-  /// Returns the modulo [chromaticDivisions] of this [int].
-  ///
-  /// Example:
-  /// ```dart
-  /// 4.chromaticMod == 4
-  /// 14.chromaticMod == 2
-  /// (-5).chromaticMod == 7
-  /// 0.chromaticMod == 0
-  /// 12.chromaticMod == 0
-  /// ```
-  int get chromaticMod => this % chromaticDivisions;
-
   /// Returns the modulo [n] of this [int]. If this is 0, it returns [n].
   ///
   /// Example:
   /// ```dart
-  /// 9.nModExcludeZero(3) == 3
-  /// 0.nModExcludeZero(5) == 5
-  /// 7.nModExcludeZero(7) == 7
+  /// 9.nonZeroMod(3) == 3
+  /// 7.nonZeroMod(7) == 7
+  /// 0.nonZeroMod(5) == 5
   /// ```
-  int nModExcludeZero(int n) {
-    final modValue = this % n;
+  int nonZeroMod(int n) {
+    final mod = this % n;
 
-    return modValue == 0 ? n : modValue;
+    return mod == 0 ? n : mod;
   }
 }

@@ -21,6 +21,59 @@ void main() {
       });
     });
 
+    group('.closestPositionedNote()', () {
+      test('should return the closest PositionedNote to this Frequency', () {
+        expect(
+          const Frequency(440).closestPositionedNote(),
+          (Note.a.inOctave(4), cents: 0.0, hertz: 0.0),
+        );
+        expect(
+          const Frequency(467).closestPositionedNote(),
+          (
+            Note.a.sharp.inOctave(4),
+            cents: 3.1028314220028586,
+            hertz: 0.8362384819100726,
+          ),
+        );
+        expect(
+          const Frequency(256).closestPositionedNote(),
+          (
+            Note.c.inOctave(4),
+            cents: -37.63165622959142,
+            hertz: -5.625565300598623,
+          ),
+        );
+
+        expect(
+          const Frequency(440)
+              .closestPositionedNote(referenceFrequency: const Frequency(415)),
+          (
+            Note.a.sharp.inOctave(4),
+            cents: 1.270624748447127,
+            hertz: 0.32281584089247417,
+          ),
+        );
+        expect(
+          const Frequency(512).closestPositionedNote(
+            referenceFrequency: const Frequency(512),
+            referenceNote: Note.c.inOctave(5),
+          ),
+          (Note.c.inOctave(5), cents: 0.0, hertz: 0.0),
+        );
+        expect(
+          const Frequency(440).closestPositionedNote(
+            referenceFrequency: const Frequency(512),
+            referenceNote: Note.c.inOctave(5),
+          ),
+          (
+            Note.a.inOctave(4),
+            cents: 37.63165622959145,
+            hertz: 9.461035390098175,
+          ),
+        );
+      });
+    });
+
     group('operator +()', () {
       test('should add other to this Frequency', () {
         expect(

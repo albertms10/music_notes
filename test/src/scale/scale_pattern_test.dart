@@ -196,15 +196,15 @@ void main() {
 
       test('should return the whole-tone Scale on Note', () {
         expect(
-          ScalePattern.wholeTone.on(EnharmonicNote.c),
+          ScalePattern.wholeTone.on(PitchClass.c),
           const Scale([
-            EnharmonicNote.c,
-            EnharmonicNote.d,
-            EnharmonicNote.e,
-            EnharmonicNote.fSharp,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.c,
+            PitchClass.c,
+            PitchClass.d,
+            PitchClass.e,
+            PitchClass.fSharp,
+            PitchClass.gSharp,
+            PitchClass.aSharp,
+            PitchClass.c,
           ]),
         );
         expect(
@@ -253,21 +253,21 @@ void main() {
           ]),
         );
         expect(
-          ScalePattern.chromatic.on(EnharmonicNote.cSharp),
+          ScalePattern.chromatic.on(PitchClass.cSharp),
           const Scale([
-            EnharmonicNote.cSharp,
-            EnharmonicNote.d,
-            EnharmonicNote.dSharp,
-            EnharmonicNote.e,
-            EnharmonicNote.f,
-            EnharmonicNote.fSharp,
-            EnharmonicNote.g,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.a,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.b,
-            EnharmonicNote.c,
-            EnharmonicNote.cSharp,
+            PitchClass.cSharp,
+            PitchClass.d,
+            PitchClass.dSharp,
+            PitchClass.e,
+            PitchClass.f,
+            PitchClass.fSharp,
+            PitchClass.g,
+            PitchClass.gSharp,
+            PitchClass.a,
+            PitchClass.aSharp,
+            PitchClass.b,
+            PitchClass.c,
+            PitchClass.cSharp,
           ]),
         );
         expect(
@@ -307,14 +307,14 @@ void main() {
           ]),
         );
         expect(
-          ScalePattern.majorPentatonic.on(EnharmonicNote.fSharp),
+          ScalePattern.majorPentatonic.on(PitchClass.fSharp),
           const Scale([
-            EnharmonicNote.fSharp,
-            EnharmonicNote.gSharp,
-            EnharmonicNote.aSharp,
-            EnharmonicNote.cSharp,
-            EnharmonicNote.dSharp,
-            EnharmonicNote.fSharp,
+            PitchClass.fSharp,
+            PitchClass.gSharp,
+            PitchClass.aSharp,
+            PitchClass.cSharp,
+            PitchClass.dSharp,
+            PitchClass.fSharp,
           ]),
         );
       });

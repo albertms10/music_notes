@@ -61,7 +61,8 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.semitones == 2
   /// Note.f.sharp.semitones == 6
   /// ```
-  int get semitones => (baseNote.semitones + accidental.semitones).chromaticMod;
+  int get semitones =>
+      (baseNote.semitones + accidental.semitones) % chromaticDivisions;
 
   /// Returns the difference in semitones between this [Note] and [other].
   ///
@@ -325,7 +326,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
 
     return Interval.fromDelta(
       intervalSize,
-      difference(other).chromaticMod - intervalSize._semitones,
+      difference(other) % chromaticDivisions - intervalSize._semitones,
     );
   }
 
@@ -353,6 +354,16 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       Accidental(semitonesOctaveMod * interval.size.sign),
     );
   }
+
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.toPitchClass() == PitchClass.c
+  /// Note.e.sharp.toPitchClass() == PitchClass.f
+  /// Note.c.flat.flat.toPitchClass() == PitchClass.a.sharp
+  /// ```
+  PitchClass toPitchClass() => PitchClass(semitones);
 
   @override
   String toString() =>

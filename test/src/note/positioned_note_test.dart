@@ -733,119 +733,119 @@ void main() {
           expect(
             Note.c
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(260.44, 0.01),
           );
           expect(
             Note.c.sharp
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(275.92, 0.01),
           );
           expect(
             Note.d.flat
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(275.92, 0.01),
           );
           expect(
             Note.d
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(292.33, 0.01),
           );
           expect(
             Note.d.sharp
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(309.71, 0.01),
           );
           expect(
             Note.e.flat
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(309.71, 0.01),
           );
           expect(
             Note.e
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(328.13, 0.01),
           );
           expect(
             Note.f
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(347.64, 0.01),
           );
           expect(
             Note.f.sharp
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(368.31, 0.01),
           );
           expect(
             Note.g.flat
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(368.31, 0.01),
           );
           expect(
             Note.g
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(390.21, 0.01),
           );
           expect(
             Note.g.sharp
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(413.42, 0.01),
           );
           expect(
             Note.a.flat
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(413.42, 0.01),
           );
           expect(
             Note.a
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             438,
           );
           expect(
             Note.a.sharp
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(464.04, 0.01),
           );
           expect(
             Note.b.flat
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(464.04, 0.01),
           );
           expect(
             Note.b
                 .inOctave(4)
-                .equalTemperamentFrequency(frequency: frequency)
+                .equalTemperamentFrequency(referenceFrequency: frequency)
                 .hertz,
             closeTo(491.64, 0.01),
           );
@@ -860,8 +860,8 @@ void main() {
             Note.c
                 .inOctave(4)
                 .equalTemperamentFrequency(
-                  frequency: frequency,
-                  reference: Note.c.inOctave(4),
+                  referenceFrequency: frequency,
+                  referenceNote: Note.c.inOctave(4),
                 )
                 .hertz,
             256,
@@ -870,8 +870,8 @@ void main() {
             Note.a
                 .inOctave(4)
                 .equalTemperamentFrequency(
-                  frequency: frequency,
-                  reference: Note.c.inOctave(4),
+                  referenceFrequency: frequency,
+                  referenceNote: Note.c.inOctave(4),
                 )
                 .hertz,
             closeTo(430.53, 0.01),

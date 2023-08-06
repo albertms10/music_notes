@@ -195,7 +195,7 @@ final class Interval implements Comparable<Interval> {
     int semitones, [
     Quality? preferredQuality,
   ]) {
-    final spellings = EnharmonicInterval(semitones).spellings();
+    final spellings = IntervalClass(semitones).spellings();
 
     if (preferredQuality != null) {
       final interval = spellings.firstWhereOrNull(
@@ -251,11 +251,13 @@ final class Interval implements Comparable<Interval> {
       (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
-              : absoluteSemitones.chromaticMod) ==
+              : absoluteSemitones % chromaticDivisions) ==
           _sizeToSemitones[size],
     );
     if (matchingSize == null) return null;
-    if (absoluteSemitones == 12) return matchingSize * semitones.sign;
+    if (absoluteSemitones == chromaticDivisions) {
+      return matchingSize * semitones.sign;
+    }
 
     final absResult =
         matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
@@ -424,6 +426,16 @@ final class Interval implements Comparable<Interval> {
         ],
       );
 
+  /// Creates a new [IntervalClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.m2.toIntervalClass() == IntervalClass.m2
+  /// Interval.d4.toIntervalClass() == IntervalClass.M3
+  /// Interval.P8.toIntervalClass() == IntervalClass.P1
+  /// ```
+  IntervalClass toIntervalClass() => IntervalClass(semitones);
+
   /// Adds [other] to this [Interval].
   ///
   /// Example:
@@ -541,5 +553,5 @@ extension _IntervalSize on int {
   /// (-22)._simplified == -8
   /// ```
   int get _simplified =>
-      _isCompound ? _sizeAbsShift.nModExcludeZero(8) * sign : this;
+      _isCompound ? _sizeAbsShift.nonZeroMod(8) * sign : this;
 }

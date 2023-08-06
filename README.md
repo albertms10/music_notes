@@ -171,15 +171,12 @@ Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
 
 ### Frequencies
 
-```dart
-Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
-Note.b.flat.inOctave(4).equalTemperamentFrequency(
-      reference: Note.c.inOctave(4),
-      frequency: const Frequency(256),
-    ); // 456.1401436878537 Hz
-```
-
-### Method chaining
+  // Frequencies
+  Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
+  Note.b.flat.inOctave(4).equalTemperamentFrequency(
+        referenceNote: Note.c.inOctave(4),
+        referenceFrequency: const Frequency(256),
+      ); // 456.1401436878537 Hz
 
 ```dart
 ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)

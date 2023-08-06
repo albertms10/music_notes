@@ -474,19 +474,19 @@ void main() {
         expect(Interval.P5.distanceBetween(Note.c, Note.b.flat.flat), -9);
         expect(Interval.P5.distanceBetween(Note.c, Note.b.flat), -2);
         expect(
-          Interval.P5.distanceBetween(EnharmonicNote.d, EnharmonicNote.gSharp),
+          Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp),
           6,
         );
         expect(Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp), 13);
 
         expect(
-          Interval.P4.distanceBetween(EnharmonicNote.dSharp, EnharmonicNote.c),
+          Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c),
           -3,
         );
         expect(Interval.P4.distanceBetween(Note.c, Note.c), 0);
         expect(Interval.P4.distanceBetween(Note.c, Note.f), 1);
         expect(
-          Interval.P4.distanceBetween(EnharmonicNote.c, EnharmonicNote.aSharp),
+          Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp),
           2,
         );
       });
@@ -500,15 +500,15 @@ void main() {
           const [Note.c, Note.g],
         );
         expect(
-          Interval.P5.circleFrom(EnharmonicNote.c, distance: 6),
+          Interval.P5.circleFrom(PitchClass.c, distance: 6),
           const [
-            EnharmonicNote.c,
-            EnharmonicNote.g,
-            EnharmonicNote.d,
-            EnharmonicNote.a,
-            EnharmonicNote.e,
-            EnharmonicNote.b,
-            EnharmonicNote.fSharp,
+            PitchClass.c,
+            PitchClass.g,
+            PitchClass.d,
+            PitchClass.a,
+            PitchClass.e,
+            PitchClass.b,
+            PitchClass.fSharp,
           ],
         );
         expect(
@@ -545,6 +545,25 @@ void main() {
           Interval.P4.circleFrom(Note.c, distance: -7),
           Interval.P5.circleFrom(Note.c, distance: 7),
         );
+      });
+    });
+
+    group('.toIntervalClass()', () {
+      test('should create a new IntervalClass from semitones', () {
+        expect(Interval.P1.toIntervalClass(), IntervalClass.P1);
+        expect(Interval.d1.toIntervalClass(), IntervalClass.m2);
+        expect(Interval.A1.toIntervalClass(), IntervalClass.m2);
+        expect((-Interval.A1).toIntervalClass(), IntervalClass.m2);
+        expect(Interval.m2.toIntervalClass(), IntervalClass.m2);
+        expect(Interval.d4.toIntervalClass(), IntervalClass.M3);
+        expect((-Interval.A4).toIntervalClass(), IntervalClass.tritone);
+        expect(Interval.d6.toIntervalClass(), IntervalClass.P4);
+        expect((-Interval.M6).toIntervalClass(), IntervalClass.m3);
+        expect(Interval.m7.toIntervalClass(), IntervalClass.M2);
+        expect((-Interval.M7).toIntervalClass(), IntervalClass.m2);
+        expect(Interval.P8.toIntervalClass(), IntervalClass.P1);
+        expect(Interval.P11.toIntervalClass(), IntervalClass.P4);
+        expect(Interval.M13.toIntervalClass(), IntervalClass.m3);
       });
     });
 

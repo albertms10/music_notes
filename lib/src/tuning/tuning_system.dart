@@ -57,18 +57,21 @@ class EqualTemperament extends TuningSystem {
   double ratio([int semitones = 1]) =>
       math.pow(2, semitones / octaveDivisions).toDouble();
 
-  /// Returns the number of cents for [semitones] in this [EqualTemperament].
+  /// Returns the number of cents for [ratio] in this [EqualTemperament].
   ///
   /// See [Cent](https://en.wikipedia.org/wiki/Cent_(music)).
   ///
   /// Example:
   /// ```dart
-  /// EqualTemperament.edo12.cents() == 100
-  /// EqualTemperament.edo12.cents(7) == 700
-  /// EqualTemperament.edo19.cents() == 63.16
+  /// var ratio = EqualTemperament.edo12.ratio;
+  /// EqualTemperament.edo12.cents(ratio()) == 100
+  /// EqualTemperament.edo12.cents(ratio(7)) == 700
+  ///
+  /// ratio = EqualTemperament.edo19.ratio;
+  /// EqualTemperament.edo19.cents(ratio()) == 63.16
   /// ```
-  double cents([int semitones = 1]) =>
-      math.log(ratio(semitones)) /
+  double cents(double ratio) =>
+      math.log(ratio) /
       math.log(2) *
       100 *
       EqualTemperament.edo12.octaveDivisions;
@@ -90,6 +93,6 @@ class EqualTemperament extends TuningSystem {
       semitonesUpToP5 += divisionEntry.value;
     }
 
-    return cents(semitonesUpToP5);
+    return cents(ratio(semitonesUpToP5));
   }
 }
