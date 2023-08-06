@@ -10,14 +10,15 @@ part of '../../music_notes.dart';
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
 @immutable
-final class IntervalClass extends Enharmonic<Interval> {
+final class IntervalClass implements Comparable<IntervalClass> {
+  /// The distance in semitones that define this [IntervalClass].
+  final int semitones;
+
   /// Creates an [IntervalClass] from [semitones].
   const IntervalClass(int semitones)
-      : super(
-          (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
-              ? chromaticDivisions - (semitones % chromaticDivisions)
-              : semitones % chromaticDivisions,
-        );
+      : semitones = (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
+            ? chromaticDivisions - (semitones % chromaticDivisions)
+            : semitones % chromaticDivisions;
 
   /// A distance of 0 semitones [IntervalClass], which corresponds to
   /// [Interval.P1] or [Interval.P8].
@@ -47,7 +48,8 @@ final class IntervalClass extends Enharmonic<Interval> {
   /// [Interval.A4] or [Interval.d5].
   static const tritone = IntervalClass(6);
 
-  @override
+  /// Returns the different spellings at [distance] sharing the same number of
+  /// [semitones].
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final size = Interval.sizeFromSemitones(semitones);
@@ -111,4 +113,17 @@ final class IntervalClass extends Enharmonic<Interval> {
   /// ```
   IntervalClass operator *(int factor) =>
       IntervalClass(semitones * factor.abs());
+
+  @override
+  String toString() => '{${spellings().join('|')}}';
+
+  @override
+  bool operator ==(Object other) =>
+      other is IntervalClass && semitones == other.semitones;
+
+  @override
+  int get hashCode => semitones.hashCode;
+
+  @override
+  int compareTo(IntervalClass other) => semitones.compareTo(other.semitones);
 }
