@@ -606,6 +606,16 @@ void main() {
       });
     });
 
+    group('.toPitchClass()', () {
+      test('should create a new PitchClass from semitones', () {
+        expect(Note.c.toPitchClass(), PitchClass.c);
+        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this Note', () {
         expect(Note.c.toString(), 'C');

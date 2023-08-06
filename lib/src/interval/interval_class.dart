@@ -11,7 +11,7 @@ part of '../../music_notes.dart';
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
 @immutable
 final class IntervalClass implements Comparable<IntervalClass> {
-  /// The distance in semitones that define this [IntervalClass].
+  /// The distance in semitones that defines this [IntervalClass].
   final int semitones;
 
   /// Creates an [IntervalClass] from [semitones].

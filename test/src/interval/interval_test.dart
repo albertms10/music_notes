@@ -548,6 +548,25 @@ void main() {
       });
     });
 
+    group('.toIntervalClass()', () {
+      test('should create a new IntervalClass from semitones', () {
+        expect(Interval.P1.toIntervalClass(), IntervalClass.P1);
+        expect(Interval.d1.toIntervalClass(), IntervalClass.m2);
+        expect(Interval.A1.toIntervalClass(), IntervalClass.m2);
+        expect((-Interval.A1).toIntervalClass(), IntervalClass.m2);
+        expect(Interval.m2.toIntervalClass(), IntervalClass.m2);
+        expect(Interval.d4.toIntervalClass(), IntervalClass.M3);
+        expect((-Interval.A4).toIntervalClass(), IntervalClass.tritone);
+        expect(Interval.d6.toIntervalClass(), IntervalClass.P4);
+        expect((-Interval.M6).toIntervalClass(), IntervalClass.m3);
+        expect(Interval.m7.toIntervalClass(), IntervalClass.M2);
+        expect((-Interval.M7).toIntervalClass(), IntervalClass.m2);
+        expect(Interval.P8.toIntervalClass(), IntervalClass.P1);
+        expect(Interval.P11.toIntervalClass(), IntervalClass.P4);
+        expect(Interval.M13.toIntervalClass(), IntervalClass.m3);
+      });
+    });
+
     group('operator +()', () {
       test('should add other to this Interval', () {
         expect(Interval.P1 + Interval.P1, Interval.P1);

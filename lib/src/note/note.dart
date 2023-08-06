@@ -355,6 +355,16 @@ final class Note implements Comparable<Note>, Scalable<Note> {
     );
   }
 
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.toPitchClass() == PitchClass.c
+  /// Note.e.sharp.toPitchClass() == PitchClass.f
+  /// Note.c.flat.flat.toPitchClass() == PitchClass.a.sharp
+  /// ```
+  PitchClass toPitchClass() => PitchClass(semitones);
+
   @override
   String toString() =>
       baseNote.name.toUpperCase() +
