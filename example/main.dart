@@ -37,8 +37,8 @@ void main() {
   // Frequencies
   Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
   Note.b.flat.inOctave(4).equalTemperamentFrequency(
-        reference: Note.c.inOctave(4),
-        frequency: const Frequency(256),
+        referenceNote: Note.c.inOctave(4),
+        referenceFrequency: const Frequency(256),
       ); // 456.1401436878537 Hz
 
   // Crazy chaining

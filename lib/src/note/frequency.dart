@@ -28,8 +28,9 @@ class Frequency implements Comparable<Frequency> {
     return hertz >= minFrequency && hertz <= maxFrequency;
   }
 
-  /// Returns the closest [PositionedNote] to this [Frequency], with the
-  /// difference in `cents` and `hertz`.
+  /// Returns the closest [PositionedNote] to this [Frequency] from
+  /// [referenceNote] and [referenceFrequency], with the difference in `cents`
+  /// and `hertz`.
   ///
   /// Example:
   /// ```dart
@@ -61,8 +62,8 @@ class Frequency implements Comparable<Frequency> {
         .inOctave(PositionedNote.octaveFromSemitones(semitones));
 
     final closestNoteFrequency = closestNote.equalTemperamentFrequency(
-      reference: referenceNote,
-      frequency: referenceFrequency,
+      referenceNote: referenceNote,
+      referenceFrequency: referenceFrequency,
     );
 
     return (
