@@ -236,7 +236,7 @@ final class PositionedNote
   }
 
   /// Returns the equal temperament [Frequency] of this [PositionedNote] from
-  /// [frequency] and [reference].
+  /// [referenceNote] and [referenceFrequency].
   ///
   /// Example:
   /// ```dart
@@ -244,12 +244,12 @@ final class PositionedNote
   /// Note.c.inOctave(4).equalTemperamentFrequency() == const Frequency(261.63)
   ///
   /// Note.b.flat.inOctave(4).equalTemperamentFrequency(
-  ///   frequency: const Frequency(438),
+  ///   referenceFrequency: const Frequency(438),
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).equalTemperamentFrequency(
-  ///   reference: Note.c.inOctave(4),
-  ///   frequency: const Frequency(256),
+  ///   referenceNote: Note.c.inOctave(4),
+  ///   referenceFrequency: const Frequency(256),
   /// ) == const Frequency(430.54)
   /// ```
   ///
@@ -261,10 +261,11 @@ final class PositionedNote
   /// note.equalTemperamentFrequency().closestPositionedNote().$1 == note;
   /// ```
   Frequency equalTemperamentFrequency({
-    PositionedNote reference = const PositionedNote(Note.a, octave: 4),
-    Frequency frequency = const Frequency(440),
+    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
+    Frequency referenceFrequency = const Frequency(440),
   }) =>
-      frequency * EqualTemperament.edo12.ratio(reference.difference(this));
+      referenceFrequency *
+      EqualTemperament.edo12.ratio(referenceNote.difference(this));
 
   /// Returns the string representation of this [Note] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
