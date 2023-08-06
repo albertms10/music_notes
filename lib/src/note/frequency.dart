@@ -33,18 +33,18 @@ class Frequency implements Comparable<Frequency> {
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(467).toClosestPositionedNote()
+  /// const Frequency(467).closestPositionedNote()
   ///   == (Note.a.sharp.inOctave(4), cents: 3.1028, hertz: 0.8362)
   ///
-  /// const Frequency(260).toClosestPositionedNote()
+  /// const Frequency(260).closestPositionedNote()
   ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
   /// ```
   (PositionedNote, {double cents, double hertz}) closestPositionedNote({
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
-    EqualTemperament tuningSystem = EqualTemperament.edo12,
   }) {
-    final cents = tuningSystem.cents(hertz / referenceFrequency.hertz);
+    final cents =
+        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
     final semitones = referenceNote.semitones + (cents / 100).round();
 
     final closestNote = PitchClass(semitones)
@@ -59,7 +59,7 @@ class Frequency implements Comparable<Frequency> {
     return (
       closestNote,
       hertz: hertz - closestNoteFrequency.hertz,
-      cents: tuningSystem.cents(hertz / closestNoteFrequency.hertz),
+      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
     );
   }
 
