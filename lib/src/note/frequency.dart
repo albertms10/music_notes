@@ -28,6 +28,50 @@ class Frequency implements Comparable<Frequency> {
     return hertz >= minFrequency && hertz <= maxFrequency;
   }
 
+  /// Returns the closest [PositionedNote] to this [Frequency], with the
+  /// difference in `cents` and `hertz`.
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(467).closestPositionedNote()
+  ///   == (Note.a.sharp.inOctave(4), cents: 3.1028, hertz: 0.8362)
+  ///
+  /// const Frequency(260).closestPositionedNote()
+  ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
+  /// ```
+  ///
+  /// This method and [PositionedNote.equalTemperamentFrequency] are inverses of
+  /// each other for a specific input `frequency`.
+  ///
+  /// ```dart
+  /// const frequency = Frequency(442);
+  /// final (note, cents: _, :hertz) = frequency.closestPositionedNote();
+  /// note.equalTemperamentFrequency() == Frequency(frequency.hertz - hertz);
+  /// ```
+  (PositionedNote, {double cents, double hertz}) closestPositionedNote({
+    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
+    Frequency referenceFrequency = const Frequency(440),
+  }) {
+    final cents =
+        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
+    final semitones = referenceNote.semitones + (cents / 100).round();
+
+    final closestNote = PitchClass(semitones)
+        .resolveClosestSpelling()
+        .inOctave(PositionedNote.octaveFromSemitones(semitones));
+
+    final closestNoteFrequency = closestNote.equalTemperamentFrequency(
+      reference: referenceNote,
+      frequency: referenceFrequency,
+    );
+
+    return (
+      closestNote,
+      hertz: hertz - closestNoteFrequency.hertz,
+      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
+    );
+  }
+
   /// Adds [other] to this [Frequency].
   ///
   /// Example:

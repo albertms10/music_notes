@@ -208,7 +208,7 @@ final class PositionedNote
             // We don't want to take the accidental into account when
             // calculating the octave height, as it depends on the note name.
             // This correctly handles cases with the same number of accidentals
-            // but different octaves (e.g., C♭4 but B3).
+            // but different octaves (e.g., B♯3 but C4, C♭4 but B3).
             transposedNote.accidental.semitones,
       ),
     );
@@ -251,6 +251,14 @@ final class PositionedNote
   ///   reference: Note.c.inOctave(4),
   ///   frequency: const Frequency(256),
   /// ) == const Frequency(430.54)
+  /// ```
+  ///
+  /// This method and [Frequency.closestPositionedNote] are inverses of each
+  /// other for a specific input `note`.
+  ///
+  /// ```dart
+  /// final note = Note.a.inOctave(5);
+  /// note.equalTemperamentFrequency().closestPositionedNote().$1 == note;
   /// ```
   Frequency equalTemperamentFrequency({
     PositionedNote reference = const PositionedNote(Note.a, octave: 4),
