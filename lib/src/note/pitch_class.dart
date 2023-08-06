@@ -1,13 +1,18 @@
 part of '../../music_notes.dart';
 
-/// A set of all pitches that are a whole number of octaves apart.
+/// A set of all pitches that are a whole number of octaves apart, sharing the
+/// same chroma.
 ///
 /// See [Pitch class](https://en.wikipedia.org/wiki/Pitch_class).
 @immutable
-final class PitchClass extends Enharmonic<Note>
-    implements Scalable<PitchClass> {
-  /// Creates a new [PitchClass] from [semitones].
-  const PitchClass(int semitones) : super(semitones % chromaticDivisions);
+final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
+  /// The chroma value that represents this [PitchClass].
+  ///
+  /// See [Chroma feature](https://en.wikipedia.org/wiki/Chroma_feature).
+  final int chroma;
+
+  /// Creates a new [PitchClass] from [chroma].
+  const PitchClass(int chroma) : chroma = chroma % chromaticDivisions;
 
   /// Pitch class 0, which corresponds to [Note.c].
   static const c = PitchClass(0);
@@ -45,10 +50,10 @@ final class PitchClass extends Enharmonic<Note>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  @override
+  /// Returns the different spellings at [distance] sharing the same [chroma].
   Set<Note> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final baseNote = BaseNote.fromSemitones(semitones);
+    final baseNote = BaseNote.fromSemitones(chroma);
 
     if (baseNote != null) {
       final note = Note(baseNote);
@@ -63,9 +68,9 @@ final class PitchClass extends Enharmonic<Note>
     }
 
     final aboveNote =
-        Note(BaseNote.fromSemitones(semitones - 1)!, Accidental.sharp);
+        Note(BaseNote.fromSemitones(chroma - 1)!, Accidental.sharp);
     final belowNote =
-        Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
+        Note(BaseNote.fromSemitones(chroma + 1)!, Accidental.flat);
 
     return SplayTreeSet<Note>.of({
       aboveNote,
@@ -145,7 +150,7 @@ final class PitchClass extends Enharmonic<Note>
   @override
   // TODO(albertms10): use [IntervalClass]. See #248.
   PitchClass transposeBy(Interval interval) =>
-      PitchClass(semitones + interval.semitones);
+      PitchClass(chroma + interval.semitones);
 
   /// Returns the [IntervalClass] expressed as [Interval] between this
   /// [PitchClass] and [other].
@@ -158,7 +163,7 @@ final class PitchClass extends Enharmonic<Note>
   @override
   // TODO(albertms10): return [IntervalClass]. See #248.
   Interval interval(PitchClass other) {
-    final difference = other.semitones - semitones;
+    final difference = other.chroma - chroma;
 
     return Interval.fromSemitonesQuality(
       difference + (difference.isNegative ? chromaticDivisions : 0),
@@ -176,10 +181,10 @@ final class PitchClass extends Enharmonic<Note>
   /// PitchClass.aSharp.integerNotation == 't'
   /// PitchClass.b.integerNotation == 'e'
   /// ```
-  String get integerNotation => switch (semitones) {
+  String get integerNotation => switch (chroma) {
         10 => 't',
         11 => 'e',
-        final semitones => '$semitones',
+        final chroma => '$chroma',
       };
 
   /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
@@ -205,5 +210,18 @@ final class PitchClass extends Enharmonic<Note>
   /// ```
   ///
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
-  PitchClass operator *(int factor) => PitchClass(semitones * factor);
+  PitchClass operator *(int factor) => PitchClass(chroma * factor);
+
+  @override
+  String toString() => '{${spellings().join('|')}}';
+
+  @override
+  bool operator ==(Object other) =>
+      other is PitchClass && chroma == other.chroma;
+
+  @override
+  int get hashCode => chroma.hashCode;
+
+  @override
+  int compareTo(PitchClass other) => chroma.compareTo(other.chroma);
 }

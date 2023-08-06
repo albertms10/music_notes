@@ -15,7 +15,6 @@ import 'utils/num_extension.dart';
 import 'utils/string_extension.dart';
 
 part 'src/chordable.dart';
-part 'src/enharmonic.dart';
 part 'src/harmony/chord.dart';
 part 'src/harmony/chord_pattern.dart';
 part 'src/harmony/harmonic_function.dart';
