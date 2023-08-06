@@ -39,6 +39,15 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(260).closestPositionedNote()
   ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
   /// ```
+  ///
+  /// This method and [PositionedNote.equalTemperamentFrequency] are inverses of
+  /// each other for a specific input `frequency`.
+  ///
+  /// ```dart
+  /// const frequency = Frequency(442);
+  /// final (note, cents: _, :hertz) = frequency.closestPositionedNote();
+  /// note.equalTemperamentFrequency() == Frequency(frequency.hertz - hertz);
+  /// ```
   (PositionedNote, {double cents, double hertz}) closestPositionedNote({
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
