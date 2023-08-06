@@ -26,16 +26,20 @@ void main() {
 
     group('.cents()', () {
       test(
-        'should return the number of cents for semitones in this '
-        'EqualTemperament',
+        'should return the number of cents for ratio in this EqualTemperament',
         () {
-          expect(EqualTemperament.edo12.cents(), closeTo(100, 0.01));
-          expect(EqualTemperament.edo12.cents(6), closeTo(600, 0.01));
-          expect(EqualTemperament.edo12.cents(12), closeTo(1200, 0.01));
+          var ratio = EqualTemperament.edo12.ratio;
+          expect(EqualTemperament.edo12.cents(ratio()), closeTo(100, 0.01));
+          expect(EqualTemperament.edo12.cents(ratio(6)), closeTo(600, 0.01));
+          expect(EqualTemperament.edo12.cents(ratio(12)), closeTo(1200, 0.01));
 
-          expect(EqualTemperament.edo19.cents(), closeTo(63.16, 0.01));
-          expect(EqualTemperament.edo19.cents(10), closeTo(631.58, 0.01));
-          expect(EqualTemperament.edo19.cents(19), closeTo(1200, 0.01));
+          ratio = EqualTemperament.edo19.ratio;
+          expect(EqualTemperament.edo19.cents(ratio()), closeTo(63.16, 0.01));
+          expect(
+            EqualTemperament.edo19.cents(ratio(10)),
+            closeTo(631.58, 0.01),
+          );
+          expect(EqualTemperament.edo19.cents(ratio(19)), closeTo(1200, 0.01));
         },
       );
     });
