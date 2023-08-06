@@ -208,7 +208,7 @@ final class PositionedNote
             // We don't want to take the accidental into account when
             // calculating the octave height, as it depends on the note name.
             // This correctly handles cases with the same number of accidentals
-            // but different octaves (e.g., C♭4 but B3).
+            // but different octaves (e.g., B♯3 but C4, C♭4 but B3).
             transposedNote.accidental.semitones,
       ),
     );
