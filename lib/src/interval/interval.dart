@@ -426,6 +426,16 @@ final class Interval implements Comparable<Interval> {
         ],
       );
 
+  /// Creates a new [IntervalClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.m2.toIntervalClass() == IntervalClass.m2
+  /// Interval.d4.toIntervalClass() == IntervalClass.M3
+  /// Interval.P8.toIntervalClass() == IntervalClass.P1
+  /// ```
+  IntervalClass toIntervalClass() => IntervalClass(semitones);
+
   /// Adds [other] to this [Interval].
   ///
   /// Example:
