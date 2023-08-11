@@ -141,6 +141,6 @@ enum BaseNote {
   BaseNote transposeBySize(int size) {
     assert(size != 0, 'Size must be non-zero');
 
-    return BaseNote.fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
+    return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
   }
 }
