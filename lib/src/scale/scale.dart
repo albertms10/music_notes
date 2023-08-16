@@ -27,8 +27,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern => ScalePattern(
-        degrees._intervals,
-        _descendingDegrees?._descendingIntervals,
+        degrees._intervalSteps,
+        _descendingDegrees?._descendingIntervalSteps,
       );
 
   /// Returns the reversed of this [Scale<T>].
