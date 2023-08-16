@@ -174,6 +174,61 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => '?',
       };
 
+  /// Returns the [Interval] from [intervals] that matches the given [size], if
+  /// any.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.size(3) == Interval.M3
+  /// ChordPattern.diminishedTriad.size(5) == Interval.d5
+  /// ChordPattern.minorTriad.add7().size(7) == Interval.m7
+  /// ChordPattern.augmentedTriad.size(9) == null
+  /// ```
+  Interval? size(int size) =>
+      intervals.firstWhereOrNull((interval) => interval.size == size);
+
+  /// Returns the symbol of this [ChordPattern].
+  String? get symbol {
+    final buffer = StringBuffer();
+    if (isAugmented) buffer.write('+');
+    if (isMajor) buffer.write('');
+    if (isMinor) buffer.write('min');
+
+    if (isDiminished) {
+      final seventh = size(7);
+      if (seventh != null) {
+        buffer.write(
+          switch (seventh.quality) {
+            ImperfectQuality.diminished => 'º',
+            ImperfectQuality.minor => 'ø',
+            _ => '',
+          },
+        );
+      } else {
+        buffer.write('dim');
+      }
+    }
+
+    if (intervals.first.size == 2) buffer.write('sus2');
+    if (intervals.first.size == 4) buffer.write('sus4');
+
+    for (final interval in modifiers) {
+      buffer.write(
+        switch (interval) {
+          Interval(size: 7, quality: ImperfectQuality.major) => ' maj',
+          Interval(size: 9 || 13, quality: ImperfectQuality.minor) => ' b',
+          Interval(size: 9 || 13, quality: ImperfectQuality.augmented) => ' #',
+          Interval(size: 11, quality: ImperfectQuality.augmented) => ' #',
+          Interval(size: 11, quality: ImperfectQuality.diminished) => ' b',
+          _ => ' ',
+        },
+      );
+      if (!isDiminished) buffer.write(interval.size);
+    }
+
+    return buffer.toString().trim();
+  }
+
   @override
   String toString() => '$abbreviation (${intervals.join(' ')})';
 
