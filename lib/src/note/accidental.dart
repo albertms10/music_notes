@@ -159,6 +159,28 @@ final class Accidental implements Comparable<Accidental> {
   bool operator ==(Object other) =>
       other is Accidental && semitones == other.semitones;
 
+  /// Adds [semitones] to this [Accidental].
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp + 1 == Accidental.doubleSharp
+  /// Accidental.flat + 2 == Accidental.sharp
+  /// Accidental.doubleFlat + 1 == Accidental.flat
+  /// ```
+  Accidental operator +(int semitones) =>
+      Accidental(this.semitones + semitones);
+
+  /// Subtracts [semitones] from this [Accidental].
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp - 1 == Accidental.natural
+  /// Accidental.flat - 2 == Accidental.tripleFlat
+  /// Accidental.doubleSharp - 1 == Accidental.sharp
+  /// ```
+  Accidental operator -(int semitones) =>
+      Accidental(this.semitones - semitones);
+
   @override
   int get hashCode => semitones.hashCode;
 

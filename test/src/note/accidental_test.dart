@@ -120,6 +120,22 @@ void main() {
       });
     });
 
+    group('operator +', () {
+      test('should add semitones to this Accidental', () {
+        expect(Accidental.sharp + 1, Accidental.doubleSharp);
+        expect(Accidental.flat + 2, Accidental.sharp);
+        expect(Accidental.doubleFlat + 1, Accidental.flat);
+      });
+    });
+
+    group('operator -', () {
+      test('should subtract semitones from this Accidental', () {
+        expect(Accidental.sharp - 1, Accidental.natural);
+        expect(Accidental.flat - 2, Accidental.tripleFlat);
+        expect(Accidental.doubleSharp - 1, Accidental.sharp);
+      });
+    });
+
     group('.hashCode', () {
       test('should ignore equal Accidental instances in a Set', () {
         final collection = {Accidental.natural, Accidental.flat};
