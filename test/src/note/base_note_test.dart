@@ -85,7 +85,7 @@ void main() {
         );
       });
 
-      test('should transpose this BaseNote enum item by Interval', () {
+      test('should transpose this BaseNote by Interval', () {
         expect(BaseNote.f.transposeBySize(-8), BaseNote.f);
         expect(BaseNote.g.transposeBySize(-3), BaseNote.e);
         expect(BaseNote.c.transposeBySize(-2), BaseNote.b);
