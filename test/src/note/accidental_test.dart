@@ -82,25 +82,25 @@ void main() {
       });
     });
 
-    group('.increment()', () {
+    group('.incrementBy()', () {
       test('should return the incremented Accidental', () {
-        expect(Accidental.flat.increment(-2), Accidental.sharp);
-        expect(Accidental.flat.increment(-1), Accidental.natural);
-        expect(Accidental.flat.increment(0), Accidental.flat);
-        expect(Accidental.flat.increment(1), Accidental.doubleFlat);
-        expect(Accidental.flat.increment(2), Accidental.tripleFlat);
+        expect(Accidental.flat.incrementBy(-2), Accidental.sharp);
+        expect(Accidental.flat.incrementBy(-1), Accidental.natural);
+        expect(Accidental.flat.incrementBy(0), Accidental.flat);
+        expect(Accidental.flat.incrementBy(1), Accidental.doubleFlat);
+        expect(Accidental.flat.incrementBy(2), Accidental.tripleFlat);
 
-        expect(Accidental.natural.increment(-2), Accidental.doubleFlat);
-        expect(Accidental.natural.increment(-1), Accidental.flat);
-        expect(Accidental.natural.increment(0), Accidental.natural);
-        expect(Accidental.natural.increment(1), Accidental.sharp);
-        expect(Accidental.natural.increment(2), Accidental.doubleSharp);
+        expect(Accidental.natural.incrementBy(-2), Accidental.doubleFlat);
+        expect(Accidental.natural.incrementBy(-1), Accidental.flat);
+        expect(Accidental.natural.incrementBy(0), Accidental.natural);
+        expect(Accidental.natural.incrementBy(1), Accidental.sharp);
+        expect(Accidental.natural.incrementBy(2), Accidental.doubleSharp);
 
-        expect(Accidental.sharp.increment(-2), Accidental.flat);
-        expect(Accidental.sharp.increment(-1), Accidental.natural);
-        expect(Accidental.sharp.increment(0), Accidental.sharp);
-        expect(Accidental.sharp.increment(1), Accidental.doubleSharp);
-        expect(Accidental.sharp.increment(2), Accidental.tripleSharp);
+        expect(Accidental.sharp.incrementBy(-2), Accidental.flat);
+        expect(Accidental.sharp.incrementBy(-1), Accidental.natural);
+        expect(Accidental.sharp.incrementBy(0), Accidental.sharp);
+        expect(Accidental.sharp.incrementBy(1), Accidental.doubleSharp);
+        expect(Accidental.sharp.incrementBy(2), Accidental.tripleSharp);
       });
     });
 
@@ -117,6 +117,22 @@ void main() {
         expect(Accidental.tripleFlat.toString(), 'Triple flat ♭𝄫 (-3)');
         expect(const Accidental(-4).toString(), '𝄫𝄫 (-4)');
         expect(const Accidental(-5).toString(), '♭𝄫𝄫 (-5)');
+      });
+    });
+
+    group('operator +', () {
+      test('should add semitones to this Accidental', () {
+        expect(Accidental.sharp + 1, Accidental.doubleSharp);
+        expect(Accidental.flat + 2, Accidental.sharp);
+        expect(Accidental.doubleFlat + 1, Accidental.flat);
+      });
+    });
+
+    group('operator -', () {
+      test('should subtract semitones from this Accidental', () {
+        expect(Accidental.sharp - 1, Accidental.natural);
+        expect(Accidental.flat - 2, Accidental.tripleFlat);
+        expect(Accidental.doubleSharp - 1, Accidental.sharp);
       });
     });
 
