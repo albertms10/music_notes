@@ -102,7 +102,7 @@ class Chord<T extends Scalable<T>>
   /// ```
   @override
   Chord<T> transposeBy(Interval interval) =>
-      Chord(items.map((item) => item.transposeBy(interval)).toList());
+      Chord([for (final item in items) item.transposeBy(interval)]);
 
   @override
   String toString() => '$root ${pattern.abbreviation} (${items.join(' ')})';
