@@ -93,6 +93,9 @@ void main() {
         expect(IntervalClass.tritone * -1, IntervalClass.tritone);
         expect(IntervalClass.M3 * 0, IntervalClass.P1);
         expect(IntervalClass.m3 * 2, IntervalClass.tritone);
+        expect(IntervalClass.m3 * -2, IntervalClass.tritone);
+        expect(IntervalClass.m2 * 3, IntervalClass.m3);
+        expect(IntervalClass.m2 * -3, IntervalClass.m3);
       });
     });
 
