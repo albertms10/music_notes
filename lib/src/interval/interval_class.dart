@@ -111,8 +111,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// IntervalClass.M2 * 0 == IntervalClass.P1
   /// IntervalClass.m3 * 2 == IntervalClass.tritone
   /// ```
-  IntervalClass operator *(int factor) =>
-      IntervalClass(semitones * factor.abs());
+  IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 
   @override
   String toString() => '{${spellings().join('|')}}';
