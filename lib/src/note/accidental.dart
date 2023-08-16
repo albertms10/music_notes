@@ -137,15 +137,16 @@ final class Accidental implements Comparable<Accidental> {
     return singleAccidentals + doubleAccidentals;
   }
 
-  /// Returns the incremented [Accidental] enum item of this by [n].
+  /// Returns this [Accidental] incremented by [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Accidental.flat.increment(2) == Accidental.tripleFlat
-  /// Accidental.sharp.increment(1) == Accidental.doubleSharp
-  /// Accidental.sharp.increment(-1) == Accidental.natural
+  /// Accidental.flat.incrementBy(2) == Accidental.tripleFlat
+  /// Accidental.sharp.incrementBy(1) == Accidental.doubleSharp
+  /// Accidental.sharp.incrementBy(-1) == Accidental.natural
   /// ```
-  Accidental increment(int n) => Accidental(semitones.incrementBy(n));
+  Accidental incrementBy(int semitones) =>
+      Accidental(this.semitones.incrementBy(semitones));
 
   @override
   String toString() => [
