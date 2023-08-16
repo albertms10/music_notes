@@ -320,7 +320,7 @@ final class ScalePattern {
     Interval addNextStep(int ordinal) => step(ordinal) + step(ordinal + 1);
 
     // Calculate the diatonic pattern from this Scale's `intervalSteps`.
-    return ChordPattern.intervalSteps([
+    return ChordPattern.fromIntervalSteps([
       addNextStep(scaleDegree.ordinal),
       addNextStep(scaleDegree.ordinal + 2),
     ]);
