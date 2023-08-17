@@ -83,6 +83,22 @@ void main() {
 
 For more detailed usage instructions and examples, please refer to the [API documentation](https://pub.dev/documentation/music_notes/latest/).
 
+## Testing
+
+Run tests with:
+
+```sh
+$ dart test test/main.dart
+```
+
+## Benchmarking
+
+Run benchmarks with:
+
+```sh
+$ dart benchmark/main.dart
+```
+
 ## Inspiration
 
 This library is inspired by a range of music theory projects.

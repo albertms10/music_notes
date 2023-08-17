@@ -13,4 +13,5 @@ dependencies:
   test: ^1.24.1
 
 dev_dependencies:
+  benchmark_harness: ^2.2.2
   very_good_analysis: ^5.0.0+1
