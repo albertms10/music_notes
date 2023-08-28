@@ -32,7 +32,7 @@ Define `Note`s from the musical scale:
 ```dart
 Note.c; // C
 Note.d; // D
-Note.f; // D
+Note.f; // F
 ```
 
 Alter them:
