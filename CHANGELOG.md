@@ -1,3 +1,37 @@
+## 0.12.0
+
+- ⚡️ perf(chord_pattern): call `sort` instead of creating a `SplayTreeSet` in [#232](https://github.com/albertms10/music_notes/pull/232)
+- ♻️ refactor(chord): reuse `augmented`, `major`, `minor`, `diminished` methods from `ChordPattern` in [#233](https://github.com/albertms10/music_notes/pull/233)
+- ♻️ refactor(scalable): extract private `_ScalableIterable` extension in [#234](https://github.com/albertms10/music_notes/pull/234)
+- 📖 docs(music_notes): add library-level documentation comment in [#235](https://github.com/albertms10/music_notes/pull/235)
+- ♻️ refactor: sort members following `diminished..augmented` order in [#236](https://github.com/albertms10/music_notes/pull/236)
+- 📖 docs: add full public member API documentation in [#237](https://github.com/albertms10/music_notes/pull/237)
+- ✨ feat(interval)!: simplify `toString` and `Quality.abbreviation` in [#238](https://github.com/albertms10/music_notes/pull/238)
+- 🥅 feat(quality): strengthen `parse` exception cases in [#239](https://github.com/albertms10/music_notes/pull/239)
+- 🥅 feat(positioned_note): strengthen `parse` exception cases in [#240](https://github.com/albertms10/music_notes/pull/240)
+- ♻️ refactor(iterable): rename `comparator` variable in [#241](https://github.com/albertms10/music_notes/pull/241)
+- ♻️ refactor(positioned_note): extract `octave` variable in `parse` to improve readability in [#242](https://github.com/albertms10/music_notes/pull/242)
+- ✨ refactor(pitch_class)!: rename `EnharmonicNote` → `PitchClass` in [#244](https://github.com/albertms10/music_notes/pull/244)
+- ✨ feat(pitch_class): add `integerNotation` getter in [#245](https://github.com/albertms10/music_notes/pull/245)
+- ✨ feat(pitch_class): move modulo operation to the constructor in [#246](https://github.com/albertms10/music_notes/pull/246)
+- ✨ feat(interval_class)!: rename `EnharmonicInterval` → `IntervalClass` in [#247](https://github.com/albertms10/music_notes/pull/247)
+- ♻️ refactor(int_extension): simplify modulo methods in [#249](https://github.com/albertms10/music_notes/pull/249)
+- ♻️ refactor(enharmonic): remove unnecessary interface in [#250](https://github.com/albertms10/music_notes/pull/250)
+- 💥 feat(tuning_system): generalize `cents` method expecting `ratio` instead of `semitones` in [#251](https://github.com/albertms10/music_notes/pull/251)
+- 🚀 feat(frequency): add `closestPositionedNote` method in [#252](https://github.com/albertms10/music_notes/pull/252)
+- ♻️ refactor(positioned_note): rename `equalTemperamentFrequency` reference parameters consistently in [#253](https://github.com/albertms10/music_notes/pull/253)
+- ✨ feat: add `toPitchClass` and `toIntervalClass` methods in [#254](https://github.com/albertms10/music_notes/pull/254)
+- ♻️ refactor(base_note): rewrite `transposeBySize` using `incrementBy` in [#255](https://github.com/albertms10/music_notes/pull/255)
+- ♻️ refactor(chord_pattern): rename `fromIntervalSteps` factory constructor in [#257](https://github.com/albertms10/music_notes/pull/257)
+- ♻️ refactor(scalable): rename `_intervalSteps` getters from `_ScalableIterable` in [#258](https://github.com/albertms10/music_notes/pull/258)
+- ⚡️ perf(interval_class): remove unnecessary `abs` call on `operator *` in [#259](https://github.com/albertms10/music_notes/pull/259)
+- ✨ feat(accidental): add `operator +-` in [#260](https://github.com/albertms10/music_notes/pull/260)
+- ⚡️ perf: rewrite `map` calls in favor of `for` loops in [#261](https://github.com/albertms10/music_notes/pull/261)
+- ⬆️ chore(deps): bump actions/checkout from 3.5.3 to 3.6.0 in [#263](https://github.com/albertms10/music_notes/pull/263)
+- 📖 docs(README): write comprehensive API walkthrough in [#243](https://github.com/albertms10/music_notes/pull/243)
+
+**Full Changelog**: [`v0.11.1...v0.12.0`](https://github.com/albertms10/music_notes/compare/v0.11.1...v0.12.0)
+
 ## 0.11.1
 
 - 📌 chore(pubspec): downgrade `test` to 1.24.1 to keep Flutter compatibility in [#231](https://github.com/albertms10/music_notes/pull/231)
