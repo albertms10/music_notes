@@ -75,7 +75,7 @@ Or turn it descending:
 Interval.M3.descending(); // desc M3
 ```
 
-Calculate the interval between two notes:
+Calculate the `Interval` between two notes:
 
 ```dart
 Note.c.interval(Note.g); // P5
@@ -131,6 +131,30 @@ KeySignature([Note.f.sharp]).tonalities.major; // G major
 KeySignature.fromDistance(-3).tonalities.minor; // C minor
 ```
 
+### Modes
+
+Get each `Mode`’s `ScalePattern`:
+
+```dart
+TonalMode.minor.scale; // ScalePattern.minor
+ModalMode.locrian.scale; // ScalePattern.locrian
+```
+
+Their [Dorian Brightness Quotient]:
+
+```dart
+ModalMode.lydian.brightness; // 3
+ModalMode.dorian.brightness; // 0
+ModalMode.aeolian.brightness; // -1
+```
+
+Or its mirrored version:
+
+```dart
+ModalMode.ionian.mirrored; // ModalMode.phrygian
+ModalMode.aeolian.mirrored; // ModalMode.mixolydian
+```
+
 ### Scales
 
 Create a `Scale` from a `ScalePattern`:
@@ -159,20 +183,28 @@ Note.c.major.scale.functionChord(
 
 ### Chords
 
-Create a `Chord` from a `ChordPattern`:
+Create a `Chord` from a series of `Note`s or from a `ChordPattern`:
 
 ```dart
+Chord([Note.a, Note.c.sharp, Note.e]); // A maj. (A C♯ E)
 ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
 // D♯ aug. (D♯ F𝄪 A𝄪 G♯ B♯)
 ```
 
-Or build id on top of a `Note`:
+Or build it on top of a `Note`:
 
 ```dart
 Note.f.minorTriad.add7().add9(ImperfectQuality.minor);
 // F min. (F A♭ C E♭ G♭)
 Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
 // F♭ dim. (F♭ A𝄫 C𝄫 E𝄫)
+```
+
+Or modify its root triad:
+
+```dart
+Note.g.minorTriad.major; // G maj. (G B D)
+Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 ```
 
 ### Frequencies
@@ -224,3 +256,5 @@ Contributions are welcome! If you encounter any issues or have suggestions for i
 ## License
 
 This package is released under the [BSD-3-Clause License](LICENSE).
+
+[Dorian Brightness Quotient]: https://mynewmicrophone.com/dorian-brightness-quotient
