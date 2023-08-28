@@ -25,12 +25,12 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.intervalSteps([Interval.m3, Interval.M3])
+  /// ChordPattern.fromIntervalSteps([Interval.m3, Interval.M3])
   ///   == ChordPattern.minorTriad
-  /// ChordPattern.intervalSteps([Interval.M3, Interval.M3])
+  /// ChordPattern.fromIntervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
-  factory ChordPattern.intervalSteps(List<Interval> intervalSteps) =>
+  factory ChordPattern.fromIntervalSteps(List<Interval> intervalSteps) =>
       ChordPattern(
         intervalSteps.skip(1).fold(
           [intervalSteps.first],

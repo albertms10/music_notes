@@ -28,7 +28,7 @@ final class PositionedNote
   static final RegExp _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final RegExp _helmholtzNotationRegExp =
       RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
-          '(${_primeSymbols.map((symbol) => '$symbol+').join('|')})?\$');
+          '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
   /// Parse [source] as a [PositionedNote] and return its value.
   ///

@@ -81,7 +81,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.c.sharp == const Note(BaseNote.c, Accidental.sharp)
   /// Note.a.sharp == const Note(BaseNote.a, Accidental.sharp)
   /// ```
-  Note get sharp => Note(baseNote, Accidental(accidental.semitones + 1));
+  Note get sharp => Note(baseNote, accidental + 1);
 
   /// Returns this [Note] flattened by 1 semitone.
   ///
@@ -90,7 +90,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.e.flat == const Note(BaseNote.e, Accidental.flat)
   /// Note.f.flat == const Note(BaseNote.f, Accidental.flat)
   /// ```
-  Note get flat => Note(baseNote, Accidental(accidental.semitones - 1));
+  Note get flat => Note(baseNote, accidental - 1);
 
   /// Returns the [TonalMode.major] [Tonality] from this [Note].
   ///

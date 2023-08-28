@@ -3,20 +3,20 @@ import 'package:test/test.dart';
 
 void main() {
   group('ChordPattern', () {
-    group('.intervalSteps()', () {
+    group('.fromIntervalSteps()', () {
       test('should create a new ChordPattern from interval steps', () {
         expect(
-          ChordPattern.intervalSteps(const [Interval.m3, Interval.M3]),
+          ChordPattern.fromIntervalSteps(const [Interval.m3, Interval.M3]),
           ChordPattern.minorTriad,
         );
         expect(
-          ChordPattern.intervalSteps(
+          ChordPattern.fromIntervalSteps(
             const [Interval.M3, Interval.M3, Interval.m3],
           ),
           ChordPattern.augmentedTriad.add7(ImperfectQuality.major),
         );
         expect(
-          ChordPattern.intervalSteps(
+          ChordPattern.fromIntervalSteps(
             const [Interval.M3, Interval.m3, Interval.P5],
           ),
           ChordPattern.majorTriad.add9(),

@@ -29,8 +29,8 @@ enum BaseNote {
   /// Creates a new [BaseNote] from [semitones].
   const BaseNote(this.semitones);
 
-  /// Returns a [BaseNote] enum item that matches with [semitones]
-  /// as in [BaseNote], otherwise returns `null`.
+  /// Returns a [BaseNote] that matches with [semitones] as in [BaseNote],
+  /// otherwise returns `null`.
   ///
   /// Example:
   /// ```dart
@@ -42,7 +42,7 @@ enum BaseNote {
         (note) => semitones % chromaticDivisions == note.semitones,
       );
 
-  /// Returns a [BaseNote] enum item that matches with [ordinal].
+  /// Returns a [BaseNote] that matches with [ordinal].
   ///
   /// Example:
   /// ```dart
@@ -75,7 +75,7 @@ enum BaseNote {
     }
   }
 
-  /// Returns the ordinal number of this [BaseNote] enum item.
+  /// Returns the ordinal number of this [BaseNote].
   ///
   /// Example:
   /// ```dart
@@ -85,8 +85,8 @@ enum BaseNote {
   /// ```
   int get ordinal => BaseNote.values.indexOf(this) + 1;
 
-  /// Returns the [Interval.size] that conforms between this [BaseNote] enum
-  /// item and [other].
+  /// Returns the [Interval.size] that conforms between this [BaseNote] and
+  /// [other].
   ///
   /// Example:
   /// ```dart
@@ -99,8 +99,7 @@ enum BaseNote {
       (ordinal > other.ordinal ? values.length : 0) +
       1;
 
-  /// Returns the difference in semitones between this [BaseNote] enum item and
-  /// [other].
+  /// Returns the difference in semitones between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
@@ -110,8 +109,8 @@ enum BaseNote {
   /// ```
   int difference(BaseNote other) => other.semitones - semitones;
 
-  /// Returns the positive difference in semitones between this [BaseNote] enum
-  /// item and [other].
+  /// Returns the positive difference in semitones between this [BaseNote] and
+  /// [other].
   ///
   /// When [difference] would return a negative value, this method returns the
   /// difference with [other] being in the next octave.
@@ -130,7 +129,7 @@ enum BaseNote {
         : differenceWithOther;
   }
 
-  /// Returns this [BaseNote] enum item transposed by interval [size].
+  /// Returns this [BaseNote] transposed by interval [size].
   ///
   /// Example:
   /// ```dart
@@ -141,6 +140,6 @@ enum BaseNote {
   BaseNote transposeBySize(int size) {
     assert(size != 0, 'Size must be non-zero');
 
-    return BaseNote.fromOrdinal(ordinal + (size.abs() - 1) * size.sign);
+    return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
   }
 }
