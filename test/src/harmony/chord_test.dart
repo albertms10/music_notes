@@ -332,8 +332,7 @@ void main() {
               .transposeBy(Interval.A4),
           Chord([
             Note.c.sharp.sharp.inOctave(4),
-            // TODO(albertms10): Failing test: should be `.inOctave(4)`.
-            Note.e.sharp.sharp.inOctave(3),
+            Note.e.sharp.sharp.inOctave(4),
             Note.g.sharp.sharp.sharp.inOctave(4),
             Note.b.sharp.inOctave(4),
             Note.d.sharp.inOctave(5),

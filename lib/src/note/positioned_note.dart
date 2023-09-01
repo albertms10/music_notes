@@ -90,7 +90,8 @@ final class PositionedNote
   /// Example:
   /// ```dart
   /// Note.a.inOctave(4).semitones == 58
-  /// Note.a.inOctave(2).semitones == 34
+  /// Note.b.sharp.inOctave(3).semitones == 48
+  /// Note.c.inOctave(4).semitones == 48
   /// Note.c.inOctave(0).semitones == 1
   /// ```
   int get semitones => note.semitones + octave * chromaticDivisions;
