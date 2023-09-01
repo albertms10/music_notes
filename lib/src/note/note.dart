@@ -60,9 +60,10 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```dart
   /// Note.d.semitones == 2
   /// Note.f.sharp.semitones == 6
+  /// Note.b.sharp.semitones == 12
+  /// Note.c.flat.semitones == -1
   /// ```
-  int get semitones =>
-      (baseNote.semitones + accidental.semitones) % chromaticDivisions;
+  int get semitones => baseNote.semitones + accidental.semitones;
 
   /// Returns the difference in semitones between this [Note] and [other].
   ///

@@ -268,6 +268,10 @@ void main() {
           );
 
           expect(
+            Note.b.sharp.inOctave(3).interval(Note.c.inOctave(4)),
+            Interval.d2,
+          );
+          expect(
             Note.c.inOctave(3).interval(Note.d.flat.flat.inOctave(3)),
             Interval.d2,
           );
@@ -360,6 +364,10 @@ void main() {
             Note.b.inOctave(4).interval(Note.a.sharp.inOctave(5)),
             Interval.M7,
           );
+          expect(
+            Note.c.inOctave(4).interval(Note.b.sharp.inOctave(4)),
+            Interval.A7,
+          );
 
           expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
           expect(
@@ -378,7 +386,7 @@ void main() {
           );
 
           // TODO(albertms10): add test case for:
-          //  `Note.c.inOctave(4).interval(Note.b.sharp.inOctave(4))`.
+          //  `Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3))`.
         },
       );
     });
@@ -414,6 +422,10 @@ void main() {
         expect(
           Note.c.inOctave(4).transposeBy(-Interval.d2),
           Note.b.sharp.inOctave(3),
+        );
+        expect(
+          Note.c.flat.inOctave(4).transposeBy(-Interval.d2),
+          Note.b.inOctave(3),
         );
         expect(
           Note.c.inOctave(6).transposeBy(Interval.m2),
@@ -982,15 +994,17 @@ void main() {
           Note.b.flat.inOctave(5),
           Note.c.inOctave(4),
           Note.d.inOctave(2),
+          Note.b.flat.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.b.sharp.inOctave(4),
         ]);
         expect(orderedSet.toList(), [
           Note.d.inOctave(2),
           Note.c.inOctave(4),
-          Note.b.sharp.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.a.flat.inOctave(4),
+          Note.b.flat.inOctave(4),
+          Note.b.sharp.inOctave(4),
           Note.b.flat.inOctave(5),
         ]);
       });

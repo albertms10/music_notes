@@ -27,7 +27,7 @@ void main() {
 
     group('.semitones', () {
       test('should return the semitones value of this Note', () {
-        expect(Note.b.sharp.semitones, 0);
+        expect(Note.c.flat.semitones, -1);
         expect(Note.c.semitones, 0);
         expect(Note.c.sharp.semitones, 1);
         expect(Note.d.flat.semitones, 1);
@@ -45,7 +45,7 @@ void main() {
         expect(Note.a.sharp.semitones, 10);
         expect(Note.b.flat.semitones, 10);
         expect(Note.b.semitones, 11);
-        expect(Note.c.flat.semitones, 11);
+        expect(Note.b.sharp.semitones, 12);
       });
     });
 
@@ -471,6 +471,7 @@ void main() {
         expect(Note.c.interval(Note.c.sharp), Interval.A1);
         expect(Note.f.flat.interval(Note.f), Interval.A1);
 
+        expect(Note.b.sharp.interval(Note.c), Interval.d2);
         expect(Note.c.interval(Note.d.flat.flat), Interval.d2);
         expect(Note.f.flat.interval(Note.g.flat.flat), Interval.m2);
         expect(Note.c.interval(Note.d.flat), Interval.m2);
@@ -642,19 +643,21 @@ void main() {
           Note.e.flat,
           Note.d,
           Note.d.sharp,
+          Note.c.flat,
           Note.g,
           Note.g.sharp,
           Note.b.sharp,
         ]);
         expect(orderedSet.toList(), [
+          Note.c.flat,
           Note.c,
-          Note.b.sharp,
           Note.d,
           Note.d.sharp,
           Note.e.flat,
           Note.g,
           Note.g.sharp,
           Note.a.flat,
+          Note.b.sharp,
         ]);
       });
 
