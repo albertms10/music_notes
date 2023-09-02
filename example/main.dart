@@ -47,7 +47,6 @@ void main() {
   Note.c.minor.relative; // E♭ major
 
   // Key signatures
-
   KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
 
