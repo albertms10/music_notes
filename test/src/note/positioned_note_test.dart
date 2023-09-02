@@ -901,227 +901,164 @@ void main() {
       });
     });
 
-    group('.equalTemperamentFrequency()', () {
-      test(
-        'should return the Frequency of this PositionedNote from 440 Hz',
-        () {
-          expect(
-            Note.c.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(261.63, 0.01),
-          );
-          expect(
-            Note.c.sharp.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(277.18, 0.01),
-          );
-          expect(
-            Note.d.flat.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(277.18, 0.01),
-          );
-          expect(
-            Note.d.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(293.66, 0.01),
-          );
-          expect(
-            Note.d.sharp.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(311.13, 0.01),
-          );
-          expect(
-            Note.e.flat.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(311.13, 0.01),
-          );
-          expect(
-            Note.e.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(329.63, 0.01),
-          );
-          expect(
-            Note.f.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(349.23, 0.01),
-          );
-          expect(
-            Note.f.sharp.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(369.99, 0.01),
-          );
-          expect(
-            Note.g.flat.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(369.99, 0.01),
-          );
-          expect(
-            Note.g.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(392, 0.01),
-          );
-          expect(
-            Note.g.sharp.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(415.3, 0.01),
-          );
-          expect(
-            Note.a.flat.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(415.3, 0.01),
-          );
-          expect(Note.a.inOctave(4).equalTemperamentFrequency().hertz, 440);
-          expect(
-            Note.a.sharp.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(466.16, 0.01),
-          );
-          expect(
-            Note.b.flat.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(466.16, 0.01),
-          );
-          expect(
-            Note.b.inOctave(4).equalTemperamentFrequency().hertz,
-            closeTo(493.88, 0.01),
-          );
-        },
-      );
+    group('.frequency()', () {
+      test('should return the Frequency of this PositionedNote at 440 Hz', () {
+        expect(
+          Note.c.inOctave(4).frequency(),
+          const Frequency(261.6255653005986),
+        );
+        expect(
+          Note.c.sharp.inOctave(4).frequency(),
+          const Frequency(277.1826309768721),
+        );
+        expect(
+          Note.d.flat.inOctave(4).frequency(),
+          const Frequency(277.1826309768721),
+        );
+        expect(
+          Note.d.inOctave(4).frequency(),
+          const Frequency(293.6647679174076),
+        );
+        expect(
+          Note.d.sharp.inOctave(4).frequency(),
+          const Frequency(311.1269837220809),
+        );
+        expect(
+          Note.e.flat.inOctave(4).frequency(),
+          const Frequency(311.1269837220809),
+        );
+        expect(
+          Note.e.inOctave(4).frequency(),
+          const Frequency(329.6275569128699),
+        );
+        expect(
+          Note.f.inOctave(4).frequency(),
+          const Frequency(349.2282314330039),
+        );
+        expect(
+          Note.f.sharp.inOctave(4).frequency(),
+          const Frequency(369.9944227116344),
+        );
+        expect(
+          Note.g.flat.inOctave(4).frequency(),
+          const Frequency(369.9944227116344),
+        );
+        expect(
+          Note.g.inOctave(4).frequency(),
+          const Frequency(391.99543598174927),
+        );
+        expect(
+          Note.g.sharp.inOctave(4).frequency(),
+          const Frequency(415.3046975799451),
+        );
+        expect(
+          Note.a.flat.inOctave(4).frequency(),
+          const Frequency(415.3046975799451),
+        );
+        expect(Note.a.inOctave(4).frequency(), const Frequency(440));
+        expect(
+          Note.a.sharp.inOctave(4).frequency(),
+          const Frequency(466.1637615180899),
+        );
+        expect(
+          Note.b.flat.inOctave(4).frequency(),
+          const Frequency(466.1637615180899),
+        );
+        expect(
+          Note.b.inOctave(4).frequency(),
+          const Frequency(493.8833012561241),
+        );
+      });
 
-      test(
-        'should return the Frequency of this PositionedNote from 438 Hz',
-        () {
-          const frequency = Frequency(438);
-          expect(
-            Note.c
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(260.44, 0.01),
-          );
-          expect(
-            Note.c.sharp
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(275.92, 0.01),
-          );
-          expect(
-            Note.d.flat
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(275.92, 0.01),
-          );
-          expect(
-            Note.d
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(292.33, 0.01),
-          );
-          expect(
-            Note.d.sharp
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(309.71, 0.01),
-          );
-          expect(
-            Note.e.flat
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(309.71, 0.01),
-          );
-          expect(
-            Note.e
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(328.13, 0.01),
-          );
-          expect(
-            Note.f
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(347.64, 0.01),
-          );
-          expect(
-            Note.f.sharp
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(368.31, 0.01),
-          );
-          expect(
-            Note.g.flat
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(368.31, 0.01),
-          );
-          expect(
-            Note.g
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(390.21, 0.01),
-          );
-          expect(
-            Note.g.sharp
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(413.42, 0.01),
-          );
-          expect(
-            Note.a.flat
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(413.42, 0.01),
-          );
-          expect(
-            Note.a
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            438,
-          );
-          expect(
-            Note.a.sharp
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(464.04, 0.01),
-          );
-          expect(
-            Note.b.flat
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(464.04, 0.01),
-          );
-          expect(
-            Note.b
-                .inOctave(4)
-                .equalTemperamentFrequency(referenceFrequency: frequency)
-                .hertz,
-            closeTo(491.64, 0.01),
-          );
-        },
-      );
+      test('should return the Frequency of this PositionedNote at 438 Hz', () {
+        const frequency = Frequency(438);
+        expect(
+          Note.c.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(260.4363581855959),
+        );
+        expect(
+          Note.c.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(275.92270992697723),
+        );
+        expect(
+          Note.d.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(275.92270992697723),
+        );
+        expect(
+          Note.d.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(292.3299280632375),
+        );
+        expect(
+          Note.d.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(309.7127701597078),
+        );
+        expect(
+          Note.e.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(309.7127701597078),
+        );
+        expect(
+          Note.e.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(328.1292498359933),
+        );
+        expect(
+          Note.f.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(347.6408303810357),
+        );
+        expect(
+          Note.f.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(368.31262988112695),
+        );
+        expect(
+          Note.g.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(368.31262988112695),
+        );
+        expect(
+          Note.g.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(390.2136385454686),
+        );
+        expect(
+          Note.g.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(413.41694895458176),
+        );
+        expect(
+          Note.a.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(413.41694895458176),
+        );
+        expect(
+          Note.a.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(438),
+        );
+        expect(
+          Note.a.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(464.0448353293713),
+        );
+        expect(
+          Note.b.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(464.0448353293713),
+        );
+        expect(
+          Note.b.inOctave(4).frequency(referenceFrequency: frequency),
+          const Frequency(491.63837715950535),
+        );
+      });
 
       test(
         'should return the Frequency of this PositionedNote from 256 Hz (C4)',
         () {
           const frequency = Frequency(256);
           expect(
-            Note.c
-                .inOctave(4)
-                .equalTemperamentFrequency(
+            Note.c.inOctave(4).frequency(
                   referenceFrequency: frequency,
                   referenceNote: Note.c.inOctave(4),
-                )
-                .hertz,
-            256,
+                ),
+            const Frequency(256),
           );
           expect(
-            Note.a
-                .inOctave(4)
-                .equalTemperamentFrequency(
+            Note.a.inOctave(4).frequency(
                   referenceFrequency: frequency,
                   referenceNote: Note.c.inOctave(4),
-                )
-                .hertz,
-            closeTo(430.53, 0.01),
+                ),
+            const Frequency(430.5389646099018),
           );
         },
       );

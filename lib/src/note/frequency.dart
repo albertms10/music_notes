@@ -21,8 +21,8 @@ class Frequency implements Comparable<Frequency> {
   /// Example:
   /// ```dart
   /// const Frequency(880).isHumanAudible == true
-  /// Note.a.inOctave(4).equalTemperamentFrequency().isHumanAudible == true
-  /// Note.g.inOctave(12).equalTemperamentFrequency(const Frequency(442))
+  /// Note.a.inOctave(4).frequency().isHumanAudible == true
+  /// Note.g.inOctave(12).frequency(const Frequency(442))
   ///   .isHumanAudible == false
   /// ```
   bool get isHumanAudible {
@@ -45,13 +45,13 @@ class Frequency implements Comparable<Frequency> {
   ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
   /// ```
   ///
-  /// This method and [PositionedNote.equalTemperamentFrequency] are inverses of
-  /// each other for a specific input `frequency`.
+  /// This method and [PositionedNote.frequency] are inverses of each other for
+  /// a specific input `frequency`.
   ///
   /// ```dart
   /// const frequency = Frequency(442);
-  /// final (note, cents: _, :hertz) = frequency.closestPositionedNote();
-  /// note.equalTemperamentFrequency() == Frequency(frequency.hertz - hertz);
+  /// final (closestNote, cents: _, :hertz) = frequency.closestPositionedNote();
+  /// closestNote.frequency() == Frequency(frequency.hertz - hertz);
   /// ```
   ClosestPositionedNote closestPositionedNote({
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
@@ -65,7 +65,7 @@ class Frequency implements Comparable<Frequency> {
         .resolveClosestSpelling()
         .inOctave(PositionedNote.octaveFromSemitones(semitones));
 
-    final closestNoteFrequency = closestNote.equalTemperamentFrequency(
+    final closestNoteFrequency = closestNote.frequency(
       referenceNote: referenceNote,
       referenceFrequency: referenceFrequency,
     );
@@ -92,7 +92,7 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(220).harmonic(1) == const Frequency(440)
   /// const Frequency(880).harmonic(-3) == const Frequency(220)
   ///
-  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonic(3)
+  /// Note.c.inOctave(1).frequency().harmonic(3)
   ///   .closestPositionedNote().displayString() == 'E3-14'
   /// ```
   Frequency harmonic(int index) =>
@@ -103,13 +103,13 @@ class Frequency implements Comparable<Frequency> {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(3).equalTemperamentFrequency().harmonics(upTo: 2)
+  /// Note.a.inOctave(3).frequency().harmonics(upTo: 2)
   ///   == {const Frequency(220), const Frequency(440), const Frequency(660)}
   ///
-  /// Note.a.inOctave(5).equalTemperamentFrequency().harmonics(upTo: -2)
+  /// Note.a.inOctave(5).frequency().harmonics(upTo: -2)
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
   ///
-  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonics(upTo: 7)
+  /// Note.c.inOctave(1).frequency().harmonics(upTo: 7)
   ///   .map((frequency) => frequency.closestPositionedNote().displayString())
   ///   .toSet()
   ///   == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}

@@ -256,7 +256,7 @@ void main() {
           expect(
               Note.c
                   .inOctave(1)
-                  .equalTemperamentFrequency()
+                  .frequency()
                   .harmonics(upToIndex: 15)
                   .map(
                     (frequency) =>

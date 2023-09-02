@@ -213,8 +213,8 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 Get the `Frequency` of a `PositionedNote`:
 
 ```dart
-Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
-Note.b.flat.inOctave(4).equalTemperamentFrequency(
+Note.a.inOctave(4).frequency(); // 440.0 Hz
+Note.b.flat.inOctave(4).frequency(
       referenceNote: Note.c.inOctave(4),
       referenceFrequency: const Frequency(256),
     ); // 456.1401436878537 Hz
@@ -232,7 +232,7 @@ And combining both methods, the harmonic series of a given `PositionedNote`:
 ```dart
 Note.c
     .inOctave(1)
-    .equalTemperamentFrequency()
+    .frequency()
     .harmonics(upToIndex: 15)
     .map((frequency) => frequency.closestPositionedNote().displayString())
     .toSet();
