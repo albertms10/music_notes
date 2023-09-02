@@ -253,6 +253,241 @@ void main() {
       });
     });
 
+    group('.respellByBaseNote()', () {
+      test('should return this PositionedNote respelled by BaseNote', () {
+        expect(
+          Note.c.sharp.inOctave(4).respellByBaseNote(BaseNote.d),
+          Note.d.flat.inOctave(4),
+        );
+        expect(
+          Note.e.flat.inOctave(3).respellByBaseNote(BaseNote.d),
+          Note.d.sharp.inOctave(3),
+        );
+        expect(
+          Note.e.sharp.inOctave(6).respellByBaseNote(BaseNote.f),
+          Note.f.inOctave(6),
+        );
+        expect(
+          Note.f.flat.inOctave(4).respellByBaseNote(BaseNote.e),
+          Note.e.inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(4).respellByBaseNote(BaseNote.b),
+          Note.b.sharp.inOctave(3),
+        );
+        expect(
+          Note.c.inOctave(5).respellByBaseNote(BaseNote.d),
+          Note.d.flat.flat.inOctave(5),
+        );
+        expect(
+          Note.b.inOctave(4).respellByBaseNote(BaseNote.c),
+          Note.c.flat.inOctave(5),
+        );
+        expect(
+          Note.b.inOctave(4).respellByBaseNote(BaseNote.a),
+          Note.a.sharp.sharp.inOctave(4),
+        );
+      });
+    });
+
+    group('.respellByBaseNoteDistance()', () {
+      test('should return this PositionedNote respelled by BaseNote', () {
+        expect(
+          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(1),
+          Note.d.flat.inOctave(4),
+        );
+        expect(
+          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.b.sharp.sharp.inOctave(3),
+        );
+        expect(
+          Note.d.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.sharp.inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(4).respellByBaseNoteDistance(1),
+          Note.d.flat.flat.inOctave(4),
+        );
+        expect(
+          Note.c.inOctave(3).respellByBaseNoteDistance(-1),
+          Note.b.sharp.inOctave(2),
+        );
+        expect(
+          Note.c.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.b.inOctave(3),
+        );
+        expect(
+          Note.d.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.sharp.sharp.inOctave(4),
+        );
+        expect(
+          Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.f.sharp.inOctave(4),
+        );
+        expect(
+          Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2),
+          Note.g.flat.flat.inOctave(4),
+        );
+        expect(
+          Note.f.inOctave(4).respellByBaseNoteDistance(7),
+          Note.f.inOctave(4),
+        );
+
+        expect(
+          Note.f.inOctave(4).respellByBaseNoteDistance(2),
+          const Note(BaseNote.a, Accidental(-4)).inOctave(4),
+        );
+        expect(
+          Note.g.inOctave(4).respellByBaseNoteDistance(3),
+          const Note(BaseNote.c, Accidental(-5)).inOctave(5),
+        );
+        expect(
+          Note.f.inOctave(4).respellByBaseNoteDistance(4),
+          const Note(BaseNote.c, Accidental(5)).inOctave(4),
+        );
+        expect(
+          Note.d.inOctave(4).respellByBaseNoteDistance(-3),
+          const Note(BaseNote.a, Accidental(5)).inOctave(3),
+        );
+      });
+    });
+
+    group('.respelledUpwards', () {
+      test('should return this PositionedNote respelled upwards', () {
+        expect(
+          Note.c.inOctave(4).respelledUpwards,
+          Note.d.flat.flat.inOctave(4),
+        );
+        expect(
+          Note.c.sharp.inOctave(4).respelledUpwards,
+          Note.d.flat.inOctave(4),
+        );
+        expect(
+          Note.d.flat.inOctave(6).respelledUpwards,
+          Note.e.flat.flat.flat.inOctave(6),
+        );
+        expect(
+          Note.c.sharp.sharp.inOctave(8).respelledUpwards,
+          Note.d.inOctave(8),
+        );
+        expect(Note.b.sharp.inOctave(4).respelledUpwards, Note.c.inOctave(5));
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('should return this PositionedNote respelled downwards', () {
+        expect(Note.c.inOctave(4).respelledDownwards, Note.b.sharp.inOctave(3));
+        expect(
+          Note.c.sharp.inOctave(3).respelledDownwards,
+          Note.b.sharp.sharp.inOctave(2),
+        );
+        expect(
+          Note.d.flat.inOctave(5).respelledDownwards,
+          Note.c.sharp.inOctave(5),
+        );
+        expect(
+          Note.d.flat.flat.inOctave(4).respelledDownwards,
+          Note.c.inOctave(4),
+        );
+        expect(Note.c.flat.inOctave(7).respelledDownwards, Note.b.inOctave(6));
+      });
+    });
+
+    group('.respellByBaseAccidental()', () {
+      test('should return this PositionedNote respelled by Accidental', () {
+        expect(
+          Note.a.sharp.inOctave(4).respellByAccidental(Accidental.flat),
+          Note.b.flat.inOctave(4),
+        );
+        expect(
+          Note.g.flat.inOctave(3).respellByAccidental(Accidental.sharp),
+          Note.f.sharp.inOctave(3),
+        );
+        expect(
+          Note.c.flat.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.b.inOctave(1),
+        );
+        expect(
+          Note.b.sharp.inOctave(5).respellByAccidental(Accidental.natural),
+          Note.c.inOctave(6),
+        );
+        expect(
+          Note.f.flat.inOctave(7).respellByAccidental(Accidental.natural),
+          Note.e.inOctave(7),
+        );
+        expect(
+          Note.e.sharp.inOctave(4).respellByAccidental(Accidental.natural),
+          Note.f.inOctave(4),
+        );
+        expect(
+          Note.f.inOctave(4).respellByAccidental(Accidental.doubleFlat),
+          Note.g.flat.flat.inOctave(4),
+        );
+        expect(
+          Note.a.inOctave(3).respellByAccidental(Accidental.doubleSharp),
+          Note.g.sharp.sharp.inOctave(3),
+        );
+      });
+
+      test('should return null when no respelling is possible', () {
+        expect(
+          Note.d.inOctave(4).respellByAccidental(Accidental.sharp),
+          isNull,
+        );
+        expect(Note.d.inOctave(2).respellByAccidental(Accidental.flat), isNull);
+        expect(
+          Note.e.inOctave(3).respellByAccidental(Accidental.doubleFlat),
+          isNull,
+        );
+        expect(
+          Note.f.inOctave(-1).respellByAccidental(Accidental.doubleSharp),
+          isNull,
+        );
+        expect(
+          Note.b.inOctave(0).respellByAccidental(Accidental.doubleFlat),
+          isNull,
+        );
+        expect(
+          Note.c.inOctave(7).respellByAccidental(Accidental.doubleSharp),
+          isNull,
+        );
+      });
+    });
+
+    group('.respelledSimple', () {
+      test(
+        'should return this PositionedNote with the simplest Accidental '
+        'spelling',
+        () {
+          expect(Note.c.inOctave(4).respelledSimple, Note.c.inOctave(4));
+          expect(Note.b.inOctave(5).respelledSimple, Note.b.inOctave(5));
+          expect(
+            Note.d.flat.inOctave(7).respelledSimple,
+            Note.d.flat.inOctave(7),
+          );
+          expect(
+            Note.c.sharp.inOctave(3).respelledSimple,
+            Note.c.sharp.inOctave(3),
+          );
+          expect(Note.e.sharp.inOctave(4).respelledSimple, Note.f.inOctave(4));
+          expect(Note.c.flat.inOctave(4).respelledSimple, Note.b.inOctave(3));
+          expect(Note.b.sharp.inOctave(2).respelledSimple, Note.c.inOctave(3));
+          expect(
+            Note.g.sharp.sharp.inOctave(5).respelledSimple,
+            Note.a.inOctave(5),
+          );
+          expect(
+            Note.a.flat.flat.flat.inOctave(4).respelledSimple,
+            Note.g.flat.inOctave(4),
+          );
+          expect(
+            Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple,
+            Note.g.sharp.inOctave(4),
+          );
+        },
+      );
+    });
+
     group('.interval()', () {
       test(
         'should return the Interval between this PositionedNote and other',
