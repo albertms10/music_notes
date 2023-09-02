@@ -28,15 +28,15 @@ void main() {
       test(
         'should return the number of cents for ratio in this EqualTemperament',
         () {
-          var ratio = const EqualTemperament.edo12().ratio;
-          expect(TuningSystem.cents(ratio()), closeTo(100, 0.01));
-          expect(TuningSystem.cents(ratio(6)), closeTo(600, 0.01));
-          expect(TuningSystem.cents(ratio(12)), closeTo(1200, 0.01));
+          const edo12 = EqualTemperament.edo12();
+          expect(TuningSystem.cents(edo12.ratio()), closeTo(100, 0.01));
+          expect(TuningSystem.cents(edo12.ratio(6)), closeTo(600, 0.01));
+          expect(TuningSystem.cents(edo12.ratio(12)), closeTo(1200, 0.01));
 
-          ratio = const EqualTemperament.edo19().ratio;
-          expect(TuningSystem.cents(ratio()), closeTo(63.16, 0.01));
-          expect(TuningSystem.cents(ratio(10)), closeTo(631.58, 0.01));
-          expect(TuningSystem.cents(ratio(19)), closeTo(1200, 0.01));
+          const edo19 = EqualTemperament.edo19();
+          expect(TuningSystem.cents(edo19.ratio()), closeTo(63.16, 0.01));
+          expect(TuningSystem.cents(edo19.ratio(10)), closeTo(631.58, 0.01));
+          expect(TuningSystem.cents(edo19.ratio(19)), closeTo(1200, 0.01));
         },
       );
     });
