@@ -1,0 +1,82 @@
+part of '../../music_notes.dart';
+
+/// A representation of an equal temperament tuning system.
+@immutable
+class EqualTemperament extends TuningSystem {
+  /// The equal divisions of the octave between each [BaseNote] and the next
+  /// one.
+  final Map<BaseNote, int> divisions;
+
+  /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
+  const EqualTemperament.edo12({
+    super.referenceNote = const PositionedNote(Note.a, octave: 4),
+  }) : divisions = const {
+          BaseNote.c: 2,
+          BaseNote.d: 2,
+          BaseNote.e: 1,
+          BaseNote.f: 2,
+          BaseNote.g: 2,
+          BaseNote.a: 2,
+          BaseNote.b: 1,
+        };
+
+  /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
+  const EqualTemperament.edo19({
+    super.referenceNote = const PositionedNote(Note.a, octave: 4),
+  }) : divisions = const {
+          BaseNote.c: 3,
+          BaseNote.d: 3,
+          BaseNote.e: 2,
+          BaseNote.f: 3,
+          BaseNote.g: 3,
+          BaseNote.a: 3,
+          BaseNote.b: 2,
+        };
+
+  /// Returns the equal divisions of the octave of this [EqualTemperament].
+  ///
+  /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
+  int get octaveDivisions =>
+      divisions.values.reduce((value, element) => value + element);
+
+  /// Returns the [semitones] ratio for this [EqualTemperament].
+  ///
+  /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
+  ///
+  /// Example:
+  /// ```dart
+  /// EqualTemperament.edo12.ratio() == 1.059463
+  /// EqualTemperament.edo19.ratio() == 1.037155
+  /// ```
+  double ratio([int semitones = 1]) =>
+      math.pow(2, semitones / octaveDivisions).toDouble();
+
+  @override
+  double ratioFromNote(PositionedNote note) =>
+      ratio(referenceNote.difference(note));
+
+  @override
+  double centsFromNote(PositionedNote note) =>
+      TuningSystem.cents(ratio(referenceNote.difference(note)));
+
+  /// Returns the number of cents for the generator at [Interval.P5] in this
+  /// [EqualTemperament].
+  ///
+  /// Example:
+  /// ```dart
+  /// EqualTemperament.edo12.generatorCents == 700
+  /// EqualTemperament.edo19.generatorCents == 694.737
+  /// ```
+  ///
+  /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
+  @override
+  double get generatorCents {
+    var semitonesUpToP5 = 0;
+    for (final divisionEntry in divisions.entries) {
+      if (divisionEntry.key == BaseNote.g) break;
+      semitonesUpToP5 += divisionEntry.value;
+    }
+
+    return TuningSystem.cents(ratio(semitonesUpToP5));
+  }
+}
