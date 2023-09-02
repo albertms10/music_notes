@@ -40,7 +40,7 @@ Alter them:
 ```dart
 Note.c.sharp; // C♯
 Note.d.flat; // D♭
-Note.g.flat.flat // G𝄫
+Note.g.flat.flat; // G𝄫
 Note.f.sharp.sharp.sharp; // F𝄪♯
 ```
 
@@ -56,7 +56,7 @@ Or just parse them in both scientific and Helmholtz notations:
 ```dart
 Note.parse('a#'); // A♯
 PositionedNote.parse("g''"); // G5
-PositionedNote.parse('Bb3'); // B♭3
+PositionedNote.parse('Eb3'); // E♭3
 ```
 
 ### Intervals
@@ -64,7 +64,7 @@ PositionedNote.parse('Bb3'); // B♭3
 Create an `Interval`:
 
 ```dart
-Interval.perfect(5, PerfectQuality.perfect); // P5
+const Interval.perfect(5, PerfectQuality.perfect); // P5
 Interval.P4; // P4
 ```
 
@@ -97,7 +97,7 @@ Note.c.circleOfFifths();
 Create a `Tonality` or get it from a given `Note`:
 
 ```dart
-Tonality(Note.e, TonalMode.minor); // E minor
+const Tonality(Note.e, TonalMode.minor); // E minor
 Note.a.flat.major; // A♭ major
 ```
 
@@ -161,8 +161,9 @@ Create a `Scale` from a `ScalePattern`:
 
 ```dart
 ScalePattern.lydian.on(Note.d); // D Lydian (D E F♯ G♯ A B C♯ D)
-ScalePattern.majorPentatonic.on(Note.g.flat); // G♭ Major pentatonic (G♭ A♭ B♭ D♭ E♭ G♭)
 ScalePattern.wholeTone.on(Note.f); // F Whole-tone (F G A B C♯ D♯ F)
+ScalePattern.majorPentatonic.on(Note.g.flat);
+// G♭ Major pentatonic (G♭ A♭ B♭ D♭ E♭ G♭)
 ```
 
 Or get it from a `Tonality`:
@@ -219,11 +220,24 @@ Note.b.flat.inOctave(4).equalTemperamentFrequency(
     ); // 456.1401436878537 Hz
 ```
 
-Or even get the closest note from a given `Frequency`:
+Get the closest note from a given `Frequency`:
 
 ```dart
 const Frequency(415).closestPositionedNote();
 // (G♯4, cents: -1.2706247484469828, hertz: -0.3046975799451275)
+```
+
+And combining both methods, the harmonic series of a given `PositionedNote`:
+
+```dart
+Note.c
+    .inOctave(1)
+    .equalTemperamentFrequency()
+    .harmonics(upToIndex: 15)
+    .map((frequency) => frequency.closestPositionedNote().displayString())
+    .toSet();
+// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, E4-14, F♯4-49, G4+2,
+// A♭4+41, A♯4-31, B4-12, C5}
 ```
 
 ### In a nutshell
