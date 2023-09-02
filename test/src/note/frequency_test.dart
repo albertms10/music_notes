@@ -246,4 +246,43 @@ void main() {
       });
     });
   });
+
+  group('ClosestPositionedNoteExtension', () {
+    group('.displayString()', () {
+      test(
+        'should return the string representation of this '
+        'ClosestPositionedNote',
+        () {
+          expect(
+              Note.c
+                  .inOctave(1)
+                  .equalTemperamentFrequency()
+                  .harmonics(upToIndex: 15)
+                  .map(
+                    (frequency) =>
+                        frequency.closestPositionedNote().displayString(),
+                  )
+                  .toSet(),
+              const {
+                'C1',
+                'C2',
+                'G2+2',
+                'C3',
+                'E3-14',
+                'G3+2',
+                'A♯3-31',
+                'C4',
+                'D4+4',
+                'E4-14',
+                'F♯4-49',
+                'G4+2',
+                'A♭4+41',
+                'A♯4-31',
+                'B4-12',
+                'C5',
+              });
+        },
+      );
+    });
+  });
 }
