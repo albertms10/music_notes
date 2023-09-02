@@ -1,5 +1,9 @@
 part of '../../music_notes.dart';
 
+/// A record containing the closest [PositionedNote], with delta `cents` and
+/// `hertz`.
+typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
+
 /// Represents an absolute pitch, a physical frequency.
 @immutable
 class Frequency implements Comparable<Frequency> {
@@ -49,7 +53,7 @@ class Frequency implements Comparable<Frequency> {
   /// final (note, cents: _, :hertz) = frequency.closestPositionedNote();
   /// note.equalTemperamentFrequency() == Frequency(frequency.hertz - hertz);
   /// ```
-  (PositionedNote, {double cents, double hertz}) closestPositionedNote({
+  ClosestPositionedNote closestPositionedNote({
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
   }) {
