@@ -3,8 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
-    group('constructor', () {});
-
     group('.octaveDivisions', () {
       test(
         'should return the equal divisions of the octave for this '
