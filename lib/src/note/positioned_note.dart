@@ -10,7 +10,7 @@ final class PositionedNote
   /// The octave where the [note] is positioned.
   final int octave;
 
-  /// Creates a new [PositionedNote] from [Note] arguments and [octave].
+  /// Creates a new [PositionedNote] from [note] and [octave].
   const PositionedNote(this.note, {required this.octave});
 
   static const String _superPrime = '′';
@@ -189,8 +189,109 @@ final class PositionedNote
   Chord<PositionedNote> get augmentedTriad =>
       ChordPattern.augmentedTriad.on(this);
 
-  /// Returns a transposed [PositionedNote] by [interval]
-  /// from this [PositionedNote].
+  /// Returns this [PositionedNote] respelled by [baseNote] while keeping the
+  /// same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.b.sharp.inOctave(4).respellByBaseNote(BaseNote.c)
+  ///   == Note.c.inOctave(5)
+  /// Note.f.inOctave(5).respellByBaseNote(BaseNote.e)
+  ///   == Note.e.sharp.inOctave(5)
+  /// Note.g.inOctave(3).respellByBaseNote(BaseNote.a)
+  ///   == Note.a.flat.flat.inOctave(3)
+  /// ```
+  PositionedNote respellByBaseNote(BaseNote baseNote) {
+    final respelledNote = note.respellByBaseNote(baseNote);
+
+    return PositionedNote(
+      respelledNote,
+      octave: octaveFromSemitones(
+        _semitonesWithoutAccidental(semitones, respelledNote),
+      ),
+    );
+  }
+
+  /// Returns this [PositionedNote] respelled by [BaseNote.ordinal] distance
+  /// while keeping the same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1)
+  ///   == Note.f.sharp.inOctave(4)
+  /// Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2)
+  ///  == Note.g.flat.flat.inOctave(4)
+  /// ```
+  PositionedNote respellByBaseNoteDistance(int distance) =>
+      respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
+
+  /// Returns this [PositionedNote] respelled upwards while keeping the same
+  /// number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.sharp.inOctave(4).respelledUpwards == Note.a.flat.inOctave(4)
+  /// Note.e.sharp.inOctave(4).respelledUpwards == Note.f.inOctave(4)
+  /// ```
+  PositionedNote get respelledUpwards => respellByBaseNoteDistance(1);
+
+  /// Returns this [PositionedNote] respelled downwards while keeping the same
+  /// number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.inOctave(4).respelledDownwards == Note.f.sharp.inOctave(4)
+  /// Note.c.inOctave(4).respelledDownwards == Note.b.sharp.inOctave(4)
+  /// ```
+  PositionedNote get respelledDownwards => respellByBaseNoteDistance(-1);
+
+  /// Returns this [PositionedNote] respelled by [accidental] while keeping the
+  /// same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
+  ///   == Note.d.sharp.inOctave(4)
+  /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
+  ///   == Note.c.flat.inOctave(4)
+  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
+  ///   == null.inOctave(4)
+  /// ```
+  PositionedNote? respellByAccidental(Accidental accidental) {
+    final respelledNote = note.respellByAccidental(accidental);
+    if (respelledNote == null) return null;
+
+    return PositionedNote(
+      respelledNote,
+      octave: octaveFromSemitones(
+        _semitonesWithoutAccidental(semitones, respelledNote),
+      ),
+    );
+  }
+
+  /// Returns this [PositionedNote] with the simplest [Accidental] spelling
+  /// while keeping the same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.sharp.inOctave(4).respelledSimple == Note.f.inOctave(4)
+  /// Note.d.flat.flat.inOctave(4).respelledSimple == Note.c.inOctave(4)
+  /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
+  ///   == Note.g.sharp.inOctave(4)
+  /// ```
+  PositionedNote get respelledSimple =>
+      respellByAccidental(Accidental.natural) ??
+      respellByAccidental(Accidental(note.accidental.semitones.sign))!;
+
+  /// We don't want to take the accidental into account when
+  /// calculating the octave height, as it depends on the note name.
+  /// This correctly handles cases with the same number of semitones
+  /// but in different octaves (e.g., B♯3 but C4, C♭4 but B3).
+  int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
+      semitones - referenceNote.accidental.semitones;
+
+  /// Returns a transposed [PositionedNote] by [interval] from this
+  /// [PositionedNote].
   ///
   /// Example:
   /// ```dart
@@ -202,15 +303,13 @@ final class PositionedNote
   PositionedNote transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval);
 
-    return transposedNote.inOctave(
-      octaveFromSemitones(
-        semitones +
-            interval.semitones -
-            // We don't want to take the accidental into account when
-            // calculating the octave height, as it depends on the note name.
-            // This correctly handles cases with the same number of accidentals
-            // but different octaves (e.g., B♯3 but C4, C♭4 but B3).
-            transposedNote.accidental.semitones,
+    return PositionedNote(
+      transposedNote,
+      octave: octaveFromSemitones(
+        _semitonesWithoutAccidental(
+          semitones + interval.semitones,
+          transposedNote,
+        ),
       ),
     );
   }
@@ -268,7 +367,7 @@ final class PositionedNote
       referenceFrequency *
       EqualTemperament.edo12.ratio(referenceNote.difference(this));
 
-  /// Returns the string representation of this [Note] following the
+  /// Returns the string representation of this [PositionedNote] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
   ///
   /// Example:
@@ -281,7 +380,7 @@ final class PositionedNote
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 
-  /// Returns the string representation of this [Note] following
+  /// Returns the string representation of this [PositionedNote] following
   /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
   ///
   /// Example:
