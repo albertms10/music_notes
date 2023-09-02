@@ -65,10 +65,17 @@ class Frequency implements Comparable<Frequency> {
       referenceNote: referenceNote,
       referenceFrequency: referenceFrequency,
     );
+    final hertzDelta = hertz - closestNoteFrequency.hertz;
+
+    /// Whether [closestNote] is closer to the upwards spelling (so, positive
+    /// [hertzDelta]), e.g. [Accidental.flat] instead of [Accidental.sharp].
+    final isCloserToUpwardsSpelling =
+        closestNote.note.accidental == Accidental.sharp &&
+            !hertzDelta.isNegative;
 
     return (
-      closestNote,
-      hertz: hertz - closestNoteFrequency.hertz,
+      isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
+      hertz: hertzDelta,
       cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
     );
   }
