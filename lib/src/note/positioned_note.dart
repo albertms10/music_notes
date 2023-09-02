@@ -10,7 +10,7 @@ final class PositionedNote
   /// The octave where the [note] is positioned.
   final int octave;
 
-  /// Creates a new [PositionedNote] from [Note] arguments and [octave].
+  /// Creates a new [PositionedNote] from [note] and [octave].
   const PositionedNote(this.note, {required this.octave});
 
   static const String _superPrime = '′';
@@ -367,7 +367,7 @@ final class PositionedNote
       referenceFrequency *
       EqualTemperament.edo12.ratio(referenceNote.difference(this));
 
-  /// Returns the string representation of this [Note] following the
+  /// Returns the string representation of this [PositionedNote] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
   ///
   /// Example:
@@ -380,7 +380,7 @@ final class PositionedNote
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 
-  /// Returns the string representation of this [Note] following
+  /// Returns the string representation of this [PositionedNote] following
   /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
   ///
   /// Example:
