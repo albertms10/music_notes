@@ -28,9 +28,17 @@ void main() {
           (Note.a.inOctave(4), cents: 0.0, hertz: 0.0),
         );
         expect(
-          const Frequency(467).closestPositionedNote(),
+          const Frequency(455).closestPositionedNote(),
           (
             Note.a.sharp.inOctave(4),
+            cents: -41.96437412632116,
+            hertz: -11.163761518089927
+          ),
+        );
+        expect(
+          const Frequency(467).closestPositionedNote(),
+          (
+            Note.b.flat.inOctave(4),
             cents: 3.1028314220028586,
             hertz: 0.8362384819100726,
           ),
@@ -48,7 +56,7 @@ void main() {
           const Frequency(440)
               .closestPositionedNote(referenceFrequency: const Frequency(415)),
           (
-            Note.a.sharp.inOctave(4),
+            Note.b.flat.inOctave(4),
             cents: 1.270624748447127,
             hertz: 0.32281584089247417,
           ),
