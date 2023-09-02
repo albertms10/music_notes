@@ -82,6 +82,79 @@ void main() {
       });
     });
 
+    group('.harmonic()', () {
+      test('should return the harmonic at index from this Frequency', () {
+        expect(const Frequency(880).harmonic(-3), const Frequency(220));
+        expect(const Frequency(440).harmonic(-1), const Frequency(220));
+        expect(const Frequency(110).harmonic(0), const Frequency(110));
+        expect(const Frequency(256).harmonic(1), const Frequency(512));
+        expect(const Frequency(32).harmonic(4), const Frequency(160));
+      });
+    });
+
+    group('.harmonics()', () {
+      test(
+        'should return a Set of the harmonic series up to index from this '
+        'Frequency',
+        () {
+          expect(
+            const Frequency(512).harmonics(upToIndex: -15),
+            {
+              const Frequency(512),
+              const Frequency(256),
+              const Frequency(170.66666666666666),
+              const Frequency(128),
+              const Frequency(102.4),
+              const Frequency(85.33333333333333),
+              const Frequency(73.14285714285714),
+              const Frequency(64),
+              const Frequency(56.888888888888886),
+              const Frequency(51.2),
+              const Frequency(46.54545454545455),
+              const Frequency(42.666666666666664),
+              const Frequency(39.38461538461539),
+              const Frequency(36.57142857142857),
+              const Frequency(34.13333333333333),
+              const Frequency(32),
+            },
+          );
+          expect(
+            const Frequency(400).harmonics(upToIndex: -1),
+            {const Frequency(400), const Frequency(200)},
+          );
+          expect(
+            const Frequency(220).harmonics(upToIndex: 0),
+            {const Frequency(220)},
+          );
+          expect(
+            const Frequency(110).harmonics(upToIndex: 1),
+            {const Frequency(110), const Frequency(220)},
+          );
+          expect(
+            const Frequency(32).harmonics(upToIndex: 15),
+            {
+              const Frequency(32),
+              const Frequency(64),
+              const Frequency(96),
+              const Frequency(128),
+              const Frequency(160),
+              const Frequency(192),
+              const Frequency(224),
+              const Frequency(256),
+              const Frequency(288),
+              const Frequency(320),
+              const Frequency(352),
+              const Frequency(384),
+              const Frequency(416),
+              const Frequency(448),
+              const Frequency(480),
+              const Frequency(512),
+            },
+          );
+        },
+      );
+    });
+
     group('operator +()', () {
       test('should add other to this Frequency', () {
         expect(

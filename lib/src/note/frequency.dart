@@ -80,6 +80,40 @@ class Frequency implements Comparable<Frequency> {
     );
   }
 
+  /// Returns the harmonic at [index] from this [Frequency], including negative
+  /// values as part of the [undertone series](https://en.wikipedia.org/wiki/Undertone_series).
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(220).harmonic(1) == const Frequency(440)
+  /// const Frequency(880).harmonic(-3) == const Frequency(220)
+  ///
+  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonic(3)
+  ///   .closestPositionedNote().$1 == Note.e.inOctave(3)
+  /// ```
+  Frequency harmonic(int index) =>
+      index.isNegative ? this / (index.abs() + 1) : this * (index + 1);
+
+  /// Returns a [Set] of the [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
+  /// [upToIndex] from this [Frequency].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.inOctave(3).equalTemperamentFrequency().harmonics(upTo: 2)
+  ///   == {const Frequency(220), const Frequency(440), const Frequency(660)}
+  ///
+  /// Note.a.inOctave(5).equalTemperamentFrequency().harmonics(upTo: -2)
+  ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
+  ///
+  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonics(upTo: 4)
+  ///   .map((frequency) => frequency.closestPositionedNote().$1).toSet()
+  ///   == {Note.c.inOctave(1), Note.c.inOctave(2), Note.g.inOctave(2),
+  ///       Note.c.inOctave(3), Note.e.inOctave(3)}
+  /// ```
+  Set<Frequency> harmonics({required int upToIndex}) => {
+        for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
+      };
+
   /// Adds [other] to this [Frequency].
   ///
   /// Example:
