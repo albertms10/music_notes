@@ -32,7 +32,7 @@ void main() {
           (
             Note.a.sharp.inOctave(4),
             cents: -41.96437412632116,
-            hertz: -11.163761518089927
+            hertz: -11.163761518089927,
           ),
         );
         expect(
