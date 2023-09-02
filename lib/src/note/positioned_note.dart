@@ -303,15 +303,13 @@ final class PositionedNote
   PositionedNote transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval);
 
-    return transposedNote.inOctave(
-      octaveFromSemitones(
-        semitones +
-            interval.semitones -
-            // We don't want to take the accidental into account when
-            // calculating the octave height, as it depends on the note name.
-            // This correctly handles cases with the same number of accidentals
-            // but different octaves (e.g., B♯3 but C4, C♭4 but B3).
-            transposedNote.accidental.semitones,
+    return PositionedNote(
+      transposedNote,
+      octave: octaveFromSemitones(
+        _semitonesWithoutAccidental(
+          semitones + interval.semitones,
+          transposedNote,
+        ),
       ),
     );
   }
