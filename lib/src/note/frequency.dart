@@ -5,7 +5,7 @@ part of '../../music_notes.dart';
 typedef ClosestPositionedNote = (
   PositionedNote closestNote, {
   double cents,
-  double hertz
+  double hertz,
 });
 
 /// Represents an absolute pitch, a physical frequency.
