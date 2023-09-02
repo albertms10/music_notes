@@ -92,8 +92,8 @@ void main() {
   Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 
   // Frequencies
-  Note.a.inOctave(4).equalTemperamentFrequency(); // 440.0 Hz
-  Note.b.flat.inOctave(4).equalTemperamentFrequency(
+  Note.a.inOctave(4).frequency(); // 440.0 Hz
+  Note.b.flat.inOctave(4).frequency(
         referenceNote: Note.c.inOctave(4),
         referenceFrequency: const Frequency(256),
       ); // 456.1401436878537 Hz
@@ -103,7 +103,7 @@ void main() {
 
   Note.c
       .inOctave(1)
-      .equalTemperamentFrequency()
+      .frequency()
       .harmonics(upToIndex: 15)
       .map((frequency) => frequency.closestPositionedNote().displayString())
       .toSet();
