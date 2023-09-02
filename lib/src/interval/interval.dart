@@ -379,25 +379,34 @@ final class Interval implements Comparable<Interval> {
       );
 
   /// Returns the iteration distance of this [Interval] between [scalable1] and
-  /// [scalable2].
+  /// [scalable2], including all visited `notes`.
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.distanceBetween(Note.c, Note.d) == 2
-  /// Interval.P5.distanceBetween(Note.a, Note.g) == -2
-  /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d) == -4
-  /// Interval.P4.distanceBetween(Note.f, Note.a.flat) == 3
+  /// Interval.P5.distanceBetween(Note.c, Note.d)
+  ///   == (2, notes: const [Note.c, Note.g, Note.d])
+  /// Interval.P5.distanceBetween(Note.a, Note.g)
+  ///   == (-2, notes: const [Note.a, Note.d, Note.g])
+  /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d)
+  ///   == (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
+  /// Interval.P4.distanceBetween(Note.f, Note.a.flat)
+  ///   == (3, notes: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat])
   /// ```
-  int distanceBetween<T extends Scalable<T>>(T scalable1, T scalable2) {
+  (int distance, {List<Scalable<T>> notes})
+      distanceBetween<T extends Scalable<T>>(T scalable1, T scalable2) {
     var distance = 0;
-    var ascendingNote = scalable1;
-    var descendingNote = scalable1;
+    final ascendingNotes = [scalable1];
+    final descendingNotes = [scalable1];
     while (true) {
-      if (ascendingNote == scalable2) return distance;
-      if (descendingNote == scalable2) return -distance;
+      if (ascendingNotes.last == scalable2) {
+        return (distance, notes: ascendingNotes);
+      }
+      if (descendingNotes.last == scalable2) {
+        return (-distance, notes: descendingNotes);
+      }
       distance++;
-      ascendingNote = ascendingNote.transposeBy(this);
-      descendingNote = descendingNote.transposeBy(inverted);
+      ascendingNotes.add(ascendingNotes.last.transposeBy(this));
+      descendingNotes.add(descendingNotes.last.transposeBy(inverted));
     }
   }
 
