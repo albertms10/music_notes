@@ -2,7 +2,11 @@ part of '../../music_notes.dart';
 
 /// A record containing the closest [PositionedNote], with delta `cents` and
 /// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
+typedef ClosestPositionedNote = (
+  PositionedNote closestNote, {
+  double cents,
+  double hertz
+});
 
 /// Represents an absolute pitch, a physical frequency.
 @immutable
@@ -33,7 +37,7 @@ class Frequency implements Comparable<Frequency> {
   }
 
   /// Returns the closest [PositionedNote] to this [Frequency] from
-  /// [referenceNote] and [referenceFrequency], with the difference in `cents`
+  /// [referenceFrequency] and [tuningSystem], with the difference in `cents`
   /// and `hertz`.
   ///
   /// Example:
@@ -54,20 +58,20 @@ class Frequency implements Comparable<Frequency> {
   /// closestNote.frequency() == Frequency(frequency.hertz - hertz);
   /// ```
   ClosestPositionedNote closestPositionedNote({
-    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
-    final cents =
-        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
-    final semitones = referenceNote.semitones + (cents / 100).round();
+    final cents = TuningSystem.cents(hertz / referenceFrequency.hertz);
+    final semitones =
+        tuningSystem.referenceNote.semitones + (cents / 100).round();
 
     final closestNote = PitchClass(semitones)
         .resolveClosestSpelling()
         .inOctave(PositionedNote.octaveFromSemitones(semitones));
 
     final closestNoteFrequency = closestNote.frequency(
-      referenceNote: referenceNote,
       referenceFrequency: referenceFrequency,
+      tuningSystem: tuningSystem,
     );
     final hertzDelta = hertz - closestNoteFrequency.hertz;
 
@@ -79,8 +83,8 @@ class Frequency implements Comparable<Frequency> {
 
     return (
       isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
+      cents: TuningSystem.cents(hertz / closestNoteFrequency.hertz),
       hertz: hertzDelta,
-      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
     );
   }
 

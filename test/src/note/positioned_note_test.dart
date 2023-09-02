@@ -1049,14 +1049,16 @@ void main() {
           expect(
             Note.c.inOctave(4).frequency(
                   referenceFrequency: frequency,
-                  referenceNote: Note.c.inOctave(4),
+                  tuningSystem:
+                      EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
                 ),
             const Frequency(256),
           );
           expect(
             Note.a.inOctave(4).frequency(
                   referenceFrequency: frequency,
-                  referenceNote: Note.c.inOctave(4),
+                  tuningSystem:
+                      EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
                 ),
             const Frequency(430.5389646099018),
           );

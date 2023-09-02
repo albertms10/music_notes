@@ -94,8 +94,8 @@ void main() {
   // Frequencies
   Note.a.inOctave(4).frequency(); // 440.0 Hz
   Note.b.flat.inOctave(4).frequency(
-        referenceNote: Note.c.inOctave(4),
         referenceFrequency: const Frequency(256),
+        tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
       ); // 456.1401436878537 Hz
 
   const Frequency(415).closestPositionedNote();
