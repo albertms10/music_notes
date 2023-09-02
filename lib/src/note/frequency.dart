@@ -163,3 +163,14 @@ class Frequency implements Comparable<Frequency> {
   @override
   int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
+
+/// A [ClosestPositionedNote] extension.
+extension ClosestPositionedNoteExtension on ClosestPositionedNote {
+  /// Returns the string representation of this [ClosestPositionedNote] record.
+  String displayString() {
+    final roundedCents = cents.round();
+    if (roundedCents == 0) return '${$1}';
+
+    return '${$1}${roundedCents.toDeltaString()}';
+  }
+}
