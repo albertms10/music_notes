@@ -93,7 +93,7 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(880).harmonic(-3) == const Frequency(220)
   ///
   /// Note.c.inOctave(1).equalTemperamentFrequency().harmonic(3)
-  ///   .closestPositionedNote().$1 == Note.e.inOctave(3)
+  ///   .closestPositionedNote().displayString() == 'E3-14'
   /// ```
   Frequency harmonic(int index) =>
       index.isNegative ? this / (index.abs() + 1) : this * (index + 1);
@@ -109,10 +109,10 @@ class Frequency implements Comparable<Frequency> {
   /// Note.a.inOctave(5).equalTemperamentFrequency().harmonics(upTo: -2)
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
   ///
-  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonics(upTo: 4)
-  ///   .map((frequency) => frequency.closestPositionedNote().$1).toSet()
-  ///   == {Note.c.inOctave(1), Note.c.inOctave(2), Note.g.inOctave(2),
-  ///       Note.c.inOctave(3), Note.e.inOctave(3)}
+  /// Note.c.inOctave(1).equalTemperamentFrequency().harmonics(upTo: 7)
+  ///   .map((frequency) => frequency.closestPositionedNote().displayString())
+  ///   .toSet()
+  ///   == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}
   /// ```
   Set<Frequency> harmonics({required int upToIndex}) => {
         for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
