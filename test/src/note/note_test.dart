@@ -290,13 +290,12 @@ void main() {
       test(
         'should return the circle of fifths starting from this Note',
         () {
-          final (sharps: sharpsFromC, flats: flatsFromC) =
-              Note.c.circleOfFifths();
+          var (:sharps, :flats) = Note.c.circleOfFifths();
           expect(
-            sharpsFromC,
+            sharps,
             [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
           );
-          expect(flatsFromC, [
+          expect(flats, [
             Note.f,
             Note.b.flat,
             Note.e.flat,
@@ -305,10 +304,9 @@ void main() {
             Note.g.flat,
           ]);
 
-          final (sharps: sharpsFromA, flats: flatsFromA) =
-              Note.a.circleOfFifths(distance: 7);
+          (:sharps, :flats) = Note.a.circleOfFifths(distance: 7);
           expect(
-            sharpsFromA,
+            sharps,
             [
               Note.e,
               Note.b,
@@ -320,7 +318,7 @@ void main() {
             ],
           );
           expect(
-            flatsFromA,
+            flats,
             [
               Note.d,
               Note.g,

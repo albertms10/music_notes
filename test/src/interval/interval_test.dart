@@ -471,24 +471,79 @@ void main() {
 
     group('.distanceBetween()', () {
       test('should return the distance between two Scalable instances', () {
-        expect(Interval.P5.distanceBetween(Note.c, Note.b.flat.flat), -9);
-        expect(Interval.P5.distanceBetween(Note.c, Note.b.flat), -2);
-        expect(
-          Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp),
-          6,
-        );
-        expect(Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp), 13);
+        var (distance, :notes) =
+            Interval.P5.distanceBetween(Note.c, Note.b.flat.flat);
+        expect(distance, -9);
+        expect(notes, [
+          Note.c,
+          Note.f,
+          Note.b.flat,
+          Note.e.flat,
+          Note.a.flat,
+          Note.d.flat,
+          Note.g.flat,
+          Note.c.flat,
+          Note.f.flat,
+          Note.b.flat.flat,
+        ]);
 
+        (distance, :notes) = Interval.P5.distanceBetween(Note.c, Note.b.flat);
+        expect(distance, -2);
+        expect(notes, [Note.c, Note.f, Note.b.flat]);
+
+        var (pitchClassDistance, notes: pitchClasses) =
+            Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp);
+        expect(pitchClassDistance, 6);
+        expect(pitchClasses, [
+          PitchClass.d,
+          PitchClass.a,
+          PitchClass.e,
+          PitchClass.b,
+          PitchClass.fSharp,
+          PitchClass.cSharp,
+          PitchClass.gSharp,
+        ]);
+
+        (distance, :notes) =
+            Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp);
+        expect(distance, 13);
+        expect(notes, [
+          Note.c,
+          Note.g,
+          Note.d,
+          Note.a,
+          Note.e,
+          Note.b,
+          Note.f.sharp,
+          Note.c.sharp,
+          Note.g.sharp,
+          Note.d.sharp,
+          Note.a.sharp,
+          Note.e.sharp,
+          Note.b.sharp,
+          Note.f.sharp.sharp,
+        ]);
+
+        (pitchClassDistance, notes: pitchClasses) =
+            Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c);
+        expect(pitchClassDistance, -3);
         expect(
-          Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c),
-          -3,
+          pitchClasses,
+          [PitchClass.dSharp, PitchClass.aSharp, PitchClass.f, PitchClass.c],
         );
-        expect(Interval.P4.distanceBetween(Note.c, Note.c), 0);
-        expect(Interval.P4.distanceBetween(Note.c, Note.f), 1);
-        expect(
-          Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp),
-          2,
-        );
+
+        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.c);
+        expect(distance, 0);
+        expect(notes, [Note.c]);
+
+        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.f);
+        expect(distance, 1);
+        expect(notes, [Note.c, Note.f]);
+
+        (pitchClassDistance, notes: pitchClasses) =
+            Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp);
+        expect(pitchClassDistance, 2);
+        expect(pitchClasses, [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });
     });
 
