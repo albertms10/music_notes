@@ -45,8 +45,8 @@ class EqualTemperament extends TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// EqualTemperament.edo12.ratio() == 1.059463
-  /// EqualTemperament.edo19.ratio() == 1.037155
+  /// const EqualTemperament.edo12().ratio() == 1.059463
+  /// const EqualTemperament.edo19().ratio() == 1.037155
   /// ```
   double ratio([int semitones = 1]) =>
       math.pow(2, semitones / octaveDivisions).toDouble();
@@ -59,16 +59,6 @@ class EqualTemperament extends TuningSystem {
   double centsFromNote(PositionedNote note) =>
       TuningSystem.cents(ratio(referenceNote.difference(note)));
 
-  /// Returns the number of cents for the generator at [Interval.P5] in this
-  /// [EqualTemperament].
-  ///
-  /// Example:
-  /// ```dart
-  /// EqualTemperament.edo12.generatorCents == 700
-  /// EqualTemperament.edo19.generatorCents == 694.737
-  /// ```
-  ///
-  /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
   @override
   double get generatorCents {
     var semitonesUpToP5 = 0;
