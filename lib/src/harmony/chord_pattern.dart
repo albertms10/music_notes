@@ -150,7 +150,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
   /// Returns a new [ChordPattern] adding [interval].
   @override
-  ChordPattern add(Interval interval, {List<int>? replaceSizes}) {
+  ChordPattern add(Interval interval, {Set<int>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
     final filteredIntervals = intervals.whereNot(
       (chordInterval) => sizesToReplace.contains(chordInterval.size),
