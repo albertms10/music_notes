@@ -27,8 +27,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern => ScalePattern(
-        degrees._intervalSteps,
-        _descendingDegrees?._descendingIntervalSteps,
+        degrees.intervalSteps.toList(),
+        _descendingDegrees?.descendingIntervalSteps.toList(),
       );
 
   /// Returns the reversed of this [Scale<T>].
@@ -118,11 +118,12 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Example:
   /// ```dart
   /// Note.c.major.scale.transposeBy(Interval.m3) == Note.e.flat.major.scale
+  /// Note.f.sharp.minor.scale.transposeBy(-Interval.A4) == Note.c.minor.scale
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        degrees._transposeBy(interval),
-        _descendingDegrees?._transposeBy(interval),
+        degrees.transposeBy(interval).toList(),
+        _descendingDegrees?.transposeBy(interval).toList(),
       );
 
   @override
