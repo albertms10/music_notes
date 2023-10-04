@@ -30,7 +30,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.fromIntervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
-  factory ChordPattern.fromIntervalSteps(List<Interval> intervalSteps) =>
+  factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
       ChordPattern(
         intervalSteps.skip(1).fold(
           [intervalSteps.first],
