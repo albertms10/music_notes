@@ -82,7 +82,7 @@ class Chord<T extends Scalable<T>>
 
   /// Returns a new [Chord<T>] adding [interval].
   @override
-  Chord<T> add(Interval interval, {List<int>? replaceSizes}) =>
+  Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
   /// Returns a transposed [Chord<T>] by [interval] from this [Chord<T>].
