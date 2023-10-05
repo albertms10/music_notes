@@ -163,12 +163,22 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   @override
   // TODO(albertms10): return [IntervalClass]. See #248.
   Interval interval(PitchClass other) {
-    final difference = other.chroma - chroma;
+    final diff = difference(other);
 
     return Interval.fromSemitonesQuality(
-      difference + (difference.isNegative ? chromaticDivisions : 0),
+      diff + (diff.isNegative ? chromaticDivisions : 0),
     );
   }
+
+  /// Returns the difference in semitones between this [PitchClass] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.g.difference(PitchClass.a) == 2
+  /// PitchClass.dSharp.difference(PitchClass.c) == -3
+  /// ```
+  @override
+  int difference(PitchClass other) => other.chroma - chroma;
 
   /// Returns the integer notation for this [PitchClass].
   ///

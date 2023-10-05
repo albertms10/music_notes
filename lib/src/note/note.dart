@@ -73,6 +73,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
+  @override
   int difference(Note other) => other.semitones - semitones;
 
   /// Returns this [Note] sharpened by 1 semitone.
