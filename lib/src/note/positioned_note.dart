@@ -105,6 +105,7 @@ final class PositionedNote
   /// Note.e.flat.inOctave(4).difference(Note.b.flat.inOctave(4)) == 7
   /// Note.a.inOctave(4).difference(Note.g.inOctave(4)) == -2
   /// ```
+  @override
   int difference(PositionedNote other) => other.semitones - semitones;
 
   /// Returns the [ChordPattern.diminishedTriad] on this [PositionedNote].
