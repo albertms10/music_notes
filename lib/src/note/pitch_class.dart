@@ -165,9 +165,9 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   Interval interval(PitchClass other) {
     final diff = difference(other);
 
-    return Interval.fromSemitonesQuality(
-      diff + (diff.isNegative ? chromaticDivisions : 0),
-    );
+    return IntervalClass(diff)
+        .resolveClosestSpelling()
+        .descending(isDescending: diff.isNegative);
   }
 
   /// Returns the difference in semitones between this [PitchClass] and [other].

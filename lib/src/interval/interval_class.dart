@@ -81,6 +81,36 @@ final class IntervalClass implements Comparable<IntervalClass> {
     });
   }
 
+  /// Returns the [Interval] that matches with [preferredQuality] from this
+  /// [IntervalClass].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.m3.resolveClosestSpelling() == Interval.m3
+  /// IntervalClass.tritone.resolveClosestSpelling() == Interval.A4
+  /// IntervalClass.tritone.resolveClosestSpelling(PerfectQuality.diminished)
+  ///   == Interval.d5
+  /// ```
+  Interval resolveClosestSpelling([Quality? preferredQuality]) {
+    if (preferredQuality != null) {
+      final interval = spellings(distance: 1).firstWhereOrNull(
+        (interval) => interval.quality == preferredQuality,
+      );
+      if (interval != null) {
+        return interval.descending(isDescending: semitones.isNegative);
+      }
+    }
+
+    // Find the Interval with the smaller Quality delta semitones.
+    return spellings()
+        .sorted(
+          (a, b) =>
+              a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
+        )
+        .first
+        .descending(isDescending: semitones.isNegative);
+  }
+
   /// Adds [other] to this [IntervalClass].
   ///
   /// Example:
