@@ -96,9 +96,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
       final interval = spellings(distance: 1).firstWhereOrNull(
         (interval) => interval.quality == preferredQuality,
       );
-      if (interval != null) {
-        return interval.descending(isDescending: semitones.isNegative);
-      }
+      if (interval != null) return interval;
     }
 
     // Find the Interval with the smaller Quality delta semitones.
@@ -107,8 +105,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
           (a, b) =>
               a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
         )
-        .first
-        .descending(isDescending: semitones.isNegative);
+        .first;
   }
 
   /// Adds [other] to this [IntervalClass].
