@@ -514,6 +514,11 @@ void main() {
             Note.f.flat.inOctave(4).interval(Note.g.flat.flat.inOctave(4)),
             Interval.m2,
           );
+          // TODO(albertms10): Failing test.
+          expect(
+            Note.c.inOctave(5).interval(Note.b.inOctave(4)),
+            -Interval.m2,
+          );
           expect(
             Note.c.inOctave(5).interval(Note.d.flat.inOctave(5)),
             Interval.m2,

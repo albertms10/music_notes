@@ -324,11 +324,9 @@ final class PositionedNote
   /// ```
   @override
   Interval interval(PositionedNote other) {
-    final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
-    final ordinalDeltaSign = ordinalDelta.isNegative ? -1 : 1;
-    final intervalSize = ordinalDelta + ordinalDeltaSign;
+    final intervalSize = note.baseNote.intervalSize(other.note.baseNote);
     final octaveShift =
-        (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
+        (7 + (intervalSize.isNegative ? 2 : 2)) * (other.octave - octave);
 
     return Interval.fromSemitones(
       intervalSize + octaveShift,
