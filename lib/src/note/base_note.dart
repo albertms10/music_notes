@@ -122,11 +122,9 @@ enum BaseNote {
   /// BaseNote.a.positiveDifference(BaseNote.d) == 5
   /// ```
   int positiveDifference(BaseNote other) {
-    final differenceWithOther = difference(other);
+    final diff = difference(other);
 
-    return differenceWithOther.isNegative
-        ? differenceWithOther + chromaticDivisions
-        : differenceWithOther;
+    return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
   /// Returns this [BaseNote] transposed by interval [size].

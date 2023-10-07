@@ -14,6 +14,14 @@ void main() {
           ScalePattern.melodicMinor.on(Note.a.flat).pattern,
           ScalePattern.melodicMinor,
         );
+        expect(
+          ScalePattern.major.on(PitchClass.d).pattern,
+          ScalePattern.major,
+        );
+        expect(
+          ScalePattern.minorPentatonic.on(PitchClass.gSharp).pattern,
+          ScalePattern.minorPentatonic,
+        );
       });
     });
 
