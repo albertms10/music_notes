@@ -323,14 +323,10 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
-  Interval interval(Note other) {
-    final intervalSize = baseNote.intervalSize(other.baseNote);
-
-    return Interval.fromDelta(
-      intervalSize,
-      difference(other) % chromaticDivisions - intervalSize._semitones,
-    );
-  }
+  Interval interval(Note other) => Interval.fromSemitones(
+        baseNote.intervalSize(other.baseNote),
+        difference(other) % chromaticDivisions,
+      );
 
   /// Returns a transposed [Note] by [interval] from this [Note].
   ///
