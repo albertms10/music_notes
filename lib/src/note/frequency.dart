@@ -1,9 +1,5 @@
 part of '../../music_notes.dart';
 
-/// A record containing the closest [PositionedNote], with delta `cents` and
-/// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
-
 /// Represents an absolute pitch, a physical frequency.
 @immutable
 class Frequency implements Comparable<Frequency> {
@@ -162,6 +158,10 @@ class Frequency implements Comparable<Frequency> {
   @override
   int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
+
+/// A record containing the closest [PositionedNote], with delta `cents` and
+/// `hertz`.
+typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {
