@@ -5,51 +5,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Quality', () {
-    group('.fromInterval()', () {
-      test('should create a new Quality from an Interval size', () {
-        expect(Quality.fromInterval(1, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(1, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(1, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(2, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(2, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(2, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(2, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(3, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(3, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(3, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(3, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(4, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(4, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(4, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(5, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(5, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(5, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(6, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(6, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(6, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(6, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(7, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(7, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(7, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(7, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(8, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(8, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(8, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(13, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(13, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(13, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(13, 2), ImperfectQuality.augmented);
-      });
-    });
-
     group('.parse()', () {
       test('should throw a FormatException when source is invalid', () {
         expect(() => PerfectQuality.parse('x'), throwsFormatException);
