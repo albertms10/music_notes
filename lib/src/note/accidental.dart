@@ -113,8 +113,8 @@ final class Accidental implements Comparable<Accidental> {
   /// natural symbol (♮).
   ///
   /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
-  /// double sharp/flat symbols (𝄪, 𝄫) depending on the number of semitones
-  /// above/below the natural note.
+  /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
+  /// above or below the natural note.
   ///
   /// Example:
   /// ```dart

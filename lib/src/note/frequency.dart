@@ -1,9 +1,5 @@
 part of '../../music_notes.dart';
 
-/// A record containing the closest [PositionedNote], with delta `cents` and
-/// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
-
 /// Represents an absolute pitch, a physical frequency.
 @immutable
 class Frequency implements Comparable<Frequency> {
@@ -22,8 +18,7 @@ class Frequency implements Comparable<Frequency> {
   /// ```dart
   /// const Frequency(880).isHumanAudible == true
   /// Note.a.inOctave(4).frequency().isHumanAudible == true
-  /// Note.g.inOctave(12).frequency(const Frequency(442))
-  ///   .isHumanAudible == false
+  /// Note.g.inOctave(12).frequency().isHumanAudible == false
   /// ```
   bool get isHumanAudible {
     const minFrequency = 20;
@@ -103,13 +98,13 @@ class Frequency implements Comparable<Frequency> {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(3).frequency().harmonics(upTo: 2)
+  /// Note.a.inOctave(3).frequency().harmonics(upToIndex: 2)
   ///   == {const Frequency(220), const Frequency(440), const Frequency(660)}
   ///
-  /// Note.a.inOctave(5).frequency().harmonics(upTo: -2)
+  /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
   ///
-  /// Note.c.inOctave(1).frequency().harmonics(upTo: 7)
+  /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7)
   ///   .map((frequency) => frequency.closestPositionedNote().displayString())
   ///   .toSet()
   ///   == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}
@@ -163,6 +158,10 @@ class Frequency implements Comparable<Frequency> {
   @override
   int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
+
+/// A record containing the closest [PositionedNote], with delta `cents` and
+/// `hertz`.
+typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {

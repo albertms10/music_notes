@@ -11,7 +11,8 @@ extension IntExtension on int {
   /// ```
   int incrementBy(int step) => (abs() + step) * (isNegative ? -1 : 1);
 
-  /// Returns the modulo [n] of this [int]. If this is 0, it returns [n].
+  /// Returns the modulo [n] of this [int], returning [n] when the modulo would
+  /// give 0.
   ///
   /// Example:
   /// ```dart
