@@ -174,12 +174,9 @@ final class Interval implements Comparable<Interval> {
 
   /// Creates a new [Interval] from [semitones].
   Interval.fromSemitones(int size, int semitones)
-      : this._(
+      : this.fromDelta(
           size,
-          Quality.fromInterval(
-            size,
-            semitones * size.sign - size._semitones.abs(),
-          ),
+          semitones * size.sign - size._semitones.abs(),
         );
 
   /// Parse [source] as an [Interval] and return its value.
