@@ -89,10 +89,10 @@ final class PositionedNote
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).semitones == 58
+  /// Note.a.inOctave(4).semitones == 57
   /// Note.b.sharp.inOctave(3).semitones == 48
   /// Note.c.inOctave(4).semitones == 48
-  /// Note.c.inOctave(0).semitones == 1
+  /// Note.c.inOctave(0).semitones == 0
   /// ```
   int get semitones => note.semitones + octave * chromaticDivisions;
 
@@ -254,9 +254,8 @@ final class PositionedNote
   /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
   ///   == Note.d.sharp.inOctave(4)
   /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
-  ///   == Note.c.flat.inOctave(4)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
-  ///   == null.inOctave(4)
+  ///   == Note.c.flat.inOctave(5)
+  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp) == null
   /// ```
   PositionedNote? respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
@@ -284,7 +283,7 @@ final class PositionedNote
       respellByAccidental(Accidental.natural) ??
       respellByAccidental(Accidental(note.accidental.semitones.sign))!;
 
-  /// We don't want to take the accidental into account when
+  /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.
   /// This correctly handles cases with the same number of semitones
   /// but in different octaves (e.g., B♯3 but C4, C♭4 but B3).
@@ -320,7 +319,7 @@ final class PositionedNote
   /// Example:
   /// ```dart
   /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
-  /// Note.d.inOctave(3).interval(Note.a.flat.inOctave(4)) == Interval.d5
+  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == Interval.A4
   /// ```
   @override
   Interval interval(PositionedNote other) {
