@@ -54,14 +54,10 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.fromDistance(0).tonality(TonalMode.major) == Note.c.major
   /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality tonality(TonalMode mode) {
-    final cachedTonalities = tonalities;
-
-    return switch (mode) {
-      TonalMode.major => cachedTonalities.major,
-      TonalMode.minor => cachedTonalities.minor,
-    };
-  }
+  Tonality tonality(TonalMode mode) => switch (mode) {
+        TonalMode.major => tonalities.major,
+        TonalMode.minor => tonalities.minor,
+      };
 
   /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
