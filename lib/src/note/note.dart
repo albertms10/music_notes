@@ -227,6 +227,16 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       respellByAccidental(Accidental.natural) ??
       respellByAccidental(Accidental(accidental.semitones.sign))!;
 
+  /// Whether this [Note] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.sharp.isEnharmonicWith(Note.a.flat) == true
+  /// Note.c.isEnharmonicWith(Note.b.sharp) == true
+  /// Note.e.isEnharmonicWith(Note.f) == false
+  /// ```
+  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
