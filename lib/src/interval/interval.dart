@@ -232,7 +232,7 @@ final class Interval implements Comparable<Interval> {
     final absResult =
         matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
 
-    return absResult * (semitones.isNegative ? -1 : 1);
+    return absResult * semitones.nonZeroSign;
   }
 
   /// Returns the number of semitones of this [Interval].
