@@ -370,11 +370,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort PitchClass items in a collection', () {
-        final orderedSet = SplayTreeSet<PitchClass>.of(const [
+        final orderedSet = SplayTreeSet<PitchClass>.of({
           PitchClass.fSharp,
           PitchClass.c,
           PitchClass.d,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           PitchClass.c,
           PitchClass.d,

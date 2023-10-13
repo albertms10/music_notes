@@ -149,11 +149,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Accidental items in a collection', () {
-        final orderedSet = SplayTreeSet<Accidental>.of(const [
+        final orderedSet = SplayTreeSet<Accidental>.of({
           Accidental.doubleSharp,
           Accidental.natural,
           Accidental.flat,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           Accidental.flat,
           Accidental.natural,

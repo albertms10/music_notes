@@ -695,12 +695,12 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Interval items in a collection', () {
-        final orderedSet = SplayTreeSet<Interval>.of(const [
+        final orderedSet = SplayTreeSet<Interval>.of({
           Interval.m2,
           Interval.P8,
           Interval.P1,
           Interval.A1,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           Interval.P1,
           Interval.A1,

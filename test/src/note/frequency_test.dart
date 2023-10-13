@@ -231,12 +231,12 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Frequency items in a collection', () {
-        final orderedSet = SplayTreeSet<Frequency>.of(const [
-          Frequency(2000),
-          Frequency(10),
-          Frequency(400),
-          Frequency(500),
-        ]);
+        final orderedSet = SplayTreeSet<Frequency>.of({
+          const Frequency(2000),
+          const Frequency(10),
+          const Frequency(400),
+          const Frequency(500),
+        });
         expect(orderedSet.toList(), const [
           Frequency(10),
           Frequency(400),

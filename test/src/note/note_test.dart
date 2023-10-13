@@ -654,23 +654,25 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Note items in a collection', () {
-        final orderedSet = SplayTreeSet<Note>.of([
+        final orderedSet = SplayTreeSet<Note>.of({
           Note.a.flat,
           Note.c,
           Note.e.flat,
           Note.d,
           Note.d.sharp,
+          Note.g.flat,
           Note.c.flat,
           Note.g,
           Note.g.sharp,
           Note.b.sharp,
-        ]);
+        });
         expect(orderedSet.toList(), [
           Note.c.flat,
           Note.c,
           Note.d,
           Note.d.sharp,
           Note.e.flat,
+          Note.g.flat,
           Note.g,
           Note.g.sharp,
           Note.a.flat,
@@ -682,14 +684,14 @@ void main() {
         'should correctly sort Note items in a collection by fifths distance',
         () {
           final orderedSet = SplayTreeSet<Note>.of(
-            [
+            {
               Note.d,
               Note.a.flat,
               Note.c,
               Note.b.flat,
               Note.g.sharp,
               Note.b.sharp,
-            ],
+            },
             Note.compareByFifthsDistance,
           );
           expect(orderedSet.toList(), [
