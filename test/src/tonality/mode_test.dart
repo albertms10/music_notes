@@ -7,14 +7,14 @@ void main() {
   group('Mode', () {
     group('.compareTo', () {
       test('should correctly sort Mode items in a collection', () {
-        final orderedSet = SplayTreeSet<Mode>.of(const [
+        final orderedSet = SplayTreeSet<Mode>.of({
           TonalMode.minor,
           ModalMode.phrygian,
           ModalMode.ionian,
           TonalMode.major,
           ModalMode.aeolian,
           ModalMode.lydian,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           ModalMode.phrygian,
           ModalMode.aeolian,

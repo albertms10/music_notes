@@ -134,16 +134,20 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort ScaleDegree items in a collection', () {
-        final orderedSet = SplayTreeSet.of(const [
-          ScaleDegree(2, inversion: 2, semitonesDelta: -1),
+        final orderedSet = SplayTreeSet.of({
+          const ScaleDegree(2, inversion: 2, semitonesDelta: -1),
           ScaleDegree.vii,
           ScaleDegree.ii,
           ScaleDegree.neapolitanSixth,
           ScaleDegree.i,
-          ScaleDegree(2, quality: ImperfectQuality.major),
-          ScaleDegree(2, quality: ImperfectQuality.minor),
-          ScaleDegree(2, quality: ImperfectQuality.major, semitonesDelta: 1),
-        ]);
+          const ScaleDegree(2, quality: ImperfectQuality.major),
+          const ScaleDegree(2, quality: ImperfectQuality.minor),
+          const ScaleDegree(
+            2,
+            quality: ImperfectQuality.major,
+            semitonesDelta: 1,
+          ),
+        });
         expect(orderedSet.toList(), const [
           ScaleDegree.i,
           ScaleDegree.neapolitanSixth,
