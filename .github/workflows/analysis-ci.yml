@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Set up Dart
-        uses: dart-lang/setup-dart@8a4b97ea2017cc079571daec46542f76189836b1 # v1.5.1
+        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d # v1.6.0
         with:
           sdk: ${{ env.DART_SDK_VERSION }}
 
