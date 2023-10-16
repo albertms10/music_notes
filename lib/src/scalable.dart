@@ -11,21 +11,21 @@ abstract interface class Scalable<T> implements Transposable<T> {
 
 /// A Scalable iterable.
 extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
-  /// Returns the [Interval]s between [T]s in this [Iterable<T>].
+  /// Returns the [Interval]s between [T]s in this [Iterable].
   Iterable<Interval> get intervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i).interval(elementAt(i + 1));
     }
   }
 
-  /// Returns the descending [Interval]s between [T]s this [Iterable<T>].
+  /// Returns the descending [Interval]s between [T]s this [Iterable].
   Iterable<Interval> get descendingIntervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
 
-  /// Returns this [Iterable<T>] transposed by [interval].
+  /// Returns this [Iterable] transposed by [interval].
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 }
