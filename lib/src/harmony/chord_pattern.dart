@@ -56,7 +56,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// Returns the [Chord<T>] from [scalable].
+  /// Returns the [Chord] from [scalable].
   ///
   /// Example:
   /// ```dart
