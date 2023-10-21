@@ -44,7 +44,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.fromDistance(3).distance == 3
   /// KeySignature.fromDistance(-4).distance == -4
   /// ```
-  int get distance => notes.length * (accidental == Accidental.flat ? -1 : 1);
+  int get distance => notes.length * accidental.semitones.nonZeroSign;
 
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
   /// [mode].
@@ -54,14 +54,10 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.fromDistance(0).tonality(TonalMode.major) == Note.c.major
   /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality tonality(TonalMode mode) {
-    final cachedTonalities = tonalities;
-
-    return switch (mode) {
-      TonalMode.major => cachedTonalities.major,
-      TonalMode.minor => cachedTonalities.minor,
-    };
-  }
+  Tonality tonality(TonalMode mode) => switch (mode) {
+        TonalMode.major => tonalities.major,
+        TonalMode.minor => tonalities.minor,
+      };
 
   /// Returns a [Set] with the two tonalities that are defined
   /// by this [KeySignature].
@@ -98,6 +94,6 @@ final class KeySignature implements Comparable<KeySignature> {
         () => accidental.compareTo(other.accidental),
         () =>
             notes.length.compareTo(other.notes.length) *
-            (accidental.semitones.isNegative ? -1 : 1),
+            accidental.semitones.nonZeroSign,
       ]);
 }

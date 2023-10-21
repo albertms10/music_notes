@@ -69,6 +69,29 @@ void main() {
       );
     });
 
+    group('.resolveClosestSpelling()', () {
+      test('should return the Note that matches with the preferred Quality',
+          () {
+        expect(IntervalClass.P1.resolveClosestSpelling(), Interval.P1);
+        expect(
+          IntervalClass.P1.resolveClosestSpelling(ImperfectQuality.diminished),
+          Interval.d2,
+        );
+        expect(IntervalClass.m3.resolveClosestSpelling(), Interval.m3);
+        expect(IntervalClass.tritone.resolveClosestSpelling(), Interval.A4);
+        expect(
+          IntervalClass.tritone
+              .resolveClosestSpelling(PerfectQuality.augmented),
+          Interval.A4,
+        );
+        expect(
+          IntervalClass.tritone
+              .resolveClosestSpelling(PerfectQuality.diminished),
+          Interval.d5,
+        );
+      });
+    });
+
     group('operator +()', () {
       test('should add other to this IntervalClass', () {
         expect(IntervalClass.P1 + IntervalClass.M2, IntervalClass.M2);
@@ -121,11 +144,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort IntervalClass items in a collection', () {
-        final orderedSet = SplayTreeSet<IntervalClass>.of(const [
+        final orderedSet = SplayTreeSet<IntervalClass>.of({
           IntervalClass.m2,
           IntervalClass.M3,
           IntervalClass.P1,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           IntervalClass.P1,
           IntervalClass.m2,

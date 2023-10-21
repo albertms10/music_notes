@@ -262,6 +262,10 @@ void main() {
     group('.add()', () {
       test('should add an Interval to this Chord', () {
         expect(
+          Note.c.majorTriad.add(Interval.P4, replaceSizes: const {3}),
+          const Chord([Note.c, Note.f, Note.g]),
+        );
+        expect(
           Note.c.majorTriad.add(Interval.M7),
           const Chord([Note.c, Note.e, Note.g, Note.b]),
         );

@@ -51,7 +51,7 @@ enum BaseNote {
   /// BaseNote.fromOrdinal(10) == BaseNote.e
   /// ```
   factory BaseNote.fromOrdinal(int ordinal) =>
-      BaseNote.values[ordinal.nonZeroMod(BaseNote.values.length) - 1];
+      values[ordinal.nonZeroMod(values.length) - 1];
 
   /// Parse [source] as a [BaseNote] and return its value.
   ///
@@ -83,7 +83,7 @@ enum BaseNote {
   /// BaseNote.f.ordinal == 4
   /// BaseNote.b.ordinal == 7
   /// ```
-  int get ordinal => BaseNote.values.indexOf(this) + 1;
+  int get ordinal => values.indexOf(this) + 1;
 
   /// Returns the [Interval.size] that conforms between this [BaseNote] and
   /// [other].
@@ -122,11 +122,9 @@ enum BaseNote {
   /// BaseNote.a.positiveDifference(BaseNote.d) == 5
   /// ```
   int positiveDifference(BaseNote other) {
-    final differenceWithOther = difference(other);
+    final diff = difference(other);
 
-    return differenceWithOther.isNegative
-        ? differenceWithOther + chromaticDivisions
-        : differenceWithOther;
+    return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
   /// Returns this [BaseNote] transposed by interval [size].

@@ -1163,21 +1163,23 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort PositionedNote items in a collection', () {
-        final orderedSet = SplayTreeSet<PositionedNote>.of([
+        final orderedSet = SplayTreeSet<PositionedNote>.of({
           Note.a.flat.inOctave(4),
           Note.b.flat.inOctave(5),
           Note.c.inOctave(4),
+          Note.b.inOctave(4),
           Note.d.inOctave(2),
           Note.b.flat.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.b.sharp.inOctave(4),
-        ]);
+        });
         expect(orderedSet.toList(), [
           Note.d.inOctave(2),
           Note.c.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.a.flat.inOctave(4),
           Note.b.flat.inOctave(4),
+          Note.b.inOctave(4),
           Note.b.sharp.inOctave(4),
           Note.b.flat.inOctave(5),
         ]);

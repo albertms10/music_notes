@@ -73,6 +73,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
   /// ```
+  @override
   int difference(Note other) => other.semitones - semitones;
 
   /// Returns this [Note] sharpened by 1 semitone.
@@ -226,6 +227,16 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       respellByAccidental(Accidental.natural) ??
       respellByAccidental(Accidental(accidental.semitones.sign))!;
 
+  /// Whether this [Note] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.sharp.isEnharmonicWith(Note.a.flat) == true
+  /// Note.c.isEnharmonicWith(Note.b.sharp) == true
+  /// Note.e.isEnharmonicWith(Note.f) == false
+  /// ```
+  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
+
   /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
   ///
   /// Example:
@@ -322,14 +333,10 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
-  Interval interval(Note other) {
-    final intervalSize = baseNote.intervalSize(other.baseNote);
-
-    return Interval.fromDelta(
-      intervalSize,
-      difference(other) % chromaticDivisions - intervalSize._semitones,
-    );
-  }
+  Interval interval(Note other) => Interval.fromSemitones(
+        baseNote.intervalSize(other.baseNote),
+        difference(other) % chromaticDivisions,
+      );
 
   /// Returns a transposed [Note] by [interval] from this [Note].
   ///

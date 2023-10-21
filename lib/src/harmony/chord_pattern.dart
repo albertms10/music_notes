@@ -30,7 +30,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.fromIntervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
-  factory ChordPattern.fromIntervalSteps(List<Interval> intervalSteps) =>
+  factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
       ChordPattern(
         intervalSteps.skip(1).fold(
           [intervalSteps.first],
@@ -56,7 +56,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// Returns the [Chord<T>] from [scalable].
+  /// Returns the [Chord] from [scalable].
   ///
   /// Example:
   /// ```dart
@@ -150,7 +150,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
   /// Returns a new [ChordPattern] adding [interval].
   @override
-  ChordPattern add(Interval interval, {List<int>? replaceSizes}) {
+  ChordPattern add(Interval interval, {Set<int>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
     final filteredIntervals = intervals.whereNot(
       (chordInterval) => sizesToReplace.contains(chordInterval.size),

@@ -128,14 +128,14 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Tonality items in a collection', () {
-        final orderedSet = SplayTreeSet<Tonality>.of([
+        final orderedSet = SplayTreeSet<Tonality>.of({
           Note.f.sharp.minor,
           Note.c.minor,
           Note.d.major,
           Note.c.major,
           Note.d.flat.major,
           Note.e.flat.major,
-        ]);
+        });
         expect(orderedSet.toList(), [
           Note.c.major,
           Note.c.minor,

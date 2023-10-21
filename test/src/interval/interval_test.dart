@@ -86,21 +86,6 @@ void main() {
       });
     });
 
-    group('.fromSemitonesQuality()', () {
-      test('should return the correct Interval from semitones and Quality', () {
-        expect(Interval.fromSemitonesQuality(3), Interval.m3);
-        expect(Interval.fromSemitonesQuality(6), Interval.A4);
-        expect(
-          Interval.fromSemitonesQuality(6, PerfectQuality.augmented),
-          Interval.A4,
-        );
-        expect(
-          Interval.fromSemitonesQuality(6, PerfectQuality.diminished),
-          Interval.d5,
-        );
-      });
-    });
-
     group('.parse()', () {
       test('should throw a FormatException when source is invalid', () {
         expect(() => Interval.parse('x'), throwsFormatException);
@@ -710,12 +695,12 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Interval items in a collection', () {
-        final orderedSet = SplayTreeSet<Interval>.of(const [
+        final orderedSet = SplayTreeSet<Interval>.of({
           Interval.m2,
           Interval.P8,
           Interval.P1,
           Interval.A1,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           Interval.P1,
           Interval.A1,

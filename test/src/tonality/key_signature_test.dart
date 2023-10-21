@@ -249,13 +249,13 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort KeySignature items in a collection', () {
-        final orderedSet = SplayTreeSet<KeySignature>.of([
+        final orderedSet = SplayTreeSet<KeySignature>.of({
           KeySignature.fromDistance(-3),
           KeySignature.fromDistance(0),
           KeySignature.fromDistance(-6),
           KeySignature.fromDistance(4),
           KeySignature.fromDistance(3),
-        ]);
+        });
         expect(orderedSet.toList(), [
           KeySignature.fromDistance(-6),
           KeySignature.fromDistance(-3),

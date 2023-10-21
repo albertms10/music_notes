@@ -168,50 +168,20 @@ final class Interval implements Comparable<Interval> {
           'Interval must be imperfect',
         );
 
-  /// Creates a new [Interval] from the [Quality] delta.
-  Interval.fromDelta(int size, int delta)
-      : this._(size, Quality.fromInterval(size, delta));
+  /// Creates a new [Interval] from [Quality.semitones].
+  factory Interval.fromQualityDelta(int size, int delta) {
+    final qualityConstructor =
+        size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
+
+    return Interval._(size, qualityConstructor(delta));
+  }
 
   /// Creates a new [Interval] from [semitones].
-  Interval.fromSemitones(int size, int semitones)
-      : this._(
-          size,
-          Quality.fromInterval(
-            size,
-            semitones * size.sign - size._semitones.abs(),
-          ),
-        );
-
-  /// Creates a new [Interval] from [semitones] and a [preferredQuality].
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.fromSemitonesQuality(4) == Interval.m3
-  /// Interval.fromSemitonesQuality(7) == Interval.A4
-  /// Interval.fromSemitonesQuality(7, PerfectQuality.diminished)
-  ///   == Interval.d5
-  /// ```
-  factory Interval.fromSemitonesQuality(
-    int semitones, [
-    Quality? preferredQuality,
-  ]) {
-    final spellings = IntervalClass(semitones).spellings();
-
-    if (preferredQuality != null) {
-      final interval = spellings.firstWhereOrNull(
-        (interval) => interval.quality == preferredQuality,
+  factory Interval.fromSemitones(int size, int semitones) =>
+      Interval.fromQualityDelta(
+        size,
+        semitones * size.sign - size._semitones.abs(),
       );
-      if (interval != null) return interval;
-    }
-
-    // Find the Interval with the smaller Quality delta semitones.
-    return spellings
-        .sorted(
-          (a, b) =>
-              a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
-        )
-        .first;
-  }
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -262,7 +232,7 @@ final class Interval implements Comparable<Interval> {
     final absResult =
         matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
 
-    return absResult * (semitones.isNegative ? -1 : 1);
+    return absResult * semitones.nonZeroSign;
   }
 
   /// Returns the number of semitones of this [Interval].
@@ -373,10 +343,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.respellBySize(5) == Interval.d5
   /// Interval.d3.respellBySize(2) == Interval.M2
   /// ```
-  Interval respellBySize(int size) => Interval._(
-        size,
-        Quality.fromInterval(size, semitones.abs() - size._semitones.abs()),
-      );
+  Interval respellBySize(int size) => Interval.fromSemitones(size, semitones);
 
   /// Returns the iteration distance of this [Interval] between [scalable1] and
   /// [scalable2], including all visited `notes`.
