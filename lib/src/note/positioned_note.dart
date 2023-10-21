@@ -221,7 +221,7 @@ final class PositionedNote
   /// Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1)
   ///   == Note.f.sharp.inOctave(4)
   /// Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2)
-  ///  == Note.g.flat.flat.inOctave(4)
+  ///   == Note.g.flat.flat.inOctave(4)
   /// ```
   PositionedNote respellByBaseNoteDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
