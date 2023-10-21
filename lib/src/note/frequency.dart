@@ -66,8 +66,8 @@ class Frequency implements Comparable<Frequency> {
     );
     final hertzDelta = hertz - closestNoteFrequency.hertz;
 
-    /// Whether [closestNote] is closer to the upwards spelling (so, positive
-    /// [hertzDelta]), e.g. [Accidental.flat] instead of [Accidental.sharp].
+    // Whether `closestNote` is closer to the upwards spelling (so, positive
+    // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
         closestNote.note.accidental == Accidental.sharp &&
             !hertzDelta.isNegative;
@@ -107,7 +107,7 @@ class Frequency implements Comparable<Frequency> {
   /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7)
   ///   .map((frequency) => frequency.closestPositionedNote().displayString())
   ///   .toSet()
-  ///   == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}
+  ///     == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}
   /// ```
   Set<Frequency> harmonics({required int upToIndex}) => {
         for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
