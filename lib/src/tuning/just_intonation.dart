@@ -5,7 +5,7 @@ part of '../../music_notes.dart';
 /// See [Just intonation](https://en.wikipedia.org/wiki/Just_intonation).
 @immutable
 sealed class JustIntonation extends TuningSystem {
-  /// Creates a new [JustIntonation] from [referenceNote];
+  /// Creates a new [JustIntonation] from [referenceNote].
   const JustIntonation({
     super.referenceNote = const PositionedNote(Note.c, octave: 4),
   });
@@ -25,7 +25,7 @@ sealed class JustIntonation extends TuningSystem {
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
 @immutable
 class PythagoreanTuning extends JustIntonation {
-  /// Creates a new [PythagoreanTuning] from [referenceNote];
+  /// Creates a new [PythagoreanTuning] from [referenceNote].
   const PythagoreanTuning({super.referenceNote});
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
