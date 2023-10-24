@@ -24,19 +24,32 @@ void main() {
       });
     });
 
-    group('.cents()', () {
+    group('.ratioFromNote()', () {
       test(
-        'should return the number of cents for ratio in this EqualTemperament',
+        'should return the number of ratio from a PositionedNote in this '
+        'EqualTemperament',
         () {
-          const edo12 = EqualTemperament.edo12();
-          expect(TuningSystem.cents(edo12.ratio()), closeTo(100, 0.01));
-          expect(TuningSystem.cents(edo12.ratio(6)), closeTo(600, 0.01));
-          expect(TuningSystem.cents(edo12.ratio(12)), closeTo(1200, 0.01));
-
-          const edo19 = EqualTemperament.edo19();
-          expect(TuningSystem.cents(edo19.ratio()), closeTo(63.16, 0.01));
-          expect(TuningSystem.cents(edo19.ratio(10)), closeTo(631.58, 0.01));
-          expect(TuningSystem.cents(edo19.ratio(19)), closeTo(1200, 0.01));
+          expect(
+            const EqualTemperament.edo12().ratioFromNote(Note.g.inOctave(4)),
+            0.8908987181403393,
+          );
+          expect(
+            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(4)),
+            1,
+          );
+          expect(
+            const EqualTemperament.edo12()
+                .ratioFromNote(Note.b.flat.inOctave(4)),
+            1.0594630943592953,
+          );
+          expect(
+            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(5)),
+            2,
+          );
+          expect(
+            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(6)),
+            4,
+          );
         },
       );
     });
@@ -62,6 +75,10 @@ void main() {
           expect(
             const EqualTemperament.edo12().centsFromNote(Note.a.inOctave(5)),
             closeTo(1200, 0.01),
+          );
+          expect(
+            const EqualTemperament.edo12().centsFromNote(Note.a.inOctave(6)),
+            closeTo(2400, 0.01),
           );
         },
       );
