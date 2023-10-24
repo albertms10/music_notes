@@ -40,7 +40,11 @@ class PythagoreanTuning extends JustIntonation {
       // transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
-    return ratio;
+    return ratio *
+        math.pow(
+          2,
+          note.interval(referenceNote).semitones.abs() ~/ chromaticDivisions,
+        );
   }
 
   @override
