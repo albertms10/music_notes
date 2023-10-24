@@ -28,16 +28,6 @@ class PythagoreanTuning extends JustIntonation {
   /// Creates a new [PythagoreanTuning] from [referenceNote].
   const PythagoreanTuning({super.referenceNote});
 
-  /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  ({double ratio, double cents}) get pythagoreanComma {
-    final enharmonicReference = referenceNote.transposeBy(-Interval.d2);
-
-    return (
-      ratio: ratioFromNote(enharmonicReference),
-      cents: centsFromNote(enharmonicReference) - centsFromNote(referenceNote)
-    );
-  }
-
   @override
   double ratioFromNote(PositionedNote note) {
     final distance = referenceNote.note.fifthsDistanceWith(note.note);
@@ -58,4 +48,14 @@ class PythagoreanTuning extends JustIntonation {
       referenceNote.note.fifthsDistanceWith(note.note) *
       generatorCents %
       TuningSystem.octaveCents;
+
+  /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
+  ({double ratio, double cents}) get pythagoreanComma {
+    final enharmonicReference = referenceNote.transposeBy(-Interval.d2);
+
+    return (
+      ratio: ratioFromNote(enharmonicReference),
+      cents: centsFromNote(enharmonicReference) - centsFromNote(referenceNote)
+    );
+  }
 }
