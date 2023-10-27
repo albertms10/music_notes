@@ -10,7 +10,7 @@ sealed class TuningSystem {
   const TuningSystem({required this.referenceNote});
 
   /// The number of cents in an [Interval.P8].
-  static const int octaveCents = 1200;
+  static const int octaveCents = chromaticDivisions * 100;
 
   /// Returns the number of cents for the generator at [Interval.P5] in this
   /// [TuningSystem].
