@@ -20,7 +20,7 @@ sealed class JustIntonation extends TuningSystem {
   double get generatorCents => TuningSystem.cents(ascendingFifthRatio);
 }
 
-/// A representation of the Pythagorean tuning system.
+/// A representation of the three-limit (a.k.a Pythagorean) tuning system.
 ///
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
 @immutable
