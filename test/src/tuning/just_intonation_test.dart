@@ -169,14 +169,11 @@ void main() {
 
     group('.pythagoreanComma', () {
       test('should return the ratio and cents of the Pythagorean comma', () {
-        expect(
-          const PythagoreanTuning().pythagoreanComma,
-          (ratio: 1.0136432647705078, cents: 23.46001038464965),
-        );
+        expect(const PythagoreanTuning().pythagoreanComma, 1.0136432647705078);
         expect(
           PythagoreanTuning(referenceNote: Note.f.sharp.inOctave(5))
               .pythagoreanComma,
-          (ratio: 1.0136432647705078, cents: 23.46001038464965),
+          1.0136432647705078,
         );
       });
     });

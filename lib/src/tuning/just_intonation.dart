@@ -18,6 +18,10 @@ sealed class JustIntonation extends TuningSystem {
 
   @override
   double get generatorCents => TuningSystem.cents(ascendingFifthRatio);
+
+  /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma) (a.k.a
+  /// Didymean comma).
+  double get syntonicComma => (81 / 64) / (5 / 4);
 }
 
 /// A representation of the three-limit (a.k.a Pythagorean) tuning system.
@@ -54,12 +58,6 @@ class PythagoreanTuning extends JustIntonation {
       TuningSystem.octaveCents;
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  ({double ratio, double cents}) get pythagoreanComma {
-    final enharmonicReference = referenceNote.transposeBy(-Interval.d2);
-
-    return (
-      ratio: ratioFromNote(enharmonicReference),
-      cents: centsFromNote(enharmonicReference) - centsFromNote(referenceNote)
-    );
-  }
+  double get pythagoreanComma =>
+      ratioFromNote(referenceNote.transposeBy(-Interval.d2));
 }
