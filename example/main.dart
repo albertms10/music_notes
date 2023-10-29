@@ -99,7 +99,7 @@ void main() {
       ); // 456.1401436878537 Hz
 
   const Frequency(415).closestPositionedNote();
-  // (G♯4, cents: -1.2706247484469828, hertz: -0.3046975799451275)
+  // (G♯4, cents: -1.2706247484469828 ¢, hertz: -0.3046975799451275)
 
   Note.c
       .inOctave(1)
