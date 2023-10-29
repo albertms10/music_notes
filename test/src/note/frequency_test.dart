@@ -64,14 +64,16 @@ void main() {
         expect(
           const Frequency(512).closestPositionedNote(
             referenceFrequency: const Frequency(512),
-            referenceNote: Note.c.inOctave(5),
+            tuningSystem:
+                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
           ),
           (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
         );
         expect(
           const Frequency(440).closestPositionedNote(
             referenceFrequency: const Frequency(512),
-            referenceNote: Note.c.inOctave(5),
+            tuningSystem:
+                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
           ),
           (
             Note.a.inOctave(4),

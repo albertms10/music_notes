@@ -28,7 +28,7 @@ class Frequency implements Comparable<Frequency> {
   }
 
   /// Returns the closest [PositionedNote] to this [Frequency] from
-  /// [referenceNote] and [referenceFrequency], with the difference in `cents`
+  /// [referenceFrequency] and [tuningSystem], with the difference in `cents`
   /// and `hertz`.
   ///
   /// Example:
@@ -49,19 +49,20 @@ class Frequency implements Comparable<Frequency> {
   /// closestNote.frequency() == Frequency(frequency.hertz - hertz);
   /// ```
   ClosestPositionedNote closestPositionedNote({
-    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
     final cents = Ratio(hertz / referenceFrequency.hertz).cents;
-    final semitones = referenceNote.semitones + (cents.value / 100).round();
+    final semitones =
+        tuningSystem.referenceNote.semitones + (cents.value / 100).round();
 
     final closestNote = PitchClass(semitones)
         .resolveClosestSpelling()
         .inOctave(PositionedNote.octaveFromSemitones(semitones));
 
     final closestNoteFrequency = closestNote.frequency(
-      referenceNote: referenceNote,
       referenceFrequency: referenceFrequency,
+      tuningSystem: tuningSystem,
     );
     final hertzDelta = hertz - closestNoteFrequency.hertz;
 
@@ -160,7 +161,11 @@ class Frequency implements Comparable<Frequency> {
 
 /// A record containing the closest [PositionedNote], with delta `cents` and
 /// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {Cent cents, double hertz});
+typedef ClosestPositionedNote = (
+  PositionedNote closestNote, {
+  Cent cents,
+  double hertz,
+});
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {
