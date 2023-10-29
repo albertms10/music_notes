@@ -55,8 +55,6 @@ class EqualTemperament extends TuningSystem {
   Ratio ratioFromNote(PositionedNote note) =>
       ratio(referenceNote.difference(note));
 
-
-
   @override
   Cent get generatorCents {
     var semitonesUpToP5 = 0;
