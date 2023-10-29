@@ -9,7 +9,7 @@ sealed class TuningSystem {
   /// Creates a new [TuningSystem].
   const TuningSystem({required this.referenceNote});
 
-  /// Returns the number of cents for the generator at [Interval.P5] in this
+  /// Returns the number of [Cent] for the generator at [Interval.P5] in this
   /// [TuningSystem].
   ///
   /// Example:
@@ -22,7 +22,7 @@ sealed class TuningSystem {
   /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
   Cent get generatorCents;
 
-  /// Returns the ratio from [note] in this [TuningSystem].
+  /// Returns the [Ratio] from [note] in this [TuningSystem].
   ///
   /// Example:
   /// ```dart
@@ -34,5 +34,5 @@ sealed class TuningSystem {
   /// edo12.ratioFromNote(Note.b.inOctave(4)) == 1.12
   /// edo12.ratioFromNote(Note.d.inOctave(5)) == 1.33
   /// ```
-  Ratio ratioFromNote(PositionedNote note);
+  Ratio ratio(PositionedNote note);
 }

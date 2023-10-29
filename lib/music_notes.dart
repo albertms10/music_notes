@@ -38,5 +38,6 @@ part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
 part 'src/tuning/cent.dart';
 part 'src/tuning/equal_temperament.dart';
+part 'src/tuning/just_intonation.dart';
 part 'src/tuning/ratio.dart';
 part 'src/tuning/tuning_system.dart';

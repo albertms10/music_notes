@@ -39,21 +39,21 @@ class EqualTemperament extends TuningSystem {
   int get octaveDivisions =>
       divisions.values.reduce((value, element) => value + element);
 
-  /// Returns the [semitones] ratio for this [EqualTemperament].
+  /// Returns the ratio from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///
   /// Example:
   /// ```dart
-  /// const EqualTemperament.edo12().ratio() == 1.059463
-  /// const EqualTemperament.edo19().ratio() == 1.037155
+  /// const EqualTemperament.edo12().ratioFromSemitones() == Ratio(1.059463)
+  /// const EqualTemperament.edo19().ratioFromSemitones() == Ratio(1.037155)
   /// ```
-  Ratio ratio([int semitones = 1]) =>
+  Ratio ratioFromSemitones([int semitones = 1]) =>
       Ratio(math.pow(2, semitones / octaveDivisions));
 
   @override
-  Ratio ratioFromNote(PositionedNote note) =>
-      ratio(referenceNote.difference(note));
+  Ratio ratio(PositionedNote note) =>
+      ratioFromSemitones(referenceNote.difference(note));
 
   @override
   Cent get generatorCents {
@@ -63,6 +63,6 @@ class EqualTemperament extends TuningSystem {
       semitonesUpToP5 += divisionEntry.value;
     }
 
-    return ratio(semitonesUpToP5).cents;
+    return ratioFromSemitones(semitonesUpToP5).cents;
   }
 }
