@@ -51,13 +51,6 @@ class PythagoreanTuning extends JustIntonation {
     return Ratio(ratio * octaveFactor);
   }
 
-  /// Returns the [Cent] from [note] in this [PythagoreanTuning].
-  Cent centsFromNote(PositionedNote note) => Cent(
-        referenceNote.note.fifthsDistanceWith(note.note) *
-            generatorCents.value %
-            Cent.octaveCents,
-      );
-
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
   Ratio get pythagoreanComma =>
       ratioFromNote(referenceNote.transposeBy(-Interval.d2));
