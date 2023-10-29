@@ -10,18 +10,18 @@ sealed class JustIntonation extends TuningSystem {
     super.referenceNote = const PositionedNote(Note.c, octave: 4),
   });
 
-  /// The ratio of an ascending [Interval.P5].
-  static const double ascendingFifthRatio = 3 / 2;
+  /// The [Ratio] of an ascending [Interval.P5].
+  static const Ratio ascendingFifthRatio = Ratio(3 / 2);
 
-  /// The ratio of an ascending [Interval.P4].
-  static const double ascendingFourthRatio = 4 / 3;
-
-  @override
-  double get generatorCents => TuningSystem.cents(ascendingFifthRatio);
+  /// The [Ratio] of an ascending [Interval.P4].
+  static const Ratio ascendingFourthRatio = Ratio(4 / 3);
 
   /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma) (a.k.a
   /// Didymean comma).
-  double get syntonicComma => (81 / 64) / (5 / 4);
+  static const Ratio syntonicComma = Ratio((81 / 64) / (5 / 4));
+
+  @override
+  Cent get generatorCents => ascendingFifthRatio.cents;
 }
 
 /// A representation of the three-limit (a.k.a Pythagorean) tuning system.
@@ -33,31 +33,32 @@ class PythagoreanTuning extends JustIntonation {
   const PythagoreanTuning({super.referenceNote});
 
   @override
-  double ratioFromNote(PositionedNote note) {
+  Ratio ratioFromNote(PositionedNote note) {
     final distance = referenceNote.note.fifthsDistanceWith(note.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
       ratio *= distance.isNegative
-          ? JustIntonation.ascendingFourthRatio
-          : JustIntonation.ascendingFifthRatio;
+          ? JustIntonation.ascendingFourthRatio.value
+          : JustIntonation.ascendingFifthRatio.value;
       // When ratio is larger than 2, so larger than an octave, divide by 2 to
       // transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
-    return ratio *
-        math.pow(
-          2,
-          note.interval(referenceNote).semitones.abs() ~/ chromaticDivisions,
-        );
+    final octaveFactor = math.pow(
+      2,
+      note.interval(referenceNote).semitones.abs() ~/ chromaticDivisions,
+    );
+    return Ratio(ratio * octaveFactor);
   }
 
-  @override
-  double centsFromNote(PositionedNote note) =>
-      referenceNote.note.fifthsDistanceWith(note.note) *
-      generatorCents %
-      TuningSystem.octaveCents;
+  /// Returns the [Cent] from [note] in this [PythagoreanTuning].
+  Cent centsFromNote(PositionedNote note) => Cent(
+        referenceNote.note.fifthsDistanceWith(note.note) *
+            generatorCents.value %
+            Cent.octaveCents,
+      );
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  double get pythagoreanComma =>
+  Ratio get pythagoreanComma =>
       ratioFromNote(referenceNote.transposeBy(-Interval.d2));
 }
