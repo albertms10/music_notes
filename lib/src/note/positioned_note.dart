@@ -363,7 +363,7 @@ final class PositionedNote
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      referenceFrequency * tuningSystem.ratioFromNote(this);
+      referenceFrequency * tuningSystem.ratioFromNote(this).value;
 
   /// Returns the string representation of this [PositionedNote] following the
   /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).

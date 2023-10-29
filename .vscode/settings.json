@@ -15,7 +15,8 @@
     "octatonic",
     "phrygian",
     "pythagorean",
-    "sublist"
+    "sublist",
+    "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true

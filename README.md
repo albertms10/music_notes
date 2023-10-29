@@ -224,7 +224,7 @@ Get the closest note from a given `Frequency`:
 
 ```dart
 const Frequency(415).closestPositionedNote();
-// (G♯4, cents: -1.2706247484469828, hertz: -0.3046975799451275)
+// (G♯4, cents: -1.2706247484469828 ¢, hertz: -0.3046975799451275)
 ```
 
 And combining both methods, the harmonic series of a given `PositionedNote`:

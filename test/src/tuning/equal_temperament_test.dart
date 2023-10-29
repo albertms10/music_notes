@@ -15,71 +15,39 @@ void main() {
     });
 
     group('.ratio()', () {
-      test('should return the semitones ratio for this EqualTemperament', () {
-        expect(const EqualTemperament.edo12().ratio(), closeTo(1.0595, 0.0001));
-        expect(const EqualTemperament.edo12().ratio(12), 2);
+      test('should return the ratio from semitones for this EqualTemperament',
+          () {
+        expect(
+          const EqualTemperament.edo12().ratio(),
+          const Ratio(1.0594630943592953),
+        );
+        expect(const EqualTemperament.edo12().ratio(12), const Ratio(2));
 
-        expect(const EqualTemperament.edo19().ratio(), closeTo(1.0372, 0.0001));
-        expect(const EqualTemperament.edo19().ratio(19), 2);
+        expect(
+          const EqualTemperament.edo19().ratio(),
+          const Ratio(1.0371550444461919),
+        );
+        expect(const EqualTemperament.edo19().ratio(19), const Ratio(2));
       });
     });
 
     group('.ratioFromNote()', () {
       test(
-        'should return the number of ratio from a PositionedNote in this '
+        'should return the ratio from a PositionedNote in this '
         'EqualTemperament',
         () {
+          const edo12 = EqualTemperament.edo12();
           expect(
-            const EqualTemperament.edo12().ratioFromNote(Note.g.inOctave(4)),
+            edo12.ratioFromNote(Note.g.inOctave(4)).value,
             0.8908987181403393,
           );
+          expect(edo12.ratioFromNote(Note.a.inOctave(4)).value, 1);
           expect(
-            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(4)),
-            1,
-          );
-          expect(
-            const EqualTemperament.edo12()
-                .ratioFromNote(Note.b.flat.inOctave(4)),
+            edo12.ratioFromNote(Note.b.flat.inOctave(4)).value,
             1.0594630943592953,
           );
-          expect(
-            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(5)),
-            2,
-          );
-          expect(
-            const EqualTemperament.edo12().ratioFromNote(Note.a.inOctave(6)),
-            4,
-          );
-        },
-      );
-    });
-
-    group('.centsFromNote()', () {
-      test(
-        'should return the number of cents from a PositionedNote in this '
-        'EqualTemperament',
-        () {
-          expect(
-            const EqualTemperament.edo12().centsFromNote(Note.g.inOctave(4)),
-            closeTo(-200, 0.01),
-          );
-          expect(
-            const EqualTemperament.edo12().centsFromNote(Note.a.inOctave(4)),
-            0,
-          );
-          expect(
-            const EqualTemperament.edo12()
-                .centsFromNote(Note.b.flat.inOctave(4)),
-            closeTo(100, 0.01),
-          );
-          expect(
-            const EqualTemperament.edo12().centsFromNote(Note.a.inOctave(5)),
-            closeTo(1200, 0.01),
-          );
-          expect(
-            const EqualTemperament.edo12().centsFromNote(Note.a.inOctave(6)),
-            closeTo(2400, 0.01),
-          );
+          expect(edo12.ratioFromNote(Note.a.inOctave(5)).value, 2);
+          expect(edo12.ratioFromNote(Note.a.inOctave(6)).value, 4);
         },
       );
     });
@@ -89,10 +57,13 @@ void main() {
         'should return the number of cents for the generator at Interval.P5 in '
         'this EqualTemperament',
         () {
-          expect(const EqualTemperament.edo12().generatorCents, 700);
+          expect(
+            const EqualTemperament.edo12().generatorCents,
+            const Cent(700),
+          );
           expect(
             const EqualTemperament.edo19().generatorCents,
-            closeTo(694.74, 0.01),
+            const Cent(694.7368421052632),
           );
         },
       );

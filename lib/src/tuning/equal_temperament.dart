@@ -48,25 +48,21 @@ class EqualTemperament extends TuningSystem {
   /// const EqualTemperament.edo12().ratio() == 1.059463
   /// const EqualTemperament.edo19().ratio() == 1.037155
   /// ```
-  double ratio([int semitones = 1]) =>
-      math.pow(2, semitones / octaveDivisions).toDouble();
+  Ratio ratio([int semitones = 1]) =>
+      Ratio(math.pow(2, semitones / octaveDivisions));
 
   @override
-  double ratioFromNote(PositionedNote note) =>
+  Ratio ratioFromNote(PositionedNote note) =>
       ratio(referenceNote.difference(note));
 
   @override
-  double centsFromNote(PositionedNote note) =>
-      TuningSystem.cents(ratio(referenceNote.difference(note)));
-
-  @override
-  double get generatorCents {
+  Cent get generatorCents {
     var semitonesUpToP5 = 0;
     for (final divisionEntry in divisions.entries) {
       if (divisionEntry.key == BaseNote.g) break;
       semitonesUpToP5 += divisionEntry.value;
     }
 
-    return TuningSystem.cents(ratio(semitonesUpToP5));
+    return ratio(semitonesUpToP5).cents;
   }
 }

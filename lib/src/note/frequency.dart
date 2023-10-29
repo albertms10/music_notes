@@ -34,10 +34,10 @@ class Frequency implements Comparable<Frequency> {
   /// Example:
   /// ```dart
   /// const Frequency(467).closestPositionedNote()
-  ///   == (Note.a.sharp.inOctave(4), cents: 3.1028, hertz: 0.8362)
+  ///   == (Note.a.sharp.inOctave(4), cents: const Cent(3.1028), hertz: 0.8362)
   ///
   /// const Frequency(260).closestPositionedNote()
-  ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
+  ///   == (Note.c.inOctave(4), cents: const Cent(-10.7903), hertz: -1.6256)
   /// ```
   ///
   /// This method and [PositionedNote.frequency] are inverses of each other for
@@ -52,9 +52,9 @@ class Frequency implements Comparable<Frequency> {
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
-    final cents = TuningSystem.cents(hertz / referenceFrequency.hertz);
+    final cents = Ratio(hertz / referenceFrequency.hertz).cents;
     final semitones =
-        tuningSystem.referenceNote.semitones + (cents / 100).round();
+        tuningSystem.referenceNote.semitones + (cents.value / 100).round();
 
     final closestNote = PitchClass(semitones)
         .resolveClosestSpelling()
@@ -74,7 +74,7 @@ class Frequency implements Comparable<Frequency> {
 
     return (
       isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
-      cents: TuningSystem.cents(hertz / closestNoteFrequency.hertz),
+      cents: Ratio(hertz / closestNoteFrequency.hertz).cents,
       hertz: hertzDelta,
     );
   }
@@ -163,15 +163,23 @@ class Frequency implements Comparable<Frequency> {
 /// `hertz`.
 typedef ClosestPositionedNote = (
   PositionedNote closestNote, {
-  double cents,
+  Cent cents,
   double hertz,
 });
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {
   /// Returns the string representation of this [ClosestPositionedNote] record.
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440).closestPositionedNote().displayString() == 'A4'
+  /// const Frequency(98.1).closestPositionedNote().displayString() == 'G2+2'
+  /// const Frequency(163.5).closestPositionedNote().displayString() == 'E3-14'
+  /// const Frequency(228.9).closestPositionedNote().displayString() == 'A♯3-31'
+  /// ```
   String displayString() {
-    final roundedCents = cents.round();
+    final roundedCents = cents.value.round();
     if (roundedCents == 0) return '${$1}';
 
     return '${$1}${roundedCents.toDeltaString()}';
