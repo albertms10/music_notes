@@ -34,5 +34,5 @@ sealed class TuningSystem {
   /// edo12.ratioFromNote(Note.b.inOctave(4)) == 1.12
   /// edo12.ratioFromNote(Note.d.inOctave(5)) == 1.33
   /// ```
-  Ratio ratioFromNote(PositionedNote note);
+  Ratio ratio(PositionedNote note);
 }

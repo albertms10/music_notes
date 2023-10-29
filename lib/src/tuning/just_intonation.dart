@@ -33,7 +33,7 @@ class PythagoreanTuning extends JustIntonation {
   const PythagoreanTuning({super.referenceNote});
 
   @override
-  Ratio ratioFromNote(PositionedNote note) {
+  Ratio ratio(PositionedNote note) {
     final distance = referenceNote.note.fifthsDistanceWith(note.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
@@ -52,6 +52,5 @@ class PythagoreanTuning extends JustIntonation {
   }
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  Ratio get pythagoreanComma =>
-      ratioFromNote(referenceNote.transposeBy(-Interval.d2));
+  Ratio get pythagoreanComma => ratio(referenceNote.transposeBy(-Interval.d2));
 }
