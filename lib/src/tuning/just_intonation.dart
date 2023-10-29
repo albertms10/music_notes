@@ -16,8 +16,8 @@ sealed class JustIntonation extends TuningSystem {
   /// The [Ratio] of an ascending [Interval.P4].
   static const Ratio ascendingFourthRatio = Ratio(4 / 3);
 
-  /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma) (a.k.a
-  /// Didymean comma).
+  /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma)
+  /// (a.k.a. Didymean comma).
   static const Ratio syntonicComma = Ratio((81 / 64) / (5 / 4));
 
   @override
