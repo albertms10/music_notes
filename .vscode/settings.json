@@ -14,7 +14,8 @@
     "neapolitan",
     "octatonic",
     "phrygian",
-    "sublist"
+    "sublist",
+    "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true

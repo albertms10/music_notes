@@ -24,26 +24,6 @@ void main() {
       });
     });
 
-    group('.cents()', () {
-      test(
-        'should return the number of cents for ratio in this EqualTemperament',
-        () {
-          var ratio = EqualTemperament.edo12.ratio;
-          expect(EqualTemperament.edo12.cents(ratio()), closeTo(100, 0.01));
-          expect(EqualTemperament.edo12.cents(ratio(6)), closeTo(600, 0.01));
-          expect(EqualTemperament.edo12.cents(ratio(12)), closeTo(1200, 0.01));
-
-          ratio = EqualTemperament.edo19.ratio;
-          expect(EqualTemperament.edo19.cents(ratio()), closeTo(63.16, 0.01));
-          expect(
-            EqualTemperament.edo19.cents(ratio(10)),
-            closeTo(631.58, 0.01),
-          );
-          expect(EqualTemperament.edo19.cents(ratio(19)), closeTo(1200, 0.01));
-        },
-      );
-    });
-
     group('.generatorCents', () {
       test(
         'should return the number of cents for semitones in this '

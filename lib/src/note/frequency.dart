@@ -52,9 +52,8 @@ class Frequency implements Comparable<Frequency> {
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
   }) {
-    final cents =
-        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
-    final semitones = referenceNote.semitones + (cents / 100).round();
+    final cents = Ratio(hertz / referenceFrequency.hertz).cents;
+    final semitones = referenceNote.semitones + (cents.value / 100).round();
 
     final closestNote = PitchClass(semitones)
         .resolveClosestSpelling()
@@ -74,8 +73,8 @@ class Frequency implements Comparable<Frequency> {
 
     return (
       isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
+      cents: Ratio(hertz / closestNoteFrequency.hertz).cents.value.toDouble(),
       hertz: hertzDelta,
-      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
     );
   }
 
