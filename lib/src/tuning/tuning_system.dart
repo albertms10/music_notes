@@ -54,27 +54,8 @@ class EqualTemperament extends TuningSystem {
   /// EqualTemperament.edo12.ratio() == 1.059463
   /// EqualTemperament.edo19.ratio() == 1.037155
   /// ```
-  double ratio([int semitones = 1]) =>
-      math.pow(2, semitones / octaveDivisions).toDouble();
-
-  /// Returns the number of cents for [ratio] in this [EqualTemperament].
-  ///
-  /// See [Cent](https://en.wikipedia.org/wiki/Cent_(music)).
-  ///
-  /// Example:
-  /// ```dart
-  /// var ratio = EqualTemperament.edo12.ratio;
-  /// EqualTemperament.edo12.cents(ratio()) == 100
-  /// EqualTemperament.edo12.cents(ratio(7)) == 700
-  ///
-  /// ratio = EqualTemperament.edo19.ratio;
-  /// EqualTemperament.edo19.cents(ratio()) == 63.16
-  /// ```
-  double cents(double ratio) =>
-      math.log(ratio) /
-      math.log(2) *
-      100 *
-      EqualTemperament.edo12.octaveDivisions;
+  Ratio ratio([int semitones = 1]) =>
+      Ratio(math.pow(2, semitones / octaveDivisions));
 
   /// Returns the number of cents for the generator at [Interval.P5] in this
   /// [EqualTemperament].
@@ -86,13 +67,13 @@ class EqualTemperament extends TuningSystem {
   /// ```
   ///
   /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
-  double get generatorCents {
+  Cent get generatorCents {
     var semitonesUpToP5 = 0;
     for (final divisionEntry in divisions.entries) {
       if (divisionEntry.key == BaseNote.g) break;
       semitonesUpToP5 += divisionEntry.value;
     }
 
-    return cents(ratio(semitonesUpToP5));
+    return ratio(semitonesUpToP5).cents;
   }
 }

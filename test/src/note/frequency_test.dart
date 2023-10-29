@@ -25,13 +25,13 @@ void main() {
       test('should return the closest PositionedNote to this Frequency', () {
         expect(
           const Frequency(440).closestPositionedNote(),
-          (Note.a.inOctave(4), cents: 0.0, hertz: 0.0),
+          (Note.a.inOctave(4), cents: const Cent(0), hertz: 0.0),
         );
         expect(
           const Frequency(455).closestPositionedNote(),
           (
             Note.a.sharp.inOctave(4),
-            cents: -41.96437412632116,
+            cents: const Cent(-41.96437412632116),
             hertz: -11.163761518089927,
           ),
         );
@@ -39,7 +39,7 @@ void main() {
           const Frequency(467).closestPositionedNote(),
           (
             Note.b.flat.inOctave(4),
-            cents: 3.1028314220028586,
+            cents: const Cent(3.1028314220028586),
             hertz: 0.8362384819100726,
           ),
         );
@@ -47,7 +47,7 @@ void main() {
           const Frequency(256).closestPositionedNote(),
           (
             Note.c.inOctave(4),
-            cents: -37.63165622959142,
+            cents: const Cent(-37.63165622959142),
             hertz: -5.625565300598623,
           ),
         );
@@ -57,7 +57,7 @@ void main() {
               .closestPositionedNote(referenceFrequency: const Frequency(415)),
           (
             Note.b.flat.inOctave(4),
-            cents: 1.270624748447127,
+            cents: const Cent(1.270624748447127),
             hertz: 0.32281584089247417,
           ),
         );
@@ -66,7 +66,7 @@ void main() {
             referenceFrequency: const Frequency(512),
             referenceNote: Note.c.inOctave(5),
           ),
-          (Note.c.inOctave(5), cents: 0.0, hertz: 0.0),
+          (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
         );
         expect(
           const Frequency(440).closestPositionedNote(
@@ -75,7 +75,7 @@ void main() {
           ),
           (
             Note.a.inOctave(4),
-            cents: 37.63165622959145,
+            cents: const Cent(37.63165622959145),
             hertz: 9.461035390098175,
           ),
         );

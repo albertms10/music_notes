@@ -34,10 +34,10 @@ class Frequency implements Comparable<Frequency> {
   /// Example:
   /// ```dart
   /// const Frequency(467).closestPositionedNote()
-  ///   == (Note.a.sharp.inOctave(4), cents: 3.1028, hertz: 0.8362)
+  ///   == (Note.a.sharp.inOctave(4), cents: const Cent(3.1028), hertz: 0.8362)
   ///
   /// const Frequency(260).closestPositionedNote()
-  ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
+  ///   == (Note.c.inOctave(4), cents: const Cent(-10.7903), hertz: -1.6256)
   /// ```
   ///
   /// This method and [PositionedNote.frequency] are inverses of each other for
@@ -52,9 +52,8 @@ class Frequency implements Comparable<Frequency> {
     PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
   }) {
-    final cents =
-        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
-    final semitones = referenceNote.semitones + (cents / 100).round();
+    final cents = Ratio(hertz / referenceFrequency.hertz).cents;
+    final semitones = referenceNote.semitones + (cents.value / 100).round();
 
     final closestNote = PitchClass(semitones)
         .resolveClosestSpelling()
@@ -74,8 +73,8 @@ class Frequency implements Comparable<Frequency> {
 
     return (
       isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
+      cents: Ratio(hertz / closestNoteFrequency.hertz).cents,
       hertz: hertzDelta,
-      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
     );
   }
 
@@ -161,13 +160,21 @@ class Frequency implements Comparable<Frequency> {
 
 /// A record containing the closest [PositionedNote], with delta `cents` and
 /// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
+typedef ClosestPositionedNote = (PositionedNote, {Cent cents, double hertz});
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {
   /// Returns the string representation of this [ClosestPositionedNote] record.
+  ///
+  /// Example:
+  /// ```dart
+  /// const Frequency(440).closestPositionedNote().displayString() == 'A4'
+  /// const Frequency(98.1).closestPositionedNote().displayString() == 'G2+2'
+  /// const Frequency(163.5).closestPositionedNote().displayString() == 'E3-14'
+  /// const Frequency(228.9).closestPositionedNote().displayString() == 'A♯3-31'
+  /// ```
   String displayString() {
-    final roundedCents = cents.round();
+    final roundedCents = cents.value.round();
     if (roundedCents == 0) return '${$1}';
 
     return '${$1}${roundedCents.toDeltaString()}';

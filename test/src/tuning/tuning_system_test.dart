@@ -16,32 +16,12 @@ void main() {
 
     group('.ratio()', () {
       test('should return the semitones ratio for this EqualTemperament', () {
-        expect(EqualTemperament.edo12.ratio(), closeTo(1.0595, 0.0001));
-        expect(EqualTemperament.edo12.ratio(12), 2);
+        expect(EqualTemperament.edo12.ratio(), const Ratio(1.0594630943592953));
+        expect(EqualTemperament.edo12.ratio(12), const Ratio(2));
 
-        expect(EqualTemperament.edo19.ratio(), closeTo(1.0372, 0.0001));
-        expect(EqualTemperament.edo19.ratio(19), 2);
+        expect(EqualTemperament.edo19.ratio(), const Ratio(1.0371550444461919));
+        expect(EqualTemperament.edo19.ratio(19), const Ratio(2));
       });
-    });
-
-    group('.cents()', () {
-      test(
-        'should return the number of cents for ratio in this EqualTemperament',
-        () {
-          var ratio = EqualTemperament.edo12.ratio;
-          expect(EqualTemperament.edo12.cents(ratio()), closeTo(100, 0.01));
-          expect(EqualTemperament.edo12.cents(ratio(6)), closeTo(600, 0.01));
-          expect(EqualTemperament.edo12.cents(ratio(12)), closeTo(1200, 0.01));
-
-          ratio = EqualTemperament.edo19.ratio;
-          expect(EqualTemperament.edo19.cents(ratio()), closeTo(63.16, 0.01));
-          expect(
-            EqualTemperament.edo19.cents(ratio(10)),
-            closeTo(631.58, 0.01),
-          );
-          expect(EqualTemperament.edo19.cents(ratio(19)), closeTo(1200, 0.01));
-        },
-      );
     });
 
     group('.generatorCents', () {
@@ -49,8 +29,11 @@ void main() {
         'should return the number of cents for semitones in this '
         'EqualTemperament',
         () {
-          expect(EqualTemperament.edo12.generatorCents, 700);
-          expect(EqualTemperament.edo19.generatorCents, closeTo(694.74, 0.01));
+          expect(EqualTemperament.edo12.generatorCents, const Cent(700));
+          expect(
+            EqualTemperament.edo19.generatorCents,
+            const Cent(694.7368421052632),
+          );
         },
       );
     });

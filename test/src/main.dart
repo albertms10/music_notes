@@ -16,6 +16,8 @@ import 'scale/scale_test.dart' as scale_test;
 import 'tonality/key_signature_test.dart' as key_signature_test;
 import 'tonality/mode_test.dart' as mode_test;
 import 'tonality/tonality_test.dart' as tonality_test;
+import 'tuning/cent_test.dart' as cent_test;
+import 'tuning/ratio_test.dart' as ratio_test;
 import 'tuning/tuning_system_test.dart' as tuning_system_test;
 
 void main() {
@@ -37,5 +39,7 @@ void main() {
   key_signature_test.main();
   mode_test.main();
   tonality_test.main();
+  cent_test.main();
+  ratio_test.main();
   tuning_system_test.main();
 }
