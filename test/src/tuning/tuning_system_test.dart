@@ -16,11 +16,11 @@ void main() {
 
     group('.ratio()', () {
       test('should return the semitones ratio for this EqualTemperament', () {
-        expect(EqualTemperament.edo12.ratio(), closeTo(1.0595, 0.0001));
-        expect(EqualTemperament.edo12.ratio(12), 2);
+        expect(EqualTemperament.edo12.ratio(), const Ratio(1.0594630943592953));
+        expect(EqualTemperament.edo12.ratio(12), const Ratio(2));
 
-        expect(EqualTemperament.edo19.ratio(), closeTo(1.0372, 0.0001));
-        expect(EqualTemperament.edo19.ratio(19), 2);
+        expect(EqualTemperament.edo19.ratio(), const Ratio(1.0371550444461919));
+        expect(EqualTemperament.edo19.ratio(19), const Ratio(2));
       });
     });
 
@@ -29,8 +29,11 @@ void main() {
         'should return the number of cents for semitones in this '
         'EqualTemperament',
         () {
-          expect(EqualTemperament.edo12.generatorCents, 700);
-          expect(EqualTemperament.edo19.generatorCents, closeTo(694.74, 0.01));
+          expect(EqualTemperament.edo12.generatorCents, const Cent(700));
+          expect(
+            EqualTemperament.edo19.generatorCents,
+            const Cent(694.7368421052632),
+          );
         },
       );
     });

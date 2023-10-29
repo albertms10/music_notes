@@ -73,7 +73,7 @@ class Frequency implements Comparable<Frequency> {
 
     return (
       isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
-      cents: Ratio(hertz / closestNoteFrequency.hertz).cents.value.toDouble(),
+      cents: Ratio(hertz / closestNoteFrequency.hertz).cents,
       hertz: hertzDelta,
     );
   }
@@ -160,13 +160,13 @@ class Frequency implements Comparable<Frequency> {
 
 /// A record containing the closest [PositionedNote], with delta `cents` and
 /// `hertz`.
-typedef ClosestPositionedNote = (PositionedNote, {double cents, double hertz});
+typedef ClosestPositionedNote = (PositionedNote, {Cent cents, double hertz});
 
 /// A [ClosestPositionedNote] extension.
 extension ClosestPositionedNoteExtension on ClosestPositionedNote {
   /// Returns the string representation of this [ClosestPositionedNote] record.
   String displayString() {
-    final roundedCents = cents.round();
+    final roundedCents = cents.value.round();
     if (roundedCents == 0) return '${$1}';
 
     return '${$1}${roundedCents.toDeltaString()}';
