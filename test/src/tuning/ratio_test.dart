@@ -22,12 +22,12 @@ void main() {
         expect(const Ratio(2).cents, const Cent(1200));
         expect(const Ratio(4).cents, const Cent(2400));
 
-        const edo12 = EqualTemperament.edo12;
+        const edo12 = EqualTemperament.edo12();
         expect(edo12.ratio().cents.value, closeTo(100, 0.01));
         expect(edo12.ratio(6).cents.value, closeTo(600, 0.01));
         expect(edo12.ratio(12).cents.value, closeTo(1200, 0.01));
 
-        const edo19 = EqualTemperament.edo19;
+        const edo19 = EqualTemperament.edo19();
         expect(edo19.ratio().cents.value, closeTo(63.16, 0.01));
         expect(edo19.ratio(10).cents.value, closeTo(631.58, 0.01));
         expect(edo19.ratio(19).cents.value, closeTo(1200, 0.01));
