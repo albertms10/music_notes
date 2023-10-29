@@ -44,11 +44,11 @@ class PythagoreanTuning extends JustIntonation {
       // transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
-    final octaveFactor = math.pow(
-      2,
-      note.interval(referenceNote).semitones.abs() ~/ chromaticDivisions,
-    );
-    return Ratio(ratio * octaveFactor);
+
+    final octaveDelta =
+        note.interval(referenceNote).semitones.abs() ~/ chromaticDivisions;
+
+    return Ratio(ratio * math.pow(2, octaveDelta));
   }
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).

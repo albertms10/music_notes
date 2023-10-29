@@ -21,15 +21,19 @@ void main() {
           const EqualTemperament.edo12().ratioFromSemitones(),
           const Ratio(1.0594630943592953),
         );
-        expect(const EqualTemperament.edo12().ratioFromSemitones(12),
-            const Ratio(2));
+        expect(
+          const EqualTemperament.edo12().ratioFromSemitones(12),
+          const Ratio(2),
+        );
 
         expect(
           const EqualTemperament.edo19().ratioFromSemitones(),
           const Ratio(1.0371550444461919),
         );
-        expect(const EqualTemperament.edo19().ratioFromSemitones(19),
-            const Ratio(2));
+        expect(
+          const EqualTemperament.edo19().ratioFromSemitones(19),
+          const Ratio(2),
+        );
       });
     });
 
