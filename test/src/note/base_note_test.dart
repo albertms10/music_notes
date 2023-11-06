@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -98,6 +100,29 @@ void main() {
         expect(BaseNote.a.transposeBySize(6), BaseNote.f);
         expect(BaseNote.b.transposeBySize(7), BaseNote.a);
         expect(BaseNote.c.transposeBySize(8), BaseNote.c);
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort BaseNote items in a collection', () {
+        final orderedSet = SplayTreeSet<BaseNote>.of({
+          BaseNote.b,
+          BaseNote.e,
+          BaseNote.d,
+          BaseNote.c,
+          BaseNote.g,
+          BaseNote.f,
+          BaseNote.a,
+        });
+        expect(orderedSet.toList(), [
+          BaseNote.c,
+          BaseNote.d,
+          BaseNote.e,
+          BaseNote.f,
+          BaseNote.g,
+          BaseNote.a,
+          BaseNote.b,
+        ]);
       });
     });
   });

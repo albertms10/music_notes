@@ -7,10 +7,15 @@ class EqualTemperament extends TuningSystem {
   /// one.
   final Map<BaseNote, int> divisions;
 
+  /// Creates a new [EqualTemperament] from [referenceNote] and [divisions].
+  const EqualTemperament({
+    required this.divisions,
+    super.referenceNote = _defaultReferenceNote,
+  });
+
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({
-    super.referenceNote = const PositionedNote(Note.a, octave: 4),
-  }) : divisions = const {
+  const EqualTemperament.edo12({super.referenceNote = _defaultReferenceNote})
+      : divisions = const {
           BaseNote.c: 2,
           BaseNote.d: 2,
           BaseNote.e: 1,
@@ -21,9 +26,8 @@ class EqualTemperament extends TuningSystem {
         };
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({
-    super.referenceNote = const PositionedNote(Note.a, octave: 4),
-  }) : divisions = const {
+  const EqualTemperament.edo19({super.referenceNote = _defaultReferenceNote})
+      : divisions = const {
           BaseNote.c: 3,
           BaseNote.d: 3,
           BaseNote.e: 2,
@@ -32,6 +36,8 @@ class EqualTemperament extends TuningSystem {
           BaseNote.a: 3,
           BaseNote.b: 2,
         };
+
+  static const _defaultReferenceNote = PositionedNote(Note.a, octave: 4);
 
   /// Returns the equal divisions of the octave of this [EqualTemperament].
   ///
@@ -58,11 +64,28 @@ class EqualTemperament extends TuningSystem {
   @override
   Cent get generatorCents {
     var semitonesUpToP5 = 0;
-    for (final divisionEntry in divisions.entries) {
+    for (final divisionEntry in SplayTreeMap.of(divisions).entries) {
       if (divisionEntry.key == BaseNote.g) break;
       semitonesUpToP5 += divisionEntry.value;
     }
 
     return ratioFromSemitones(semitonesUpToP5).cents;
   }
+
+  @override
+  String toString() => 'EDO $octaveDivisions '
+      '(${SplayTreeMap.of(divisions).values.join(" ")})';
+
+  @override
+  bool operator ==(Object other) =>
+      other is EqualTemperament &&
+      const UnorderedIterableEquality<(BaseNote, int)>()
+          .equals(divisions.recordEntries, other.divisions.recordEntries) &&
+      referenceNote == other.referenceNote;
+
+  @override
+  int get hashCode => Object.hash(
+        Object.hashAllUnordered(divisions.recordEntries),
+        referenceNote,
+      );
 }

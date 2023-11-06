@@ -68,8 +68,99 @@ void main() {
             const Cent(700),
           );
           expect(
+            const EqualTemperament(
+              divisions: {
+                // different order
+                BaseNote.a: 2,
+                BaseNote.e: 1,
+                BaseNote.c: 2,
+                BaseNote.g: 2,
+                BaseNote.b: 1,
+                BaseNote.d: 2,
+                BaseNote.f: 2,
+              },
+            ).generatorCents,
+            const Cent(700),
+          );
+          expect(
             const EqualTemperament.edo19().generatorCents,
             const Cent(694.7368421052632),
+          );
+        },
+      );
+    });
+
+    group('operator ==', () {
+      test('should compare this EqualTemperament to other', () {
+        // ignore: prefer_const_constructors
+        expect(EqualTemperament.edo12(), EqualTemperament.edo12());
+        expect(
+          // ignore: prefer_const_constructors
+          EqualTemperament.edo12(),
+          // ignore: prefer_const_constructors
+          EqualTemperament(
+            // ignore: prefer_const_literals_to_create_immutables
+            divisions: {
+              // different order
+              BaseNote.a: 2,
+              BaseNote.e: 1,
+              BaseNote.c: 2,
+              BaseNote.g: 2,
+              BaseNote.b: 1,
+              BaseNote.d: 2,
+              BaseNote.f: 2,
+            },
+          ),
+        );
+        expect(
+          const EqualTemperament.edo12(),
+          isNot(const EqualTemperament.edo19()),
+        );
+      });
+    });
+
+    group('.toString()', () {
+      test(
+        'should return the string representation of this EqualTemperament',
+        () {
+          expect(
+            const EqualTemperament.edo12().toString(),
+            'EDO 12 (2 2 1 2 2 2 1)',
+          );
+          expect(
+            const EqualTemperament.edo19().toString(),
+            'EDO 19 (3 3 2 3 3 3 2)',
+          );
+        },
+      );
+    });
+
+    group('.hashCode', () {
+      test('should return the same hashCode for equal EqualTemperaments', () {
+        expect(
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+        );
+        expect(
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          EqualTemperament(divisions: {BaseNote.d: 2, BaseNote.c: 1}).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+        );
+      });
+
+      test(
+        'should return different hashCodes for different EqualTemperaments',
+        () {
+          expect(
+            const EqualTemperament.edo12().hashCode,
+            isNot(const EqualTemperament.edo19().hashCode),
+          );
+          expect(
+            const EqualTemperament(divisions: {BaseNote.c: 1}).hashCode,
+            isNot(const EqualTemperament(divisions: {BaseNote.c: 2}).hashCode),
           );
         },
       );

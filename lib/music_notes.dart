@@ -2,15 +2,16 @@
 /// working with music theory concepts.
 library music_notes;
 
-import 'dart:collection' show SplayTreeSet;
+import 'dart:collection' show SplayTreeMap, SplayTreeSet;
 import 'dart:math' as math show log, pow;
 
 import 'package:collection/collection.dart'
-    show IterableExtension, ListEquality;
+    show IterableExtension, ListEquality, UnorderedIterableEquality;
 import 'package:meta/meta.dart' show immutable;
 
 import 'utils/int_extension.dart';
 import 'utils/iterable.dart';
+import 'utils/map_extension.dart';
 import 'utils/num_extension.dart';
 import 'utils/string_extension.dart';
 
