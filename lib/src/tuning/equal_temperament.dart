@@ -14,9 +14,8 @@ class EqualTemperament extends TuningSystem {
   });
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({
-    super.referenceNote = const PositionedNote(Note.a, octave: 4),
-  }) : divisions = const {
+  const EqualTemperament.edo12({super.referenceNote = _defaultReferenceNote})
+      : divisions = const {
           BaseNote.c: 2,
           BaseNote.d: 2,
           BaseNote.e: 1,
@@ -27,9 +26,8 @@ class EqualTemperament extends TuningSystem {
         };
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({
-    super.referenceNote = const PositionedNote(Note.a, octave: 4),
-  }) : divisions = const {
+  const EqualTemperament.edo19({super.referenceNote = _defaultReferenceNote})
+      : divisions = const {
           BaseNote.c: 3,
           BaseNote.d: 3,
           BaseNote.e: 2,
@@ -38,6 +36,8 @@ class EqualTemperament extends TuningSystem {
           BaseNote.a: 3,
           BaseNote.b: 2,
         };
+
+  static const _defaultReferenceNote = PositionedNote(Note.a, octave: 4);
 
   /// Returns the equal divisions of the octave of this [EqualTemperament].
   ///
