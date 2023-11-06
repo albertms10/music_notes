@@ -65,4 +65,29 @@ class EqualTemperament extends TuningSystem {
 
     return ratioFromSemitones(semitonesUpToP5).cents;
   }
+
+  @override
+  String toString() => 'EDO $octaveDivisions '
+      '(${SplayTreeMap.of(divisions).values.join(" ")})';
+
+  @override
+  bool operator ==(Object other) =>
+      other is EqualTemperament &&
+      const UnorderedIterableEquality<(BaseNote, int)>()
+          .equals(divisions.recordEntries, other.divisions.recordEntries) &&
+      referenceNote == other.referenceNote;
+
+  @override
+  int get hashCode => Object.hash(
+        // A stable hash code implementation for a HashMap.
+        Object.hashAllUnordered(divisions.entries.map((e) => (e.key, e.value))),
+        referenceNote,
+      );
+}
+
+/// An extension on [Map].
+extension MapExtension<K, V> on Map<K, V> {
+  /// Returns the record entries of this [Map].
+  Iterable<(K key, V value)> get recordEntries =>
+      entries.map((e) => (e.key, e.value));
 }
