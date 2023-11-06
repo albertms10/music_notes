@@ -3,6 +3,13 @@ import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
+    group('constructor', () {
+      test('should create a new EqualTemperament from octave divisions', () {
+        expect(EqualTemperament.edo(12), const EqualTemperament.edo12());
+        expect(EqualTemperament.edo(19), const EqualTemperament.edo19());
+      });
+    });
+
     group('.octaveDivisions', () {
       test(
         'should return the equal divisions of the octave for this '

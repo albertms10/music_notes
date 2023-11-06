@@ -13,6 +13,30 @@ class EqualTemperament extends TuningSystem {
     super.referenceNote = _defaultReferenceNote,
   });
 
+  /// Creates a new [EqualTemperament] from [octaveDivisions] and
+  /// [referenceNote].
+  factory EqualTemperament.edo(
+    int octaveDivisions, {
+    PositionedNote referenceNote = _defaultReferenceNote,
+  }) {
+    final notes = BaseNote.values.length;
+    final tone = (octaveDivisions / notes).ceil();
+    final halftone = (octaveDivisions / (notes * 2)).ceil();
+
+    return EqualTemperament(
+      divisions: {
+        BaseNote.c: tone,
+        BaseNote.d: tone,
+        BaseNote.e: halftone,
+        BaseNote.f: tone,
+        BaseNote.g: tone,
+        BaseNote.a: tone,
+        BaseNote.b: halftone,
+      },
+      referenceNote: referenceNote,
+    );
+  }
+
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
   const EqualTemperament.edo12({super.referenceNote = _defaultReferenceNote})
       : divisions = const {
