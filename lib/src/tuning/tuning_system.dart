@@ -27,12 +27,12 @@ sealed class TuningSystem {
   /// Example:
   /// ```dart
   /// final pt = PythagoreanTuning(referenceNote: Note.c.inOctave(4));
-  /// pt.ratioFromNote(Note.d.inOctave(4)) == 9 / 8
-  /// pt.ratioFromNote(Note.f.inOctave(4)) == 4 / 3
+  /// pt.ratioFromNote(Note.d.inOctave(4)) == const Ratio(9 / 8)
+  /// pt.ratioFromNote(Note.f.inOctave(4)) == const Ratio(4 / 3)
   ///
   /// final edo12 = EqualTemperament.edo12(referenceNote: Note.a.inOctave(4));
-  /// edo12.ratioFromNote(Note.b.inOctave(4)) == 1.12
-  /// edo12.ratioFromNote(Note.d.inOctave(5)) == 1.33
+  /// edo12.ratioFromNote(Note.b.inOctave(4)) == const Ratio(1.12)
+  /// edo12.ratioFromNote(Note.d.inOctave(5)) == const Ratio(1.33)
   /// ```
   Ratio ratio(PositionedNote note);
 }
