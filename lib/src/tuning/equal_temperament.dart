@@ -58,7 +58,7 @@ class EqualTemperament extends TuningSystem {
   @override
   Cent get generatorCents {
     var semitonesUpToP5 = 0;
-    for (final divisionEntry in divisions.entries) {
+    for (final divisionEntry in SplayTreeMap.of(divisions).entries) {
       if (divisionEntry.key == BaseNote.g) break;
       semitonesUpToP5 += divisionEntry.value;
     }
