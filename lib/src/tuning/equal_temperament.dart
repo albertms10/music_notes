@@ -7,6 +7,12 @@ class EqualTemperament extends TuningSystem {
   /// one.
   final Map<BaseNote, int> divisions;
 
+  /// Creates a new [EqualTemperament] from [referenceNote] and [divisions].
+  const EqualTemperament({
+    required this.divisions,
+    super.referenceNote = _defaultReferenceNote,
+  });
+
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
   const EqualTemperament.edo12({
     super.referenceNote = const PositionedNote(Note.a, octave: 4),
