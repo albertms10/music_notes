@@ -11,6 +11,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import 'utils/int_extension.dart';
 import 'utils/iterable.dart';
+import 'utils/map_extension.dart';
 import 'utils/num_extension.dart';
 import 'utils/string_extension.dart';
 

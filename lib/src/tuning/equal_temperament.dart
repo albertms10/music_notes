@@ -85,15 +85,7 @@ class EqualTemperament extends TuningSystem {
 
   @override
   int get hashCode => Object.hash(
-        // A stable hash code implementation for a HashMap.
-        Object.hashAllUnordered(divisions.entries.map((e) => (e.key, e.value))),
+        Object.hashAllUnordered(divisions.recordEntries),
         referenceNote,
       );
-}
-
-/// An extension on [Map].
-extension MapExtension<K, V> on Map<K, V> {
-  /// Returns the record entries of this [Map].
-  Iterable<(K key, V value)> get recordEntries =>
-      entries.map((e) => (e.key, e.value));
 }
