@@ -16,7 +16,7 @@ final class Cent {
   /// The number of cents in an [Interval.P8].
   static const int octaveCents = chromaticDivisions * 100;
 
-  /// Returns the ratio for this [Cent].
+  /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
 
   @override
