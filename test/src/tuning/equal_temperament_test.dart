@@ -3,19 +3,15 @@ import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
-    group('.octaveDivisions', () {
-      test(
-        'should return the equal divisions of the octave for this '
-        'TuningSystem',
-        () {
-          expect(const EqualTemperament.edo12().octaveDivisions, 12);
-          expect(const EqualTemperament.edo19().octaveDivisions, 19);
-        },
-      );
+    group('.edo', () {
+      test('should return the EDO for this EqualTemperament', () {
+        expect(const EqualTemperament.edo12().edo, 12);
+        expect(const EqualTemperament.edo19().edo, 19);
+      });
     });
 
     group('.ratioFromSemitones()', () {
-      test('should return the ratio from semitones for this EqualTemperament',
+      test('should return the Ratio from semitones for this EqualTemperament',
           () {
         expect(
           const EqualTemperament.edo12().ratioFromSemitones(),
@@ -39,51 +35,33 @@ void main() {
 
     group('.ratio()', () {
       test(
-        'should return the ratio from a PositionedNote in this '
+        'should return the Ratio from a PositionedNote in this '
         'EqualTemperament',
         () {
           const edo12 = EqualTemperament.edo12();
           expect(
-            edo12.ratio(Note.g.inOctave(4)).value,
-            0.8908987181403393,
+            edo12.ratio(Note.g.inOctave(4)),
+            const Ratio(0.8908987181403393),
           );
-          expect(edo12.ratio(Note.a.inOctave(4)).value, 1);
+          expect(edo12.ratio(Note.a.inOctave(4)), const Ratio(1));
           expect(
-            edo12.ratio(Note.b.flat.inOctave(4)).value,
-            1.0594630943592953,
+            edo12.ratio(Note.b.flat.inOctave(4)),
+            const Ratio(1.0594630943592953),
           );
-          expect(edo12.ratio(Note.a.inOctave(5)).value, 2);
-          expect(edo12.ratio(Note.a.inOctave(6)).value, 4);
+          expect(edo12.ratio(Note.a.inOctave(5)), const Ratio(2));
+          expect(edo12.ratio(Note.a.inOctave(6)), const Ratio(4));
         },
       );
     });
 
-    group('.generatorCents', () {
+    group('.generator', () {
       test(
         'should return the number of cents for the generator at Interval.P5 in '
         'this EqualTemperament',
         () {
+          expect(const EqualTemperament.edo12().generator, const Cent(700));
           expect(
-            const EqualTemperament.edo12().generatorCents,
-            const Cent(700),
-          );
-          expect(
-            const EqualTemperament(
-              divisions: {
-                // different order
-                BaseNote.a: 2,
-                BaseNote.e: 1,
-                BaseNote.c: 2,
-                BaseNote.g: 2,
-                BaseNote.b: 1,
-                BaseNote.d: 2,
-                BaseNote.f: 2,
-              },
-            ).generatorCents,
-            const Cent(700),
-          );
-          expect(
-            const EqualTemperament.edo19().generatorCents,
+            const EqualTemperament.edo19().generator,
             const Cent(694.7368421052632),
           );
         },
@@ -94,24 +72,6 @@ void main() {
       test('should compare this EqualTemperament to other', () {
         // ignore: prefer_const_constructors
         expect(EqualTemperament.edo12(), EqualTemperament.edo12());
-        expect(
-          // ignore: prefer_const_constructors
-          EqualTemperament.edo12(),
-          // ignore: prefer_const_constructors
-          EqualTemperament(
-            // ignore: prefer_const_literals_to_create_immutables
-            divisions: {
-              // different order
-              BaseNote.a: 2,
-              BaseNote.e: 1,
-              BaseNote.c: 2,
-              BaseNote.g: 2,
-              BaseNote.b: 1,
-              BaseNote.d: 2,
-              BaseNote.f: 2,
-            },
-          ),
-        );
         expect(
           const EqualTemperament.edo12(),
           isNot(const EqualTemperament.edo19()),
@@ -139,15 +99,9 @@ void main() {
       test('should return the same hashCode for equal EqualTemperaments', () {
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+          EqualTemperament(steps: [1, 2]).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
-        );
-        expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(divisions: {BaseNote.d: 2, BaseNote.c: 1}).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(divisions: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+          EqualTemperament(steps: [1, 2]).hashCode,
         );
       });
 
@@ -159,8 +113,8 @@ void main() {
             isNot(const EqualTemperament.edo19().hashCode),
           );
           expect(
-            const EqualTemperament(divisions: {BaseNote.c: 1}).hashCode,
-            isNot(const EqualTemperament(divisions: {BaseNote.c: 2}).hashCode),
+            const EqualTemperament(steps: [1, 2]).hashCode,
+            isNot(const EqualTemperament(steps: [2, 1]).hashCode),
           );
         },
       );
