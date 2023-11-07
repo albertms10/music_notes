@@ -21,7 +21,7 @@ sealed class JustIntonation extends TuningSystem {
   static const Ratio syntonicComma = Ratio((81 / 64) / (5 / 4));
 
   @override
-  Cent get generatorCents => ascendingFifthRatio.cents;
+  Cent get generator => ascendingFifthRatio.cents;
 }
 
 /// A representation of the three-limit (a.k.a Pythagorean) tuning system.

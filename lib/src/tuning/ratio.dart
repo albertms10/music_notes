@@ -3,7 +3,7 @@ part of '../../music_notes.dart';
 /// A representation of a ratio.
 @immutable
 final class Ratio {
-  /// The value of the ratio.
+  /// The value of this [Ratio].
   final num value;
 
   /// Creates a new [Ratio] from [value].
