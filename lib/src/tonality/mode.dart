@@ -58,18 +58,18 @@ enum TonalMode implements Mode {
   String toString({NotationSystem system = NotationSystem.english}) =>
       switch (system) {
         NotationSystem.english => name,
-        NotationSystem.french => switch (this) {
-            TonalMode.major => 'majeur',
-            TonalMode.minor => 'mineur',
+        NotationSystem.german => switch (this) {
+            TonalMode.major => 'Dur',
+            TonalMode.minor => 'Moll',
           },
         NotationSystem.catalan => switch (this) {
             TonalMode.major => 'major',
             TonalMode.minor => 'menor',
           },
-        NotationSystem.german => switch (this) {
-            TonalMode.major => 'Dur',
-            TonalMode.minor => 'Moll',
-          }
+        NotationSystem.french => switch (this) {
+            TonalMode.major => 'majeur',
+            TonalMode.minor => 'mineur',
+          },
       };
 
   @override
