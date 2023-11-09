@@ -40,13 +40,13 @@ class Frequency implements Comparable<Frequency> {
   ///   == (Note.c.inOctave(4), cents: const Cent(-10.7903), hertz: -1.6256)
   /// ```
   ///
-  /// This method and [Pitch.frequency] are inverses of each other for
-  /// a specific input `frequency`.
+  /// This method and [Pitch.frequency] are inverses of each other for a
+  /// specific input `frequency`.
   ///
   /// ```dart
   /// const frequency = Frequency(442);
-  /// final (closestNote, cents: _, :hertz) = frequency.closestPitch();
-  /// closestNote.frequency() == Frequency(frequency.hertz - hertz);
+  /// final (closestPitch, cents: _, :hertz) = frequency.closestPitch();
+  /// closestPitch.frequency() == Frequency(frequency.hertz - hertz);
   /// ```
   ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),
@@ -66,7 +66,7 @@ class Frequency implements Comparable<Frequency> {
     );
     final hertzDelta = hertz - closestPitchFrequency.hertz;
 
-    // Whether `closestNote` is closer to the upwards spelling (so, positive
+    // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
         closestPitch.note.accidental == Accidental.sharp &&
