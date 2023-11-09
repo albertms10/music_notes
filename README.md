@@ -216,7 +216,8 @@ Get the `Frequency` of a `Pitch`:
 Note.a.inOctave(4).frequency(); // 440.0 Hz
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
-      tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
+      tuningSystem:
+          EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
     ); // 456.1401436878537 Hz
 ```
 

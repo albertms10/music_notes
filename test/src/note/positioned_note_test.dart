@@ -1050,7 +1050,7 @@ void main() {
             Note.c.inOctave(4).frequency(
                   referenceFrequency: frequency,
                   tuningSystem:
-                      EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
+                      EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
                 ),
             const Frequency(256),
           );
@@ -1058,7 +1058,7 @@ void main() {
             Note.a.inOctave(4).frequency(
                   referenceFrequency: frequency,
                   tuningSystem:
-                      EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
+                      EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
                 ),
             const Frequency(430.5389646099018),
           );

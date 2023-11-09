@@ -1,6 +1,11 @@
 part of '../../music_notes.dart';
 
 /// A note in the octave range.
+///
+/// ---
+/// See also:
+/// * [Note].
+/// * [PitchClass].
 @immutable
 final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// The note inside the octave.
@@ -345,16 +350,17 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   ///
   /// Note.a.inOctave(4).frequency(
   ///   referenceFrequency: const Frequency(256),
-  ///   tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
+  ///   tuningSystem:
+  ///       EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
   /// ) == const Frequency(430.54)
   /// ```
   ///
-  /// This method and [Frequency.closestPitch] are inverses of each
-  /// other for a specific input `note`.
+  /// This method and [Frequency.closestPitch] are inverses of each other for a
+  /// specific `pitch`.
   ///
   /// ```dart
-  /// final note = Note.a.inOctave(5);
-  /// note.frequency().closestPitch().$1 == note;
+  /// final pitch = Note.a.inOctave(5);
+  /// pitch.frequency().closestPitch().$1 == pitch;
   /// ```
   Frequency frequency({
     Frequency referenceFrequency = const Frequency(440),

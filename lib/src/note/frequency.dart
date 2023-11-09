@@ -54,27 +54,27 @@ class Frequency implements Comparable<Frequency> {
   }) {
     final cents = Ratio(hertz / referenceFrequency.hertz).cents;
     final semitones =
-        tuningSystem.referenceNote.semitones + (cents.value / 100).round();
+        tuningSystem.referencePitch.semitones + (cents.value / 100).round();
 
-    final closestNote = PitchClass(semitones)
+    final closestPitch = PitchClass(semitones)
         .resolveClosestSpelling()
         .inOctave(Pitch.octaveFromSemitones(semitones));
 
-    final closestNoteFrequency = closestNote.frequency(
+    final closestPitchFrequency = closestPitch.frequency(
       referenceFrequency: referenceFrequency,
       tuningSystem: tuningSystem,
     );
-    final hertzDelta = hertz - closestNoteFrequency.hertz;
+    final hertzDelta = hertz - closestPitchFrequency.hertz;
 
     // Whether `closestNote` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
-        closestNote.note.accidental == Accidental.sharp &&
+        closestPitch.note.accidental == Accidental.sharp &&
             !hertzDelta.isNegative;
 
     return (
-      isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
-      cents: Ratio(hertz / closestNoteFrequency.hertz).cents,
+      isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
+      cents: Ratio(hertz / closestPitchFrequency.hertz).cents,
       hertz: hertzDelta,
     );
   }

@@ -65,7 +65,7 @@ void main() {
           const Frequency(512).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
           (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
         );
@@ -73,7 +73,7 @@ void main() {
           const Frequency(440).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
           (
             Note.a.inOctave(4),
