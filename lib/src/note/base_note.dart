@@ -148,19 +148,28 @@ enum BaseNote implements Comparable<BaseNote> {
   @override
   String toString({NotationSystem system = NotationSystem.english}) =>
       switch (system) {
-        NotationSystem.english || NotationSystem.german => name.toUpperCase(),
-        NotationSystem.french => switch (this) {
-            BaseNote.c => 'Ut',
-            BaseNote.d => 'Ré',
+        NotationSystem.english => name.toUpperCase(),
+        NotationSystem.german => switch (this) {
+            BaseNote.c => 'C',
+            BaseNote.d => 'D',
+            BaseNote.e => 'E',
+            BaseNote.f => 'F',
+            BaseNote.g => 'G',
+            BaseNote.a => 'A',
+            BaseNote.b => 'H',
+          },
+        NotationSystem.catalan => switch (this) {
+            BaseNote.c => 'Do',
+            BaseNote.d => 'Re',
             BaseNote.e => 'Mi',
             BaseNote.f => 'Fa',
             BaseNote.g => 'Sol',
             BaseNote.a => 'La',
             BaseNote.b => 'Si',
           },
-        NotationSystem.catalan => switch (this) {
-            BaseNote.c => 'Do',
-            BaseNote.d => 'Re',
+        NotationSystem.french => switch (this) {
+            BaseNote.c => 'Ut',
+            BaseNote.d => 'Ré',
             BaseNote.e => 'Mi',
             BaseNote.f => 'Fa',
             BaseNote.g => 'Sol',

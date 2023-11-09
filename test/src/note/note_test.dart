@@ -719,7 +719,7 @@ void main() {
 
         expect(
           Note.b.flat.flat.toString(system: NotationSystem.german),
-          'Bes',
+          'Heses',
         );
         expect(Note.b.flat.toString(system: NotationSystem.german), 'B');
         expect(Note.b.toString(system: NotationSystem.german), 'H');

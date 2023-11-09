@@ -384,23 +384,21 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   @override
   String toString({NotationSystem system = NotationSystem.english}) =>
       switch (system) {
-        NotationSystem.german => switch (accidental.semitones) {
+        NotationSystem.german => switch (this) {
+            Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
             // Flattened notes.
-            final semitones when semitones < 0 => switch (baseNote) {
-                BaseNote.b => 'B${'es' * (semitones.abs() - 1)}',
+            final note when note.accidental.semitones < 0 => switch (
+                  note.baseNote) {
                 BaseNote.a ||
                 BaseNote.e =>
-                  '${baseNote.toString(system: system)}s'
-                      '${'es' * (semitones.abs() - 1)}',
+                  '${note.baseNote.toString(system: system)}s'
+                      '${'es' * (note.accidental.semitones.abs() - 1)}',
                 final baseNote => '${baseNote.toString(system: system)}'
-                    '${'es' * semitones.abs()}',
+                    '${'es' * note.accidental.semitones.abs()}',
               },
             // Sharpened and natural notes.
-            final semitones => switch (baseNote) {
-                BaseNote.b => 'H${'is' * semitones}',
-                final baseNote => '${baseNote.toString(system: system)}'
-                    '${'is' * semitones}',
-              }
+            final note => '${baseNote.toString(system: system)}'
+                '${'is' * note.accidental.semitones}',
           },
         final system => baseNote.toString(system: system) +
             (accidental != Accidental.natural ? accidental.symbol : ''),
