@@ -1,6 +1,11 @@
 part of '../../music_notes.dart';
 
 /// A harmonic function.
+///
+/// ---
+/// See also:
+/// * [Scale].
+/// * [ScaleDegree].
 @immutable
 class HarmonicFunction {
   /// The scale degrees that define this [HarmonicFunction].

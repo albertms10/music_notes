@@ -1,6 +1,14 @@
 part of '../../music_notes.dart';
 
 /// A musical note.
+///
+/// ---
+/// See also:
+/// * [BaseNote].
+/// * [Accidental].
+/// * [Pitch].
+/// * [KeySignature].
+/// * [Tonality].
 @immutable
 final class Note implements Comparable<Note>, Scalable<Note> {
   /// The base note that defines this [Note].

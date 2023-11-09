@@ -6,6 +6,7 @@ part of '../../music_notes.dart';
 /// See also:
 /// * [Note].
 /// * [PitchClass].
+/// * [Frequency].
 @immutable
 final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// The note inside the octave.

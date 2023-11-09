@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// A representation of a ratio.
+///
+/// ---
+/// See also:
+/// * [TuningSystem].
 @immutable
 final class Ratio {
   /// The value of this [Ratio].

@@ -4,6 +4,11 @@ part of '../../music_notes.dart';
 /// harmonic behaviors.
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
+///
+/// ---
+/// See also:
+/// * [Tonality].
+/// * [ScalePattern].
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;

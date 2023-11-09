@@ -2,6 +2,10 @@ part of '../../music_notes.dart';
 
 /// See [Cent (Wikipedia)](https://en.wikipedia.org/wiki/Cent_(music)) and
 /// [Cent (Xenharmonic Wiki)](https://en.xen.wiki/w/Cent).
+///
+/// ---
+/// See also:
+/// * [TuningSystem].
 @immutable
 final class Cent {
   /// The value of this [Cent].
