@@ -3,6 +3,11 @@
 part of '../../music_notes.dart';
 
 /// Distance between two notes.
+///
+/// ---
+/// See also:
+/// * [Quality].
+/// * [IntervalClass].
 @immutable
 final class Interval implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
@@ -11,8 +16,8 @@ final class Interval implements Comparable<Interval> {
 
   /// The quality of this [Interval].
   ///
-  /// Must be an instance of [PerfectQuality] or
-  /// [ImperfectQuality], depending on the nature of the interval.
+  /// Must be an instance of [PerfectQuality] or [ImperfectQuality],
+  /// depending on the nature of this [Interval].
   final Quality quality;
 
   const Interval._(this.size, this.quality)
@@ -421,10 +426,10 @@ final class Interval implements Comparable<Interval> {
   /// Interval.M2 + Interval.P4 == Interval.P5
   /// ```
   Interval operator +(Interval other) {
-    final initialNote = Note.c.inOctave(4);
-    final finalNote = initialNote.transposeBy(this).transposeBy(other);
+    final initialPitch = Note.c.inOctave(4);
+    final finalPitch = initialPitch.transposeBy(this).transposeBy(other);
 
-    return initialNote.interval(finalNote);
+    return initialPitch.interval(finalPitch);
   }
 
   /// The negation of this [Interval].

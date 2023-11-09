@@ -1,6 +1,11 @@
 part of '../../music_notes.dart';
 
 /// A musical tonality.
+///
+/// ---
+/// See also:
+/// * [Note].
+/// * [Mode].
 @immutable
 final class Tonality implements Comparable<Tonality> {
   /// The tonal center representing this [Tonality].

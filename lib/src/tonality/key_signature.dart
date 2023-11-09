@@ -1,6 +1,11 @@
 part of '../../music_notes.dart';
 
 /// A key signature.
+///
+/// ---
+/// See also:
+/// * [Note].
+/// * [Tonality].
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
   /// The set of [Note] accidentals that define this [KeySignature].

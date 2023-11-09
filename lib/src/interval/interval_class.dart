@@ -9,6 +9,10 @@ part of '../../music_notes.dart';
 /// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
+///
+/// ---
+/// See also:
+/// * [Interval].
 @immutable
 final class IntervalClass implements Comparable<IntervalClass> {
   /// The distance in semitones that defines this [IntervalClass].

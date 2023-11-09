@@ -4,6 +4,10 @@ part of '../../music_notes.dart';
 /// same chroma.
 ///
 /// See [Pitch class](https://en.wikipedia.org/wiki/Pitch_class).
+///
+/// ---
+/// See also:
+/// * [Pitch].
 @immutable
 final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// The chroma value that represents this [PitchClass].

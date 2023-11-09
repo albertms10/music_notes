@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// A musical chord.
+///
+/// ---
+/// See also:
+/// * [ChordPattern].
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
@@ -20,7 +24,7 @@ class Chord<T extends Scalable<T>>
   /// rather than from the root note. This approach helps differentiate
   /// compound intervals (e.g., [Interval.M9]) from simple intervals
   /// (e.g., [Interval.M2]) in chords where distance is not explicit
-  /// (so, [Note] based chords rather than [PositionedNote] based).
+  /// (so, [Note] based chords rather than [Pitch] based).
   ///
   /// Example:
   /// ```dart

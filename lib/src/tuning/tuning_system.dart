@@ -1,13 +1,17 @@
 part of '../../music_notes.dart';
 
 /// A tuning system representation.
+///
+/// ---
+/// See also:
+/// * [Pitch].
 @immutable
 sealed class TuningSystem {
-  /// The reference note from which this [TuningSystem] is tuned.
-  final PositionedNote referenceNote;
+  /// The reference [Pitch] from which this [TuningSystem] is tuned.
+  final Pitch referencePitch;
 
   /// Creates a new [TuningSystem].
-  const TuningSystem({required this.referenceNote});
+  const TuningSystem({required this.referencePitch});
 
   /// Returns the number of [Cent] for the generator at [Interval.P5] in this
   /// [TuningSystem].
@@ -26,13 +30,13 @@ sealed class TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// final pt = PythagoreanTuning(referenceNote: Note.c.inOctave(4));
+  /// final pt = PythagoreanTuning(referencePitch: Note.c.inOctave(4));
   /// pt.ratioFromNote(Note.d.inOctave(4)) == const Ratio(9 / 8)
   /// pt.ratioFromNote(Note.f.inOctave(4)) == const Ratio(4 / 3)
   ///
-  /// final edo12 = EqualTemperament.edo12(referenceNote: Note.a.inOctave(4));
+  /// final edo12 = EqualTemperament.edo12(referencePitch: Note.a.inOctave(4));
   /// edo12.ratioFromNote(Note.b.inOctave(4)) == const Ratio(1.12)
   /// edo12.ratioFromNote(Note.d.inOctave(5)) == const Ratio(1.33)
   /// ```
-  Ratio ratio(PositionedNote note);
+  Ratio ratio(Pitch note);
 }
