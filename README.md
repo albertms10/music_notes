@@ -44,7 +44,7 @@ Note.g.flat.flat; // G𝄫
 Note.f.sharp.sharp.sharp; // F𝄪♯
 ```
 
-And position them in the octave, resulting in `Pitch`s:
+And position them in the octave, resulting in `Pitch`es:
 
 ```dart
 Note.f.inOctave(4); // F4
