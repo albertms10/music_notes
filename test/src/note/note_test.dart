@@ -640,6 +640,7 @@ void main() {
         expect(Note.e.toString(), 'E');
         expect(Note.b.flat.toString(), 'B♭');
         expect(Note.f.sharp.toString(), 'F♯');
+        expect(Note.d.flat.toString(), 'D♭');
         expect(Note.a.sharp.sharp.toString(), 'A𝄪');
         expect(Note.g.flat.flat.toString(), 'G𝄫');
       });
