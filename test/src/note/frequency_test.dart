@@ -21,14 +21,14 @@ void main() {
       });
     });
 
-    group('.closestPositionedNote()', () {
-      test('should return the closest PositionedNote to this Frequency', () {
+    group('.closestPitch()', () {
+      test('should return the closest Pitch to this Frequency', () {
         expect(
-          const Frequency(440).closestPositionedNote(),
+          const Frequency(440).closestPitch(),
           (Note.a.inOctave(4), cents: const Cent(0), hertz: 0.0),
         );
         expect(
-          const Frequency(455).closestPositionedNote(),
+          const Frequency(455).closestPitch(),
           (
             Note.a.sharp.inOctave(4),
             cents: const Cent(-41.96437412632116),
@@ -36,7 +36,7 @@ void main() {
           ),
         );
         expect(
-          const Frequency(467).closestPositionedNote(),
+          const Frequency(467).closestPitch(),
           (
             Note.b.flat.inOctave(4),
             cents: const Cent(3.1028314220028586),
@@ -44,7 +44,7 @@ void main() {
           ),
         );
         expect(
-          const Frequency(256).closestPositionedNote(),
+          const Frequency(256).closestPitch(),
           (
             Note.c.inOctave(4),
             cents: const Cent(-37.63165622959142),
@@ -54,7 +54,7 @@ void main() {
 
         expect(
           const Frequency(440)
-              .closestPositionedNote(referenceFrequency: const Frequency(415)),
+              .closestPitch(referenceFrequency: const Frequency(415)),
           (
             Note.b.flat.inOctave(4),
             cents: const Cent(1.270624748447127),
@@ -62,18 +62,18 @@ void main() {
           ),
         );
         expect(
-          const Frequency(512).closestPositionedNote(
+          const Frequency(512).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
           (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
         );
         expect(
-          const Frequency(440).closestPositionedNote(
+          const Frequency(440).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
           (
             Note.a.inOctave(4),
@@ -249,11 +249,11 @@ void main() {
     });
   });
 
-  group('ClosestPositionedNoteExtension', () {
+  group('ClosestPitchExtension', () {
     group('.displayString()', () {
       test(
         'should return the string representation of this '
-        'ClosestPositionedNote',
+        'ClosestPitch',
         () {
           expect(
               Note.c
@@ -261,8 +261,7 @@ void main() {
                   .frequency()
                   .harmonics(upToIndex: 15)
                   .map(
-                    (frequency) =>
-                        frequency.closestPositionedNote().displayString(),
+                    (frequency) => frequency.closestPitch().displayString(),
                   )
                   .toSet(),
               const {

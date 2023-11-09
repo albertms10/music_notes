@@ -27,7 +27,7 @@ part 'src/note/base_note.dart';
 part 'src/note/frequency.dart';
 part 'src/note/note.dart';
 part 'src/note/pitch_class.dart';
-part 'src/note/positioned_note.dart';
+part 'src/note/pitch.dart';
 part 'src/scalable.dart';
 part 'src/scale/scale.dart';
 part 'src/scale/scale_degree.dart';

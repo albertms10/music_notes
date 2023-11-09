@@ -44,7 +44,7 @@ Note.g.flat.flat; // G𝄫
 Note.f.sharp.sharp.sharp; // F𝄪♯
 ```
 
-And position them in the octave, resulting in `PositionedNote`s:
+And position them in the octave, resulting in `Pitch`es:
 
 ```dart
 Note.f.inOctave(4); // F4
@@ -55,8 +55,8 @@ Or just parse them in both scientific and Helmholtz notations:
 
 ```dart
 Note.parse('a#'); // A♯
-PositionedNote.parse("g''"); // G5
-PositionedNote.parse('Eb3'); // E♭3
+Pitch.parse("g''"); // G5
+Pitch.parse('Eb3'); // E♭3
 ```
 
 ### Intervals
@@ -210,31 +210,32 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 
 ### Frequencies
 
-Get the `Frequency` of a `PositionedNote`:
+Get the `Frequency` of a `Pitch`:
 
 ```dart
 Note.a.inOctave(4).frequency(); // 440.0 Hz
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
-      tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
+      tuningSystem:
+          EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
     ); // 456.1401436878537 Hz
 ```
 
 Get the closest note from a given `Frequency`:
 
 ```dart
-const Frequency(415).closestPositionedNote();
+const Frequency(415).closestPitch();
 // (G♯4, cents: -1.2706247484469828 ¢, hertz: -0.3046975799451275)
 ```
 
-And combining both methods, the harmonic series of a given `PositionedNote`:
+And combining both methods, the harmonic series of a given `Pitch`:
 
 ```dart
 Note.c
     .inOctave(1)
     .frequency()
     .harmonics(upToIndex: 15)
-    .map((frequency) => frequency.closestPositionedNote().displayString())
+    .map((frequency) => frequency.closestPitch().displayString())
     .toSet();
 // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, E4-14, F♯4-49, G4+2,
 // A♭4+41, A♯4-31, B4-12, C5}

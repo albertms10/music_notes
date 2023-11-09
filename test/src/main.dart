@@ -9,7 +9,7 @@ import 'note/base_note_test.dart' as base_note_test;
 import 'note/frequency_test.dart' as frequency_test;
 import 'note/note_test.dart' as note_test;
 import 'note/pitch_class_test.dart' as pitch_class_test;
-import 'note/positioned_note_test.dart' as positioned_note_test;
+import 'note/pitch_test.dart' as pitch_test;
 import 'scale/scale_degree_test.dart' as scale_degree_test;
 import 'scale/scale_pattern_test.dart' as scale_pattern_test;
 import 'scale/scale_test.dart' as scale_test;
@@ -33,7 +33,7 @@ void main() {
   frequency_test.main();
   note_test.main();
   pitch_class_test.main();
-  positioned_note_test.main();
+  pitch_test.main();
   scale_degree_test.main();
   scale_pattern_test.main();
   scale_test.main();

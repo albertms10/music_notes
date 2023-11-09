@@ -421,10 +421,10 @@ final class Interval implements Comparable<Interval> {
   /// Interval.M2 + Interval.P4 == Interval.P5
   /// ```
   Interval operator +(Interval other) {
-    final initialNote = Note.c.inOctave(4);
-    final finalNote = initialNote.transposeBy(this).transposeBy(other);
+    final initialPitch = Note.c.inOctave(4);
+    final finalPitch = initialPitch.transposeBy(this).transposeBy(other);
 
-    return initialNote.interval(finalNote);
+    return initialPitch.interval(finalPitch);
   }
 
   /// The negation of this [Interval].

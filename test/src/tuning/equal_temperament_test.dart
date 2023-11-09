@@ -35,7 +35,7 @@ void main() {
 
     group('.ratio()', () {
       test(
-        'should return the Ratio from a PositionedNote in this '
+        'should return the Ratio from a Pitch in this '
         'EqualTemperament',
         () {
           const edo12 = EqualTemperament.edo12();

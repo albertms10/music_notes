@@ -27,54 +27,54 @@ class Frequency implements Comparable<Frequency> {
     return hertz >= minFrequency && hertz <= maxFrequency;
   }
 
-  /// Returns the closest [PositionedNote] to this [Frequency] from
+  /// Returns the closest [Pitch] to this [Frequency] from
   /// [referenceFrequency] and [tuningSystem], with the difference in `cents`
   /// and `hertz`.
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(467).closestPositionedNote()
+  /// const Frequency(467).closestPitch()
   ///   == (Note.a.sharp.inOctave(4), cents: const Cent(3.1028), hertz: 0.8362)
   ///
-  /// const Frequency(260).closestPositionedNote()
+  /// const Frequency(260).closestPitch()
   ///   == (Note.c.inOctave(4), cents: const Cent(-10.7903), hertz: -1.6256)
   /// ```
   ///
-  /// This method and [PositionedNote.frequency] are inverses of each other for
-  /// a specific input `frequency`.
+  /// This method and [Pitch.frequency] are inverses of each other for a
+  /// specific input `frequency`.
   ///
   /// ```dart
   /// const frequency = Frequency(442);
-  /// final (closestNote, cents: _, :hertz) = frequency.closestPositionedNote();
-  /// closestNote.frequency() == Frequency(frequency.hertz - hertz);
+  /// final (closestPitch, cents: _, :hertz) = frequency.closestPitch();
+  /// closestPitch.frequency() == Frequency(frequency.hertz - hertz);
   /// ```
-  ClosestPositionedNote closestPositionedNote({
+  ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
     final cents = Ratio(hertz / referenceFrequency.hertz).cents;
     final semitones =
-        tuningSystem.referenceNote.semitones + (cents.value / 100).round();
+        tuningSystem.referencePitch.semitones + (cents.value / 100).round();
 
-    final closestNote = PitchClass(semitones)
+    final closestPitch = PitchClass(semitones)
         .resolveClosestSpelling()
-        .inOctave(PositionedNote.octaveFromSemitones(semitones));
+        .inOctave(Pitch.octaveFromSemitones(semitones));
 
-    final closestNoteFrequency = closestNote.frequency(
+    final closestPitchFrequency = closestPitch.frequency(
       referenceFrequency: referenceFrequency,
       tuningSystem: tuningSystem,
     );
-    final hertzDelta = hertz - closestNoteFrequency.hertz;
+    final hertzDelta = hertz - closestPitchFrequency.hertz;
 
-    // Whether `closestNote` is closer to the upwards spelling (so, positive
+    // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
-        closestNote.note.accidental == Accidental.sharp &&
+        closestPitch.note.accidental == Accidental.sharp &&
             !hertzDelta.isNegative;
 
     return (
-      isCloserToUpwardsSpelling ? closestNote.respelledUpwards : closestNote,
-      cents: Ratio(hertz / closestNoteFrequency.hertz).cents,
+      isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
+      cents: Ratio(hertz / closestPitchFrequency.hertz).cents,
       hertz: hertzDelta,
     );
   }
@@ -88,7 +88,7 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(880).harmonic(-3) == const Frequency(220)
   ///
   /// Note.c.inOctave(1).frequency().harmonic(3)
-  ///   .closestPositionedNote().displayString() == 'E3-14'
+  ///   .closestPitch().displayString() == 'E3-14'
   /// ```
   Frequency harmonic(int index) =>
       index.isNegative ? this / (index.abs() + 1) : this * (index + 1);
@@ -105,7 +105,7 @@ class Frequency implements Comparable<Frequency> {
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
   ///
   /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7)
-  ///   .map((frequency) => frequency.closestPositionedNote().displayString())
+  ///   .map((frequency) => frequency.closestPitch().displayString())
   ///   .toSet()
   ///     == const {'C1', 'C2', 'G2+2', 'C3', 'E3-14', 'G3+2', 'A♯3-31', 'C4'}
   /// ```
@@ -159,24 +159,24 @@ class Frequency implements Comparable<Frequency> {
   int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
 
-/// A record containing the closest [PositionedNote], with delta `cents` and
+/// A record containing the closest [Pitch], with delta `cents` and
 /// `hertz`.
-typedef ClosestPositionedNote = (
-  PositionedNote closestNote, {
+typedef ClosestPitch = (
+  Pitch closestPitch, {
   Cent cents,
   double hertz,
 });
 
-/// A [ClosestPositionedNote] extension.
-extension ClosestPositionedNoteExtension on ClosestPositionedNote {
-  /// Returns the string representation of this [ClosestPositionedNote] record.
+/// A [ClosestPitch] extension.
+extension ClosestPitchExtension on ClosestPitch {
+  /// Returns the string representation of this [ClosestPitch] record.
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440).closestPositionedNote().displayString() == 'A4'
-  /// const Frequency(98.1).closestPositionedNote().displayString() == 'G2+2'
-  /// const Frequency(163.5).closestPositionedNote().displayString() == 'E3-14'
-  /// const Frequency(228.9).closestPositionedNote().displayString() == 'A♯3-31'
+  /// const Frequency(440).closestPitch().displayString() == 'A4'
+  /// const Frequency(98.1).closestPitch().displayString() == 'G2+2'
+  /// const Frequency(163.5).closestPitch().displayString() == 'E3-14'
+  /// const Frequency(228.9).closestPitch().displayString() == 'A♯3-31'
   /// ```
   String displayString() {
     final roundedCents = cents.value.round();

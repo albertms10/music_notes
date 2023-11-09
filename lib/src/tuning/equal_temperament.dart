@@ -3,27 +3,31 @@ part of '../../music_notes.dart';
 /// A representation of an equal temperament tuning system.
 ///
 /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
+///
+/// ---
+/// See also:
+/// * [TuningSystem].
 @immutable
 class EqualTemperament extends TuningSystem {
   /// The equal divisions of the octave between each [BaseNote] and the next
   /// one.
   final List<int> steps;
 
-  /// Creates a new [EqualTemperament] from [referenceNote] and [steps].
+  /// Creates a new [EqualTemperament] from [referencePitch] and [steps].
   const EqualTemperament({
     required this.steps,
-    super.referenceNote = _defaultReferenceNote,
+    super.referencePitch = _defaultReferencePitch,
   });
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referenceNote = _defaultReferenceNote})
+  const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
       : steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referenceNote = _defaultReferenceNote})
+  const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
       : steps = const [3, 3, 2, 3, 3, 3, 2];
 
-  static const _defaultReferenceNote = PositionedNote(Note.a, octave: 4);
+  static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
 
   /// Returns the equal divisions of the octave of this [EqualTemperament].
   ///
@@ -60,8 +64,8 @@ class EqualTemperament extends TuningSystem {
       Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(PositionedNote note) =>
-      ratioFromSemitones(referenceNote.difference(note));
+  Ratio ratio(Pitch note) =>
+      ratioFromSemitones(referencePitch.difference(note));
 
   @override
   Cent get generator => Cent(cents.map((cent) => cent.value).closestTo(700));
@@ -73,8 +77,8 @@ class EqualTemperament extends TuningSystem {
   bool operator ==(Object other) =>
       other is EqualTemperament &&
       const ListEquality<int>().equals(steps, other.steps) &&
-      referenceNote == other.referenceNote;
+      referencePitch == other.referencePitch;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(steps), referenceNote);
+  int get hashCode => Object.hash(Object.hashAll(steps), referencePitch);
 }
