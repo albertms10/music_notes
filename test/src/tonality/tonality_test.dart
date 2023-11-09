@@ -115,26 +115,26 @@ void main() {
       test(
         'should return the German string representation of this Tonality',
         () {
-          expect(Note.c.major.toString(system: NotationSystem.german), 'C-dur');
+          expect(Note.c.major.toString(system: NotationSystem.german), 'C-Dur');
           expect(
             Note.d.minor.toString(system: NotationSystem.german),
-            'D-moll',
+            'd-Moll',
           );
           expect(
             Note.a.flat.major.toString(system: NotationSystem.german),
-            'As-dur',
+            'As-Dur',
           );
           expect(
             Note.f.sharp.minor.toString(system: NotationSystem.german),
-            'Fis-moll',
+            'fis-Moll',
           );
           expect(
             Note.g.sharp.sharp.major.toString(system: NotationSystem.german),
-            'Gisis-dur',
+            'Gisis-Dur',
           );
           expect(
             Note.e.flat.flat.minor.toString(system: NotationSystem.german),
-            'Eses-moll',
+            'eses-Moll',
           );
         },
       );

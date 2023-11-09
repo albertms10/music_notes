@@ -40,8 +40,8 @@ void main() {
         expect(TonalMode.major.toString(), 'major');
         expect(TonalMode.minor.toString(), 'minor');
 
-        expect(TonalMode.major.toString(system: NotationSystem.german), 'dur');
-        expect(TonalMode.minor.toString(system: NotationSystem.german), 'moll');
+        expect(TonalMode.major.toString(system: NotationSystem.german), 'Dur');
+        expect(TonalMode.minor.toString(system: NotationSystem.german), 'Moll');
 
         expect(
           TonalMode.major.toString(system: NotationSystem.catalan),

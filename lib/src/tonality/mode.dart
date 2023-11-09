@@ -67,8 +67,8 @@ enum TonalMode implements Mode {
             TonalMode.minor => 'menor',
           },
         NotationSystem.german => switch (this) {
-            TonalMode.major => 'dur',
-            TonalMode.minor => 'moll',
+            TonalMode.major => 'Dur',
+            TonalMode.minor => 'Moll',
           }
       };
 
