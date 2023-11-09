@@ -1,6 +1,10 @@
 part of '../music_notes.dart';
 
 /// A mixin for items that can form chords.
+///
+/// ---
+/// See also:
+/// * [Chord].
 mixin Chordable<T> {
   /// Returns a new [T] with an [ImperfectQuality.diminished] root triad.
   T get diminished;

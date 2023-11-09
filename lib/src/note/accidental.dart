@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// An accidental.
+///
+/// ---
+/// See also:
+/// * [Note].
 @immutable
 final class Accidental implements Comparable<Accidental> {
   /// The number of semitones above or below the natural note.

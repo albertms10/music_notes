@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// A scale degree.
+///
+/// ---
+/// See also:
+/// * [Scale].
 @immutable
 class ScaleDegree implements Comparable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].

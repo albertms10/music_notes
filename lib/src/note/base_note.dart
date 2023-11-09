@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// The base note names of the diatonic scale.
+///
+/// ---
+/// See also:
+/// * [Note].
 enum BaseNote implements Comparable<BaseNote> {
   /// Note C.
   c(0),

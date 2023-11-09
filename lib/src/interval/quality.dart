@@ -2,6 +2,10 @@ part of '../../music_notes.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
+///
+/// ---
+/// See also:
+/// * [Interval].
 @immutable
 sealed class Quality implements Comparable<Quality> {
   /// Delta semitones from the [Interval].
