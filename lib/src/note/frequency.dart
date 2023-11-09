@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// Represents an absolute pitch, a physical frequency.
+///
+/// ---
+/// See also:
+/// * [Pitch].
 @immutable
 class Frequency implements Comparable<Frequency> {
   /// The value of this [Frequency] in Hertz.
