@@ -4,7 +4,7 @@ part of '../../music_notes.dart';
 @immutable
 sealed class TuningSystem {
   /// The reference note from which this [TuningSystem] is tuned.
-  final PositionedNote referenceNote;
+  final Pitch referenceNote;
 
   /// Creates a new [TuningSystem].
   const TuningSystem({required this.referenceNote});
@@ -34,5 +34,5 @@ sealed class TuningSystem {
   /// edo12.ratioFromNote(Note.b.inOctave(4)) == const Ratio(1.12)
   /// edo12.ratioFromNote(Note.d.inOctave(5)) == const Ratio(1.33)
   /// ```
-  Ratio ratio(PositionedNote note);
+  Ratio ratio(Pitch note);
 }

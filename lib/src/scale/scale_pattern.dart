@@ -257,7 +257,7 @@ final class ScalePattern {
         ),
         // We iterate over the `reversed` descending step list to make sure both
         // regular and descending scales match, e.g., their octave in
-        // `PositionedNote` lists.
+        // `Pitch` lists.
         _descendingIntervalSteps?.reversed
             .fold(
               [scalable],

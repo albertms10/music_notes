@@ -237,14 +237,14 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
 
-  /// Returns this [Note] positioned in the given [octave] as [PositionedNote].
+  /// Returns this [Note] positioned in the given [octave] as [Pitch].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(3) == const PositionedNote(Note.c, octave: 3)
-  /// Note.a.flat.inOctave(2) == PositionedNote(Note.a.flat, octave: 2)
+  /// Note.c.inOctave(3) == const Pitch(Note.c, octave: 3)
+  /// Note.a.flat.inOctave(2) == Pitch(Note.a.flat, octave: 2)
   /// ```
-  PositionedNote inOctave(int octave) => PositionedNote(this, octave: octave);
+  Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
   /// Returns the circle of fifths starting from this [Note] up to [distance].
   ///

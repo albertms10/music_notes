@@ -7,7 +7,7 @@ part of '../../music_notes.dart';
 sealed class JustIntonation extends TuningSystem {
   /// Creates a new [JustIntonation] from [referenceNote].
   const JustIntonation({
-    super.referenceNote = const PositionedNote(Note.c, octave: 4),
+    super.referenceNote = const Pitch(Note.c, octave: 4),
   });
 
   /// The [Ratio] of an ascending [Interval.P5].
@@ -33,7 +33,7 @@ class PythagoreanTuning extends JustIntonation {
   const PythagoreanTuning({super.referenceNote});
 
   @override
-  Ratio ratio(PositionedNote note) {
+  Ratio ratio(Pitch note) {
     final distance = referenceNote.note.fifthsDistanceWith(note.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {

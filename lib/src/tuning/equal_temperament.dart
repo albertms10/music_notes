@@ -23,7 +23,7 @@ class EqualTemperament extends TuningSystem {
   const EqualTemperament.edo19({super.referenceNote = _defaultReferenceNote})
       : steps = const [3, 3, 2, 3, 3, 3, 2];
 
-  static const _defaultReferenceNote = PositionedNote(Note.a, octave: 4);
+  static const _defaultReferenceNote = Pitch(Note.a, octave: 4);
 
   /// Returns the equal divisions of the octave of this [EqualTemperament].
   ///
@@ -60,8 +60,7 @@ class EqualTemperament extends TuningSystem {
       Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(PositionedNote note) =>
-      ratioFromSemitones(referenceNote.difference(note));
+  Ratio ratio(Pitch note) => ratioFromSemitones(referenceNote.difference(note));
 
   @override
   Cent get generator => Cent(cents.map((cent) => cent.value).closestTo(700));
