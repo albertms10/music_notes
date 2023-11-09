@@ -59,12 +59,12 @@ final class PositionedNote
       final octave = notePart[0].isUpperCase
           ? switch (primes?.first) {
               '' || null => middleOctave - 1,
-              ',' || _subPrime => middleOctave - primes!.length - 1,
+              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
               _ => throw FormatException('Invalid PositionedNote', source),
             }
           : switch (primes?.first) {
               '' || null => middleOctave,
-              "'" || _superPrime => middleOctave + primes!.length,
+              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
               _ => throw FormatException('Invalid PositionedNote', source),
             };
 

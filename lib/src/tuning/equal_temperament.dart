@@ -5,8 +5,7 @@ part of '../../music_notes.dart';
 /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
 @immutable
 class EqualTemperament extends TuningSystem {
-  /// The equal divisions of the octave between each [BaseNote] and the next
-  /// one.
+  /// The equal divisions between each [BaseNote] and the next one.
   final List<int> steps;
 
   /// Creates a new [EqualTemperament] from [referenceNote] and [steps].
@@ -67,7 +66,7 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => Cent(cents.map((cent) => cent.value).closestTo(700));
 
   @override
-  String toString() => 'EDO $edo (${steps.join(" ")})';
+  String toString() => 'EDO $edo (${steps.join(' ')})';
 
   @override
   bool operator ==(Object other) =>

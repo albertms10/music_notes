@@ -54,11 +54,11 @@ void main() {
 
         expect(
           TonalMode.major.toString(system: NotationSystem.french),
-          'majéur',
+          'majeur',
         );
         expect(
           TonalMode.minor.toString(system: NotationSystem.french),
-          'minéur',
+          'mineur',
         );
       });
     });

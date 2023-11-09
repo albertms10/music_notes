@@ -174,27 +174,27 @@ void main() {
         () {
           expect(
             Note.c.major.toString(system: NotationSystem.french),
-            'Ut majéur',
+            'Ut majeur',
           );
           expect(
             Note.d.minor.toString(system: NotationSystem.french),
-            'Ré minéur',
+            'Ré mineur',
           );
           expect(
             Note.a.flat.major.toString(system: NotationSystem.french),
-            'La♭ majéur',
+            'La♭ majeur',
           );
           expect(
             Note.f.sharp.minor.toString(system: NotationSystem.french),
-            'Fa♯ minéur',
+            'Fa♯ mineur',
           );
           expect(
             Note.g.sharp.sharp.major.toString(system: NotationSystem.french),
-            'Sol𝄪 majéur',
+            'Sol𝄪 majeur',
           );
           expect(
             Note.e.flat.flat.minor.toString(system: NotationSystem.french),
-            'Mi𝄫 minéur',
+            'Mi𝄫 mineur',
           );
         },
       );

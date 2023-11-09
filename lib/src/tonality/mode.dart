@@ -54,8 +54,8 @@ enum TonalMode implements Mode {
       switch (system) {
         NotationSystem.english => name,
         NotationSystem.french => switch (this) {
-            TonalMode.major => 'majéur',
-            TonalMode.minor => 'minéur',
+            TonalMode.major => 'majeur',
+            TonalMode.minor => 'mineur',
           },
         NotationSystem.catalan => switch (this) {
             TonalMode.major => 'major',
