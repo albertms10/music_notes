@@ -237,7 +237,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```
   bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
 
-  /// Returns this [Note] positioned in the given [octave] as [Pitch].
+  /// Returns this [Note] positioned in the given [octave] as a [Pitch].
   ///
   /// Example:
   /// ```dart
