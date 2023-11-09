@@ -64,12 +64,12 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
       final octave = notePart[0].isUpperCase
           ? switch (primes?.first) {
               '' || null => middleOctave - 1,
-              ',' || _subPrime => middleOctave - primes!.length - 1,
+              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
               _ => throw FormatException('Invalid Pitch', source),
             }
           : switch (primes?.first) {
               '' || null => middleOctave,
-              "'" || _superPrime => middleOctave + primes!.length,
+              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
               _ => throw FormatException('Invalid Pitch', source),
             };
 
@@ -378,7 +378,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName => '${note.baseNote.name.toUpperCase()}'
+  String get scientificName => '${note.baseNote}'
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 

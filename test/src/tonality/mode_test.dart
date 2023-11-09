@@ -34,6 +34,34 @@ void main() {
         expect(TonalMode.minor.opposite, TonalMode.major);
       });
     });
+
+    group('.toString()', () {
+      test('should return the string representation of this TonalMode', () {
+        expect(TonalMode.major.toString(), 'major');
+        expect(TonalMode.minor.toString(), 'minor');
+
+        expect(TonalMode.major.toString(system: NotationSystem.german), 'Dur');
+        expect(TonalMode.minor.toString(system: NotationSystem.german), 'Moll');
+
+        expect(
+          TonalMode.major.toString(system: NotationSystem.catalan),
+          'major',
+        );
+        expect(
+          TonalMode.minor.toString(system: NotationSystem.catalan),
+          'menor',
+        );
+
+        expect(
+          TonalMode.major.toString(system: NotationSystem.french),
+          'majeur',
+        );
+        expect(
+          TonalMode.minor.toString(system: NotationSystem.french),
+          'mineur',
+        );
+      });
+    });
   });
 
   group('ModalMode', () {

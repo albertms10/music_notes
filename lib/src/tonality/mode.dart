@@ -55,6 +55,24 @@ enum TonalMode implements Mode {
       this == TonalMode.major ? TonalMode.minor : TonalMode.major;
 
   @override
+  String toString({NotationSystem system = NotationSystem.english}) =>
+      switch (system) {
+        NotationSystem.english => name,
+        NotationSystem.german => switch (this) {
+            TonalMode.major => 'Dur',
+            TonalMode.minor => 'Moll',
+          },
+        NotationSystem.catalan => switch (this) {
+            TonalMode.major => 'major',
+            TonalMode.minor => 'menor',
+          },
+        NotationSystem.french => switch (this) {
+            TonalMode.major => 'majeur',
+            TonalMode.minor => 'mineur',
+          },
+      };
+
+  @override
   int compareTo(Mode other) => Mode.compare(this, other);
 }
 
