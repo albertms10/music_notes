@@ -52,7 +52,13 @@ final class Tonality implements Comparable<Tonality> {
   Scale<Note> get scale => mode.scale.on(note);
 
   @override
-  String toString() => '$note ${mode.name}';
+  String toString({NotationSystem system = NotationSystem.english}) =>
+      '${note.toString(system: system)}'
+      // Divider.
+      '${switch (system) {
+        NotationSystem.german => '-',
+        _ => ' ',
+      }}${mode.toString(system: system)}';
 
   @override
   bool operator ==(Object other) =>

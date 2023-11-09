@@ -100,14 +100,104 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Tonality', () {
-        expect(Note.c.major.toString(), 'C major');
-        expect(Note.d.minor.toString(), 'D minor');
-        expect(Note.a.flat.major.toString(), 'A♭ major');
-        expect(Note.f.sharp.minor.toString(), 'F♯ minor');
-        expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
-        expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
-      });
+      test(
+        'should return the English string representation of this Tonality',
+        () {
+          expect(Note.c.major.toString(), 'C major');
+          expect(Note.d.minor.toString(), 'D minor');
+          expect(Note.a.flat.major.toString(), 'A♭ major');
+          expect(Note.f.sharp.minor.toString(), 'F♯ minor');
+          expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
+          expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
+        },
+      );
+
+      test(
+        'should return the German string representation of this Tonality',
+        () {
+          expect(Note.c.major.toString(system: NotationSystem.german), 'C-dur');
+          expect(
+            Note.d.minor.toString(system: NotationSystem.german),
+            'D-moll',
+          );
+          expect(
+            Note.a.flat.major.toString(system: NotationSystem.german),
+            'As-dur',
+          );
+          expect(
+            Note.f.sharp.minor.toString(system: NotationSystem.german),
+            'Fis-moll',
+          );
+          expect(
+            Note.g.sharp.sharp.major.toString(system: NotationSystem.german),
+            'Gisis-dur',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(system: NotationSystem.german),
+            'Eses-moll',
+          );
+        },
+      );
+
+      test(
+        'should return the Catalan string representation of this Tonality',
+        () {
+          expect(
+            Note.c.major.toString(system: NotationSystem.catalan),
+            'Do major',
+          );
+          expect(
+            Note.d.minor.toString(system: NotationSystem.catalan),
+            'Re menor',
+          );
+          expect(
+            Note.a.flat.major.toString(system: NotationSystem.catalan),
+            'La♭ major',
+          );
+          expect(
+            Note.f.sharp.minor.toString(system: NotationSystem.catalan),
+            'Fa♯ menor',
+          );
+          expect(
+            Note.g.sharp.sharp.major.toString(system: NotationSystem.catalan),
+            'Sol𝄪 major',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(system: NotationSystem.catalan),
+            'Mi𝄫 menor',
+          );
+        },
+      );
+
+      test(
+        'should return the French string representation of this Tonality',
+        () {
+          expect(
+            Note.c.major.toString(system: NotationSystem.french),
+            'Ut majéur',
+          );
+          expect(
+            Note.d.minor.toString(system: NotationSystem.french),
+            'Ré minéur',
+          );
+          expect(
+            Note.a.flat.major.toString(system: NotationSystem.french),
+            'La♭ majéur',
+          );
+          expect(
+            Note.f.sharp.minor.toString(system: NotationSystem.french),
+            'Fa♯ minéur',
+          );
+          expect(
+            Note.g.sharp.sharp.major.toString(system: NotationSystem.french),
+            'Sol𝄪 majéur',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(system: NotationSystem.french),
+            'Mi𝄫 minéur',
+          );
+        },
+      );
     });
 
     group('.hashCode', () {

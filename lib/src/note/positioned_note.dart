@@ -374,7 +374,7 @@ final class PositionedNote
   /// Note.a.inOctave(3).scientificName == 'A3'
   /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
   /// ```
-  String get scientificName => '${note.baseNote.name.toUpperCase()}'
+  String get scientificName => '${note.baseNote}'
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 

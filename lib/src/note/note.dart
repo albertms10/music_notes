@@ -374,9 +374,29 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   PitchClass toPitchClass() => PitchClass(semitones);
 
   @override
-  String toString() =>
-      baseNote.name.toUpperCase() +
-      (accidental != Accidental.natural ? accidental.symbol : '');
+  String toString({NotationSystem system = NotationSystem.english}) =>
+      switch (system) {
+        NotationSystem.german => switch (accidental.semitones) {
+            // Flattened notes.
+            final semitones when semitones < 0 => switch (baseNote) {
+                BaseNote.b => 'B${'es' * (semitones.abs() - 1)}',
+                BaseNote.a ||
+                BaseNote.e =>
+                  '${baseNote.toString(system: system)}s'
+                      '${'es' * (semitones.abs() - 1)}',
+                final baseNote => '${baseNote.toString(system: system)}'
+                    '${'es' * semitones.abs()}',
+              },
+            // Sharpened and natural notes.
+            final semitones => switch (baseNote) {
+                BaseNote.b => 'H${'is' * semitones}',
+                final baseNote => '${baseNote.toString(system: system)}'
+                    '${'is' * semitones}',
+              }
+          },
+        final system => baseNote.toString(system: system) +
+            (accidental != Accidental.natural ? accidental.symbol : ''),
+      };
 
   @override
   bool operator ==(Object other) =>
@@ -392,4 +412,19 @@ final class Note implements Comparable<Note>, Scalable<Note> {
         () => semitones.compareTo(other.semitones),
         () => baseNote.semitones.compareTo(other.baseNote.semitones),
       ]);
+}
+
+/// Alphabetic system.
+enum NotationSystem {
+  /// The English alphabetic system.
+  english,
+
+  /// The German alphabetic system.
+  german,
+
+  /// The Catalan solmization system.
+  catalan,
+
+  /// The French solmization system.
+  french,
 }
