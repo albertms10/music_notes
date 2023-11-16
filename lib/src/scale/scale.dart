@@ -133,7 +133,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   @override
   String toString() => '${degrees.first} ${pattern.name} (${degrees.join(' ')}'
       '${_descendingDegrees != null ? ', '
-          '${_descendingDegrees!.join(' ')}' : ''})';
+          '${_descendingDegrees.join(' ')}' : ''})';
 
   @override
   bool operator ==(Object other) =>
@@ -144,6 +144,6 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   @override
   int get hashCode => Object.hash(
         Object.hashAll(degrees),
-        _descendingDegrees != null ? Object.hashAll(_descendingDegrees!) : null,
+        _descendingDegrees != null ? Object.hashAll(_descendingDegrees) : null,
       );
 }
