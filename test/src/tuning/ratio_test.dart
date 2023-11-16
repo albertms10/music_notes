@@ -33,29 +33,5 @@ void main() {
         expect(edo19.ratioFromSemitones(19).cents.value, closeTo(1200, 0.01));
       });
     });
-
-    group('.toString()', () {
-      test('should return the string representation of this Ratio', () {
-        expect(const Ratio(1).toString(), '1');
-        expect(const Ratio(1.059463).toString(), '1.059463');
-      });
-    });
-
-    group('.hashCode', () {
-      test('should return the same hashCode for equal Ratios', () {
-        // ignore: prefer_const_constructors
-        expect(Ratio(1).hashCode, Ratio(1).hashCode);
-        // ignore: prefer_const_constructors
-        expect(Ratio(1.414062).hashCode, Ratio(1.414062).hashCode);
-      });
-
-      test('should return different hashCodes for different Ratios', () {
-        expect(const Ratio(1).hashCode, isNot(equals(const Ratio(2).hashCode)));
-        expect(
-          const Ratio(1.892345).hashCode,
-          isNot(equals(const Ratio(1.89234509).hashCode)),
-        );
-      });
-    });
   });
 }

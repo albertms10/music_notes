@@ -6,14 +6,7 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
-@immutable
-final class Cent {
-  /// The value of this [Cent].
-  final num value;
-
-  /// Creates a new [Cent] from [value].
-  const Cent(this.value);
-
+extension type const Cent(num value) {
   /// The unit symbol for cent.
   static const centUnitSymbol = '¢';
 
@@ -22,13 +15,4 @@ final class Cent {
 
   /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
-
-  @override
-  String toString() => '$value $centUnitSymbol';
-
-  @override
-  bool operator ==(Object other) => other is Cent && value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
 }
