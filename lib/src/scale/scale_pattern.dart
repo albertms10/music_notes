@@ -359,7 +359,7 @@ final class ScalePattern {
   @override
   String toString() {
     final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps!.join(' ')}'
+        ? ', ${_descendingIntervalSteps.join(' ')}'
         : '';
 
     return '$name (${intervalSteps.join(' ')}$descendingSteps)';
@@ -377,7 +377,7 @@ final class ScalePattern {
   int get hashCode => Object.hash(
         Object.hashAll(intervalSteps),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps!)
+            ? Object.hashAll(_descendingIntervalSteps)
             : null,
       );
 }
