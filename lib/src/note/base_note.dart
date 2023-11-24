@@ -89,19 +89,19 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int get ordinal => values.indexOf(this) + 1;
 
-  /// Returns the [Interval.size] that conforms between this [BaseNote] and
-  /// [other].
+  /// Returns the [Size] that conforms between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.d.intervalSize(BaseNote.f) == 3
-  /// BaseNote.a.intervalSize(BaseNote.e) == 5
+  /// BaseNote.d.intervalSize(BaseNote.f) == Size.third
+  /// BaseNote.a.intervalSize(BaseNote.e) == Size.fifth
   /// ```
-  int intervalSize(BaseNote other) =>
-      other.ordinal -
-      ordinal +
-      (ordinal > other.ordinal ? values.length : 0) +
-      1;
+  Size intervalSize(BaseNote other) => Size(
+        other.ordinal -
+            ordinal +
+            (ordinal > other.ordinal ? values.length : 0) +
+            1,
+      );
 
   /// Returns the difference in semitones between this [BaseNote] and [other].
   ///
@@ -135,15 +135,12 @@ enum BaseNote implements Comparable<BaseNote> {
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.g.transposeBySize(1) == BaseNote.g
-  /// BaseNote.g.transposeBySize(5) == BaseNote.d
+  /// BaseNote.g.transposeBySize(Size.unison) == BaseNote.g
+  /// BaseNote.g.transposeBySize(Size.fifth) == BaseNote.d
   /// BaseNote.a.transposeBySize(-3) == BaseNote.f
   /// ```
-  BaseNote transposeBySize(int size) {
-    assert(size != 0, 'Size must be non-zero');
-
-    return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
-  }
+  BaseNote transposeBySize(Size size) =>
+      BaseNote.fromOrdinal(ordinal + size.value.incrementBy(-1));
 
   @override
   String toString({NotationSystem system = NotationSystem.english}) =>

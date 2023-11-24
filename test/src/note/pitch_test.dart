@@ -607,17 +607,17 @@ void main() {
           expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
           expect(
             Note.c.inOctave(3).interval(Note.c.inOctave(5)),
-            const Interval.perfect(15, PerfectQuality.perfect),
+            const Interval.perfect(Size(15), PerfectQuality.perfect),
           );
 
           expect(
             Note.c.inOctave(3).interval(Note.c.inOctave(6)),
-            const Interval.perfect(22, PerfectQuality.perfect),
+            const Interval.perfect(Size(22), PerfectQuality.perfect),
           );
 
           expect(
             Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-            const Interval.perfect(29, PerfectQuality.perfect),
+            const Interval.perfect(Size(29), PerfectQuality.perfect),
           );
 
           // TODO(albertms10): add test case for:
@@ -879,23 +879,23 @@ void main() {
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(15), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(6),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(22), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(7),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(29), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(8),
         );
       });

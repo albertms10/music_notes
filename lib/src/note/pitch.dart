@@ -332,7 +332,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
     return Interval.fromSemitones(
-      intervalSize + octaveShift,
+      Size(intervalSize + octaveShift),
       difference(other),
     );
   }

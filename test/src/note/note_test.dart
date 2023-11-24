@@ -605,20 +605,23 @@ void main() {
         expect(Note.c.transposeBy(Interval.M13), Note.a);
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(15), PerfectQuality.perfect),
+          ),
           Note.c,
         );
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(22), PerfectQuality.perfect),
+          ),
           Note.c,
         );
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(29), PerfectQuality.perfect),
+          ),
           Note.c,
         );
       });

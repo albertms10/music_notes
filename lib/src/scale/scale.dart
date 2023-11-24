@@ -77,7 +77,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
     return scalable.transposeBy(
       Interval.perfect(
-        1,
+        Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
     );
