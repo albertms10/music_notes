@@ -369,29 +369,11 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   }) =>
       referenceFrequency * tuningSystem.ratio(this).value;
 
-  /// Returns the string representation of this [Pitch] following the
-  /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4).scientificName == 'C4'
-  /// Note.a.inOctave(3).scientificName == 'A3'
-  /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
-  /// ```
-  String get scientificName => '${note.baseNote}'
+  String get _scientificNotation => '${note.baseNote}'
       '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
       '$octave';
 
-  /// Returns the string representation of this [Pitch] following
-  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4).helmholtzName == 'c′'
-  /// Note.a.inOctave(3).helmholtzName == 'a'
-  /// Note.b.flat.inOctave(1).helmholtzName == 'B♭͵'
-  /// ```
-  String get helmholtzName {
+  String get _helmholtzNotation {
     final accidentalSymbol =
         note.accidental != Accidental.natural ? note.accidental.symbol : '';
 
@@ -404,8 +386,25 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
         '${_subPrime * (octave - 2).abs()}';
   }
 
+  /// Returns the string representation of this [Pitch] based on [notation].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toString() == 'C4'
+  /// Note.a.inOctave(3).toString() == 'A3'
+  /// Note.b.flat.inOctave(1).toString() == 'B♭1'
+  ///
+  /// Note.c.inOctave(4).toString(notation: PitchNotation.helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(notation: PitchNotation.helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(notation: PitchNotation.helmholtz)
+  ///   == 'B♭͵'
+  /// ```
   @override
-  String toString() => scientificName;
+  String toString({PitchNotation notation = PitchNotation.scientific}) =>
+      switch (notation) {
+        PitchNotation.scientific => _scientificNotation,
+        PitchNotation.helmholtz => _helmholtzNotation,
+      };
 
   @override
   bool operator ==(Object other) =>
@@ -419,4 +418,13 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
         () => octave.compareTo(other.octave),
         () => note.compareTo(other.note),
       ]);
+}
+
+/// Pitch notations.
+enum PitchNotation {
+  /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+  scientific,
+
+  /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+  helmholtz;
 }
