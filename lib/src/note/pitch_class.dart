@@ -182,23 +182,6 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   @override
   int difference(PitchClass other) => other.chroma - chroma;
 
-  /// Returns the integer notation for this [PitchClass].
-  ///
-  /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// PitchClass.c.integerNotation == '0'
-  /// PitchClass.f.integerNotation == '5'
-  /// PitchClass.aSharp.integerNotation == 't'
-  /// PitchClass.b.integerNotation == 'e'
-  /// ```
-  String get integerNotation => switch (chroma) {
-        10 => 't',
-        11 => 'e',
-        final chroma => '$chroma',
-      };
-
   /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].
   ///
@@ -224,8 +207,36 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
   PitchClass operator *(int factor) => PitchClass(chroma * factor);
 
+  String get _enharmonicSpellingsNotation => '{${spellings().join('|')}}';
+
+  String get _integerNotation => switch (chroma) {
+        10 => 't',
+        11 => 'e',
+        final chroma => '$chroma',
+      };
+
+  /// Returns the string representation of this [PitchClass] based on
+  /// [notation].
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.c.toString() == '{C}'
+  /// PitchClass.g.toString() == '{G}'
+  /// PitchClass.dSharp.toString() == '{D♯|E♭}'
+  ///
+  /// PitchClass.c.toString(notation: PitchClassNotation.integer) == '0'
+  /// PitchClass.f.toString(notation: PitchClassNotation.integer) == '5'
+  /// PitchClass.aSharp.toString(notation: PitchClassNotation.integer) == 't'
+  /// PitchClass.b.toString(notation: PitchClassNotation.integer) == 'e'
+  /// ```
   @override
-  String toString() => '{${spellings().join('|')}}';
+  String toString({
+    PitchClassNotation notation = PitchClassNotation.enharmonicSpellings,
+  }) =>
+      switch (notation) {
+        PitchClassNotation.enharmonicSpellings => _enharmonicSpellingsNotation,
+        PitchClassNotation.integer => _integerNotation,
+      };
 
   @override
   bool operator ==(Object other) =>
@@ -236,4 +247,13 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
 
   @override
   int compareTo(PitchClass other) => chroma.compareTo(other.chroma);
+}
+
+/// Pitch-class notations.
+enum PitchClassNotation {
+  /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
+  enharmonicSpellings,
+
+  /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
+  integer;
 }
