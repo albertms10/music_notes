@@ -146,10 +146,10 @@ enum BaseNote implements Comparable<BaseNote> {
   }
 
   @override
-  String toString({NotationSystem system = NotationSystem.english}) =>
+  String toString({NoteNotation system = NoteNotation.english}) =>
       switch (system) {
-        NotationSystem.english => name.toUpperCase(),
-        NotationSystem.german => switch (this) {
+        NoteNotation.english => name.toUpperCase(),
+        NoteNotation.german => switch (this) {
             BaseNote.c => 'C',
             BaseNote.d => 'D',
             BaseNote.e => 'E',
@@ -158,7 +158,7 @@ enum BaseNote implements Comparable<BaseNote> {
             BaseNote.a => 'A',
             BaseNote.b => 'H',
           },
-        NotationSystem.catalan => switch (this) {
+        NoteNotation.italian => switch (this) {
             BaseNote.c => 'Do',
             BaseNote.d => 'Re',
             BaseNote.e => 'Mi',
@@ -167,7 +167,7 @@ enum BaseNote implements Comparable<BaseNote> {
             BaseNote.a => 'La',
             BaseNote.b => 'Si',
           },
-        NotationSystem.french => switch (this) {
+        NoteNotation.french => switch (this) {
             BaseNote.c => 'Ut',
             BaseNote.d => 'Ré',
             BaseNote.e => 'Mi',

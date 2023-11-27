@@ -163,13 +163,8 @@ class Frequency implements Comparable<Frequency> {
   int compareTo(Frequency other) => hertz.compareTo(other.hertz);
 }
 
-/// A record containing the closest [Pitch], with delta `cents` and
-/// `hertz`.
-typedef ClosestPitch = (
-  Pitch closestPitch, {
-  Cent cents,
-  double hertz,
-});
+/// A record containing the closest [Pitch], with delta `cents` and `hertz`.
+typedef ClosestPitch = (Pitch closestPitch, {Cent cents, double hertz});
 
 /// A [ClosestPitch] extension.
 extension ClosestPitchExtension on ClosestPitch {
