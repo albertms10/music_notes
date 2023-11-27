@@ -5,6 +5,8 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [ChordPattern].
+/// * [Scalable].
+/// * [Chordable].
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>

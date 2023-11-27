@@ -382,9 +382,9 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   PitchClass toPitchClass() => PitchClass(semitones);
 
   @override
-  String toString({NotationSystem system = NotationSystem.english}) =>
+  String toString({NoteNotation system = NoteNotation.english}) =>
       switch (system) {
-        NotationSystem.german => switch (this) {
+        NoteNotation.german => switch (this) {
             Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
             // Flattened notes.
             final note when note.accidental.semitones < 0 => switch (
@@ -420,17 +420,17 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       ]);
 }
 
-/// Alphabetic system.
-enum NotationSystem {
-  /// The English alphabetic system.
+/// Note notations.
+enum NoteNotation {
+  /// The English alphabetic notation system.
   english,
 
-  /// The German alphabetic system.
+  /// The German alphabetic notation system.
   german,
 
-  /// The Catalan solmization system.
-  catalan,
+  /// The Italian solmization notation system.
+  italian,
 
-  /// The French solmization system.
+  /// The French solmization notation system.
   french,
 }

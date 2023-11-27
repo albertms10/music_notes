@@ -57,12 +57,12 @@ final class Tonality implements Comparable<Tonality> {
   Scale<Note> get scale => mode.scale.on(note);
 
   @override
-  String toString({NotationSystem system = NotationSystem.english}) {
+  String toString({NoteNotation system = NoteNotation.english}) {
     final noteString = note.toString(system: system);
     final modeString = mode.toString(system: system);
 
     return switch (system) {
-      NotationSystem.german => '${switch (mode) {
+      NoteNotation.german => '${switch (mode) {
           TonalMode.minor => noteString.toLowerCase(),
           _ => noteString
         }}-$modeString',
