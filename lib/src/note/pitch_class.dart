@@ -144,7 +144,7 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
     }
   }
 
-  /// Returns a transposed [PitchClass] by [interval] from this [PitchClass].
+  /// Transposes this [PitchClass] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -152,7 +152,7 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// PitchClass.a.transposeBy(-Interval.M2) == PitchClass.g
   /// ```
   @override
-  // TODO(albertms10): use [IntervalClass]. See #248.
+  // TODO(albertms10): expect [IntervalClass]. See #248.
   PitchClass transposeBy(Interval interval) =>
       PitchClass(chroma + interval.semitones);
 

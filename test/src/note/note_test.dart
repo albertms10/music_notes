@@ -528,7 +528,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Note transposed by Interval', () {
+      test('should transpose this Note by Interval', () {
         expect(Note.c.transposeBy(Interval.d1), Note.c.flat);
         expect(Note.c.transposeBy(-Interval.d1), Note.c.sharp);
         expect(Note.c.transposeBy(Interval.P1), Note.c);

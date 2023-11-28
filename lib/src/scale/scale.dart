@@ -117,7 +117,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
           )
           .degreeChord(harmonicFunction.scaleDegrees.first);
 
-  /// Returns this [Scale] transposed by [interval].
+  /// Transposes this [Scale] by [interval].
   ///
   /// Example:
   /// ```dart
