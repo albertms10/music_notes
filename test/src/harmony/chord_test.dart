@@ -284,7 +284,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Chord transposed by Interval', () {
+      test('should transpose this Chord by Interval', () {
         expect(
           ChordPattern.majorTriad
               .add9(ImperfectQuality.minor)

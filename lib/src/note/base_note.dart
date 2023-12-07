@@ -131,7 +131,7 @@ enum BaseNote implements Comparable<BaseNote> {
     return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
-  /// Returns this [BaseNote] transposed by interval [size].
+  /// Transposes this [BaseNote] by interval [size].
   ///
   /// Example:
   /// ```dart
