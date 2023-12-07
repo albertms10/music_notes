@@ -386,7 +386,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
         '${_subPrime * (octave - 2).abs()}';
   }
 
-  /// Returns the string representation of this [Pitch] based on [notation].
+  /// Returns the string representation of this [Pitch] based on [system].
   ///
   /// Example:
   /// ```dart
@@ -394,14 +394,14 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// Note.a.inOctave(3).toString() == 'A3'
   /// Note.b.flat.inOctave(1).toString() == 'B♭1'
   ///
-  /// Note.c.inOctave(4).toString(notation: PitchNotation.helmholtz) == 'c′'
-  /// Note.a.inOctave(3).toString(notation: PitchNotation.helmholtz) == 'a'
-  /// Note.b.flat.inOctave(1).toString(notation: PitchNotation.helmholtz)
+  /// Note.c.inOctave(4).toString(system: PitchNotation.helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(system: PitchNotation.helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz)
   ///   == 'B♭͵'
   /// ```
   @override
-  String toString({PitchNotation notation = PitchNotation.scientific}) =>
-      switch (notation) {
+  String toString({PitchNotation system = PitchNotation.scientific}) =>
+      switch (system) {
         PitchNotation.scientific => _scientificNotation,
         PitchNotation.helmholtz => _helmholtzNotation,
       };
@@ -420,7 +420,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
       ]);
 }
 
-/// Pitch notations.
+/// Pitch notation systems.
 enum PitchNotation {
   /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
   scientific,
