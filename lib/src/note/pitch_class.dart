@@ -238,18 +238,18 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   int compareTo(PitchClass other) => chroma.compareTo(other.chroma);
 }
 
-/// Pitch-class notations.
+/// The abstraction for [PitchClass] notation systems.
 abstract class PitchClassNotation {
   /// Creates a new [PitchClassNotation].
   const PitchClassNotation();
 
-  /// The enharmonic spellings [PitchClassNotation].
+  /// The enharmonic spellings [PitchClassNotation] system.
   static const enharmonicSpellings = PitchClassEnharmonicSpellingsNotation();
 
-  /// The integer [PitchClassNotation].
+  /// The integer [PitchClassNotation] system.
   static const integer = PitchClassIntegerNotation();
 
-  /// [PitchClass] notation.
+  /// Returns the string notation for [pitchClass].
   String pitchClassNotation(PitchClass pitchClass);
 }
 

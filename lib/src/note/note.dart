@@ -401,30 +401,30 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       ]);
 }
 
-/// Note notations.
-sealed class NoteNotation {
+/// The abstraction for [Note] notation systems.
+abstract class NoteNotation {
   /// Creates a new [NoteNotation].
   const NoteNotation();
 
-  /// The English alphabetic notation system.
+  /// The English alphabetic [NoteNotation] system.
   static const english = EnglishNoteNotation();
 
-  /// The German alphabetic notation system.
+  /// The German alphabetic [NoteNotation] system.
   static const german = GermanNoteNotation();
 
-  /// The Italian solmization notation system.
+  /// The Italian solmization [NoteNotation] system.
   static const italian = ItalianNoteNotation();
 
-  /// The French solmization notation system.
+  /// The French solmization [NoteNotation] system.
   static const french = FrenchNoteNotation();
 
-  /// [Note] notation.
+  /// Returns the string notation for [note].
   String noteNotation(Note note);
 
-  /// [BaseNote] notation.
+  /// Returns the string notation for [baseNote].
   String baseNoteNotation(BaseNote baseNote);
 
-  /// [TonalMode] notation.
+  /// Returns the string notation for [tonalMode].
   String tonalModeNotation(TonalMode tonalMode);
 }
 
