@@ -52,6 +52,26 @@ void main() {
       });
     });
 
+    group('.isFlat', () {
+      test('should return whether this Accidental is flat', () {
+        expect(Accidental.doubleSharp.isFlat, isFalse);
+        expect(Accidental.sharp.isFlat, isFalse);
+        expect(Accidental.natural.isFlat, isFalse);
+        expect(Accidental.flat.isFlat, isTrue);
+        expect(Accidental.doubleFlat.isFlat, isTrue);
+      });
+    });
+
+    group('.isSharp', () {
+      test('should return whether this Accidental is sharp', () {
+        expect(Accidental.doubleSharp.isSharp, isTrue);
+        expect(Accidental.sharp.isSharp, isTrue);
+        expect(Accidental.natural.isSharp, isFalse);
+        expect(Accidental.flat.isSharp, isFalse);
+        expect(Accidental.doubleFlat.isSharp, isFalse);
+      });
+    });
+
     group('.name', () {
       test('should return the name of this Accidental', () {
         expect(const Accidental(8).name, '×8 sharp');
