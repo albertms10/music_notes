@@ -72,7 +72,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.vi.isLowered == false
   /// ScaleDegree.neapolitanSixth.isLowered == true
   /// ```
-  bool get isLowered => semitonesDelta < 0;
+  bool get isLowered => semitonesDelta.isNegative;
 
   /// Returns this [ScaleDegree] raised by 1 semitone.
   ///
