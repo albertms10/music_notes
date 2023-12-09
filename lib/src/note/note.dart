@@ -386,8 +386,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
         NoteNotation.german => switch (this) {
             Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
             // Flattened notes.
-            final note when note.accidental.semitones < 0 => switch (
-                  note.baseNote) {
+            final note when note.accidental.isFlat => switch (note.baseNote) {
                 BaseNote.a ||
                 BaseNote.e =>
                   '${note.baseNote.toString(system: system)}s'
