@@ -25,7 +25,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     }
   }
 
-  /// Returns this [Iterable] transposed by [interval].
+  /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 }

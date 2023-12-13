@@ -293,8 +293,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
-  /// Returns a transposed [Pitch] by [interval] from this
-  /// [Pitch].
+  /// Transposes this [Pitch] by [interval].
   ///
   /// Example:
   /// ```dart

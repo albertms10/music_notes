@@ -319,8 +319,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.circleOfFifthsDistance == 2
   /// Note.a.flat.circleOfFifthsDistance == -4
   /// ```
-  int get circleOfFifthsDistance =>
-      Tonality(this, TonalMode.major).keySignature.distance;
+  int get circleOfFifthsDistance => major.keySignature.distance;
 
   /// Returns the fifths distance between this [Note] and [other].
   ///
@@ -333,7 +332,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   int fifthsDistanceWith(Note other) =>
       Interval.P5.distanceBetween(this, other).$1;
 
-  /// Returns the exact interval between this [Note] and [other].
+  /// Returns the [Interval] between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -346,7 +345,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
         difference(other) % chromaticDivisions,
       );
 
-  /// Returns a transposed [Note] by [interval] from this [Note].
+  /// Transposes this [Note] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -454,8 +453,7 @@ class GermanNoteNotation extends NoteNotation {
   String noteNotation(Note note) => switch (note) {
         Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
         // Flattened notes.
-        final note when note.accidental.semitones < 0 => switch (
-              note.baseNote) {
+        final note when note.accidental.isFlat => switch (note.baseNote) {
             BaseNote.a ||
             BaseNote.e =>
               '${note.baseNote.toString(system: this)}s'

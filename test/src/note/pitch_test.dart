@@ -629,7 +629,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Pitch transposed by Interval', () {
+      test('should transpose this Pitch by Interval', () {
         expect(
           Note.c.inOctave(4).transposeBy(Interval.d1),
           Note.c.flat.inOctave(4),

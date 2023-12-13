@@ -336,7 +336,8 @@ final class Interval implements Comparable<Interval> {
   bool get isDissonant =>
       switch (quality) {
         PerfectQuality(:final semitones) => semitones != 0,
-        ImperfectQuality(:final semitones) => semitones < 0 && semitones > 1,
+        ImperfectQuality(:final semitones) =>
+          semitones.isNegative && semitones > 1,
       } ||
       const {2, 7}.contains(simplified.size.abs());
 

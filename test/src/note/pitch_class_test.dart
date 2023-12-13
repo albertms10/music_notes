@@ -286,7 +286,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this PitchClass transposed by Interval', () {
+      test('should transpose this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
         expect(PitchClass.c.transposeBy(-Interval.d1), PitchClass.cSharp);
         expect(PitchClass.c.transposeBy(Interval.P1), PitchClass.c);
