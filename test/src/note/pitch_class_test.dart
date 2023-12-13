@@ -356,51 +356,51 @@ void main() {
         'should return the integer string representation of this PitchClass',
         () {
           expect(
-            PitchClass.c.toString(notation: PitchClassNotation.integer),
+            PitchClass.c.toString(system: PitchClassNotation.integer),
             '0',
           );
           expect(
-            PitchClass.cSharp.toString(notation: PitchClassNotation.integer),
+            PitchClass.cSharp.toString(system: PitchClassNotation.integer),
             '1',
           );
           expect(
-            PitchClass.d.toString(notation: PitchClassNotation.integer),
+            PitchClass.d.toString(system: PitchClassNotation.integer),
             '2',
           );
           expect(
-            PitchClass.dSharp.toString(notation: PitchClassNotation.integer),
+            PitchClass.dSharp.toString(system: PitchClassNotation.integer),
             '3',
           );
           expect(
-            PitchClass.e.toString(notation: PitchClassNotation.integer),
+            PitchClass.e.toString(system: PitchClassNotation.integer),
             '4',
           );
           expect(
-            PitchClass.f.toString(notation: PitchClassNotation.integer),
+            PitchClass.f.toString(system: PitchClassNotation.integer),
             '5',
           );
           expect(
-            PitchClass.fSharp.toString(notation: PitchClassNotation.integer),
+            PitchClass.fSharp.toString(system: PitchClassNotation.integer),
             '6',
           );
           expect(
-            PitchClass.g.toString(notation: PitchClassNotation.integer),
+            PitchClass.g.toString(system: PitchClassNotation.integer),
             '7',
           );
           expect(
-            PitchClass.gSharp.toString(notation: PitchClassNotation.integer),
+            PitchClass.gSharp.toString(system: PitchClassNotation.integer),
             '8',
           );
           expect(
-            PitchClass.a.toString(notation: PitchClassNotation.integer),
+            PitchClass.a.toString(system: PitchClassNotation.integer),
             '9',
           );
           expect(
-            PitchClass.aSharp.toString(notation: PitchClassNotation.integer),
+            PitchClass.aSharp.toString(system: PitchClassNotation.integer),
             't',
           );
           expect(
-            PitchClass.b.toString(notation: PitchClassNotation.integer),
+            PitchClass.b.toString(system: PitchClassNotation.integer),
             'e',
           );
         },

@@ -45,9 +45,7 @@ void main() {
         );
         expect(
           Pitch.parse(
-            Note.a.sharp
-                .inOctave(7)
-                .toString(notation: PitchNotation.helmholtz),
+            Note.a.sharp.inOctave(7).toString(system: PitchNotation.helmholtz),
           ),
           Note.a.sharp.inOctave(7),
         );
@@ -1093,49 +1091,43 @@ void main() {
         'should return the Helmholtz string representation of this Pitch',
         () {
           expect(
-            Note.g.sharp
-                .inOctave(-1)
-                .toString(notation: PitchNotation.helmholtz),
+            Note.g.sharp.inOctave(-1).toString(system: PitchNotation.helmholtz),
             'G♯͵͵͵',
           );
           expect(
-            Note.d.inOctave(0).toString(notation: PitchNotation.helmholtz),
+            Note.d.inOctave(0).toString(system: PitchNotation.helmholtz),
             'D͵͵',
           );
           expect(
-            Note.b.flat.inOctave(1).toString(notation: PitchNotation.helmholtz),
+            Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz),
             'B♭͵',
           );
           expect(
-            Note.g.inOctave(2).toString(notation: PitchNotation.helmholtz),
+            Note.g.inOctave(2).toString(system: PitchNotation.helmholtz),
             'G',
           );
           expect(
-            Note.a.inOctave(3).toString(notation: PitchNotation.helmholtz),
+            Note.a.inOctave(3).toString(system: PitchNotation.helmholtz),
             'a',
           );
           expect(
-            Note.c.inOctave(4).toString(notation: PitchNotation.helmholtz),
+            Note.c.inOctave(4).toString(system: PitchNotation.helmholtz),
             'c′',
           );
           expect(
-            Note.c.sharp
-                .inOctave(4)
-                .toString(notation: PitchNotation.helmholtz),
+            Note.c.sharp.inOctave(4).toString(system: PitchNotation.helmholtz),
             'c♯′',
           );
           expect(
-            Note.a.inOctave(4).toString(notation: PitchNotation.helmholtz),
+            Note.a.inOctave(4).toString(system: PitchNotation.helmholtz),
             'a′',
           );
           expect(
-            Note.f.sharp
-                .inOctave(5)
-                .toString(notation: PitchNotation.helmholtz),
+            Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
             'f♯′′',
           );
           expect(
-            Note.e.inOctave(7).toString(notation: PitchNotation.helmholtz),
+            Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
             'e′′′′',
           );
         },

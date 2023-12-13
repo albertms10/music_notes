@@ -376,31 +376,13 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// ```dart
   /// Note.c.toPitchClass() == PitchClass.c
   /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.a.sharp
+  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
   /// ```
   PitchClass toPitchClass() => PitchClass(semitones);
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      switch (system) {
-        NoteNotation.german => switch (this) {
-            Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
-            // Flattened notes.
-            final note when note.accidental.isFlat => switch (note.baseNote) {
-                BaseNote.a ||
-                BaseNote.e =>
-                  '${note.baseNote.toString(system: system)}s'
-                      '${'es' * (note.accidental.semitones.abs() - 1)}',
-                final baseNote => '${baseNote.toString(system: system)}'
-                    '${'es' * note.accidental.semitones.abs()}',
-              },
-            // Sharpened and natural notes.
-            final note => '${baseNote.toString(system: system)}'
-                '${'is' * note.accidental.semitones}',
-          },
-        final system => baseNote.toString(system: system) +
-            (accidental != Accidental.natural ? accidental.symbol : ''),
-      };
+      system.noteNotation(this);
 
   @override
   bool operator ==(Object other) =>
@@ -418,17 +400,137 @@ final class Note implements Comparable<Note>, Scalable<Note> {
       ]);
 }
 
-/// Note notations.
-enum NoteNotation {
-  /// The English alphabetic notation system.
-  english,
+/// The abstraction for [Note] notation systems.
+abstract class NoteNotation {
+  /// Creates a new [NoteNotation].
+  const NoteNotation();
 
-  /// The German alphabetic notation system.
-  german,
+  /// The English alphabetic [NoteNotation] system.
+  static const english = EnglishNoteNotation();
 
-  /// The Italian solmization notation system.
-  italian,
+  /// The German alphabetic [NoteNotation] system.
+  static const german = GermanNoteNotation();
 
-  /// The French solmization notation system.
-  french,
+  /// The Italian solmization [NoteNotation] system.
+  static const italian = ItalianNoteNotation();
+
+  /// The French solmization [NoteNotation] system.
+  static const french = FrenchNoteNotation();
+
+  /// Returns the string notation for [note].
+  String noteNotation(Note note);
+
+  /// Returns the string notation for [baseNote].
+  String baseNoteNotation(BaseNote baseNote);
+
+  /// Returns the string notation for [tonalMode].
+  String tonalModeNotation(TonalMode tonalMode);
+}
+
+/// The English alphabetic notation system.
+class EnglishNoteNotation extends NoteNotation {
+  /// Creates a new [EnglishNoteNotation].
+  const EnglishNoteNotation();
+
+  @override
+  String noteNotation(Note note) =>
+      note.baseNote.toString(system: this) +
+      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
+
+  @override
+  String baseNoteNotation(BaseNote baseNote) => baseNote.name.toUpperCase();
+
+  @override
+  String tonalModeNotation(TonalMode tonalMode) => tonalMode.name;
+}
+
+/// The German alphabetic notation system.
+class GermanNoteNotation extends NoteNotation {
+  /// Creates a new [GermanNoteNotation].
+  const GermanNoteNotation();
+
+  @override
+  String noteNotation(Note note) => switch (note) {
+        Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
+        // Flattened notes.
+        final note when note.accidental.isFlat => switch (note.baseNote) {
+            BaseNote.a ||
+            BaseNote.e =>
+              '${note.baseNote.toString(system: this)}s'
+                  '${'es' * (note.accidental.semitones.abs() - 1)}',
+            final baseNote => '${baseNote.toString(system: this)}'
+                '${'es' * note.accidental.semitones.abs()}',
+          },
+        // Sharpened and natural notes.
+        final note => '${note.baseNote.toString(system: this)}'
+            '${'is' * note.accidental.semitones}',
+      };
+
+  @override
+  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.b => 'H',
+        final baseNote => baseNote.name.toUpperCase(),
+      };
+
+  @override
+  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'Dur',
+        TonalMode.minor => 'Moll',
+      };
+}
+
+/// The Italian alphabetic notation system.
+class ItalianNoteNotation extends NoteNotation {
+  /// Creates a new [ItalianNoteNotation].
+  const ItalianNoteNotation();
+
+  @override
+  String noteNotation(Note note) =>
+      note.baseNote.toString(system: this) +
+      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
+
+  @override
+  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.c => 'Do',
+        BaseNote.d => 'Re',
+        BaseNote.e => 'Mi',
+        BaseNote.f => 'Fa',
+        BaseNote.g => 'Sol',
+        BaseNote.a => 'La',
+        BaseNote.b => 'Si',
+      };
+
+  @override
+  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'maggiore',
+        TonalMode.minor => 'minore',
+      };
+}
+
+/// The French alphabetic notation system.
+class FrenchNoteNotation extends NoteNotation {
+  /// Creates a new [FrenchNoteNotation].
+  const FrenchNoteNotation();
+
+  @override
+  String noteNotation(Note note) =>
+      note.baseNote.toString(system: this) +
+      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
+
+  @override
+  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.c => 'Ut',
+        BaseNote.d => 'Ré',
+        BaseNote.e => 'Mi',
+        BaseNote.f => 'Fa',
+        BaseNote.g => 'Sol',
+        BaseNote.a => 'La',
+        BaseNote.b => 'Si',
+      };
+
+  @override
+  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'majeur',
+        TonalMode.minor => 'mineur',
+      };
 }

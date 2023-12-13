@@ -147,36 +147,7 @@ enum BaseNote implements Comparable<BaseNote> {
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      switch (system) {
-        NoteNotation.english => name.toUpperCase(),
-        NoteNotation.german => switch (this) {
-            BaseNote.c => 'C',
-            BaseNote.d => 'D',
-            BaseNote.e => 'E',
-            BaseNote.f => 'F',
-            BaseNote.g => 'G',
-            BaseNote.a => 'A',
-            BaseNote.b => 'H',
-          },
-        NoteNotation.italian => switch (this) {
-            BaseNote.c => 'Do',
-            BaseNote.d => 'Re',
-            BaseNote.e => 'Mi',
-            BaseNote.f => 'Fa',
-            BaseNote.g => 'Sol',
-            BaseNote.a => 'La',
-            BaseNote.b => 'Si',
-          },
-        NoteNotation.french => switch (this) {
-            BaseNote.c => 'Ut',
-            BaseNote.d => 'Ré',
-            BaseNote.e => 'Mi',
-            BaseNote.f => 'Fa',
-            BaseNote.g => 'Sol',
-            BaseNote.a => 'La',
-            BaseNote.b => 'Si',
-          },
-      };
+      system.baseNoteNotation(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
