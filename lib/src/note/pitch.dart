@@ -404,8 +404,10 @@ abstract class PitchNotation {
   /// Creates a new [PitchNotation].
   const PitchNotation();
 
+  /// The scientific [PitchNotation] system.
   static const scientific = ScientificPitchNotation();
 
+  /// The Helmholtz [PitchNotation] system.
   static const helmholtz = HelmholtzPitchNotation();
 
   /// Returns the string representation for [pitch].
