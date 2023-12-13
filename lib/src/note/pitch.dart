@@ -368,23 +368,6 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   }) =>
       referenceFrequency * tuningSystem.ratio(this).value;
 
-  String get _scientificNotation => '${note.baseNote}'
-      '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
-      '$octave';
-
-  String get _helmholtzNotation {
-    final accidentalSymbol =
-        note.accidental != Accidental.natural ? note.accidental.symbol : '';
-
-    if (octave >= 3) {
-      return '${note.baseNote.name}$accidentalSymbol'
-          '${_superPrime * (octave - 3)}';
-    }
-
-    return '${note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${_subPrime * (octave - 2).abs()}';
-  }
-
   /// Returns the string representation of this [Pitch] based on [system].
   ///
   /// Example:
@@ -400,10 +383,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// ```
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
-      switch (system) {
-        PitchNotation.scientific => _scientificNotation,
-        PitchNotation.helmholtz => _helmholtzNotation,
-      };
+      system.pitchNotation(this);
 
   @override
   bool operator ==(Object other) =>
@@ -420,10 +400,49 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
 }
 
 /// Pitch notation systems.
-enum PitchNotation {
-  /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-  scientific,
+abstract class PitchNotation {
+  /// Creates a new [PitchNotation].
+  const PitchNotation();
 
-  /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-  helmholtz;
+  static const scientific = ScientificPitchNotation();
+
+  static const helmholtz = HelmholtzPitchNotation();
+
+  /// Returns the string representation for [pitch].
+  String pitchNotation(Pitch pitch);
+}
+
+/// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+class ScientificPitchNotation extends PitchNotation {
+  /// Creates a new [ScientificPitchNotation].
+  const ScientificPitchNotation();
+
+  @override
+  String pitchNotation(Pitch pitch) {
+    final accidental = pitch.note.accidental != Accidental.natural
+        ? pitch.note.accidental.symbol
+        : '';
+    return '${pitch.note.baseNote}$accidental${pitch.octave}';
+  }
+}
+
+/// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+class HelmholtzPitchNotation extends PitchNotation {
+  /// Creates a new [HelmholtzPitchNotation].
+  const HelmholtzPitchNotation();
+
+  @override
+  String pitchNotation(Pitch pitch) {
+    final accidentalSymbol = pitch.note.accidental != Accidental.natural
+        ? pitch.note.accidental.symbol
+        : '';
+
+    if (pitch.octave >= 3) {
+      return '${pitch.note.baseNote.name}$accidentalSymbol'
+          '${Pitch._superPrime * (pitch.octave - 3)}';
+    }
+
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
+        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+  }
 }
