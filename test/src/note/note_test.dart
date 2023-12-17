@@ -624,13 +624,13 @@ void main() {
       });
     });
 
-    group('.toPitchClass()', () {
+    group('.toClass()', () {
       test('should create a new PitchClass from semitones', () {
-        expect(Note.c.toPitchClass(), PitchClass.c);
-        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+        expect(Note.c.toClass(), PitchClass.c);
+        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
       });
     });
 
