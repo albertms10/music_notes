@@ -456,7 +456,7 @@ void main() {
 
     group('.distanceBetween()', () {
       test('should return the distance between two Scalable instances', () {
-        var (distance, :notes) =
+        var (distance, notes: dynamic notes) =
             Interval.P5.distanceBetween(Note.c, Note.b.flat.flat);
         expect(distance, -9);
         expect(notes, [
@@ -476,10 +476,10 @@ void main() {
         expect(distance, -2);
         expect(notes, [Note.c, Note.f, Note.b.flat]);
 
-        var (pitchClassDistance, notes: pitchClasses) =
+        (distance, :notes) =
             Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp);
-        expect(pitchClassDistance, 6);
-        expect(pitchClasses, [
+        expect(distance, 6);
+        expect(notes, [
           PitchClass.d,
           PitchClass.a,
           PitchClass.e,
@@ -509,11 +509,11 @@ void main() {
           Note.f.sharp.sharp,
         ]);
 
-        (pitchClassDistance, notes: pitchClasses) =
+        (distance, :notes) =
             Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c);
-        expect(pitchClassDistance, -3);
+        expect(distance, -3);
         expect(
-          pitchClasses,
+          notes,
           [PitchClass.dSharp, PitchClass.aSharp, PitchClass.f, PitchClass.c],
         );
 
@@ -525,10 +525,10 @@ void main() {
         expect(distance, 1);
         expect(notes, [Note.c, Note.f]);
 
-        (pitchClassDistance, notes: pitchClasses) =
+        (distance, :notes) =
             Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp);
-        expect(pitchClassDistance, 2);
-        expect(pitchClasses, [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
+        expect(distance, 2);
+        expect(notes, [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });
     });
 
@@ -588,22 +588,22 @@ void main() {
       });
     });
 
-    group('.toIntervalClass()', () {
+    group('.toClass()', () {
       test('should create a new IntervalClass from semitones', () {
-        expect(Interval.P1.toIntervalClass(), IntervalClass.P1);
-        expect(Interval.d1.toIntervalClass(), IntervalClass.m2);
-        expect(Interval.A1.toIntervalClass(), IntervalClass.m2);
-        expect((-Interval.A1).toIntervalClass(), IntervalClass.m2);
-        expect(Interval.m2.toIntervalClass(), IntervalClass.m2);
-        expect(Interval.d4.toIntervalClass(), IntervalClass.M3);
-        expect((-Interval.A4).toIntervalClass(), IntervalClass.tritone);
-        expect(Interval.d6.toIntervalClass(), IntervalClass.P4);
-        expect((-Interval.M6).toIntervalClass(), IntervalClass.m3);
-        expect(Interval.m7.toIntervalClass(), IntervalClass.M2);
-        expect((-Interval.M7).toIntervalClass(), IntervalClass.m2);
-        expect(Interval.P8.toIntervalClass(), IntervalClass.P1);
-        expect(Interval.P11.toIntervalClass(), IntervalClass.P4);
-        expect(Interval.M13.toIntervalClass(), IntervalClass.m3);
+        expect(Interval.P1.toClass(), IntervalClass.P1);
+        expect(Interval.d1.toClass(), IntervalClass.m2);
+        expect(Interval.A1.toClass(), IntervalClass.m2);
+        expect((-Interval.A1).toClass(), IntervalClass.m2);
+        expect(Interval.m2.toClass(), IntervalClass.m2);
+        expect(Interval.d4.toClass(), IntervalClass.M3);
+        expect((-Interval.A4).toClass(), IntervalClass.tritone);
+        expect(Interval.d6.toClass(), IntervalClass.P4);
+        expect((-Interval.M6).toClass(), IntervalClass.m3);
+        expect(Interval.m7.toClass(), IntervalClass.M2);
+        expect((-Interval.M7).toClass(), IntervalClass.m2);
+        expect(Interval.P8.toClass(), IntervalClass.P1);
+        expect(Interval.P11.toClass(), IntervalClass.P4);
+        expect(Interval.M13.toClass(), IntervalClass.m3);
       });
     });
 
@@ -695,12 +695,12 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Interval items in a collection', () {
-        final orderedSet = SplayTreeSet<Interval>.of(const [
+        final orderedSet = SplayTreeSet<Interval>.of({
           Interval.m2,
           Interval.P8,
           Interval.P1,
           Interval.A1,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           Interval.P1,
           Interval.A1,

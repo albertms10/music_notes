@@ -52,9 +52,30 @@ void main() {
       });
     });
 
+    group('.isFlat', () {
+      test('should return whether this Accidental is flat', () {
+        expect(Accidental.doubleSharp.isFlat, isFalse);
+        expect(Accidental.sharp.isFlat, isFalse);
+        expect(Accidental.natural.isFlat, isFalse);
+        expect(Accidental.flat.isFlat, isTrue);
+        expect(Accidental.doubleFlat.isFlat, isTrue);
+      });
+    });
+
+    group('.isSharp', () {
+      test('should return whether this Accidental is sharp', () {
+        expect(Accidental.doubleSharp.isSharp, isTrue);
+        expect(Accidental.sharp.isSharp, isTrue);
+        expect(Accidental.natural.isSharp, isFalse);
+        expect(Accidental.flat.isSharp, isFalse);
+        expect(Accidental.doubleFlat.isSharp, isFalse);
+      });
+    });
+
     group('.name', () {
       test('should return the name of this Accidental', () {
-        expect(const Accidental(4).name, isNull);
+        expect(const Accidental(8).name, '×8 sharp');
+        expect(const Accidental(4).name, '×4 sharp');
         expect(Accidental.tripleSharp.name, 'Triple sharp');
         expect(Accidental.doubleSharp.name, 'Double sharp');
         expect(Accidental.sharp.name, 'Sharp');
@@ -62,7 +83,8 @@ void main() {
         expect(Accidental.flat.name, 'Flat');
         expect(Accidental.doubleFlat.name, 'Double flat');
         expect(Accidental.tripleFlat.name, 'Triple flat');
-        expect(const Accidental(-4).name, isNull);
+        expect(const Accidental(-5).name, '×5 flat');
+        expect(const Accidental(-7).name, '×7 flat');
       });
     });
 
@@ -106,17 +128,17 @@ void main() {
 
     group('.toString()', () {
       test('should return the string representation of this Accidental', () {
-        expect(const Accidental(5).toString(), '♯𝄪𝄪 (+5)');
-        expect(const Accidental(4).toString(), '𝄪𝄪 (+4)');
-        expect(Accidental.tripleSharp.toString(), 'Triple sharp ♯𝄪 (+3)');
-        expect(Accidental.doubleSharp.toString(), 'Double sharp 𝄪 (+2)');
-        expect(Accidental.sharp.toString(), 'Sharp ♯ (+1)');
-        expect(Accidental.natural.toString(), 'Natural ♮ (+0)');
-        expect(Accidental.flat.toString(), 'Flat ♭ (-1)');
-        expect(Accidental.doubleFlat.toString(), 'Double flat 𝄫 (-2)');
-        expect(Accidental.tripleFlat.toString(), 'Triple flat ♭𝄫 (-3)');
-        expect(const Accidental(-4).toString(), '𝄫𝄫 (-4)');
-        expect(const Accidental(-5).toString(), '♭𝄫𝄫 (-5)');
+        expect(const Accidental(5).toString(), '×5 sharp (♯𝄪𝄪)');
+        expect(const Accidental(4).toString(), '×4 sharp (𝄪𝄪)');
+        expect(Accidental.tripleSharp.toString(), 'Triple sharp (♯𝄪)');
+        expect(Accidental.doubleSharp.toString(), 'Double sharp (𝄪)');
+        expect(Accidental.sharp.toString(), 'Sharp (♯)');
+        expect(Accidental.natural.toString(), 'Natural (♮)');
+        expect(Accidental.flat.toString(), 'Flat (♭)');
+        expect(Accidental.doubleFlat.toString(), 'Double flat (𝄫)');
+        expect(Accidental.tripleFlat.toString(), 'Triple flat (♭𝄫)');
+        expect(const Accidental(-4).toString(), '×4 flat (𝄫𝄫)');
+        expect(const Accidental(-5).toString(), '×5 flat (♭𝄫𝄫)');
       });
     });
 
@@ -149,11 +171,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Accidental items in a collection', () {
-        final orderedSet = SplayTreeSet<Accidental>.of(const [
+        final orderedSet = SplayTreeSet<Accidental>.of({
           Accidental.doubleSharp,
           Accidental.natural,
           Accidental.flat,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           Accidental.flat,
           Accidental.natural,

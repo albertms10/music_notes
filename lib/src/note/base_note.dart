@@ -1,7 +1,11 @@
 part of '../../music_notes.dart';
 
 /// The base note names of the diatonic scale.
-enum BaseNote {
+///
+/// ---
+/// See also:
+/// * [Note].
+enum BaseNote implements Comparable<BaseNote> {
   /// Note C.
   c(0),
 
@@ -51,7 +55,7 @@ enum BaseNote {
   /// BaseNote.fromOrdinal(10) == BaseNote.e
   /// ```
   factory BaseNote.fromOrdinal(int ordinal) =>
-      BaseNote.values[ordinal.nonZeroMod(BaseNote.values.length) - 1];
+      values[ordinal.nonZeroMod(values.length) - 1];
 
   /// Parse [source] as a [BaseNote] and return its value.
   ///
@@ -83,7 +87,7 @@ enum BaseNote {
   /// BaseNote.f.ordinal == 4
   /// BaseNote.b.ordinal == 7
   /// ```
-  int get ordinal => BaseNote.values.indexOf(this) + 1;
+  int get ordinal => values.indexOf(this) + 1;
 
   /// Returns the [Interval.size] that conforms between this [BaseNote] and
   /// [other].
@@ -127,7 +131,7 @@ enum BaseNote {
     return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
-  /// Returns this [BaseNote] transposed by interval [size].
+  /// Transposes this [BaseNote] by interval [size].
   ///
   /// Example:
   /// ```dart
@@ -140,4 +144,11 @@ enum BaseNote {
 
     return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
   }
+
+  @override
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.baseNoteNotation(this);
+
+  @override
+  int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
 }

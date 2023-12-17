@@ -286,7 +286,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this PitchClass transposed by Interval', () {
+      test('should transpose this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
         expect(PitchClass.c.transposeBy(-Interval.d1), PitchClass.cSharp);
         expect(PitchClass.c.transposeBy(Interval.P1), PitchClass.c);
@@ -303,23 +303,6 @@ void main() {
         expect(PitchClass.fSharp.transposeBy(-Interval.P4), PitchClass.cSharp);
 
         expect(PitchClass.g.transposeBy(Interval.P8), PitchClass.g);
-      });
-    });
-
-    group('.integerNotation', () {
-      test('should return the integer notation for this PitchClass', () {
-        expect(PitchClass.c.integerNotation, '0');
-        expect(PitchClass.cSharp.integerNotation, '1');
-        expect(PitchClass.d.integerNotation, '2');
-        expect(PitchClass.dSharp.integerNotation, '3');
-        expect(PitchClass.e.integerNotation, '4');
-        expect(PitchClass.f.integerNotation, '5');
-        expect(PitchClass.fSharp.integerNotation, '6');
-        expect(PitchClass.g.integerNotation, '7');
-        expect(PitchClass.gSharp.integerNotation, '8');
-        expect(PitchClass.a.integerNotation, '9');
-        expect(PitchClass.aSharp.integerNotation, 't');
-        expect(PitchClass.b.integerNotation, 'e');
       });
     });
 
@@ -350,11 +333,78 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return a string representation of this PitchClass', () {
-        expect(PitchClass.c.toString(), '{C}');
-        expect(PitchClass.g.toString(), '{G}');
-        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
-      });
+      test(
+        'should return the enharmonic spellings string representation of '
+        'this PitchClass',
+        () {
+          expect(PitchClass.c.toString(), '{C}');
+          expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
+          expect(PitchClass.d.toString(), '{D}');
+          expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+          expect(PitchClass.e.toString(), '{E}');
+          expect(PitchClass.f.toString(), '{F}');
+          expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
+          expect(PitchClass.g.toString(), '{G}');
+          expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
+          expect(PitchClass.a.toString(), '{A}');
+          expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
+          expect(PitchClass.b.toString(), '{B}');
+        },
+      );
+
+      test(
+        'should return the integer string representation of this PitchClass',
+        () {
+          expect(
+            PitchClass.c.toString(system: PitchClassNotation.integer),
+            '0',
+          );
+          expect(
+            PitchClass.cSharp.toString(system: PitchClassNotation.integer),
+            '1',
+          );
+          expect(
+            PitchClass.d.toString(system: PitchClassNotation.integer),
+            '2',
+          );
+          expect(
+            PitchClass.dSharp.toString(system: PitchClassNotation.integer),
+            '3',
+          );
+          expect(
+            PitchClass.e.toString(system: PitchClassNotation.integer),
+            '4',
+          );
+          expect(
+            PitchClass.f.toString(system: PitchClassNotation.integer),
+            '5',
+          );
+          expect(
+            PitchClass.fSharp.toString(system: PitchClassNotation.integer),
+            '6',
+          );
+          expect(
+            PitchClass.g.toString(system: PitchClassNotation.integer),
+            '7',
+          );
+          expect(
+            PitchClass.gSharp.toString(system: PitchClassNotation.integer),
+            '8',
+          );
+          expect(
+            PitchClass.a.toString(system: PitchClassNotation.integer),
+            '9',
+          );
+          expect(
+            PitchClass.aSharp.toString(system: PitchClassNotation.integer),
+            't',
+          );
+          expect(
+            PitchClass.b.toString(system: PitchClassNotation.integer),
+            'e',
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
@@ -370,11 +420,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort PitchClass items in a collection', () {
-        final orderedSet = SplayTreeSet<PitchClass>.of(const [
+        final orderedSet = SplayTreeSet<PitchClass>.of({
           PitchClass.fSharp,
           PitchClass.c,
           PitchClass.d,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           PitchClass.c,
           PitchClass.d,

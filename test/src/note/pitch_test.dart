@@ -4,47 +4,49 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('PositionedNote', () {
+  group('Pitch', () {
     group('.parse()', () {
       test('should throw a FormatException when source is invalid', () {
-        expect(() => PositionedNote.parse('x'), throwsFormatException);
-        expect(() => PositionedNote.parse("A,'"), throwsFormatException);
-        expect(() => PositionedNote.parse('bb,'), throwsFormatException);
-        expect(() => PositionedNote.parse("F#'"), throwsFormatException);
-        expect(() => PositionedNote.parse("g''h"), throwsFormatException);
-        expect(() => PositionedNote.parse('C,d'), throwsFormatException);
+        expect(() => Pitch.parse('x'), throwsFormatException);
+        expect(() => Pitch.parse("A,'"), throwsFormatException);
+        expect(() => Pitch.parse('bb,'), throwsFormatException);
+        expect(() => Pitch.parse("F#'"), throwsFormatException);
+        expect(() => Pitch.parse("g''h"), throwsFormatException);
+        expect(() => Pitch.parse('C,d'), throwsFormatException);
 
-        expect(() => PositionedNote.parse('D5,'), throwsFormatException);
-        expect(() => PositionedNote.parse("d7'"), throwsFormatException);
-        expect(() => PositionedNote.parse("e'4"), throwsFormatException);
-        expect(() => PositionedNote.parse("'E3"), throwsFormatException);
-        expect(() => PositionedNote.parse('2a'), throwsFormatException);
-        expect(() => PositionedNote.parse('3B,'), throwsFormatException);
+        expect(() => Pitch.parse('D5,'), throwsFormatException);
+        expect(() => Pitch.parse("d7'"), throwsFormatException);
+        expect(() => Pitch.parse("e'4"), throwsFormatException);
+        expect(() => Pitch.parse("'E3"), throwsFormatException);
+        expect(() => Pitch.parse('2a'), throwsFormatException);
+        expect(() => Pitch.parse('3B,'), throwsFormatException);
       });
 
-      test('should parse source as a PositionedNote and return its value', () {
-        expect(PositionedNote.parse('A4'), Note.a.inOctave(4));
-        expect(PositionedNote.parse('d3'), Note.d.inOctave(3));
-        expect(PositionedNote.parse('C-1'), Note.c.inOctave(-1));
-        expect(PositionedNote.parse('bb-1'), Note.b.flat.inOctave(-1));
-        expect(PositionedNote.parse('G#6'), Note.g.sharp.inOctave(6));
-        expect(PositionedNote.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
+      test('should parse source as a Pitch and return its value', () {
+        expect(Pitch.parse('A4'), Note.a.inOctave(4));
+        expect(Pitch.parse('d3'), Note.d.inOctave(3));
+        expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
+        expect(Pitch.parse('bb-1'), Note.b.flat.inOctave(-1));
+        expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
+        expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
 
-        expect(PositionedNote.parse('C͵͵͵'), Note.c.inOctave(-1));
-        expect(PositionedNote.parse('C,,'), Note.c.inOctave(0));
-        expect(PositionedNote.parse('Gb,'), Note.g.flat.inOctave(1));
-        expect(PositionedNote.parse('A'), Note.a.inOctave(2));
-        expect(PositionedNote.parse('f'), Note.f.inOctave(3));
-        expect(PositionedNote.parse("d#'"), Note.d.sharp.inOctave(4));
-        expect(PositionedNote.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(PositionedNote.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+        expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
+        expect(Pitch.parse('C,,'), Note.c.inOctave(0));
+        expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
+        expect(Pitch.parse('A'), Note.a.inOctave(2));
+        expect(Pitch.parse('f'), Note.f.inOctave(3));
+        expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
+        expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
+        expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
 
         expect(
-          PositionedNote.parse(Note.b.flat.flat.inOctave(-2).scientificName),
+          Pitch.parse(Note.b.flat.flat.inOctave(-2).toString()),
           Note.b.flat.flat.inOctave(-2),
         );
         expect(
-          PositionedNote.parse(Note.a.sharp.inOctave(7).helmholtzName),
+          Pitch.parse(
+            Note.a.sharp.inOctave(7).toString(system: PitchNotation.helmholtz),
+          ),
           Note.a.sharp.inOctave(7),
         );
       });
@@ -55,28 +57,28 @@ void main() {
         'should return the octave that corresponds to the semitones from root '
         'height',
         () {
-          expect(PositionedNote.octaveFromSemitones(-37), -4);
-          expect(PositionedNote.octaveFromSemitones(-36), -3);
-          expect(PositionedNote.octaveFromSemitones(-25), -3);
-          expect(PositionedNote.octaveFromSemitones(-24), -2);
-          expect(PositionedNote.octaveFromSemitones(-23), -2);
-          expect(PositionedNote.octaveFromSemitones(-12), -1);
-          expect(PositionedNote.octaveFromSemitones(-11), -1);
-          expect(PositionedNote.octaveFromSemitones(-1), -1);
-          expect(PositionedNote.octaveFromSemitones(0), 0); // C
-          expect(PositionedNote.octaveFromSemitones(1), 0);
-          expect(PositionedNote.octaveFromSemitones(11), 0);
-          expect(PositionedNote.octaveFromSemitones(12), 1);
-          expect(PositionedNote.octaveFromSemitones(13), 1);
-          expect(PositionedNote.octaveFromSemitones(24), 2);
-          expect(PositionedNote.octaveFromSemitones(34), 2);
-          expect(PositionedNote.octaveFromSemitones(58), 4);
+          expect(Pitch.octaveFromSemitones(-37), -4);
+          expect(Pitch.octaveFromSemitones(-36), -3);
+          expect(Pitch.octaveFromSemitones(-25), -3);
+          expect(Pitch.octaveFromSemitones(-24), -2);
+          expect(Pitch.octaveFromSemitones(-23), -2);
+          expect(Pitch.octaveFromSemitones(-12), -1);
+          expect(Pitch.octaveFromSemitones(-11), -1);
+          expect(Pitch.octaveFromSemitones(-1), -1);
+          expect(Pitch.octaveFromSemitones(0), 0); // C
+          expect(Pitch.octaveFromSemitones(1), 0);
+          expect(Pitch.octaveFromSemitones(11), 0);
+          expect(Pitch.octaveFromSemitones(12), 1);
+          expect(Pitch.octaveFromSemitones(13), 1);
+          expect(Pitch.octaveFromSemitones(24), 2);
+          expect(Pitch.octaveFromSemitones(34), 2);
+          expect(Pitch.octaveFromSemitones(58), 4);
         },
       );
     });
 
     group('.semitones', () {
-      test('should return the semitones of this PositionedNote from C0', () {
+      test('should return the semitones of this Pitch from C0', () {
         expect(Note.c.inOctave(-4).semitones, -48);
         expect(Note.a.inOctave(-4).semitones, -39);
         expect(Note.c.inOctave(-3).semitones, -36);
@@ -105,7 +107,7 @@ void main() {
 
     group('.difference()', () {
       test(
-        'should return the difference in semitones with another PositionedNote',
+        'should return the difference in semitones with another Pitch',
         () {
           expect(Note.c.inOctave(4).difference(Note.c.inOctave(4)), 0);
           expect(Note.e.sharp.inOctave(4).difference(Note.f.inOctave(4)), 0);
@@ -138,7 +140,7 @@ void main() {
     });
 
     group('.augmentedTriad', () {
-      test('should return the augmented triad on this PositionedNote', () {
+      test('should return the augmented triad on this Pitch', () {
         expect(
           Note.c.inOctave(4).augmentedTriad,
           Chord([
@@ -167,7 +169,7 @@ void main() {
     });
 
     group('.majorTriad', () {
-      test('should return the major triad on this PositionedNote', () {
+      test('should return the major triad on this Pitch', () {
         expect(
           Note.c.inOctave(4).majorTriad,
           Chord([
@@ -196,7 +198,7 @@ void main() {
     });
 
     group('.minorTriad', () {
-      test('should return the minor triad on this PositionedNote', () {
+      test('should return the minor triad on this Pitch', () {
         expect(
           Note.d.flat.inOctave(5).minorTriad,
           Chord([
@@ -225,7 +227,7 @@ void main() {
     });
 
     group('.diminishedTriad', () {
-      test('should return the diminished triad on this PositionedNote', () {
+      test('should return the diminished triad on this Pitch', () {
         expect(
           Note.e.inOctave(4).diminishedTriad,
           Chord([
@@ -254,7 +256,7 @@ void main() {
     });
 
     group('.respellByBaseNote()', () {
-      test('should return this PositionedNote respelled by BaseNote', () {
+      test('should return this Pitch respelled by BaseNote', () {
         expect(
           Note.c.sharp.inOctave(4).respellByBaseNote(BaseNote.d),
           Note.d.flat.inOctave(4),
@@ -291,7 +293,7 @@ void main() {
     });
 
     group('.respellByBaseNoteDistance()', () {
-      test('should return this PositionedNote respelled by BaseNote', () {
+      test('should return this Pitch respelled by BaseNote', () {
         expect(
           Note.c.sharp.inOctave(4).respellByBaseNoteDistance(1),
           Note.d.flat.inOctave(4),
@@ -353,7 +355,7 @@ void main() {
     });
 
     group('.respelledUpwards', () {
-      test('should return this PositionedNote respelled upwards', () {
+      test('should return this Pitch respelled upwards', () {
         expect(
           Note.c.inOctave(4).respelledUpwards,
           Note.d.flat.flat.inOctave(4),
@@ -375,7 +377,7 @@ void main() {
     });
 
     group('.respelledDownwards', () {
-      test('should return this PositionedNote respelled downwards', () {
+      test('should return this Pitch respelled downwards', () {
         expect(Note.c.inOctave(4).respelledDownwards, Note.b.sharp.inOctave(3));
         expect(
           Note.c.sharp.inOctave(3).respelledDownwards,
@@ -394,7 +396,7 @@ void main() {
     });
 
     group('.respellByBaseAccidental()', () {
-      test('should return this PositionedNote respelled by Accidental', () {
+      test('should return this Pitch respelled by Accidental', () {
         expect(
           Note.a.sharp.inOctave(4).respellByAccidental(Accidental.flat),
           Note.b.flat.inOctave(4),
@@ -456,7 +458,7 @@ void main() {
 
     group('.respelledSimple', () {
       test(
-        'should return this PositionedNote with the simplest Accidental '
+        'should return this Pitch with the simplest Accidental '
         'spelling',
         () {
           expect(Note.c.inOctave(4).respelledSimple, Note.c.inOctave(4));
@@ -490,7 +492,7 @@ void main() {
 
     group('.interval()', () {
       test(
-        'should return the Interval between this PositionedNote and other',
+        'should return the Interval between this Pitch and other',
         () {
           expect(Note.c.inOctave(4).interval(Note.c.inOctave(4)), Interval.P1);
           expect(
@@ -627,7 +629,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this PositionedNote transposed by Interval', () {
+      test('should transpose this Pitch by Interval', () {
         expect(
           Note.c.inOctave(4).transposeBy(Interval.d1),
           Note.c.flat.inOctave(4),
@@ -902,7 +904,7 @@ void main() {
     });
 
     group('.frequency()', () {
-      test('should return the Frequency of this PositionedNote at 440 Hz', () {
+      test('should return the Frequency of this Pitch at 440 Hz', () {
         expect(
           Note.c.inOctave(4).frequency(),
           const Frequency(261.6255653005986),
@@ -970,7 +972,7 @@ void main() {
         );
       });
 
-      test('should return the Frequency of this PositionedNote at 438 Hz', () {
+      test('should return the Frequency of this Pitch at 438 Hz', () {
         const frequency = Frequency(438);
         expect(
           Note.c.inOctave(4).frequency(referenceFrequency: frequency),
@@ -1043,20 +1045,24 @@ void main() {
       });
 
       test(
-        'should return the Frequency of this PositionedNote from 256 Hz (C4)',
+        'should return the Frequency of this Pitch from 256 Hz (C4)',
         () {
           const frequency = Frequency(256);
           expect(
             Note.c.inOctave(4).frequency(
                   referenceFrequency: frequency,
-                  referenceNote: Note.c.inOctave(4),
+                  tuningSystem: EqualTemperament.edo12(
+                    referencePitch: Note.c.inOctave(4),
+                  ),
                 ),
             const Frequency(256),
           );
           expect(
             Note.a.inOctave(4).frequency(
                   referenceFrequency: frequency,
-                  referenceNote: Note.c.inOctave(4),
+                  tuningSystem: EqualTemperament.edo12(
+                    referencePitch: Note.c.inOctave(4),
+                  ),
                 ),
             const Frequency(430.5389646099018),
           );
@@ -1064,76 +1070,89 @@ void main() {
       );
     });
 
-    group('.scientificName', () {
-      test(
-        'should return the scientific pitch notation name for this '
-        'PositionedNote',
-        () {
-          expect(Note.g.sharp.inOctave(-1).scientificName, 'G♯-1');
-          expect(Note.d.inOctave(0).scientificName, 'D0');
-          expect(Note.b.flat.inOctave(1).scientificName, 'B♭1');
-          expect(Note.g.inOctave(2).scientificName, 'G2');
-          expect(Note.a.inOctave(3).scientificName, 'A3');
-          expect(Note.c.inOctave(4).scientificName, 'C4');
-          expect(Note.c.sharp.inOctave(4).scientificName, 'C♯4');
-          expect(Note.a.inOctave(4).scientificName, 'A4');
-          expect(Note.f.sharp.inOctave(5).scientificName, 'F♯5');
-          expect(Note.e.inOctave(7).scientificName, 'E7');
-        },
-      );
-    });
-
-    group('.helmholtzName', () {
-      test(
-        'should return the Helmholtz pitch notation name for this '
-        'PositionedNote',
-        () {
-          expect(Note.g.sharp.inOctave(-1).helmholtzName, 'G♯͵͵͵');
-          expect(Note.d.inOctave(0).helmholtzName, 'D͵͵');
-          expect(Note.b.flat.inOctave(1).helmholtzName, 'B♭͵');
-          expect(Note.g.inOctave(2).helmholtzName, 'G');
-          expect(Note.a.inOctave(3).helmholtzName, 'a');
-          expect(Note.c.inOctave(4).helmholtzName, 'c′');
-          expect(Note.c.sharp.inOctave(4).helmholtzName, 'c♯′');
-          expect(Note.a.inOctave(4).helmholtzName, 'a′');
-          expect(Note.f.sharp.inOctave(5).helmholtzName, 'f♯′′');
-          expect(Note.e.inOctave(7).helmholtzName, 'e′′′′');
-        },
-      );
-    });
-
     group('.toString()', () {
       test(
-        'should return the string representation of this PositionedNote',
+        'should return the scientific string representation of this Pitch',
         () {
-          expect(Note.d.sharp.inOctave(0).toString(), 'D♯0');
-          expect(Note.e.flat.inOctave(2).toString(), 'E♭2');
+          expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
+          expect(Note.d.inOctave(0).toString(), 'D0');
+          expect(Note.b.flat.inOctave(1).toString(), 'B♭1');
+          expect(Note.g.inOctave(2).toString(), 'G2');
+          expect(Note.a.inOctave(3).toString(), 'A3');
+          expect(Note.c.inOctave(4).toString(), 'C4');
+          expect(Note.c.sharp.inOctave(4).toString(), 'C♯4');
           expect(Note.a.inOctave(4).toString(), 'A4');
-          expect(Note.f.sharp.inOctave(4).toString(), 'F♯4');
-          expect(Note.g.inOctave(7).toString(), 'G7');
+          expect(Note.f.sharp.inOctave(5).toString(), 'F♯5');
+          expect(Note.e.inOctave(7).toString(), 'E7');
+        },
+      );
+
+      test(
+        'should return the Helmholtz string representation of this Pitch',
+        () {
+          expect(
+            Note.g.sharp.inOctave(-1).toString(system: PitchNotation.helmholtz),
+            'G♯͵͵͵',
+          );
+          expect(
+            Note.d.inOctave(0).toString(system: PitchNotation.helmholtz),
+            'D͵͵',
+          );
+          expect(
+            Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz),
+            'B♭͵',
+          );
+          expect(
+            Note.g.inOctave(2).toString(system: PitchNotation.helmholtz),
+            'G',
+          );
+          expect(
+            Note.a.inOctave(3).toString(system: PitchNotation.helmholtz),
+            'a',
+          );
+          expect(
+            Note.c.inOctave(4).toString(system: PitchNotation.helmholtz),
+            'c′',
+          );
+          expect(
+            Note.c.sharp.inOctave(4).toString(system: PitchNotation.helmholtz),
+            'c♯′',
+          );
+          expect(
+            Note.a.inOctave(4).toString(system: PitchNotation.helmholtz),
+            'a′',
+          );
+          expect(
+            Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
+            'f♯′′',
+          );
+          expect(
+            Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
+            'e′′′′',
+          );
         },
       );
     });
 
     group('.hashCode', () {
-      test('should return the same hashCode for equal PositionedNotes', () {
+      test('should return the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          const PositionedNote(Note.a, octave: 3).hashCode,
-          const PositionedNote(Note.a, octave: 3).hashCode,
+          const Pitch(Note.a, octave: 3).hashCode,
+          const Pitch(Note.a, octave: 3).hashCode,
         );
       });
 
       test(
-        'should return different hashCodes for different PositionedNotes',
+        'should return different hashCodes for different Pitches',
         () {
           expect(
             Note.c.inOctave(4).hashCode,
             isNot(equals(Note.c.inOctave(5).hashCode)),
           );
           expect(
-            const PositionedNote(Note.a, octave: 3).hashCode,
-            isNot(equals(const PositionedNote(Note.b, octave: 3).hashCode)),
+            const Pitch(Note.a, octave: 3).hashCode,
+            isNot(equals(const Pitch(Note.b, octave: 3).hashCode)),
           );
           expect(
             Note.d.inOctave(6).hashCode,
@@ -1142,7 +1161,7 @@ void main() {
         },
       );
 
-      test('should ignore equal PositionedNote instances in a Set', () {
+      test('should ignore equal Pitch instances in a Set', () {
         final collection = {
           Note.c.inOctave(4),
           Note.a.flat.inOctave(2),
@@ -1160,22 +1179,24 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort PositionedNote items in a collection', () {
-        final orderedSet = SplayTreeSet<PositionedNote>.of([
+      test('should correctly sort Pitch items in a collection', () {
+        final orderedSet = SplayTreeSet<Pitch>.of({
           Note.a.flat.inOctave(4),
           Note.b.flat.inOctave(5),
           Note.c.inOctave(4),
+          Note.b.inOctave(4),
           Note.d.inOctave(2),
           Note.b.flat.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.b.sharp.inOctave(4),
-        ]);
+        });
         expect(orderedSet.toList(), [
           Note.d.inOctave(2),
           Note.c.inOctave(4),
           Note.g.sharp.inOctave(4),
           Note.a.flat.inOctave(4),
           Note.b.flat.inOctave(4),
+          Note.b.inOctave(4),
           Note.b.sharp.inOctave(4),
           Note.b.flat.inOctave(5),
         ]);

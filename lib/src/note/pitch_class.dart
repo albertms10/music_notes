@@ -4,6 +4,10 @@ part of '../../music_notes.dart';
 /// same chroma.
 ///
 /// See [Pitch class](https://en.wikipedia.org/wiki/Pitch_class).
+///
+/// ---
+/// See also:
+/// * [Pitch].
 @immutable
 final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// The chroma value that represents this [PitchClass].
@@ -140,7 +144,7 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
     }
   }
 
-  /// Returns a transposed [PitchClass] by [interval] from this [PitchClass].
+  /// Transposes this [PitchClass] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -148,7 +152,7 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// PitchClass.a.transposeBy(-Interval.M2) == PitchClass.g
   /// ```
   @override
-  // TODO(albertms10): use [IntervalClass]. See #248.
+  // TODO(albertms10): expect [IntervalClass]. See #248.
   PitchClass transposeBy(Interval interval) =>
       PitchClass(chroma + interval.semitones);
 
@@ -178,23 +182,6 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   @override
   int difference(PitchClass other) => other.chroma - chroma;
 
-  /// Returns the integer notation for this [PitchClass].
-  ///
-  /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-  ///
-  /// Example:
-  /// ```dart
-  /// PitchClass.c.integerNotation == '0'
-  /// PitchClass.f.integerNotation == '5'
-  /// PitchClass.aSharp.integerNotation == 't'
-  /// PitchClass.b.integerNotation == 'e'
-  /// ```
-  String get integerNotation => switch (chroma) {
-        10 => 't',
-        11 => 'e',
-        final chroma => '$chroma',
-      };
-
   /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].
   ///
@@ -220,8 +207,25 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
   PitchClass operator *(int factor) => PitchClass(chroma * factor);
 
+  /// Returns the string representation of this [PitchClass] based on
+  /// [system].
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.c.toString() == '{C}'
+  /// PitchClass.g.toString() == '{G}'
+  /// PitchClass.dSharp.toString() == '{D♯|E♭}'
+  ///
+  /// PitchClass.c.toString(system: PitchClassNotation.integer) == '0'
+  /// PitchClass.f.toString(system: PitchClassNotation.integer) == '5'
+  /// PitchClass.aSharp.toString(system: PitchClassNotation.integer) == 't'
+  /// PitchClass.b.toString(system: PitchClassNotation.integer) == 'e'
+  /// ```
   @override
-  String toString() => '{${spellings().join('|')}}';
+  String toString({
+    PitchClassNotation system = PitchClassNotation.enharmonicSpellings,
+  }) =>
+      system.pitchClassNotation(this);
 
   @override
   bool operator ==(Object other) =>
@@ -232,4 +236,43 @@ final class PitchClass implements Scalable<PitchClass>, Comparable<PitchClass> {
 
   @override
   int compareTo(PitchClass other) => chroma.compareTo(other.chroma);
+}
+
+/// The abstraction for [PitchClass] notation systems.
+abstract class PitchClassNotation {
+  /// Creates a new [PitchClassNotation].
+  const PitchClassNotation();
+
+  /// The enharmonic spellings [PitchClassNotation] system.
+  static const enharmonicSpellings = PitchClassEnharmonicSpellingsNotation();
+
+  /// The integer [PitchClassNotation] system.
+  static const integer = PitchClassIntegerNotation();
+
+  /// Returns the string notation for [pitchClass].
+  String pitchClassNotation(PitchClass pitchClass);
+}
+
+/// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
+class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
+  /// Creates a new [PitchClassEnharmonicSpellingsNotation].
+  const PitchClassEnharmonicSpellingsNotation();
+
+  @override
+  String pitchClassNotation(PitchClass pitchClass) =>
+      '{${pitchClass.spellings().join('|')}}';
+}
+
+/// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
+class PitchClassIntegerNotation extends PitchClassNotation {
+  /// Creates a new [PitchClassIntegerNotation].
+  const PitchClassIntegerNotation();
+
+  @override
+  String pitchClassNotation(PitchClass pitchClass) =>
+      switch (pitchClass.chroma) {
+        10 => 't',
+        11 => 'e',
+        final chroma => '$chroma',
+      };
 }
