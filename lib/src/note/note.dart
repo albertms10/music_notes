@@ -243,7 +243,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.c.isEnharmonicWith(Note.b.sharp) == true
   /// Note.e.isEnharmonicWith(Note.f) == false
   /// ```
-  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
+  bool isEnharmonicWith(Note other) => toClass() == other.toClass();
 
   /// Returns this [Note] positioned in the given [octave] as a [Pitch].
   ///
@@ -374,11 +374,11 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.toPitchClass() == PitchClass.c
-  /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
+  /// Note.c.toClass() == PitchClass.c
+  /// Note.e.sharp.toClass() == PitchClass.f
+  /// Note.c.flat.flat.toClass() == PitchClass.aSharp
   /// ```
-  PitchClass toPitchClass() => PitchClass(semitones);
+  PitchClass toClass() => PitchClass(semitones);
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
