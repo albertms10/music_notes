@@ -29,12 +29,12 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 
-  /// The inverse of this [ScalableIterable].
+  /// Returns the inverse of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}.inverse.toSet()
-  ///   == {PitchClass.b, PitchClass.c, PitchClass.gSharp}
+  /// {Note.b, Note.a.sharp, Note.d}.inverse.toSet()
+  ///   == {Note.b, Note.c, Note.g.sharp}
   /// ```
   Iterable<T> get inverse sync* {
     if (isEmpty) return;
@@ -48,7 +48,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     }
   }
 
-  /// The retrograde of this [ScalableIterable].
+  /// Returns the retrograde of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -57,7 +57,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
-  /// The numeric representation of this [ScalableIterable].
+  /// Returns the numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -68,17 +68,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
         (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
       );
 
-  /// The delta numeric representation of this [ScalableIterable].
+  /// Returns the delta numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
-  ///   .deltaNumericRepresentation.toList() == []
+  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
   /// ```
   Iterable<int> get deltaNumericRepresentation sync* {
+    if (isEmpty) return;
     yield 0;
     for (var i = 1; i < length; i++) {
-      yield elementAt(i).difference(elementAt(i - 1));
+      yield elementAt(i - 1).difference(elementAt(i));
     }
   }
 }
