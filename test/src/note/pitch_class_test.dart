@@ -285,6 +285,28 @@ void main() {
       });
     });
 
+    group('.difference()', () {
+      test(
+        'should return the difference in semitones with another PitchClass',
+        () {
+          expect(PitchClass.d.difference(PitchClass.gSharp), -6);
+          expect(PitchClass.dSharp.difference(PitchClass.aSharp), -5);
+          expect(PitchClass.d.difference(PitchClass.aSharp), -4);
+          expect(PitchClass.cSharp.difference(PitchClass.aSharp), -3);
+          expect(PitchClass.cSharp.difference(PitchClass.b), -2);
+          expect(PitchClass.c.difference(PitchClass.b), -1);
+          expect(PitchClass.c.difference(PitchClass.c), 0);
+          expect(PitchClass.c.difference(PitchClass.cSharp), 1);
+          expect(PitchClass.b.difference(PitchClass.c), 1);
+          expect(PitchClass.f.difference(PitchClass.g), 2);
+          expect(PitchClass.f.difference(PitchClass.gSharp), 3);
+          expect(PitchClass.e.difference(PitchClass.gSharp), 4);
+          expect(PitchClass.a.difference(PitchClass.d), 5);
+          expect(PitchClass.a.difference(PitchClass.dSharp), 6);
+        },
+      );
+    });
+
     group('.transposeBy()', () {
       test('should transpose this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);

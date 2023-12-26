@@ -79,11 +79,11 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.difference(Note.d) == 2
-  /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
+  /// Note.e.flat.difference(Note.b.flat) == -5
   /// ```
   @override
-  int difference(Note other) => other.semitones - semitones;
+  int difference(Note other) => super.difference(other);
 
   /// Returns this [Note] sharpened by 1 semitone.
   ///

@@ -8,11 +8,17 @@ abstract interface class Scalable<T extends Scalable<T>>
   /// The number of semitones that define this [Scalable].
   int get semitones;
 
-  /// Returns the [Interval] between this [T] and [other].
+  /// Returns the [Interval] between this [Scalable] and [other].
   Interval interval(T other);
 
-  /// Returns the difference in semitones between this [T] and [other].
-  int difference(T other);
+  /// Returns the difference in semitones between this [Scalable] and [other].
+  int difference(T other) {
+    final diff = other.semitones - semitones;
+
+    return diff.abs() < chromaticDivisions ~/ 2
+        ? diff
+        : diff - chromaticDivisions * diff.sign;
+  }
 }
 
 /// A Scalable iterable.
