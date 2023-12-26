@@ -51,6 +51,7 @@ void main() {
       test(
         'should return the difference in semitones with another BaseNote',
         () {
+          expect(BaseNote.f.difference(BaseNote.b), -6);
           expect(BaseNote.e.difference(BaseNote.b), -5);
           expect(BaseNote.e.difference(BaseNote.c), -4);
           expect(BaseNote.d.difference(BaseNote.b), -3);
@@ -62,6 +63,7 @@ void main() {
           expect(BaseNote.c.difference(BaseNote.e), 4);
           expect(BaseNote.a.difference(BaseNote.d), 5);
           expect(BaseNote.c.difference(BaseNote.f), 5);
+          expect(BaseNote.b.difference(BaseNote.f), 6);
         },
       );
     });
