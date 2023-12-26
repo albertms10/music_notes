@@ -10,7 +10,7 @@ part of '../../music_notes.dart';
 /// * [KeySignature].
 /// * [Tonality].
 @immutable
-final class Note implements Comparable<Note>, Scalable<Note> {
+final class Note extends Scalable<Note> implements Comparable<Note> {
   /// The base note that defines this [Note].
   final BaseNote baseNote;
 
@@ -71,6 +71,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.b.sharp.semitones == 12
   /// Note.c.flat.semitones == -1
   /// ```
+  @override
   int get semitones => baseNote.semitones + accidental.semitones;
 
   /// Returns the difference in semitones between this [Note] and [other].
