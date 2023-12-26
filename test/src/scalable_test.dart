@@ -11,7 +11,21 @@ void main() {
           {Note.d, Note.f.sharp, Note.e, Note.g}.inverse.toList(),
           [Note.d, Note.b.flat, Note.c, Note.a],
         );
-        // TODO(albertms10): test Pitch, PitchClass, #321 #322.
+        expect(
+          {
+            Note.c.inOctave(4),
+            Note.d.sharp.inOctave(4),
+            Note.b.inOctave(3),
+            Note.g.inOctave(3),
+          }.inverse.toList(),
+          [
+            Note.c.inOctave(4),
+            Note.b.flat.flat.inOctave(3),
+            Note.d.flat.inOctave(4),
+            Note.f.inOctave(4),
+          ],
+        );
+        // TODO(albertms10): test PitchClass. See #322.
       });
     });
 
