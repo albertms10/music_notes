@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// A scale degree.
+///
+/// ---
+/// See also:
+/// * [Scale].
 @immutable
 class ScaleDegree implements Comparable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
@@ -68,7 +72,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.vi.isLowered == false
   /// ScaleDegree.neapolitanSixth.isLowered == true
   /// ```
-  bool get isLowered => semitonesDelta < 0;
+  bool get isLowered => semitonesDelta.isNegative;
 
   /// Returns this [ScaleDegree] raised by 1 semitone.
   ///

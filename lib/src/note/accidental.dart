@@ -1,6 +1,10 @@
 part of '../../music_notes.dart';
 
 /// An accidental.
+///
+/// ---
+/// See also:
+/// * [Note].
 @immutable
 final class Accidental implements Comparable<Accidental> {
   /// The number of semitones above or below the natural note.
@@ -88,6 +92,28 @@ final class Accidental implements Comparable<Accidental> {
     return Accidental(semitones);
   }
 
+  /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidental.flat.isFlat == true
+  /// Accidental.doubleFlat.isFlat == true
+  /// Accidental.sharp.isFlat == false
+  /// Accidental.natural.isFlat == false
+  /// ```
+  bool get isFlat => semitones.isNegative;
+
+  /// Whether this [Accidental] is sharp (♯, 𝄪, etc.).
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidental.sharp.isSharp == true
+  /// Accidental.doubleSharp.isSharp == true
+  /// Accidental.flat.isSharp == false
+  /// Accidental.natural.isSharp == false
+  /// ```
+  bool get isSharp => semitones > 0;
+
   /// The name of this [Accidental].
   ///
   /// Example:
@@ -96,7 +122,8 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.doubleFlat.name == 'Double flat'
   /// Accidental.natural.name == 'Natural'
   /// ```
-  String? get name => switch (semitones) {
+  String get name => switch (semitones) {
+        > 3 => '×$semitones sharp',
         3 => 'Triple sharp',
         2 => 'Double sharp',
         1 => 'Sharp',
@@ -104,7 +131,7 @@ final class Accidental implements Comparable<Accidental> {
         -1 => 'Flat',
         -2 => 'Double flat',
         -3 => 'Triple flat',
-        _ => null,
+        _ => '×${semitones.abs()} flat',
       };
 
   /// The symbol of this [Accidental].
@@ -113,8 +140,8 @@ final class Accidental implements Comparable<Accidental> {
   /// natural symbol (♮).
   ///
   /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
-  /// double sharp/flat symbols (𝄪, 𝄫) depending on the number of semitones
-  /// above/below the natural note.
+  /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
+  /// above or below the natural note.
   ///
   /// Example:
   /// ```dart
@@ -149,11 +176,7 @@ final class Accidental implements Comparable<Accidental> {
       Accidental(this.semitones.incrementBy(semitones));
 
   @override
-  String toString() => [
-        if (name != null) name,
-        symbol,
-        '(${semitones.toDeltaString()})',
-      ].join(' ');
+  String toString() => '$name ($symbol)';
 
   @override
   bool operator ==(Object other) =>

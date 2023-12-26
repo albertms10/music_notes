@@ -3,18 +3,25 @@
   "cSpell.words": [
     "chordable",
     "Chordable",
+    "Didymean",
     "dorian",
     "enharmonically",
     "helmholtz",
     "heptatonic",
     "ionian",
+    "italian",
     "locrian",
     "lydian",
+    "maggiore",
+    "majeur",
+    "mineur",
     "mixolydian",
     "neapolitan",
     "octatonic",
     "phrygian",
-    "sublist"
+    "pythagorean",
+    "sublist",
+    "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true

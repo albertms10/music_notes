@@ -3,6 +3,11 @@
 part of '../../music_notes.dart';
 
 /// Distance between two notes.
+///
+/// ---
+/// See also:
+/// * [Quality].
+/// * [IntervalClass].
 @immutable
 final class Interval implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
@@ -11,8 +16,8 @@ final class Interval implements Comparable<Interval> {
 
   /// The quality of this [Interval].
   ///
-  /// Must be an instance of [PerfectQuality] or
-  /// [ImperfectQuality], depending on the nature of the interval.
+  /// Must be an instance of [PerfectQuality] or [ImperfectQuality],
+  /// depending on the nature of this [Interval].
   final Quality quality;
 
   const Interval._(this.size, this.quality)
@@ -168,19 +173,20 @@ final class Interval implements Comparable<Interval> {
           'Interval must be imperfect',
         );
 
-  /// Creates a new [Interval] from the [Quality] delta.
-  Interval.fromDelta(int size, int delta)
-      : this._(size, Quality.fromInterval(size, delta));
+  /// Creates a new [Interval] from [Quality.semitones].
+  factory Interval.fromQualityDelta(int size, int delta) {
+    final qualityConstructor =
+        size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
+
+    return Interval._(size, qualityConstructor(delta));
+  }
 
   /// Creates a new [Interval] from [semitones].
-  Interval.fromSemitones(int size, int semitones)
-      : this._(
-          size,
-          Quality.fromInterval(
-            size,
-            semitones * size.sign - size._semitones.abs(),
-          ),
-        );
+  factory Interval.fromSemitones(int size, int semitones) =>
+      Interval.fromQualityDelta(
+        size,
+        semitones * size.sign - size._semitones.abs(),
+      );
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -231,7 +237,7 @@ final class Interval implements Comparable<Interval> {
     final absResult =
         matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
 
-    return absResult * (semitones.isNegative ? -1 : 1);
+    return absResult * semitones.nonZeroSign;
   }
 
   /// Returns the number of semitones of this [Interval].
@@ -330,7 +336,8 @@ final class Interval implements Comparable<Interval> {
   bool get isDissonant =>
       switch (quality) {
         PerfectQuality(:final semitones) => semitones != 0,
-        ImperfectQuality(:final semitones) => semitones < 0 && semitones > 1,
+        ImperfectQuality(:final semitones) =>
+          semitones.isNegative && semitones > 1,
       } ||
       const {2, 7}.contains(simplified.size.abs());
 
@@ -342,10 +349,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.respellBySize(5) == Interval.d5
   /// Interval.d3.respellBySize(2) == Interval.M2
   /// ```
-  Interval respellBySize(int size) => Interval._(
-        size,
-        Quality.fromInterval(size, semitones.abs() - size._semitones.abs()),
-      );
+  Interval respellBySize(int size) => Interval.fromSemitones(size, semitones);
 
   /// Returns the iteration distance of this [Interval] between [scalable1] and
   /// [scalable2], including all visited `notes`.
@@ -408,11 +412,11 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.m2.toIntervalClass() == IntervalClass.m2
-  /// Interval.d4.toIntervalClass() == IntervalClass.M3
-  /// Interval.P8.toIntervalClass() == IntervalClass.P1
+  /// Interval.m2.toClass() == IntervalClass.m2
+  /// Interval.d4.toClass() == IntervalClass.M3
+  /// Interval.P8.toClass() == IntervalClass.P1
   /// ```
-  IntervalClass toIntervalClass() => IntervalClass(semitones);
+  IntervalClass toClass() => IntervalClass(semitones);
 
   /// Adds [other] to this [Interval].
   ///
@@ -423,10 +427,10 @@ final class Interval implements Comparable<Interval> {
   /// Interval.M2 + Interval.P4 == Interval.P5
   /// ```
   Interval operator +(Interval other) {
-    final initialNote = Note.c.inOctave(4);
-    final finalNote = initialNote.transposeBy(this).transposeBy(other);
+    final initialPitch = Note.c.inOctave(4);
+    final finalPitch = initialPitch.transposeBy(this).transposeBy(other);
 
-    return initialNote.interval(finalNote);
+    return initialPitch.interval(finalPitch);
   }
 
   /// The negation of this [Interval].

@@ -1,17 +1,22 @@
 part of '../../music_notes.dart';
 
-/// A note octave in the octave range.
+/// A note in the octave range.
+///
+/// ---
+/// See also:
+/// * [Note].
+/// * [PitchClass].
+/// * [Frequency].
 @immutable
-final class PositionedNote
-    implements Comparable<PositionedNote>, Scalable<PositionedNote> {
-  /// Which of the 12 notes inside the octave.
+final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
+  /// The note inside the octave.
   final Note note;
 
   /// The octave where the [note] is positioned.
   final int octave;
 
-  /// Creates a new [PositionedNote] from [note] and [octave].
-  const PositionedNote(this.note, {required this.octave});
+  /// Creates a new [Pitch] from [note] and [octave].
+  const Pitch(this.note, {required this.octave});
 
   static const String _superPrime = '′';
   static const String _superPrimeAlt = "'";
@@ -30,22 +35,22 @@ final class PositionedNote
       RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
           '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
-  /// Parse [source] as a [PositionedNote] and return its value.
+  /// Parse [source] as a [Pitch] and return its value.
   ///
-  /// If the [source] string does not contain a valid [PositionedNote], a
+  /// If the [source] string does not contain a valid [Pitch], a
   /// [FormatException] is thrown.
   ///
   /// Example:
   /// ```dart
-  /// PositionedNote.parse('F#3') == Note.f.sharp.inOctave(3)
-  /// PositionedNote.parse("c'") == Note.c.inOctave(4)
-  /// PositionedNote.parse('z') // throws a FormatException
+  /// Pitch.parse('F#3') == Note.f.sharp.inOctave(3)
+  /// Pitch.parse("c'") == Note.c.inOctave(4)
+  /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory PositionedNote.parse(String source) {
+  factory Pitch.parse(String source) {
     final scientificNotationMatch =
         _scientificNotationRegExp.firstMatch(source);
     if (scientificNotationMatch != null) {
-      return PositionedNote(
+      return Pitch(
         Note.parse(scientificNotationMatch[1]!),
         octave: int.parse(scientificNotationMatch[2]!),
       );
@@ -59,44 +64,45 @@ final class PositionedNote
       final octave = notePart[0].isUpperCase
           ? switch (primes?.first) {
               '' || null => middleOctave - 1,
-              ',' || _subPrime => middleOctave - primes!.length - 1,
-              _ => throw FormatException('Invalid PositionedNote', source),
+              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
+              _ => throw FormatException('Invalid Pitch', source),
             }
           : switch (primes?.first) {
               '' || null => middleOctave,
-              "'" || _superPrime => middleOctave + primes!.length,
-              _ => throw FormatException('Invalid PositionedNote', source),
+              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+              _ => throw FormatException('Invalid Pitch', source),
             };
 
-      return PositionedNote(Note.parse(notePart), octave: octave);
+      return Pitch(Note.parse(notePart), octave: octave);
     }
 
-    throw FormatException('Invalid PositionedNote', source);
+    throw FormatException('Invalid Pitch', source);
   }
 
   /// Returns the [octave] that corresponds to the semitones from root height.
   ///
   /// Example:
   /// ```dart
-  /// PositionedNote.octaveFromSemitones(1) == 0
-  /// PositionedNote.octaveFromSemitones(34) == 2
-  /// PositionedNote.octaveFromSemitones(49) == 4
+  /// Pitch.octaveFromSemitones(1) == 0
+  /// Pitch.octaveFromSemitones(34) == 2
+  /// Pitch.octaveFromSemitones(49) == 4
   /// ```
   static int octaveFromSemitones(int semitones) =>
       (semitones / chromaticDivisions).floor();
 
-  /// Returns the number of semitones of this [PositionedNote] from C0 (root).
+  /// Returns the number of semitones of this [Pitch] from C0 (root).
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(4).semitones == 58
+  /// Note.a.inOctave(4).semitones == 57
   /// Note.b.sharp.inOctave(3).semitones == 48
   /// Note.c.inOctave(4).semitones == 48
-  /// Note.c.inOctave(0).semitones == 1
+  /// Note.c.inOctave(0).semitones == 0
   /// ```
+  @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
-  /// Returns the difference in semitones between this [PositionedNote] and
+  /// Returns the difference in semitones between this [Pitch] and
   /// [other].
   ///
   /// Example:
@@ -106,9 +112,9 @@ final class PositionedNote
   /// Note.a.inOctave(4).difference(Note.g.inOctave(4)) == -2
   /// ```
   @override
-  int difference(PositionedNote other) => other.semitones - semitones;
+  int difference(Pitch other) => other.semitones - semitones;
 
-  /// Returns the [ChordPattern.diminishedTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.diminishedTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -126,10 +132,9 @@ final class PositionedNote
   ///        Note.f.inOctave(4),
   ///      ])
   /// ```
-  Chord<PositionedNote> get diminishedTriad =>
-      ChordPattern.diminishedTriad.on(this);
+  Chord<Pitch> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
-  /// Returns the [ChordPattern.minorTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.minorTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -147,9 +152,9 @@ final class PositionedNote
   ///        Note.c.sharp.inOctave(4)
   ///      ])
   /// ```
-  Chord<PositionedNote> get minorTriad => ChordPattern.minorTriad.on(this);
+  Chord<Pitch> get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// Returns the [ChordPattern.majorTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.majorTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -167,9 +172,9 @@ final class PositionedNote
   ///        Note.e.flat.inOctave(5),
   ///      ])
   /// ```
-  Chord<PositionedNote> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord<Pitch> get majorTriad => ChordPattern.majorTriad.on(this);
 
-  /// Returns the [ChordPattern.augmentedTriad] on this [PositionedNote].
+  /// Returns the [ChordPattern.augmentedTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -187,10 +192,9 @@ final class PositionedNote
   ///        Note.d.sharp.inOctave(6),
   ///      ])
   /// ```
-  Chord<PositionedNote> get augmentedTriad =>
-      ChordPattern.augmentedTriad.on(this);
+  Chord<Pitch> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// Returns this [PositionedNote] respelled by [baseNote] while keeping the
+  /// Returns this [Pitch] respelled by [baseNote] while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -202,10 +206,10 @@ final class PositionedNote
   /// Note.g.inOctave(3).respellByBaseNote(BaseNote.a)
   ///   == Note.a.flat.flat.inOctave(3)
   /// ```
-  PositionedNote respellByBaseNote(BaseNote baseNote) {
+  Pitch respellByBaseNote(BaseNote baseNote) {
     final respelledNote = note.respellByBaseNote(baseNote);
 
-    return PositionedNote(
+    return Pitch(
       respelledNote,
       octave: octaveFromSemitones(
         _semitonesWithoutAccidental(semitones, respelledNote),
@@ -213,7 +217,7 @@ final class PositionedNote
     );
   }
 
-  /// Returns this [PositionedNote] respelled by [BaseNote.ordinal] distance
+  /// Returns this [Pitch] respelled by [BaseNote.ordinal] distance
   /// while keeping the same number of [semitones].
   ///
   /// Example:
@@ -221,12 +225,12 @@ final class PositionedNote
   /// Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1)
   ///   == Note.f.sharp.inOctave(4)
   /// Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2)
-  ///  == Note.g.flat.flat.inOctave(4)
+  ///   == Note.g.flat.flat.inOctave(4)
   /// ```
-  PositionedNote respellByBaseNoteDistance(int distance) =>
+  Pitch respellByBaseNoteDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
 
-  /// Returns this [PositionedNote] respelled upwards while keeping the same
+  /// Returns this [Pitch] respelled upwards while keeping the same
   /// number of [semitones].
   ///
   /// Example:
@@ -234,9 +238,9 @@ final class PositionedNote
   /// Note.g.sharp.inOctave(4).respelledUpwards == Note.a.flat.inOctave(4)
   /// Note.e.sharp.inOctave(4).respelledUpwards == Note.f.inOctave(4)
   /// ```
-  PositionedNote get respelledUpwards => respellByBaseNoteDistance(1);
+  Pitch get respelledUpwards => respellByBaseNoteDistance(1);
 
-  /// Returns this [PositionedNote] respelled downwards while keeping the same
+  /// Returns this [Pitch] respelled downwards while keeping the same
   /// number of [semitones].
   ///
   /// Example:
@@ -244,9 +248,9 @@ final class PositionedNote
   /// Note.g.flat.inOctave(4).respelledDownwards == Note.f.sharp.inOctave(4)
   /// Note.c.inOctave(4).respelledDownwards == Note.b.sharp.inOctave(4)
   /// ```
-  PositionedNote get respelledDownwards => respellByBaseNoteDistance(-1);
+  Pitch get respelledDownwards => respellByBaseNoteDistance(-1);
 
-  /// Returns this [PositionedNote] respelled by [accidental] while keeping the
+  /// Returns this [Pitch] respelled by [accidental] while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -254,15 +258,14 @@ final class PositionedNote
   /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
   ///   == Note.d.sharp.inOctave(4)
   /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
-  ///   == Note.c.flat.inOctave(4)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
-  ///   == null.inOctave(4)
+  ///   == Note.c.flat.inOctave(5)
+  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp) == null
   /// ```
-  PositionedNote? respellByAccidental(Accidental accidental) {
+  Pitch? respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
     if (respelledNote == null) return null;
 
-    return PositionedNote(
+    return Pitch(
       respelledNote,
       octave: octaveFromSemitones(
         _semitonesWithoutAccidental(semitones, respelledNote),
@@ -270,7 +273,7 @@ final class PositionedNote
     );
   }
 
-  /// Returns this [PositionedNote] with the simplest [Accidental] spelling
+  /// Returns this [Pitch] with the simplest [Accidental] spelling
   /// while keeping the same number of [semitones].
   ///
   /// Example:
@@ -280,19 +283,18 @@ final class PositionedNote
   /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
   ///   == Note.g.sharp.inOctave(4)
   /// ```
-  PositionedNote get respelledSimple =>
+  Pitch get respelledSimple =>
       respellByAccidental(Accidental.natural) ??
       respellByAccidental(Accidental(note.accidental.semitones.sign))!;
 
-  /// We don't want to take the accidental into account when
+  /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.
   /// This correctly handles cases with the same number of semitones
   /// but in different octaves (e.g., B♯3 but C4, C♭4 but B3).
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
-  /// Returns a transposed [PositionedNote] by [interval] from this
-  /// [PositionedNote].
+  /// Transposes this [Pitch] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -301,10 +303,10 @@ final class PositionedNote
   ///   == Note.c.flat.inOctave(2)
   /// ```
   @override
-  PositionedNote transposeBy(Interval interval) {
+  Pitch transposeBy(Interval interval) {
     final transposedNote = note.transposeBy(interval);
 
-    return PositionedNote(
+    return Pitch(
       transposedNote,
       octave: octaveFromSemitones(
         _semitonesWithoutAccidental(
@@ -315,18 +317,17 @@ final class PositionedNote
     );
   }
 
-  /// Returns the exact interval between this [PositionedNote] and [other].
+  /// Returns the exact interval between this [Pitch] and [other].
   ///
   /// Example:
   /// ```dart
   /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
-  /// Note.d.inOctave(3).interval(Note.a.flat.inOctave(4)) == Interval.d5
+  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == Interval.A4
   /// ```
   @override
-  Interval interval(PositionedNote other) {
+  Interval interval(Pitch other) {
     final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
-    final ordinalDeltaSign = ordinalDelta.isNegative ? -1 : 1;
-    final intervalSize = ordinalDelta + ordinalDeltaSign;
+    final intervalSize = ordinalDelta + ordinalDelta.nonZeroSign;
     final octaveShift =
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
@@ -336,8 +337,8 @@ final class PositionedNote
     );
   }
 
-  /// Returns the equal temperament [Frequency] of this [PositionedNote] from
-  /// [referenceNote], [referenceFrequency] and [tuningSystem].
+  /// Returns the equal temperament [Frequency] of this [Pitch] from
+  /// [referenceFrequency] and [tuningSystem].
   ///
   /// Example:
   /// ```dart
@@ -349,73 +350,102 @@ final class PositionedNote
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).frequency(
-  ///   referenceNote: Note.c.inOctave(4),
   ///   referenceFrequency: const Frequency(256),
+  ///   tuningSystem:
+  ///       EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
   /// ) == const Frequency(430.54)
   /// ```
   ///
-  /// This method and [Frequency.closestPositionedNote] are inverses of each
-  /// other for a specific input `note`.
+  /// This method and [Frequency.closestPitch] are inverses of each other for a
+  /// specific `pitch`.
   ///
   /// ```dart
-  /// final note = Note.a.inOctave(5);
-  /// note.frequency().closestPositionedNote().$1 == note;
+  /// final pitch = Note.a.inOctave(5);
+  /// pitch.frequency().closestPitch().$1 == pitch;
   /// ```
   Frequency frequency({
-    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
     Frequency referenceFrequency = const Frequency(440),
-    EqualTemperament tuningSystem = EqualTemperament.edo12,
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      referenceFrequency * tuningSystem.ratio(referenceNote.difference(this));
+      referenceFrequency * tuningSystem.ratio(this).value;
 
-  /// Returns the string representation of this [PositionedNote] following the
-  /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+  /// Returns the string representation of this [Pitch] based on [system].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(4).scientificName == 'C4'
-  /// Note.a.inOctave(3).scientificName == 'A3'
-  /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
-  /// ```
-  String get scientificName => '${note.baseNote.name.toUpperCase()}'
-      '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
-      '$octave';
-
-  /// Returns the string representation of this [PositionedNote] following
-  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+  /// Note.c.inOctave(4).toString() == 'C4'
+  /// Note.a.inOctave(3).toString() == 'A3'
+  /// Note.b.flat.inOctave(1).toString() == 'B♭1'
   ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4).helmholtzName == 'c′'
-  /// Note.a.inOctave(3).helmholtzName == 'a'
-  /// Note.b.flat.inOctave(1).helmholtzName == 'B♭͵'
+  /// Note.c.inOctave(4).toString(system: PitchNotation.helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(system: PitchNotation.helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz)
+  ///   == 'B♭͵'
   /// ```
-  String get helmholtzName {
-    final accidentalSymbol =
-        note.accidental != Accidental.natural ? note.accidental.symbol : '';
-
-    if (octave >= 3) {
-      return '${note.baseNote.name}$accidentalSymbol'
-          '${_superPrime * (octave - 3)}';
-    }
-
-    return '${note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${_subPrime * (octave - 2).abs()}';
-  }
-
   @override
-  String toString() => scientificName;
+  String toString({PitchNotation system = PitchNotation.scientific}) =>
+      system.pitchNotation(this);
 
   @override
   bool operator ==(Object other) =>
-      other is PositionedNote && note == other.note && octave == other.octave;
+      other is Pitch && note == other.note && octave == other.octave;
 
   @override
   int get hashCode => Object.hash(note, octave);
 
   @override
-  int compareTo(PositionedNote other) => compareMultiple([
+  int compareTo(Pitch other) => compareMultiple([
         () => octave.compareTo(other.octave),
         () => note.compareTo(other.note),
       ]);
+}
+
+/// Pitch notation systems.
+abstract class PitchNotation {
+  /// Creates a new [PitchNotation].
+  const PitchNotation();
+
+  /// The scientific [PitchNotation] system.
+  static const scientific = ScientificPitchNotation();
+
+  /// The Helmholtz [PitchNotation] system.
+  static const helmholtz = HelmholtzPitchNotation();
+
+  /// Returns the string representation for [pitch].
+  String pitchNotation(Pitch pitch);
+}
+
+/// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+class ScientificPitchNotation extends PitchNotation {
+  /// Creates a new [ScientificPitchNotation].
+  const ScientificPitchNotation();
+
+  @override
+  String pitchNotation(Pitch pitch) {
+    final accidental = pitch.note.accidental != Accidental.natural
+        ? pitch.note.accidental.symbol
+        : '';
+    return '${pitch.note.baseNote}$accidental${pitch.octave}';
+  }
+}
+
+/// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+class HelmholtzPitchNotation extends PitchNotation {
+  /// Creates a new [HelmholtzPitchNotation].
+  const HelmholtzPitchNotation();
+
+  @override
+  String pitchNotation(Pitch pitch) {
+    final accidentalSymbol = pitch.note.accidental != Accidental.natural
+        ? pitch.note.accidental.symbol
+        : '';
+
+    if (pitch.octave >= 3) {
+      return '${pitch.note.baseNote.name}$accidentalSymbol'
+          '${Pitch._superPrime * (pitch.octave - 3)}';
+    }
+
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
+        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+  }
 }

@@ -7,14 +7,14 @@ void main() {
   group('Mode', () {
     group('.compareTo', () {
       test('should correctly sort Mode items in a collection', () {
-        final orderedSet = SplayTreeSet<Mode>.of(const [
+        final orderedSet = SplayTreeSet<Mode>.of({
           TonalMode.minor,
           ModalMode.phrygian,
           ModalMode.ionian,
           TonalMode.major,
           ModalMode.aeolian,
           ModalMode.lydian,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           ModalMode.phrygian,
           ModalMode.aeolian,
@@ -32,6 +32,28 @@ void main() {
       test('should return the correct opposite TonalMode', () {
         expect(TonalMode.major.opposite, TonalMode.minor);
         expect(TonalMode.minor.opposite, TonalMode.major);
+      });
+    });
+
+    group('.toString()', () {
+      test('should return the string representation of this TonalMode', () {
+        expect(TonalMode.major.toString(), 'major');
+        expect(TonalMode.minor.toString(), 'minor');
+
+        expect(TonalMode.major.toString(system: NoteNotation.german), 'Dur');
+        expect(TonalMode.minor.toString(system: NoteNotation.german), 'Moll');
+
+        expect(
+          TonalMode.major.toString(system: NoteNotation.italian),
+          'maggiore',
+        );
+        expect(
+          TonalMode.minor.toString(system: NoteNotation.italian),
+          'minore',
+        );
+
+        expect(TonalMode.major.toString(system: NoteNotation.french), 'majeur');
+        expect(TonalMode.minor.toString(system: NoteNotation.french), 'mineur');
       });
     });
   });
