@@ -64,9 +64,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// const {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}
-  ///   .retrograde.toSet()
-  ///   == const {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
+  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
+  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
