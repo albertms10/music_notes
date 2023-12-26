@@ -1,25 +1,28 @@
-/// An Iterable num extension.
-extension IterableNumExtension<E> on Iterable<E> {
-  /// Returns the closest element to [target] in this [Iterable].
+/// An Iterable extension.
+extension IterableExtension<E> on Iterable<E> {
+  /// Returns the closest element [E] to [target].
   ///
   /// Example:
   /// ```dart
   /// const [2, 5, 6, 8, 10].closestTo(7) == 6
+  ///
+  /// [Note.c, Note.e, Note.f.sharp, Note.a]
+  ///     .closestTo(Note.g, (a, b) => b.semitones - a.semitones)
+  ///   == Note.f.sharp
   /// ```
-  E closestTo(E target, [num Function(E element)? toNum]) => reduce(
-        (closestElement, element) {
-          if (toNum == null && closestElement is! num) {
+  E closestTo(E target, [num Function(E a, E b)? difference]) => reduce(
+        (closest, element) {
+          if (difference == null && closest is! num) {
             throw ArgumentError(
-              'Provide toNum when elements are not num',
-              'toNum',
+              'Provide difference when elements are not num',
+              'difference',
             );
           }
-          final currentNum = toNum?.call(element) ?? element as num;
-          final closest = toNum?.call(closestElement) ?? closestElement as num;
-          final targetNum = toNum?.call(target) ?? target as num;
-          return (targetNum - currentNum).abs() < (targetNum - closest).abs()
+          difference ??= (a, b) => (b as num) - (a as num);
+          return difference!(element, target).abs() <
+                  difference!(closest, target).abs()
               ? element
-              : closestElement;
+              : closest;
         },
       );
 }
