@@ -64,8 +64,9 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
-  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
+  /// const {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}
+  ///   .retrograde.toSet()
+  ///   == const {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
@@ -74,7 +75,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// Example:
   /// ```dart
   /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
-  ///   .numericRepresentation.toSet() == {0, 11, 3}
+  ///   .numericRepresentation.toSet() == const {0, 11, 3}
   /// ```
   Iterable<int> get numericRepresentation => map(
         (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
