@@ -116,7 +116,7 @@ void main() {
     });
 
     group('.resolveSpelling()', () {
-      test('should return the Note that matches with the accidental', () {
+      test('should return the Note that matches with Accidental', () {
         expect(PitchClass.c.resolveSpelling(), Note.c);
         expect(PitchClass.c.resolveSpelling(Accidental.sharp), Note.b.sharp);
         expect(
@@ -217,7 +217,7 @@ void main() {
 
     group('.resolveClosestSpelling()', () {
       test(
-        'should return the Note that matches with the preferred accidental',
+        'should return the Note that matches with the preferred Accidental',
         () {
           expect(PitchClass.c.resolveClosestSpelling(), Note.c);
           expect(
@@ -272,16 +272,16 @@ void main() {
         expect(PitchClass.c.interval(PitchClass.f), Interval.P4);
         expect(PitchClass.gSharp.interval(PitchClass.cSharp), Interval.P4);
         expect(PitchClass.gSharp.interval(PitchClass.d), Interval.A4);
-        expect(PitchClass.c.interval(PitchClass.fSharp), Interval.A4);
+        expect(PitchClass.c.interval(PitchClass.fSharp), -Interval.A4);
 
-        expect(PitchClass.c.interval(PitchClass.g), Interval.P4);
-        expect(PitchClass.c.interval(PitchClass.gSharp), Interval.M3);
+        expect(PitchClass.c.interval(PitchClass.g), -Interval.P4);
+        expect(PitchClass.c.interval(PitchClass.gSharp), -Interval.M3);
 
-        expect(PitchClass.c.interval(PitchClass.a), Interval.m3);
-        expect(PitchClass.c.interval(PitchClass.aSharp), Interval.M2);
+        expect(PitchClass.c.interval(PitchClass.a), -Interval.m3);
+        expect(PitchClass.c.interval(PitchClass.aSharp), -Interval.M2);
 
-        expect(PitchClass.c.interval(PitchClass.b), Interval.m2);
-        expect(PitchClass.b.interval(PitchClass.aSharp), Interval.m2);
+        expect(PitchClass.c.interval(PitchClass.b), -Interval.m2);
+        expect(PitchClass.b.interval(PitchClass.aSharp), -Interval.m2);
       });
     });
 

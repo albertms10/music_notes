@@ -25,7 +25,12 @@ void main() {
             Note.f.inOctave(4),
           ],
         );
-        // TODO(albertms10): test PitchClass. See #322.
+        expect(
+          {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
+              .inverse
+              .toList(),
+          [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
+        );
       });
     });
 

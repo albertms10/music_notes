@@ -169,8 +169,13 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   @override
   // TODO(albertms10): return [IntervalClass]. See #248.
-  Interval interval(PitchClass other) =>
-      IntervalClass(difference(other)).resolveClosestSpelling();
+  Interval interval(PitchClass other) {
+    final diff = difference(other);
+
+    return IntervalClass(diff)
+        .resolveClosestSpelling()
+        .descending(isDescending: diff.isNegative);
+  }
 
   /// Returns the difference in semitones between this [PitchClass] and [other].
   ///
