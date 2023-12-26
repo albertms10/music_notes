@@ -53,23 +53,24 @@ void main() {
       test(
         'should return the difference in semitones with another Note',
         () {
+          expect(Note.d.difference(Note.a.flat), -6);
+          expect(Note.e.flat.difference(Note.b.flat), -5);
+          expect(Note.d.sharp.difference(Note.a.sharp), -5);
+          expect(Note.d.difference(Note.a.sharp), -4);
+          expect(Note.c.sharp.difference(Note.b.flat), -3);
+          expect(Note.c.sharp.difference(Note.b), -2);
+          expect(Note.d.flat.difference(Note.b), -2);
+          expect(Note.c.difference(Note.b), -1);
           expect(Note.c.difference(Note.c), 0);
           expect(Note.e.sharp.difference(Note.f), 0);
           expect(Note.c.difference(Note.d.flat), 1);
           expect(Note.c.difference(Note.c.sharp), 1);
-          expect(Note.b.difference(Note.c), -11);
+          expect(Note.b.difference(Note.c), 1);
           expect(Note.f.difference(Note.g), 2);
           expect(Note.f.difference(Note.a.flat), 3);
           expect(Note.e.difference(Note.a.flat), 4);
-          expect(Note.a.difference(Note.d), -7);
-          expect(Note.d.difference(Note.a.flat), 6);
-          expect(Note.e.flat.difference(Note.b.flat), 7);
-          expect(Note.d.sharp.difference(Note.a.sharp), 7);
-          expect(Note.d.difference(Note.a.sharp), 8);
-          expect(Note.c.sharp.difference(Note.b.flat), 9);
-          expect(Note.c.sharp.difference(Note.b), 10);
-          expect(Note.d.flat.difference(Note.b), 10);
-          expect(Note.c.difference(Note.b), 11);
+          expect(Note.a.difference(Note.d), 5);
+          expect(Note.a.difference(Note.d.sharp), 6);
         },
       );
     });
@@ -282,6 +283,25 @@ void main() {
           expect(Note.g.sharp.sharp.respelledSimple, Note.a);
           expect(Note.a.flat.flat.flat.respelledSimple, Note.g.flat);
           expect(Note.f.sharp.sharp.sharp.respelledSimple, Note.g.sharp);
+        },
+      );
+    });
+
+    group('.isEnharmonicWith()', () {
+      test(
+        'should return whether this Note is enharmonically equivalent to other',
+        () {
+          expect(Note.c.sharp.isEnharmonicWith(Note.d.flat), isTrue);
+          expect(Note.b.isEnharmonicWith(Note.c.flat), isTrue);
+          expect(Note.b.sharp.isEnharmonicWith(Note.c), isTrue);
+          expect(Note.e.isEnharmonicWith(Note.f.flat), isTrue);
+          expect(Note.e.sharp.isEnharmonicWith(Note.f), isTrue);
+          expect(Note.e.sharp.sharp.isEnharmonicWith(Note.g.flat), isTrue);
+          expect(Note.a.flat.flat.isEnharmonicWith(Note.f.sharp.sharp), isTrue);
+
+          expect(Note.c.isEnharmonicWith(Note.b), isFalse);
+          expect(Note.f.isEnharmonicWith(Note.g), isFalse);
+          expect(Note.a.isEnharmonicWith(Note.d.sharp), isFalse);
         },
       );
     });
@@ -509,7 +529,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Note transposed by Interval', () {
+      test('should transpose this Note by Interval', () {
         expect(Note.c.transposeBy(Interval.d1), Note.c.flat);
         expect(Note.c.transposeBy(-Interval.d1), Note.c.sharp);
         expect(Note.c.transposeBy(Interval.P1), Note.c);
@@ -605,23 +625,147 @@ void main() {
       });
     });
 
-    group('.toPitchClass()', () {
+    group('.toClass()', () {
       test('should create a new PitchClass from semitones', () {
-        expect(Note.c.toPitchClass(), PitchClass.c);
-        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+        expect(Note.c.toClass(), PitchClass.c);
+        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
       });
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Note', () {
+      test('should return the English string representation of this Note', () {
         expect(Note.c.toString(), 'C');
+        expect(Note.e.toString(), 'E');
         expect(Note.b.flat.toString(), 'B♭');
         expect(Note.f.sharp.toString(), 'F♯');
+        expect(Note.d.flat.toString(), 'D♭');
         expect(Note.a.sharp.sharp.toString(), 'A𝄪');
         expect(Note.g.flat.flat.toString(), 'G𝄫');
+      });
+
+      test('should return the German string representation of this Note', () {
+        expect(
+          Note.c.flat.flat.toString(system: NoteNotation.german),
+          'Ceses',
+        );
+        expect(Note.c.flat.toString(system: NoteNotation.german), 'Ces');
+        expect(Note.c.toString(system: NoteNotation.german), 'C');
+        expect(Note.c.sharp.toString(system: NoteNotation.german), 'Cis');
+        expect(
+          Note.c.sharp.sharp.toString(system: NoteNotation.german),
+          'Cisis',
+        );
+
+        expect(
+          Note.d.flat.flat.toString(system: NoteNotation.german),
+          'Deses',
+        );
+        expect(Note.d.flat.toString(system: NoteNotation.german), 'Des');
+        expect(Note.d.toString(system: NoteNotation.german), 'D');
+        expect(Note.d.sharp.toString(system: NoteNotation.german), 'Dis');
+        expect(
+          Note.d.sharp.sharp.toString(system: NoteNotation.german),
+          'Disis',
+        );
+
+        expect(
+          Note.e.flat.flat.toString(system: NoteNotation.german),
+          'Eses',
+        );
+        expect(Note.e.flat.toString(system: NoteNotation.german), 'Es');
+        expect(Note.e.toString(system: NoteNotation.german), 'E');
+        expect(Note.e.sharp.toString(system: NoteNotation.german), 'Eis');
+        expect(
+          Note.e.sharp.sharp.toString(system: NoteNotation.german),
+          'Eisis',
+        );
+
+        expect(
+          Note.f.flat.flat.toString(system: NoteNotation.german),
+          'Feses',
+        );
+        expect(Note.f.flat.toString(system: NoteNotation.german), 'Fes');
+        expect(Note.f.toString(system: NoteNotation.german), 'F');
+        expect(Note.f.sharp.toString(system: NoteNotation.german), 'Fis');
+        expect(
+          Note.f.sharp.sharp.toString(system: NoteNotation.german),
+          'Fisis',
+        );
+
+        expect(
+          Note.g.flat.flat.toString(system: NoteNotation.german),
+          'Geses',
+        );
+        expect(Note.g.flat.toString(system: NoteNotation.german), 'Ges');
+        expect(Note.g.toString(system: NoteNotation.german), 'G');
+        expect(Note.g.sharp.toString(system: NoteNotation.german), 'Gis');
+        expect(
+          Note.g.sharp.sharp.toString(system: NoteNotation.german),
+          'Gisis',
+        );
+
+        expect(
+          Note.a.flat.flat.toString(system: NoteNotation.german),
+          'Ases',
+        );
+        expect(Note.a.flat.toString(system: NoteNotation.german), 'As');
+        expect(Note.a.toString(system: NoteNotation.german), 'A');
+        expect(Note.a.sharp.toString(system: NoteNotation.german), 'Ais');
+        expect(
+          Note.a.sharp.sharp.toString(system: NoteNotation.german),
+          'Aisis',
+        );
+
+        expect(
+          Note.b.flat.flat.toString(system: NoteNotation.german),
+          'Heses',
+        );
+        expect(Note.b.flat.toString(system: NoteNotation.german), 'B');
+        expect(Note.b.toString(system: NoteNotation.german), 'H');
+        expect(Note.b.sharp.toString(system: NoteNotation.german), 'His');
+        expect(
+          Note.b.sharp.sharp.toString(system: NoteNotation.german),
+          'Hisis',
+        );
+      });
+
+      test('should return the Italian string representation of this Note', () {
+        expect(Note.c.toString(system: NoteNotation.italian), 'Do');
+        expect(Note.c.sharp.toString(system: NoteNotation.italian), 'Do♯');
+        expect(Note.d.toString(system: NoteNotation.italian), 'Re');
+        expect(Note.d.flat.toString(system: NoteNotation.italian), 'Re♭');
+        expect(Note.e.toString(system: NoteNotation.italian), 'Mi');
+        expect(Note.b.flat.toString(system: NoteNotation.italian), 'Si♭');
+        expect(Note.f.sharp.toString(system: NoteNotation.italian), 'Fa♯');
+        expect(
+          Note.a.sharp.sharp.toString(system: NoteNotation.italian),
+          'La𝄪',
+        );
+        expect(
+          Note.g.flat.flat.toString(system: NoteNotation.italian),
+          'Sol𝄫',
+        );
+      });
+
+      test('should return the French string representation of this Note', () {
+        expect(Note.c.toString(system: NoteNotation.french), 'Ut');
+        expect(Note.c.sharp.toString(system: NoteNotation.french), 'Ut♯');
+        expect(Note.d.toString(system: NoteNotation.french), 'Ré');
+        expect(Note.d.flat.toString(system: NoteNotation.french), 'Ré♭');
+        expect(Note.e.toString(system: NoteNotation.french), 'Mi');
+        expect(Note.b.flat.toString(system: NoteNotation.french), 'Si♭');
+        expect(Note.f.sharp.toString(system: NoteNotation.french), 'Fa♯');
+        expect(
+          Note.a.sharp.sharp.toString(system: NoteNotation.french),
+          'La𝄪',
+        );
+        expect(
+          Note.g.flat.flat.toString(system: NoteNotation.french),
+          'Sol𝄫',
+        );
       });
     });
 
@@ -635,23 +779,25 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort Note items in a collection', () {
-        final orderedSet = SplayTreeSet<Note>.of([
+        final orderedSet = SplayTreeSet<Note>.of({
           Note.a.flat,
           Note.c,
           Note.e.flat,
           Note.d,
           Note.d.sharp,
+          Note.g.flat,
           Note.c.flat,
           Note.g,
           Note.g.sharp,
           Note.b.sharp,
-        ]);
+        });
         expect(orderedSet.toList(), [
           Note.c.flat,
           Note.c,
           Note.d,
           Note.d.sharp,
           Note.e.flat,
+          Note.g.flat,
           Note.g,
           Note.g.sharp,
           Note.a.flat,
@@ -663,14 +809,14 @@ void main() {
         'should correctly sort Note items in a collection by fifths distance',
         () {
           final orderedSet = SplayTreeSet<Note>.of(
-            [
+            {
               Note.d,
               Note.a.flat,
               Note.c,
               Note.b.flat,
               Note.g.sharp,
               Note.b.sharp,
-            ],
+            },
             Note.compareByFifthsDistance,
           );
           expect(orderedSet.toList(), [

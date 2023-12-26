@@ -2,6 +2,12 @@ part of '../../music_notes.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
+///
+/// ---
+/// See also:
+/// * [Interval].
+/// * [PerfectQuality].
+/// * [ImperfectQuality].
 @immutable
 sealed class Quality implements Comparable<Quality> {
   /// Delta semitones from the [Interval].
@@ -9,21 +15,6 @@ sealed class Quality implements Comparable<Quality> {
 
   /// Creates a new [Quality] from [semitones].
   const Quality(this.semitones);
-
-  /// Creates a new [PerfectQuality] or [ImperfectQuality] from interval [size].
-  ///
-  /// Example:
-  /// ```dart
-  /// Quality.fromInterval(5, 0) == PerfectQuality.perfect
-  /// Quality.fromInterval(3, 1) == ImperfectQuality.major
-  /// Quality.fromInterval(6, 0) == ImperfectQuality.minor
-  /// ```
-  factory Quality.fromInterval(int size, int semitones) {
-    final qualityConstructor =
-        size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
-
-    return qualityConstructor(semitones);
-  }
 
   /// The textual abbreviation of this [Quality].
   String get abbreviation;

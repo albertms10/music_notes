@@ -10,7 +10,7 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 
 import 'utils/int_extension.dart';
-import 'utils/iterable.dart';
+import 'utils/iterable_extension.dart';
 import 'utils/num_extension.dart';
 import 'utils/string_extension.dart';
 
@@ -27,7 +27,7 @@ part 'src/note/base_note.dart';
 part 'src/note/frequency.dart';
 part 'src/note/note.dart';
 part 'src/note/pitch_class.dart';
-part 'src/note/positioned_note.dart';
+part 'src/note/pitch.dart';
 part 'src/scalable.dart';
 part 'src/scale/scale.dart';
 part 'src/scale/scale_degree.dart';
@@ -36,4 +36,8 @@ part 'src/tonality/key_signature.dart';
 part 'src/tonality/mode.dart';
 part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
+part 'src/tuning/cent.dart';
+part 'src/tuning/equal_temperament.dart';
+part 'src/tuning/just_intonation.dart';
+part 'src/tuning/ratio.dart';
 part 'src/tuning/tuning_system.dart';

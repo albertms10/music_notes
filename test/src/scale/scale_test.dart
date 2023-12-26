@@ -200,7 +200,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Scale transposed by Interval', () {
+      test('should transpose this Scale by Interval', () {
         expect(
           Note.c.major.scale.transposeBy(Interval.M3),
           Note.e.major.scale,

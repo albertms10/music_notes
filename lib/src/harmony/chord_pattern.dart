@@ -1,6 +1,11 @@
 part of '../../music_notes.dart';
 
 /// A musical chord pattern.
+///
+/// ---
+/// See also:
+/// * [Chord].
+/// * [Interval].
 @immutable
 class ChordPattern with Chordable<ChordPattern> {
   /// The intervals from the root note.
@@ -56,7 +61,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// Returns the [Chord<T>] from [scalable].
+  /// Returns the [Chord] from [scalable].
   ///
   /// Example:
   /// ```dart

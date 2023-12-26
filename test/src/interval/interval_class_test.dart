@@ -144,11 +144,11 @@ void main() {
 
     group('.compareTo()', () {
       test('should correctly sort IntervalClass items in a collection', () {
-        final orderedSet = SplayTreeSet<IntervalClass>.of(const [
+        final orderedSet = SplayTreeSet<IntervalClass>.of({
           IntervalClass.m2,
           IntervalClass.M3,
           IntervalClass.P1,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           IntervalClass.P1,
           IntervalClass.m2,

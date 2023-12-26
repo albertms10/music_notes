@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
@@ -46,19 +48,22 @@ void main() {
     });
 
     group('.difference()', () {
-      test('should return the difference in semitones with other', () {
-        expect(BaseNote.b.difference(BaseNote.c), -11);
-        expect(BaseNote.a.difference(BaseNote.d), -7);
-        expect(BaseNote.e.difference(BaseNote.c), -4);
-        expect(BaseNote.e.difference(BaseNote.d), -2);
-        expect(BaseNote.c.difference(BaseNote.c), 0);
-        expect(BaseNote.c.difference(BaseNote.d), 2);
-        expect(BaseNote.c.difference(BaseNote.e), 4);
-        expect(BaseNote.c.difference(BaseNote.f), 5);
-        expect(BaseNote.e.difference(BaseNote.b), 7);
-        expect(BaseNote.d.difference(BaseNote.b), 9);
-        expect(BaseNote.c.difference(BaseNote.b), 11);
-      });
+      test(
+        'should return the difference in semitones with another BaseNote',
+        () {
+          expect(BaseNote.e.difference(BaseNote.b), -5);
+          expect(BaseNote.e.difference(BaseNote.c), -4);
+          expect(BaseNote.d.difference(BaseNote.b), -3);
+          expect(BaseNote.e.difference(BaseNote.d), -2);
+          expect(BaseNote.c.difference(BaseNote.b), -1);
+          expect(BaseNote.c.difference(BaseNote.c), 0);
+          expect(BaseNote.b.difference(BaseNote.c), 1);
+          expect(BaseNote.c.difference(BaseNote.d), 2);
+          expect(BaseNote.c.difference(BaseNote.e), 4);
+          expect(BaseNote.a.difference(BaseNote.d), 5);
+          expect(BaseNote.c.difference(BaseNote.f), 5);
+        },
+      );
     });
 
     group('.positiveDifference()', () {
@@ -98,6 +103,29 @@ void main() {
         expect(BaseNote.a.transposeBySize(6), BaseNote.f);
         expect(BaseNote.b.transposeBySize(7), BaseNote.a);
         expect(BaseNote.c.transposeBySize(8), BaseNote.c);
+      });
+    });
+
+    group('.compareTo()', () {
+      test('should correctly sort BaseNote items in a collection', () {
+        final orderedSet = SplayTreeSet<BaseNote>.of({
+          BaseNote.b,
+          BaseNote.e,
+          BaseNote.d,
+          BaseNote.c,
+          BaseNote.g,
+          BaseNote.f,
+          BaseNote.a,
+        });
+        expect(orderedSet.toList(), [
+          BaseNote.c,
+          BaseNote.d,
+          BaseNote.e,
+          BaseNote.f,
+          BaseNote.g,
+          BaseNote.a,
+          BaseNote.b,
+        ]);
       });
     });
   });

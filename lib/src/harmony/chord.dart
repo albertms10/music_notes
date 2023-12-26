@@ -1,26 +1,32 @@
 part of '../../music_notes.dart';
 
 /// A musical chord.
+///
+/// ---
+/// See also:
+/// * [ChordPattern].
+/// * [Scalable].
+/// * [Chordable].
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
     implements Transposable<Chord<T>> {
-  /// The [Scalable<T>] items this [Chord<T>] is built of.
+  /// The [Scalable] items this [Chord] is built of.
   final List<T> items;
 
-  /// Creates a new [Chord<T>] from [items].
+  /// Creates a new [Chord] from [items].
   const Chord(this.items);
 
-  /// The root [Scalable<T>] of this [Chord<T>].
+  /// The root [Scalable] of this [Chord].
   T get root => items.first;
 
-  /// Returns the [ChordPattern] for this [Chord<T>].
+  /// Returns the [ChordPattern] for this [Chord].
   ///
-  /// The pattern is calculated based on the intervals between the notes rather
-  /// than from the root note. This approach helps differentiate compound
-  /// intervals (e.g., [Interval.M9]) from simple intervals (e.g.,
-  /// [Interval.M2]) in chords where distance is not explicit (e.g.,
-  /// [Note] based chords rather than [PositionedNote] based).
+  /// The pattern is calculated based on the intervals between the notes
+  /// rather than from the root note. This approach helps differentiate
+  /// compound intervals (e.g., [Interval.M9]) from simple intervals
+  /// (e.g., [Interval.M2]) in chords where distance is not explicit
+  /// (so, [Note] based chords rather than [Pitch] based).
   ///
   /// Example:
   /// ```dart
@@ -39,7 +45,7 @@ class Chord<T extends Scalable<T>>
   /// ```
   List<T> get modifiers => items.skip(3).toList();
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.diminished] root triad.
+  /// Returns a new [Chord] with an [ImperfectQuality.diminished] root triad.
   ///
   /// Example:
   /// ```dart
@@ -49,7 +55,7 @@ class Chord<T extends Scalable<T>>
   @override
   Chord<T> get diminished => pattern.diminished.on(root);
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.minor] root triad.
+  /// Returns a new [Chord] with an [ImperfectQuality.minor] root triad.
   ///
   /// Example:
   /// ```dart
@@ -59,7 +65,7 @@ class Chord<T extends Scalable<T>>
   @override
   Chord<T> get minor => pattern.minor.on(root);
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.major] root triad.
+  /// Returns a new [Chord] with an [ImperfectQuality.major] root triad.
   ///
   /// Example:
   /// ```dart
@@ -69,8 +75,7 @@ class Chord<T extends Scalable<T>>
   @override
   Chord<T> get major => pattern.major.on(root);
 
-  /// Returns a new [Chord<T>] with an [ImperfectQuality.augmented] root
-  /// triad.
+  /// Returns a new [Chord] with an [ImperfectQuality.augmented] root triad.
   ///
   /// Example:
   /// ```dart
@@ -80,12 +85,12 @@ class Chord<T extends Scalable<T>>
   @override
   Chord<T> get augmented => pattern.augmented.on(root);
 
-  /// Returns a new [Chord<T>] adding [interval].
+  /// Returns a new [Chord] adding [interval].
   @override
   Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
-  /// Returns a transposed [Chord<T>] by [interval] from this [Chord<T>].
+  /// Transposes this [Chord] by [interval].
   ///
   /// Example:
   /// ```dart

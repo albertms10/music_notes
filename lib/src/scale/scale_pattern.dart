@@ -3,6 +3,10 @@ part of '../../music_notes.dart';
 /// A set of musical intervals that conform a musical scale.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
+///
+/// ---
+/// See also:
+/// * [Scale].
 @immutable
 final class ScalePattern {
   /// The interval steps that define this [ScalePattern].
@@ -255,9 +259,9 @@ final class ScalePattern {
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-        // We iterate over the `reversed` descending step list to make sure both
-        // regular and descending scales match, e.g., their octave in
-        // `PositionedNote` lists.
+        // We iterate over the `reversed` descending step list to make sure
+        // both regular and descending scales match, e.g., their octave in
+        // `Pitch` lists.
         _descendingIntervalSteps?.reversed
             .fold(
               [scalable],
@@ -355,7 +359,7 @@ final class ScalePattern {
   @override
   String toString() {
     final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps!.join(' ')}'
+        ? ', ${_descendingIntervalSteps.join(' ')}'
         : '';
 
     return '$name (${intervalSteps.join(' ')}$descendingSteps)';
@@ -373,7 +377,7 @@ final class ScalePattern {
   int get hashCode => Object.hash(
         Object.hashAll(intervalSteps),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps!)
+            ? Object.hashAll(_descendingIntervalSteps)
             : null,
       );
 }
