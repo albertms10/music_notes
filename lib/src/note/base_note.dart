@@ -109,9 +109,9 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
-  /// BaseNote.a.difference(BaseNote.d) == -7
+  /// BaseNote.a.difference(BaseNote.d) == 5
   /// ```
-  int difference(BaseNote other) => other.semitones - semitones;
+  int difference(BaseNote other) => Note(this).difference(Note(other));
 
   /// Returns the positive difference in semitones between this [BaseNote] and
   /// [other].

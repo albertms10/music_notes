@@ -178,9 +178,10 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```dart
   /// PitchClass.g.difference(PitchClass.a) == 2
   /// PitchClass.dSharp.difference(PitchClass.c) == -3
+  /// PitchClass.c.difference(PitchClass.fSharp) == -6
   /// ```
   @override
-  int difference(PitchClass other) => other.semitones - semitones;
+  int difference(PitchClass other) => super.difference(other);
 
   /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].

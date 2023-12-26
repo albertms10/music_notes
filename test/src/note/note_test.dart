@@ -53,23 +53,24 @@ void main() {
       test(
         'should return the difference in semitones with another Note',
         () {
+          expect(Note.d.difference(Note.a.flat), -6);
+          expect(Note.e.flat.difference(Note.b.flat), -5);
+          expect(Note.d.sharp.difference(Note.a.sharp), -5);
+          expect(Note.d.difference(Note.a.sharp), -4);
+          expect(Note.c.sharp.difference(Note.b.flat), -3);
+          expect(Note.c.sharp.difference(Note.b), -2);
+          expect(Note.d.flat.difference(Note.b), -2);
+          expect(Note.c.difference(Note.b), -1);
           expect(Note.c.difference(Note.c), 0);
           expect(Note.e.sharp.difference(Note.f), 0);
           expect(Note.c.difference(Note.d.flat), 1);
           expect(Note.c.difference(Note.c.sharp), 1);
-          expect(Note.b.difference(Note.c), -11);
+          expect(Note.b.difference(Note.c), 1);
           expect(Note.f.difference(Note.g), 2);
           expect(Note.f.difference(Note.a.flat), 3);
           expect(Note.e.difference(Note.a.flat), 4);
-          expect(Note.a.difference(Note.d), -7);
-          expect(Note.d.difference(Note.a.flat), 6);
-          expect(Note.e.flat.difference(Note.b.flat), 7);
-          expect(Note.d.sharp.difference(Note.a.sharp), 7);
-          expect(Note.d.difference(Note.a.sharp), 8);
-          expect(Note.c.sharp.difference(Note.b.flat), 9);
-          expect(Note.c.sharp.difference(Note.b), 10);
-          expect(Note.d.flat.difference(Note.b), 10);
-          expect(Note.c.difference(Note.b), 11);
+          expect(Note.a.difference(Note.d), 5);
+          expect(Note.a.difference(Note.d.sharp), 6);
         },
       );
     });
