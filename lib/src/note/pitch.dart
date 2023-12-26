@@ -8,7 +8,7 @@ part of '../../music_notes.dart';
 /// * [PitchClass].
 /// * [Frequency].
 @immutable
-final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
+final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// The note inside the octave.
   final Note note;
 
@@ -99,6 +99,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// Note.c.inOctave(4).semitones == 48
   /// Note.c.inOctave(0).semitones == 0
   /// ```
+  @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
   /// Returns the difference in semitones between this [Pitch] and
