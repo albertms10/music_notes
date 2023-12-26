@@ -10,7 +10,7 @@ part of '../../music_notes.dart';
 /// * [KeySignature].
 /// * [Tonality].
 @immutable
-final class Note implements Comparable<Note>, Scalable<Note> {
+final class Note extends Scalable<Note> implements Comparable<Note> {
   /// The base note that defines this [Note].
   final BaseNote baseNote;
 
@@ -71,6 +71,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.b.sharp.semitones == 12
   /// Note.c.flat.semitones == -1
   /// ```
+  @override
   int get semitones => baseNote.semitones + accidental.semitones;
 
   /// Returns the difference in semitones between this [Note] and [other].
@@ -78,11 +79,11 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.difference(Note.d) == 2
-  /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
+  /// Note.e.flat.difference(Note.b.flat) == -5
   /// ```
   @override
-  int difference(Note other) => other.semitones - semitones;
+  int difference(Note other) => super.difference(other);
 
   /// Returns this [Note] sharpened by 1 semitone.
   ///
@@ -243,7 +244,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.c.isEnharmonicWith(Note.b.sharp) == true
   /// Note.e.isEnharmonicWith(Note.f) == false
   /// ```
-  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
+  bool isEnharmonicWith(Note other) => toClass() == other.toClass();
 
   /// Returns this [Note] positioned in the given [octave] as a [Pitch].
   ///
@@ -374,11 +375,11 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.toPitchClass() == PitchClass.c
-  /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
+  /// Note.c.toClass() == PitchClass.c
+  /// Note.e.sharp.toClass() == PitchClass.f
+  /// Note.c.flat.flat.toClass() == PitchClass.aSharp
   /// ```
-  PitchClass toPitchClass() => PitchClass(semitones);
+  PitchClass toClass() => PitchClass(semitones);
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>

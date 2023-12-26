@@ -71,7 +71,7 @@ Interval.P4; // P4
 Or turn it descending:
 
 ```dart
--Interval.P4; // desc P4
+-Interval.m6; // desc m6
 Interval.M3.descending(); // desc M3
 ```
 
