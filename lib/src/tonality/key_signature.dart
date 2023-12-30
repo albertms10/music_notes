@@ -34,9 +34,9 @@ final class KeySignature implements Comparable<KeySignature> {
   ///
   /// Example:
   /// ```dart
-  /// const KeySignature([Note.f.sharp, Note.c.sharp]).accidental
-  ///   == Accidental.sharp
-  /// const KeySignature([Note.b.flat]).accidental == Accidental.flat
+  /// KeySignature([Note.f.sharp, Note.c.sharp]).accidental == Accidental.sharp
+  /// KeySignature([Note.b.flat]).accidental == Accidental.flat
+  /// KeySignature.empty.accidental == Accidental.natural
   /// ```
   Accidental get accidental =>
       notes.firstOrNull?.accidental ?? Accidental.natural;
