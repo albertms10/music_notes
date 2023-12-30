@@ -500,13 +500,14 @@ class GermanNoteNotation extends NoteNotation {
 
   @override
   String tonality(Tonality tonality) {
-    final noteString = tonality.note.toString(system: this);
-    final modeString = tonality.mode.toString(system: this);
+    final note = tonality.note.toString(system: this);
+    final mode = tonality.mode.toString(system: this);
+    final casedNote = switch (tonality.mode) {
+      TonalMode.minor => note.toLowerCase(),
+      _ => note,
+    };
 
-    return '${switch (tonality.mode) {
-      TonalMode.minor => noteString.toLowerCase(),
-      _ => noteString
-    }}-$modeString';
+    return '$casedNote-$mode';
   }
 }
 
