@@ -30,7 +30,7 @@ final class KeySignature implements Comparable<KeySignature> {
     );
   }
 
-  /// Returns the main Accidental of this [KeySignature].
+  /// Returns the main [Accidental] of this [KeySignature].
   ///
   /// Example:
   /// ```dart
@@ -45,8 +45,8 @@ final class KeySignature implements Comparable<KeySignature> {
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.fromDistance(0).distance == 0
-  /// KeySignature.fromDistance(3).distance == 3
+  /// KeySignature.empty.distance == 0
+  /// KeySignature([Note.f.sharp, Note.c.sharp]).distance == 2
   /// KeySignature.fromDistance(-4).distance == -4
   /// ```
   int get distance => notes.length * accidental.semitones.nonZeroSign;
@@ -56,7 +56,7 @@ final class KeySignature implements Comparable<KeySignature> {
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.fromDistance(0).tonality(TonalMode.major) == Note.c.major
+  /// KeySignature.empty.tonality(TonalMode.major) == Note.c.major
   /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
   Tonality tonality(TonalMode mode) => switch (mode) {
