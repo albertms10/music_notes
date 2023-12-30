@@ -58,6 +58,13 @@ final class PitchClass extends Scalable<PitchClass>
 
   /// Returns the different spellings at [distance] sharing the same
   /// [semitones].
+  ///
+  /// ```dart
+  /// PitchClass.g.spellings() == {Note.g}
+  /// PitchClass.dSharp.spellings() == {Note.d.sharp, Note.e.flat}
+  /// PitchClass.b.spellings(distance: 1)
+  ///   == {Note.a.sharp.sharp, Note.b, Note.c.flat}
+  /// ```
   Set<Note> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final baseNote = BaseNote.fromSemitones(semitones);
