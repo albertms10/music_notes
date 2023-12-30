@@ -404,7 +404,8 @@ final class Interval implements Comparable<Interval> {
         [scalable],
         (circleItems, _) => [
           ...circleItems,
-          circleItems.last.transposeBy(distance.isNegative ? -this : this),
+          circleItems.last
+              .transposeBy(descending(isDescending: distance.isNegative)),
         ],
       );
 
