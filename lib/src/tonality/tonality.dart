@@ -36,7 +36,7 @@ final class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.keySignature == KeySignature.fromDistance(0)
+  /// Note.c.major.keySignature == KeySignature.empty
   /// Note.a.major.keySignature == KeySignature.fromDistance(3)
   /// Note.g.flat.major.keySignature == KeySignature.fromDistance(-6)
   /// ```
