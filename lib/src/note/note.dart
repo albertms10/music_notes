@@ -419,24 +419,29 @@ abstract class NoteNotation {
   static const french = FrenchNoteNotation();
 
   /// Returns the string notation for [note].
-  String noteNotation(Note note);
+  String noteNotation(Note note) =>
+      note.baseNote.toString(system: this) +
+      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
 
   /// Returns the string notation for [baseNote].
   String baseNoteNotation(BaseNote baseNote);
 
   /// Returns the string notation for [tonalMode].
   String tonalModeNotation(TonalMode tonalMode);
+
+  /// Returns the string notation for [tonality].
+  String tonalityNotation(Tonality tonality) {
+    final noteString = tonality.note.toString(system: this);
+    final modeString = tonality.mode.toString(system: this);
+
+    return '$noteString $modeString';
+  }
 }
 
 /// The English alphabetic notation system.
 class EnglishNoteNotation extends NoteNotation {
   /// Creates a new [EnglishNoteNotation].
   const EnglishNoteNotation();
-
-  @override
-  String noteNotation(Note note) =>
-      note.baseNote.toString(system: this) +
-      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
 
   @override
   String baseNoteNotation(BaseNote baseNote) => baseNote.name.toUpperCase();
@@ -478,17 +483,23 @@ class GermanNoteNotation extends NoteNotation {
         TonalMode.major => 'Dur',
         TonalMode.minor => 'Moll',
       };
+
+  @override
+  String tonalityNotation(Tonality tonality) {
+    final noteString = tonality.note.toString(system: this);
+    final modeString = tonality.mode.toString(system: this);
+
+    return '${switch (tonality.mode) {
+      TonalMode.minor => noteString.toLowerCase(),
+      _ => noteString
+    }}-$modeString';
+  }
 }
 
 /// The Italian alphabetic notation system.
 class ItalianNoteNotation extends NoteNotation {
   /// Creates a new [ItalianNoteNotation].
   const ItalianNoteNotation();
-
-  @override
-  String noteNotation(Note note) =>
-      note.baseNote.toString(system: this) +
-      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
 
   @override
   String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
@@ -512,11 +523,6 @@ class ItalianNoteNotation extends NoteNotation {
 class FrenchNoteNotation extends NoteNotation {
   /// Creates a new [FrenchNoteNotation].
   const FrenchNoteNotation();
-
-  @override
-  String noteNotation(Note note) =>
-      note.baseNote.toString(system: this) +
-      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
 
   @override
   String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
