@@ -56,7 +56,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  /// Returns the different spellings at [distance] sharing the same
+  /// Returns the different spellings at [distance] sharing the same number of
   /// [semitones].
   ///
   /// ```dart
