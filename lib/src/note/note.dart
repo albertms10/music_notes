@@ -421,7 +421,7 @@ abstract class NoteNotation {
   /// Returns the string notation for [note].
   String note(Note note) =>
       note.baseNote.toString(system: this) +
-      (note.accidental != Accidental.natural ? note.accidental.symbol : '');
+      (note.accidental.isNatural ? '' : note.accidental.symbol);
 
   /// Returns the string notation for [baseNote].
   String baseNote(BaseNote baseNote);

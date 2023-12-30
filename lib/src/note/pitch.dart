@@ -422,9 +422,9 @@ class ScientificPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) {
-    final accidental = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
+
     return '${pitch.note.baseNote}$accidental${pitch.octave}';
   }
 }
@@ -436,16 +436,15 @@ class HelmholtzPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) {
-    final accidentalSymbol = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
 
     if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidentalSymbol'
+      return '${pitch.note.baseNote.name}$accidental'
           '${Pitch._superPrime * (pitch.octave - 3)}';
     }
 
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidental'
         '${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }

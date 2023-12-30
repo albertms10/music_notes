@@ -62,6 +62,16 @@ void main() {
       });
     });
 
+    group('.isNatural', () {
+      test('should return whether this Accidental is natural', () {
+        expect(Accidental.doubleSharp.isNatural, isFalse);
+        expect(Accidental.sharp.isNatural, isFalse);
+        expect(Accidental.natural.isNatural, isTrue);
+        expect(Accidental.flat.isNatural, isFalse);
+        expect(Accidental.doubleFlat.isNatural, isFalse);
+      });
+    });
+
     group('.isSharp', () {
       test('should return whether this Accidental is sharp', () {
         expect(Accidental.doubleSharp.isSharp, isTrue);
