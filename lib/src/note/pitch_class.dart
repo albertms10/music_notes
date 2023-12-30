@@ -231,7 +231,7 @@ final class PitchClass extends Scalable<PitchClass>
   String toString({
     PitchClassNotation system = PitchClassNotation.enharmonicSpellings,
   }) =>
-      system.pitchClassNotation(this);
+      system.pitchClass(this);
 
   @override
   bool operator ==(Object other) =>
@@ -256,7 +256,7 @@ abstract class PitchClassNotation {
   static const integer = PitchClassIntegerNotation();
 
   /// Returns the string notation for [pitchClass].
-  String pitchClassNotation(PitchClass pitchClass);
+  String pitchClass(PitchClass pitchClass);
 }
 
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
@@ -265,7 +265,7 @@ class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
   const PitchClassEnharmonicSpellingsNotation();
 
   @override
-  String pitchClassNotation(PitchClass pitchClass) =>
+  String pitchClass(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 }
 
@@ -275,8 +275,7 @@ class PitchClassIntegerNotation extends PitchClassNotation {
   const PitchClassIntegerNotation();
 
   @override
-  String pitchClassNotation(PitchClass pitchClass) =>
-      switch (pitchClass.semitones) {
+  String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {
         10 => 't',
         11 => 'e',
         final semitones => '$semitones',

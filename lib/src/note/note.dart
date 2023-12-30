@@ -383,7 +383,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      system.noteNotation(this);
+      system.note(this);
 
   @override
   bool operator ==(Object other) =>
@@ -419,22 +419,22 @@ abstract class NoteNotation {
   static const french = FrenchNoteNotation();
 
   /// Returns the string notation for [note].
-  String noteNotation(Note note) =>
+  String note(Note note) =>
       note.baseNote.toString(system: this) +
       (note.accidental != Accidental.natural ? note.accidental.symbol : '');
 
   /// Returns the string notation for [baseNote].
-  String baseNoteNotation(BaseNote baseNote);
+  String baseNote(BaseNote baseNote);
 
   /// Returns the string notation for [tonalMode].
-  String tonalModeNotation(TonalMode tonalMode);
+  String tonalMode(TonalMode tonalMode);
 
   /// Returns the string notation for [tonality].
-  String tonalityNotation(Tonality tonality) {
-    final noteString = tonality.note.toString(system: this);
-    final modeString = tonality.mode.toString(system: this);
+  String tonality(Tonality tonality) {
+    final note = tonality.note.toString(system: this);
+    final mode = tonality.mode.toString(system: this);
 
-    return '$noteString $modeString';
+    return '$note $mode';
   }
 }
 
@@ -444,10 +444,10 @@ class EnglishNoteNotation extends NoteNotation {
   const EnglishNoteNotation();
 
   @override
-  String baseNoteNotation(BaseNote baseNote) => baseNote.name.toUpperCase();
+  String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
 
   @override
-  String tonalModeNotation(TonalMode tonalMode) => tonalMode.name;
+  String tonalMode(TonalMode tonalMode) => tonalMode.name;
 }
 
 /// The German alphabetic notation system.
@@ -456,7 +456,7 @@ class GermanNoteNotation extends NoteNotation {
   const GermanNoteNotation();
 
   @override
-  String noteNotation(Note note) => switch (note) {
+  String note(Note note) => switch (note) {
         Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
         // Flattened notes.
         final note when note.accidental.isFlat => switch (note.baseNote) {
@@ -473,19 +473,19 @@ class GermanNoteNotation extends NoteNotation {
       };
 
   @override
-  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
         BaseNote.b => 'H',
         final baseNote => baseNote.name.toUpperCase(),
       };
 
   @override
-  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
         TonalMode.major => 'Dur',
         TonalMode.minor => 'Moll',
       };
 
   @override
-  String tonalityNotation(Tonality tonality) {
+  String tonality(Tonality tonality) {
     final noteString = tonality.note.toString(system: this);
     final modeString = tonality.mode.toString(system: this);
 
@@ -502,7 +502,7 @@ class ItalianNoteNotation extends NoteNotation {
   const ItalianNoteNotation();
 
   @override
-  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
         BaseNote.c => 'Do',
         BaseNote.d => 'Re',
         BaseNote.e => 'Mi',
@@ -513,7 +513,7 @@ class ItalianNoteNotation extends NoteNotation {
       };
 
   @override
-  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
         TonalMode.major => 'maggiore',
         TonalMode.minor => 'minore',
       };
@@ -525,7 +525,7 @@ class FrenchNoteNotation extends NoteNotation {
   const FrenchNoteNotation();
 
   @override
-  String baseNoteNotation(BaseNote baseNote) => switch (baseNote) {
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
         BaseNote.c => 'Ut',
         BaseNote.d => 'Ré',
         BaseNote.e => 'Mi',
@@ -536,7 +536,7 @@ class FrenchNoteNotation extends NoteNotation {
       };
 
   @override
-  String tonalModeNotation(TonalMode tonalMode) => switch (tonalMode) {
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
         TonalMode.major => 'majeur',
         TonalMode.minor => 'mineur',
       };

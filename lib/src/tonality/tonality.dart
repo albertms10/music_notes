@@ -58,7 +58,7 @@ final class Tonality implements Comparable<Tonality> {
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      system.tonalityNotation(this);
+      system.tonality(this);
 
   @override
   bool operator ==(Object other) =>

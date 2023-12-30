@@ -384,7 +384,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
-      system.pitchNotation(this);
+      system.pitch(this);
 
   @override
   bool operator ==(Object other) =>
@@ -412,7 +412,7 @@ abstract class PitchNotation {
   static const helmholtz = HelmholtzPitchNotation();
 
   /// Returns the string representation for [pitch].
-  String pitchNotation(Pitch pitch);
+  String pitch(Pitch pitch);
 }
 
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
@@ -421,7 +421,7 @@ class ScientificPitchNotation extends PitchNotation {
   const ScientificPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
+  String pitch(Pitch pitch) {
     final accidental = pitch.note.accidental != Accidental.natural
         ? pitch.note.accidental.symbol
         : '';
@@ -435,7 +435,7 @@ class HelmholtzPitchNotation extends PitchNotation {
   const HelmholtzPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
+  String pitch(Pitch pitch) {
     final accidentalSymbol = pitch.note.accidental != Accidental.natural
         ? pitch.note.accidental.symbol
         : '';

@@ -147,7 +147,7 @@ enum BaseNote implements Comparable<BaseNote> {
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      system.baseNoteNotation(this);
+      system.baseNote(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
