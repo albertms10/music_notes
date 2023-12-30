@@ -72,13 +72,16 @@ final class PitchClass extends Scalable<PitchClass>
     if (baseNote != null) {
       final note = Note(baseNote);
 
-      return SplayTreeSet<Note>.of({
-        note,
-        for (var i = 1; i <= distance; i++) ...[
-          note.respellByBaseNoteDistance(distance),
-          note.respellByBaseNoteDistance(-distance),
-        ],
-      });
+      return SplayTreeSet<Note>.of(
+        {
+          note,
+          for (var i = 1; i <= distance; i++) ...[
+            note.respellByBaseNoteDistance(distance),
+            note.respellByBaseNoteDistance(-distance),
+          ],
+        },
+        Note.compareByClosestDistance,
+      );
     }
 
     final aboveNote =
@@ -86,14 +89,17 @@ final class PitchClass extends Scalable<PitchClass>
     final belowNote =
         Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
 
-    return SplayTreeSet<Note>.of({
-      aboveNote,
-      belowNote,
-      for (var i = 1; i <= distance; i++) ...[
-        belowNote.respellByBaseNoteDistance(distance),
-        aboveNote.respellByBaseNoteDistance(-distance),
-      ],
-    });
+    return SplayTreeSet<Note>.of(
+      {
+        aboveNote,
+        belowNote,
+        for (var i = 1; i <= distance; i++) ...[
+          belowNote.respellByBaseNoteDistance(distance),
+          aboveNote.respellByBaseNoteDistance(-distance),
+        ],
+      },
+      Note.compareByClosestDistance,
+    );
   }
 
   /// Returns the [Note] that matches [withAccidental] from this

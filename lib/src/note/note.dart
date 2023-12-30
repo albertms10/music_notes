@@ -61,6 +61,23 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   static int compareByFifthsDistance(Note a, Note b) =>
       a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
 
+  /// [Comparator] for [Note]s by closest distance.
+  static int compareByClosestDistance(Note a, Note b) => compareMultiple([
+        () {
+          final distance = (a.semitones - b.semitones).abs();
+
+          return (distance <= chromaticDivisions - distance)
+              ? a.semitones.compareTo(b.semitones)
+              : b.semitones.compareTo(a.semitones);
+        },
+        ..._comparators(a, b),
+      ]);
+
+  static List<int Function()> _comparators(Note a, Note b) => [
+        () => a.semitones.compareTo(b.semitones),
+        () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
+      ];
+
   /// Returns the number of semitones that correspond to this [Note]
   /// from [BaseNote.c].
   ///
@@ -395,10 +412,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   int get hashCode => Object.hash(baseNote, accidental);
 
   @override
-  int compareTo(Note other) => compareMultiple([
-        () => semitones.compareTo(other.semitones),
-        () => baseNote.semitones.compareTo(other.baseNote.semitones),
-      ]);
+  int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
 /// The abstraction for [Note] notation systems.
