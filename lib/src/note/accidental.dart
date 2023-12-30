@@ -103,6 +103,16 @@ final class Accidental implements Comparable<Accidental> {
   /// ```
   bool get isFlat => semitones.isNegative;
 
+  /// Whether this [Accidental] is natural (♮).
+  ///
+  /// Examples:
+  /// ```dart
+  /// Accidental.natural.isNatural == true
+  /// Accidental.sharp.isNatural == false
+  /// Accidental.flat.isNatural == false
+  /// ```
+  bool get isNatural => semitones == 0;
+
   /// Whether this [Accidental] is sharp (♯, 𝄪, etc.).
   ///
   /// Examples:
