@@ -268,11 +268,10 @@ final class Interval implements Comparable<Interval> {
   /// Interval.m2.descending() == -Interval.m2
   /// Interval.M3.descending(isDescending: false) == Interval.M3
   /// (-Interval.P5).descending() == -Interval.P5
-  /// (-Interval.M7).descending(isDescending: false)
-  ///   == Interval.M7
+  /// (-Interval.M7).descending(isDescending: false) == Interval.M7
   /// ```
   Interval descending({bool isDescending = true}) =>
-      this.isDescending != isDescending ? -this : Interval._(size, quality);
+      Interval._(size * (this.isDescending == isDescending ? 1 : -1), quality);
 
   /// Returns the inverted of this [Interval].
   ///
