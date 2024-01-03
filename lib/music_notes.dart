@@ -25,6 +25,7 @@ part 'src/music.dart';
 part 'src/note/accidental.dart';
 part 'src/note/base_note.dart';
 part 'src/note/frequency.dart';
+part 'src/note/hearing_range.dart';
 part 'src/note/note.dart';
 part 'src/note/pitch.dart';
 part 'src/note/pitch_class.dart';
