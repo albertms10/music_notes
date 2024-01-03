@@ -91,8 +91,8 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(220).harmonic(1) == const Frequency(440)
   /// const Frequency(880).harmonic(-3) == const Frequency(220)
   ///
-  /// Note.c.inOctave(1).frequency().harmonic(3)
-  ///   .closestPitch().displayString() == 'E3-14'
+  /// Note.c.inOctave(1).frequency().harmonic(3).closestPitch().toString()
+  ///   == 'E3-14'
   /// ```
   Frequency harmonic(int index) =>
       index.isNegative ? this / (index.abs() + 1) : this * (index + 1);
