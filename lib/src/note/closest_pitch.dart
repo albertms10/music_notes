@@ -1,6 +1,12 @@
 part of '../../music_notes.dart';
 
 /// An abstraction of the closest representation of a [Frequency] as a [Pitch].
+///
+/// ---
+/// See also:
+/// * [Pitch].
+/// * [Cent].
+/// * [Frequency].
 @immutable
 class ClosestPitch {
   /// The pitch closest to the original [Frequency].
@@ -17,9 +23,9 @@ class ClosestPitch {
   /// Example:
   /// ```dart
   /// const Frequency(440).closestPitch().toString() == 'A4'
-  /// const Frequency(98.1).closestPitch().toString() == 'G2+2'
-  /// const Frequency(163.5).closestPitch().toString() == 'E3-14'
   /// const Frequency(228.9).closestPitch().toString() == 'A♯3-31'
+  /// (Note.g.inOctave(2) + const Cent(2)).toString() == 'G2+2'
+  /// (Note.e.flat.inOctave(3) - const Cent(14)).toString() == 'E♭3-14'
   /// ```
   @override
   String toString() {

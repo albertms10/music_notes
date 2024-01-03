@@ -59,6 +59,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// Returns the different spellings at [distance] sharing the same number of
   /// [semitones].
   ///
+  /// Example:
   /// ```dart
   /// PitchClass.g.spellings() == {Note.g}
   /// PitchClass.dSharp.spellings() == {Note.d.sharp, Note.e.flat}

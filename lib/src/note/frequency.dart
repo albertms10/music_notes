@@ -42,10 +42,10 @@ class Frequency implements Comparable<Frequency> {
   /// Example:
   /// ```dart
   /// const Frequency(467).closestPitch()
-  ///   == ClosestPitch(Note.a.sharp.inOctave(4), cents: Cent(3.1))
+  ///   == Note.a.sharp.inOctave(4) + const Cent(3.1028)
   ///
   /// const Frequency(260).closestPitch()
-  ///   == ClosestPitch(Note.c.inOctave(4), cents: Cent(-10.79))
+  ///   == Note.c.inOctave(4) - const Cent(10.7903)
   /// ```
   ///
   /// This method and [Pitch.frequency] are inverses of each other for a
@@ -94,8 +94,8 @@ class Frequency implements Comparable<Frequency> {
   /// const Frequency(220).harmonic(1) == const Frequency(440)
   /// const Frequency(880).harmonic(-3) == const Frequency(220)
   ///
-  /// Note.c.inOctave(1).frequency().harmonic(3).closestPitch().toString()
-  ///   == 'E3-14'
+  /// Note.c.inOctave(1).frequency().harmonic(3).closestPitch()
+  ///   == Note.e.inOctave(3) - const Cent(14)
   /// ```
   Frequency harmonic(int index) =>
       index.isNegative ? this / (index.abs() + 1) : this * (index + 1);

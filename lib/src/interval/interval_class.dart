@@ -55,6 +55,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// Returns the different spellings at [distance] sharing the same number of
   /// [semitones].
   ///
+  /// Example:
   /// ```dart
   /// IntervalClass.m2.spellings() == {Interval.m2}
   /// IntervalClass.tritone.spellings() == {Interval.A4, Interval.d5}
