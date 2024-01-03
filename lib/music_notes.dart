@@ -24,6 +24,7 @@ part 'src/interval/quality.dart';
 part 'src/music.dart';
 part 'src/note/accidental.dart';
 part 'src/note/base_note.dart';
+part 'src/note/closest_pitch.dart';
 part 'src/note/frequency.dart';
 part 'src/note/note.dart';
 part 'src/note/pitch.dart';
