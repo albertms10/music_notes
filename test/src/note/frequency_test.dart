@@ -32,7 +32,6 @@ void main() {
           ClosestPitch(
             Note.a.sharp.inOctave(4),
             cents: const Cent(-41.96437412632116),
-            hertz: -11.163761518089927,
           ),
         );
         expect(
@@ -40,7 +39,6 @@ void main() {
           ClosestPitch(
             Note.b.flat.inOctave(4),
             cents: const Cent(3.1028314220028586),
-            hertz: 0.8362384819100726,
           ),
         );
         expect(
@@ -48,7 +46,6 @@ void main() {
           ClosestPitch(
             Note.c.inOctave(4),
             cents: const Cent(-37.63165622959142),
-            hertz: -5.625565300598623,
           ),
         );
 
@@ -58,7 +55,6 @@ void main() {
           ClosestPitch(
             Note.b.flat.inOctave(4),
             cents: const Cent(1.270624748447127),
-            hertz: 0.32281584089247417,
           ),
         );
         expect(
@@ -78,7 +74,6 @@ void main() {
           ClosestPitch(
             Note.a.inOctave(4),
             cents: const Cent(37.63165622959145),
-            hertz: 9.461035390098175,
           ),
         );
       });

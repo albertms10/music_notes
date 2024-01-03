@@ -9,11 +9,8 @@ class ClosestPitch {
   /// The difference in cents.
   final Cent cents;
 
-  /// The difference in hertz.
-  final double hertz;
-
-  /// Creates a new [ClosestPitch] from [pitch], [cents] and [hertz].
-  const ClosestPitch(this.pitch, {this.cents = const Cent(0), this.hertz = 0});
+  /// Creates a new [ClosestPitch] from [pitch] and [cents].
+  const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
   /// Returns the string representation of this [ClosestPitch] record.
   ///
@@ -34,11 +31,8 @@ class ClosestPitch {
 
   @override
   bool operator ==(Object other) =>
-      other is ClosestPitch &&
-      pitch == other.pitch &&
-      cents == other.cents &&
-      hertz == other.hertz;
+      other is ClosestPitch && pitch == other.pitch && cents == other.cents;
 
   @override
-  int get hashCode => Object.hash(pitch, cents, hertz);
+  int get hashCode => Object.hash(pitch, cents);
 }

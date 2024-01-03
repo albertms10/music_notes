@@ -34,16 +34,8 @@ void main() {
           ClosestPitch(Note.a.inOctave(4)),
         );
         expect(
-          ClosestPitch(
-            Note.c.sharp.inOctave(3),
-            cents: const Cent(-2.123),
-            hertz: -2.021,
-          ),
-          ClosestPitch(
-            Note.c.sharp.inOctave(3),
-            cents: const Cent(-2.123),
-            hertz: -2.021,
-          ),
+          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
+          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
         );
       });
 
@@ -55,17 +47,12 @@ void main() {
             isNot(equals(ClosestPitch(Note.g.inOctave(4)))),
           );
           expect(
-            ClosestPitch(
-              Note.c.sharp.inOctave(3),
-              cents: const Cent(-2.123),
-              hertz: -2.021,
-            ),
+            ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
             isNot(
               equals(
                 ClosestPitch(
                   Note.c.sharp.inOctave(3),
                   cents: const Cent(-0.345),
-                  hertz: -4.989,
                 ),
               ),
             ),
@@ -77,13 +64,13 @@ void main() {
         final collection = {
           ClosestPitch(Note.a.inOctave(4)),
           ClosestPitch(Note.b.flat.inOctave(3)),
-          ClosestPitch(Note.c.inOctave(3), cents: const Cent(2), hertz: 2),
+          ClosestPitch(Note.c.inOctave(3), cents: const Cent(2)),
         };
         collection.addAll(collection);
         expect(collection.toList(), [
           ClosestPitch(Note.a.inOctave(4)),
           ClosestPitch(Note.b.flat.inOctave(3)),
-          ClosestPitch(Note.c.inOctave(3), cents: const Cent(2), hertz: 2),
+          ClosestPitch(Note.c.inOctave(3), cents: const Cent(2)),
         ]);
       });
     });
