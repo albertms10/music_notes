@@ -42,10 +42,10 @@ class Frequency implements Comparable<Frequency> {
   /// Example:
   /// ```dart
   /// const Frequency(467).closestPitch()
-  ///   == ClosestPitch(Note.a.sharp.inOctave(4), cents: Cent(3.1), hertz: 0.84)
+  ///   == ClosestPitch(Note.a.sharp.inOctave(4), cents: Cent(3.1))
   ///
   /// const Frequency(260).closestPitch()
-  ///   == ClosestPitch(Note.c.inOctave(4), cents: Cent(-10.79), hertz: -1.63)
+  ///   == ClosestPitch(Note.c.inOctave(4), cents: Cent(-10.79))
   /// ```
   ///
   /// This method and [Pitch.frequency] are inverses of each other for a
@@ -83,7 +83,6 @@ class Frequency implements Comparable<Frequency> {
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
       cents: Ratio(hertz / closestPitchFrequency.hertz).cents,
-      hertz: hertzDelta,
     );
   }
 
