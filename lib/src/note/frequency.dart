@@ -1,8 +1,5 @@
 part of '../../music_notes.dart';
 
-/// A representation of a hearing range.
-typedef HearingRange = ({Frequency min, Frequency max});
-
 /// Represents an absolute pitch, a physical frequency.
 ///
 /// ---
@@ -20,11 +17,7 @@ class Frequency implements Comparable<Frequency> {
   /// The symbol for the Hertz unit.
   static const hertzUnitSymbol = 'Hz';
 
-  /// See [Hearing range](https://en.wikipedia.org/wiki/Hearing_range).
-  static const HearingRange humanHearingRange =
-      (min: Frequency(20), max: Frequency(20000));
-
-  /// Whether this [Frequency] is inside the [humanHearingRange].
+  /// Whether this [Frequency] is inside the [HearingRange.human].
   ///
   /// Example:
   /// ```dart
@@ -32,9 +25,7 @@ class Frequency implements Comparable<Frequency> {
   /// Note.a.inOctave(4).frequency().isHumanAudible == true
   /// Note.g.inOctave(12).frequency().isHumanAudible == false
   /// ```
-  bool get isHumanAudible =>
-      hertz >= humanHearingRange.min.hertz &&
-      hertz <= humanHearingRange.max.hertz;
+  bool get isHumanAudible => HearingRange.human.isAudible(this);
 
   /// Returns the [ClosestPitch] to this [Frequency] from [referenceFrequency]
   /// and [tuningSystem].
