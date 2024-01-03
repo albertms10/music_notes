@@ -29,33 +29,21 @@ void main() {
         );
         expect(
           const Frequency(455).closestPitch(),
-          ClosestPitch(
-            Note.a.sharp.inOctave(4),
-            cents: const Cent(-41.96437412632116),
-          ),
+          Note.a.sharp.inOctave(4) - const Cent(41.96437412632116),
         );
         expect(
           const Frequency(467).closestPitch(),
-          ClosestPitch(
-            Note.b.flat.inOctave(4),
-            cents: const Cent(3.1028314220028586),
-          ),
+          Note.b.flat.inOctave(4) + const Cent(3.1028314220028586),
         );
         expect(
           const Frequency(256).closestPitch(),
-          ClosestPitch(
-            Note.c.inOctave(4),
-            cents: const Cent(-37.63165622959142),
-          ),
+          Note.c.inOctave(4) - const Cent(37.63165622959142),
         );
 
         expect(
           const Frequency(440)
               .closestPitch(referenceFrequency: const Frequency(415)),
-          ClosestPitch(
-            Note.b.flat.inOctave(4),
-            cents: const Cent(1.270624748447127),
-          ),
+          Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
         expect(
           const Frequency(512).closestPitch(
@@ -71,10 +59,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          ClosestPitch(
-            Note.a.inOctave(4),
-            cents: const Cent(37.63165622959145),
-          ),
+          Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
       });
     });

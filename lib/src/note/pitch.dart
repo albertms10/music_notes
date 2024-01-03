@@ -7,6 +7,7 @@ part of '../../music_notes.dart';
 /// * [Note].
 /// * [PitchClass].
 /// * [Frequency].
+/// * [ClosestPitch].
 @immutable
 final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// The note inside the octave.
@@ -385,6 +386,24 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
       system.pitch(this);
+
+  /// Adds [cents] to this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).toString() == 'F♯4+4'
+  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).toString() == 'E♭3-28'
+  /// ```
+  ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
+
+  /// Subtracts [cents] from this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).toString() == 'G♭5-16'
+  /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
+  /// ```
+  ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
 
   @override
   bool operator ==(Object other) =>
