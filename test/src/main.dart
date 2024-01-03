@@ -7,6 +7,7 @@ import 'interval/quality_test.dart' as quality_test;
 import 'note/accidental_test.dart' as accidental_test;
 import 'note/base_note_test.dart' as base_note_test;
 import 'note/frequency_test.dart' as frequency_test;
+import 'note/hearing_range_test.dart' as hearing_range_test;
 import 'note/note_test.dart' as note_test;
 import 'note/pitch_class_test.dart' as pitch_class_test;
 import 'note/pitch_test.dart' as pitch_test;
@@ -32,6 +33,7 @@ void main() {
   accidental_test.main();
   base_note_test.main();
   frequency_test.main();
+  hearing_range_test.main();
   note_test.main();
   pitch_class_test.main();
   pitch_test.main();
