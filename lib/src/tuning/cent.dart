@@ -26,6 +26,15 @@ final class Cent {
   @override
   String toString() => '$value $centUnitSymbol';
 
+  /// The negation of this [Cent].
+  ///
+  /// Example:
+  /// ```dart
+  /// -const Cent(24) == const Cent(-24)
+  /// -const Cent(-18.32) == const Cent(18.32)
+  /// ```
+  Cent operator -() => Cent(-value);
+
   @override
   bool operator ==(Object other) => other is Cent && value == other.value;
 
