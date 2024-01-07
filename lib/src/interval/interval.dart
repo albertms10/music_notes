@@ -355,8 +355,8 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.A4.respellBySize(const Size.fifth) == Interval.d5
-  /// Interval.d3.respellBySize(const Size.second) == Interval.M2
+  /// Interval.A4.respellBySize(Size.fifth) == Interval.d5
+  /// Interval.d3.respellBySize(Size.second) == Interval.M2
   /// ```
   Interval respellBySize(Size size) => Interval.fromSemitones(size, semitones);
 

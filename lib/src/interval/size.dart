@@ -51,12 +51,12 @@ extension type const Size._(int value) implements int {
   ///
   /// Example:
   /// ```dart
-  /// const Size.third.semitones == 3
-  /// const Size.fifth.semitones == 7
-  /// const Size(-5).semitones == -7
-  /// const Size.seventh.semitones == 10
-  /// const Size.ninth.semitones == 13
-  /// const Size(-9).semitones == -13
+  /// Size.third.semitones == 3
+  /// Size.fifth.semitones == 7
+  /// (-Size.fifth).semitones == -7
+  /// Size.seventh.semitones == 10
+  /// Size.ninth.semitones == 13
+  /// (-Size.ninth).semitones == -13
   /// ```
   int get semitones {
     final simplifiedAbs = simplified.value.abs();
@@ -79,9 +79,9 @@ extension type const Size._(int value) implements int {
   ///
   /// Example:
   /// ```dart
-  /// const Size.fifth.isPerfect == true
-  /// const Size.sixth.isPerfect == false
-  /// const Size(-11).isPerfect == true
+  /// Size.fifth.isPerfect == true
+  /// Size.sixth.isPerfect == false
+  /// (-Size.eleventh).isPerfect == true
   /// ```
   bool get isPerfect => _sizeAbsShift % 4 < 2;
 
@@ -89,12 +89,12 @@ extension type const Size._(int value) implements int {
   ///
   /// Example:
   /// ```dart
-  /// const Size.fifth.isCompound == false
-  /// const Size(-6).isCompound == false
-  /// const Size.octave.isCompound == false
-  /// const Size.ninth.isCompound == true
-  /// const Size(-11).isCompound == true
-  /// const Size.thirteenth.isCompound == true
+  /// Size.fifth.isCompound == false
+  /// (-Size.sixth).isCompound == false
+  /// Size.octave.isCompound == false
+  /// Size.ninth.isCompound == true
+  /// (-Size.eleventh).isCompound == true
+  /// Size.thirteenth.isCompound == true
   /// ```
   bool get isCompound => value.abs() > 8;
 
@@ -102,9 +102,9 @@ extension type const Size._(int value) implements int {
   ///
   /// Example:
   /// ```dart
-  /// const Size.thirteenth.simplified == Size.sixth
-  /// const Size(-9).simplified == Size(-2)
-  /// const Size.octave.simplified == Size.octave
+  /// Size.thirteenth.simplified == Size.sixth
+  /// (-Size.ninth).simplified == Size(-2)
+  /// Size.octave.simplified == Size.octave
   /// const Size(-22).simplified == Size(-8)
   /// ```
   Size get simplified =>
