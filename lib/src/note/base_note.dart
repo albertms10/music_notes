@@ -109,9 +109,9 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
-  /// BaseNote.a.difference(BaseNote.d) == -7
+  /// BaseNote.a.difference(BaseNote.d) == 5
   /// ```
-  int difference(BaseNote other) => other.semitones - semitones;
+  int difference(BaseNote other) => Note(this).difference(Note(other));
 
   /// Returns the positive difference in semitones between this [BaseNote] and
   /// [other].
@@ -131,7 +131,7 @@ enum BaseNote implements Comparable<BaseNote> {
     return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
-  /// Returns this [BaseNote] transposed by interval [size].
+  /// Transposes this [BaseNote] by interval [size].
   ///
   /// Example:
   /// ```dart
@@ -143,37 +143,8 @@ enum BaseNote implements Comparable<BaseNote> {
       BaseNote.fromOrdinal(ordinal + size.value.incrementBy(-1));
 
   @override
-  String toString({NotationSystem system = NotationSystem.english}) =>
-      switch (system) {
-        NotationSystem.english => name.toUpperCase(),
-        NotationSystem.german => switch (this) {
-            BaseNote.c => 'C',
-            BaseNote.d => 'D',
-            BaseNote.e => 'E',
-            BaseNote.f => 'F',
-            BaseNote.g => 'G',
-            BaseNote.a => 'A',
-            BaseNote.b => 'H',
-          },
-        NotationSystem.catalan => switch (this) {
-            BaseNote.c => 'Do',
-            BaseNote.d => 'Re',
-            BaseNote.e => 'Mi',
-            BaseNote.f => 'Fa',
-            BaseNote.g => 'Sol',
-            BaseNote.a => 'La',
-            BaseNote.b => 'Si',
-          },
-        NotationSystem.french => switch (this) {
-            BaseNote.c => 'Ut',
-            BaseNote.d => 'Ré',
-            BaseNote.e => 'Mi',
-            BaseNote.f => 'Fa',
-            BaseNote.g => 'Sol',
-            BaseNote.a => 'La',
-            BaseNote.b => 'Si',
-          },
-      };
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.baseNote(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);

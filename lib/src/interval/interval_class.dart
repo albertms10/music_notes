@@ -54,6 +54,17 @@ final class IntervalClass implements Comparable<IntervalClass> {
 
   /// Returns the different spellings at [distance] sharing the same number of
   /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.m2.spellings() == {Interval.m2}
+  /// IntervalClass.tritone.spellings() == {Interval.A4, Interval.d5}
+  /// IntervalClass.m3.spellings(distance: 1) == {
+  ///     Interval.A2,
+  ///     Interval.m3,
+  ///     const Interval.perfect(4, PerfectQuality.doublyDiminished)
+  ///   }
+  /// ```
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final size = Interval.sizeFromSemitones(semitones);

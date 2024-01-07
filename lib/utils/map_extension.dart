@@ -8,7 +8,7 @@ extension MapExtension<K, V> on Map<K, V> {
   /// ```dart
   /// const planets = {1: 'Mercury', 2: 'Venus', 3: 'Earth', 4: 'Mars'};
   /// planets.recordEntries.toList()
-  ///   == [(1, 'Mercury'), (2, 'Venus'), (3, 'Earth'), (4, 'Mars')]
+  ///   == const [(1, 'Mercury'), (2, 'Venus'), (3, 'Earth'), (4, 'Mars')]
   /// ```
   Iterable<(K key, V value)> get recordEntries =>
       entries.map((e) => (e.key, e.value));

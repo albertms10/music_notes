@@ -10,7 +10,7 @@ part of '../../music_notes.dart';
 /// * [KeySignature].
 /// * [Tonality].
 @immutable
-final class Note implements Comparable<Note>, Scalable<Note> {
+final class Note extends Scalable<Note> implements Comparable<Note> {
   /// The base note that defines this [Note].
   final BaseNote baseNote;
 
@@ -61,6 +61,23 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   static int compareByFifthsDistance(Note a, Note b) =>
       a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
 
+  /// [Comparator] for [Note]s by closest distance.
+  static int compareByClosestDistance(Note a, Note b) => compareMultiple([
+        () {
+          final distance = (a.semitones - b.semitones).abs();
+
+          return (distance <= chromaticDivisions - distance)
+              ? a.semitones.compareTo(b.semitones)
+              : b.semitones.compareTo(a.semitones);
+        },
+        ..._comparators(a, b),
+      ]);
+
+  static List<int Function()> _comparators(Note a, Note b) => [
+        () => a.semitones.compareTo(b.semitones),
+        () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
+      ];
+
   /// Returns the number of semitones that correspond to this [Note]
   /// from [BaseNote.c].
   ///
@@ -71,6 +88,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.b.sharp.semitones == 12
   /// Note.c.flat.semitones == -1
   /// ```
+  @override
   int get semitones => baseNote.semitones + accidental.semitones;
 
   /// Returns the difference in semitones between this [Note] and [other].
@@ -78,11 +96,11 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.difference(Note.d) == 2
-  /// Note.e.flat.difference(Note.b.flat) == 7
   /// Note.a.difference(Note.g) == -2
+  /// Note.e.flat.difference(Note.b.flat) == -5
   /// ```
   @override
-  int difference(Note other) => other.semitones - semitones;
+  int difference(Note other) => super.difference(other);
 
   /// Returns this [Note] sharpened by 1 semitone.
   ///
@@ -243,7 +261,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.c.isEnharmonicWith(Note.b.sharp) == true
   /// Note.e.isEnharmonicWith(Note.f) == false
   /// ```
-  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
+  bool isEnharmonicWith(Note other) => toClass() == other.toClass();
 
   /// Returns this [Note] positioned in the given [octave] as a [Pitch].
   ///
@@ -319,8 +337,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   /// Note.d.circleOfFifthsDistance == 2
   /// Note.a.flat.circleOfFifthsDistance == -4
   /// ```
-  int get circleOfFifthsDistance =>
-      Tonality(this, TonalMode.major).keySignature.distance;
+  int get circleOfFifthsDistance => major.keySignature.distance;
 
   /// Returns the fifths distance between this [Note] and [other].
   ///
@@ -333,7 +350,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   int fifthsDistanceWith(Note other) =>
       Interval.P5.distanceBetween(this, other).$1;
 
-  /// Returns the exact interval between this [Note] and [other].
+  /// Returns the [Interval] between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -346,7 +363,7 @@ final class Note implements Comparable<Note>, Scalable<Note> {
         difference(other) % chromaticDivisions,
       );
 
-  /// Returns a transposed [Note] by [interval] from this [Note].
+  /// Transposes this [Note] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -376,34 +393,15 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.toPitchClass() == PitchClass.c
-  /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.a.sharp
+  /// Note.c.toClass() == PitchClass.c
+  /// Note.e.sharp.toClass() == PitchClass.f
+  /// Note.c.flat.flat.toClass() == PitchClass.aSharp
   /// ```
-  PitchClass toPitchClass() => PitchClass(semitones);
+  PitchClass toClass() => PitchClass(semitones);
 
   @override
-  String toString({NotationSystem system = NotationSystem.english}) =>
-      switch (system) {
-        NotationSystem.german => switch (this) {
-            Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
-            // Flattened notes.
-            final note when note.accidental.semitones < 0 => switch (
-                  note.baseNote) {
-                BaseNote.a ||
-                BaseNote.e =>
-                  '${note.baseNote.toString(system: system)}s'
-                      '${'es' * (note.accidental.semitones.abs() - 1)}',
-                final baseNote => '${baseNote.toString(system: system)}'
-                    '${'es' * note.accidental.semitones.abs()}',
-              },
-            // Sharpened and natural notes.
-            final note => '${baseNote.toString(system: system)}'
-                '${'is' * note.accidental.semitones}',
-          },
-        final system => baseNote.toString(system: system) +
-            (accidental != Accidental.natural ? accidental.symbol : ''),
-      };
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.note(this);
 
   @override
   bool operator ==(Object other) =>
@@ -415,23 +413,147 @@ final class Note implements Comparable<Note>, Scalable<Note> {
   int get hashCode => Object.hash(baseNote, accidental);
 
   @override
-  int compareTo(Note other) => compareMultiple([
-        () => semitones.compareTo(other.semitones),
-        () => baseNote.semitones.compareTo(other.baseNote.semitones),
-      ]);
+  int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// Alphabetic system.
-enum NotationSystem {
-  /// The English alphabetic system.
-  english,
+/// The abstraction for [Note] notation systems.
+abstract class NoteNotation {
+  /// Creates a new [NoteNotation].
+  const NoteNotation();
 
-  /// The German alphabetic system.
-  german,
+  /// The English alphabetic [NoteNotation] system.
+  static const english = EnglishNoteNotation();
 
-  /// The Catalan solmization system.
-  catalan,
+  /// The German alphabetic [NoteNotation] system.
+  static const german = GermanNoteNotation();
 
-  /// The French solmization system.
-  french,
+  /// The Italian solmization [NoteNotation] system.
+  static const italian = ItalianNoteNotation();
+
+  /// The French solmization [NoteNotation] system.
+  static const french = FrenchNoteNotation();
+
+  /// Returns the string notation for [note].
+  String note(Note note) =>
+      note.baseNote.toString(system: this) +
+      (note.accidental.isNatural ? '' : note.accidental.symbol);
+
+  /// Returns the string notation for [baseNote].
+  String baseNote(BaseNote baseNote);
+
+  /// Returns the string notation for [tonalMode].
+  String tonalMode(TonalMode tonalMode);
+
+  /// Returns the string notation for [tonality].
+  String tonality(Tonality tonality) {
+    final note = tonality.note.toString(system: this);
+    final mode = tonality.mode.toString(system: this);
+
+    return '$note $mode';
+  }
+}
+
+/// The English alphabetic notation system.
+class EnglishNoteNotation extends NoteNotation {
+  /// Creates a new [EnglishNoteNotation].
+  const EnglishNoteNotation();
+
+  @override
+  String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
+
+  @override
+  String tonalMode(TonalMode tonalMode) => tonalMode.name;
+}
+
+/// The German alphabetic notation system.
+class GermanNoteNotation extends NoteNotation {
+  /// Creates a new [GermanNoteNotation].
+  const GermanNoteNotation();
+
+  @override
+  String note(Note note) => switch (note) {
+        Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
+        // Flattened notes.
+        final note when note.accidental.isFlat => switch (note.baseNote) {
+            BaseNote.a ||
+            BaseNote.e =>
+              '${note.baseNote.toString(system: this)}s'
+                  '${'es' * (note.accidental.semitones.abs() - 1)}',
+            final baseNote => '${baseNote.toString(system: this)}'
+                '${'es' * note.accidental.semitones.abs()}',
+          },
+        // Sharpened and natural notes.
+        final note => '${note.baseNote.toString(system: this)}'
+            '${'is' * note.accidental.semitones}',
+      };
+
+  @override
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.b => 'H',
+        final baseNote => baseNote.name.toUpperCase(),
+      };
+
+  @override
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'Dur',
+        TonalMode.minor => 'Moll',
+      };
+
+  @override
+  String tonality(Tonality tonality) {
+    final note = tonality.note.toString(system: this);
+    final mode = tonality.mode.toString(system: this);
+    final casedNote = switch (tonality.mode) {
+      TonalMode.minor => note.toLowerCase(),
+      _ => note,
+    };
+
+    return '$casedNote-$mode';
+  }
+}
+
+/// The Italian alphabetic notation system.
+class ItalianNoteNotation extends NoteNotation {
+  /// Creates a new [ItalianNoteNotation].
+  const ItalianNoteNotation();
+
+  @override
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.c => 'Do',
+        BaseNote.d => 'Re',
+        BaseNote.e => 'Mi',
+        BaseNote.f => 'Fa',
+        BaseNote.g => 'Sol',
+        BaseNote.a => 'La',
+        BaseNote.b => 'Si',
+      };
+
+  @override
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'maggiore',
+        TonalMode.minor => 'minore',
+      };
+}
+
+/// The French alphabetic notation system.
+class FrenchNoteNotation extends NoteNotation {
+  /// Creates a new [FrenchNoteNotation].
+  const FrenchNoteNotation();
+
+  @override
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.c => 'Ut',
+        BaseNote.d => 'Ré',
+        BaseNote.e => 'Mi',
+        BaseNote.f => 'Fa',
+        BaseNote.g => 'Sol',
+        BaseNote.a => 'La',
+        BaseNote.b => 'Si',
+      };
+
+  @override
+  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
+        TonalMode.major => 'majeur',
+        TonalMode.minor => 'mineur',
+      };
 }

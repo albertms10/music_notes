@@ -273,11 +273,10 @@ final class Interval implements Comparable<Interval> {
   /// Interval.m2.descending() == -Interval.m2
   /// Interval.M3.descending(isDescending: false) == Interval.M3
   /// (-Interval.P5).descending() == -Interval.P5
-  /// (-Interval.M7).descending(isDescending: false)
-  ///   == Interval.M7
+  /// (-Interval.M7).descending(isDescending: false) == Interval.M7
   /// ```
   Interval descending({bool isDescending = true}) =>
-      this.isDescending != isDescending ? -this : Interval._(size, quality);
+      Interval._(size * (this.isDescending == isDescending ? 1 : -1), quality);
 
   /// Returns the inverted of this [Interval].
   ///
@@ -342,7 +341,8 @@ final class Interval implements Comparable<Interval> {
   bool get isDissonant =>
       switch (quality) {
         PerfectQuality(:final semitones) => semitones != 0,
-        ImperfectQuality(:final semitones) => semitones < 0 && semitones > 1,
+        ImperfectQuality(:final semitones) =>
+          semitones.isNegative && semitones > 1,
       } ||
       const {2, 7}.contains(simplified.size.value.abs());
 
@@ -409,7 +409,8 @@ final class Interval implements Comparable<Interval> {
         [scalable],
         (circleItems, _) => [
           ...circleItems,
-          circleItems.last.transposeBy(distance.isNegative ? -this : this),
+          circleItems.last
+              .transposeBy(descending(isDescending: distance.isNegative)),
         ],
       );
 
@@ -417,11 +418,11 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.m2.toIntervalClass() == IntervalClass.m2
-  /// Interval.d4.toIntervalClass() == IntervalClass.M3
-  /// Interval.P8.toIntervalClass() == IntervalClass.P1
+  /// Interval.m2.toClass() == IntervalClass.m2
+  /// Interval.d4.toClass() == IntervalClass.M3
+  /// Interval.P8.toClass() == IntervalClass.P1
   /// ```
-  IntervalClass toIntervalClass() => IntervalClass(semitones);
+  IntervalClass toClass() => IntervalClass(semitones);
 
   /// Adds [other] to this [Interval].
   ///

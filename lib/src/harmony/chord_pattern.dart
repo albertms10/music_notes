@@ -5,6 +5,7 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [Chord].
+/// * [Interval].
 @immutable
 class ChordPattern with Chordable<ChordPattern> {
   /// The intervals from the root note.

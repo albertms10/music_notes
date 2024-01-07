@@ -14,8 +14,8 @@ final class Cent {
   /// Creates a new [Cent] from [value].
   const Cent(this.value);
 
-  /// The unit symbol for cent.
-  static const centUnitSymbol = '¢';
+  /// The unit symbol for [Cent].
+  static const unitSymbol = '¢';
 
   /// The number of cents in an [Interval.P8].
   static const int octaveCents = chromaticDivisions * 100;
@@ -24,7 +24,16 @@ final class Cent {
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
 
   @override
-  String toString() => '$value $centUnitSymbol';
+  String toString() => '$value $unitSymbol';
+
+  /// The negation of this [Cent].
+  ///
+  /// Example:
+  /// ```dart
+  /// -const Cent(24) == const Cent(-24)
+  /// -const Cent(-18.32) == const Cent(18.32)
+  /// ```
+  Cent operator -() => Cent(-value);
 
   @override
   bool operator ==(Object other) => other is Cent && value == other.value;

@@ -115,56 +115,56 @@ void main() {
       test(
         'should return the German string representation of this Tonality',
         () {
-          expect(Note.c.major.toString(system: NotationSystem.german), 'C-Dur');
+          expect(Note.c.major.toString(system: NoteNotation.german), 'C-Dur');
           expect(
-            Note.d.minor.toString(system: NotationSystem.german),
+            Note.d.minor.toString(system: NoteNotation.german),
             'd-Moll',
           );
           expect(
-            Note.a.flat.major.toString(system: NotationSystem.german),
+            Note.a.flat.major.toString(system: NoteNotation.german),
             'As-Dur',
           );
           expect(
-            Note.f.sharp.minor.toString(system: NotationSystem.german),
+            Note.f.sharp.minor.toString(system: NoteNotation.german),
             'fis-Moll',
           );
           expect(
-            Note.g.sharp.sharp.major.toString(system: NotationSystem.german),
+            Note.g.sharp.sharp.major.toString(system: NoteNotation.german),
             'Gisis-Dur',
           );
           expect(
-            Note.e.flat.flat.minor.toString(system: NotationSystem.german),
+            Note.e.flat.flat.minor.toString(system: NoteNotation.german),
             'eses-Moll',
           );
         },
       );
 
       test(
-        'should return the Catalan string representation of this Tonality',
+        'should return the Italian string representation of this Tonality',
         () {
           expect(
-            Note.c.major.toString(system: NotationSystem.catalan),
-            'Do major',
+            Note.c.major.toString(system: NoteNotation.italian),
+            'Do maggiore',
           );
           expect(
-            Note.d.minor.toString(system: NotationSystem.catalan),
-            'Re menor',
+            Note.d.minor.toString(system: NoteNotation.italian),
+            'Re minore',
           );
           expect(
-            Note.a.flat.major.toString(system: NotationSystem.catalan),
-            'La♭ major',
+            Note.a.flat.major.toString(system: NoteNotation.italian),
+            'La♭ maggiore',
           );
           expect(
-            Note.f.sharp.minor.toString(system: NotationSystem.catalan),
-            'Fa♯ menor',
+            Note.f.sharp.minor.toString(system: NoteNotation.italian),
+            'Fa♯ minore',
           );
           expect(
-            Note.g.sharp.sharp.major.toString(system: NotationSystem.catalan),
-            'Sol𝄪 major',
+            Note.g.sharp.sharp.major.toString(system: NoteNotation.italian),
+            'Sol𝄪 maggiore',
           );
           expect(
-            Note.e.flat.flat.minor.toString(system: NotationSystem.catalan),
-            'Mi𝄫 menor',
+            Note.e.flat.flat.minor.toString(system: NoteNotation.italian),
+            'Mi𝄫 minore',
           );
         },
       );
@@ -173,27 +173,27 @@ void main() {
         'should return the French string representation of this Tonality',
         () {
           expect(
-            Note.c.major.toString(system: NotationSystem.french),
+            Note.c.major.toString(system: NoteNotation.french),
             'Ut majeur',
           );
           expect(
-            Note.d.minor.toString(system: NotationSystem.french),
+            Note.d.minor.toString(system: NoteNotation.french),
             'Ré mineur',
           );
           expect(
-            Note.a.flat.major.toString(system: NotationSystem.french),
+            Note.a.flat.major.toString(system: NoteNotation.french),
             'La♭ majeur',
           );
           expect(
-            Note.f.sharp.minor.toString(system: NotationSystem.french),
+            Note.f.sharp.minor.toString(system: NoteNotation.french),
             'Fa♯ mineur',
           );
           expect(
-            Note.g.sharp.sharp.major.toString(system: NotationSystem.french),
+            Note.g.sharp.sharp.major.toString(system: NoteNotation.french),
             'Sol𝄪 majeur',
           );
           expect(
-            Note.e.flat.flat.minor.toString(system: NotationSystem.french),
+            Note.e.flat.flat.minor.toString(system: NoteNotation.french),
             'Mi𝄫 mineur',
           );
         },

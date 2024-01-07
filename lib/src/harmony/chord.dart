@@ -5,6 +5,8 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [ChordPattern].
+/// * [Scalable].
+/// * [Chordable].
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
@@ -88,7 +90,7 @@ class Chord<T extends Scalable<T>>
   Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
-  /// Returns a transposed [Chord] by [interval] from this [Chord].
+  /// Transposes this [Chord] by [interval].
   ///
   /// Example:
   /// ```dart
