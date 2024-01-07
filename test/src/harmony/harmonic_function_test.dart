@@ -51,16 +51,12 @@ void main() {
     group('.hashCode', () {
       test('should return the same hashCode for equal HarmonicFunctions', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          HarmonicFunction([ScaleDegree.i]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          HarmonicFunction([ScaleDegree.i]).hashCode,
+          HarmonicFunction.i.hashCode,
+          HarmonicFunction.i.hashCode,
         );
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          HarmonicFunction([ScaleDegree.neapolitanSixth]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          HarmonicFunction([ScaleDegree.neapolitanSixth]).hashCode,
+          HarmonicFunction.neapolitanSixth.hashCode,
+          HarmonicFunction.neapolitanSixth.hashCode,
         );
       });
 
@@ -77,6 +73,22 @@ void main() {
           );
         },
       );
+
+      test('should ignore equal HarmonicFunction instances in a Set', () {
+        final collection = {
+          HarmonicFunction.i,
+          HarmonicFunction.neapolitanSixth,
+          HarmonicFunction.iii,
+          HarmonicFunction.iv / HarmonicFunction.iv,
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), [
+          HarmonicFunction.i,
+          HarmonicFunction.neapolitanSixth,
+          HarmonicFunction.iii,
+          HarmonicFunction.iv / HarmonicFunction.iv,
+        ]);
+      });
     });
   });
 }
