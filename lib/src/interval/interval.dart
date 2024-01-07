@@ -163,17 +163,21 @@ final class Interval implements Comparable<Interval> {
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
-      // Copied from [_IntervalSize._isPerfect] to allow const.
+      // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
+          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
+                  4 <
+              2,
           'Interval must be perfect',
         );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
-      // Copied from [_IntervalSize._isPerfect] to allow const.
+      // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
+          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
+                  4 >=
+              2,
           'Interval must be imperfect',
         );
 

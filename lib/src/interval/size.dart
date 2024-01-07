@@ -109,4 +109,14 @@ extension type const Size._(int value) implements int {
   /// ```
   Size get simplified =>
       Size(isCompound ? _sizeAbsShift.nonZeroMod(8) * value.sign : value);
+
+  /// The negation of this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// -Size.fifth == const Size(-5)
+  /// -const Size(-7) == Size.seventh
+  /// ```
+  @redeclare
+  Size operator -() => Size(-value);
 }

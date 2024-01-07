@@ -7,7 +7,7 @@ import 'dart:math' as math show log, pow;
 
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality;
-import 'package:meta/meta.dart' show immutable;
+import 'package:meta/meta.dart' show immutable, redeclare;
 
 import 'utils/int_extension.dart';
 import 'utils/iterable_extension.dart';
