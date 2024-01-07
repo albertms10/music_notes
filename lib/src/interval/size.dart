@@ -109,22 +109,4 @@ extension type const Size._(int value) implements int {
   /// ```
   Size get simplified =>
       isCompound ? Size(_sizeAbsShift.nonZeroMod(8) * value.sign) : this;
-
-  /// Whether this [Size] is numerically smaller than [other].
-  bool operator <(num other) => value < other;
-
-  /// Returns the inverted (negative) value of this [Size].
-  Size operator -() => Size(-value);
-
-  /// Adds [other] to this [Size].
-  Size operator +(Size other) => Size(value + other.value);
-
-  /// Euclidean modulo of this [Size] by [other].
-  num operator %(num other) => value % other;
-
-  /// Truncating division operator.
-  Size operator ~/(num other) => Size(value ~/ other);
-
-  /// Compares this [Size] to other.
-  int compareTo(Size other) => value.compareTo(other.value);
 }
