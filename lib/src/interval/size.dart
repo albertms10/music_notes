@@ -102,11 +102,11 @@ extension type const Size._(int value) implements int {
   ///
   /// Example:
   /// ```dart
-  /// const Size.thirteenth.simplified == 6
-  /// const Size(-9).simplified == -2
-  /// const Size.octave.simplified == 8
-  /// const Size(-22).simplified == -8
+  /// const Size.thirteenth.simplified == Size.sixth
+  /// const Size(-9).simplified == Size(-2)
+  /// const Size.octave.simplified == Size.octave
+  /// const Size(-22).simplified == Size(-8)
   /// ```
   Size get simplified =>
-      isCompound ? Size(_sizeAbsShift.nonZeroMod(8) * value.sign) : this;
+      Size(isCompound ? _sizeAbsShift.nonZeroMod(8) * value.sign : value);
 }
