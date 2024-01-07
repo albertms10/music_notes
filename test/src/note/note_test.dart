@@ -53,23 +53,24 @@ void main() {
       test(
         'should return the difference in semitones with another Note',
         () {
+          expect(Note.d.difference(Note.a.flat), -6);
+          expect(Note.e.flat.difference(Note.b.flat), -5);
+          expect(Note.d.sharp.difference(Note.a.sharp), -5);
+          expect(Note.d.difference(Note.a.sharp), -4);
+          expect(Note.c.sharp.difference(Note.b.flat), -3);
+          expect(Note.c.sharp.difference(Note.b), -2);
+          expect(Note.d.flat.difference(Note.b), -2);
+          expect(Note.c.difference(Note.b), -1);
           expect(Note.c.difference(Note.c), 0);
           expect(Note.e.sharp.difference(Note.f), 0);
           expect(Note.c.difference(Note.d.flat), 1);
           expect(Note.c.difference(Note.c.sharp), 1);
-          expect(Note.b.difference(Note.c), -11);
+          expect(Note.b.difference(Note.c), 1);
           expect(Note.f.difference(Note.g), 2);
           expect(Note.f.difference(Note.a.flat), 3);
           expect(Note.e.difference(Note.a.flat), 4);
-          expect(Note.a.difference(Note.d), -7);
-          expect(Note.d.difference(Note.a.flat), 6);
-          expect(Note.e.flat.difference(Note.b.flat), 7);
-          expect(Note.d.sharp.difference(Note.a.sharp), 7);
-          expect(Note.d.difference(Note.a.sharp), 8);
-          expect(Note.c.sharp.difference(Note.b.flat), 9);
-          expect(Note.c.sharp.difference(Note.b), 10);
-          expect(Note.d.flat.difference(Note.b), 10);
-          expect(Note.c.difference(Note.b), 11);
+          expect(Note.a.difference(Note.d), 5);
+          expect(Note.a.difference(Note.d.sharp), 6);
         },
       );
     });
@@ -528,7 +529,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should return this Note transposed by Interval', () {
+      test('should transpose this Note by Interval', () {
         expect(Note.c.transposeBy(Interval.d1), Note.c.flat);
         expect(Note.c.transposeBy(-Interval.d1), Note.c.sharp);
         expect(Note.c.transposeBy(Interval.P1), Note.c);
@@ -624,13 +625,13 @@ void main() {
       });
     });
 
-    group('.toPitchClass()', () {
+    group('.toClass()', () {
       test('should create a new PitchClass from semitones', () {
-        expect(Note.c.toPitchClass(), PitchClass.c);
-        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+        expect(Note.c.toClass(), PitchClass.c);
+        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
       });
     });
 
@@ -647,122 +648,122 @@ void main() {
 
       test('should return the German string representation of this Note', () {
         expect(
-          Note.c.flat.flat.toString(system: NotationSystem.german),
+          Note.c.flat.flat.toString(system: NoteNotation.german),
           'Ceses',
         );
-        expect(Note.c.flat.toString(system: NotationSystem.german), 'Ces');
-        expect(Note.c.toString(system: NotationSystem.german), 'C');
-        expect(Note.c.sharp.toString(system: NotationSystem.german), 'Cis');
+        expect(Note.c.flat.toString(system: NoteNotation.german), 'Ces');
+        expect(Note.c.toString(system: NoteNotation.german), 'C');
+        expect(Note.c.sharp.toString(system: NoteNotation.german), 'Cis');
         expect(
-          Note.c.sharp.sharp.toString(system: NotationSystem.german),
+          Note.c.sharp.sharp.toString(system: NoteNotation.german),
           'Cisis',
         );
 
         expect(
-          Note.d.flat.flat.toString(system: NotationSystem.german),
+          Note.d.flat.flat.toString(system: NoteNotation.german),
           'Deses',
         );
-        expect(Note.d.flat.toString(system: NotationSystem.german), 'Des');
-        expect(Note.d.toString(system: NotationSystem.german), 'D');
-        expect(Note.d.sharp.toString(system: NotationSystem.german), 'Dis');
+        expect(Note.d.flat.toString(system: NoteNotation.german), 'Des');
+        expect(Note.d.toString(system: NoteNotation.german), 'D');
+        expect(Note.d.sharp.toString(system: NoteNotation.german), 'Dis');
         expect(
-          Note.d.sharp.sharp.toString(system: NotationSystem.german),
+          Note.d.sharp.sharp.toString(system: NoteNotation.german),
           'Disis',
         );
 
         expect(
-          Note.e.flat.flat.toString(system: NotationSystem.german),
+          Note.e.flat.flat.toString(system: NoteNotation.german),
           'Eses',
         );
-        expect(Note.e.flat.toString(system: NotationSystem.german), 'Es');
-        expect(Note.e.toString(system: NotationSystem.german), 'E');
-        expect(Note.e.sharp.toString(system: NotationSystem.german), 'Eis');
+        expect(Note.e.flat.toString(system: NoteNotation.german), 'Es');
+        expect(Note.e.toString(system: NoteNotation.german), 'E');
+        expect(Note.e.sharp.toString(system: NoteNotation.german), 'Eis');
         expect(
-          Note.e.sharp.sharp.toString(system: NotationSystem.german),
+          Note.e.sharp.sharp.toString(system: NoteNotation.german),
           'Eisis',
         );
 
         expect(
-          Note.f.flat.flat.toString(system: NotationSystem.german),
+          Note.f.flat.flat.toString(system: NoteNotation.german),
           'Feses',
         );
-        expect(Note.f.flat.toString(system: NotationSystem.german), 'Fes');
-        expect(Note.f.toString(system: NotationSystem.german), 'F');
-        expect(Note.f.sharp.toString(system: NotationSystem.german), 'Fis');
+        expect(Note.f.flat.toString(system: NoteNotation.german), 'Fes');
+        expect(Note.f.toString(system: NoteNotation.german), 'F');
+        expect(Note.f.sharp.toString(system: NoteNotation.german), 'Fis');
         expect(
-          Note.f.sharp.sharp.toString(system: NotationSystem.german),
+          Note.f.sharp.sharp.toString(system: NoteNotation.german),
           'Fisis',
         );
 
         expect(
-          Note.g.flat.flat.toString(system: NotationSystem.german),
+          Note.g.flat.flat.toString(system: NoteNotation.german),
           'Geses',
         );
-        expect(Note.g.flat.toString(system: NotationSystem.german), 'Ges');
-        expect(Note.g.toString(system: NotationSystem.german), 'G');
-        expect(Note.g.sharp.toString(system: NotationSystem.german), 'Gis');
+        expect(Note.g.flat.toString(system: NoteNotation.german), 'Ges');
+        expect(Note.g.toString(system: NoteNotation.german), 'G');
+        expect(Note.g.sharp.toString(system: NoteNotation.german), 'Gis');
         expect(
-          Note.g.sharp.sharp.toString(system: NotationSystem.german),
+          Note.g.sharp.sharp.toString(system: NoteNotation.german),
           'Gisis',
         );
 
         expect(
-          Note.a.flat.flat.toString(system: NotationSystem.german),
+          Note.a.flat.flat.toString(system: NoteNotation.german),
           'Ases',
         );
-        expect(Note.a.flat.toString(system: NotationSystem.german), 'As');
-        expect(Note.a.toString(system: NotationSystem.german), 'A');
-        expect(Note.a.sharp.toString(system: NotationSystem.german), 'Ais');
+        expect(Note.a.flat.toString(system: NoteNotation.german), 'As');
+        expect(Note.a.toString(system: NoteNotation.german), 'A');
+        expect(Note.a.sharp.toString(system: NoteNotation.german), 'Ais');
         expect(
-          Note.a.sharp.sharp.toString(system: NotationSystem.german),
+          Note.a.sharp.sharp.toString(system: NoteNotation.german),
           'Aisis',
         );
 
         expect(
-          Note.b.flat.flat.toString(system: NotationSystem.german),
+          Note.b.flat.flat.toString(system: NoteNotation.german),
           'Heses',
         );
-        expect(Note.b.flat.toString(system: NotationSystem.german), 'B');
-        expect(Note.b.toString(system: NotationSystem.german), 'H');
-        expect(Note.b.sharp.toString(system: NotationSystem.german), 'His');
+        expect(Note.b.flat.toString(system: NoteNotation.german), 'B');
+        expect(Note.b.toString(system: NoteNotation.german), 'H');
+        expect(Note.b.sharp.toString(system: NoteNotation.german), 'His');
         expect(
-          Note.b.sharp.sharp.toString(system: NotationSystem.german),
+          Note.b.sharp.sharp.toString(system: NoteNotation.german),
           'Hisis',
         );
       });
 
-      test('should return the Catalan string representation of this Note', () {
-        expect(Note.c.toString(system: NotationSystem.catalan), 'Do');
-        expect(Note.c.sharp.toString(system: NotationSystem.catalan), 'Do♯');
-        expect(Note.d.toString(system: NotationSystem.catalan), 'Re');
-        expect(Note.d.flat.toString(system: NotationSystem.catalan), 'Re♭');
-        expect(Note.e.toString(system: NotationSystem.catalan), 'Mi');
-        expect(Note.b.flat.toString(system: NotationSystem.catalan), 'Si♭');
-        expect(Note.f.sharp.toString(system: NotationSystem.catalan), 'Fa♯');
+      test('should return the Italian string representation of this Note', () {
+        expect(Note.c.toString(system: NoteNotation.italian), 'Do');
+        expect(Note.c.sharp.toString(system: NoteNotation.italian), 'Do♯');
+        expect(Note.d.toString(system: NoteNotation.italian), 'Re');
+        expect(Note.d.flat.toString(system: NoteNotation.italian), 'Re♭');
+        expect(Note.e.toString(system: NoteNotation.italian), 'Mi');
+        expect(Note.b.flat.toString(system: NoteNotation.italian), 'Si♭');
+        expect(Note.f.sharp.toString(system: NoteNotation.italian), 'Fa♯');
         expect(
-          Note.a.sharp.sharp.toString(system: NotationSystem.catalan),
+          Note.a.sharp.sharp.toString(system: NoteNotation.italian),
           'La𝄪',
         );
         expect(
-          Note.g.flat.flat.toString(system: NotationSystem.catalan),
+          Note.g.flat.flat.toString(system: NoteNotation.italian),
           'Sol𝄫',
         );
       });
 
       test('should return the French string representation of this Note', () {
-        expect(Note.c.toString(system: NotationSystem.french), 'Ut');
-        expect(Note.c.sharp.toString(system: NotationSystem.french), 'Ut♯');
-        expect(Note.d.toString(system: NotationSystem.french), 'Ré');
-        expect(Note.d.flat.toString(system: NotationSystem.french), 'Ré♭');
-        expect(Note.e.toString(system: NotationSystem.french), 'Mi');
-        expect(Note.b.flat.toString(system: NotationSystem.french), 'Si♭');
-        expect(Note.f.sharp.toString(system: NotationSystem.french), 'Fa♯');
+        expect(Note.c.toString(system: NoteNotation.french), 'Ut');
+        expect(Note.c.sharp.toString(system: NoteNotation.french), 'Ut♯');
+        expect(Note.d.toString(system: NoteNotation.french), 'Ré');
+        expect(Note.d.flat.toString(system: NoteNotation.french), 'Ré♭');
+        expect(Note.e.toString(system: NoteNotation.french), 'Mi');
+        expect(Note.b.flat.toString(system: NoteNotation.french), 'Si♭');
+        expect(Note.f.sharp.toString(system: NoteNotation.french), 'Fa♯');
         expect(
-          Note.a.sharp.sharp.toString(system: NotationSystem.french),
+          Note.a.sharp.sharp.toString(system: NoteNotation.french),
           'La𝄪',
         );
         expect(
-          Note.g.flat.flat.toString(system: NotationSystem.french),
+          Note.g.flat.flat.toString(system: NoteNotation.french),
           'Sol𝄫',
         );
       });

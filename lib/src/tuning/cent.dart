@@ -15,4 +15,13 @@ extension type const Cent(num value) implements num {
 
   /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
+
+  /// The negation of this [Cent].
+  ///
+  /// Example:
+  /// ```dart
+  /// -const Cent(24) == const Cent(-24)
+  /// -const Cent(-18.32) == const Cent(18.32)
+  /// ```
+  Cent operator -() => Cent(-value);
 }

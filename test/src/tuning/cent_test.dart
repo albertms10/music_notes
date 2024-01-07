@@ -13,5 +13,12 @@ void main() {
         expect(const Cent(1200).ratio, const Ratio(2));
       });
     });
+
+    group('operator -()', () {
+      test('should return the negation of this Cent', () {
+        expect(-const Cent(100), const Cent(-100));
+        expect(-const Cent(-701.955), const Cent(701.955));
+      });
+    });
   });
 }

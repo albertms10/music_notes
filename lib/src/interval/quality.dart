@@ -6,6 +6,8 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [Interval].
+/// * [PerfectQuality].
+/// * [ImperfectQuality].
 @immutable
 sealed class Quality implements Comparable<Quality> {
   /// Delta semitones from the [Interval].

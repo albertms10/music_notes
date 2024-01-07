@@ -7,8 +7,9 @@ part of '../../music_notes.dart';
 /// * [Note].
 /// * [PitchClass].
 /// * [Frequency].
+/// * [ClosestPitch].
 @immutable
-final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
+final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// The note inside the octave.
   final Note note;
 
@@ -99,6 +100,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   /// Note.c.inOctave(4).semitones == 48
   /// Note.c.inOctave(0).semitones == 0
   /// ```
+  @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
   /// Returns the difference in semitones between this [Pitch] and
@@ -293,8 +295,7 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
-  /// Returns a transposed [Pitch] by [interval] from this
-  /// [Pitch].
+  /// Transposes this [Pitch] by [interval].
   ///
   /// Example:
   /// ```dart
@@ -369,43 +370,40 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
   }) =>
       referenceFrequency * tuningSystem.ratio(this).value;
 
-  /// Returns the string representation of this [Pitch] following the
-  /// [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+  /// Returns the string representation of this [Pitch] based on [system].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(4).scientificName == 'C4'
-  /// Note.a.inOctave(3).scientificName == 'A3'
-  /// Note.b.flat.inOctave(1).scientificName == 'B♭1'
-  /// ```
-  String get scientificName => '${note.baseNote}'
-      '${note.accidental != Accidental.natural ? note.accidental.symbol : ''}'
-      '$octave';
-
-  /// Returns the string representation of this [Pitch] following
-  /// [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+  /// Note.c.inOctave(4).toString() == 'C4'
+  /// Note.a.inOctave(3).toString() == 'A3'
+  /// Note.b.flat.inOctave(1).toString() == 'B♭1'
   ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4).helmholtzName == 'c′'
-  /// Note.a.inOctave(3).helmholtzName == 'a'
-  /// Note.b.flat.inOctave(1).helmholtzName == 'B♭͵'
+  /// Note.c.inOctave(4).toString(system: PitchNotation.helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(system: PitchNotation.helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz)
+  ///   == 'B♭͵'
   /// ```
-  String get helmholtzName {
-    final accidentalSymbol =
-        note.accidental != Accidental.natural ? note.accidental.symbol : '';
-
-    if (octave >= 3) {
-      return '${note.baseNote.name}$accidentalSymbol'
-          '${_superPrime * (octave - 3)}';
-    }
-
-    return '${note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${_subPrime * (octave - 2).abs()}';
-  }
-
   @override
-  String toString() => scientificName;
+  String toString({PitchNotation system = PitchNotation.scientific}) =>
+      system.pitch(this);
+
+  /// Adds [cents] to this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).toString() == 'F♯4+4'
+  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).toString() == 'E♭3-28'
+  /// ```
+  ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
+
+  /// Subtracts [cents] from this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).toString() == 'G♭5-16'
+  /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
+  /// ```
+  ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
 
   @override
   bool operator ==(Object other) =>
@@ -419,4 +417,53 @@ final class Pitch implements Comparable<Pitch>, Scalable<Pitch> {
         () => octave.compareTo(other.octave),
         () => note.compareTo(other.note),
       ]);
+}
+
+/// Pitch notation systems.
+abstract class PitchNotation {
+  /// Creates a new [PitchNotation].
+  const PitchNotation();
+
+  /// The scientific [PitchNotation] system.
+  static const scientific = ScientificPitchNotation();
+
+  /// The Helmholtz [PitchNotation] system.
+  static const helmholtz = HelmholtzPitchNotation();
+
+  /// Returns the string representation for [pitch].
+  String pitch(Pitch pitch);
+}
+
+/// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+class ScientificPitchNotation extends PitchNotation {
+  /// Creates a new [ScientificPitchNotation].
+  const ScientificPitchNotation();
+
+  @override
+  String pitch(Pitch pitch) {
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
+
+    return '${pitch.note.baseNote}$accidental${pitch.octave}';
+  }
+}
+
+/// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+class HelmholtzPitchNotation extends PitchNotation {
+  /// Creates a new [HelmholtzPitchNotation].
+  const HelmholtzPitchNotation();
+
+  @override
+  String pitch(Pitch pitch) {
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
+
+    if (pitch.octave >= 3) {
+      return '${pitch.note.baseNote.name}$accidental'
+          '${Pitch._superPrime * (pitch.octave - 3)}';
+    }
+
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidental'
+        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+  }
 }
