@@ -60,10 +60,10 @@ extension type const Size._(int value) implements int {
   /// ```
   int get semitones {
     final simplifiedAbs = simplified.value.abs();
-    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
+    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ Size.octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
-    // them 0 (as if they were modulo 8).
-    final size = Size(simplifiedAbs == 8 ? 1 : simplifiedAbs);
+    // them 0 (as if they were modulo `Size.octave`).
+    final size = Size(simplifiedAbs == Size.octave ? 1 : simplifiedAbs);
 
     return (Interval._sizeToSemitones[size]! + octaveShift) * value.sign;
   }
@@ -72,7 +72,7 @@ extension type const Size._(int value) implements int {
   int get _sizeAbsShift {
     final sizeAbs = value.abs();
 
-    return sizeAbs + sizeAbs ~/ 8;
+    return sizeAbs + sizeAbs ~/ Size.octave;
   }
 
   /// Returns whether this [Size] conforms a perfect interval.
@@ -83,7 +83,7 @@ extension type const Size._(int value) implements int {
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => _sizeAbsShift % 4 < 2;
+  bool get isPerfect => _sizeAbsShift % (Size.octave / 2) < 2;
 
   /// Returns whether this [Size] is greater than an octave.
   ///
@@ -96,7 +96,7 @@ extension type const Size._(int value) implements int {
   /// (-Size.eleventh).isCompound == true
   /// Size.thirteenth.isCompound == true
   /// ```
-  bool get isCompound => value.abs() > 8;
+  bool get isCompound => value.abs() > Size.octave;
 
   /// Returns the simplified version of this [Size].
   ///
@@ -107,8 +107,9 @@ extension type const Size._(int value) implements int {
   /// Size.octave.simplified == Size.octave
   /// const Size(-22).simplified == Size(-8)
   /// ```
-  Size get simplified =>
-      Size(isCompound ? _sizeAbsShift.nonZeroMod(8) * value.sign : value);
+  Size get simplified => Size(
+        isCompound ? _sizeAbsShift.nonZeroMod(Size.octave) * value.sign : value,
+      );
 
   /// The negation of this [Size].
   ///
