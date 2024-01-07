@@ -5,7 +5,7 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
-extension type const Ratio._(num value) {
+extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)
       : assert(value > 0, 'Value must be positive, non-zero');
