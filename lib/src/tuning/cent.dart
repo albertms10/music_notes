@@ -23,5 +23,6 @@ extension type const Cent(num value) implements num {
   /// -const Cent(24) == const Cent(-24)
   /// -const Cent(-18.32) == const Cent(18.32)
   /// ```
+  @redeclare
   Cent operator -() => Cent(-value);
 }
