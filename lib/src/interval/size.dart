@@ -1,7 +1,7 @@
 part of '../../music_notes.dart';
 
 /// An [Interval] size.
-extension type const Size._(int value) {
+extension type const Size._(int value) implements int {
   /// Creates a new [Size] from [value].
   const Size(this.value): assert(value != 0, 'Value must be non-zero');
 
