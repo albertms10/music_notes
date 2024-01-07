@@ -7,8 +7,8 @@ part of '../../music_notes.dart';
 /// See also:
 /// * [TuningSystem].
 extension type const Cent(num value) implements num {
-  /// The unit symbol for cent.
-  static const centUnitSymbol = '¢';
+  /// The unit symbol for [Cent].
+  static const unitSymbol = '¢';
 
   /// The number of cents in an [Interval.P8].
   static const int octaveCents = chromaticDivisions * 100;
