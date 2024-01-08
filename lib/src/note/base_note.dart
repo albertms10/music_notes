@@ -140,7 +140,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// BaseNote.a.transposeBySize(-3) == BaseNote.f
   /// ```
   BaseNote transposeBySize(Size size) =>
-      BaseNote.fromOrdinal(ordinal + size.value.incrementBy(-1));
+      BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>

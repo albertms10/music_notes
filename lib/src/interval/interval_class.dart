@@ -73,9 +73,9 @@ final class IntervalClass implements Comparable<IntervalClass> {
       return SplayTreeSet<Interval>.of({
         Interval.fromSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
-          if (size.value.incrementBy(-i) != 0)
-            Interval.fromSemitones(Size(size.value.incrementBy(-i)), semitones),
-          Interval.fromSemitones(Size(size.value.incrementBy(i)), semitones),
+          if (size.incrementBy(-i) != 0)
+            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
+          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }

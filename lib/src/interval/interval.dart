@@ -193,7 +193,7 @@ final class Interval implements Comparable<Interval> {
   factory Interval.fromSemitones(Size size, int semitones) =>
       Interval.fromQualityDelta(
         size,
-        semitones * size.value.sign - size.semitones.abs(),
+        semitones * size.sign - size.semitones.abs(),
       );
 
   /// Parse [source] as an [Interval] and return its value.
@@ -239,11 +239,11 @@ final class Interval implements Comparable<Interval> {
     );
     if (matchingSize == null) return null;
     if (absoluteSemitones == chromaticDivisions) {
-      return Size(matchingSize.value * semitones.sign);
+      return Size(matchingSize * semitones.sign);
     }
 
     final absResult =
-        matchingSize.value + (absoluteSemitones ~/ chromaticDivisions) * 7;
+        matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
 
     return Size(absResult * semitones.nonZeroSign);
   }
@@ -257,8 +257,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.semitones == 6
   /// (-Interval.M3).semitones == -4
   /// ```
-  int get semitones =>
-      (size.semitones.abs() + quality.semitones) * size.value.sign;
+  int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
   /// Whether this [Interval] is descending.
   ///
@@ -268,7 +267,7 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P4).isDescending == true
   /// Interval.d1.isDescending == false
   /// ```
-  bool get isDescending => size.value.isNegative;
+  bool get isDescending => size.isNegative;
 
   /// Returns a copy of this [Interval] based on [isDescending].
   ///
@@ -279,8 +278,10 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P5).descending() == -Interval.P5
   /// (-Interval.M7).descending(isDescending: false) == Interval.M7
   /// ```
-  Interval descending({bool isDescending = true}) =>
-      Interval._(size * (this.isDescending == isDescending ? 1 : -1), quality);
+  Interval descending({bool isDescending = true}) => Interval._(
+        Size(size * (this.isDescending == isDescending ? 1 : -1)),
+        quality,
+      );
 
   /// Returns the inverted of this [Interval].
   ///
@@ -301,9 +302,9 @@ final class Interval implements Comparable<Interval> {
   /// Interval.P11.inverted == Interval.P5
   /// ```
   Interval get inverted {
-    final diff = 9 - simplified.size.value.abs();
+    final diff = 9 - simplified.size.abs();
     final invertedSize =
-        Size((diff.isNegative ? diff.abs() + 2 : diff) * size.value.sign);
+        Size((diff.isNegative ? diff.abs() + 2 : diff) * size.sign);
 
     return Interval._(invertedSize, quality.inverted);
   }
@@ -348,7 +349,7 @@ final class Interval implements Comparable<Interval> {
         ImperfectQuality(:final semitones) =>
           semitones.isNegative && semitones > 1,
       } ||
-      const {2, 7}.contains(simplified.size.value.abs());
+      const {2, 7}.contains(simplified.size.abs());
 
   /// Returns this [Interval] respelled by [size] while keeping the same
   /// number of [semitones].
@@ -454,11 +455,11 @@ final class Interval implements Comparable<Interval> {
 
   @override
   String toString() {
-    final naming = '${quality.abbreviation}${size.value.abs()}';
+    final naming = '${quality.abbreviation}${size.abs()}';
     final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (isCompound) {
       return '$descendingAbbreviation$naming '
-          '(${quality.abbreviation}${simplified.size.value.abs()})';
+          '(${quality.abbreviation}${simplified.size.abs()})';
     }
 
     return '$descendingAbbreviation$naming';
