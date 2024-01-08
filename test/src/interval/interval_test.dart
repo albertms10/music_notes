@@ -8,12 +8,11 @@ void main() {
     group('constructor', () {
       test('should throw an assertion error when arguments are incorrect', () {
         expect(
-          () => const Interval.perfect(Size.second, PerfectQuality.diminished),
+          () => Interval.perfect(Size.second, PerfectQuality.diminished),
           throwsA(isA<AssertionError>()),
         );
         expect(
-          () =>
-              const Interval.imperfect(Size.fifth, ImperfectQuality.augmented),
+          () => Interval.imperfect(Size.fifth, ImperfectQuality.augmented),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -275,7 +274,7 @@ void main() {
             isFalse,
           );
 
-          const descendingInterval = -Interval.m3;
+          final descendingInterval = -Interval.m3;
           expect(
             identical(descendingInterval.descending(), descendingInterval),
             isFalse,
