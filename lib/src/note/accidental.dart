@@ -18,36 +18,36 @@ final class Accidental implements Comparable<Accidental> {
   const Accidental(this.semitones);
 
   /// A triple sharp [Accidental].
-  static const Accidental tripleSharp = Accidental(3);
+  static const tripleSharp = Accidental(3);
 
   /// A double sharp [Accidental].
-  static const Accidental doubleSharp = Accidental(2);
+  static const doubleSharp = Accidental(2);
 
   /// A sharp [Accidental].
-  static const Accidental sharp = Accidental(1);
+  static const sharp = Accidental(1);
 
   /// A natural [Accidental].
-  static const Accidental natural = Accidental(0);
+  static const natural = Accidental(0);
 
   /// A flat [Accidental].
-  static const Accidental flat = Accidental(-1);
+  static const flat = Accidental(-1);
 
   /// A double flat [Accidental].
-  static const Accidental doubleFlat = Accidental(-2);
+  static const doubleFlat = Accidental(-2);
 
   /// A triple flat [Accidental].
-  static const Accidental tripleFlat = Accidental(-3);
+  static const tripleFlat = Accidental(-3);
 
-  static const String _doubleSharpSymbol = '𝄪';
-  static const String _doubleSharpSymbolAlt = 'x';
-  static const String _sharpSymbol = '♯';
-  static const String _sharpSymbolAlt = '#';
-  static const String _naturalSymbol = '♮';
-  static const String _flatSymbol = '♭';
-  static const String _flatSymbolAlt = 'b';
-  static const String _doubleFlatSymbol = '𝄫';
+  static const _doubleSharpSymbol = '𝄪';
+  static const _doubleSharpSymbolAlt = 'x';
+  static const _sharpSymbol = '♯';
+  static const _sharpSymbolAlt = '#';
+  static const _naturalSymbol = '♮';
+  static const _flatSymbol = '♭';
+  static const _flatSymbolAlt = 'b';
+  static const _doubleFlatSymbol = '𝄫';
 
-  static const List<String> _symbols = [
+  static const _symbols = [
     _doubleSharpSymbol,
     _doubleSharpSymbolAlt,
     _sharpSymbol,

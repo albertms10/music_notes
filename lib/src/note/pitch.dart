@@ -19,12 +19,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Creates a new [Pitch] from [note] and [octave].
   const Pitch(this.note, {required this.octave});
 
-  static const String _superPrime = '′';
-  static const String _superPrimeAlt = "'";
-  static const String _subPrime = '͵';
-  static const String _subPrimeAlt = ',';
+  static const _superPrime = '′';
+  static const _superPrimeAlt = "'";
+  static const _subPrime = '͵';
+  static const _subPrimeAlt = ',';
 
-  static const List<String> _primeSymbols = [
+  static const _primeSymbols = [
     _superPrime,
     _superPrimeAlt,
     _subPrime,
