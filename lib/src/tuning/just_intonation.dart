@@ -42,8 +42,8 @@ class PythagoreanTuning extends JustIntonation {
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
       ratio *= distance.isNegative
-          ? JustIntonation.ascendingFourthRatio.value
-          : JustIntonation.ascendingFifthRatio.value;
+          ? JustIntonation.ascendingFourthRatio
+          : JustIntonation.ascendingFifthRatio;
       // When ratio is larger than 2, so larger than an octave, divide by 2 to
       // transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
