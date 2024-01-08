@@ -18,7 +18,7 @@ final class Cent {
   static const unitSymbol = '¢';
 
   /// The number of cents in an [Interval.P8].
-  static const int octaveCents = chromaticDivisions * 100;
+  static const octaveCents = chromaticDivisions * 100;
 
   /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
