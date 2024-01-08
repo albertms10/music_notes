@@ -51,25 +51,25 @@ class PerfectQuality extends Quality {
   const PerfectQuality(super.semitones);
 
   /// A triply diminished [PerfectQuality].
-  static const PerfectQuality triplyDiminished = PerfectQuality(-3);
+  static const triplyDiminished = PerfectQuality(-3);
 
   /// A doubly diminished [PerfectQuality].
-  static const PerfectQuality doublyDiminished = PerfectQuality(-2);
+  static const doublyDiminished = PerfectQuality(-2);
 
   /// A diminished [PerfectQuality].
-  static const PerfectQuality diminished = PerfectQuality(-1);
+  static const diminished = PerfectQuality(-1);
 
   /// A perfect [PerfectQuality].
-  static const PerfectQuality perfect = PerfectQuality(0);
+  static const perfect = PerfectQuality(0);
 
   /// An augmented [PerfectQuality].
-  static const PerfectQuality augmented = PerfectQuality(1);
+  static const augmented = PerfectQuality(1);
 
   /// A doubly augmented [PerfectQuality].
-  static const PerfectQuality doublyAugmented = PerfectQuality(2);
+  static const doublyAugmented = PerfectQuality(2);
 
   /// A triply augmented [PerfectQuality].
-  static const PerfectQuality triplyAugmented = PerfectQuality(3);
+  static const triplyAugmented = PerfectQuality(3);
 
   static final RegExp _perfectQualityRegExp = RegExp(r'^(d+|P|A+)$');
 
@@ -130,28 +130,28 @@ class ImperfectQuality extends Quality {
   const ImperfectQuality(super.semitones);
 
   /// A triply diminished [ImperfectQuality].
-  static const ImperfectQuality triplyDiminished = ImperfectQuality(-3);
+  static const triplyDiminished = ImperfectQuality(-3);
 
   /// A doubly diminished [ImperfectQuality].
-  static const ImperfectQuality doublyDiminished = ImperfectQuality(-2);
+  static const doublyDiminished = ImperfectQuality(-2);
 
   /// A diminished [ImperfectQuality].
-  static const ImperfectQuality diminished = ImperfectQuality(-1);
+  static const diminished = ImperfectQuality(-1);
 
   /// A minor [ImperfectQuality].
-  static const ImperfectQuality minor = ImperfectQuality(0);
+  static const minor = ImperfectQuality(0);
 
   /// A major [ImperfectQuality].
-  static const ImperfectQuality major = ImperfectQuality(1);
+  static const major = ImperfectQuality(1);
 
   /// An augmented [ImperfectQuality].
-  static const ImperfectQuality augmented = ImperfectQuality(2);
+  static const augmented = ImperfectQuality(2);
 
   /// A doubly augmented [ImperfectQuality].
-  static const ImperfectQuality doublyAugmented = ImperfectQuality(3);
+  static const doublyAugmented = ImperfectQuality(3);
 
   /// A triply augmented [ImperfectQuality].
-  static const ImperfectQuality triplyAugmented = ImperfectQuality(4);
+  static const triplyAugmented = ImperfectQuality(4);
 
   static final RegExp _imperfectQualityRegExp = RegExp(r'^(d+|m|M|A+)$');
 

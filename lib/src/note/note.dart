@@ -21,25 +21,25 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   const Note(this.baseNote, [this.accidental = Accidental.natural]);
 
   /// Note C.
-  static const Note c = Note(BaseNote.c);
+  static const c = Note(BaseNote.c);
 
   /// Note D.
-  static const Note d = Note(BaseNote.d);
+  static const d = Note(BaseNote.d);
 
   /// Note E.
-  static const Note e = Note(BaseNote.e);
+  static const e = Note(BaseNote.e);
 
   /// Note F.
-  static const Note f = Note(BaseNote.f);
+  static const f = Note(BaseNote.f);
 
   /// Note G.
-  static const Note g = Note(BaseNote.g);
+  static const g = Note(BaseNote.g);
 
   /// Note A.
-  static const Note a = Note(BaseNote.a);
+  static const a = Note(BaseNote.a);
 
   /// Note B.
-  static const Note b = Note(BaseNote.b);
+  static const b = Note(BaseNote.b);
 
   /// Parse [source] as a [Note] and return its value.
   ///

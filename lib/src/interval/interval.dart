@@ -148,7 +148,7 @@ final class Interval implements Comparable<Interval> {
 
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
-  static const Map<Size, int> _sizeToSemitones = {
+  static const _sizeToSemitones = {
     Size.unison: 0, // P
     Size.second: 1, // m
     Size.third: 3, // m
