@@ -67,7 +67,7 @@ class EqualTemperament extends TuningSystem {
       ratioFromSemitones(referencePitch.difference(note));
 
   @override
-  Cent get generator => Cent(cents.closestTo(const Cent(700)));
+  Cent get generator => cents.closestTo(const Cent(700));
 
   @override
   String toString() => 'EDO $edo (${steps.join(' ')})';
