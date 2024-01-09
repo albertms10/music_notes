@@ -56,7 +56,7 @@ enum TonalMode implements Mode {
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
-      system.tonalModeNotation(this);
+      system.tonalMode(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);

@@ -56,8 +56,16 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  /// Returns the different spellings at [distance] sharing the same
+  /// Returns the different spellings at [distance] sharing the same number of
   /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.g.spellings() == {Note.g}
+  /// PitchClass.dSharp.spellings() == {Note.d.sharp, Note.e.flat}
+  /// PitchClass.b.spellings(distance: 1)
+  ///   == {Note.a.sharp.sharp, Note.b, Note.c.flat}
+  /// ```
   Set<Note> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
     final baseNote = BaseNote.fromSemitones(semitones);
@@ -65,13 +73,16 @@ final class PitchClass extends Scalable<PitchClass>
     if (baseNote != null) {
       final note = Note(baseNote);
 
-      return SplayTreeSet<Note>.of({
-        note,
-        for (var i = 1; i <= distance; i++) ...[
-          note.respellByBaseNoteDistance(distance),
-          note.respellByBaseNoteDistance(-distance),
-        ],
-      });
+      return SplayTreeSet<Note>.of(
+        {
+          note,
+          for (var i = 1; i <= distance; i++) ...[
+            note.respellByBaseNoteDistance(distance),
+            note.respellByBaseNoteDistance(-distance),
+          ],
+        },
+        Note.compareByClosestDistance,
+      );
     }
 
     final aboveNote =
@@ -79,14 +90,17 @@ final class PitchClass extends Scalable<PitchClass>
     final belowNote =
         Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
 
-    return SplayTreeSet<Note>.of({
-      aboveNote,
-      belowNote,
-      for (var i = 1; i <= distance; i++) ...[
-        belowNote.respellByBaseNoteDistance(distance),
-        aboveNote.respellByBaseNoteDistance(-distance),
-      ],
-    });
+    return SplayTreeSet<Note>.of(
+      {
+        aboveNote,
+        belowNote,
+        for (var i = 1; i <= distance; i++) ...[
+          belowNote.respellByBaseNoteDistance(distance),
+          aboveNote.respellByBaseNoteDistance(-distance),
+        ],
+      },
+      Note.compareByClosestDistance,
+    );
   }
 
   /// Returns the [Note] that matches [withAccidental] from this
@@ -169,8 +183,13 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   @override
   // TODO(albertms10): return [IntervalClass]. See #248.
-  Interval interval(PitchClass other) =>
-      IntervalClass(difference(other)).resolveClosestSpelling();
+  Interval interval(PitchClass other) {
+    final diff = difference(other);
+
+    return IntervalClass(diff)
+        .resolveClosestSpelling()
+        .descending(isDescending: diff.isNegative);
+  }
 
   /// Returns the difference in semitones between this [PitchClass] and [other].
   ///
@@ -226,7 +245,7 @@ final class PitchClass extends Scalable<PitchClass>
   String toString({
     PitchClassNotation system = PitchClassNotation.enharmonicSpellings,
   }) =>
-      system.pitchClassNotation(this);
+      system.pitchClass(this);
 
   @override
   bool operator ==(Object other) =>
@@ -251,7 +270,7 @@ abstract class PitchClassNotation {
   static const integer = PitchClassIntegerNotation();
 
   /// Returns the string notation for [pitchClass].
-  String pitchClassNotation(PitchClass pitchClass);
+  String pitchClass(PitchClass pitchClass);
 }
 
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
@@ -260,7 +279,7 @@ class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
   const PitchClassEnharmonicSpellingsNotation();
 
   @override
-  String pitchClassNotation(PitchClass pitchClass) =>
+  String pitchClass(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 }
 
@@ -270,8 +289,7 @@ class PitchClassIntegerNotation extends PitchClassNotation {
   const PitchClassIntegerNotation();
 
   @override
-  String pitchClassNotation(PitchClass pitchClass) =>
-      switch (pitchClass.semitones) {
+  String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {
         10 => 't',
         11 => 'e',
         final semitones => '$semitones',

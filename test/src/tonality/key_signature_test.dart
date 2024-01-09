@@ -39,7 +39,7 @@ void main() {
       test('should return the fifths distance of this KeySignature', () {
         expect(KeySignature.fromDistance(-7).distance, -7);
         expect(KeySignature.fromDistance(-2).distance, -2);
-        expect(KeySignature.fromDistance(0).distance, 0);
+        expect(KeySignature.empty.distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
       });
@@ -63,14 +63,8 @@ void main() {
           KeySignature.fromDistance(-2).tonality(TonalMode.minor),
           Note.g.minor,
         );
-        expect(
-          KeySignature.fromDistance(0).tonality(TonalMode.major),
-          Note.c.major,
-        );
-        expect(
-          KeySignature.fromDistance(0).tonality(TonalMode.minor),
-          Note.a.minor,
-        );
+        expect(KeySignature.empty.tonality(TonalMode.major), Note.c.major);
+        expect(KeySignature.empty.tonality(TonalMode.minor), Note.a.minor);
         expect(
           KeySignature.fromDistance(1).tonality(TonalMode.major),
           Note.g.major,
@@ -133,7 +127,7 @@ void main() {
           (major: Note.f.major, minor: Note.d.minor),
         );
         expect(
-          KeySignature.fromDistance(0).tonalities,
+          KeySignature.empty.tonalities,
           (major: Note.c.major, minor: Note.a.minor),
         );
         expect(
@@ -207,7 +201,7 @@ void main() {
           expect(KeySignature.fromDistance(-3).toString(), '-3 (B♭ E♭ A♭)');
           expect(KeySignature.fromDistance(-2).toString(), '-2 (B♭ E♭)');
           expect(KeySignature.fromDistance(-1).toString(), '-1 (B♭)');
-          expect(KeySignature.fromDistance(0).toString(), '0 ()');
+          expect(KeySignature.empty.toString(), '0 ()');
           expect(KeySignature.fromDistance(1).toString(), '1 (F♯)');
           expect(KeySignature.fromDistance(2).toString(), '2 (F♯ C♯)');
           expect(KeySignature.fromDistance(3).toString(), '3 (F♯ C♯ G♯)');
@@ -251,7 +245,7 @@ void main() {
       test('should correctly sort KeySignature items in a collection', () {
         final orderedSet = SplayTreeSet<KeySignature>.of({
           KeySignature.fromDistance(-3),
-          KeySignature.fromDistance(0),
+          KeySignature.empty,
           KeySignature.fromDistance(-6),
           KeySignature.fromDistance(4),
           KeySignature.fromDistance(3),
@@ -259,7 +253,7 @@ void main() {
         expect(orderedSet.toList(), [
           KeySignature.fromDistance(-6),
           KeySignature.fromDistance(-3),
-          KeySignature.fromDistance(0),
+          KeySignature.empty,
           KeySignature.fromDistance(3),
           KeySignature.fromDistance(4),
         ]);

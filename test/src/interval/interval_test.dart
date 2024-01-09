@@ -479,7 +479,7 @@ void main() {
         (distance, :notes) =
             Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp);
         expect(distance, 6);
-        expect(notes, [
+        expect(notes, const [
           PitchClass.d,
           PitchClass.a,
           PitchClass.e,
@@ -514,21 +514,26 @@ void main() {
         expect(distance, -3);
         expect(
           notes,
-          [PitchClass.dSharp, PitchClass.aSharp, PitchClass.f, PitchClass.c],
+          const [
+            PitchClass.dSharp,
+            PitchClass.aSharp,
+            PitchClass.f,
+            PitchClass.c,
+          ],
         );
 
         (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.c);
         expect(distance, 0);
-        expect(notes, [Note.c]);
+        expect(notes, const [Note.c]);
 
         (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.f);
         expect(distance, 1);
-        expect(notes, [Note.c, Note.f]);
+        expect(notes, const [Note.c, Note.f]);
 
         (distance, :notes) =
             Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp);
         expect(distance, 2);
-        expect(notes, [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
+        expect(notes, const [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });
     });
 

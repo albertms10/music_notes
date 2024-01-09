@@ -25,41 +25,25 @@ void main() {
       test('should return the closest Pitch to this Frequency', () {
         expect(
           const Frequency(440).closestPitch(),
-          (Note.a.inOctave(4), cents: const Cent(0), hertz: 0.0),
+          ClosestPitch(Note.a.inOctave(4)),
         );
         expect(
           const Frequency(455).closestPitch(),
-          (
-            Note.a.sharp.inOctave(4),
-            cents: const Cent(-41.96437412632116),
-            hertz: -11.163761518089927,
-          ),
+          Note.a.sharp.inOctave(4) - const Cent(41.96437412632116),
         );
         expect(
           const Frequency(467).closestPitch(),
-          (
-            Note.b.flat.inOctave(4),
-            cents: const Cent(3.1028314220028586),
-            hertz: 0.8362384819100726,
-          ),
+          Note.b.flat.inOctave(4) + const Cent(3.1028314220028586),
         );
         expect(
           const Frequency(256).closestPitch(),
-          (
-            Note.c.inOctave(4),
-            cents: const Cent(-37.63165622959142),
-            hertz: -5.625565300598623,
-          ),
+          Note.c.inOctave(4) - const Cent(37.63165622959142),
         );
 
         expect(
           const Frequency(440)
               .closestPitch(referenceFrequency: const Frequency(415)),
-          (
-            Note.b.flat.inOctave(4),
-            cents: const Cent(1.270624748447127),
-            hertz: 0.32281584089247417,
-          ),
+          Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
         expect(
           const Frequency(512).closestPitch(
@@ -67,7 +51,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
+          ClosestPitch(Note.c.inOctave(5)),
         );
         expect(
           const Frequency(440).closestPitch(
@@ -75,11 +59,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          (
-            Note.a.inOctave(4),
-            cents: const Cent(37.63165622959145),
-            hertz: 9.461035390098175,
-          ),
+          Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
       });
     });
@@ -246,44 +226,6 @@ void main() {
           Frequency(2000),
         ]);
       });
-    });
-  });
-
-  group('ClosestPitchExtension', () {
-    group('.displayString()', () {
-      test(
-        'should return the string representation of this '
-        'ClosestPitch',
-        () {
-          expect(
-              Note.c
-                  .inOctave(1)
-                  .frequency()
-                  .harmonics(upToIndex: 15)
-                  .map(
-                    (frequency) => frequency.closestPitch().displayString(),
-                  )
-                  .toSet(),
-              const {
-                'C1',
-                'C2',
-                'G2+2',
-                'C3',
-                'E3-14',
-                'G3+2',
-                'A♯3-31',
-                'C4',
-                'D4+4',
-                'E4-14',
-                'F♯4-49',
-                'G4+2',
-                'A♭4+41',
-                'A♯4-31',
-                'B4-12',
-                'C5',
-              });
-        },
-      );
     });
   });
 }

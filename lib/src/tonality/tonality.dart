@@ -36,7 +36,7 @@ final class Tonality implements Comparable<Tonality> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.keySignature == KeySignature.fromDistance(0)
+  /// Note.c.major.keySignature == KeySignature.empty
   /// Note.a.major.keySignature == KeySignature.fromDistance(3)
   /// Note.g.flat.major.keySignature == KeySignature.fromDistance(-6)
   /// ```
@@ -57,18 +57,8 @@ final class Tonality implements Comparable<Tonality> {
   Scale<Note> get scale => mode.scale.on(note);
 
   @override
-  String toString({NoteNotation system = NoteNotation.english}) {
-    final noteString = note.toString(system: system);
-    final modeString = mode.toString(system: system);
-
-    return switch (system) {
-      NoteNotation.german => '${switch (mode) {
-          TonalMode.minor => noteString.toLowerCase(),
-          _ => noteString
-        }}-$modeString',
-      _ => '$noteString $modeString'
-    };
-  }
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.tonality(this);
 
   @override
   bool operator ==(Object other) =>

@@ -7,6 +7,7 @@ part of '../../music_notes.dart';
 /// * [Note].
 /// * [PitchClass].
 /// * [Frequency].
+/// * [ClosestPitch].
 @immutable
 final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// The note inside the octave.
@@ -18,12 +19,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Creates a new [Pitch] from [note] and [octave].
   const Pitch(this.note, {required this.octave});
 
-  static const String _superPrime = '′';
-  static const String _superPrimeAlt = "'";
-  static const String _subPrime = '͵';
-  static const String _subPrimeAlt = ',';
+  static const _superPrime = '′';
+  static const _superPrimeAlt = "'";
+  static const _subPrime = '͵';
+  static const _subPrimeAlt = ',';
 
-  static const List<String> _primeSymbols = [
+  static const _primeSymbols = [
     _superPrime,
     _superPrimeAlt,
     _subPrime,
@@ -384,7 +385,25 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
-      system.pitchNotation(this);
+      system.pitch(this);
+
+  /// Adds [cents] to this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).toString() == 'F♯4+4'
+  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).toString() == 'E♭3-28'
+  /// ```
+  ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
+
+  /// Subtracts [cents] from this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).toString() == 'G♭5-16'
+  /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
+  /// ```
+  ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
 
   @override
   bool operator ==(Object other) =>
@@ -412,7 +431,7 @@ abstract class PitchNotation {
   static const helmholtz = HelmholtzPitchNotation();
 
   /// Returns the string representation for [pitch].
-  String pitchNotation(Pitch pitch);
+  String pitch(Pitch pitch);
 }
 
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
@@ -421,10 +440,10 @@ class ScientificPitchNotation extends PitchNotation {
   const ScientificPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
-    final accidental = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
+  String pitch(Pitch pitch) {
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
+
     return '${pitch.note.baseNote}$accidental${pitch.octave}';
   }
 }
@@ -435,17 +454,16 @@ class HelmholtzPitchNotation extends PitchNotation {
   const HelmholtzPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
-    final accidentalSymbol = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
+  String pitch(Pitch pitch) {
+    final accidental =
+        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
 
     if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidentalSymbol'
+      return '${pitch.note.baseNote.name}$accidental'
           '${Pitch._superPrime * (pitch.octave - 3)}';
     }
 
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidental'
         '${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }

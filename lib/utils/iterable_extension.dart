@@ -14,7 +14,7 @@ extension IterableNumExtension<T extends num> on Iterable<T> {
 }
 
 /// Compares multiple comparators.
-int compareMultiple(Iterable<int Function()> comparators) {
+int compareMultiple(List<int Function()> comparators) {
   assert(comparators.length > 1, 'Provide more than one comparator');
   late int compareValue;
   for (final comparator in comparators) {
