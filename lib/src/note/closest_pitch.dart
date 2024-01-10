@@ -9,7 +9,7 @@ part of '../../music_notes.dart';
 /// * [Frequency].
 @immutable
 class ClosestPitch {
-  /// The pitch closest to the original [Frequency].
+  /// The [Pitch] closest to the original [Frequency].
   final Pitch pitch;
 
   /// The difference in cents.
