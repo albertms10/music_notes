@@ -188,11 +188,11 @@ void main() {
       });
     });
 
-    group('.toString()', () {
-      test('should return the string representation of this Frequency', () {
-        expect(const Frequency(440).toString(), '440.0 Hz');
-        expect(const Frequency(415.62).toString(), '415.62 Hz');
-        expect(const Frequency(2200.2968).toString(), '2200.2968 Hz');
+    group('.format()', () {
+      test('should return the string format of this Frequency', () {
+        expect(const Frequency(440).format(), '440 Hz');
+        expect(const Frequency(415.62).format(), '415.62 Hz');
+        expect(const Frequency(2200.2968).format(), '2200.2968 Hz');
       });
     });
 
