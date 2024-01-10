@@ -16,6 +16,15 @@ extension type const Cent(num value) implements num {
   /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
 
+  /// Returns the string format of this [Cent].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Cent(700).format() == '700 ¢'
+  /// const Cent(701.95).format() == '701.95 ¢'
+  /// ```
+  String format() => '$value $unitSymbol';
+
   /// The negation of this [Cent].
   ///
   /// Example:

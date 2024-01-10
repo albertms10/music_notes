@@ -14,6 +14,13 @@ void main() {
       });
     });
 
+    group('.format()', () {
+      test('should return the string format of this Cent', () {
+        expect(const Cent(700).format(), '700 ¢');
+        expect(const Cent(701.95).format(), '701.95 ¢');
+      });
+    });
+
     group('operator -()', () {
       test('should return the negation of this Cent', () {
         expect(-const Cent(100), const Cent(-100));
