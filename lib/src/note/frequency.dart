@@ -48,7 +48,7 @@ extension type const Frequency._(num hertz) implements num {
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
-    final cents = Ratio(this / referenceFrequency).cents;
+    final cents = Ratio(hertz / referenceFrequency).cents;
     final semitones =
         tuningSystem.referencePitch.semitones + (cents.value / 100).round();
 
@@ -60,7 +60,7 @@ extension type const Frequency._(num hertz) implements num {
       referenceFrequency: referenceFrequency,
       tuningSystem: tuningSystem,
     );
-    final hertzDelta = this - closestPitchFrequency;
+    final hertzDelta = hertz - closestPitchFrequency;
 
     // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
@@ -70,7 +70,7 @@ extension type const Frequency._(num hertz) implements num {
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
-      cents: Ratio(this / closestPitchFrequency).cents,
+      cents: Ratio(hertz / closestPitchFrequency).cents,
     );
   }
 
@@ -86,7 +86,7 @@ extension type const Frequency._(num hertz) implements num {
   ///   == Note.e.inOctave(3) - const Cent(14)
   /// ```
   Frequency harmonic(int index) => Frequency(
-        index.isNegative ? this / (index.abs() + 1) : this * (index + 1),
+        index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
       );
 
   /// Returns a [Set] of the [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
