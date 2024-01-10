@@ -5,7 +5,7 @@ void main() {
   group('HearingRange', () {
     group('.toString()', () {
       test('should return the string representation of this HearingRange', () {
-        expect(HearingRange.human.toString(), '20.0 Hz ≤ f ≤ 20000.0 Hz');
+        expect(HearingRange.human.toString(), '20 Hz ≤ f ≤ 20000 Hz');
         expect(
           const HearingRange(min: Frequency(28.901), max: Frequency(34500.3))
               .toString(),
