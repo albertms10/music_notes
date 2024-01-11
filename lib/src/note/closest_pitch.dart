@@ -24,7 +24,7 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4') == const ClosestPitch(Note.a.inOctave(4))
+  /// ClosestPitch.parse('A4') == Note.a.inOctave(4) + const Cent(0)
   /// ClosestPitch.parse('A4+12.4') == Note.a.inOctave(4) + const Cent(12.4)
   /// ClosestPitch.parse('E♭3-28') == Note.e.flat.inOctave(3) - const Cent(28)
   /// ClosestPitch.parse('z') // throws a FormatException
