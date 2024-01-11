@@ -18,6 +18,39 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
+  static final _regExp = RegExp(r'^(.*?\d+)([+-].+)?$');
+
+  /// Parse [source] as a [ClosestPitch] and return its value.
+  ///
+  /// Example:
+  /// ```dart
+  /// ClosestPitch.parse('A4') == const ClosestPitch(Note.a.inOctave(4))
+  /// ClosestPitch.parse('A4+12.4') == Note.a.inOctave(4) + const Cent(12.4)
+  /// ClosestPitch.parse('E♭3-28') == Note.e.flat.inOctave(3) - const Cent(28)
+  /// ClosestPitch.parse('z') // throws a FormatException
+  /// ```
+  factory ClosestPitch.parse(String source) {
+    final match = _regExp.firstMatch(source);
+    if (match == null) throw FormatException('Invalid ClosestPitch', source);
+
+    final digits = match[2];
+    var cents = const Cent(0);
+    if (digits != null) {
+      final parsed = num.tryParse(digits);
+      if (parsed == null) {
+        throw FormatException(
+          'Invalid ClosestPitch',
+          source,
+          // Adding 1 to skip the sign position.
+          source.indexOf(digits) + 1,
+        );
+      }
+      cents = Cent(parsed);
+    }
+
+    return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
+  }
+
   /// Returns the string representation of this [ClosestPitch] record.
   ///
   /// Example:
