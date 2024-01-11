@@ -71,7 +71,7 @@ class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  static final RegExp _perfectQualityRegExp = RegExp(r'^(d+|P|A+)$');
+  static final _regExp = RegExp(r'^(d+|P|A+)$');
 
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
@@ -85,7 +85,7 @@ class PerfectQuality extends Quality {
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(String source) {
-    if (!_perfectQualityRegExp.hasMatch(source)) {
+    if (!_regExp.hasMatch(source)) {
       throw FormatException('Invalid PerfectQuality', source);
     }
 
@@ -153,7 +153,7 @@ class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  static final RegExp _imperfectQualityRegExp = RegExp(r'^(d+|m|M|A+)$');
+  static final _regExp = RegExp(r'^(d+|m|M|A+)$');
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
@@ -167,7 +167,7 @@ class ImperfectQuality extends Quality {
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(String source) {
-    if (!_imperfectQualityRegExp.hasMatch(source)) {
+    if (!_regExp.hasMatch(source)) {
       throw FormatException('Invalid PerfectQuality', source);
     }
 

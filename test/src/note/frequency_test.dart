@@ -25,7 +25,7 @@ void main() {
       test('should return the closest Pitch to this Frequency', () {
         expect(
           const Frequency(440).closestPitch(),
-          ClosestPitch(Note.a.inOctave(4)),
+          Note.a.inOctave(4) + const Cent(0),
         );
         expect(
           const Frequency(455).closestPitch(),
@@ -51,7 +51,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          ClosestPitch(Note.c.inOctave(5)),
+          Note.c.inOctave(5) + const Cent(0),
         );
         expect(
           const Frequency(440).closestPitch(
