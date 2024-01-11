@@ -18,7 +18,7 @@ void main() {
           ClosestPitch(Note.g.inOctave(3), cents: const Cent(6)),
         );
         expect(
-          ClosestPitch.parse('Eb5-14.6'),
+          ClosestPitch.parse('E♭5-14.6'),
           ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(-14.6)),
         );
         expect(
