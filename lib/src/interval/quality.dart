@@ -71,7 +71,13 @@ class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  static final _regExp = RegExp(r'^(d+|P|A+)$');
+  static const _diminishedSymbol = 'd';
+  static const _perfectSymbol = 'P';
+  static const _augmentedSymbol = 'A';
+
+  static final _regExp = RegExp(
+    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
+  );
 
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
@@ -81,7 +87,7 @@ class PerfectQuality extends Quality {
   /// Example:
   /// ```dart
   /// PerfectQuality.parse('P') == PerfectQuality.perfect
-  /// PerfectQuality.parse('AA') == PerfectQuality.doublyAugmented
+  /// PerfectQuality.parse('dd') == PerfectQuality.doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(String source) {
@@ -90,17 +96,17 @@ class PerfectQuality extends Quality {
     }
 
     return switch (source[0]) {
-      'd' => PerfectQuality(-source.length),
-      'P' => PerfectQuality.perfect,
-      _ /* 'A' */ => PerfectQuality(source.length),
+      _diminishedSymbol => PerfectQuality(-source.length),
+      _perfectSymbol => PerfectQuality.perfect,
+      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
     };
   }
 
   @override
   String get abbreviation => switch (semitones) {
-        < 0 => 'd' * semitones.abs(),
-        0 => 'P',
-        _ => 'A' * semitones,
+        < 0 => _diminishedSymbol * semitones.abs(),
+        0 => _perfectSymbol,
+        _ => _augmentedSymbol * semitones,
       };
 
   /// Returns the inverted version of this [PerfectQuality].
@@ -153,7 +159,14 @@ class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  static final _regExp = RegExp(r'^(d+|m|M|A+)$');
+  static const _diminishedSymbol = 'd';
+  static const _minorSymbol = 'm';
+  static const _majorSymbol = 'M';
+  static const _augmentedSymbol = 'A';
+
+  static final _regExp = RegExp(
+    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
+  );
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
@@ -162,8 +175,8 @@ class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.parse('M') == ImperfectQuality.major
-  /// ImperfectQuality.parse('d') == ImperfectQuality.diminished
+  /// ImperfectQuality.parse('m') == ImperfectQuality.minor
+  /// ImperfectQuality.parse('A') == ImperfectQuality.augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(String source) {
@@ -172,19 +185,19 @@ class ImperfectQuality extends Quality {
     }
 
     return switch (source[0]) {
-      'd' => ImperfectQuality(-source.length),
-      'm' => ImperfectQuality.minor,
-      'M' => ImperfectQuality.major,
-      _ /* 'A' */ => ImperfectQuality(source.length + 1),
+      _diminishedSymbol => ImperfectQuality(-source.length),
+      _minorSymbol => ImperfectQuality.minor,
+      _majorSymbol => ImperfectQuality.major,
+      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
     };
   }
 
   @override
   String get abbreviation => switch (semitones) {
-        < 0 => 'd' * semitones.abs(),
-        0 => 'm',
-        1 => 'M',
-        _ => 'A' * (semitones - 1),
+        < 0 => _diminishedSymbol * semitones.abs(),
+        0 => _minorSymbol,
+        1 => _majorSymbol,
+        _ => _augmentedSymbol * (semitones - 1),
       };
 
   /// Returns the inverted version of this [ImperfectQuality].
