@@ -173,17 +173,17 @@ final class Interval implements Comparable<Interval> {
           'Interval must be imperfect',
         );
 
-  /// Creates a new [Interval] from [Quality.semitones].
-  factory Interval.fromQualityDelta(int size, int delta) {
+  /// Creates a new [Interval] from [size] and [Quality.semitones].
+  factory Interval.fromQualitySemitones(int size, int semitones) {
     final qualityConstructor =
         size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
-    return Interval._(size, qualityConstructor(delta));
+    return Interval._(size, qualityConstructor(semitones));
   }
 
-  /// Creates a new [Interval] from [semitones].
+  /// Creates a new [Interval] from [size] and [Interval.semitones].
   factory Interval.fromSemitones(int size, int semitones) =>
-      Interval.fromQualityDelta(
+      Interval.fromQualitySemitones(
         size,
         semitones * size.sign - size._semitones.abs(),
       );
