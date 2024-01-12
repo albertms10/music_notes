@@ -293,8 +293,8 @@ final class Interval implements Comparable<Interval> {
   /// (-Interval.P1).inverted == -Interval.P8
   /// ```
   ///
-  /// If this [Interval] is greater than an octave, the simplified inversion is
-  /// returned instead.
+  /// If this [Interval] is greater than [Size.octave], the simplified inversion
+  /// is returned instead.
   ///
   /// Example:
   /// ```dart
@@ -320,7 +320,7 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval get simplified => Interval._(size.simplified, quality);
 
-  /// Returns whether this [Interval] is greater than an octave.
+  /// Returns whether this [Interval] is greater than [Size.octave].
   ///
   /// Example:
   /// ```dart

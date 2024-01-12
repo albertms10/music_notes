@@ -44,8 +44,8 @@ class PythagoreanTuning extends JustIntonation {
       ratio *= distance.isNegative
           ? JustIntonation.ascendingFourthRatio.value
           : JustIntonation.ascendingFifthRatio.value;
-      // When ratio is larger than 2, so larger than an octave, divide by 2 to
-      // transpose it down by one octave.
+      // When ratio is greater than 2, so greater than [Size.octave],
+      // divide by 2 to transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
 

@@ -85,7 +85,7 @@ extension type const Size._(int value) implements int {
   /// ```
   bool get isPerfect => _sizeAbsShift % (Size.octave / 2) < 2;
 
-  /// Returns whether this [Size] is greater than an octave.
+  /// Returns whether this [Size] is greater than [Size.octave]
   ///
   /// Example:
   /// ```dart
