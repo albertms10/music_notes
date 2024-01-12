@@ -77,8 +77,8 @@ class PerfectQuality extends Quality {
   static const _perfectSymbol = 'P';
 
   static final _regExp = RegExp(
-    '^($Quality._diminishedSymbol+|$_perfectSymbol|'
-    '$Quality._augmentedSymbol+)\$',
+    '^(${Quality._diminishedSymbol}+|$_perfectSymbol|'
+    '${Quality._augmentedSymbol}+)\$',
   );
 
   /// Parse [source] as a [PerfectQuality] and return its value.
@@ -165,8 +165,8 @@ class ImperfectQuality extends Quality {
   static const _majorSymbol = 'M';
 
   static final _regExp = RegExp(
-    '^($Quality._diminishedSymbol+|$_minorSymbol|$_majorSymbol|'
-    '$Quality._augmentedSymbol+)\$',
+    '^(${Quality._diminishedSymbol}+|$_minorSymbol|$_majorSymbol|'
+    '${Quality._augmentedSymbol}+)\$',
   );
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
