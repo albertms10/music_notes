@@ -18,9 +18,9 @@ sealed class TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// const PythagoreanTuning().generatorCents == const Cent(701.96)
-  /// const EqualTemperament.edo12().generatorCents == const Cent(700)
-  /// const EqualTemperament.edo19().generatorCents == const Cent(694.74)
+  /// const PythagoreanTuning().generator == const Cent(701.96)
+  /// const EqualTemperament.edo12().generator == const Cent(700)
+  /// const EqualTemperament.edo19().generator == const Cent(694.74)
   /// ```
   ///
   /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
