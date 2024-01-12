@@ -16,6 +16,9 @@ sealed class Quality implements Comparable<Quality> {
   /// Creates a new [Quality] from [semitones].
   const Quality(this.semitones);
 
+  static const _diminishedSymbol = 'd';
+  static const _augmentedSymbol = 'A';
+
   /// The textual abbreviation of this [Quality].
   String get abbreviation;
 
@@ -71,12 +74,11 @@ class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  static const _diminishedSymbol = 'd';
   static const _perfectSymbol = 'P';
-  static const _augmentedSymbol = 'A';
 
   static final _regExp = RegExp(
-    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
+    '^($Quality._diminishedSymbol+|$_perfectSymbol|'
+    '$Quality._augmentedSymbol+)\$',
   );
 
   /// Parse [source] as a [PerfectQuality] and return its value.
@@ -96,7 +98,7 @@ class PerfectQuality extends Quality {
     }
 
     return switch (source[0]) {
-      _diminishedSymbol => PerfectQuality(-source.length),
+      Quality._diminishedSymbol => PerfectQuality(-source.length),
       _perfectSymbol => PerfectQuality.perfect,
       _ /* _augmentedSymbol */ => PerfectQuality(source.length),
     };
@@ -104,9 +106,9 @@ class PerfectQuality extends Quality {
 
   @override
   String get abbreviation => switch (semitones) {
-        < 0 => _diminishedSymbol * semitones.abs(),
+        < 0 => Quality._diminishedSymbol * semitones.abs(),
         0 => _perfectSymbol,
-        _ => _augmentedSymbol * semitones,
+        _ => Quality._augmentedSymbol * semitones,
       };
 
   /// Returns the inverted version of this [PerfectQuality].
@@ -159,13 +161,12 @@ class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  static const _diminishedSymbol = 'd';
   static const _minorSymbol = 'm';
   static const _majorSymbol = 'M';
-  static const _augmentedSymbol = 'A';
 
   static final _regExp = RegExp(
-    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
+    '^($Quality._diminishedSymbol+|$_minorSymbol|$_majorSymbol|'
+    '$Quality._augmentedSymbol+)\$',
   );
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
@@ -185,7 +186,7 @@ class ImperfectQuality extends Quality {
     }
 
     return switch (source[0]) {
-      _diminishedSymbol => ImperfectQuality(-source.length),
+      Quality._diminishedSymbol => ImperfectQuality(-source.length),
       _minorSymbol => ImperfectQuality.minor,
       _majorSymbol => ImperfectQuality.major,
       _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
@@ -194,10 +195,10 @@ class ImperfectQuality extends Quality {
 
   @override
   String get abbreviation => switch (semitones) {
-        < 0 => _diminishedSymbol * semitones.abs(),
+        < 0 => Quality._diminishedSymbol * semitones.abs(),
         0 => _minorSymbol,
         1 => _majorSymbol,
-        _ => _augmentedSymbol * (semitones - 1),
+        _ => Quality._augmentedSymbol * (semitones - 1),
       };
 
   /// Returns the inverted version of this [ImperfectQuality].
