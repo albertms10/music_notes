@@ -9,7 +9,7 @@ part of '../../music_notes.dart';
 @immutable
 class Frequency implements Comparable<Frequency> {
   /// The value of this [Frequency] in Hertz.
-  final double hertz;
+  final num hertz;
 
   /// Creates a new [Frequency] instance from [hertz].
   const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive');

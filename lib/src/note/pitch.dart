@@ -31,8 +31,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     _subPrimeAlt,
   ];
 
-  static final RegExp _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
-  static final RegExp _helmholtzNotationRegExp =
+  static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
+  static final _helmholtzNotationRegExp =
       RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
           '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 

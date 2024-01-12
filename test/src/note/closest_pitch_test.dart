@@ -3,6 +3,34 @@ import 'package:test/test.dart';
 
 void main() {
   group('ClosestPitch', () {
+    group('.parse()', () {
+      test('should throw a FormatException when source is invalid', () {
+        expect(() => ClosestPitch.parse('invalid'), throwsFormatException);
+        expect(() => ClosestPitch.parse('A4+'), throwsFormatException);
+        expect(() => ClosestPitch.parse('G3?'), throwsFormatException);
+        expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
+      });
+
+      test('should parse source as a ClosestPitch and return its value', () {
+        expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
+        expect(
+          ClosestPitch.parse('G3+6'),
+          ClosestPitch(Note.g.inOctave(3), cents: const Cent(6)),
+        );
+        expect(
+          ClosestPitch.parse('E♭5-14.6'),
+          ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(-14.6)),
+        );
+        expect(
+          ClosestPitch.parse('Cx2+36.23912'),
+          ClosestPitch(
+            Note.c.sharp.sharp.inOctave(2),
+            cents: const Cent(36.23912),
+          ),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('should return the string representation of this ClosestPitch', () {
         expect(

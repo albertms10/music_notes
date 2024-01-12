@@ -37,8 +37,8 @@ class PythagoreanTuning extends JustIntonation {
   const PythagoreanTuning({super.referencePitch});
 
   @override
-  Ratio ratio(Pitch note) {
-    final distance = referencePitch.note.fifthsDistanceWith(note.note);
+  Ratio ratio(Pitch pitch) {
+    final distance = referencePitch.note.fifthsDistanceWith(pitch.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
       ratio *= distance.isNegative
@@ -50,7 +50,7 @@ class PythagoreanTuning extends JustIntonation {
     }
 
     final octaveDelta =
-        note.interval(referencePitch).semitones.abs() ~/ chromaticDivisions;
+        pitch.interval(referencePitch).semitones.abs() ~/ chromaticDivisions;
 
     return Ratio(ratio * math.pow(2, octaveDelta));
   }

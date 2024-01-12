@@ -159,7 +159,7 @@ final class Interval implements Comparable<Interval> {
     Size.octave: 12, // P
   };
 
-  static final RegExp _intervalRegExp = RegExp(r'(\w+?)(\d+)');
+  static final _regExp = RegExp(r'(\w+?)(\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
@@ -181,17 +181,17 @@ final class Interval implements Comparable<Interval> {
           'Interval must be imperfect',
         );
 
-  /// Creates a new [Interval] from [Quality.semitones].
-  factory Interval.fromQualityDelta(Size size, int delta) {
+  /// Creates a new [Interval] from [size] and [Quality.semitones].
+  factory Interval.fromQualitySemitones(Size size, int semitones) {
     final qualityConstructor =
         size.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
-    return Interval._(size, qualityConstructor(delta));
+    return Interval._(size, qualityConstructor(semitones));
   }
 
-  /// Creates a new [Interval] from [semitones].
+  /// Creates a new [Interval] from [size] and [Interval.semitones].
   factory Interval.fromSemitones(Size size, int semitones) =>
-      Interval.fromQualityDelta(
+      Interval.fromQualitySemitones(
         size,
         semitones * size.sign - size.semitones.abs(),
       );
@@ -208,7 +208,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(String source) {
-    final match = _intervalRegExp.firstMatch(source);
+    final match = _regExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
     final size = Size(int.parse(match[2]!));

@@ -25,7 +25,7 @@ void main() {
       test('should return the closest Pitch to this Frequency', () {
         expect(
           const Frequency(440).closestPitch(),
-          ClosestPitch(Note.a.inOctave(4)),
+          Note.a.inOctave(4) + const Cent(0),
         );
         expect(
           const Frequency(455).closestPitch(),
@@ -51,7 +51,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          ClosestPitch(Note.c.inOctave(5)),
+          Note.c.inOctave(5) + const Cent(0),
         );
         expect(
           const Frequency(440).closestPitch(
@@ -190,7 +190,7 @@ void main() {
 
     group('.toString()', () {
       test('should return the string representation of this Frequency', () {
-        expect(const Frequency(440).toString(), '440.0 Hz');
+        expect(const Frequency(440).toString(), '440 Hz');
         expect(const Frequency(415.62).toString(), '415.62 Hz');
         expect(const Frequency(2200.2968).toString(), '2200.2968 Hz');
       });
