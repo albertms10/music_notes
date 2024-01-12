@@ -208,7 +208,7 @@ class ImperfectQuality extends Quality {
   /// ImperfectQuality.augmented.inverted == ImperfectQuality.diminished
   /// ```
   @override
-  ImperfectQuality get inverted => ImperfectQuality(-semitones + 1);
+  ImperfectQuality get inverted => ImperfectQuality(1 - semitones);
 
   @override
   // Overridden hashCode already present in the super class.
