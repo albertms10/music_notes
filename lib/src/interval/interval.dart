@@ -444,11 +444,11 @@ final class Interval implements Comparable<Interval> {
 
   @override
   String toString() {
-    final naming = '${quality.abbreviation}${size.abs()}';
+    final naming = '${quality.symbol}${size.abs()}';
     final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (isCompound) {
       return '$descendingAbbreviation$naming '
-          '(${quality.abbreviation}${simplified.size.abs()})';
+          '(${quality.symbol}${simplified.size.abs()})';
     }
 
     return '$descendingAbbreviation$naming';
