@@ -68,8 +68,7 @@ class Frequency implements Comparable<Frequency> {
     // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
-        closestPitch.note.accidental == Accidental.sharp &&
-            !hertzDelta.isNegative;
+        closestPitch.note.accidental.isSharp && !hertzDelta.isNegative;
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
