@@ -100,7 +100,7 @@ class PerfectQuality extends Quality {
     return switch (source[0]) {
       Quality._diminishedSymbol => PerfectQuality(-source.length),
       _perfectSymbol => PerfectQuality.perfect,
-      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
+      _ /* Quality._augmentedSymbol */ => PerfectQuality(source.length),
     };
   }
 
@@ -189,7 +189,7 @@ class ImperfectQuality extends Quality {
       Quality._diminishedSymbol => ImperfectQuality(-source.length),
       _minorSymbol => ImperfectQuality.minor,
       _majorSymbol => ImperfectQuality.major,
-      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
+      _ /* Quality._augmentedSymbol */ => ImperfectQuality(source.length + 1),
     };
   }
 
