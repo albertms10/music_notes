@@ -19,14 +19,14 @@ sealed class Quality implements Comparable<Quality> {
   static const _diminishedSymbol = 'd';
   static const _augmentedSymbol = 'A';
 
-  /// The textual abbreviation of this [Quality].
-  String get abbreviation;
+  /// The symbol of this [Quality].
+  String get symbol;
 
   /// Returns the inverted version of this [Quality].
   Quality get inverted;
 
   @override
-  String toString() => '$abbreviation (${semitones.toDeltaString()})';
+  String toString() => '$symbol (${semitones.toDeltaString()})';
 
   @override
   bool operator ==(Object other) =>
@@ -105,7 +105,7 @@ class PerfectQuality extends Quality {
   }
 
   @override
-  String get abbreviation => switch (semitones) {
+  String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
         0 => _perfectSymbol,
         _ => Quality._augmentedSymbol * semitones,
@@ -194,7 +194,7 @@ class ImperfectQuality extends Quality {
   }
 
   @override
-  String get abbreviation => switch (semitones) {
+  String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
         0 => _minorSymbol,
         1 => _majorSymbol,
