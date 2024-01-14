@@ -18,6 +18,13 @@ final class KeySignature implements Comparable<KeySignature> {
   static const empty = KeySignature([]);
 
   /// Creates a new [KeySignature] from fifths [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature.fromDistance(0) == KeySignature.empty
+  /// KeySignature.fromDistance(-1) == KeySignature([Note.b.flat])
+  /// KeySignature.fromDistance(2) == KeySignature([Note.f.sharp, Note.c.sharp])
+  /// ```
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 

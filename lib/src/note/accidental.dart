@@ -94,7 +94,7 @@ final class Accidental implements Comparable<Accidental> {
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.flat.isFlat == true
   /// Accidental.doubleFlat.isFlat == true
@@ -105,7 +105,7 @@ final class Accidental implements Comparable<Accidental> {
 
   /// Whether this [Accidental] is natural (♮).
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.natural.isNatural == true
   /// Accidental.sharp.isNatural == false
@@ -115,7 +115,7 @@ final class Accidental implements Comparable<Accidental> {
 
   /// Whether this [Accidental] is sharp (♯, 𝄪, etc.).
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.sharp.isSharp == true
   /// Accidental.doubleSharp.isSharp == true
