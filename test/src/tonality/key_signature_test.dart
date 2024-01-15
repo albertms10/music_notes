@@ -42,6 +42,12 @@ void main() {
         expect(KeySignature.empty.distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
+
+        expect(KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).distance, 2);
+        expect(
+          KeySignature([Note.f, Note.c, Note.g, Note.b.flat]).distance,
+          -1,
+        );
       });
     });
 
