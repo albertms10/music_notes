@@ -103,8 +103,12 @@ final class KeySignature implements Comparable<KeySignature> {
     );
   }
 
+  static const _noteNotation = EnglishNoteNotation(showNatural: true);
+
   @override
-  String toString() => '$distance (${notes.join(' ')})';
+  String toString() => '$distance (${notes.map(
+        (note) => note.toString(system: _noteNotation),
+      ).join(' ')})';
 
   /// Adds two [KeySignature]s, including cancellation [Accidental.natural]s
   /// if needed.

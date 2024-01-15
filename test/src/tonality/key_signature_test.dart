@@ -113,7 +113,7 @@ void main() {
     });
 
     group('.tonalities', () {
-      test('should return the Set of tonalities for this KeySignature', () {
+      test('should return the tonalities for this KeySignature', () {
         expect(
           KeySignature.fromDistance(-10).tonalities,
           (major: Note.e.flat.flat.major, minor: Note.c.flat.minor),
@@ -250,6 +250,14 @@ void main() {
           expect(
             KeySignature.fromDistance(10).toString(),
             '10 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪 C𝄪 G𝄪)',
+          );
+
+          expect(const KeySignature([Note.b]).toString(), '0 (B♮)');
+          expect(const KeySignature([Note.f, Note.c]).toString(), '0 (F♮ C♮)');
+          expect(
+            KeySignature([Note.f, Note.c, Note.g, Note.b.flat, Note.e.flat])
+                .toString(),
+            '-2 (F♮ C♮ G♮ B♭ E♭)',
           );
         },
       );
