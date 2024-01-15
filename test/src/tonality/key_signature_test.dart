@@ -48,8 +48,9 @@ void main() {
             KeySignature([Note.b.flat]),
           );
           expect(
-            (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3))
-                .clean,
+            KeySignature(
+              [Note.b, Note.e, Note.f.sharp, Note.c.sharp, Note.g.sharp],
+            ).clean,
             KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
           );
         },
