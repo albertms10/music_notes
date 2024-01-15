@@ -464,8 +464,17 @@ abstract class NoteNotation {
 
 /// The English alphabetic notation system.
 class EnglishNoteNotation extends NoteNotation {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
   /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation();
+  const EnglishNoteNotation({this.showNatural = false});
+
+  @override
+  String note(Note note) => showNatural
+      ? note.baseNote.toString(system: this) + note.accidental.symbol
+      : super.note(note);
 
   @override
   String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
