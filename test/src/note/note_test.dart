@@ -653,6 +653,12 @@ void main() {
         expect(Note.d.flat.toString(), 'D♭');
         expect(Note.a.sharp.sharp.toString(), 'A𝄪');
         expect(Note.g.flat.flat.toString(), 'G𝄫');
+
+        const showNatural = EnglishNoteNotation(showNatural: true);
+        expect(Note.c.toString(system: showNatural), 'C♮');
+        expect(Note.a.toString(system: showNatural), 'A♮');
+        expect(Note.e.sharp.toString(system: showNatural), 'E♯');
+        expect(Note.b.flat.flat.toString(system: showNatural), 'B𝄫');
       });
 
       test('should return the German string representation of this Note', () {
