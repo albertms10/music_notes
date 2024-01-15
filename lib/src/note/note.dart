@@ -120,6 +120,16 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get flat => Note(baseNote, accidental - 1);
 
+  /// Returns this [Note] natural, without accidental.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.natural == Note.g
+  /// Note.c.sharp.sharp.natural == Note.c
+  /// Note.a.natural == Note.a
+  /// ```
+  Note get natural => Note(baseNote);
+
   /// Returns the [TonalMode.major] [Tonality] from this [Note].
   ///
   /// Example:
