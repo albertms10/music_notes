@@ -109,6 +109,15 @@ void main() {
       });
     });
 
+    group('.natural', () {
+      test('should return this Note natural', () {
+        expect(Note.e.natural, Note.e);
+        expect(Note.a.flat.natural, Note.a);
+        expect(Note.f.sharp.natural, Note.f);
+        expect(Note.e.sharp.sharp.natural, Note.e);
+      });
+    });
+
     group('.major', () {
       test('should return the major Tonality from this Note', () {
         expect(Note.c.major, const Tonality(Note.c, TonalMode.major));
