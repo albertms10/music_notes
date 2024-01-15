@@ -103,8 +103,33 @@ final class KeySignature implements Comparable<KeySignature> {
     );
   }
 
+  static const _noteNotation = EnglishNoteNotation(showNatural: true);
+
   @override
-  String toString() => '$distance (${notes.join(' ')})';
+  String toString() => '$distance (${notes.map(
+        (note) => note.toString(system: _noteNotation),
+      ).join(' ')})';
+
+  /// Adds two [KeySignature]s, including cancellation [Accidental.natural]s
+  /// if needed.
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature([Note.b.flat]) + KeySignature([Note.f.sharp, Note.c.sharp])
+  ///   == KeySignature([Note.b, Note.f.sharp, Note.c.sharp])
+  ///
+  /// KeySignature([Note.f.sharp, Note.c.sharp])
+  ///   + KeySignature([Note.b.flat, Note.e.flat])
+  ///   == KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat])
+  /// ```
+  KeySignature operator +(KeySignature other) {
+    if (this == empty) return other;
+    if (accidental == other.accidental) {
+      return KeySignature({...notes, ...other.notes}.toList());
+    }
+
+    return KeySignature([...notes.map((note) => note.natural), ...other.notes]);
+  }
 
   @override
   bool operator ==(Object other) =>
