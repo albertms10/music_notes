@@ -135,7 +135,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Example:
   /// ```dart
   /// Note.c.major == const Tonality(Note.c, TonalMode.major)
-  /// Note.e.flat.major == const Tonality(Note.e.flat, TonalMode.major)
+  /// Note.e.flat.major == Tonality(Note.e.flat, TonalMode.major)
   /// ```
   Tonality get major => Tonality(this, TonalMode.major);
 
@@ -144,7 +144,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Example:
   /// ```dart
   /// Note.d.minor == const Tonality(Note.d, TonalMode.minor)
-  /// Note.g.sharp.minor == const Tonality(Note.g.sharp, TonalMode.minor)
+  /// Note.g.sharp.minor == Tonality(Note.g.sharp, TonalMode.minor)
   /// ```
   Tonality get minor => Tonality(this, TonalMode.minor);
 

@@ -152,7 +152,7 @@ void main() {
       });
     });
 
-    group('operator +', () {
+    group('operator +()', () {
       test('should add semitones to this Accidental', () {
         expect(Accidental.sharp + 1, Accidental.doubleSharp);
         expect(Accidental.flat + 2, Accidental.sharp);
@@ -160,7 +160,7 @@ void main() {
       });
     });
 
-    group('operator -', () {
+    group('operator -()', () {
       test('should subtract semitones from this Accidental', () {
         expect(Accidental.sharp - 1, Accidental.natural);
         expect(Accidental.flat - 2, Accidental.tripleFlat);
