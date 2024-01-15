@@ -17,25 +17,25 @@ final class Accidental implements Comparable<Accidental> {
   /// Creates a new [Accidental] from [semitones].
   const Accidental(this.semitones);
 
-  /// A triple sharp [Accidental].
+  /// A triple sharp (♯𝄪) [Accidental].
   static const tripleSharp = Accidental(3);
 
-  /// A double sharp [Accidental].
+  /// A double sharp (𝄪) [Accidental].
   static const doubleSharp = Accidental(2);
 
-  /// A sharp [Accidental].
+  /// A sharp (♯) [Accidental].
   static const sharp = Accidental(1);
 
-  /// A natural [Accidental].
+  /// A natural (♮) [Accidental].
   static const natural = Accidental(0);
 
-  /// A flat [Accidental].
+  /// A flat (♭) [Accidental].
   static const flat = Accidental(-1);
 
-  /// A double flat [Accidental].
+  /// A double flat (𝄫) [Accidental].
   static const doubleFlat = Accidental(-2);
 
-  /// A triple flat [Accidental].
+  /// A triple flat (♭𝄫) [Accidental].
   static const tripleFlat = Accidental(-3);
 
   static const _doubleSharpSymbol = '𝄪';
