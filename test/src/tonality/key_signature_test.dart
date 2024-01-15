@@ -35,6 +35,28 @@ void main() {
       });
     });
 
+    group('.clean', () {
+      test(
+        'should return a new KeySignature without cancellation naturals',
+        () {
+          expect(
+            const KeySignature([Note.f, Note.c, Note.g]).clean,
+            KeySignature.empty,
+          );
+          expect(
+            KeySignature([Note.f, Note.b.flat]).clean,
+            KeySignature([Note.b.flat]),
+          );
+          expect(
+            KeySignature(
+              [Note.b, Note.e, Note.f.sharp, Note.c.sharp, Note.g.sharp],
+            ).clean,
+            KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          );
+        },
+      );
+    });
+
     group('.distance', () {
       test('should return the fifths distance of this KeySignature', () {
         expect(KeySignature.fromDistance(-7).distance, -7);
@@ -42,6 +64,12 @@ void main() {
         expect(KeySignature.empty.distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
+
+        expect(KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).distance, 2);
+        expect(
+          KeySignature([Note.f, Note.c, Note.g, Note.b.flat]).distance,
+          -1,
+        );
       });
     });
 

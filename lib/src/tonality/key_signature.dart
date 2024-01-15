@@ -8,7 +8,8 @@ part of '../../music_notes.dart';
 /// * [Tonality].
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
-  /// The set of [Note] accidentals that define this [KeySignature].
+  /// The set of [Note] that define this [KeySignature], which may include
+  /// cancellation [Accidental.natural]s.
   final List<Note> notes;
 
   /// Creates a new [KeySignature] from [notes].
@@ -46,7 +47,19 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.empty.accidental == Accidental.natural
   /// ```
   Accidental get accidental =>
-      notes.firstOrNull?.accidental ?? Accidental.natural;
+      clean.notes.firstOrNull?.accidental ?? Accidental.natural;
+
+  /// Returns a new [KeySignature] without cancellation [Accidental.natural]s.
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature([Note.f, Note.b.flat]).clean == KeySignature([Note.b.flat])
+  ///
+  /// (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3)).clean
+  ///   == KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp])
+  /// ```
+  KeySignature get clean =>
+      KeySignature(notes.where((note) => !note.accidental.isNatural).toList());
 
   /// Returns the fifths distance of this [KeySignature].
   ///
@@ -56,7 +69,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature([Note.f.sharp, Note.c.sharp]).distance == 2
   /// KeySignature.fromDistance(-4).distance == -4
   /// ```
-  int get distance => notes.length * accidental.semitones.nonZeroSign;
+  int get distance => clean.notes.length * accidental.semitones.nonZeroSign;
 
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
   /// [mode].
@@ -86,7 +99,7 @@ final class KeySignature implements Comparable<KeySignature> {
 
     return (
       major: rootNote.major,
-      minor: rootNote.transposeBy(-Interval.m3).minor
+      minor: rootNote.transposeBy(-Interval.m3).minor,
     );
   }
 
