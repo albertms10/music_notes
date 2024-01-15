@@ -68,7 +68,7 @@ void main() {
       );
     });
 
-    group('operator ==', () {
+    group('operator ==()', () {
       test('should compare this EqualTemperament to other', () {
         // ignore: prefer_const_constructors
         expect(EqualTemperament.edo12(), EqualTemperament.edo12());

@@ -328,7 +328,7 @@ void main() {
       });
     });
 
-    group('operator *', () {
+    group('operator *()', () {
       test(
         'should return the pitch-class multiplication modulo 12 of this '
         'PitchClass',

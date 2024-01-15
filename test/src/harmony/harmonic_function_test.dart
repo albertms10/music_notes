@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('HarmonicFunction', () {
-    group('operator /', () {
+    group('operator /()', () {
       test('should return the HarmonicFunction relating this to other', () {
         expect(
           HarmonicFunction.dominantV / HarmonicFunction.dominantV,
