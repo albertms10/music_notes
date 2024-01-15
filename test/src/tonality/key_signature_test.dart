@@ -255,6 +255,52 @@ void main() {
       );
     });
 
+    group('operator +()', () {
+      test('should keep the same KeySignature when this is empty', () {
+        expect(KeySignature.empty + KeySignature.empty, KeySignature.empty);
+        expect(
+          KeySignature.empty + KeySignature([Note.b.flat]),
+          KeySignature([Note.b.flat]),
+        );
+      });
+
+      test('should add the notes of both KeySignatures', () {
+        expect(
+          const KeySignature([Note.b]) + const KeySignature([Note.e]),
+          const KeySignature([Note.b, Note.e]),
+        );
+
+        expect(
+          KeySignature([Note.b.flat]) +
+              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+        );
+        expect(
+          KeySignature([Note.f.sharp]) +
+              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+        );
+      });
+
+      test('should add cautionary accidentals when needed', () {
+        expect(
+          KeySignature([Note.f.sharp, Note.c.sharp]) + KeySignature.empty,
+          const KeySignature([Note.f, Note.c]),
+        );
+
+        expect(
+          KeySignature([Note.b.flat]) +
+              KeySignature([Note.f.sharp, Note.c.sharp]),
+          KeySignature([Note.b, Note.f.sharp, Note.c.sharp]),
+        );
+        expect(
+          KeySignature([Note.f.sharp, Note.c.sharp]) +
+              KeySignature([Note.b.flat, Note.e.flat]),
+          KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat]),
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('should ignore equal KeySignature instances in a Set', () {
         final collection = {
