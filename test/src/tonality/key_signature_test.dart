@@ -35,6 +35,27 @@ void main() {
       });
     });
 
+    group('.clean', () {
+      test(
+        'should return a new KeySignature without cancellation naturals',
+        () {
+          expect(
+            const KeySignature([Note.f, Note.c, Note.g]).clean,
+            KeySignature.empty,
+          );
+          expect(
+            KeySignature([Note.f, Note.b.flat]).clean,
+            KeySignature([Note.b.flat]),
+          );
+          expect(
+            (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3))
+                .clean,
+            KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          );
+        },
+      );
+    });
+
     group('.distance', () {
       test('should return the fifths distance of this KeySignature', () {
         expect(KeySignature.fromDistance(-7).distance, -7);
