@@ -124,18 +124,13 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   KeySignature operator +(KeySignature other) {
     if (this == empty) return other;
-    if (accidental == other.accidental) {
-      final missingNotes =
-          clean.notes.whereNot((note) => other.notes.contains(note));
 
-      return KeySignature([
-        ...missingNotes.map((note) => note.natural),
-        ...other.notes,
-      ]);
-    }
+    final cancelledNotes = accidental == other.accidental
+        ? clean.notes.whereNot(other.notes.contains)
+        : clean.notes;
 
     return KeySignature([
-      ...clean.notes.map((note) => note.natural),
+      ...cancelledNotes.map((note) => note.natural),
       ...other.notes,
     ]);
   }
