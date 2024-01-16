@@ -270,14 +270,14 @@ void main() {
           KeySignature.empty + KeySignature([Note.b.flat]),
           KeySignature([Note.b.flat]),
         );
-      });
 
-      test('should add the notes of both KeySignatures', () {
         expect(
           const KeySignature([Note.b]) + const KeySignature([Note.e]),
-          const KeySignature([Note.b, Note.e]),
+          const KeySignature([Note.e]),
         );
+      });
 
+      test('should add the accidentals of both KeySignatures', () {
         expect(
           KeySignature([Note.b.flat]) +
               KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
@@ -287,6 +287,19 @@ void main() {
           KeySignature([Note.f.sharp]) +
               KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
           KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+        );
+      });
+
+      test('should ignore previous cautionary accidentals', () {
+        expect(
+          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
+              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+        );
+        expect(
+          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
+              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat, Note.a.flat]),
         );
       });
 
@@ -305,6 +318,16 @@ void main() {
           KeySignature([Note.f.sharp, Note.c.sharp]) +
               KeySignature([Note.b.flat, Note.e.flat]),
           KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat]),
+        );
+        expect(
+          KeySignature([Note.f.sharp, Note.c.sharp]) +
+              KeySignature([Note.f.sharp]),
+          KeySignature([Note.c, Note.f.sharp]),
+        );
+        expect(
+          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]) +
+              KeySignature([Note.b.flat]),
+          KeySignature([Note.e, Note.a, Note.b.flat]),
         );
       });
     });
