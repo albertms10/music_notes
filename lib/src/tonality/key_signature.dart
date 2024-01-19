@@ -34,7 +34,8 @@ final class KeySignature implements Comparable<KeySignature> {
 
     return KeySignature(
       Interval.P5
-          .circleFrom(firstAccidentalNote, distance: distance.incrementBy(-1)),
+          .circleFrom(firstAccidentalNote, distance: distance.incrementBy(-1))
+          .toList(),
     );
   }
 
