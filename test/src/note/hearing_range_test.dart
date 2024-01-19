@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('HearingRange', () {
     group('.toString()', () {
-      test('should return the string representation of this HearingRange', () {
+      test('returns the string representation of this HearingRange', () {
         expect(HearingRange.human.toString(), '20 Hz ≤ f ≤ 20000 Hz');
         expect(
           const HearingRange(min: Frequency(28.901), max: Frequency(34500.3))
@@ -15,7 +15,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should return the same hashCode for equal ClosestPitches', () {
+      test('returns the same hashCode for equal ClosestPitches', () {
         expect(
           // ignore: prefer_const_constructors
           HearingRange(min: Frequency(1), max: Frequency(1000)),
@@ -30,33 +30,30 @@ void main() {
         );
       });
 
-      test(
-        'should return different hashCodes for different ClosestPitches',
-        () {
-          expect(
-            // ignore: prefer_const_constructors
-            HearingRange(min: Frequency(0), max: Frequency(30000)),
-            isNot(
-              equals(
-                // ignore: prefer_const_constructors
-                HearingRange(min: Frequency(2), max: Frequency(3)),
-              ),
+      test('returns different hashCodes for different ClosestPitches', () {
+        expect(
+          // ignore: prefer_const_constructors
+          HearingRange(min: Frequency(0), max: Frequency(30000)),
+          isNot(
+            equals(
+              // ignore: prefer_const_constructors
+              HearingRange(min: Frequency(2), max: Frequency(3)),
             ),
-          );
-          expect(
-            // ignore: prefer_const_constructors
-            HearingRange(min: Frequency(10.6), max: Frequency(2345.3)),
-            isNot(
-              equals(
-                // ignore: prefer_const_constructors
-                HearingRange(min: Frequency(10.7), max: Frequency(2345.6)),
-              ),
+          ),
+        );
+        expect(
+          // ignore: prefer_const_constructors
+          HearingRange(min: Frequency(10.6), max: Frequency(2345.3)),
+          isNot(
+            equals(
+              // ignore: prefer_const_constructors
+              HearingRange(min: Frequency(10.7), max: Frequency(2345.6)),
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
 
-      test('should ignore equal ClosestPitch instances in a Set', () {
+      test('ignores equal ClosestPitch instances in a Set', () {
         final collection = {
           HearingRange.human,
           const HearingRange(min: Frequency(0), max: Frequency(1000)),

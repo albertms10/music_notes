@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Scale', () {
     group('.pattern', () {
-      test('should return the ScalePattern of this Scale', () {
+      test('returns the ScalePattern of this Scale', () {
         expect(ScalePattern.aeolian.on(Note.c).pattern, ScalePattern.aeolian);
         expect(
           ScalePattern.harmonicMinor.on(Note.f.sharp).pattern,
@@ -26,7 +26,7 @@ void main() {
     });
 
     group('.reversed', () {
-      test('should return this Scale reversed', () {
+      test('returns this Scale reversed', () {
         expect(
           Note.a.major.scale.reversed,
           Scale([
@@ -57,7 +57,7 @@ void main() {
     });
 
     group('.degreeChords', () {
-      test('should return the Chord for each ScaleDegree of this Scale', () {
+      test('returns the Chord for each ScaleDegree of this Scale', () {
         expect(Note.c.sharp.major.scale.degreeChords, [
           Note.c.sharp.majorTriad,
           Note.d.sharp.minorTriad,
@@ -80,7 +80,7 @@ void main() {
     });
 
     group('.degree()', () {
-      test('should return the Scalable for the ScaleDegree of this Scale', () {
+      test('returns the Scalable for the ScaleDegree of this Scale', () {
         expect(Note.c.major.scale.degree(ScaleDegree.ii), Note.d);
         expect(Note.d.minor.scale.degree(ScaleDegree.vii), Note.c);
         expect(
@@ -100,7 +100,7 @@ void main() {
     });
 
     group('.degreeChord()', () {
-      test('should return the Chord for the ScaleDegree of this Scale', () {
+      test('returns the Chord for the ScaleDegree of this Scale', () {
         expect(
           Note.c.major.scale.degreeChord(ScaleDegree.ii),
           Note.d.minorTriad,
@@ -129,78 +129,75 @@ void main() {
     });
 
     group('.functionChord()', () {
-      test(
-        'should return the Chord for the HarmonicFunction of this Scale',
-        () {
-          expect(
-            Note.c.major.scale.functionChord(HarmonicFunction.i),
-            Note.c.majorTriad,
-          );
-          expect(
-            Note.d.major.scale.functionChord(HarmonicFunction.vii),
-            Note.c.sharp.diminishedTriad,
-          );
+      test('returns the Chord for the HarmonicFunction of this Scale', () {
+        expect(
+          Note.c.major.scale.functionChord(HarmonicFunction.i),
+          Note.c.majorTriad,
+        );
+        expect(
+          Note.d.major.scale.functionChord(HarmonicFunction.vii),
+          Note.c.sharp.diminishedTriad,
+        );
 
-          expect(
-            Note.g.major.scale.functionChord(
-              HarmonicFunction.dominantV / HarmonicFunction.dominantV,
-            ),
-            Note.a.majorTriad,
-          );
-          expect(
-            Note.f.major.scale
-                .functionChord(HarmonicFunction.iv / HarmonicFunction.vi),
-            Note.g.minorTriad,
-          );
-          expect(
-            Note.b.flat.major.scale
-                .functionChord(HarmonicFunction.vi / HarmonicFunction.iv),
-            Note.c.minorTriad,
-          );
-          expect(
-            Note.c.sharp.minor.scale.functionChord(
-              HarmonicFunction.ii / HarmonicFunction.dominantV,
-            ),
-            Note.a.sharp.minorTriad,
-          );
+        expect(
+          Note.g.major.scale.functionChord(
+            HarmonicFunction.dominantV / HarmonicFunction.dominantV,
+          ),
+          Note.a.majorTriad,
+        );
+        expect(
+          Note.f.major.scale
+              .functionChord(HarmonicFunction.iv / HarmonicFunction.vi),
+          Note.g.minorTriad,
+        );
+        expect(
+          Note.b.flat.major.scale
+              .functionChord(HarmonicFunction.vi / HarmonicFunction.iv),
+          Note.c.minorTriad,
+        );
+        expect(
+          Note.c.sharp.minor.scale.functionChord(
+            HarmonicFunction.ii / HarmonicFunction.dominantV,
+          ),
+          Note.a.sharp.minorTriad,
+        );
 
-          expect(
-            Note.d.flat.major.scale.functionChord(
-              HarmonicFunction.ii /
-                  HarmonicFunction.vi /
-                  HarmonicFunction.dominantV,
-            ),
-            Note.g.diminishedTriad,
-          );
-          expect(
-            Note.b.major.scale.functionChord(
-              HarmonicFunction.iv / HarmonicFunction.iv / HarmonicFunction.iv,
-            ),
-            Note.d.majorTriad,
-          );
-          expect(
-            Note.a.major.scale.functionChord(
-              HarmonicFunction.dominantV /
-                  HarmonicFunction.dominantV /
-                  HarmonicFunction.dominantV,
-            ),
-            Note.f.sharp.majorTriad,
-          );
-          expect(
-            Note.e.flat.major.scale.functionChord(
-              HarmonicFunction.dominantV /
-                  HarmonicFunction.dominantV /
-                  HarmonicFunction.dominantV /
-                  HarmonicFunction.dominantV,
-            ),
-            Note.g.majorTriad,
-          );
-        },
-      );
+        expect(
+          Note.d.flat.major.scale.functionChord(
+            HarmonicFunction.ii /
+                HarmonicFunction.vi /
+                HarmonicFunction.dominantV,
+          ),
+          Note.g.diminishedTriad,
+        );
+        expect(
+          Note.b.major.scale.functionChord(
+            HarmonicFunction.iv / HarmonicFunction.iv / HarmonicFunction.iv,
+          ),
+          Note.d.majorTriad,
+        );
+        expect(
+          Note.a.major.scale.functionChord(
+            HarmonicFunction.dominantV /
+                HarmonicFunction.dominantV /
+                HarmonicFunction.dominantV,
+          ),
+          Note.f.sharp.majorTriad,
+        );
+        expect(
+          Note.e.flat.major.scale.functionChord(
+            HarmonicFunction.dominantV /
+                HarmonicFunction.dominantV /
+                HarmonicFunction.dominantV /
+                HarmonicFunction.dominantV,
+          ),
+          Note.g.majorTriad,
+        );
+      });
     });
 
     group('.transposeBy()', () {
-      test('should transpose this Scale by Interval', () {
+      test('transposes this Scale by Interval', () {
         expect(
           Note.c.major.scale.transposeBy(Interval.M3),
           Note.e.major.scale,
@@ -217,7 +214,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Scale', () {
+      test('returns the string representation of this Scale', () {
         expect(
           Note.b.flat.major.scale.toString(),
           'B♭ Major (ionian) (B♭ C D E♭ F G A B♭)',
@@ -247,7 +244,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should ignore equal Scale instances in a Set', () {
+      test('ignores equal Scale instances in a Set', () {
         final collection = {
           Note.a.major.scale,
           Note.c.sharp.minor.scale,

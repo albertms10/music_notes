@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('HarmonicFunction', () {
     group('operator /()', () {
-      test('should return the HarmonicFunction relating this to other', () {
+      test('returns the HarmonicFunction relating this to other', () {
         expect(
           HarmonicFunction.dominantV / HarmonicFunction.dominantV,
           HarmonicFunction([ScaleDegree.v.major, ScaleDegree.v.major]),
@@ -27,29 +27,25 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'should return the string representation of this HarmonicFunction',
-        () {
-          expect(HarmonicFunction.i.toString(), 'I');
-          expect(HarmonicFunction.vii.toString(), 'VII');
-          expect(
-            (HarmonicFunction.dominantV / HarmonicFunction.dominantV)
-                .toString(),
-            'V/V',
-          );
-          expect(
-            (HarmonicFunction([ScaleDegree.iv.minor]) /
-                    HarmonicFunction.neapolitanSixth /
-                    HarmonicFunction.dominantV)
-                .toString(),
-            'iv/♭II6/V',
-          );
-        },
-      );
+      test('returns the string representation of this HarmonicFunction', () {
+        expect(HarmonicFunction.i.toString(), 'I');
+        expect(HarmonicFunction.vii.toString(), 'VII');
+        expect(
+          (HarmonicFunction.dominantV / HarmonicFunction.dominantV).toString(),
+          'V/V',
+        );
+        expect(
+          (HarmonicFunction([ScaleDegree.iv.minor]) /
+                  HarmonicFunction.neapolitanSixth /
+                  HarmonicFunction.dominantV)
+              .toString(),
+          'iv/♭II6/V',
+        );
+      });
     });
 
     group('.hashCode', () {
-      test('should return the same hashCode for equal HarmonicFunctions', () {
+      test('returns the same hashCode for equal HarmonicFunctions', () {
         expect(
           HarmonicFunction.i.hashCode,
           HarmonicFunction.i.hashCode,
@@ -60,21 +56,18 @@ void main() {
         );
       });
 
-      test(
-        'should return different hashCodes for different HarmonicFunctions',
-        () {
-          expect(
-            HarmonicFunction.i.hashCode,
-            isNot(equals(HarmonicFunction.ii.hashCode)),
-          );
-          expect(
-            const HarmonicFunction([ScaleDegree.vi, ScaleDegree.i]).hashCode,
-            isNot(equals(HarmonicFunction.vi.hashCode)),
-          );
-        },
-      );
+      test('returns different hashCodes for different HarmonicFunctions', () {
+        expect(
+          HarmonicFunction.i.hashCode,
+          isNot(equals(HarmonicFunction.ii.hashCode)),
+        );
+        expect(
+          const HarmonicFunction([ScaleDegree.vi, ScaleDegree.i]).hashCode,
+          isNot(equals(HarmonicFunction.vi.hashCode)),
+        );
+      });
 
-      test('should ignore equal HarmonicFunction instances in a Set', () {
+      test('ignores equal HarmonicFunction instances in a Set', () {
         final collection = {
           HarmonicFunction.i,
           HarmonicFunction.neapolitanSixth,
