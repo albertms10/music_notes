@@ -308,20 +308,24 @@ void main() {
         );
       });
 
-      test('should add the accidentals of both KeySignatures', () {
-        expect(
-          KeySignature([Note.b.flat]) +
-              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-        );
-        expect(
-          KeySignature([Note.f.sharp]) +
-              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-        );
-      });
+      test(
+        'should keep the other KeySignature when it has more Accidentals of '
+        'the same kind',
+        () {
+          expect(
+            KeySignature([Note.b.flat]) +
+                KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+            KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          );
+          expect(
+            KeySignature([Note.f.sharp]) +
+                KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+            KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          );
+        },
+      );
 
-      test('should ignore previous cautionary accidentals', () {
+      test('should ignore any previously cancelled Accidentals', () {
         expect(
           KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
               KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
@@ -334,7 +338,7 @@ void main() {
         );
       });
 
-      test('should add cautionary accidentals when needed', () {
+      test('should cancel Accidentals when needed', () {
         expect(
           KeySignature([Note.f.sharp, Note.c.sharp]) + KeySignature.empty,
           const KeySignature([Note.f, Note.c]),
@@ -374,22 +378,28 @@ void main() {
             Note.f.sharp,
           ]),
         );
-        expect(
-          KeySignature.fromDistance(9) + KeySignature.fromDistance(-3),
-          KeySignature([
-            Note.f,
-            Note.c,
-            Note.g,
-            Note.d,
-            Note.a,
-            Note.e,
-            Note.b,
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-          ]),
-        );
       });
+
+      test(
+        'should show each cancelled Accidental once in edge KeySignatures',
+        () {
+          expect(
+            KeySignature.fromDistance(10) + KeySignature.fromDistance(-3),
+            KeySignature([
+              Note.f,
+              Note.c,
+              Note.g,
+              Note.d,
+              Note.a,
+              Note.e,
+              Note.b,
+              Note.b.flat,
+              Note.e.flat,
+              Note.a.flat,
+            ]),
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
