@@ -31,7 +31,7 @@ void main() {
   Note.d.interval(Note.f.sharp).inverted; // m6
   Note.g.flat.transposeBy(-Interval.m3); // E♭
 
-  Interval.P5.circleFrom(Note.c, distance: 12);
+  Interval.P5.circleFrom(Note.c, distance: 12).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
   Note.c.circleOfFifths();
   // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])

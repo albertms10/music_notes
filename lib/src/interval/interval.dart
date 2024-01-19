@@ -386,27 +386,27 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.circleFrom(Note.c, distance: 6)
+  /// Interval.P5.circleFrom(Note.c, distance: 6).toList()
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: 5)
+  /// Interval.P4.circleFrom(Note.c, distance: 5).toList()
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: -3)
+  /// Interval.P4.circleFrom(Note.c, distance: -3).toList()
   ///   == Interval.P5.circleFrom(Note.c, distance: 3)
   /// ```
-  List<T> circleFrom<T extends Scalable<T>>(
+  Iterable<T> circleFrom<T extends Scalable<T>>(
     T scalable, {
     required int distance,
-  }) =>
-      List.filled(distance.abs(), null).fold(
-        [scalable],
-        (circleItems, _) => [
-          ...circleItems,
-          circleItems.last
-              .transposeBy(descending(isDescending: distance.isNegative)),
-        ],
-      );
+  }) sync* {
+    final distanceAbs = distance.abs();
+    yield scalable;
+    var last = scalable;
+    for (var i = 0; i < distanceAbs; i++) {
+      last = last.transposeBy(descending(isDescending: distance.isNegative));
+      yield last;
+    }
+  }
 
   /// Creates a new [IntervalClass] from [semitones].
   ///
