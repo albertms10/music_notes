@@ -4,14 +4,14 @@ import 'package:test/test.dart';
 void main() {
   group('ClosestPitch', () {
     group('.parse()', () {
-      test('should throw a FormatException when source is invalid', () {
+      test('throws a FormatException when source is invalid', () {
         expect(() => ClosestPitch.parse('invalid'), throwsFormatException);
         expect(() => ClosestPitch.parse('A4+'), throwsFormatException);
         expect(() => ClosestPitch.parse('G3?'), throwsFormatException);
         expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
       });
 
-      test('should parse source as a ClosestPitch and return its value', () {
+      test('parses source as a ClosestPitch and return its value', () {
         expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
         expect(
           ClosestPitch.parse('G3+6'),
@@ -32,7 +32,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this ClosestPitch', () {
+      test('returns the string representation of this ClosestPitch', () {
         expect(
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.456)).toString(),
           'A4+3',
@@ -56,7 +56,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should return the same hashCode for equal ClosestPitches', () {
+      test('returns the same hashCode for equal ClosestPitches', () {
         expect(
           ClosestPitch(Note.a.inOctave(4)),
           ClosestPitch(Note.a.inOctave(4)),
@@ -67,28 +67,25 @@ void main() {
         );
       });
 
-      test(
-        'should return different hashCodes for different ClosestPitches',
-        () {
-          expect(
-            ClosestPitch(Note.a.inOctave(4)),
-            isNot(equals(ClosestPitch(Note.g.inOctave(4)))),
-          );
-          expect(
-            ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
-            isNot(
-              equals(
-                ClosestPitch(
-                  Note.c.sharp.inOctave(3),
-                  cents: const Cent(-0.345),
-                ),
+      test('returns different hashCodes for different ClosestPitches', () {
+        expect(
+          ClosestPitch(Note.a.inOctave(4)),
+          isNot(equals(ClosestPitch(Note.g.inOctave(4)))),
+        );
+        expect(
+          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
+          isNot(
+            equals(
+              ClosestPitch(
+                Note.c.sharp.inOctave(3),
+                cents: const Cent(-0.345),
               ),
             ),
-          );
-        },
-      );
+          ),
+        );
+      });
 
-      test('should ignore equal ClosestPitch instances in a Set', () {
+      test('ignores equal ClosestPitch instances in a Set', () {
         final collection = {
           ClosestPitch(Note.a.inOctave(4)),
           ClosestPitch(Note.b.flat.inOctave(3)),

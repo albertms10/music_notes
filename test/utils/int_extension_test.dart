@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('IntExtension', () {
     group('.incrementBy()', () {
-      test('should return this int incremented by step', () {
+      test('returns this int incremented by step', () {
         expect(1.incrementBy(1), 2);
         expect(1.incrementBy(-1), 0);
         expect((-1).incrementBy(1), -2);
@@ -21,7 +21,7 @@ void main() {
     });
 
     group('.nonZeroMod()', () {
-      test('should return the correct non-zero modulo for a given int', () {
+      test('returns the correct non-zero modulo for a given int', () {
         expect(9.nonZeroMod(3), 3);
         expect(7.nonZeroMod(7), 7);
         expect(0.nonZeroMod(5), 5);
@@ -29,7 +29,7 @@ void main() {
     });
 
     group('.nonZeroSign', () {
-      test('should return the non-zero sign of this int', () {
+      test('returns the non-zero sign of this int', () {
         expect(5.nonZeroSign, 1);
         expect(0.nonZeroSign, 1);
         expect((-2).nonZeroSign, -1);

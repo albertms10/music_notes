@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Tonality', () {
     group('.relative', () {
-      test('should return the relative of this Tonality', () {
+      test('returns the relative of this Tonality', () {
         expect(Note.c.major.relative, Note.a.minor);
         expect(Note.f.major.relative, Note.d.minor);
         expect(Note.b.minor.relative, Note.d.major);
@@ -16,7 +16,7 @@ void main() {
     });
 
     group('.parallel', () {
-      test('should return the parallel of this Tonality', () {
+      test('returns the parallel of this Tonality', () {
         expect(Note.c.major.parallel, Note.c.minor);
         expect(Note.f.major.parallel, Note.f.minor);
         expect(Note.b.minor.parallel, Note.b.major);
@@ -26,7 +26,7 @@ void main() {
     });
 
     group('.keySignature', () {
-      test('should return the KeySignature of this Tonality', () {
+      test('returns the KeySignature of this Tonality', () {
         expect(Note.c.major.keySignature, KeySignature.empty);
         expect(Note.a.minor.keySignature, KeySignature.empty);
 
@@ -79,7 +79,7 @@ void main() {
     });
 
     group('.scale', () {
-      test('should return the scale notes of this Tonality', () {
+      test('returns the scale notes of this Tonality', () {
         expect(
           Note.d.major.scale,
           Scale([
@@ -110,108 +110,96 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'should return the English string representation of this Tonality',
-        () {
-          expect(Note.c.major.toString(), 'C major');
-          expect(Note.d.minor.toString(), 'D minor');
-          expect(Note.a.flat.major.toString(), 'A♭ major');
-          expect(Note.f.sharp.minor.toString(), 'F♯ minor');
-          expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
-          expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
-        },
-      );
+      test('returns the English string representation of this Tonality', () {
+        expect(Note.c.major.toString(), 'C major');
+        expect(Note.d.minor.toString(), 'D minor');
+        expect(Note.a.flat.major.toString(), 'A♭ major');
+        expect(Note.f.sharp.minor.toString(), 'F♯ minor');
+        expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
+        expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
+      });
 
-      test(
-        'should return the German string representation of this Tonality',
-        () {
-          expect(Note.c.major.toString(system: NoteNotation.german), 'C-Dur');
-          expect(
-            Note.d.minor.toString(system: NoteNotation.german),
-            'd-Moll',
-          );
-          expect(
-            Note.a.flat.major.toString(system: NoteNotation.german),
-            'As-Dur',
-          );
-          expect(
-            Note.f.sharp.minor.toString(system: NoteNotation.german),
-            'fis-Moll',
-          );
-          expect(
-            Note.g.sharp.sharp.major.toString(system: NoteNotation.german),
-            'Gisis-Dur',
-          );
-          expect(
-            Note.e.flat.flat.minor.toString(system: NoteNotation.german),
-            'eses-Moll',
-          );
-        },
-      );
+      test('returns the German string representation of this Tonality', () {
+        expect(Note.c.major.toString(system: NoteNotation.german), 'C-Dur');
+        expect(
+          Note.d.minor.toString(system: NoteNotation.german),
+          'd-Moll',
+        );
+        expect(
+          Note.a.flat.major.toString(system: NoteNotation.german),
+          'As-Dur',
+        );
+        expect(
+          Note.f.sharp.minor.toString(system: NoteNotation.german),
+          'fis-Moll',
+        );
+        expect(
+          Note.g.sharp.sharp.major.toString(system: NoteNotation.german),
+          'Gisis-Dur',
+        );
+        expect(
+          Note.e.flat.flat.minor.toString(system: NoteNotation.german),
+          'eses-Moll',
+        );
+      });
 
-      test(
-        'should return the Italian string representation of this Tonality',
-        () {
-          expect(
-            Note.c.major.toString(system: NoteNotation.italian),
-            'Do maggiore',
-          );
-          expect(
-            Note.d.minor.toString(system: NoteNotation.italian),
-            'Re minore',
-          );
-          expect(
-            Note.a.flat.major.toString(system: NoteNotation.italian),
-            'La♭ maggiore',
-          );
-          expect(
-            Note.f.sharp.minor.toString(system: NoteNotation.italian),
-            'Fa♯ minore',
-          );
-          expect(
-            Note.g.sharp.sharp.major.toString(system: NoteNotation.italian),
-            'Sol𝄪 maggiore',
-          );
-          expect(
-            Note.e.flat.flat.minor.toString(system: NoteNotation.italian),
-            'Mi𝄫 minore',
-          );
-        },
-      );
+      test('returns the Italian string representation of this Tonality', () {
+        expect(
+          Note.c.major.toString(system: NoteNotation.italian),
+          'Do maggiore',
+        );
+        expect(
+          Note.d.minor.toString(system: NoteNotation.italian),
+          'Re minore',
+        );
+        expect(
+          Note.a.flat.major.toString(system: NoteNotation.italian),
+          'La♭ maggiore',
+        );
+        expect(
+          Note.f.sharp.minor.toString(system: NoteNotation.italian),
+          'Fa♯ minore',
+        );
+        expect(
+          Note.g.sharp.sharp.major.toString(system: NoteNotation.italian),
+          'Sol𝄪 maggiore',
+        );
+        expect(
+          Note.e.flat.flat.minor.toString(system: NoteNotation.italian),
+          'Mi𝄫 minore',
+        );
+      });
 
-      test(
-        'should return the French string representation of this Tonality',
-        () {
-          expect(
-            Note.c.major.toString(system: NoteNotation.french),
-            'Ut majeur',
-          );
-          expect(
-            Note.d.minor.toString(system: NoteNotation.french),
-            'Ré mineur',
-          );
-          expect(
-            Note.a.flat.major.toString(system: NoteNotation.french),
-            'La♭ majeur',
-          );
-          expect(
-            Note.f.sharp.minor.toString(system: NoteNotation.french),
-            'Fa♯ mineur',
-          );
-          expect(
-            Note.g.sharp.sharp.major.toString(system: NoteNotation.french),
-            'Sol𝄪 majeur',
-          );
-          expect(
-            Note.e.flat.flat.minor.toString(system: NoteNotation.french),
-            'Mi𝄫 mineur',
-          );
-        },
-      );
+      test('returns the French string representation of this Tonality', () {
+        expect(
+          Note.c.major.toString(system: NoteNotation.french),
+          'Ut majeur',
+        );
+        expect(
+          Note.d.minor.toString(system: NoteNotation.french),
+          'Ré mineur',
+        );
+        expect(
+          Note.a.flat.major.toString(system: NoteNotation.french),
+          'La♭ majeur',
+        );
+        expect(
+          Note.f.sharp.minor.toString(system: NoteNotation.french),
+          'Fa♯ mineur',
+        );
+        expect(
+          Note.g.sharp.sharp.major.toString(system: NoteNotation.french),
+          'Sol𝄪 majeur',
+        );
+        expect(
+          Note.e.flat.flat.minor.toString(system: NoteNotation.french),
+          'Mi𝄫 mineur',
+        );
+      });
     });
 
     group('.hashCode', () {
-      test('should ignore equal Tonality instances in a Set', () {
+      test('ignores equal Tonality instances in a Set', () {
         final collection = {
           Note.d.major,
           Note.f.sharp.minor,
@@ -227,7 +215,7 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort Tonality items in a collection', () {
+      test('sorts Tonalities in a collection', () {
         final orderedSet = SplayTreeSet<Tonality>.of({
           Note.f.sharp.minor,
           Note.c.minor,
