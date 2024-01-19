@@ -86,7 +86,7 @@ Note.g.flat.transposeBy(-Interval.m3); // E♭
 And even play with the circle of fifths or any circle of intervals up to a distance:
 
 ```dart
-Interval.P5.circleFrom(Note.c, distance: 12);
+Interval.P5.circleFrom(Note.c, distance: 12).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths();
 // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
