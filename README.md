@@ -4,7 +4,8 @@
 [![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause/)
 
-A simple Dart library that provides a comprehensive set of utilities for working with music theory concepts through a beautifully crafted API.
+A simple Dart library that provides a comprehensive set of utilities
+for working with music theory concepts through a beautifully crafted API.
 
 ## Features
 
@@ -23,7 +24,9 @@ Import the package into your Dart code:
 import 'package:music_notes/music_notes.dart';
 ```
 
-Now, you can use the provided APIs to perform various music theory operations. For more detailed usage instructions and examples, please refer to the [API documentation](https://pub.dev/documentation/music_notes/latest/).
+Now, you can use the provided APIs to perform various music theory operations.
+For more detailed usage instructions and examples, please refer to the
+[API documentation](https://pub.dev/documentation/music_notes/latest/).
 
 ### Notes
 
@@ -83,7 +86,8 @@ Note.d.interval(Note.f.sharp).inverted; // m6
 Note.g.flat.transposeBy(-Interval.m3); // E♭
 ```
 
-And even play with the circle of fifths or any circle of intervals up to a distance:
+And even play with the circle of fifths or any circle of intervals
+up to a distance:
 
 ```dart
 Interval.P5.circleFrom(Note.c, distance: 12).toList();
@@ -120,15 +124,26 @@ Note.c.minor.relative; // E♭ major
 Create a `KeySignature`:
 
 ```dart
-KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
 KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
+KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
+KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 ```
 
 And know its tonalities:
 
 ```dart
-KeySignature([Note.f.sharp]).tonalities.major; // G major
-KeySignature.fromDistance(-3).tonalities.minor; // C minor
+KeySignature([Note.f.sharp]).tonalities!.major; // G major
+KeySignature.empty.tonalities!.minor; // A minor
+```
+
+Non-canonical key signatures are also supported, although they
+return `null` when asked about their fifths distance or tonalities:
+
+```dart
+KeySignature([Note.a.flat])
+  ..isCanonical // false
+  ..distance // null
+  ..tonalities; // null
 ```
 
 ### Modes
@@ -213,7 +228,7 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 Get the `Frequency` of a `Pitch`:
 
 ```dart
-Note.a.inOctave(4).frequency(); // 440.0 Hz
+Note.a.inOctave(4).frequency(); // 440 Hz
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
       tuningSystem:

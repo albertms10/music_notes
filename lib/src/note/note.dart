@@ -347,7 +347,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.circleOfFifthsDistance == 2
   /// Note.a.flat.circleOfFifthsDistance == -4
   /// ```
-  int get circleOfFifthsDistance => major.keySignature.distance;
+  int get circleOfFifthsDistance => Note.c.fifthsDistanceWith(this);
 
   /// Returns the fifths distance between this [Note] and [other].
   ///

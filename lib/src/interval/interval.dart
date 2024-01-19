@@ -403,8 +403,8 @@ final class Interval implements Comparable<Interval> {
     yield scalable;
     var last = scalable;
     for (var i = 0; i < distanceAbs; i++) {
-      last = last.transposeBy(descending(isDescending: distance.isNegative));
-      yield last;
+      yield last =
+          last.transposeBy(descending(isDescending: distance.isNegative));
     }
   }
 

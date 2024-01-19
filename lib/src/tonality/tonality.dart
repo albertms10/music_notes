@@ -53,7 +53,7 @@ final class Tonality implements Comparable<Tonality> {
   /// Note.g.flat.major.keySignature == KeySignature.fromDistance(-6)
   /// ```
   KeySignature get keySignature => KeySignature.fromDistance(
-        KeySignature.empty.tonality(mode).note.fifthsDistanceWith(note),
+        KeySignature.empty.tonality(mode)!.note.fifthsDistanceWith(note),
       );
 
   /// Returns the scale notes of this [Tonality].
