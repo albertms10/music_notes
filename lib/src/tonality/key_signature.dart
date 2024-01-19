@@ -130,7 +130,7 @@ final class KeySignature implements Comparable<KeySignature> {
         : clean.notes;
 
     return KeySignature([
-      ...cancelledNotes.map((note) => note.natural),
+      ...cancelledNotes.map((note) => note.natural).toSet(),
       ...other.notes,
     ]);
   }

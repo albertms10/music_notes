@@ -8,6 +8,20 @@ void main() {
     group('.fromDistance()', () {
       test('should create a new KeySignature from the given distance', () {
         expect(
+          KeySignature.fromDistance(-9),
+          KeySignature([
+            Note.b.flat,
+            Note.e.flat,
+            Note.a.flat,
+            Note.d.flat,
+            Note.g.flat,
+            Note.c.flat,
+            Note.f.flat,
+            Note.b.flat.flat,
+            Note.e.flat.flat,
+          ]),
+        );
+        expect(
           KeySignature.fromDistance(-6),
           KeySignature([
             Note.b.flat,
@@ -30,6 +44,21 @@ void main() {
             Note.d.sharp,
             Note.a.sharp,
             Note.e.sharp,
+          ]),
+        );
+        expect(
+          KeySignature.fromDistance(10),
+          KeySignature([
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+            Note.d.sharp,
+            Note.a.sharp,
+            Note.e.sharp,
+            Note.b.sharp,
+            Note.f.sharp.sharp,
+            Note.c.sharp.sharp,
+            Note.g.sharp.sharp,
           ]),
         );
       });
@@ -59,11 +88,13 @@ void main() {
 
     group('.distance', () {
       test('should return the fifths distance of this KeySignature', () {
+        expect(KeySignature.fromDistance(-9).distance, -9);
         expect(KeySignature.fromDistance(-7).distance, -7);
         expect(KeySignature.fromDistance(-2).distance, -2);
         expect(KeySignature.empty.distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
+        expect(KeySignature.fromDistance(10).distance, 10);
 
         expect(KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).distance, 2);
         expect(
@@ -277,20 +308,24 @@ void main() {
         );
       });
 
-      test('should add the accidentals of both KeySignatures', () {
-        expect(
-          KeySignature([Note.b.flat]) +
-              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-        );
-        expect(
-          KeySignature([Note.f.sharp]) +
-              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-        );
-      });
+      test(
+        'should keep the other KeySignature when it has more Accidentals of '
+        'the same kind',
+        () {
+          expect(
+            KeySignature([Note.b.flat]) +
+                KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+            KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          );
+          expect(
+            KeySignature([Note.f.sharp]) +
+                KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+            KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          );
+        },
+      );
 
-      test('should ignore previous cautionary accidentals', () {
+      test('should ignore any previously cancelled Accidentals', () {
         expect(
           KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
               KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
@@ -303,7 +338,7 @@ void main() {
         );
       });
 
-      test('should add cautionary accidentals when needed', () {
+      test('should cancel Accidentals when needed', () {
         expect(
           KeySignature([Note.f.sharp, Note.c.sharp]) + KeySignature.empty,
           const KeySignature([Note.f, Note.c]),
@@ -329,7 +364,42 @@ void main() {
               KeySignature([Note.b.flat]),
           KeySignature([Note.e, Note.a, Note.b.flat]),
         );
+
+        expect(
+          KeySignature.fromDistance(-8) + KeySignature.fromDistance(1),
+          KeySignature([
+            Note.b,
+            Note.e,
+            Note.a,
+            Note.d,
+            Note.g,
+            Note.c,
+            Note.f,
+            Note.f.sharp,
+          ]),
+        );
       });
+
+      test(
+        'should show each cancelled Accidental once in edge KeySignatures',
+        () {
+          expect(
+            KeySignature.fromDistance(10) + KeySignature.fromDistance(-3),
+            KeySignature([
+              Note.f,
+              Note.c,
+              Note.g,
+              Note.d,
+              Note.a,
+              Note.e,
+              Note.b,
+              Note.b.flat,
+              Note.e.flat,
+              Note.a.flat,
+            ]),
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
