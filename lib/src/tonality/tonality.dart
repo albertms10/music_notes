@@ -32,6 +32,18 @@ final class Tonality implements Comparable<Tonality> {
         mode.opposite,
       );
 
+  /// Returns the [TonalMode.major] or [TonalMode.minor] parallel [Tonality]
+  /// of this [Tonality].
+  ///
+  /// See [Parallel key](https://en.wikipedia.org/wiki/Parallel_key).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.minor.parallel == Note.d.major
+  /// Note.b.flat.major.parallel == Note.b.flat.minor
+  /// ```
+  Tonality get parallel => Tonality(note, mode.opposite);
+
   /// Returns the [KeySignature] of this [Tonality].
   ///
   /// Example:
