@@ -142,19 +142,19 @@ final class KeySignature implements Comparable<KeySignature> {
         (note) => note.toString(system: _noteNotation),
       ).join(' ')})';
 
-  /// Adds two [KeySignature]s, including cancellation [Accidental.natural]s
-  /// if needed.
+  /// The consecutive union of two [KeySignature]s (as if divided by a barline),
+  /// including cancellation [Accidental.natural]s when needed.
   ///
   /// Example:
   /// ```dart
-  /// KeySignature([Note.b.flat]) + KeySignature([Note.f.sharp, Note.c.sharp])
+  /// KeySignature([Note.b.flat]) | KeySignature([Note.f.sharp, Note.c.sharp])
   ///   == KeySignature([Note.b, Note.f.sharp, Note.c.sharp])
   ///
-  /// KeySignature([Note.f.sharp, Note.c.sharp])
-  ///   + KeySignature([Note.b.flat, Note.e.flat])
+  /// KeySignature([Note.f.sharp, Note.c.sharp]) |
+  ///   KeySignature([Note.b.flat, Note.e.flat])
   ///   == KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat])
   /// ```
-  KeySignature operator +(KeySignature other) {
+  KeySignature operator |(KeySignature other) {
     if (this == empty) return other;
 
     final cancelledNotes = accidental == other.accidental
