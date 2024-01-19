@@ -92,6 +92,7 @@ void main() {
         expect(KeySignature.fromDistance(-7).distance, -7);
         expect(KeySignature.fromDistance(-2).distance, -2);
         expect(KeySignature.empty.distance, 0);
+        expect(const KeySignature([Note.b, Note.e]).distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
         expect(KeySignature.fromDistance(10).distance, 10);
@@ -101,6 +102,11 @@ void main() {
           KeySignature([Note.f, Note.c, Note.g, Note.b.flat]).distance,
           -1,
         );
+      });
+
+      test('should return null when this KeySignature is not canonical', () {
+        expect(KeySignature([Note.b.flat, Note.a.flat]).distance, isNull);
+        expect(KeySignature([Note.g.sharp]).distance, isNull);
       });
     });
 
@@ -139,6 +145,14 @@ void main() {
         expect(
           KeySignature.fromDistance(5).tonality(TonalMode.minor),
           Note.g.sharp.minor,
+        );
+      });
+
+      test('should return null when this KeySignature is not canonical', () {
+        expect(KeySignature([Note.c.flat]).tonality(TonalMode.major), isNull);
+        expect(
+          KeySignature([Note.f.sharp, Note.e.sharp]).tonality(TonalMode.minor),
+          isNull,
         );
       });
     });
@@ -229,6 +243,11 @@ void main() {
           KeySignature.fromDistance(10).tonalities,
           (major: Note.a.sharp.major, minor: Note.f.sharp.sharp.minor),
         );
+      });
+
+      test('should return null when this KeySignature is not canonical', () {
+        expect(KeySignature([Note.d.flat]).tonalities, isNull);
+        expect(KeySignature([Note.c.sharp.sharp]).tonalities, isNull);
       });
     });
 

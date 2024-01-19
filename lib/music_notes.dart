@@ -6,7 +6,7 @@ import 'dart:collection' show SplayTreeSet;
 import 'dart:math' as math show log, pow;
 
 import 'package:collection/collection.dart'
-    show IterableExtension, ListEquality;
+    show IterableEquality, IterableExtension, ListEquality;
 import 'package:meta/meta.dart' show immutable;
 
 import 'utils/int_extension.dart';

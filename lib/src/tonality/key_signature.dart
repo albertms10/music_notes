@@ -18,6 +18,9 @@ final class KeySignature implements Comparable<KeySignature> {
   /// An empty [KeySignature].
   static const empty = KeySignature([]);
 
+  static const _firstFlatNote = Note(BaseNote.b, Accidental.flat);
+  static const _firstSharpNote = Note(BaseNote.f, Accidental.sharp);
+
   /// Creates a new [KeySignature] from fifths [distance].
   ///
   /// Example:
@@ -29,12 +32,11 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final firstAccidentalNote =
-        distance.isNegative ? Note.b.flat : Note.f.sharp;
+    final firstNote = distance.isNegative ? _firstFlatNote : _firstSharpNote;
 
     return KeySignature(
       Interval.P5
-          .circleFrom(firstAccidentalNote, distance: distance.incrementBy(-1))
+          .circleFrom(firstNote, distance: distance.incrementBy(-1))
           .toList(),
     );
   }
@@ -70,7 +72,35 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature([Note.f.sharp, Note.c.sharp]).distance == 2
   /// KeySignature.fromDistance(-4).distance == -4
   /// ```
-  int get distance => clean.notes.length * accidental.semitones.nonZeroSign;
+  int? get distance {
+    if (accidental.isNatural) return 0;
+
+    final cleanNotes = clean.notes;
+    final apparentDistance = cleanNotes.length * accidental.semitones.sign;
+    final apparentFirstNote =
+        accidental.isFlat ? _firstFlatNote : _firstSharpNote;
+    final circle = Interval.P5.circleFrom(
+      apparentFirstNote,
+      distance: apparentDistance.incrementBy(-1),
+    );
+
+    // As `circle` is an Iterable, lazy evaluation takes place
+    // for efficient comparison, returning early on mismatches.
+    return const IterableEquality<Note>().equals(cleanNotes, circle)
+        ? apparentDistance
+        : null;
+  }
+
+  /// Whether this [KeySignature] is canonical (has an associated [Tonality]).
+  ///
+  /// Cancellation [Accidental.natural]s are ignored.
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature([Note.f.sharp, Note.c.sharp]).isCanonical == true
+  /// KeySignature([Note.e.flat, Note.d.flat]).isCanonical == false
+  /// ```
+  bool get isCanonical => distance != null;
 
   /// Returns the [Tonality] that corresponds to this [KeySignature] from
   /// [mode].
@@ -80,9 +110,9 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.empty.tonality(TonalMode.major) == Note.c.major
   /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality tonality(TonalMode mode) => switch (mode) {
-        TonalMode.major => tonalities.major,
-        TonalMode.minor => tonalities.minor,
+  Tonality? tonality(TonalMode mode) => switch (mode) {
+        TonalMode.major => tonalities?.major,
+        TonalMode.minor => tonalities?.minor,
       };
 
   /// Returns a [Set] with the two tonalities that are defined
@@ -95,13 +125,14 @@ final class KeySignature implements Comparable<KeySignature> {
   ///   minor: Note.g.minor,
   /// )
   /// ```
-  ({Tonality major, Tonality minor}) get tonalities {
-    final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
+  ({Tonality major, Tonality minor})? get tonalities {
+    final distance = this.distance;
+    if (distance == null) return null;
 
-    return (
-      major: rootNote.major,
-      minor: rootNote.transposeBy(-Interval.m3).minor,
-    );
+    final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
+    final major = rootNote.major;
+
+    return (major: major, minor: major.relative);
   }
 
   static const _noteNotation = EnglishNoteNotation(showNatural: true);
