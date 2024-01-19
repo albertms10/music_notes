@@ -53,8 +53,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     yield first;
     var last = first;
     for (var i = 1; i < length; i++) {
-      last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
-      yield last;
+      yield last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
     }
   }
 
