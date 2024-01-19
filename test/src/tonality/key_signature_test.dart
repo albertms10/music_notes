@@ -321,16 +321,16 @@ void main() {
       });
     });
 
-    group('operator +()', () {
+    group('operator |()', () {
       test('keeps the same KeySignature when this is empty', () {
-        expect(KeySignature.empty + KeySignature.empty, KeySignature.empty);
+        expect(KeySignature.empty | KeySignature.empty, KeySignature.empty);
         expect(
-          KeySignature.empty + KeySignature([Note.b.flat]),
+          KeySignature.empty | KeySignature([Note.b.flat]),
           KeySignature([Note.b.flat]),
         );
 
         expect(
-          const KeySignature([Note.b]) + const KeySignature([Note.e]),
+          const KeySignature([Note.b]) | const KeySignature([Note.e]),
           const KeySignature([Note.e]),
         );
       });
@@ -340,12 +340,12 @@ void main() {
         'the same kind',
         () {
           expect(
-            KeySignature([Note.b.flat]) +
+            KeySignature([Note.b.flat]) |
                 KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
             KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
           );
           expect(
-            KeySignature([Note.f.sharp]) +
+            KeySignature([Note.f.sharp]) |
                 KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
             KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
           );
@@ -354,12 +354,12 @@ void main() {
 
       test('ignores any previously cancelled Accidentals', () {
         expect(
-          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
+          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) |
               KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
           KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
         );
         expect(
-          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) +
+          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) |
               KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
           KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat, Note.a.flat]),
         );
@@ -367,33 +367,33 @@ void main() {
 
       test('cancels Accidentals when needed', () {
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) + KeySignature.empty,
+          KeySignature([Note.f.sharp, Note.c.sharp]) | KeySignature.empty,
           const KeySignature([Note.f, Note.c]),
         );
 
         expect(
-          KeySignature([Note.b.flat]) +
+          KeySignature([Note.b.flat]) |
               KeySignature([Note.f.sharp, Note.c.sharp]),
           KeySignature([Note.b, Note.f.sharp, Note.c.sharp]),
         );
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) +
+          KeySignature([Note.f.sharp, Note.c.sharp]) |
               KeySignature([Note.b.flat, Note.e.flat]),
           KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat]),
         );
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) +
+          KeySignature([Note.f.sharp, Note.c.sharp]) |
               KeySignature([Note.f.sharp]),
           KeySignature([Note.c, Note.f.sharp]),
         );
         expect(
-          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]) +
+          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]) |
               KeySignature([Note.b.flat]),
           KeySignature([Note.e, Note.a, Note.b.flat]),
         );
 
         expect(
-          KeySignature.fromDistance(-8) + KeySignature.fromDistance(1),
+          KeySignature.fromDistance(-8) | KeySignature.fromDistance(1),
           KeySignature([
             Note.b,
             Note.e,
@@ -409,7 +409,7 @@ void main() {
 
       test('shows each cancelled Accidental once in edge KeySignatures', () {
         expect(
-          KeySignature.fromDistance(10) + KeySignature.fromDistance(-3),
+          KeySignature.fromDistance(10) | KeySignature.fromDistance(-3),
           KeySignature([
             Note.f,
             Note.c,
