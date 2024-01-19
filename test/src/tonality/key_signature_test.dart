@@ -110,6 +110,20 @@ void main() {
       });
     });
 
+    group('.isCanonical', () {
+      test('should return whether this KeySignature is canonical', () {
+        expect(KeySignature.fromDistance(-3).isCanonical, isTrue);
+        expect(KeySignature.empty.isCanonical, isTrue);
+        expect(
+          KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).isCanonical,
+          isTrue,
+        );
+
+        expect(KeySignature([Note.g.sharp]).isCanonical, isFalse);
+        expect(KeySignature([Note.a.flat.flat]).isCanonical, isFalse);
+      });
+    });
+
     group('.tonality()', () {
       test('should return the Tonality from TonalMode', () {
         expect(
