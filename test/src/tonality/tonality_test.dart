@@ -6,12 +6,22 @@ import 'package:test/test.dart';
 void main() {
   group('Tonality', () {
     group('.relative', () {
-      test('should return the relative Tonality of this', () {
+      test('should return the relative of this Tonality', () {
         expect(Note.c.major.relative, Note.a.minor);
         expect(Note.f.major.relative, Note.d.minor);
-        expect(Note.d.major.relative, Note.b.minor);
+        expect(Note.b.minor.relative, Note.d.major);
         expect(Note.g.sharp.minor.relative, Note.b.major);
         expect(Note.a.flat.minor.relative, Note.c.flat.major);
+      });
+    });
+
+    group('.parallel', () {
+      test('should return the parallel of this Tonality', () {
+        expect(Note.c.major.parallel, Note.c.minor);
+        expect(Note.f.major.parallel, Note.f.minor);
+        expect(Note.b.minor.parallel, Note.b.major);
+        expect(Note.g.sharp.minor.parallel, Note.g.sharp.major);
+        expect(Note.a.flat.major.parallel, Note.a.flat.minor);
       });
     });
 
