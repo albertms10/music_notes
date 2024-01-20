@@ -62,6 +62,13 @@ void main() {
           Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
       });
+
+      test('returns the same Frequency after Pitch.frequency()', () {
+        final pitch = Note.a.inOctave(5);
+        final closestPitch = pitch.frequency().closestPitch();
+        expect(closestPitch.pitch, pitch);
+        expect(closestPitch.cents, const Cent(0));
+      });
     });
 
     group('.harmonic()', () {

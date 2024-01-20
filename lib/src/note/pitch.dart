@@ -362,7 +362,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// ```dart
   /// final pitch = Note.a.inOctave(5);
-  /// pitch.frequency().closestPitch().$1 == pitch;
+  /// pitch.frequency().closestPitch().pitch == pitch;
   /// ```
   Frequency frequency({
     Frequency referenceFrequency = const Frequency(440),
