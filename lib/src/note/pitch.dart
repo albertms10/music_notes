@@ -440,12 +440,7 @@ class ScientificPitchNotation extends PitchNotation {
   const ScientificPitchNotation();
 
   @override
-  String pitch(Pitch pitch) {
-    final accidental =
-        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
-
-    return '${pitch.note.baseNote}$accidental${pitch.octave}';
-  }
+  String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
 }
 
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
@@ -455,15 +450,15 @@ class HelmholtzPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) {
-    final accidental =
-        pitch.note.accidental.isNatural ? '' : pitch.note.accidental.symbol;
+    final accidental = pitch.note.accidental;
+    final accidentalSymbol = accidental.isNatural ? '' : accidental.symbol;
 
     if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidental'
+      return '${pitch.note.baseNote.name}$accidentalSymbol'
           '${Pitch._superPrime * (pitch.octave - 3)}';
     }
 
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidental'
+    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
         '${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }
