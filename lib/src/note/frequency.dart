@@ -39,13 +39,12 @@ class Frequency implements Comparable<Frequency> {
   ///   == Note.c.inOctave(4) - const Cent(10.7903)
   /// ```
   ///
-  /// This method and [Pitch.frequency] are inverses of each other for a
+  /// This method and [ClosestPitch.frequency] are inverses of each other for a
   /// specific input `frequency`.
   ///
   /// ```dart
-  /// const frequency = Frequency(442);
-  /// final (closestPitch, cents: _, :hertz) = frequency.closestPitch();
-  /// closestPitch.frequency() == Frequency(frequency.hertz - hertz);
+  /// const frequency = Frequency(415);
+  /// frequency.closestPitch().frequency() == frequency;
   /// ```
   ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),

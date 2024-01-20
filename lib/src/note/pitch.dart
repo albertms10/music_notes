@@ -338,8 +338,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// Returns the equal temperament [Frequency] of this [Pitch] from
-  /// [referenceFrequency] and [tuningSystem].
+  /// Returns the [Frequency] of this [Pitch] from [referenceFrequency] and
+  /// [tuningSystem].
   ///
   /// Example:
   /// ```dart

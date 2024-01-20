@@ -31,6 +31,24 @@ void main() {
       });
     });
 
+    group('.frequency()', () {
+      test('returns the Frequency of this ClosestPitch', () {
+        expect(
+          (Note.a.inOctave(4) + const Cent(12)).frequency(),
+          const Frequency(443.06044202495633),
+        );
+        expect(
+          (Note.a.inOctave(4) - const Cent(12)).frequency(),
+          const Frequency(436.9606979922958),
+        );
+      });
+
+      test('returns the same Frequency after Frequency.closestPitch()', () {
+        const frequency = Frequency(415);
+        expect(frequency.closestPitch().frequency(), frequency);
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ClosestPitch', () {
         expect(
