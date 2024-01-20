@@ -70,7 +70,7 @@ final class Tonality implements Comparable<Tonality> {
   /// Note.g.sharp.major.isTheoretical == true
   /// Note.f.flat.minor.isTheoretical == true
   /// ```
-  bool get isTheoretical => (keySignature.distance?.abs() ?? 0) > 7;
+  bool get isTheoretical => keySignature.distance!.abs() > 7;
 
   /// Returns the scale notes of this [Tonality].
   ///
