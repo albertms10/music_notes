@@ -103,6 +103,26 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
+  static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
+  static const _higherMidiPitch = Pitch(Note.g, octave: 9);
+
+  /// Returns the MIDI number of this [Pitch].
+  ///
+  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
+  /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(-1).midiNumber == 0
+  /// Note.a.inOctave(4).midiNumber == 69
+  /// Note.g.inOctave(9).midiNumber == 127
+  /// Note.a.flat.inOctave(9).midiNumber == null
+  /// ```
+  int? get midiNumber => switch (this) {
+        < _lowerMidiPitch || > _higherMidiPitch => null,
+        _ => semitones + chromaticDivisions,
+      };
+
   /// Returns the difference in semitones between this [Pitch] and
   /// [other].
   ///
@@ -404,6 +424,46 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
   /// ```
   ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
+
+  /// Whether this [Pitch] is lower than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) < Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) < Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) < Note.d.inOctave(4) == false
+  /// ```
+  bool operator <(Pitch other) => semitones < other.semitones;
+
+  /// Whether this [Pitch] is lower than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) <= Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) <= Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) <= Note.d.inOctave(4) == true
+  /// ```
+  bool operator <=(Pitch other) => semitones <= other.semitones;
+
+  /// Whether this [Pitch] is higher than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) > Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) > Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) > Note.d.inOctave(4) == false
+  /// ```
+  bool operator >(Pitch other) => semitones > other.semitones;
+
+  /// Whether this [Pitch] is higher than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) >= Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) >= Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) >= Note.d.inOctave(4) == true
+  /// ```
+  bool operator >=(Pitch other) => semitones >= other.semitones;
 
   @override
   bool operator ==(Object other) =>

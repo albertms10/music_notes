@@ -104,6 +104,19 @@ void main() {
       });
     });
 
+    group('.midiNumber', () {
+      test('returns the MIDI key of this Pitch', () {
+        expect(Note.c.flat.inOctave(-1).midiNumber, isNull);
+        expect(Note.c.inOctave(-1).midiNumber, 0);
+        expect(Note.c.inOctave(0).midiNumber, 12);
+        expect(Note.c.inOctave(1).midiNumber, 24);
+        expect(Note.c.inOctave(4).midiNumber, 60);
+        expect(Note.a.inOctave(4).midiNumber, 69);
+        expect(Note.g.inOctave(9).midiNumber, 127);
+        expect(Note.g.sharp.inOctave(9).midiNumber, isNull);
+      });
+    });
+
     group('.difference()', () {
       test('returns the difference in semitones with another Pitch', () {
         expect(Note.c.inOctave(4).difference(Note.c.inOctave(4)), 0);
