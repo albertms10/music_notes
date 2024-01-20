@@ -78,6 +78,24 @@ void main() {
       });
     });
 
+    group('.isTheoretical', () {
+      test('returns whether this Tonality is theoretical', () {
+        expect(Note.c.flat.major.isTheoretical, false);
+        expect(Note.a.flat.minor.isTheoretical, false);
+        expect(Note.c.minor.isTheoretical, false);
+        expect(Note.e.major.isTheoretical, false);
+        expect(Note.c.sharp.major.isTheoretical, false);
+        expect(Note.a.sharp.minor.isTheoretical, false);
+
+        expect(Note.f.flat.major.isTheoretical, true);
+        expect(Note.d.flat.minor.isTheoretical, true);
+        expect(Note.c.sharp.sharp.minor.isTheoretical, true);
+        expect(Note.a.flat.flat.major.isTheoretical, true);
+        expect(Note.g.sharp.major.isTheoretical, true);
+        expect(Note.e.sharp.minor.isTheoretical, true);
+      });
+    });
+
     group('.scale', () {
       test('returns the scale notes of this Tonality', () {
         expect(

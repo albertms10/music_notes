@@ -1,11 +1,14 @@
 part of '../../music_notes.dart';
 
-/// A musical tonality.
+/// A musical tonality, also known as key.
+///
+/// See [Key (music)](https://en.wikipedia.org/wiki/Key_(music)).
 ///
 /// ---
 /// See also:
 /// * [Note].
 /// * [Mode].
+/// * [KeySignature].
 @immutable
 final class Tonality implements Comparable<Tonality> {
   /// The tonal center representing this [Tonality].
@@ -55,6 +58,19 @@ final class Tonality implements Comparable<Tonality> {
   KeySignature get keySignature => KeySignature.fromDistance(
         KeySignature.empty.tonality(mode)!.note.fifthsDistanceWith(note),
       );
+
+  /// Whether this [Tonality] is theoretical, whose [keySignature] would have
+  /// at least one [Accidental.doubleFlat] or [Accidental.doubleSharp].
+  ///
+  /// See [Theoretical key](https://en.wikipedia.org/wiki/Theoretical_key).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.major.isTheoretical == false
+  /// Note.g.sharp.major.isTheoretical == true
+  /// Note.f.flat.minor.isTheoretical == true
+  /// ```
+  bool get isTheoretical => keySignature.distance!.abs() > 7;
 
   /// Returns the scale notes of this [Tonality].
   ///
