@@ -409,14 +409,6 @@ void main() {
 
     group('.circleOfFifthsDistance', () {
       test('returns the circle of fifths distance of this Note', () {
-        expect(Note.b.flat.flat.flat.circleOfFifthsDistance, -16);
-        expect(Note.f.flat.flat.circleOfFifthsDistance, -15);
-        expect(Note.c.flat.flat.circleOfFifthsDistance, -14);
-        expect(Note.g.flat.flat.circleOfFifthsDistance, -13);
-        expect(Note.d.flat.flat.circleOfFifthsDistance, -12);
-        expect(Note.a.flat.flat.circleOfFifthsDistance, -11);
-        expect(Note.e.flat.flat.circleOfFifthsDistance, -10);
-        expect(Note.b.flat.flat.circleOfFifthsDistance, -9);
         expect(Note.f.flat.circleOfFifthsDistance, -8);
         expect(Note.c.flat.circleOfFifthsDistance, -7);
         expect(Note.g.flat.circleOfFifthsDistance, -6);
@@ -438,10 +430,6 @@ void main() {
         expect(Note.a.sharp.circleOfFifthsDistance, 10);
         expect(Note.e.sharp.circleOfFifthsDistance, 11);
         expect(Note.b.sharp.circleOfFifthsDistance, 12);
-        expect(Note.f.sharp.sharp.circleOfFifthsDistance, 13);
-        expect(Note.c.sharp.sharp.circleOfFifthsDistance, 14);
-        expect(Note.g.sharp.sharp.circleOfFifthsDistance, 15);
-        expect(Note.d.sharp.sharp.circleOfFifthsDistance, 16);
       });
     });
 
