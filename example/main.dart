@@ -48,7 +48,7 @@ void main() {
 
   // Key signatures
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
-  KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
+  KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
   KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 
   KeySignature([Note.f.sharp]).tonalities!.major; // G major
