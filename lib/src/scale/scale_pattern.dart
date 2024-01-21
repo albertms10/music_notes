@@ -234,6 +234,17 @@ final class ScalePattern {
         _ => major,
       };
 
+  /// The length of this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.length == 5
+  /// ScalePattern.major.length == 7
+  /// ScalePattern.octatonic.length == 8
+  /// ScalePattern.chromatic.length == 12
+  /// ```
+  int get length => degreePatterns.length;
+
   /// The descending interval steps that define this [ScalePattern].
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
