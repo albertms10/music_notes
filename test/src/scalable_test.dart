@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('ScalableIterable', () {
     group('.inverse', () {
-      test('should return the inverse of this ScalableIterable', () {
+      test('returns the inverse of this ScalableIterable', () {
         expect(const <PitchClass>{}.inverse.toList(), const <PitchClass>[]);
         expect({PitchClass.cSharp}.inverse.toList(), const [PitchClass.cSharp]);
         expect(
@@ -35,7 +35,7 @@ void main() {
     });
 
     group('.retrograde', () {
-      test('should return the retrograde of this ScalableIterable', () {
+      test('returns the retrograde of this ScalableIterable', () {
         expect(const <PitchClass>{}.retrograde.toList(), const <PitchClass>[]);
         expect(
           {PitchClass.fSharp}.retrograde.toList(),
@@ -69,36 +69,32 @@ void main() {
     });
 
     group('.numericRepresentation', () {
-      test(
-        'should return the numeric representation of this ScalableIterable',
-        () {
-          expect(<PitchClass>{}.numericRepresentation.toList(), const <int>[]);
-          expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
-          expect(
-            {
-              PitchClass.b,
-              PitchClass.aSharp,
-              PitchClass.d,
-              PitchClass.dSharp,
-              PitchClass.g,
-              PitchClass.fSharp,
-              PitchClass.gSharp,
-              PitchClass.e,
-              PitchClass.f,
-              PitchClass.c,
-              PitchClass.cSharp,
-              PitchClass.a,
-            }.numericRepresentation.toList(),
-            const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
-          );
-        },
-      );
+      test('returns the numeric representation of this ScalableIterable', () {
+        expect(<PitchClass>{}.numericRepresentation.toList(), const <int>[]);
+        expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
+        expect(
+          {
+            PitchClass.b,
+            PitchClass.aSharp,
+            PitchClass.d,
+            PitchClass.dSharp,
+            PitchClass.g,
+            PitchClass.fSharp,
+            PitchClass.gSharp,
+            PitchClass.e,
+            PitchClass.f,
+            PitchClass.c,
+            PitchClass.cSharp,
+            PitchClass.a,
+          }.numericRepresentation.toList(),
+          const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
+        );
+      });
     });
 
     group('.deltaNumericRepresentation', () {
       test(
-        'should return the delta numeric representation of this '
-        'ScalableIterable',
+        'returns the delta numeric representation of this ScalableIterable',
         () {
           expect(
             <PitchClass>{}.deltaNumericRepresentation.toList(),

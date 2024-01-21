@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('MapExtension', () {
     group('.recordEntries', () {
-      test('should return the record entries of this Map', () {
+      test('returns the record entries of this Map', () {
         expect(const <num, String>{}.recordEntries, const <(num, String)>[]);
         expect(const {'a': false}.recordEntries, const [('a', false)]);
         expect(

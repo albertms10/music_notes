@@ -36,13 +36,12 @@ extension type const Frequency._(num hertz) implements num {
   ///   == Note.c.inOctave(4) - const Cent(10.7903)
   /// ```
   ///
-  /// This method and [Pitch.frequency] are inverses of each other for a
+  /// This method and [ClosestPitch.frequency] are inverses of each other for a
   /// specific input `frequency`.
   ///
   /// ```dart
-  /// const frequency = Frequency(442);
-  /// final (closestPitch, cents: _, :hertz) = frequency.closestPitch();
-  /// closestPitch.frequency() == Frequency(frequency.hertz - hertz);
+  /// const frequency = Frequency(415);
+  /// frequency.closestPitch().frequency() == frequency;
   /// ```
   ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),
@@ -65,8 +64,7 @@ extension type const Frequency._(num hertz) implements num {
     // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
-        closestPitch.note.accidental == Accidental.sharp &&
-            !hertzDelta.isNegative;
+        closestPitch.note.accidental.isSharp && !hertzDelta.isNegative;
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,

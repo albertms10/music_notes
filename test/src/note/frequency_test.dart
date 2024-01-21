@@ -4,13 +4,13 @@ import 'package:test/test.dart';
 void main() {
   group('Frequency', () {
     group('constructor', () {
-      test('should throw an assertion error when arguments are incorrect', () {
+      test('throws an assertion error when arguments are incorrect', () {
         expect(() => Frequency(-0.1), throwsA(isA<AssertionError>()));
       });
     });
 
     group('.isHumanAudible', () {
-      test('should return whether the frequency is audible by humans', () {
+      test('returns whether the frequency is audible by humans', () {
         expect(const Frequency(0).isHumanAudible, isFalse);
         expect(const Frequency(100).isHumanAudible, isTrue);
         expect(const Frequency(400).isHumanAudible, isTrue);
@@ -20,10 +20,10 @@ void main() {
     });
 
     group('.closestPitch()', () {
-      test('should return the closest Pitch to this Frequency', () {
+      test('returns the closest Pitch to this Frequency', () {
         expect(
           const Frequency(440).closestPitch(),
-          ClosestPitch(Note.a.inOctave(4)),
+          Note.a.inOctave(4) + const Cent(0),
         );
         expect(
           const Frequency(455).closestPitch(),
@@ -49,7 +49,7 @@ void main() {
             tuningSystem:
                 EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          ClosestPitch(Note.c.inOctave(5)),
+          Note.c.inOctave(5) + const Cent(0),
         );
         expect(
           const Frequency(440).closestPitch(
@@ -60,10 +60,17 @@ void main() {
           Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
       });
+
+      test('returns the same Frequency after Pitch.frequency()', () {
+        final pitch = Note.a.inOctave(5);
+        final closestPitch = pitch.frequency().closestPitch();
+        expect(closestPitch.pitch, pitch);
+        expect(closestPitch.cents, const Cent(0));
+      });
     });
 
     group('.harmonic()', () {
-      test('should return the harmonic at index from this Frequency', () {
+      test('returns the harmonic at index from this Frequency', () {
         expect(const Frequency(880).harmonic(-3), const Frequency(220));
         expect(const Frequency(440).harmonic(-1), const Frequency(220));
         expect(const Frequency(110).harmonic(0), const Frequency(110));
@@ -74,8 +81,7 @@ void main() {
 
     group('.harmonics()', () {
       test(
-        'should return a Set of the harmonic series up to index from this '
-        'Frequency',
+        'returns a Set of the harmonic series up to index from this Frequency',
         () {
           expect(
             const Frequency(512).harmonics(upToIndex: -15),
@@ -136,7 +142,7 @@ void main() {
     });
 
     group('.format()', () {
-      test('should return the string format of this Frequency', () {
+      test('returns the string format of this Frequency', () {
         expect(const Frequency(440).format(), '440 Hz');
         expect(const Frequency(415.62).format(), '415.62 Hz');
         expect(const Frequency(2200.2968).format(), '2200.2968 Hz');
