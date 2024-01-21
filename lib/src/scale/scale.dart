@@ -19,6 +19,17 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Creates a new [Scale] instance from [degrees].
   const Scale(this.degrees, [this._descendingDegrees]);
 
+  /// The length of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.on(Note.f).length == 5
+  /// ScalePattern.major.on(Note.e).length == 7
+  /// ScalePattern.octatonic.on(Note.d.flat).length == 8
+  /// ScalePattern.chromatic.on(Note.c).length == 12
+  /// ```
+  int get length => degrees.length - 1;
+
   /// The descending [Scalable] degrees that define this [Scale].
   List<T> get descendingDegrees =>
       _descendingDegrees ?? degrees.reversed.toList();
