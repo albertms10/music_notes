@@ -6,7 +6,7 @@ import 'dart:collection' show SplayTreeSet;
 import 'dart:math' as math show log, pow;
 
 import 'package:collection/collection.dart'
-    show IterableExtension, ListEquality;
+    show IterableEquality, IterableExtension, ListEquality;
 import 'package:meta/meta.dart' show immutable, redeclare;
 
 import 'utils/int_extension.dart';
@@ -22,6 +22,9 @@ part 'src/interval/interval.dart';
 part 'src/interval/interval_class.dart';
 part 'src/interval/quality.dart';
 part 'src/interval/size.dart';
+part 'src/key/key.dart';
+part 'src/key/key_signature.dart';
+part 'src/key/mode.dart';
 part 'src/music.dart';
 part 'src/note/accidental.dart';
 part 'src/note/base_note.dart';
@@ -35,9 +38,6 @@ part 'src/scalable.dart';
 part 'src/scale/scale.dart';
 part 'src/scale/scale_degree.dart';
 part 'src/scale/scale_pattern.dart';
-part 'src/tonality/key_signature.dart';
-part 'src/tonality/mode.dart';
-part 'src/tonality/tonality.dart';
 part 'src/transposable.dart';
 part 'src/tuning/cent.dart';
 part 'src/tuning/equal_temperament.dart';

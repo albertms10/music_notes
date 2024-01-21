@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Mode', () {
     group('.compareTo', () {
-      test('should correctly sort Mode items in a collection', () {
+      test('sorts Modes in a collection', () {
         final orderedSet = SplayTreeSet<Mode>.of({
           TonalMode.minor,
           ModalMode.phrygian,
@@ -29,14 +29,14 @@ void main() {
 
   group('TonalMode', () {
     group('.opposite', () {
-      test('should return the correct opposite TonalMode', () {
+      test('returns the correct opposite TonalMode', () {
         expect(TonalMode.major.opposite, TonalMode.minor);
         expect(TonalMode.minor.opposite, TonalMode.major);
       });
     });
 
     group('.toString()', () {
-      test('should return the string representation of this TonalMode', () {
+      test('returns the string representation of this TonalMode', () {
         expect(TonalMode.major.toString(), 'major');
         expect(TonalMode.minor.toString(), 'minor');
 
@@ -60,7 +60,7 @@ void main() {
 
   group('ModalMode', () {
     group('.mirrored', () {
-      test('should return the mirrored version of this ModalMode', () {
+      test('returns the mirrored version of this ModalMode', () {
         expect(ModalMode.dorian.mirrored, ModalMode.dorian);
         expect(ModalMode.mixolydian.mirrored, ModalMode.aeolian);
         expect(ModalMode.ionian.mirrored, ModalMode.phrygian);

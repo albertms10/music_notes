@@ -51,6 +51,23 @@ class ClosestPitch {
     return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
   }
 
+  /// Returns the [Frequency] of this [ClosestPitch] from [referenceFrequency]
+  /// and [tuningSystem].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.a.inOctave(4) + const Cent(12)).frequency() == const Frequency(443)
+  /// ```
+  Frequency frequency({
+    Frequency referenceFrequency = const Frequency(440),
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
+  }) =>
+      pitch.frequency(
+        referenceFrequency: referenceFrequency,
+        tuningSystem: tuningSystem,
+      ) *
+      cents.ratio.value;
+
   /// Returns the string representation of this [ClosestPitch] record.
   ///
   /// Example:
