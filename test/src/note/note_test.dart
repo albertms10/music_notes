@@ -529,8 +529,7 @@ void main() {
         expect(Note.c.interval(Note.b), Interval.M7);
         expect(Note.b.interval(Note.a.sharp), Interval.M7);
 
-        // TODO(albertms10): Failing test:
-        //  `Note.c.interval(Note.b.sharp)`.
+        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.M7);
       });
     });
 
