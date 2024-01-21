@@ -1127,6 +1127,76 @@ void main() {
       });
     });
 
+    group('operator +()', () {
+      test('adds Cent to this Pitch', () {
+        expect(
+          Note.a.inOctave(4) + const Cent(12),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(12)),
+        );
+        expect(
+          Note.c.sharp.inOctave(3) + const Cent(-12),
+          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-12)),
+        );
+      });
+    });
+
+    group('operator -()', () {
+      test('subtracts Cent to this Pitch', () {
+        expect(
+          Note.a.inOctave(4) - const Cent(12),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(-12)),
+        );
+        expect(
+          Note.e.flat.inOctave(5) - const Cent(-12),
+          ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(12)),
+        );
+      });
+    });
+
+    group('operator <()', () {
+      test('returns whether this Pitch is lower than other', () {
+        expect(Note.a.inOctave(3) < Note.a.inOctave(4), isTrue);
+        expect(Note.f.sharp.inOctave(4) < Note.a.inOctave(4), isTrue);
+
+        expect(Note.a.inOctave(4) < Note.a.inOctave(4), isFalse);
+        expect(Note.a.flat.inOctave(4) < Note.a.flat.inOctave(3), isFalse);
+        expect(Note.a.inOctave(4) < Note.f.inOctave(4), isFalse);
+      });
+    });
+
+    group('operator <=()', () {
+      test('returns whether this Pitch is lower than or equal to other', () {
+        expect(Note.a.inOctave(3) <= Note.a.inOctave(4), isTrue);
+        expect(Note.f.sharp.inOctave(4) <= Note.a.inOctave(4), isTrue);
+        expect(Note.a.inOctave(4) <= Note.a.inOctave(4), isTrue);
+
+        expect(Note.a.flat.inOctave(4) <= Note.a.flat.inOctave(3), isFalse);
+        expect(Note.a.inOctave(4) <= Note.f.inOctave(4), isFalse);
+      });
+    });
+
+    group('operator >()', () {
+      test('returns whether this Pitch is higher than other', () {
+        expect(Note.a.inOctave(4) > Note.a.inOctave(3), isTrue);
+        expect(Note.a.inOctave(4) > Note.g.flat.inOctave(4), isTrue);
+
+        expect(Note.a.inOctave(4) > Note.a.inOctave(4), isFalse);
+        expect(Note.a.flat.inOctave(3) > Note.a.flat.inOctave(4), isFalse);
+        expect(Note.f.inOctave(4) > Note.a.inOctave(4), isFalse);
+      });
+    });
+
+    group('operator >=()', () {
+      test('returns whether this Pitch is higher than or equal to other', () {
+        expect(Note.a.inOctave(4) >= Note.a.inOctave(3), isTrue);
+        expect(Note.a.inOctave(4) >= Note.f.sharp.inOctave(4), isTrue);
+        expect(Note.a.inOctave(4) >= Note.a.inOctave(4), isTrue);
+
+        expect(Note.a.flat.inOctave(3) >= Note.a.flat.inOctave(4), isFalse);
+        expect(Note.f.inOctave(4) >= Note.a.inOctave(4), isFalse);
+      });
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
