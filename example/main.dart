@@ -36,12 +36,12 @@ void main() {
   Note.c.circleOfFifths();
   // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
 
-  // Tonalities
-  const Tonality(Note.e, TonalMode.minor); // E minor
+  // Keys
+  const Key(Note.e, TonalMode.minor); // E minor
   Note.a.flat.major; // A♭ major
 
-  Note.d.major.keySignature; // 2 (F♯ C♯)
-  Note.e.flat.minor.keySignature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+  Note.d.major.signature; // 2 (F♯ C♯)
+  Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 
   Note.d.major.relative; // B minor
   Note.c.minor.relative; // E♭ major
@@ -51,13 +51,13 @@ void main() {
   KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
   KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 
-  KeySignature([Note.f.sharp]).tonalities!.major; // G major
-  KeySignature.empty.tonalities!.minor; // A minor
+  KeySignature([Note.f.sharp]).keys!.major; // G major
+  KeySignature.empty.keys!.minor; // A minor
 
   KeySignature([Note.a.flat])
     ..isCanonical // false
     ..distance // null
-    ..tonalities; // null
+    ..keys; // null
 
   // Modes
   TonalMode.minor.scale; // ScalePattern.minor

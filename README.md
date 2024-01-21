@@ -13,7 +13,7 @@ for working with music theory concepts through a beautifully crafted API.
 - Intervals and qualities
 - Notes, frequencies, accidentals, and enharmonic operations
 - Scales and scale degrees
-- Tonalities, key signatures, and modes
+- Keys, key signatures, and modes
 - Tuning systems (_work in progress_)
 
 ## Usage
@@ -96,7 +96,7 @@ Note.c.circleOfFifths();
 // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
 ```
 
-### Tonalities
+### Keys
 
 Create a `Tonality` or get it from a given `Note`:
 
@@ -108,8 +108,8 @@ Note.a.flat.major; // A♭ major
 Know its `KeySignature`:
 
 ```dart
-Note.d.major.keySignature; // 2 (F♯ C♯)
-Note.e.flat.minor.keySignature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+Note.d.major.signature; // 2 (F♯ C♯)
+Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
 And its relative `Tonality`:
@@ -129,21 +129,21 @@ KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
 KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 ```
 
-And know its tonalities:
+And know its `Key`s:
 
 ```dart
-KeySignature([Note.f.sharp]).tonalities!.major; // G major
-KeySignature.empty.tonalities!.minor; // A minor
+KeySignature([Note.f.sharp]).keys!.major; // G major
+KeySignature.empty.keys!.minor; // A minor
 ```
 
 Non-canonical key signatures are also supported, although they
-return `null` when asked about their fifths distance or tonalities:
+return `null` when asked about their fifths distance or keys:
 
 ```dart
 KeySignature([Note.a.flat])
   ..isCanonical // false
   ..distance // null
-  ..tonalities; // null
+  ..keys; // null
 ```
 
 ### Modes

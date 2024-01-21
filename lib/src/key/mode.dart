@@ -7,7 +7,7 @@ part of '../../music_notes.dart';
 ///
 /// ---
 /// See also:
-/// * [Tonality].
+/// * [Key].
 /// * [ScalePattern].
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].

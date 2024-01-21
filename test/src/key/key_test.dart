@@ -4,9 +4,9 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Tonality', () {
+  group('Key', () {
     group('.relative', () {
-      test('returns the relative of this Tonality', () {
+      test('returns the relative of this Key', () {
         expect(Note.c.major.relative, Note.a.minor);
         expect(Note.f.major.relative, Note.d.minor);
         expect(Note.b.minor.relative, Note.d.major);
@@ -16,7 +16,7 @@ void main() {
     });
 
     group('.parallel', () {
-      test('returns the parallel of this Tonality', () {
+      test('returns the parallel of this Key', () {
         expect(Note.c.major.parallel, Note.c.minor);
         expect(Note.f.major.parallel, Note.f.minor);
         expect(Note.b.minor.parallel, Note.b.major);
@@ -25,18 +25,18 @@ void main() {
       });
     });
 
-    group('.keySignature', () {
-      test('returns the KeySignature of this Tonality', () {
-        expect(Note.c.major.keySignature, KeySignature.empty);
-        expect(Note.a.minor.keySignature, KeySignature.empty);
+    group('.signature', () {
+      test('returns the KeySignature of this Key', () {
+        expect(Note.c.major.signature, KeySignature.empty);
+        expect(Note.a.minor.signature, KeySignature.empty);
 
-        expect(Note.g.major.keySignature, KeySignature([Note.f.sharp]));
-        expect(Note.e.minor.keySignature, KeySignature([Note.f.sharp]));
-        expect(Note.f.major.keySignature, KeySignature([Note.b.flat]));
-        expect(Note.d.minor.keySignature, KeySignature([Note.b.flat]));
+        expect(Note.g.major.signature, KeySignature([Note.f.sharp]));
+        expect(Note.e.minor.signature, KeySignature([Note.f.sharp]));
+        expect(Note.f.major.signature, KeySignature([Note.b.flat]));
+        expect(Note.d.minor.signature, KeySignature([Note.b.flat]));
 
         expect(
-          Note.b.major.keySignature,
+          Note.b.major.signature,
           KeySignature([
             Note.f.sharp,
             Note.c.sharp,
@@ -46,7 +46,7 @@ void main() {
           ]),
         );
         expect(
-          Note.g.sharp.minor.keySignature,
+          Note.g.sharp.minor.signature,
           KeySignature([
             Note.f.sharp,
             Note.c.sharp,
@@ -56,7 +56,7 @@ void main() {
           ]),
         );
         expect(
-          Note.d.flat.major.keySignature,
+          Note.d.flat.major.signature,
           KeySignature([
             Note.b.flat,
             Note.e.flat,
@@ -66,7 +66,7 @@ void main() {
           ]),
         );
         expect(
-          Note.b.flat.minor.keySignature,
+          Note.b.flat.minor.signature,
           KeySignature([
             Note.b.flat,
             Note.e.flat,
@@ -79,7 +79,7 @@ void main() {
     });
 
     group('.isTheoretical', () {
-      test('returns whether this Tonality is theoretical', () {
+      test('returns whether this Key is theoretical', () {
         expect(Note.c.flat.major.isTheoretical, false);
         expect(Note.a.flat.minor.isTheoretical, false);
         expect(Note.c.minor.isTheoretical, false);
@@ -97,7 +97,7 @@ void main() {
     });
 
     group('.scale', () {
-      test('returns the scale notes of this Tonality', () {
+      test('returns the scale notes of this Key', () {
         expect(
           Note.d.major.scale,
           Scale([
@@ -128,7 +128,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the English string representation of this Tonality', () {
+      test('returns the English string representation of this Key', () {
         expect(Note.c.major.toString(), 'C major');
         expect(Note.d.minor.toString(), 'D minor');
         expect(Note.a.flat.major.toString(), 'A♭ major');
@@ -137,7 +137,7 @@ void main() {
         expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
       });
 
-      test('returns the German string representation of this Tonality', () {
+      test('returns the German string representation of this Key', () {
         expect(Note.c.major.toString(system: NoteNotation.german), 'C-Dur');
         expect(
           Note.d.minor.toString(system: NoteNotation.german),
@@ -161,7 +161,7 @@ void main() {
         );
       });
 
-      test('returns the Italian string representation of this Tonality', () {
+      test('returns the Italian string representation of this Key', () {
         expect(
           Note.c.major.toString(system: NoteNotation.italian),
           'Do maggiore',
@@ -188,7 +188,7 @@ void main() {
         );
       });
 
-      test('returns the French string representation of this Tonality', () {
+      test('returns the French string representation of this Key', () {
         expect(
           Note.c.major.toString(system: NoteNotation.french),
           'Ut majeur',
@@ -217,7 +217,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('ignores equal Tonality instances in a Set', () {
+      test('ignores equal Key instances in a Set', () {
         final collection = {
           Note.d.major,
           Note.f.sharp.minor,
@@ -233,8 +233,8 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('sorts Tonalities in a collection', () {
-        final orderedSet = SplayTreeSet<Tonality>.of({
+      test('sorts Keys in a collection', () {
+        final orderedSet = SplayTreeSet<Key>.of({
           Note.f.sharp.minor,
           Note.c.minor,
           Note.d.major,
