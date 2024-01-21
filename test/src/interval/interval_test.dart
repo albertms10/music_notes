@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('Interval', () {
     group('constructor', () {
-      test('should throw an assertion error when arguments are incorrect', () {
+      test('throws an assertion error when arguments are incorrect', () {
         expect(
           () => Interval.perfect(0, PerfectQuality.perfect),
           throwsA(isA<AssertionError>()),
@@ -27,7 +27,7 @@ void main() {
     });
 
     group('.fromSemitones()', () {
-      test('should create a new Interval from semitones', () {
+      test('creates a new Interval from semitones', () {
         expect(Interval.fromSemitones(1, -1), Interval.d1);
         expect(Interval.fromSemitones(-1, 1), -Interval.d1);
         expect(Interval.fromSemitones(1, 0), Interval.P1);
@@ -87,13 +87,13 @@ void main() {
     });
 
     group('.parse()', () {
-      test('should throw a FormatException when source is invalid', () {
+      test('throws a FormatException when source is invalid', () {
         expect(() => Interval.parse('x'), throwsFormatException);
         expect(() => Interval.parse('x4'), throwsFormatException);
         expect(() => Interval.parse('x6'), throwsFormatException);
       });
 
-      test('should parse source as an Interval and return its value', () {
+      test('parses source as an Interval and return its value', () {
         expect(
           Interval.parse('AA4'),
           const Interval.perfect(4, PerfectQuality.doublyAugmented),
@@ -131,7 +131,7 @@ void main() {
 
     group('.sizeFromSemitones()', () {
       test(
-        'should return the Interval size corresponding to the given semitones',
+        'returns the Interval size corresponding to the given semitones',
         () {
           expect(Interval.sizeFromSemitones(-12), -8);
           expect(Interval.sizeFromSemitones(-5), -4);
@@ -158,8 +158,7 @@ void main() {
       );
 
       test(
-        'should return null when no Interval size corresponds to the given '
-        'semitones',
+        'returns null when no Interval size corresponds to the given semitones',
         () {
           expect(Interval.sizeFromSemitones(-4), isNull);
           expect(Interval.sizeFromSemitones(-2), isNull);
@@ -173,7 +172,7 @@ void main() {
     });
 
     group('.semitones', () {
-      test('should return the number of semitones of this Interval', () {
+      test('returns the number of semitones of this Interval', () {
         expect(Interval.d1.semitones, -1);
         expect(Interval.P1.semitones, 0);
         expect((-Interval.P1).semitones, 0);
@@ -243,7 +242,7 @@ void main() {
     });
 
     group('.isDescending', () {
-      test('should return whether this Interval is descending', () {
+      test('returns whether this Interval is descending', () {
         expect(Interval.m3.isDescending, isFalse);
         expect((-Interval.P5).isDescending, isTrue);
         expect(Interval.d1.isDescending, isFalse);
@@ -257,36 +256,30 @@ void main() {
     });
 
     group('.descending()', () {
-      test(
-        'should return the descending Interval based on isDescending',
-        () {
-          expect(Interval.M2.descending(), -Interval.M2);
-          expect(Interval.m3.descending(isDescending: false), Interval.m3);
-          expect((-Interval.m6).descending(isDescending: false), Interval.m6);
-          expect((-Interval.P8).descending(), -Interval.P8);
-        },
-      );
+      test('returns the descending Interval based on isDescending', () {
+        expect(Interval.M2.descending(), -Interval.M2);
+        expect(Interval.m3.descending(isDescending: false), Interval.m3);
+        expect((-Interval.m6).descending(isDescending: false), Interval.m6);
+        expect((-Interval.P8).descending(), -Interval.P8);
+      });
 
-      test(
-        'should return a copy of this Interval based on isDescending',
-        () {
-          const ascendingInterval = Interval.P4;
-          expect(
-            identical(ascendingInterval.descending(), ascendingInterval),
-            isFalse,
-          );
+      test('returns a copy of this Interval based on isDescending', () {
+        const ascendingInterval = Interval.P4;
+        expect(
+          identical(ascendingInterval.descending(), ascendingInterval),
+          isFalse,
+        );
 
-          final descendingInterval = -Interval.m3;
-          expect(
-            identical(descendingInterval.descending(), descendingInterval),
-            isFalse,
-          );
-        },
-      );
+        final descendingInterval = -Interval.m3;
+        expect(
+          identical(descendingInterval.descending(), descendingInterval),
+          isFalse,
+        );
+      });
     });
 
     group('.inverted', () {
-      test('should return the inverted of this Interval', () {
+      test('returns the inverted of this Interval', () {
         expect((-Interval.M13).inverted, -Interval.m3);
         expect((-Interval.m13).inverted, -Interval.M3);
         expect((-Interval.P11).inverted, -Interval.P5);
@@ -337,7 +330,7 @@ void main() {
     });
 
     group('.simplified', () {
-      test('should return the simplified of this Interval', () {
+      test('returns the simplified of this Interval', () {
         expect(
           const Interval.perfect(-22, PerfectQuality.perfect).simplified,
           -Interval.P8,
@@ -372,7 +365,7 @@ void main() {
     });
 
     group('.isCompound', () {
-      test('should return whether this Interval is compound', () {
+      test('returns whether this Interval is compound', () {
         expect((-Interval.m13).isCompound, isTrue);
         expect((-Interval.M9).isCompound, isTrue);
         expect((-Interval.M7).isCompound, isFalse);
@@ -387,7 +380,7 @@ void main() {
     });
 
     group('.isDissonant', () {
-      test('should return whether this Interval is dissonant', () {
+      test('returns whether this Interval is dissonant', () {
         expect((-Interval.A8).isDissonant, isTrue);
         expect((-Interval.P8).isDissonant, isFalse);
         expect((-Interval.d8).isDissonant, isTrue);
@@ -434,7 +427,7 @@ void main() {
     });
 
     group('.respellBySize()', () {
-      test('should return this Interval respelled by size', () {
+      test('returns this Interval respelled by size', () {
         expect(Interval.A4.respellBySize(5), Interval.d5);
         expect(Interval.d5.respellBySize(4), Interval.A4);
         expect(Interval.M2.respellBySize(3), Interval.d3);
@@ -455,7 +448,7 @@ void main() {
     });
 
     group('.distanceBetween()', () {
-      test('should return the distance between two Scalable instances', () {
+      test('returns the distance between two Scalable instances', () {
         var (distance, notes: dynamic notes) =
             Interval.P5.distanceBetween(Note.c, Note.b.flat.flat);
         expect(distance, -9);
@@ -538,7 +531,7 @@ void main() {
     });
 
     group('.circleFrom()', () {
-      test('should return the circle of this Interval', () {
+      test('returns the circle of this Interval', () {
         expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
         expect(
           Interval.P5.circleFrom(Note.c, distance: 1),
@@ -594,7 +587,7 @@ void main() {
     });
 
     group('.toClass()', () {
-      test('should create a new IntervalClass from semitones', () {
+      test('creates a new IntervalClass from semitones', () {
         expect(Interval.P1.toClass(), IntervalClass.P1);
         expect(Interval.d1.toClass(), IntervalClass.m2);
         expect(Interval.A1.toClass(), IntervalClass.m2);
@@ -613,7 +606,7 @@ void main() {
     });
 
     group('operator +()', () {
-      test('should add other to this Interval', () {
+      test('adds other to this Interval', () {
         expect(Interval.P1 + Interval.P1, Interval.P1);
         expect(Interval.P1 + Interval.m2, Interval.m2);
         expect(Interval.m2 + Interval.P1, Interval.m2);
@@ -633,7 +626,7 @@ void main() {
     });
 
     group('operator -()', () {
-      test('should return the negation of this Interval', () {
+      test('returns the negation of this Interval', () {
         expect(
           -Interval.M2,
           const Interval.imperfect(-2, ImperfectQuality.major),
@@ -646,7 +639,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Interval', () {
+      test('returns the string representation of this Interval', () {
         expect(Interval.M2.toString(), 'M2');
         expect((-Interval.m3).toString(), 'desc m3');
         expect(Interval.A4.toString(), 'A4');
@@ -688,7 +681,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should ignore equal Interval instances in a Set', () {
+      test('ignores equal Interval instances in a Set', () {
         final collection = {Interval.M2, Interval.d3, Interval.P4};
         collection.addAll(collection);
         expect(
@@ -699,7 +692,7 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort Interval items in a collection', () {
+      test('sorts Intervals in a collection', () {
         final orderedSet = SplayTreeSet<Interval>.of({
           Interval.m2,
           Interval.P8,

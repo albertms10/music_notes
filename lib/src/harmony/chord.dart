@@ -95,11 +95,11 @@ class Chord<T extends Scalable<T>>
   /// Example:
   /// ```dart
   /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.m3)
-  ///   == const Chord([Note.c, Note.e.flat, Note.g])
+  ///   == Chord([Note.c, Note.e.flat, Note.g])
   ///
   /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
   ///   .transposeBy(Interval.M3)
-  ///     == const Chord([
+  ///     == Chord([
   ///          Note.b.inOctave(4),
   ///          Note.d.sharp.inOctave(5),
   ///          Note.f.sharp.inOctave(5)

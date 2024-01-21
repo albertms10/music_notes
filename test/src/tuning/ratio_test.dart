@@ -4,17 +4,14 @@ import 'package:test/test.dart';
 void main() {
   group('Ratio', () {
     group('constructor', () {
-      test(
-        'should throw an assertion error when arguments are incorrect',
-        () {
-          expect(() => Ratio(-1), throwsA(isA<AssertionError>()));
-          expect(() => Ratio(0), throwsA(isA<AssertionError>()));
-        },
-      );
+      test('throws an assertion error when arguments are incorrect', () {
+        expect(() => Ratio(-1), throwsA(isA<AssertionError>()));
+        expect(() => Ratio(0), throwsA(isA<AssertionError>()));
+      });
     });
 
     group('.cents', () {
-      test('should return the Cent for this Ratio', () {
+      test('returns the Cent for this Ratio', () {
         expect(const Ratio(0.12).cents, const Cent(-3670.6724268642824));
         expect(const Ratio(1).cents, const Cent(0));
         expect(const Ratio(3 / 2).cents, const Cent(701.9550008653874));

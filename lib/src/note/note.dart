@@ -8,7 +8,7 @@ part of '../../music_notes.dart';
 /// * [Accidental].
 /// * [Pitch].
 /// * [KeySignature].
-/// * [Tonality].
+/// * [Key].
 @immutable
 final class Note extends Scalable<Note> implements Comparable<Note> {
   /// The base note that defines this [Note].
@@ -120,23 +120,33 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get flat => Note(baseNote, accidental - 1);
 
-  /// Returns the [TonalMode.major] [Tonality] from this [Note].
+  /// Returns this [Note] natural, without accidental.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major == const Tonality(Note.c, TonalMode.major)
-  /// Note.e.flat.major == const Tonality(Note.e.flat, TonalMode.major)
+  /// Note.g.flat.natural == Note.g
+  /// Note.c.sharp.sharp.natural == Note.c
+  /// Note.a.natural == Note.a
   /// ```
-  Tonality get major => Tonality(this, TonalMode.major);
+  Note get natural => Note(baseNote);
 
-  /// Returns the [TonalMode.minor] [Tonality] from this [Note].
+  /// Returns the [TonalMode.major] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.minor == const Tonality(Note.d, TonalMode.minor)
-  /// Note.g.sharp.minor == const Tonality(Note.g.sharp, TonalMode.minor)
+  /// Note.c.major == const Key(Note.c, TonalMode.major)
+  /// Note.e.flat.major == Key(Note.e.flat, TonalMode.major)
   /// ```
-  Tonality get minor => Tonality(this, TonalMode.minor);
+  Key get major => Key(this, TonalMode.major);
+
+  /// Returns the [TonalMode.minor] [Key] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.minor == const Key(Note.d, TonalMode.minor)
+  /// Note.g.sharp.minor == Key(Note.g.sharp, TonalMode.minor)
+  /// ```
+  Key get minor => Key(this, TonalMode.minor);
 
   /// Returns the [ChordPattern.diminishedTriad] on this [Note].
   ///
@@ -337,7 +347,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.circleOfFifthsDistance == 2
   /// Note.a.flat.circleOfFifthsDistance == -4
   /// ```
-  int get circleOfFifthsDistance => major.keySignature.distance;
+  int get circleOfFifthsDistance => Note.c.fifthsDistanceWith(this);
 
   /// Returns the fifths distance between this [Note] and [other].
   ///
@@ -443,10 +453,10 @@ abstract class NoteNotation {
   /// Returns the string notation for [tonalMode].
   String tonalMode(TonalMode tonalMode);
 
-  /// Returns the string notation for [tonality].
-  String tonality(Tonality tonality) {
-    final note = tonality.note.toString(system: this);
-    final mode = tonality.mode.toString(system: this);
+  /// Returns the string notation for [key].
+  String key(Key key) {
+    final note = key.note.toString(system: this);
+    final mode = key.mode.toString(system: this);
 
     return '$note $mode';
   }
@@ -454,8 +464,17 @@ abstract class NoteNotation {
 
 /// The English alphabetic notation system.
 class EnglishNoteNotation extends NoteNotation {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
   /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation();
+  const EnglishNoteNotation({this.showNatural = false});
+
+  @override
+  String note(Note note) => showNatural
+      ? note.baseNote.toString(system: this) + note.accidental.symbol
+      : super.note(note);
 
   @override
   String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
@@ -499,10 +518,10 @@ class GermanNoteNotation extends NoteNotation {
       };
 
   @override
-  String tonality(Tonality tonality) {
-    final note = tonality.note.toString(system: this);
-    final mode = tonality.mode.toString(system: this);
-    final casedNote = switch (tonality.mode) {
+  String key(Key key) {
+    final note = key.note.toString(system: this);
+    final mode = key.mode.toString(system: this);
+    final casedNote = switch (key.mode) {
       TonalMode.minor => note.toLowerCase(),
       _ => note,
     };

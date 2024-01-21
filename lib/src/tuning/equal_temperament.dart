@@ -63,8 +63,8 @@ class EqualTemperament extends TuningSystem {
       Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(Pitch note) =>
-      ratioFromSemitones(referencePitch.difference(note));
+  Ratio ratio(Pitch pitch) =>
+      ratioFromSemitones(referencePitch.difference(pitch));
 
   @override
   Cent get generator => cents.closestTo(const Cent(700));

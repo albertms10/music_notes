@@ -153,7 +153,7 @@ final class Interval implements Comparable<Interval> {
     8: 12, // P
   };
 
-  static final RegExp _intervalRegExp = RegExp(r'(\w+?)(\d+)');
+  static final _regExp = RegExp(r'(\w+?)(\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
@@ -173,17 +173,17 @@ final class Interval implements Comparable<Interval> {
           'Interval must be imperfect',
         );
 
-  /// Creates a new [Interval] from [Quality.semitones].
-  factory Interval.fromQualityDelta(int size, int delta) {
+  /// Creates a new [Interval] from [size] and [Quality.semitones].
+  factory Interval.fromQualitySemitones(int size, int semitones) {
     final qualityConstructor =
         size._isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
-    return Interval._(size, qualityConstructor(delta));
+    return Interval._(size, qualityConstructor(semitones));
   }
 
-  /// Creates a new [Interval] from [semitones].
+  /// Creates a new [Interval] from [size] and [Interval.semitones].
   factory Interval.fromSemitones(int size, int semitones) =>
-      Interval.fromQualityDelta(
+      Interval.fromQualitySemitones(
         size,
         semitones * size.sign - size._semitones.abs(),
       );
@@ -200,7 +200,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(String source) {
-    final match = _intervalRegExp.firstMatch(source);
+    final match = _regExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
     final size = int.parse(match[2]!);
@@ -386,27 +386,27 @@ final class Interval implements Comparable<Interval> {
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.circleFrom(Note.c, distance: 6)
+  /// Interval.P5.circleFrom(Note.c, distance: 6).toList()
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: 5)
+  /// Interval.P4.circleFrom(Note.c, distance: 5).toList()
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: -3)
+  /// Interval.P4.circleFrom(Note.c, distance: -3).toList()
   ///   == Interval.P5.circleFrom(Note.c, distance: 3)
   /// ```
-  List<T> circleFrom<T extends Scalable<T>>(
+  Iterable<T> circleFrom<T extends Scalable<T>>(
     T scalable, {
     required int distance,
-  }) =>
-      List.filled(distance.abs(), null).fold(
-        [scalable],
-        (circleItems, _) => [
-          ...circleItems,
-          circleItems.last
-              .transposeBy(descending(isDescending: distance.isNegative)),
-        ],
-      );
+  }) sync* {
+    final distanceAbs = distance.abs();
+    yield scalable;
+    var last = scalable;
+    for (var i = 0; i < distanceAbs; i++) {
+      yield last =
+          last.transposeBy(descending(isDescending: distance.isNegative));
+    }
+  }
 
   /// Creates a new [IntervalClass] from [semitones].
   ///
@@ -444,11 +444,11 @@ final class Interval implements Comparable<Interval> {
 
   @override
   String toString() {
-    final naming = '${quality.abbreviation}${size.abs()}';
+    final naming = '${quality.symbol}${size.abs()}';
     final descendingAbbreviation = isDescending ? 'desc ' : '';
     if (isCompound) {
       return '$descendingAbbreviation$naming '
-          '(${quality.abbreviation}${simplified.size.abs()})';
+          '(${quality.symbol}${simplified.size.abs()})';
     }
 
     return '$descendingAbbreviation$naming';

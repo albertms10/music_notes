@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('StringExtension', () {
     group('.isUpperCase', () {
-      test('should return whether this String is upper-cased', () {
+      test('returns whether this String is upper-cased', () {
         expect('A'.isUpperCase, isTrue);
         expect('ABC'.isUpperCase, isTrue);
         expect('a'.isUpperCase, isFalse);
@@ -14,7 +14,7 @@ void main() {
     });
 
     group('.isLowerCase', () {
-      test('should return whether this String is lower-cased', () {
+      test('returns whether this String is lower-cased', () {
         expect('A'.isLowerCase, isFalse);
         expect('ABC'.isLowerCase, isFalse);
         expect('a'.isLowerCase, isTrue);
