@@ -98,10 +98,10 @@ Note.c.circleOfFifths();
 
 ### Keys
 
-Create a `Tonality` or get it from a given `Note`:
+Create a `Key` or get it from a given `Note`:
 
 ```dart
-const Tonality(Note.e, TonalMode.minor); // E minor
+const Key(Note.e, TonalMode.minor); // E minor
 Note.a.flat.major; // A♭ major
 ```
 
@@ -112,7 +112,7 @@ Note.d.major.signature; // 2 (F♯ C♯)
 Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
-And its relative `Tonality`:
+And its relative `Key`:
 
 ```dart
 Note.d.major.relative; // B minor
@@ -181,7 +181,7 @@ ScalePattern.majorPentatonic.on(Note.g.flat);
 // G♭ Major pentatonic (G♭ A♭ B♭ D♭ E♭ G♭)
 ```
 
-Or get it from a `Tonality`:
+Or get it from a `Key`:
 
 ```dart
 Note.a.flat.major.scale; // A♭ Major (ionian) (A♭ B♭ C D♭ E♭ F G A♭)

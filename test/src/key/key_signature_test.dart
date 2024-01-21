@@ -121,8 +121,8 @@ void main() {
       });
     });
 
-    group('.tonality()', () {
-      test('returns the Tonality from TonalMode', () {
+    group('.key()', () {
+      test('returns the Key from TonalMode', () {
         expect(
           KeySignature.fromDistance(-4).key(TonalMode.major),
           Note.a.flat.major,
