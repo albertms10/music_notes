@@ -103,6 +103,27 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
+  static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
+  static const _higherMidiPitch = Pitch(Note.g, octave: 9);
+
+  /// Returns the MIDI number (an integer from 0 to 127) of this [Pitch],
+  /// or `null` for pitches out of the MIDI range.
+  ///
+  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
+  /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(-1).midiNumber == 0
+  /// Note.a.inOctave(4).midiNumber == 69
+  /// Note.g.inOctave(9).midiNumber == 127
+  /// Note.a.flat.inOctave(9).midiNumber == null
+  /// ```
+  int? get midiNumber => switch (this) {
+        < _lowerMidiPitch || > _higherMidiPitch => null,
+        _ => semitones + chromaticDivisions,
+      };
+
   /// Returns the difference in semitones between this [Pitch] and
   /// [other].
   ///
