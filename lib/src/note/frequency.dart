@@ -9,7 +9,7 @@ part of '../../music_notes.dart';
 @immutable
 class Frequency implements Comparable<Frequency> {
   /// The value of this [Frequency] in Hertz.
-  final double hertz;
+  final num hertz;
 
   /// Creates a new [Frequency] instance from [hertz].
   const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive');
@@ -39,13 +39,12 @@ class Frequency implements Comparable<Frequency> {
   ///   == Note.c.inOctave(4) - const Cent(10.7903)
   /// ```
   ///
-  /// This method and [Pitch.frequency] are inverses of each other for a
+  /// This method and [ClosestPitch.frequency] are inverses of each other for a
   /// specific input `frequency`.
   ///
   /// ```dart
-  /// const frequency = Frequency(442);
-  /// final (closestPitch, cents: _, :hertz) = frequency.closestPitch();
-  /// closestPitch.frequency() == Frequency(frequency.hertz - hertz);
+  /// const frequency = Frequency(415);
+  /// frequency.closestPitch().frequency() == frequency;
   /// ```
   ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),
@@ -68,8 +67,7 @@ class Frequency implements Comparable<Frequency> {
     // Whether `closestPitch` is closer to the upwards spelling (so, positive
     // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
     final isCloserToUpwardsSpelling =
-        closestPitch.note.accidental == Accidental.sharp &&
-            !hertzDelta.isNegative;
+        closestPitch.note.accidental.isSharp && !hertzDelta.isNegative;
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
