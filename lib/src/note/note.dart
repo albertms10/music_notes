@@ -8,7 +8,7 @@ part of '../../music_notes.dart';
 /// * [Accidental].
 /// * [Pitch].
 /// * [KeySignature].
-/// * [Tonality].
+/// * [Key].
 @immutable
 final class Note extends Scalable<Note> implements Comparable<Note> {
   /// The base note that defines this [Note].
@@ -130,23 +130,23 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get natural => Note(baseNote);
 
-  /// Returns the [TonalMode.major] [Tonality] from this [Note].
+  /// Returns the [TonalMode.major] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major == const Tonality(Note.c, TonalMode.major)
-  /// Note.e.flat.major == Tonality(Note.e.flat, TonalMode.major)
+  /// Note.c.major == const Key(Note.c, TonalMode.major)
+  /// Note.e.flat.major == Key(Note.e.flat, TonalMode.major)
   /// ```
-  Tonality get major => Tonality(this, TonalMode.major);
+  Key get major => Key(this, TonalMode.major);
 
-  /// Returns the [TonalMode.minor] [Tonality] from this [Note].
+  /// Returns the [TonalMode.minor] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.minor == const Tonality(Note.d, TonalMode.minor)
-  /// Note.g.sharp.minor == Tonality(Note.g.sharp, TonalMode.minor)
+  /// Note.d.minor == const Key(Note.d, TonalMode.minor)
+  /// Note.g.sharp.minor == Key(Note.g.sharp, TonalMode.minor)
   /// ```
-  Tonality get minor => Tonality(this, TonalMode.minor);
+  Key get minor => Key(this, TonalMode.minor);
 
   /// Returns the [ChordPattern.diminishedTriad] on this [Note].
   ///
@@ -453,10 +453,10 @@ abstract class NoteNotation {
   /// Returns the string notation for [tonalMode].
   String tonalMode(TonalMode tonalMode);
 
-  /// Returns the string notation for [tonality].
-  String tonality(Tonality tonality) {
-    final note = tonality.note.toString(system: this);
-    final mode = tonality.mode.toString(system: this);
+  /// Returns the string notation for [key].
+  String key(Key key) {
+    final note = key.note.toString(system: this);
+    final mode = key.mode.toString(system: this);
 
     return '$note $mode';
   }
@@ -518,10 +518,10 @@ class GermanNoteNotation extends NoteNotation {
       };
 
   @override
-  String tonality(Tonality tonality) {
-    final note = tonality.note.toString(system: this);
-    final mode = tonality.mode.toString(system: this);
-    final casedNote = switch (tonality.mode) {
+  String key(Key key) {
+    final note = key.note.toString(system: this);
+    final mode = key.mode.toString(system: this);
+    final casedNote = switch (key.mode) {
       TonalMode.minor => note.toLowerCase(),
       _ => note,
     };

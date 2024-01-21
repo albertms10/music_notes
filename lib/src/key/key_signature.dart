@@ -5,7 +5,7 @@ part of '../../music_notes.dart';
 /// ---
 /// See also:
 /// * [Note].
-/// * [Tonality].
+/// * [Key].
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
   /// The set of [Note] that define this [KeySignature], which may include
@@ -91,7 +91,7 @@ final class KeySignature implements Comparable<KeySignature> {
         : null;
   }
 
-  /// Whether this [KeySignature] is canonical (has an associated [Tonality]).
+  /// Whether this [KeySignature] is canonical (has an associated [Key]).
   ///
   /// Cancellation [Accidental.natural]s are ignored.
   ///
@@ -102,30 +102,29 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   bool get isCanonical => distance != null;
 
-  /// Returns the [Tonality] that corresponds to this [KeySignature] from
+  /// Returns the [Key] that corresponds to this [KeySignature] from
   /// [mode].
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.empty.tonality(TonalMode.major) == Note.c.major
-  /// KeySignature.fromDistance(-2).tonality(TonalMode.minor) == Note.g.minor
+  /// KeySignature.empty.key(TonalMode.major) == Note.c.major
+  /// KeySignature.fromDistance(-2).key(TonalMode.minor) == Note.g.minor
   /// ```
-  Tonality? tonality(TonalMode mode) => switch (mode) {
-        TonalMode.major => tonalities?.major,
-        TonalMode.minor => tonalities?.minor,
+  Key? key(TonalMode mode) => switch (mode) {
+        TonalMode.major => keys?.major,
+        TonalMode.minor => keys?.minor,
       };
 
-  /// Returns a [Set] with the two tonalities that are defined
-  /// by this [KeySignature].
+  /// Returns a [Set] with the two keys that are defined by this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.fromDistance(-2).tonalities == (
+  /// KeySignature.fromDistance(-2).keys == (
   ///   major: Note.b.flat.major,
   ///   minor: Note.g.minor,
   /// )
   /// ```
-  ({Tonality major, Tonality minor})? get tonalities {
+  ({Key major, Key minor})? get keys {
     final distance = this.distance;
     if (distance == null) return null;
 

@@ -116,20 +116,20 @@ void main() {
     });
 
     group('.major', () {
-      test('returns the major Tonality from this Note', () {
-        expect(Note.c.major, const Tonality(Note.c, TonalMode.major));
-        expect(Note.a.major, const Tonality(Note.a, TonalMode.major));
-        expect(Note.b.flat.major, Tonality(Note.b.flat, TonalMode.major));
-        expect(Note.c.sharp.major, Tonality(Note.c.sharp, TonalMode.major));
+      test('returns the major Key from this Note', () {
+        expect(Note.c.major, const Key(Note.c, TonalMode.major));
+        expect(Note.a.major, const Key(Note.a, TonalMode.major));
+        expect(Note.b.flat.major, Key(Note.b.flat, TonalMode.major));
+        expect(Note.c.sharp.major, Key(Note.c.sharp, TonalMode.major));
       });
     });
 
     group('.minor', () {
-      test('returns the minor Tonality from this Note', () {
-        expect(Note.c.minor, const Tonality(Note.c, TonalMode.minor));
-        expect(Note.e.minor, const Tonality(Note.e, TonalMode.minor));
-        expect(Note.a.flat.minor, Tonality(Note.a.flat, TonalMode.minor));
-        expect(Note.d.sharp.minor, Tonality(Note.d.sharp, TonalMode.minor));
+      test('returns the minor Key from this Note', () {
+        expect(Note.c.minor, const Key(Note.c, TonalMode.minor));
+        expect(Note.e.minor, const Key(Note.e, TonalMode.minor));
+        expect(Note.a.flat.minor, Key(Note.a.flat, TonalMode.minor));
+        expect(Note.d.sharp.minor, Key(Note.d.sharp, TonalMode.minor));
       });
     });
 
