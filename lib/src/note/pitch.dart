@@ -405,6 +405,46 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
 
+  /// Whether this [Pitch] is lower than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) < Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) < Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) < Note.d.inOctave(4) == false
+  /// ```
+  bool operator <(Pitch other) => semitones < other.semitones;
+
+  /// Whether this [Pitch] is lower than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) <= Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) <= Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) <= Note.d.inOctave(4) == true
+  /// ```
+  bool operator <=(Pitch other) => semitones <= other.semitones;
+
+  /// Whether this [Pitch] is higher than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) > Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) > Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) > Note.d.inOctave(4) == false
+  /// ```
+  bool operator >(Pitch other) => semitones > other.semitones;
+
+  /// Whether this [Pitch] is higher than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) >= Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) >= Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) >= Note.d.inOctave(4) == true
+  /// ```
+  bool operator >=(Pitch other) => semitones >= other.semitones;
+
   @override
   bool operator ==(Object other) =>
       other is Pitch && note == other.note && octave == other.octave;
