@@ -106,7 +106,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
   static const _higherMidiPitch = Pitch(Note.g, octave: 9);
 
-  /// Returns the MIDI number of this [Pitch].
+  /// Returns the MIDI number (an integer from 0 to 127) of this [Pitch],
+  /// or `null` for pitches out of the MIDI range.
   ///
   /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
   /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
