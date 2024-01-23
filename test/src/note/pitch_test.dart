@@ -1139,7 +1139,7 @@ void main() {
         );
       });
 
-      test('returns a custom string representation of this Pitch', () {
+      test('returns the string representation extending PitchNotation', () {
         expect(
           () => Note.a.inOctave(4).toString(system: _SubPitchNotation()),
           throwsUnimplementedError,
@@ -1280,17 +1280,6 @@ void main() {
           Note.b.sharp.inOctave(4),
           Note.b.flat.inOctave(5),
         ]);
-      });
-    });
-  });
-
-  group('PitchNotation', () {
-    group('class', () {
-      test('should allow extending the class', () {
-        expect(
-          () => _SubPitchNotation().pitch(Note.c.inOctave(4)),
-          throwsUnimplementedError,
-        );
       });
     });
   });

@@ -779,7 +779,7 @@ void main() {
         );
       });
 
-      test('returns a custom string representation of this Note', () {
+      test('returns the string representation extending NoteNotation', () {
         expect(
           () => Note.a.sharp.toString(system: _SubNoteNotation()),
           throwsUnimplementedError,
@@ -843,17 +843,6 @@ void main() {
           Note.g.sharp,
           Note.b.sharp,
         ]);
-      });
-    });
-  });
-
-  group('NoteNotation', () {
-    group('class', () {
-      test('should allow extending the class', () {
-        expect(
-          () => _SubNoteNotation().baseNote(BaseNote.c),
-          throwsUnimplementedError,
-        );
       });
     });
   });

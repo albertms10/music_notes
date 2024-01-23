@@ -418,12 +418,15 @@ void main() {
         );
       });
 
-      test('returns a custom string representation of this PitchClass', () {
-        expect(
-          () => PitchClass.aSharp.toString(system: _SubPitchClassNotation()),
-          throwsUnimplementedError,
-        );
-      });
+      test(
+        'returns the string representation extending PitchClassNotation',
+        () {
+          expect(
+            () => PitchClass.aSharp.toString(system: _SubPitchClassNotation()),
+            throwsUnimplementedError,
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
@@ -449,17 +452,6 @@ void main() {
           PitchClass.d,
           PitchClass.fSharp,
         ]);
-      });
-    });
-  });
-
-  group('PitchClassNotation', () {
-    group('class', () {
-      test('should allow extending the class', () {
-        expect(
-          () => _SubPitchClassNotation().pitchClass(PitchClass.c),
-          throwsUnimplementedError,
-        );
       });
     });
   });
