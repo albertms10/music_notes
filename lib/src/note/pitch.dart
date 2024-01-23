@@ -490,7 +490,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       ]);
 }
 
-/// Pitch notation systems.
+/// The abstraction for [Pitch] notation systems.
+@immutable
 abstract class PitchNotation {
   /// Creates a new [PitchNotation].
   const PitchNotation();
@@ -506,7 +507,7 @@ abstract class PitchNotation {
 }
 
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-class ScientificPitchNotation extends PitchNotation {
+final class ScientificPitchNotation extends PitchNotation {
   /// Creates a new [ScientificPitchNotation].
   const ScientificPitchNotation();
 
@@ -515,7 +516,7 @@ class ScientificPitchNotation extends PitchNotation {
 }
 
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-class HelmholtzPitchNotation extends PitchNotation {
+final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation();
 

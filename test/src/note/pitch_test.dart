@@ -1138,6 +1138,13 @@ void main() {
           'e′′′′',
         );
       });
+
+      test('returns the string representation extending PitchNotation', () {
+        expect(
+          () => Note.a.inOctave(4).toString(system: _SubPitchNotation()),
+          throwsUnimplementedError,
+        );
+      });
     });
 
     group('operator +()', () {
@@ -1276,4 +1283,9 @@ void main() {
       });
     });
   });
+}
+
+class _SubPitchNotation extends PitchNotation {
+  @override
+  String pitch(Pitch pitch) => throw UnimplementedError();
 }

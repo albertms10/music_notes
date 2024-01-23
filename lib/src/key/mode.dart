@@ -9,6 +9,7 @@ part of '../../music_notes.dart';
 /// See also:
 /// * [Key].
 /// * [ScalePattern].
+@immutable
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;
