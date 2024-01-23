@@ -426,6 +426,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
 }
 
 /// The abstraction for [Note] notation systems.
+@immutable
 abstract class NoteNotation {
   /// Creates a new [NoteNotation].
   const NoteNotation();
@@ -463,7 +464,7 @@ abstract class NoteNotation {
 }
 
 /// The English alphabetic notation system.
-class EnglishNoteNotation extends NoteNotation {
+final class EnglishNoteNotation extends NoteNotation {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
   final bool showNatural;
@@ -484,7 +485,7 @@ class EnglishNoteNotation extends NoteNotation {
 }
 
 /// The German alphabetic notation system.
-class GermanNoteNotation extends NoteNotation {
+final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation();
 
@@ -531,7 +532,7 @@ class GermanNoteNotation extends NoteNotation {
 }
 
 /// The Italian alphabetic notation system.
-class ItalianNoteNotation extends NoteNotation {
+final class ItalianNoteNotation extends NoteNotation {
   /// Creates a new [ItalianNoteNotation].
   const ItalianNoteNotation();
 
@@ -554,7 +555,7 @@ class ItalianNoteNotation extends NoteNotation {
 }
 
 /// The French alphabetic notation system.
-class FrenchNoteNotation extends NoteNotation {
+final class FrenchNoteNotation extends NoteNotation {
   /// Creates a new [FrenchNoteNotation].
   const FrenchNoteNotation();
 

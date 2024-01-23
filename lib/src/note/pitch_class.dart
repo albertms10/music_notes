@@ -259,6 +259,7 @@ final class PitchClass extends Scalable<PitchClass>
 }
 
 /// The abstraction for [PitchClass] notation systems.
+@immutable
 abstract class PitchClassNotation {
   /// Creates a new [PitchClassNotation].
   const PitchClassNotation();
@@ -274,7 +275,7 @@ abstract class PitchClassNotation {
 }
 
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
-class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
+final class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
   /// Creates a new [PitchClassEnharmonicSpellingsNotation].
   const PitchClassEnharmonicSpellingsNotation();
 
@@ -284,7 +285,7 @@ class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
 }
 
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-class PitchClassIntegerNotation extends PitchClassNotation {
+final class PitchClassIntegerNotation extends PitchClassNotation {
   /// Creates a new [PitchClassIntegerNotation].
   const PitchClassIntegerNotation();
 
