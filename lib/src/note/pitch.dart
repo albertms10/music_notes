@@ -490,7 +490,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       ]);
 }
 
-/// Pitch notation systems.
+/// The abstraction for [Pitch] notation systems.
 @immutable
 abstract class PitchNotation {
   /// Creates a new [PitchNotation].
