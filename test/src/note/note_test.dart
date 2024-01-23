@@ -778,6 +778,13 @@ void main() {
           'Sol𝄫',
         );
       });
+
+      test('returns a custom string representation of this Note', () {
+        expect(
+          () => Note.a.sharp.toString(system: _SubNoteNotation()),
+          throwsUnimplementedError,
+        );
+      });
     });
 
     group('.hashCode', () {
@@ -839,4 +846,23 @@ void main() {
       });
     });
   });
+
+  group('NoteNotation', () {
+    group('class', () {
+      test('should allow extending the class', () {
+        expect(
+          () => _SubNoteNotation().baseNote(BaseNote.c),
+          throwsUnimplementedError,
+        );
+      });
+    });
+  });
+}
+
+class _SubNoteNotation extends NoteNotation {
+  @override
+  String baseNote(BaseNote baseNote) => throw UnimplementedError();
+
+  @override
+  String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
 }
