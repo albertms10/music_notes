@@ -1,4 +1,14 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../harmony/chord.dart';
+import '../harmony/harmonic_function.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../scalable.dart';
+import '../transposable.dart';
+import 'scale_degree.dart';
+import 'scale_pattern.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///

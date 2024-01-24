@@ -1,4 +1,4 @@
-import 'package:music_notes/utils/num_extension.dart';
+import 'package:music_notes/utils.dart';
 import 'package:test/test.dart';
 
 void main() {

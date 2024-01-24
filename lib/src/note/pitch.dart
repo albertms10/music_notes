@@ -1,4 +1,20 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../harmony/chord.dart';
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../music.dart';
+import '../scalable.dart';
+import '../tuning/cent.dart';
+import '../tuning/equal_temperament.dart';
+import '../tuning/tuning_system.dart';
+import 'accidental.dart';
+import 'base_note.dart';
+import 'closest_pitch.dart';
+import 'frequency.dart';
+import 'note.dart';
+import 'pitch_class.dart';
 
 /// A note in the octave range.
 ///
@@ -33,7 +49,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final _helmholtzNotationRegExp =
-      RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
+      RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
           '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
   /// Parse [source] as a [Pitch] and return its value.

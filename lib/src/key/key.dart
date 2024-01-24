@@ -1,4 +1,12 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../interval/interval.dart';
+import '../note/accidental.dart';
+import '../note/note.dart';
+import '../scale/scale.dart';
+import 'key_signature.dart';
+import 'mode.dart';
 
 /// A musical key or tonality.
 ///

@@ -1,4 +1,7 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
