@@ -1,4 +1,14 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart'
+    show IterableEquality, IterableExtension, ListEquality;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../interval/interval.dart';
+import '../note/accidental.dart';
+import '../note/base_note.dart';
+import '../note/note.dart';
+import 'key.dart';
+import 'mode.dart';
 
 /// A key signature.
 ///

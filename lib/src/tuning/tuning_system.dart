@@ -1,4 +1,9 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/interval.dart';
+import '../note/pitch.dart';
+import 'cent.dart';
+import 'ratio.dart';
 
 /// A tuning system representation.
 ///
@@ -6,7 +11,7 @@ part of '../../music_notes.dart';
 /// See also:
 /// * [Pitch].
 @immutable
-sealed class TuningSystem {
+abstract class TuningSystem {
   /// The reference [Pitch] from which this [TuningSystem] is tuned.
   final Pitch referencePitch;
 

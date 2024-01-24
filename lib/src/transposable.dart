@@ -1,4 +1,4 @@
-part of '../music_notes.dart';
+import 'interval/interval.dart';
 
 /// A interface for items that can be transposed.
 // ignore: one_member_abstracts

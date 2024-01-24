@@ -1,4 +1,16 @@
-part of '../../music_notes.dart';
+import 'dart:collection' show SplayTreeSet;
+
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/interval.dart';
+import '../interval/interval_class.dart';
+import '../music.dart';
+import '../scalable.dart';
+import 'accidental.dart';
+import 'base_note.dart';
+import 'note.dart';
+import 'pitch.dart';
 
 /// A set of all pitches that are a whole number of octaves apart, sharing the
 /// same chroma.
