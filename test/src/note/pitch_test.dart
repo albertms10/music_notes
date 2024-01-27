@@ -638,7 +638,7 @@ void main() {
         expect(
           skip: true,
           () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
-          const Interval.perfect(29, PerfectQuality.perfect),
+          const Interval.perfect(Size(29), PerfectQuality.perfect),
         );
       });
     });

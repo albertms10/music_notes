@@ -268,7 +268,7 @@ void main() {
           isFalse,
         );
 
-        const descendingInterval = -Interval.m3;
+        final descendingInterval = -Interval.m3;
         expect(
           identical(descendingInterval.descending(), descendingInterval),
           isFalse,
