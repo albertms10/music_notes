@@ -1,4 +1,9 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:meta/meta.dart' show immutable;
+
+import 'cent.dart';
+import 'tuning_system.dart';
 
 /// A representation of a ratio.
 ///

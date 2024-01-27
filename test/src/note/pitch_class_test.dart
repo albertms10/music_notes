@@ -417,6 +417,16 @@ void main() {
           'e',
         );
       });
+
+      test(
+        'returns the string representation extending PitchClassNotation',
+        () {
+          expect(
+            () => PitchClass.aSharp.toString(system: _SubPitchClassNotation()),
+            throwsUnimplementedError,
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
@@ -445,4 +455,9 @@ void main() {
       });
     });
   });
+}
+
+class _SubPitchClassNotation extends PitchClassNotation {
+  @override
+  String pitchClass(PitchClass pitchClass) => throw UnimplementedError();
 }

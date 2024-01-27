@@ -1,6 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
-part of '../../music_notes.dart';
+import 'dart:collection' show SplayTreeSet;
+
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../music.dart';
+import '../note/pitch_class.dart';
+import 'interval.dart';
+import 'quality.dart';
 
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.

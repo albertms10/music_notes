@@ -1,4 +1,20 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../harmony/chord.dart';
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../music.dart';
+import '../scalable.dart';
+import '../tuning/cent.dart';
+import '../tuning/equal_temperament.dart';
+import '../tuning/tuning_system.dart';
+import 'accidental.dart';
+import 'base_note.dart';
+import 'closest_pitch.dart';
+import 'frequency.dart';
+import 'note.dart';
+import 'pitch_class.dart';
 
 /// A note in the octave range.
 ///
@@ -33,7 +49,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final _helmholtzNotationRegExp =
-      RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
+      RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
           '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
   /// Parse [source] as a [Pitch] and return its value.
@@ -316,6 +332,16 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == PitchClass.c
+  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
+  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// ```
+  PitchClass toClass() => PitchClass(semitones);
+
   /// Transposes this [Pitch] by [interval].
   ///
   /// Example:
@@ -480,7 +506,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       ]);
 }
 
-/// Pitch notation systems.
+/// The abstraction for [Pitch] notation systems.
+@immutable
 abstract class PitchNotation {
   /// Creates a new [PitchNotation].
   const PitchNotation();
@@ -496,7 +523,7 @@ abstract class PitchNotation {
 }
 
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-class ScientificPitchNotation extends PitchNotation {
+final class ScientificPitchNotation extends PitchNotation {
   /// Creates a new [ScientificPitchNotation].
   const ScientificPitchNotation();
 
@@ -505,7 +532,7 @@ class ScientificPitchNotation extends PitchNotation {
 }
 
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-class HelmholtzPitchNotation extends PitchNotation {
+final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation();
 

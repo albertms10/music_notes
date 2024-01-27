@@ -1,4 +1,7 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
@@ -44,7 +47,7 @@ sealed class Quality implements Comparable<Quality> {
 }
 
 /// Quality corresponding to an [Interval.perfect].
-class PerfectQuality extends Quality {
+final class PerfectQuality extends Quality {
   /// Delta semitones from the [Interval], starting at 0 for the [perfect]
   /// quality.
   @override
@@ -128,7 +131,7 @@ class PerfectQuality extends Quality {
 }
 
 /// Quality corresponding to an [Interval.imperfect].
-class ImperfectQuality extends Quality {
+final class ImperfectQuality extends Quality {
   /// Delta semitones from the [Interval], starting at 0 for the [minor]
   /// quality.
   @override

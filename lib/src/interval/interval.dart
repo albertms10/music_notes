@@ -1,6 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../music.dart';
+import '../note/note.dart';
+import '../scalable.dart';
+import 'interval_class.dart';
+import 'quality.dart';
 
 /// Distance between two notes.
 ///
@@ -468,7 +476,8 @@ final class Interval implements Comparable<Interval> {
       ]);
 }
 
-extension _IntervalSize on int {
+/// An [Interval.size] int extension.
+extension IntervalSize on int {
   /// Returns the number of semitones of this [Interval.size] for the
   /// corresponding [ImperfectQuality.minor] or [PerfectQuality.perfect]
   /// semitones.
@@ -486,7 +495,7 @@ extension _IntervalSize on int {
   /// ```
   int get _semitones {
     final simplifiedAbs = _simplified.abs();
-    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ 8);
+    final octaveShift = chromaticDivisions * (sizeAbsShift ~/ 8);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo 8).
     final size = simplifiedAbs == 8 ? 1 : simplifiedAbs;
@@ -496,7 +505,7 @@ extension _IntervalSize on int {
 
   /// Returns the absolute [Interval.size] value taking octave shift into
   /// account.
-  int get _sizeAbsShift {
+  int get sizeAbsShift {
     final sizeAbs = abs();
 
     return sizeAbs + sizeAbs ~/ 8;
@@ -510,7 +519,7 @@ extension _IntervalSize on int {
   /// 6._isPerfect == false
   /// (-11)._isPerfect == true
   /// ```
-  bool get _isPerfect => _sizeAbsShift % 4 < 2;
+  bool get _isPerfect => sizeAbsShift % 4 < 2;
 
   /// Returns whether this [Interval.size] is greater than an octave.
   ///
@@ -534,6 +543,5 @@ extension _IntervalSize on int {
   /// 8._simplified == 8
   /// (-22)._simplified == -8
   /// ```
-  int get _simplified =>
-      _isCompound ? _sizeAbsShift.nonZeroMod(8) * sign : this;
+  int get _simplified => _isCompound ? sizeAbsShift.nonZeroMod(8) * sign : this;
 }

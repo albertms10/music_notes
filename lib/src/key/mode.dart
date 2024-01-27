@@ -1,4 +1,9 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../note/note.dart';
+import '../scale/scale_pattern.dart';
+import 'key.dart';
 
 /// A type of musical scale coupled with a set of characteristic melodic and
 /// harmonic behaviors.
@@ -9,6 +14,7 @@ part of '../../music_notes.dart';
 /// See also:
 /// * [Key].
 /// * [ScalePattern].
+@immutable
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;

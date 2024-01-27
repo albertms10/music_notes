@@ -1,4 +1,12 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart'
+    show IterableExtension, ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../chordable.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../scalable.dart';
+import 'chord.dart';
 
 /// A musical chord pattern.
 ///

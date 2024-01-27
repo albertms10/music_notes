@@ -495,6 +495,16 @@ void main() {
       });
     });
 
+    group('.toClass()', () {
+      test('creates a new PitchClass from semitones', () {
+        expect(Note.c.inOctave(4).toClass(), PitchClass.c);
+        expect(Note.d.sharp.inOctave(3).toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.inOctave(6).toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.inOctave(5).toClass(), PitchClass.aSharp);
+      });
+    });
+
     group('.interval()', () {
       test('returns the Interval between this Pitch and other', () {
         expect(Note.c.inOctave(4).interval(Note.c.inOctave(4)), Interval.P1);
@@ -625,8 +635,11 @@ void main() {
           const Interval.perfect(29, PerfectQuality.perfect),
         );
 
-        // TODO(albertms10): add test case for:
-        //  `Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3))`.
+        expect(
+          skip: true,
+          () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
+          const Interval.perfect(29, PerfectQuality.perfect),
+        );
       });
     });
 
@@ -1125,6 +1138,13 @@ void main() {
           'e′′′′',
         );
       });
+
+      test('returns the string representation extending PitchNotation', () {
+        expect(
+          () => Note.a.inOctave(4).toString(system: _SubPitchNotation()),
+          throwsUnimplementedError,
+        );
+      });
     });
 
     group('operator +()', () {
@@ -1263,4 +1283,9 @@ void main() {
       });
     });
   });
+}
+
+class _SubPitchNotation extends PitchNotation {
+  @override
+  String pitch(Pitch pitch) => throw UnimplementedError();
 }
