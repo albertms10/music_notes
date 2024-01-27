@@ -77,7 +77,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// ```
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final size = Interval.sizeFromSemitones(semitones);
+    final size = Size.fromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
@@ -95,11 +95,11 @@ final class IntervalClass implements Comparable<IntervalClass> {
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(-i))!,
+          Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(i))!,
+          Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
       ],

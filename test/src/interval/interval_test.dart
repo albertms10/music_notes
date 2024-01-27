@@ -127,48 +127,6 @@ void main() {
       });
     });
 
-    group('.sizeFromSemitones()', () {
-      test(
-        'returns the Interval size corresponding to the given semitones',
-        () {
-          expect(Interval.sizeFromSemitones(-12), -8);
-          expect(Interval.sizeFromSemitones(-5), -4);
-          expect(Interval.sizeFromSemitones(-3), -3);
-          expect(Interval.sizeFromSemitones(-1), -2);
-          expect(Interval.sizeFromSemitones(0), 1);
-          expect(Interval.sizeFromSemitones(1), 2);
-          expect(Interval.sizeFromSemitones(3), 3);
-          expect(Interval.sizeFromSemitones(5), 4);
-          expect(Interval.sizeFromSemitones(7), 5);
-          expect(Interval.sizeFromSemitones(8), 6);
-          expect(Interval.sizeFromSemitones(10), 7);
-          expect(Interval.sizeFromSemitones(12), 8);
-          expect(Interval.sizeFromSemitones(13), 9);
-          expect(Interval.sizeFromSemitones(15), 10);
-          expect(Interval.sizeFromSemitones(17), 11);
-          expect(Interval.sizeFromSemitones(19), 12);
-          expect(Interval.sizeFromSemitones(20), 13);
-          expect(Interval.sizeFromSemitones(22), 14);
-          expect(Interval.sizeFromSemitones(24), 15);
-          expect(Interval.sizeFromSemitones(36), 22);
-          expect(Interval.sizeFromSemitones(48), 29);
-        },
-      );
-
-      test(
-        'returns null when no Interval size corresponds to the given semitones',
-        () {
-          expect(Interval.sizeFromSemitones(-4), isNull);
-          expect(Interval.sizeFromSemitones(-2), isNull);
-          expect(Interval.sizeFromSemitones(2), isNull);
-          expect(Interval.sizeFromSemitones(4), isNull);
-          expect(Interval.sizeFromSemitones(6), isNull);
-          expect(Interval.sizeFromSemitones(9), isNull);
-          expect(Interval.sizeFromSemitones(11), isNull);
-        },
-      );
-    });
-
     group('.semitones', () {
       test('returns the number of semitones of this Interval', () {
         expect(Interval.d1.semitones, -1);

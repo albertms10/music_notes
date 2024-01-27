@@ -1,10 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../music.dart';
 import '../note/note.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
@@ -155,19 +153,6 @@ final class Interval implements Comparable<Interval> {
   static const A13 =
       Interval.imperfect(Size.thirteenth, ImperfectQuality.augmented);
 
-  /// [Size] to the corresponding [ImperfectQuality.minor] or
-  /// [PerfectQuality.perfect] semitones.
-  static const sizeToSemitones = {
-    Size.unison: 0, // P
-    Size.second: 1, // m
-    Size.third: 3, // m
-    Size.fourth: 5, // P
-    Size.fifth: 7, // P
-    Size.sixth: 8, // m
-    Size.seventh: 10, // m
-    Size.octave: 12, // P
-  };
-
   static final _regExp = RegExp(r'(\w+?)(\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
@@ -225,36 +210,6 @@ final class Interval implements Comparable<Interval> {
         size.isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
 
     return Interval._(size, parseFactory(match[1]!));
-  }
-
-  /// Returns the [Size] that matches with [semitones] in [sizeToSemitones],
-  /// otherwise returns `null`.
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.sizeFromSemitones(8) == Size.sixth
-  /// Interval.sizeFromSemitones(0) == Size.unison
-  /// Interval.sizeFromSemitones(-12) == -Size.octave
-  /// Interval.sizeFromSemitones(4) == null
-  /// ```
-  static Size? sizeFromSemitones(int semitones) {
-    final absoluteSemitones = semitones.abs();
-    final matchingSize = sizeToSemitones.keys.firstWhereOrNull(
-      (size) =>
-          (absoluteSemitones == chromaticDivisions
-              ? chromaticDivisions
-              : absoluteSemitones % chromaticDivisions) ==
-          sizeToSemitones[size],
-    );
-    if (matchingSize == null) return null;
-    if (absoluteSemitones == chromaticDivisions) {
-      return Size(matchingSize * semitones.sign);
-    }
-
-    final absResult =
-        matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
-
-    return Size(absResult * semitones.nonZeroSign);
   }
 
   /// Returns the number of semitones of this [Interval].
