@@ -106,18 +106,18 @@ extension type const Size._(int value) implements int {
   /// (-Size.ninth).semitones == -13
   /// ```
   int get semitones {
-    final simplifiedAbs = simplified.value.abs();
+    final simplifiedAbs = simplified.abs();
     final octaveShift = chromaticDivisions * (absShift ~/ Size.octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
     final size = Size(simplifiedAbs == Size.octave ? 1 : simplifiedAbs);
 
-    return (_sizeToSemitones[size]! + octaveShift) * value.sign;
+    return (_sizeToSemitones[size]! + octaveShift) * sign;
   }
 
   /// Returns the absolute [Size] value taking octave shift into account.
   int get absShift {
-    final sizeAbs = value.abs();
+    final sizeAbs = abs();
 
     return sizeAbs + sizeAbs ~/ Size.octave;
   }
@@ -143,7 +143,7 @@ extension type const Size._(int value) implements int {
   /// (-Size.eleventh).isCompound == true
   /// Size.thirteenth.isCompound == true
   /// ```
-  bool get isCompound => value.abs() > Size.octave;
+  bool get isCompound => abs() > Size.octave;
 
   /// Returns the simplified version of this [Size].
   ///
@@ -155,7 +155,7 @@ extension type const Size._(int value) implements int {
   /// const Size(-22).simplified == -Size.octave
   /// ```
   Size get simplified => Size(
-        isCompound ? absShift.nonZeroMod(Size.octave) * value.sign : value,
+        isCompound ? absShift.nonZeroMod(Size.octave) * sign : value,
       );
 
   /// The negation of this [Size].
