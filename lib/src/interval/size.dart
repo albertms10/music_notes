@@ -53,7 +53,7 @@ extension type const Size._(int value) implements int {
 
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
-  static const sizeToSemitones = {
+  static const _sizeToSemitones = {
     Size.unison: 0, // P
     Size.second: 1, // m
     Size.third: 3, // m
@@ -64,7 +64,7 @@ extension type const Size._(int value) implements int {
     Size.octave: 12, // P
   };
 
-  /// Returns the [Size] that matches with [semitones] in [sizeToSemitones],
+  /// Returns the [Size] that matches with [semitones] in [_sizeToSemitones],
   /// otherwise returns `null`.
   ///
   /// Example:
@@ -76,12 +76,12 @@ extension type const Size._(int value) implements int {
   /// ```
   static Size? fromSemitones(int semitones) {
     final absoluteSemitones = semitones.abs();
-    final matchingSize = sizeToSemitones.keys.firstWhereOrNull(
+    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
       (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
               : absoluteSemitones % chromaticDivisions) ==
-          sizeToSemitones[size],
+          _sizeToSemitones[size],
     );
     if (matchingSize == null) return null;
     if (absoluteSemitones == chromaticDivisions) {
@@ -94,10 +94,7 @@ extension type const Size._(int value) implements int {
     return Size(absResult * semitones.nonZeroSign);
   }
 
-  /// Returns the number of semitones of this [Size] for the corresponding
-  /// [ImperfectQuality.minor] or [PerfectQuality.perfect] semitones.
-  ///
-  /// See [sizeToSemitones].
+  /// Returns the number of semitones of this [Size] as in [_sizeToSemitones].
   ///
   /// Example:
   /// ```dart
@@ -115,7 +112,7 @@ extension type const Size._(int value) implements int {
     // them 0 (as if they were modulo `Size.octave`).
     final size = Size(simplifiedAbs == Size.octave ? 1 : simplifiedAbs);
 
-    return (sizeToSemitones[size]! + octaveShift) * value.sign;
+    return (_sizeToSemitones[size]! + octaveShift) * value.sign;
   }
 
   /// Returns the absolute [Size] value taking octave shift into account.
