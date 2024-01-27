@@ -1,4 +1,18 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../harmony/chord.dart';
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../key/key.dart';
+import '../key/key_signature.dart';
+import '../key/mode.dart';
+import '../music.dart';
+import '../scalable.dart';
+import 'accidental.dart';
+import 'base_note.dart';
+import 'pitch.dart';
+import 'pitch_class.dart';
 
 /// A musical note.
 ///
@@ -271,7 +285,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.c.isEnharmonicWith(Note.b.sharp) == true
   /// Note.e.isEnharmonicWith(Note.f) == false
   /// ```
-  bool isEnharmonicWith(Note other) => toClass() == other.toClass();
+  bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
 
   /// Returns this [Note] positioned in the given [octave] as a [Pitch].
   ///
@@ -390,7 +404,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     final accidentalSemitones = (accidental.semitones * interval.size.sign) +
         ((interval.semitones * interval.size.sign) - positiveDifference);
     final semitonesOctaveMod = accidentalSemitones -
-        chromaticDivisions * (interval.size._sizeAbsShift ~/ 8);
+        chromaticDivisions * (interval.size.sizeAbsShift ~/ 8);
 
     return Note(
       transposedBaseNote,
@@ -402,11 +416,11 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.toClass() == PitchClass.c
-  /// Note.e.sharp.toClass() == PitchClass.f
-  /// Note.c.flat.flat.toClass() == PitchClass.aSharp
+  /// Note.c.toPitchClass() == PitchClass.c
+  /// Note.e.sharp.toPitchClass() == PitchClass.f
+  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
   /// ```
-  PitchClass toClass() => PitchClass(semitones);
+  PitchClass toPitchClass() => PitchClass(semitones);
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
@@ -426,6 +440,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
 }
 
 /// The abstraction for [Note] notation systems.
+@immutable
 abstract class NoteNotation {
   /// Creates a new [NoteNotation].
   const NoteNotation();
@@ -463,7 +478,7 @@ abstract class NoteNotation {
 }
 
 /// The English alphabetic notation system.
-class EnglishNoteNotation extends NoteNotation {
+final class EnglishNoteNotation extends NoteNotation {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
   final bool showNatural;
@@ -484,7 +499,7 @@ class EnglishNoteNotation extends NoteNotation {
 }
 
 /// The German alphabetic notation system.
-class GermanNoteNotation extends NoteNotation {
+final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation();
 
@@ -531,7 +546,7 @@ class GermanNoteNotation extends NoteNotation {
 }
 
 /// The Italian alphabetic notation system.
-class ItalianNoteNotation extends NoteNotation {
+final class ItalianNoteNotation extends NoteNotation {
   /// Creates a new [ItalianNoteNotation].
   const ItalianNoteNotation();
 
@@ -554,7 +569,7 @@ class ItalianNoteNotation extends NoteNotation {
 }
 
 /// The French alphabetic notation system.
-class FrenchNoteNotation extends NoteNotation {
+final class FrenchNoteNotation extends NoteNotation {
   /// Creates a new [FrenchNoteNotation].
   const FrenchNoteNotation();
 

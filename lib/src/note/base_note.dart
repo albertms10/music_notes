@@ -1,4 +1,9 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:music_notes/utils.dart';
+
+import '../interval/interval.dart';
+import '../music.dart';
+import 'note.dart';
 
 /// The base note names of the diatonic scale.
 ///

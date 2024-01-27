@@ -1,4 +1,11 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/interval.dart';
+import '../music.dart';
+import 'ratio.dart';
+import 'tuning_system.dart';
 
 /// See [Cent (Wikipedia)](https://en.wikipedia.org/wiki/Cent_(music)) and
 /// [Cent (Xenharmonic Wiki)](https://en.xen.wiki/w/Cent).

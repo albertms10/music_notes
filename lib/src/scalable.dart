@@ -1,8 +1,10 @@
-part of '../music_notes.dart';
+import 'interval/interval.dart';
+import 'music.dart';
+import 'transposable.dart';
 
 /// A interface for items that can form scales.
-abstract interface class Scalable<T extends Scalable<T>>
-    implements Transposable<T> {
+abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
+  /// Creates a new [Scalable].
   const Scalable();
 
   /// The number of semitones that define this [Scalable].

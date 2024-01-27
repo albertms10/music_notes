@@ -1,4 +1,15 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../note/base_note.dart';
+import '../note/note.dart';
+import '../note/pitch.dart';
+import 'cent.dart';
+import 'ratio.dart';
+import 'tuning_system.dart';
 
 /// A representation of an equal temperament tuning system.
 ///

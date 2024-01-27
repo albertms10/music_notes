@@ -1,4 +1,11 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../tuning/cent.dart';
+import '../tuning/equal_temperament.dart';
+import '../tuning/tuning_system.dart';
+import 'frequency.dart';
+import 'pitch.dart';
 
 /// An abstraction of the closest representation of a [Frequency] as a [Pitch].
 ///

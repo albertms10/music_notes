@@ -1,4 +1,7 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'note.dart';
 
 /// An accidental.
 ///
@@ -47,7 +50,8 @@ final class Accidental implements Comparable<Accidental> {
   static const _flatSymbolAlt = 'b';
   static const _doubleFlatSymbol = '𝄫';
 
-  static const _symbols = [
+  /// The list of valid symbols for an [Accidental].
+  static const symbols = [
     _doubleSharpSymbol,
     _doubleSharpSymbolAlt,
     _sharpSymbol,

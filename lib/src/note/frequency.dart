@@ -1,4 +1,12 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+
+import '../tuning/equal_temperament.dart';
+import '../tuning/ratio.dart';
+import '../tuning/tuning_system.dart';
+import 'closest_pitch.dart';
+import 'hearing_range.dart';
+import 'pitch.dart';
+import 'pitch_class.dart';
 
 /// Represents an absolute pitch, a physical frequency.
 ///

@@ -24,6 +24,15 @@ void main() {
       });
     });
 
+    group('.length', () {
+      test('returns the length of this ScalePattern', () {
+        expect(ScalePattern.minorPentatonic.length, 5);
+        expect(ScalePattern.major.length, 7);
+        expect(ScalePattern.octatonic.length, 8);
+        expect(ScalePattern.chromatic.length, 12);
+      });
+    });
+
     group('.on()', () {
       test('returns the major Scale on Note', () {
         expect(
