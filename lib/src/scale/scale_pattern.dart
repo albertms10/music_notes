@@ -1,4 +1,11 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../scalable.dart';
+import 'scale.dart';
+import 'scale_degree.dart';
 
 /// A set of musical intervals that conform a musical scale.
 ///
@@ -233,6 +240,17 @@ final class ScalePattern {
         // TODO(albertms10): add support for other triad constructions.
         _ => major,
       };
+
+  /// The length of this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.length == 5
+  /// ScalePattern.major.length == 7
+  /// ScalePattern.octatonic.length == 8
+  /// ScalePattern.chromatic.length == 12
+  /// ```
+  int get length => degreePatterns.length;
 
   /// The descending interval steps that define this [ScalePattern].
   List<Interval> get descendingIntervalSteps =>

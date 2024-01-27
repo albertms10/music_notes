@@ -1,4 +1,7 @@
-part of '../music_notes.dart';
+import 'harmony/chord.dart';
+import 'interval/interval.dart';
+import 'interval/quality.dart';
+import 'interval/size.dart';
 
 /// A mixin for items that can form chords.
 ///

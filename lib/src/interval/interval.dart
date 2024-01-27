@@ -1,6 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../music.dart';
+import '../note/note.dart';
+import '../scalable.dart';
+import 'interval_class.dart';
+import 'quality.dart';
+import 'size.dart';
 
 /// Distance between two notes.
 ///
@@ -148,7 +157,7 @@ final class Interval implements Comparable<Interval> {
 
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
-  static const _sizeToSemitones = {
+  static const sizeToSemitones = {
     Size.unison: 0, // P
     Size.second: 1, // m
     Size.third: 3, // m
@@ -218,7 +227,7 @@ final class Interval implements Comparable<Interval> {
     return Interval._(size, parseFactory(match[1]!));
   }
 
-  /// Returns the [Size] that matches with [semitones] in [_sizeToSemitones],
+  /// Returns the [Size] that matches with [semitones] in [sizeToSemitones],
   /// otherwise returns `null`.
   ///
   /// Example:
@@ -230,12 +239,12 @@ final class Interval implements Comparable<Interval> {
   /// ```
   static Size? sizeFromSemitones(int semitones) {
     final absoluteSemitones = semitones.abs();
-    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
+    final matchingSize = sizeToSemitones.keys.firstWhereOrNull(
       (size) =>
           (absoluteSemitones == chromaticDivisions
               ? chromaticDivisions
               : absoluteSemitones % chromaticDivisions) ==
-          _sizeToSemitones[size],
+          sizeToSemitones[size],
     );
     if (matchingSize == null) return null;
     if (absoluteSemitones == chromaticDivisions) {

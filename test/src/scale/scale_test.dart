@@ -3,6 +3,15 @@ import 'package:test/test.dart';
 
 void main() {
   group('Scale', () {
+    group('.length', () {
+      test('returns the length of this Scale', () {
+        expect(ScalePattern.minorPentatonic.on(Note.f).length, 5);
+        expect(ScalePattern.major.on(Note.e).length, 7);
+        expect(ScalePattern.octatonic.on(Note.d.flat).length, 8);
+        expect(ScalePattern.chromatic.on(Note.c).length, 12);
+      });
+    });
+
     group('.pattern', () {
       test('returns the ScalePattern of this Scale', () {
         expect(ScalePattern.aeolian.on(Note.c).pattern, ScalePattern.aeolian);

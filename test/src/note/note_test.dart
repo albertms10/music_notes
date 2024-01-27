@@ -529,8 +529,7 @@ void main() {
         expect(Note.c.interval(Note.b), Interval.M7);
         expect(Note.b.interval(Note.a.sharp), Interval.M7);
 
-        // TODO(albertms10): Failing test:
-        //  `Note.c.interval(Note.b.sharp)`.
+        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.M7);
       });
     });
 
@@ -634,13 +633,13 @@ void main() {
       });
     });
 
-    group('.toClass()', () {
+    group('.toPitchClass()', () {
       test('creates a new PitchClass from semitones', () {
-        expect(Note.c.toClass(), PitchClass.c);
-        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
+        expect(Note.c.toPitchClass(), PitchClass.c);
+        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
       });
     });
 
@@ -782,6 +781,13 @@ void main() {
           'Sol𝄫',
         );
       });
+
+      test('returns the string representation extending NoteNotation', () {
+        expect(
+          () => Note.a.sharp.toString(system: _SubNoteNotation()),
+          throwsUnimplementedError,
+        );
+      });
     });
 
     group('.hashCode', () {
@@ -843,4 +849,12 @@ void main() {
       });
     });
   });
+}
+
+class _SubNoteNotation extends NoteNotation {
+  @override
+  String baseNote(BaseNote baseNote) => throw UnimplementedError();
+
+  @override
+  String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
 }

@@ -1,4 +1,6 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+
+import 'frequency.dart';
 
 /// A representation of a hearing range.
 ///

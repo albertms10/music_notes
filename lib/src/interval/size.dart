@@ -1,6 +1,12 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable, redeclare;
+import 'package:music_notes/utils.dart';
+
+import '../music.dart';
+import 'interval.dart';
+import 'quality.dart';
 
 /// An [Interval] size.
+@immutable
 extension type const Size._(int value) implements int {
   /// Creates a new [Size] from [value].
   const Size(this.value) : assert(value != 0, 'Value must be non-zero');
@@ -47,7 +53,7 @@ extension type const Size._(int value) implements int {
   /// Returns the number of semitones of this [Size] for the corresponding
   /// [ImperfectQuality.minor] or [PerfectQuality.perfect] semitones.
   ///
-  /// See [Interval._sizeToSemitones].
+  /// See [Interval.sizeToSemitones].
   ///
   /// Example:
   /// ```dart
@@ -60,16 +66,16 @@ extension type const Size._(int value) implements int {
   /// ```
   int get semitones {
     final simplifiedAbs = simplified.value.abs();
-    final octaveShift = chromaticDivisions * (_sizeAbsShift ~/ Size.octave);
+    final octaveShift = chromaticDivisions * (absShift ~/ Size.octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
     final size = Size(simplifiedAbs == Size.octave ? 1 : simplifiedAbs);
 
-    return (Interval._sizeToSemitones[size]! + octaveShift) * value.sign;
+    return (Interval.sizeToSemitones[size]! + octaveShift) * value.sign;
   }
 
   /// Returns the absolute [Size] value taking octave shift into account.
-  int get _sizeAbsShift {
+  int get absShift {
     final sizeAbs = value.abs();
 
     return sizeAbs + sizeAbs ~/ Size.octave;
@@ -83,7 +89,7 @@ extension type const Size._(int value) implements int {
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => _sizeAbsShift % (Size.octave / 2) < 2;
+  bool get isPerfect => absShift % (Size.octave / 2) < 2;
 
   /// Returns whether this [Size] is greater than [Size.octave]
   ///
@@ -108,7 +114,7 @@ extension type const Size._(int value) implements int {
   /// const Size(-22).simplified == Size(-8)
   /// ```
   Size get simplified => Size(
-        isCompound ? _sizeAbsShift.nonZeroMod(Size.octave) * value.sign : value,
+        isCompound ? absShift.nonZeroMod(Size.octave) * value.sign : value,
       );
 
   /// The negation of this [Size].
