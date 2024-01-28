@@ -18,38 +18,42 @@ void main() {
       test('returns the same hashCode for equal ClosestPitches', () {
         expect(
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(1), max: Frequency(1000)),
+          HearingRange(min: Frequency(1), max: Frequency(1000)).hashCode,
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(1), max: Frequency(1000)),
+          HearingRange(min: Frequency(1), max: Frequency(1000)).hashCode,
         );
         expect(
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(10.646), max: Frequency(2345.345)),
+          HearingRange(min: Frequency(10.646), max: Frequency(2345.3)).hashCode,
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(10.646), max: Frequency(2345.345)),
+          HearingRange(min: Frequency(10.646), max: Frequency(2345.3)).hashCode,
         );
       });
 
       test('returns different hashCodes for different ClosestPitches', () {
         expect(
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(0), max: Frequency(30000)),
+          HearingRange(min: Frequency(0), max: Frequency(30000)).hashCode,
           // ignore: prefer_const_constructors
-          isNot(HearingRange(min: Frequency(2), max: Frequency(3))),
+          isNot(HearingRange(min: Frequency(2), max: Frequency(3)).hashCode),
         );
         expect(
           // ignore: prefer_const_constructors
-          HearingRange(min: Frequency(10.6), max: Frequency(2345.3)),
-          // ignore: prefer_const_constructors
-          isNot(HearingRange(min: Frequency(10.7), max: Frequency(2345.6))),
+          HearingRange(min: Frequency(10.6), max: Frequency(2345.3)).hashCode,
+          isNot(
+            // ignore: prefer_const_constructors
+            HearingRange(min: Frequency(10.7), max: Frequency(2345.6)).hashCode,
+          ),
         );
       });
 
       test('ignores equal ClosestPitch instances in a Set', () {
         final collection = {
           HearingRange.human,
-          const HearingRange(min: Frequency(0), max: Frequency(1000)),
-          const HearingRange(min: Frequency(10), max: Frequency(20000)),
+          // ignore: prefer_const_constructors
+          HearingRange(min: Frequency(0), max: Frequency(1000)),
+          // ignore: prefer_const_constructors
+          HearingRange(min: Frequency(10), max: Frequency(20000)),
         };
         collection.addAll(collection);
         expect(collection.toList(), [

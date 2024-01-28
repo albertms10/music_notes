@@ -1221,8 +1221,10 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          const Pitch(Note.a, octave: 3).hashCode,
-          const Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
         );
       });
 
