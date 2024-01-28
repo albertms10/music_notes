@@ -22,6 +22,7 @@ export 'src/note/note.dart';
 export 'src/note/pitch.dart';
 export 'src/note/pitch_class.dart';
 export 'src/scalable.dart';
+export 'src/scale/cadence.dart';
 export 'src/scale/scale.dart';
 export 'src/scale/scale_degree.dart';
 export 'src/scale/scale_pattern.dart';
