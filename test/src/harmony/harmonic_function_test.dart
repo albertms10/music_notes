@@ -47,23 +47,43 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal HarmonicFunctions', () {
         expect(
-          HarmonicFunction.i.hashCode,
-          HarmonicFunction.i.hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          HarmonicFunction([ScaleDegree.i]).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          HarmonicFunction([ScaleDegree.i]).hashCode,
         );
         expect(
-          HarmonicFunction.neapolitanSixth.hashCode,
-          HarmonicFunction.neapolitanSixth.hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          HarmonicFunction([
+            // ignore: prefer_const_constructors
+            ScaleDegree(
+              2,
+              quality: ImperfectQuality.major,
+              inversion: 1,
+              semitonesDelta: -1,
+            ),
+          ]).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          HarmonicFunction([
+            // ignore: prefer_const_constructors
+            ScaleDegree(
+              2,
+              quality: ImperfectQuality.major,
+              inversion: 1,
+              semitonesDelta: -1,
+            ),
+          ]).hashCode,
         );
       });
 
       test('returns different hashCodes for different HarmonicFunctions', () {
         expect(
           HarmonicFunction.i.hashCode,
-          isNot(equals(HarmonicFunction.ii.hashCode)),
+          isNot(HarmonicFunction.ii.hashCode),
         );
         expect(
           const HarmonicFunction([ScaleDegree.vi, ScaleDegree.i]).hashCode,
-          isNot(equals(HarmonicFunction.vi.hashCode)),
+          isNot(HarmonicFunction.vi.hashCode),
         );
       });
 

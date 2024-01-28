@@ -47,10 +47,10 @@ void main() {
       });
 
       test('returns different hashCodes for different Ratios', () {
-        expect(const Ratio(1).hashCode, isNot(equals(const Ratio(2).hashCode)));
+        expect(const Ratio(1).hashCode, isNot(const Ratio(2).hashCode));
         expect(
           const Ratio(1.892345).hashCode,
-          isNot(equals(const Ratio(1.89234509).hashCode)),
+          isNot(const Ratio(1.89234509).hashCode),
         );
       });
     });

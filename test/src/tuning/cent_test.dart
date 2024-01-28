@@ -37,13 +37,10 @@ void main() {
       });
 
       test('returns different hashCodes for different Cents', () {
-        expect(
-          const Cent(0).hashCode,
-          isNot(equals(const Cent(1200).hashCode)),
-        );
+        expect(const Cent(0).hashCode, isNot(const Cent(1200).hashCode));
         expect(
           const Cent(34.3578).hashCode,
-          isNot(equals(const Cent(34.35789).hashCode)),
+          isNot(const Cent(34.35789).hashCode),
         );
       });
     });

@@ -97,18 +97,31 @@ void main() {
 
     group('.hashCode', () {
       test('returns the same hashCode for equal ScaleDegrees', () {
-        expect(ScaleDegree.i.hashCode, ScaleDegree.i.hashCode);
+        // ignore: prefer_const_constructors
+        expect(ScaleDegree(1).hashCode, ScaleDegree(1).hashCode);
         expect(
-          ScaleDegree.neapolitanSixth.hashCode,
-          ScaleDegree.neapolitanSixth.hashCode,
+          // ignore: prefer_const_constructors
+          ScaleDegree(
+            2,
+            quality: ImperfectQuality.major,
+            inversion: 1,
+            semitonesDelta: -1,
+          ).hashCode,
+          // ignore: prefer_const_constructors
+          ScaleDegree(
+            2,
+            quality: ImperfectQuality.major,
+            inversion: 1,
+            semitonesDelta: -1,
+          ).hashCode,
         );
       });
 
       test('returns different hashCodes for different ScaleDegrees', () {
-        expect(ScaleDegree.i.hashCode, isNot(equals(ScaleDegree.ii.hashCode)));
+        expect(ScaleDegree.i.hashCode, isNot(ScaleDegree.ii.hashCode));
         expect(
           const ScaleDegree(6, inversion: 1).hashCode,
-          isNot(equals(ScaleDegree.vi.hashCode)),
+          isNot(ScaleDegree.vi.hashCode),
         );
       });
 
