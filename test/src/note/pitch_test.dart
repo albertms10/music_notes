@@ -1229,15 +1229,15 @@ void main() {
       test('returns different hashCodes for different Pitches', () {
         expect(
           Note.c.inOctave(4).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
         expect(
           const Pitch(Note.a, octave: 3).hashCode,
-          isNot(equals(const Pitch(Note.b, octave: 3).hashCode)),
+          isNot(const Pitch(Note.b, octave: 3).hashCode),
         );
         expect(
           Note.d.inOctave(6).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
       });
 

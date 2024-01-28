@@ -105,10 +105,10 @@ void main() {
       });
 
       test('returns different hashCodes for different ScaleDegrees', () {
-        expect(ScaleDegree.i.hashCode, isNot(equals(ScaleDegree.ii.hashCode)));
+        expect(ScaleDegree.i.hashCode, isNot(ScaleDegree.ii.hashCode));
         expect(
           const ScaleDegree(6, inversion: 1).hashCode,
-          isNot(equals(ScaleDegree.vi.hashCode)),
+          isNot(ScaleDegree.vi.hashCode),
         );
       });
 

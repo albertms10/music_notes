@@ -34,22 +34,14 @@ void main() {
         expect(
           // ignore: prefer_const_constructors
           HearingRange(min: Frequency(0), max: Frequency(30000)),
-          isNot(
-            equals(
-              // ignore: prefer_const_constructors
-              HearingRange(min: Frequency(2), max: Frequency(3)),
-            ),
-          ),
+          // ignore: prefer_const_constructors
+          isNot(HearingRange(min: Frequency(2), max: Frequency(3))),
         );
         expect(
           // ignore: prefer_const_constructors
           HearingRange(min: Frequency(10.6), max: Frequency(2345.3)),
-          isNot(
-            equals(
-              // ignore: prefer_const_constructors
-              HearingRange(min: Frequency(10.7), max: Frequency(2345.6)),
-            ),
-          ),
+          // ignore: prefer_const_constructors
+          isNot(HearingRange(min: Frequency(10.7), max: Frequency(2345.6))),
         );
       });
 

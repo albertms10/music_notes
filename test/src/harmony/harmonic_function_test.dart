@@ -59,11 +59,11 @@ void main() {
       test('returns different hashCodes for different HarmonicFunctions', () {
         expect(
           HarmonicFunction.i.hashCode,
-          isNot(equals(HarmonicFunction.ii.hashCode)),
+          isNot(HarmonicFunction.ii.hashCode),
         );
         expect(
           const HarmonicFunction([ScaleDegree.vi, ScaleDegree.i]).hashCode,
-          isNot(equals(HarmonicFunction.vi.hashCode)),
+          isNot(HarmonicFunction.vi.hashCode),
         );
       });
 

@@ -88,17 +88,12 @@ void main() {
       test('returns different hashCodes for different ClosestPitches', () {
         expect(
           ClosestPitch(Note.a.inOctave(4)),
-          isNot(equals(ClosestPitch(Note.g.inOctave(4)))),
+          isNot(ClosestPitch(Note.g.inOctave(4))),
         );
         expect(
           ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123)),
           isNot(
-            equals(
-              ClosestPitch(
-                Note.c.sharp.inOctave(3),
-                cents: const Cent(-0.345),
-              ),
-            ),
+            ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-0.345)),
           ),
         );
       });
