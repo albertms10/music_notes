@@ -1221,23 +1221,25 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          const Pitch(Note.a, octave: 3).hashCode,
-          const Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
         );
       });
 
       test('returns different hashCodes for different Pitches', () {
         expect(
           Note.c.inOctave(4).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
         expect(
           const Pitch(Note.a, octave: 3).hashCode,
-          isNot(equals(const Pitch(Note.b, octave: 3).hashCode)),
+          isNot(const Pitch(Note.b, octave: 3).hashCode),
         );
         expect(
           Note.d.inOctave(6).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
       });
 
