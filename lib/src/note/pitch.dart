@@ -332,16 +332,6 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
-  /// Creates a new [PitchClass] from [semitones].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4).toClass() == PitchClass.c
-  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
-  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
-  /// ```
-  PitchClass toClass() => PitchClass(semitones);
-
   /// Transposes this [Pitch] by [interval].
   ///
   /// Example:
