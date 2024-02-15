@@ -1,5 +1,6 @@
 import 'interval/interval.dart';
 import 'music.dart';
+import 'note/pitch_class.dart';
 import 'transposable.dart';
 
 /// A interface for items that can form scales.
@@ -9,6 +10,16 @@ abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
 
   /// The number of semitones that define this [Scalable].
   int get semitones;
+
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == PitchClass.c
+  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
+  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// ```
+  PitchClass toClass() => PitchClass(semitones);
 
   /// Returns the [Interval] between this [Scalable] and [other].
   Interval interval(T other);
