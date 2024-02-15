@@ -171,4 +171,43 @@ void main() {
       });
     });
   });
+
+  group('ScaleDegreeSequence', () {
+    group('.cadence()', () {
+      test('should return the Cadence for this ScaleDegreeSequence', () {
+        expect(const [ScaleDegree.v, ScaleDegree.i].cadence(), Cadence.perfect);
+        expect([ScaleDegree.v.major, ScaleDegree.i].cadence(), Cadence.perfect);
+        expect(
+          [ScaleDegree.v.major, ScaleDegree.i].cadence(mode: TonalMode.minor),
+          Cadence.perfect,
+        );
+        expect(
+          [ScaleDegree.v.major, ScaleDegree.i.major].cadence(),
+          Cadence.perfect,
+        );
+        expect(
+          [ScaleDegree.v.major, ScaleDegree.i.major]
+              .cadence(mode: TonalMode.minor),
+          Cadence.perfect,
+        );
+        expect(
+          [ScaleDegree.v.major, ScaleDegree.i.minor].cadence(),
+          Cadence.perfect,
+        );
+        expect(
+          [ScaleDegree.v.major, ScaleDegree.i.minor]
+              .cadence(mode: TonalMode.minor),
+          Cadence.perfect,
+        );
+      });
+
+      test(
+        'should return null if the ScaleDegreeSequence does not match any '
+        'Cadence',
+        () {
+          expect([ScaleDegree.v.minor, ScaleDegree.i].cadence(), isNull);
+        },
+      );
+    });
+  });
 }

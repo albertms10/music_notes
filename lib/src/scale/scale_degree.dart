@@ -3,7 +3,9 @@ import 'package:music_notes/utils.dart';
 
 import '../harmony/chord.dart';
 import '../interval/quality.dart';
+import '../key/mode.dart';
 import '../note/accidental.dart';
+import 'cadence.dart';
 import 'scale.dart';
 
 /// A scale degree.
@@ -193,4 +195,43 @@ class ScaleDegree implements Comparable<ScaleDegree> {
           return 0;
         },
       ]);
+}
+
+/// A Scale degree sequence extension.
+extension ScaleDegreeSequence on List<ScaleDegree> {
+  /// Returns the [Cadence] for this [ScaleDegreeSequence], or `null` if the
+  /// sequence does not conform a [Cadence].
+  ///
+  /// Example:
+  /// ```dart
+  /// [ScaleDegree.v, ScaleDegree.i].cadence() == Cadence.perfect
+  /// [ScaleDegree.ii, ScaleDegree.iv].cadence() == null
+  /// ```
+  Cadence? cadence({TonalMode mode = TonalMode.major}) {
+    if (length != 2) return null;
+
+    return switch ((first, last)) {
+      (ScaleDegree(ordinal: 5), ScaleDegree(ordinal: 1)) => switch (mode) {
+          TonalMode.major
+              when first.quality == null ||
+                  first.quality == ImperfectQuality.major =>
+            Cadence.perfect,
+          TonalMode.minor when first.quality == ImperfectQuality.major =>
+            Cadence.perfect,
+          _ => null,
+        },
+      (
+        ScaleDegree(ordinal: 1 || 2 || 4 || 6),
+        ScaleDegree(ordinal: 5, quality: ImperfectQuality.major),
+      ) =>
+        Cadence.imperfect,
+      (ScaleDegree(ordinal: 2 || 4), ScaleDegree(ordinal: 1)) => Cadence.plagal,
+      (
+        ScaleDegree(ordinal: 5, quality: ImperfectQuality.major),
+        ScaleDegree(ordinal: 6),
+      ) =>
+        Cadence.interrupted,
+      _ => null,
+    };
+  }
 }
