@@ -11,10 +11,7 @@ import 'tuning_system.dart';
 /// See also:
 /// * [TuningSystem].
 @immutable
-final class Ratio {
-  /// The value of this [Ratio].
-  final num value;
-
+extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)
       : assert(value > 0, 'Value must be positive, non-zero');
@@ -36,13 +33,4 @@ final class Ratio {
   /// edo19.ratioFromSemitones(10).cents == const Cent(631.58)
   /// ```
   Cent get cents => Cent(math.log(value) / math.log(2) * Cent.octaveCents);
-
-  @override
-  String toString() => '$value';
-
-  @override
-  bool operator ==(Object other) => other is Ratio && value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
 }

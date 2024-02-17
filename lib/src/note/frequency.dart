@@ -60,7 +60,7 @@ class Frequency implements Comparable<Frequency> {
   }) {
     final cents = Ratio(hertz / referenceFrequency.hertz).cents;
     final semitones =
-        tuningSystem.referencePitch.semitones + (cents.value / 100).round();
+        tuningSystem.referencePitch.semitones + (cents / 100).round();
 
     final closestPitch = PitchClass(semitones)
         .resolveClosestSpelling()
