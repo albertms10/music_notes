@@ -10,6 +10,7 @@ import 'tuning_system.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
+@immutable
 extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)
