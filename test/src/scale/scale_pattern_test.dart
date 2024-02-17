@@ -24,6 +24,32 @@ void main() {
       });
     });
 
+    group('.fromBinary()', () {
+      test('creates a new ScalePattern from a binary sequence', () {
+        expect(
+          ScalePattern.fromBinary(int.parse('101010110101', radix: 2)),
+          ScalePattern.major,
+        );
+        expect(
+          ScalePattern.fromBinary(int.parse('111111111111', radix: 2)),
+          ScalePattern.chromatic,
+        );
+      });
+    });
+
+    group('.toBinary()', () {
+      test('returns the binary representation of this ScalePattern', () {
+        expect(
+          ScalePattern.major.toBinary(),
+          int.parse('101010110101', radix: 2),
+        );
+        expect(
+          ScalePattern.chromatic.toBinary(),
+          int.parse('111111111111', radix: 2),
+        );
+      });
+    });
+
     group('.length', () {
       test('returns the length of this ScalePattern', () {
         expect(ScalePattern.minorPentatonic.length, 5);

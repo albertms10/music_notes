@@ -3,6 +3,9 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../music.dart';
+import '../note/note.dart';
+import '../note/pitch_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
@@ -240,6 +243,38 @@ final class ScalePattern {
         // TODO(albertms10): add support for other triad constructions.
         _ => major,
       };
+
+  /// Creates a new [ScalePattern] from a binary [sequence] in integer form.
+  ///
+  /// This method and [ScalePattern.toBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.fromBinary(int.parse('101010110101', radix: 2))
+  ///   == ScalePattern.major
+  /// ```
+  factory ScalePattern.fromBinary(int sequence) {
+    assert(sequence > 0, 'Sequence must be greater than 0');
+
+    return Scale([
+      for (int i = 0; i < chromaticDivisions; i++)
+        if (sequence & 1 << i != 0) PitchClass(i),
+      PitchClass.c,
+    ]).pattern;
+  }
+
+  /// Returns the binary representation of this [ScalePattern].
+  ///
+  /// This method and [ScalePattern.fromBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.on(Note.c).toBinary()
+  ///   == int.parse('101010110101', radix: 2)
+  /// ```
+  int toBinary() => on(Note.c)
+      .degrees
+      .fold(0, (sequence, scalable) => sequence | 1 << scalable.semitones);
 
   /// The length of this [ScalePattern].
   ///
