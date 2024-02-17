@@ -9,9 +9,6 @@ linter:
     - unnecessary_null_aware_operator_on_extension_on_nullable
 
 analyzer:
-  enable-experiment:
-    - inline-class
-
   errors:
     # Style decisions
     always_use_package_imports: ignore

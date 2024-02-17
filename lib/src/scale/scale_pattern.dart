@@ -1,8 +1,9 @@
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart' show IterableEquality;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../interval/interval_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
@@ -348,6 +349,22 @@ final class ScalePattern {
     ]);
   }
 
+  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+  ///   .isEnharmonicWith(ScalePattern([Interval.m2, Interval.A2, Interval.d3]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(ScalePattern other) =>
+      const IterableEquality<IntervalClass>()
+          .equals(intervalSteps.toClass(), other.intervalSteps.toClass()) &&
+      const IterableEquality<IntervalClass>().equals(
+        (_descendingIntervalSteps ?? const []).toClass(),
+        (other._descendingIntervalSteps ?? const []).toClass(),
+      );
+
   /// Returns the name associated with this [ScalePattern].
   ///
   /// Example:
@@ -386,9 +403,9 @@ final class ScalePattern {
   @override
   bool operator ==(Object other) =>
       other is ScalePattern &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(intervalSteps, other.intervalSteps) &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
