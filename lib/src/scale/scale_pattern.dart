@@ -403,9 +403,9 @@ final class ScalePattern {
   @override
   bool operator ==(Object other) =>
       other is ScalePattern &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(intervalSteps, other.intervalSteps) &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
