@@ -1,3 +1,37 @@
+## 0.16.0
+
+- test: ♻️ shorten test descriptions by dropping _should_ [#372](https://github.com/albertms10/music_notes/pull/372)
+- refactor!(key_signature): ♻️ change operator `+` → `|` [#373](https://github.com/albertms10/music_notes/pull/373)
+- feat(closest_pitch): ✨ add `frequency` method [#374](https://github.com/albertms10/music_notes/pull/374)
+- test(note): 🧪 add edge test cases for `circleOfFifthsDistance` [#375](https://github.com/albertms10/music_notes/pull/375)
+- refactor(pitch): ♻️ reuse default `Note.toString` return value for `ScientificPitchNotation` [#376](https://github.com/albertms10/music_notes/pull/376)
+- feat(tonality): ✨ add `isTheoretical` getter [#377](https://github.com/albertms10/music_notes/pull/377)
+- feat(pitch): ✨ add comparison operators `<`, `<=`, `>`, and `>=` [#379](https://github.com/albertms10/music_notes/pull/379)
+- feat(pitch): ✨ add `midiNumber` getter [#378](https://github.com/albertms10/music_notes/pull/378)
+- refactor!(key): ♻️ rename `Tonality` → `Key` [#380](https://github.com/albertms10/music_notes/pull/380)
+- docs(key): 📖 addendum to rename `Tonality` → `Key` [#381](https://github.com/albertms10/music_notes/pull/381)
+- test(note): 🧪 `skip` failing tests [#382](https://github.com/albertms10/music_notes/pull/382)
+- feat(scale): ✨ add `length` getter [#383](https://github.com/albertms10/music_notes/pull/383)
+- chore(deps): bump actions/cache from 3.3.3 to 4.0.0 by @dependabot [#384](https://github.com/albertms10/music_notes/pull/384)
+- feat(note): ✨ rename `toPitchClass` and create `Pitch.toClass` methods [#385](https://github.com/albertms10/music_notes/pull/385)
+- refactor: ♻️ enforce `@immutable` and declare `final` Notation classes [#386](https://github.com/albertms10/music_notes/pull/386)
+- refactor: ♻️ rewrite `part of` directives in mini libraries [#387](https://github.com/albertms10/music_notes/pull/387)
+- test: 🧪 remove unnecessary `equals` matcher [#388](https://github.com/albertms10/music_notes/pull/388)
+- chore(deps): bump dart-lang/setup-dart from 1.6.1 to 1.6.2 by @dependabot [#390](https://github.com/albertms10/music_notes/pull/390)
+- refactor(scalable): ♻️ move `toClass` method from `Pitch` [#391](https://github.com/albertms10/music_notes/pull/391)
+- feat(scale): ✨ add `isEnharmonicWith` methods [#393](https://github.com/albertms10/music_notes/pull/393)
+- build(pubspec): 🏗️ bump Dart SDK 3.3 [#395](https://github.com/albertms10/music_notes/pull/395)
+- perf(tuning): :zap: rewrite `Cent`, `Ratio` as extension types [#312](https://github.com/albertms10/music_notes/pull/312)
+- docs(pitch_class): 📖 add more examples for `operator *` [#396](https://github.com/albertms10/music_notes/pull/396)
+- feat!(equal_temperament): 💥 remove default parameter value from `ratioFromSemitones` [#397](https://github.com/albertms10/music_notes/pull/397)
+- docs(tuning_system): 📖 rename old `ratioFromNote` examples [#398](https://github.com/albertms10/music_notes/pull/398)
+- docs(README): 🌟 add Star History Chart [#399](https://github.com/albertms10/music_notes/pull/399)
+- perf(frequency): ⚡️ rewrite as extension type [#349](https://github.com/albertms10/music_notes/pull/349)
+- refactor(interval): :recycle: rewrite `Size` as extension type [#311](https://github.com/albertms10/music_notes/pull/311)
+- test(scalable): ⚡️ use `const` collection literals whenever possible [#400](https://github.com/albertms10/music_notes/pull/400)
+
+**Full Changelog**: [`v0.15.0...v0.16.0`](https://github.com/albertms10/music_notes/compare/v0.15.0...v0.16.0)
+
 ## 0.15.0
 
 - refactor(tonality): ♻️ rewrite `toString` method into `NoteNotation` [#329](https://github.com/albertms10/music_notes/pull/329)
