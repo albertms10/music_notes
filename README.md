@@ -132,8 +132,8 @@ KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 And know its `Key`s:
 
 ```dart
-KeySignature([Note.f.sharp]).keys!.major; // G major
-KeySignature.empty.keys!.minor; // A minor
+KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+KeySignature.empty.keys[TonalMode.minor]; // A minor
 ```
 
 Non-canonical key signatures are also supported, although they

@@ -64,7 +64,7 @@ final class Key implements Comparable<Key> {
   /// Note.g.flat.major.signature == KeySignature.fromDistance(-6)
   /// ```
   KeySignature get signature => KeySignature.fromDistance(
-        KeySignature.empty.key(mode)!.note.fifthsDistanceWith(note),
+        KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
       );
 
   /// Whether this [Key] is theoretical, whose [signature] would have

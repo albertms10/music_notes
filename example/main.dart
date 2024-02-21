@@ -51,8 +51,8 @@ void main() {
   KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
   KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 
-  KeySignature([Note.f.sharp]).keys!.major; // G major
-  KeySignature.empty.keys!.minor; // A minor
+  KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+  KeySignature.empty.keys[TonalMode.minor]; // A minor
 
   KeySignature([Note.a.flat])
     ..isCanonical // false
