@@ -112,36 +112,23 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   bool get isCanonical => distance != null;
 
-  /// Returns the [Key] that corresponds to this [KeySignature] from
-  /// [mode].
+  /// Returns a [Map] with the two keys that are defined by this [KeySignature].
   ///
   /// Example:
   /// ```dart
-  /// KeySignature.empty.key(TonalMode.major) == Note.c.major
-  /// KeySignature.fromDistance(-2).key(TonalMode.minor) == Note.g.minor
+  /// KeySignature.fromDistance(-2).keys == {
+  ///   TonalMode.major: Note.b.flat.major,
+  ///   TonalMode.minor: Note.g.minor,
+  /// }
   /// ```
-  Key? key(TonalMode mode) => switch (mode) {
-        TonalMode.major => keys?.major,
-        TonalMode.minor => keys?.minor,
-      };
-
-  /// Returns a [Set] with the two keys that are defined by this [KeySignature].
-  ///
-  /// Example:
-  /// ```dart
-  /// KeySignature.fromDistance(-2).keys == (
-  ///   major: Note.b.flat.major,
-  ///   minor: Note.g.minor,
-  /// )
-  /// ```
-  ({Key major, Key minor})? get keys {
+  Map<TonalMode, Key> get keys {
     final distance = this.distance;
-    if (distance == null) return null;
+    if (distance == null) return {};
 
     final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
     final major = rootNote.major;
 
-    return (major: major, minor: major.relative);
+    return {TonalMode.major: major, TonalMode.minor: major.relative};
   }
 
   static const _noteNotation = EnglishNoteNotation(showNatural: true);
