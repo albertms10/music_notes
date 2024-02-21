@@ -88,7 +88,7 @@ class ClosestPitch {
   /// ```
   @override
   String toString() {
-    final roundedCents = cents.value.round();
+    final roundedCents = cents.round();
     if (roundedCents == 0) return '$pitch';
 
     return '$pitch${roundedCents.toDeltaString()}';

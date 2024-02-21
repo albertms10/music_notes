@@ -495,16 +495,6 @@ void main() {
       });
     });
 
-    group('.toClass()', () {
-      test('creates a new PitchClass from semitones', () {
-        expect(Note.c.inOctave(4).toClass(), PitchClass.c);
-        expect(Note.d.sharp.inOctave(3).toClass(), PitchClass.dSharp);
-        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.inOctave(6).toClass(), PitchClass.f);
-        expect(Note.c.flat.flat.inOctave(5).toClass(), PitchClass.aSharp);
-      });
-    });
-
     group('.interval()', () {
       test('returns the Interval between this Pitch and other', () {
         expect(Note.c.inOctave(4).interval(Note.c.inOctave(4)), Interval.P1);
@@ -1221,23 +1211,25 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          const Pitch(Note.a, octave: 3).hashCode,
-          const Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
+          // ignore: prefer_const_constructors
+          Pitch(Note.a, octave: 3).hashCode,
         );
       });
 
       test('returns different hashCodes for different Pitches', () {
         expect(
           Note.c.inOctave(4).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
         expect(
           const Pitch(Note.a, octave: 3).hashCode,
-          isNot(equals(const Pitch(Note.b, octave: 3).hashCode)),
+          isNot(const Pitch(Note.b, octave: 3).hashCode),
         );
         expect(
           Note.d.inOctave(6).hashCode,
-          isNot(equals(Note.c.inOctave(5).hashCode)),
+          isNot(Note.c.inOctave(5).hashCode),
         );
       });
 

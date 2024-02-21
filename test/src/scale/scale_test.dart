@@ -205,6 +205,26 @@ void main() {
       });
     });
 
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this Scale is enharmonically equivalent to other',
+        () {
+          expect(
+            const Scale([Note.c, Note.d, Note.f, Note.g]).isEnharmonicWith(
+              Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]),
+            ),
+            isTrue,
+          );
+          expect(
+            ScalePattern.chromatic.on(Note.d.flat).isEnharmonicWith(
+                  ScalePattern.chromatic.on(Note.b.sharp.sharp),
+                ),
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('.transposeBy()', () {
       test('transposes this Scale by Interval', () {
         expect(
