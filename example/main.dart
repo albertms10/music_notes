@@ -57,7 +57,7 @@ void main() {
   KeySignature([Note.a.flat])
     ..isCanonical // false
     ..distance // null
-    ..keys; // null
+    ..keys; // <TonalMode, Key>{}
 
   // Modes
   TonalMode.minor.scale; // ScalePattern.minor

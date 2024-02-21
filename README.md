@@ -143,7 +143,7 @@ return `null` when asked about their fifths distance or keys:
 KeySignature([Note.a.flat])
   ..isCanonical // false
   ..distance // null
-  ..keys; // null
+  ..keys; // <TonalMode, Key>{}
 ```
 
 ### Modes
