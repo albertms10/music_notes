@@ -13,7 +13,7 @@ void main() {
     group('.ratioFromSemitones()', () {
       test('returns the Ratio from semitones for this EqualTemperament', () {
         expect(
-          const EqualTemperament.edo12().ratioFromSemitones(),
+          const EqualTemperament.edo12().ratioFromSemitones(1),
           const Ratio(1.0594630943592953),
         );
         expect(
@@ -22,7 +22,7 @@ void main() {
         );
 
         expect(
-          const EqualTemperament.edo19().ratioFromSemitones(),
+          const EqualTemperament.edo19().ratioFromSemitones(1),
           const Ratio(1.0371550444461919),
         );
         expect(
