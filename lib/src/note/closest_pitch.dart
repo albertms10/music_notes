@@ -74,7 +74,7 @@ class ClosestPitch {
               referenceFrequency: referenceFrequency,
               tuningSystem: tuningSystem,
             ) *
-            cents.ratio.value,
+            cents.ratio,
       );
 
   /// Returns the string representation of this [ClosestPitch] record.
