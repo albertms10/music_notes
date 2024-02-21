@@ -48,10 +48,9 @@ class EqualTemperament extends TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// const EqualTemperament.edo12().cents
-  ///   == const [Cent(0), Cent(100), Cent(200), Cent(300),
-  ///   Cent(400), Cent(500), Cent(600), Cent(700),
-  ///   Cent(800), Cent(900), Cent(1000), Cent(1100)]
+  /// const EqualTemperament.edo12().cents.toList()
+  ///   == const [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100]
+  ///       as List<Cent>
   /// ```
   Iterable<Cent> get cents sync* {
     yield const Cent(0);
