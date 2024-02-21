@@ -405,7 +405,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      referenceFrequency * tuningSystem.ratio(this);
+      Frequency(referenceFrequency * tuningSystem.ratio(this));
 
   /// Returns the string representation of this [Pitch] based on [system].
   ///
