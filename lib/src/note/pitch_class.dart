@@ -221,9 +221,11 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```dart
   /// PitchClass.cSharp * 7 == PitchClass.g
   /// PitchClass.d * 7 == PitchClass.d
+  /// // observe one semitone upwards results in ascending fifths G -> D.
   ///
   /// PitchClass.cSharp * 5 == PitchClass.f
   /// PitchClass.d * 5 == PitchClass.aSharp
+  /// // observe one semitone upwards results in ascending fourths F -> B-flat.
   /// ```
   ///
   /// The multiplication by the two meaningful operations (5 and 7) gives us the
@@ -231,9 +233,24 @@ final class PitchClass extends Scalable<PitchClass>
   /// chromatic scale as follows:
   ///
   /// ```dart
-  /// ScalePattern.chromatic.on(PitchClass.c)
-  ///   .degrees.map((note) => note * 7)
-  ///     == Interval.P5.circleFrom(PitchClass.c, distance: 12)
+  /// final chromaticScale = ScalePattern.chromatic.on(PitchClass.c);
+  ///
+  /// // Cycle of fourths transform
+  /// chromaticScale.degrees.map((note) => note * 5)
+  ///   == Interval.P4.circleFrom(PitchClass.c, distance: 12)
+  ///
+  /// // Cycle of fifths transform
+  /// chromaticScale.degrees.map((note) => note * 7)
+  ///   == Interval.P5.circleFrom(PitchClass.c, distance: 12)
+  ///
+  /// // Inversion
+  /// chromaticScale.degrees.map((note) => note * 11)
+  ///   .toList() == chromaticScale.descendingDegrees
+  ///
+  /// // Whole-tone transform
+  /// final wholeToneScale = ScalePattern.wholeTone.on(PitchClass.c);
+  /// chromaticScale.degrees.skip(6).map((note) => note * 2)
+  ///   .toList() == wholeToneScale.degrees
   /// ```
   ///
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).

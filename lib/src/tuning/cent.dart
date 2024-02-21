@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:meta/meta.dart' show immutable;
+import 'package:meta/meta.dart' show immutable, redeclare;
 
 import '../interval/interval.dart';
 import '../music.dart';
@@ -13,25 +13,26 @@ import 'tuning_system.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
+/// * [Ratio].
 @immutable
-final class Cent {
-  /// The value of this [Cent].
-  final num value;
-
-  /// Creates a new [Cent] from [value].
-  const Cent(this.value);
-
+extension type const Cent(num value) implements num {
   /// The unit symbol for [Cent].
   static const unitSymbol = '¢';
 
   /// The number of cents in an [Interval.P8].
-  static const octaveCents = chromaticDivisions * 100;
+  static const octaveCents = Cent(chromaticDivisions * 100);
 
   /// Returns the [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
 
-  @override
-  String toString() => '$value $unitSymbol';
+  /// Returns the string format of this [Cent].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Cent(700).format() == '700 ¢'
+  /// const Cent(701.95).format() == '701.95 ¢'
+  /// ```
+  String format() => '$value $unitSymbol';
 
   /// The negation of this [Cent].
   ///
@@ -40,11 +41,6 @@ final class Cent {
   /// -const Cent(24) == const Cent(-24)
   /// -const Cent(-18.32) == const Cent(18.32)
   /// ```
+  @redeclare
   Cent operator -() => Cent(-value);
-
-  @override
-  bool operator ==(Object other) => other is Cent && value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
 }

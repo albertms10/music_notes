@@ -69,11 +69,13 @@ class ClosestPitch {
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      pitch.frequency(
-        referenceFrequency: referenceFrequency,
-        tuningSystem: tuningSystem,
-      ) *
-      cents.ratio.value;
+      Frequency(
+        pitch.frequency(
+              referenceFrequency: referenceFrequency,
+              tuningSystem: tuningSystem,
+            ) *
+            cents.ratio,
+      );
 
   /// Returns the string representation of this [ClosestPitch] record.
   ///
@@ -86,7 +88,7 @@ class ClosestPitch {
   /// ```
   @override
   String toString() {
-    final roundedCents = cents.value.round();
+    final roundedCents = cents.round();
     if (roundedCents == 0) return '$pitch';
 
     return '$pitch${roundedCents.toDeltaString()}';

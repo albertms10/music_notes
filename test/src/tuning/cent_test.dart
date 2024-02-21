@@ -14,10 +14,10 @@ void main() {
       });
     });
 
-    group('.toString()', () {
-      test('returns the string representation of this Cent', () {
-        expect(const Cent(100).toString(), '100 ¢');
-        expect(const Cent(701.955).toString(), '701.955 ¢');
+    group('.format()', () {
+      test('returns the string format of this Cent', () {
+        expect(const Cent(700).format(), '700 ¢');
+        expect(const Cent(701.95).format(), '701.95 ¢');
       });
     });
 
@@ -25,26 +25,6 @@ void main() {
       test('returns the negation of this Cent', () {
         expect(-const Cent(100), const Cent(-100));
         expect(-const Cent(-701.955), const Cent(701.955));
-      });
-    });
-
-    group('.hashCode', () {
-      test('returns the same hashCode for equal Cents', () {
-        // ignore: prefer_const_constructors
-        expect(Cent(100).hashCode, Cent(100).hashCode);
-        // ignore: prefer_const_constructors
-        expect(Cent(34.67982).hashCode, Cent(34.67982).hashCode);
-      });
-
-      test('returns different hashCodes for different Cents', () {
-        expect(
-          const Cent(0).hashCode,
-          isNot(equals(const Cent(1200).hashCode)),
-        );
-        expect(
-          const Cent(34.3578).hashCode,
-          isNot(equals(const Cent(34.35789).hashCode)),
-        );
       });
     });
   });

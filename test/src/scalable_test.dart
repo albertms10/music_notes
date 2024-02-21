@@ -2,6 +2,18 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Scalable', () {
+    group('.toClass()', () {
+      test('creates a new PitchClass from semitones', () {
+        expect(Note.c.inOctave(4).toClass(), PitchClass.c);
+        expect(Note.d.sharp.inOctave(3).toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.inOctave(6).toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.inOctave(5).toClass(), PitchClass.aSharp);
+      });
+    });
+  });
+
   group('ScalableIterable', () {
     group('.inverse', () {
       test('returns the inverse of this ScalableIterable', () {

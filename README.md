@@ -278,6 +278,16 @@ This library is inspired by a range of music theory projects.
 
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/albertms10/music_notes/pulls).
 
+## Star History
+
+<a href="https://star-history.com/#albertms10/music_notes&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+  </picture>
+</a>
+
 ## License
 
 This package is released under the [BSD-3-Clause License](LICENSE).
