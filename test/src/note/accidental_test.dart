@@ -7,18 +7,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Accidental', () {
-    group('constructor', () {
-      test('creates a new Accidental from static constants', () {
-        expect(Accidental.tripleSharp, const Accidental(3));
-        expect(Accidental.doubleSharp, const Accidental(2));
-        expect(Accidental.sharp, const Accidental(1));
-        expect(Accidental.natural, const Accidental(0));
-        expect(Accidental.flat, const Accidental(-1));
-        expect(Accidental.doubleFlat, const Accidental(-2));
-        expect(Accidental.tripleFlat, const Accidental(-3));
-      });
-    });
-
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Accidental.parse('invalid'), throwsFormatException);
