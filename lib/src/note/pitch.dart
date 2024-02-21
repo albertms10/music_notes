@@ -4,6 +4,7 @@ import 'package:music_notes/utils.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../interval/size.dart';
 import '../music.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
@@ -370,7 +371,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
     return Interval.fromSemitones(
-      intervalSize + octaveShift,
+      Size(intervalSize + octaveShift),
       difference(other),
     );
   }

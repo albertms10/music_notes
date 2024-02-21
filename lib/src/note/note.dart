@@ -4,6 +4,7 @@ import 'package:music_notes/utils.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../interval/size.dart';
 import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
@@ -404,7 +405,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     final accidentalSemitones = (accidental.semitones * interval.size.sign) +
         ((interval.semitones * interval.size.sign) - positiveDifference);
     final semitonesOctaveMod = accidentalSemitones -
-        chromaticDivisions * (interval.size.sizeAbsShift ~/ 8);
+        chromaticDivisions * (interval.size.absShift ~/ Size.octave);
 
     return Note(
       transposedBaseNote,

@@ -67,8 +67,8 @@ Pitch.parse('Eb3'); // E♭3
 Create an `Interval`:
 
 ```dart
-const Interval.perfect(5, PerfectQuality.perfect); // P5
 Interval.P4; // P4
+const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 ```
 
 Or turn it descending:

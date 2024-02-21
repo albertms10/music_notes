@@ -10,6 +10,7 @@ import '../music.dart';
 import '../note/pitch_class.dart';
 import 'interval.dart';
 import 'quality.dart';
+import 'size.dart';
 
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.
@@ -76,15 +77,15 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// ```
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final size = Interval.sizeFromSemitones(semitones);
+    final size = Size.fromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
         Interval.fromSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSemitones(size.incrementBy(-i), semitones),
-          Interval.fromSemitones(size.incrementBy(i), semitones),
+            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
+          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -94,11 +95,11 @@ final class IntervalClass implements Comparable<IntervalClass> {
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(-i))!,
+          Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(i))!,
+          Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
       ],

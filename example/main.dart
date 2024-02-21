@@ -21,8 +21,8 @@ void main() {
   Pitch.parse('Eb3'); // E♭3
 
   // Intervals
-  const Interval.perfect(15, PerfectQuality.perfect); // P15
   Interval.P4; // P4
+  const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 
   -Interval.m6; // desc m6
   Interval.M3.descending(); // desc M3

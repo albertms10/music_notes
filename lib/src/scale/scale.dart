@@ -5,6 +5,7 @@ import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../interval/size.dart';
 import '../note/pitch_class.dart';
 import '../scalable.dart';
 import '../transposable.dart';
@@ -99,7 +100,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
     return scalable.transposeBy(
       Interval.perfect(
-        1,
+        Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
     );
