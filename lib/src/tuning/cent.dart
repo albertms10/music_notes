@@ -13,6 +13,7 @@ import 'tuning_system.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
+/// * [Ratio].
 @immutable
 extension type const Cent(num value) implements num {
   /// The unit symbol for [Cent].
