@@ -204,7 +204,7 @@ void main() {
         expect(Interval.d1.isDescending, isFalse);
         expect(Interval.M9.isDescending, isFalse);
         expect(
-          const Interval.perfect(-Size.fourth, PerfectQuality.doublyAugmented)
+          const Interval.perfect(Size(-4), PerfectQuality.doublyAugmented)
               .isDescending,
           isTrue,
         );
@@ -398,7 +398,7 @@ void main() {
         expect((-Interval.d5).respellBySize(-Size.fourth), -Interval.A4);
         expect(
           (-Interval.P4).respellBySize(-Size.fifth),
-          const Interval.perfect(-Size.fifth, PerfectQuality.doublyDiminished),
+          const Interval.perfect(Size(-5), PerfectQuality.doublyDiminished),
         );
       });
     });
@@ -585,10 +585,10 @@ void main() {
       test('returns the negation of this Interval', () {
         expect(
           -Interval.M2,
-          const Interval.imperfect(-Size.second, ImperfectQuality.major),
+          const Interval.imperfect(Size(-2), ImperfectQuality.major),
         );
         expect(
-          -const Interval.imperfect(-Size.sixth, ImperfectQuality.minor),
+          -const Interval.imperfect(Size(-6), ImperfectQuality.minor),
           Interval.m6,
         );
       });
@@ -604,7 +604,7 @@ void main() {
         expect((-Interval.d8).toString(), 'desc d8');
         expect(Interval.M9.toString(), 'M9 (M2)');
         expect(
-          const Interval.imperfect(-Size.tenth, ImperfectQuality.minor)
+          const Interval.imperfect(Size(-10), ImperfectQuality.minor)
               .toString(),
           'desc m10 (m3)',
         );
