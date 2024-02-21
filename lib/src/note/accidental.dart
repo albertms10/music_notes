@@ -1,4 +1,7 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'note.dart';
 
 /// An accidental.
 ///
@@ -17,37 +20,38 @@ final class Accidental implements Comparable<Accidental> {
   /// Creates a new [Accidental] from [semitones].
   const Accidental(this.semitones);
 
-  /// A triple sharp [Accidental].
-  static const Accidental tripleSharp = Accidental(3);
+  /// A triple sharp (♯𝄪) [Accidental].
+  static const tripleSharp = Accidental(3);
 
-  /// A double sharp [Accidental].
-  static const Accidental doubleSharp = Accidental(2);
+  /// A double sharp (𝄪) [Accidental].
+  static const doubleSharp = Accidental(2);
 
-  /// A sharp [Accidental].
-  static const Accidental sharp = Accidental(1);
+  /// A sharp (♯) [Accidental].
+  static const sharp = Accidental(1);
 
-  /// A natural [Accidental].
-  static const Accidental natural = Accidental(0);
+  /// A natural (♮) [Accidental].
+  static const natural = Accidental(0);
 
-  /// A flat [Accidental].
-  static const Accidental flat = Accidental(-1);
+  /// A flat (♭) [Accidental].
+  static const flat = Accidental(-1);
 
-  /// A double flat [Accidental].
-  static const Accidental doubleFlat = Accidental(-2);
+  /// A double flat (𝄫) [Accidental].
+  static const doubleFlat = Accidental(-2);
 
-  /// A triple flat [Accidental].
-  static const Accidental tripleFlat = Accidental(-3);
+  /// A triple flat (♭𝄫) [Accidental].
+  static const tripleFlat = Accidental(-3);
 
-  static const String _doubleSharpSymbol = '𝄪';
-  static const String _doubleSharpSymbolAlt = 'x';
-  static const String _sharpSymbol = '♯';
-  static const String _sharpSymbolAlt = '#';
-  static const String _naturalSymbol = '♮';
-  static const String _flatSymbol = '♭';
-  static const String _flatSymbolAlt = 'b';
-  static const String _doubleFlatSymbol = '𝄫';
+  static const _doubleSharpSymbol = '𝄪';
+  static const _doubleSharpSymbolAlt = 'x';
+  static const _sharpSymbol = '♯';
+  static const _sharpSymbolAlt = '#';
+  static const _naturalSymbol = '♮';
+  static const _flatSymbol = '♭';
+  static const _flatSymbolAlt = 'b';
+  static const _doubleFlatSymbol = '𝄫';
 
-  static const List<String> _symbols = [
+  /// The list of valid symbols for an [Accidental].
+  static const symbols = [
     _doubleSharpSymbol,
     _doubleSharpSymbolAlt,
     _sharpSymbol,
@@ -94,7 +98,7 @@ final class Accidental implements Comparable<Accidental> {
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.flat.isFlat == true
   /// Accidental.doubleFlat.isFlat == true
@@ -103,9 +107,19 @@ final class Accidental implements Comparable<Accidental> {
   /// ```
   bool get isFlat => semitones.isNegative;
 
+  /// Whether this [Accidental] is natural (♮).
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.natural.isNatural == true
+  /// Accidental.sharp.isNatural == false
+  /// Accidental.flat.isNatural == false
+  /// ```
+  bool get isNatural => semitones == 0;
+
   /// Whether this [Accidental] is sharp (♯, 𝄪, etc.).
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// Accidental.sharp.isSharp == true
   /// Accidental.doubleSharp.isSharp == true

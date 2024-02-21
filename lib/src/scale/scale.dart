@@ -1,4 +1,16 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableEquality, ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../harmony/chord.dart';
+import '../harmony/harmonic_function.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../interval/size.dart';
+import '../note/pitch_class.dart';
+import '../scalable.dart';
+import '../transposable.dart';
+import 'scale_degree.dart';
+import 'scale_pattern.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///
@@ -18,6 +30,17 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
   /// Creates a new [Scale] instance from [degrees].
   const Scale(this.degrees, [this._descendingDegrees]);
+
+  /// The length of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.on(Note.f).length == 5
+  /// ScalePattern.major.on(Note.e).length == 7
+  /// ScalePattern.octatonic.on(Note.d.flat).length == 8
+  /// ScalePattern.chromatic.on(Note.c).length == 12
+  /// ```
+  int get length => degrees.length - 1;
 
   /// The descending [Scalable] degrees that define this [Scale].
   List<T> get descendingDegrees =>
@@ -77,7 +100,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
     return scalable.transposeBy(
       Interval.perfect(
-        1,
+        Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
     );
@@ -116,6 +139,22 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
             ).on(scale.degree(scaleDegree)),
           )
           .degreeChord(harmonicFunction.scaleDegrees.first);
+
+  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Scale([Note.c, Note.d, Note.f, Note.g])
+  ///   .isEnharmonicWith(Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(Scale<T> other) =>
+      const IterableEquality<PitchClass>()
+          .equals(degrees.toClass(), other.degrees.toClass()) &&
+      const IterableEquality<PitchClass>().equals(
+        (_descendingDegrees ?? const []).toClass(),
+        (other._descendingDegrees ?? const []).toClass(),
+      );
 
   /// Transposes this [Scale] by [interval].
   ///

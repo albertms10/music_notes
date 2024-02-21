@@ -1,15 +1,18 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:meta/meta.dart' show immutable;
+
+import 'cent.dart';
+import 'tuning_system.dart';
 
 /// A representation of a ratio.
 ///
 /// ---
 /// See also:
 /// * [TuningSystem].
+/// * [Cent].
 @immutable
-final class Ratio {
-  /// The value of this [Ratio].
-  final num value;
-
+extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)
       : assert(value > 0, 'Value must be positive, non-zero');
@@ -23,21 +26,12 @@ final class Ratio {
   /// pt.ratio(Note.g.inOctave(4)).cents == const Cent(701.96)
   ///
   /// const edo12 = EqualTemperament.edo12();
-  /// edo12.ratioFromSemitones().cents == const Cent(100)
+  /// edo12.ratioFromSemitones(1).cents == const Cent(100)
   /// edo12.ratioFromSemitones(6).cents == const Cent(600)
   ///
   /// const edo19 = EqualTemperament.edo19();
-  /// edo19.ratioFromSemitones().cents == const Cent(63.16)
+  /// edo19.ratioFromSemitones(1).cents == const Cent(63.16)
   /// edo19.ratioFromSemitones(10).cents == const Cent(631.58)
   /// ```
   Cent get cents => Cent(math.log(value) / math.log(2) * Cent.octaveCents);
-
-  @override
-  String toString() => '$value';
-
-  @override
-  bool operator ==(Object other) => other is Ratio && value == other.value;
-
-  @override
-  int get hashCode => value.hashCode;
 }

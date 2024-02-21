@@ -1,4 +1,21 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../harmony/chord.dart';
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../interval/size.dart';
+import '../music.dart';
+import '../scalable.dart';
+import '../tuning/cent.dart';
+import '../tuning/equal_temperament.dart';
+import '../tuning/tuning_system.dart';
+import 'accidental.dart';
+import 'base_note.dart';
+import 'closest_pitch.dart';
+import 'frequency.dart';
+import 'note.dart';
+import 'pitch_class.dart';
 
 /// A note in the octave range.
 ///
@@ -7,6 +24,7 @@ part of '../../music_notes.dart';
 /// * [Note].
 /// * [PitchClass].
 /// * [Frequency].
+/// * [ClosestPitch].
 @immutable
 final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// The note inside the octave.
@@ -18,21 +36,21 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Creates a new [Pitch] from [note] and [octave].
   const Pitch(this.note, {required this.octave});
 
-  static const String _superPrime = '′';
-  static const String _superPrimeAlt = "'";
-  static const String _subPrime = '͵';
-  static const String _subPrimeAlt = ',';
+  static const _superPrime = '′';
+  static const _superPrimeAlt = "'";
+  static const _subPrime = '͵';
+  static const _subPrimeAlt = ',';
 
-  static const List<String> _primeSymbols = [
+  static const _primeSymbols = [
     _superPrime,
     _superPrimeAlt,
     _subPrime,
     _subPrimeAlt,
   ];
 
-  static final RegExp _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
-  static final RegExp _helmholtzNotationRegExp =
-      RegExp('(^[A-Ga-g${Accidental._symbols.join()}]+)'
+  static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
+  static final _helmholtzNotationRegExp =
+      RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
           '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
   /// Parse [source] as a [Pitch] and return its value.
@@ -101,6 +119,27 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   @override
   int get semitones => note.semitones + octave * chromaticDivisions;
+
+  static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
+  static const _higherMidiPitch = Pitch(Note.g, octave: 9);
+
+  /// Returns the MIDI number (an integer from 0 to 127) of this [Pitch],
+  /// or `null` for pitches out of the MIDI range.
+  ///
+  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
+  /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(-1).midiNumber == 0
+  /// Note.a.inOctave(4).midiNumber == 69
+  /// Note.g.inOctave(9).midiNumber == 127
+  /// Note.a.flat.inOctave(9).midiNumber == null
+  /// ```
+  int? get midiNumber => switch (this) {
+        < _lowerMidiPitch || > _higherMidiPitch => null,
+        _ => semitones + chromaticDivisions,
+      };
 
   /// Returns the difference in semitones between this [Pitch] and
   /// [other].
@@ -332,13 +371,13 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
     return Interval.fromSemitones(
-      intervalSize + octaveShift,
+      Size(intervalSize + octaveShift),
       difference(other),
     );
   }
 
-  /// Returns the equal temperament [Frequency] of this [Pitch] from
-  /// [referenceFrequency] and [tuningSystem].
+  /// Returns the [Frequency] of this [Pitch] from [referenceFrequency] and
+  /// [tuningSystem].
   ///
   /// Example:
   /// ```dart
@@ -361,13 +400,13 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// ```dart
   /// final pitch = Note.a.inOctave(5);
-  /// pitch.frequency().closestPitch().$1 == pitch;
+  /// pitch.frequency().closestPitch().pitch == pitch;
   /// ```
   Frequency frequency({
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      referenceFrequency * tuningSystem.ratio(this).value;
+      Frequency(referenceFrequency * tuningSystem.ratio(this));
 
   /// Returns the string representation of this [Pitch] based on [system].
   ///
@@ -384,7 +423,65 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
-      system.pitchNotation(this);
+      system.pitch(this);
+
+  /// Adds [cents] to this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).toString() == 'F♯4+4'
+  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).toString() == 'E♭3-28'
+  /// ```
+  ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
+
+  /// Subtracts [cents] from this [Pitch], creating a new [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).toString() == 'G♭5-16'
+  /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
+  /// ```
+  ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
+
+  /// Whether this [Pitch] is lower than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) < Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) < Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) < Note.d.inOctave(4) == false
+  /// ```
+  bool operator <(Pitch other) => semitones < other.semitones;
+
+  /// Whether this [Pitch] is lower than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4) <= Note.c.inOctave(5) == true
+  /// Note.a.inOctave(5) <= Note.g.inOctave(4) == false
+  /// Note.d.inOctave(4) <= Note.d.inOctave(4) == true
+  /// ```
+  bool operator <=(Pitch other) => semitones <= other.semitones;
+
+  /// Whether this [Pitch] is higher than [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) > Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) > Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) > Note.d.inOctave(4) == false
+  /// ```
+  bool operator >(Pitch other) => semitones > other.semitones;
+
+  /// Whether this [Pitch] is higher than or equal to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(5) >= Note.c.inOctave(4) == true
+  /// Note.a.inOctave(4) >= Note.g.inOctave(5) == false
+  /// Note.d.inOctave(4) >= Note.d.inOctave(4) == true
+  /// ```
+  bool operator >=(Pitch other) => semitones >= other.semitones;
 
   @override
   bool operator ==(Object other) =>
@@ -400,7 +497,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       ]);
 }
 
-/// Pitch notation systems.
+/// The abstraction for [Pitch] notation systems.
+@immutable
 abstract class PitchNotation {
   /// Creates a new [PitchNotation].
   const PitchNotation();
@@ -412,33 +510,27 @@ abstract class PitchNotation {
   static const helmholtz = HelmholtzPitchNotation();
 
   /// Returns the string representation for [pitch].
-  String pitchNotation(Pitch pitch);
+  String pitch(Pitch pitch);
 }
 
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-class ScientificPitchNotation extends PitchNotation {
+final class ScientificPitchNotation extends PitchNotation {
   /// Creates a new [ScientificPitchNotation].
   const ScientificPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
-    final accidental = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
-    return '${pitch.note.baseNote}$accidental${pitch.octave}';
-  }
+  String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
 }
 
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-class HelmholtzPitchNotation extends PitchNotation {
+final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation();
 
   @override
-  String pitchNotation(Pitch pitch) {
-    final accidentalSymbol = pitch.note.accidental != Accidental.natural
-        ? pitch.note.accidental.symbol
-        : '';
+  String pitch(Pitch pitch) {
+    final accidental = pitch.note.accidental;
+    final accidentalSymbol = accidental.isNatural ? '' : accidental.symbol;
 
     if (pitch.octave >= 3) {
       return '${pitch.note.baseNote.name}$accidentalSymbol'

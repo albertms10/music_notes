@@ -2,9 +2,21 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('Scalable', () {
+    group('.toClass()', () {
+      test('creates a new PitchClass from semitones', () {
+        expect(Note.c.inOctave(4).toClass(), PitchClass.c);
+        expect(Note.d.sharp.inOctave(3).toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.inOctave(6).toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.inOctave(5).toClass(), PitchClass.aSharp);
+      });
+    });
+  });
+
   group('ScalableIterable', () {
     group('.inverse', () {
-      test('should return the inverse of this ScalableIterable', () {
+      test('returns the inverse of this ScalableIterable', () {
         expect(const <PitchClass>{}.inverse.toList(), const <PitchClass>[]);
         expect({PitchClass.cSharp}.inverse.toList(), const [PitchClass.cSharp]);
         expect(
@@ -25,12 +37,17 @@ void main() {
             Note.f.inOctave(4),
           ],
         );
-        // TODO(albertms10): test PitchClass. See #322.
+        expect(
+          {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
+              .inverse
+              .toList(),
+          [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
+        );
       });
     });
 
     group('.retrograde', () {
-      test('should return the retrograde of this ScalableIterable', () {
+      test('returns the retrograde of this ScalableIterable', () {
         expect(const <PitchClass>{}.retrograde.toList(), const <PitchClass>[]);
         expect(
           {PitchClass.fSharp}.retrograde.toList(),
@@ -64,36 +81,32 @@ void main() {
     });
 
     group('.numericRepresentation', () {
-      test(
-        'should return the numeric representation of this ScalableIterable',
-        () {
-          expect(<PitchClass>{}.numericRepresentation.toList(), const <int>[]);
-          expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
-          expect(
-            {
-              PitchClass.b,
-              PitchClass.aSharp,
-              PitchClass.d,
-              PitchClass.dSharp,
-              PitchClass.g,
-              PitchClass.fSharp,
-              PitchClass.gSharp,
-              PitchClass.e,
-              PitchClass.f,
-              PitchClass.c,
-              PitchClass.cSharp,
-              PitchClass.a,
-            }.numericRepresentation.toList(),
-            const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
-          );
-        },
-      );
+      test('returns the numeric representation of this ScalableIterable', () {
+        expect(<PitchClass>{}.numericRepresentation.toList(), const <int>[]);
+        expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
+        expect(
+          {
+            PitchClass.b,
+            PitchClass.aSharp,
+            PitchClass.d,
+            PitchClass.dSharp,
+            PitchClass.g,
+            PitchClass.fSharp,
+            PitchClass.gSharp,
+            PitchClass.e,
+            PitchClass.f,
+            PitchClass.c,
+            PitchClass.cSharp,
+            PitchClass.a,
+          }.numericRepresentation.toList(),
+          const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
+        );
+      });
     });
 
     group('.deltaNumericRepresentation', () {
       test(
-        'should return the delta numeric representation of this '
-        'ScalableIterable',
+        'returns the delta numeric representation of this ScalableIterable',
         () {
           expect(
             <PitchClass>{}.deltaNumericRepresentation.toList(),

@@ -1,15 +1,15 @@
 import 'package:music_notes/music_notes.dart';
-import 'package:music_notes/utils/iterable_extension.dart';
+import 'package:music_notes/utils.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('IterableExtension', () {
     group('.closestTo()', () {
-      test('should throw an exception when this Iterable is empty', () {
+      test('throws an exception when this Iterable is empty', () {
         expect(() => const <num>[].closestTo(1), throwsStateError);
       });
 
-      test('should throw an ArgumentError when difference is required', () {
+      test('throws an ArgumentError when difference is required', () {
         expect(
           () => [DateTime(2025, 1, 2), DateTime(2023, 12, 15)]
               .closestTo(DateTime.now()),
@@ -17,7 +17,7 @@ void main() {
         );
       });
 
-      test('should return the closest element to target in this Iterable', () {
+      test('returns the closest element to target in this Iterable', () {
         expect(const [5].closestTo(1), 5);
         expect(const [5].closestTo(-1), 5);
         expect(const [-5, 5].closestTo(0), -5);

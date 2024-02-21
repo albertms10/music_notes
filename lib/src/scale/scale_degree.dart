@@ -1,4 +1,10 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../harmony/chord.dart';
+import '../interval/quality.dart';
+import '../note/accidental.dart';
+import 'scale.dart';
 
 /// A scale degree.
 ///

@@ -1,4 +1,14 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../chordable.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../note/note.dart';
+import '../note/pitch.dart';
+import '../scalable.dart';
+import '../transposable.dart';
+import 'chord_pattern.dart';
 
 /// A musical chord.
 ///
@@ -95,11 +105,11 @@ class Chord<T extends Scalable<T>>
   /// Example:
   /// ```dart
   /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.m3)
-  ///   == const Chord([Note.c, Note.e.flat, Note.g])
+  ///   == Chord([Note.c, Note.e.flat, Note.g])
   ///
   /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
   ///   .transposeBy(Interval.M3)
-  ///     == const Chord([
+  ///     == Chord([
   ///          Note.b.inOctave(4),
   ///          Note.d.sharp.inOctave(5),
   ///          Note.f.sharp.inOctave(5)

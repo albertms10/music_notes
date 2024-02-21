@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 void main() {
   group('Chord', () {
     group('.root', () {
-      test('should return the root of this Chord', () {
+      test('returns the root of this Chord', () {
         expect(ChordPattern.majorTriad.on(Note.f).root, Note.f);
         expect(
           Chord([Note.d.inOctave(3), Note.f.inOctave(3), Note.a.inOctave(3)])
@@ -15,7 +15,7 @@ void main() {
     });
 
     group('.pattern', () {
-      test('should return the ChordPattern for this Chord', () {
+      test('returns the ChordPattern for this Chord', () {
         expect(
           ChordPattern.majorTriad.on(Note.c).pattern,
           ChordPattern.majorTriad,
@@ -41,7 +41,7 @@ void main() {
     });
 
     group('.modifiers', () {
-      test('should return the list of modifiers from the root note', () {
+      test('returns the list of modifiers from the root note', () {
         expect(Note.c.majorTriad.modifiers, const <Interval>[]);
         expect(
           Note.d.majorTriad.add6().add9().modifiers,
@@ -55,7 +55,7 @@ void main() {
     });
 
     group('.augmented', () {
-      test('should return a new Chord with an augmented root triad', () {
+      test('returns a new Chord with an augmented root triad', () {
         expect(Note.c.majorTriad.augmented, Note.c.augmentedTriad);
         expect(
           Note.f.majorTriad.add7().add9().augmented,
@@ -65,7 +65,7 @@ void main() {
     });
 
     group('.major', () {
-      test('should return a new Chord with a major root triad', () {
+      test('returns a new Chord with a major root triad', () {
         expect(Note.g.minorTriad.major, Note.g.majorTriad);
         expect(
           Note.a.flat.minorTriad.add7().add9().major,
@@ -75,7 +75,7 @@ void main() {
     });
 
     group('.minor', () {
-      test('should return a new Chord with a minor root triad', () {
+      test('returns a new Chord with a minor root triad', () {
         expect(Note.f.sharp.augmentedTriad.minor, Note.f.sharp.minorTriad);
         expect(
           Note.a.majorTriad.add7().add9().minor,
@@ -85,7 +85,7 @@ void main() {
     });
 
     group('.diminished', () {
-      test('should return a new Chord with a diminished root triad', () {
+      test('returns a new Chord with a diminished root triad', () {
         expect(Note.g.flat.majorTriad.diminished, Note.g.flat.diminishedTriad);
         expect(
           Note.g.sharp.augmentedTriad.add7().add9().diminished,
@@ -95,7 +95,7 @@ void main() {
     });
 
     group('.sus2()', () {
-      test('should turn this Chord into a suspended 2nd Chord', () {
+      test('turns this Chord into a suspended 2nd Chord', () {
         expect(Note.c.majorTriad.sus2(), const Chord([Note.c, Note.d, Note.g]));
         expect(
           Note.d.minorTriad.sus4().sus2(),
@@ -113,7 +113,7 @@ void main() {
     });
 
     group('.sus4()', () {
-      test('should turn this Chord into a suspended 4th Chord', () {
+      test('turns this Chord into a suspended 4th Chord', () {
         expect(
           Note.d.flat.majorTriad.sus4(),
           Chord([Note.d.flat, Note.g.flat, Note.a.flat]),
@@ -134,7 +134,7 @@ void main() {
     });
 
     group('.add6()', () {
-      test('should add a 6th Interval to this Chord', () {
+      test('adds a 6th Interval to this Chord', () {
         expect(
           Note.c.majorTriad.add6(),
           const Chord([Note.c, Note.e, Note.g, Note.a]),
@@ -155,7 +155,7 @@ void main() {
     });
 
     group('.add7()', () {
-      test('should add a 7th Interval to this Chord', () {
+      test('adds a 7th Interval to this Chord', () {
         expect(
           Note.a.majorTriad.add7(),
           Chord([Note.a, Note.c.sharp, Note.e, Note.g]),
@@ -176,7 +176,7 @@ void main() {
     });
 
     group('.add9()', () {
-      test('should add a 9th Interval to this Chord', () {
+      test('adds a 9th Interval to this Chord', () {
         expect(
           Note.d.majorTriad.add9(),
           Chord([Note.d, Note.f.sharp, Note.a, Note.e]),
@@ -197,7 +197,7 @@ void main() {
     });
 
     group('.add11()', () {
-      test('should add an 11th Interval to this Chord', () {
+      test('adds an 11th Interval to this Chord', () {
         expect(
           Note.g.majorTriad.add11(),
           const Chord([Note.g, Note.b, Note.d, Note.c]),
@@ -228,7 +228,7 @@ void main() {
     });
 
     group('.add13()', () {
-      test('should add an 13th Interval to this Chord', () {
+      test('adds an 13th Interval to this Chord', () {
         expect(
           Note.a.sharp.diminishedTriad.add13(),
           Chord([Note.a.sharp, Note.c.sharp, Note.e, Note.f.sharp.sharp]),
@@ -260,7 +260,7 @@ void main() {
     });
 
     group('.add()', () {
-      test('should add an Interval to this Chord', () {
+      test('adds an Interval to this Chord', () {
         expect(
           Note.c.majorTriad.add(Interval.P4, replaceSizes: const {3}),
           const Chord([Note.c, Note.f, Note.g]),
@@ -271,7 +271,7 @@ void main() {
         );
       });
 
-      test('should ignore any previous Interval size in this ChordPattern', () {
+      test('ignores any previous Interval size in this ChordPattern', () {
         expect(
           Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp]).add(Interval.M7),
           Chord([Note.e, Note.g.sharp, Note.b, Note.d.sharp]),
@@ -284,7 +284,7 @@ void main() {
     });
 
     group('.transposeBy()', () {
-      test('should transpose this Chord by Interval', () {
+      test('transposes this Chord by Interval', () {
         expect(
           ChordPattern.majorTriad
               .add9(ImperfectQuality.minor)
@@ -360,7 +360,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this Chord', () {
+      test('returns the string representation of this Chord', () {
         expect(
           ChordPattern.majorTriad.on(Note.d).toString(),
           'D maj. (D F♯ A)',
@@ -377,7 +377,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should ignore equal Chord instances in a Set', () {
+      test('ignores equal Chord instances in a Set', () {
         final collection = {
           const Chord([Note.c, Note.e, Note.g]),
           ChordPattern.minorTriad.on(Note.g),

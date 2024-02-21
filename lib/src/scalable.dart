@@ -1,12 +1,26 @@
-part of '../music_notes.dart';
+import 'interval/interval.dart';
+import 'interval/interval_class.dart';
+import 'music.dart';
+import 'note/pitch_class.dart';
+import 'transposable.dart';
 
 /// A interface for items that can form scales.
-abstract interface class Scalable<T extends Scalable<T>>
-    implements Transposable<T> {
+abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
+  /// Creates a new [Scalable].
   const Scalable();
 
   /// The number of semitones that define this [Scalable].
   int get semitones;
+
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == PitchClass.c
+  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
+  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// ```
+  PitchClass toClass() => PitchClass(semitones);
 
   /// Returns the [Interval] between this [Scalable] and [other].
   Interval interval(T other);
@@ -37,6 +51,9 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     }
   }
 
+  /// Returns the [PitchClass] representation of this [ScalableIterable].
+  Iterable<PitchClass> toClass() => map((scalable) => scalable.toClass());
+
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
@@ -53,10 +70,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     yield first;
     var last = first;
     for (var i = 1; i < length; i++) {
-      final transposed =
-          last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
-      last = transposed;
-      yield transposed;
+      yield last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
     }
   }
 
@@ -74,7 +88,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// Example:
   /// ```dart
   /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
-  ///   .numericRepresentation.toSet() == {0, 11, 3}
+  ///   .numericRepresentation.toSet() == const {0, 11, 3}
   /// ```
   Iterable<int> get numericRepresentation => map(
         (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
@@ -94,4 +108,10 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i - 1).difference(elementAt(i));
     }
   }
+}
+
+/// An Interval iterable.
+extension IntervalIterable<T extends Interval> on Iterable<T> {
+  /// Returns the [PitchClass] representation of this [IntervalIterable].
+  Iterable<IntervalClass> toClass() => map((interval) => interval.toClass());
 }
