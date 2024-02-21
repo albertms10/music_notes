@@ -76,8 +76,11 @@ class EqualTemperament extends TuningSystem {
   Ratio ratio(Pitch pitch) =>
       ratioFromSemitones(referencePitch.difference(pitch));
 
+  /// The reference generator cents.
+  static const referenceGeneratorCents = Cent(700);
+
   @override
-  Cent get generator => cents.closestTo(const Cent(700));
+  Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
   String toString() => 'EDO $edo (${steps.join(' ')})';
