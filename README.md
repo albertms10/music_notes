@@ -228,12 +228,12 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 Get the `Frequency` of a `Pitch`:
 
 ```dart
-Note.a.inOctave(4).frequency(); // 440 Hz
+Note.a.inOctave(4).frequency(); // 440
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
       tuningSystem:
           EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
-    ); // 456.1401436878537 Hz
+    ); // 456.1401436878537
 ```
 
 Get the closest note from a given `Frequency`:
