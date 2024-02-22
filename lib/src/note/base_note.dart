@@ -1,6 +1,15 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:music_notes/utils.dart';
+
+import '../interval/size.dart';
+import '../music.dart';
+import 'note.dart';
 
 /// The base note names of the diatonic scale.
+///
+/// ---
+/// See also:
+/// * [Note].
 enum BaseNote implements Comparable<BaseNote> {
   /// Note C.
   c(0),
@@ -85,19 +94,19 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int get ordinal => values.indexOf(this) + 1;
 
-  /// Returns the [Interval.size] that conforms between this [BaseNote] and
-  /// [other].
+  /// Returns the [Size] that conforms between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.d.intervalSize(BaseNote.f) == 3
-  /// BaseNote.a.intervalSize(BaseNote.e) == 5
+  /// BaseNote.d.intervalSize(BaseNote.f) == Size.third
+  /// BaseNote.a.intervalSize(BaseNote.e) == Size.fifth
   /// ```
-  int intervalSize(BaseNote other) =>
-      other.ordinal -
-      ordinal +
-      (ordinal > other.ordinal ? values.length : 0) +
-      1;
+  Size intervalSize(BaseNote other) => Size(
+        other.ordinal -
+            ordinal +
+            (ordinal > other.ordinal ? values.length : 0) +
+            1,
+      );
 
   /// Returns the difference in semitones between this [BaseNote] and [other].
   ///
@@ -105,9 +114,9 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
-  /// BaseNote.a.difference(BaseNote.d) == -7
+  /// BaseNote.a.difference(BaseNote.d) == 5
   /// ```
-  int difference(BaseNote other) => other.semitones - semitones;
+  int difference(BaseNote other) => Note(this).difference(Note(other));
 
   /// Returns the positive difference in semitones between this [BaseNote] and
   /// [other].
@@ -127,19 +136,20 @@ enum BaseNote implements Comparable<BaseNote> {
     return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
-  /// Returns this [BaseNote] transposed by interval [size].
+  /// Transposes this [BaseNote] by interval [size].
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.g.transposeBySize(1) == BaseNote.g
-  /// BaseNote.g.transposeBySize(5) == BaseNote.d
+  /// BaseNote.g.transposeBySize(Size.unison) == BaseNote.g
+  /// BaseNote.g.transposeBySize(Size.fifth) == BaseNote.d
   /// BaseNote.a.transposeBySize(-3) == BaseNote.f
   /// ```
-  BaseNote transposeBySize(int size) {
-    assert(size != 0, 'Size must be non-zero');
+  BaseNote transposeBySize(Size size) =>
+      BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
 
-    return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
-  }
+  @override
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.baseNote(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);

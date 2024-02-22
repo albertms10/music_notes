@@ -1,6 +1,22 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../chordable.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../note/note.dart';
+import '../note/pitch.dart';
+import '../scalable.dart';
+import '../transposable.dart';
+import 'chord_pattern.dart';
 
 /// A musical chord.
+///
+/// ---
+/// See also:
+/// * [ChordPattern].
+/// * [Scalable].
+/// * [Chordable].
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
@@ -20,7 +36,7 @@ class Chord<T extends Scalable<T>>
   /// rather than from the root note. This approach helps differentiate
   /// compound intervals (e.g., [Interval.M9]) from simple intervals
   /// (e.g., [Interval.M2]) in chords where distance is not explicit
-  /// (so, [Note] based chords rather than [PositionedNote] based).
+  /// (so, [Note] based chords rather than [Pitch] based).
   ///
   /// Example:
   /// ```dart
@@ -84,16 +100,16 @@ class Chord<T extends Scalable<T>>
   Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
-  /// Returns a transposed [Chord] by [interval] from this [Chord].
+  /// Transposes this [Chord] by [interval].
   ///
   /// Example:
   /// ```dart
   /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.m3)
-  ///   == const Chord([Note.c, Note.e.flat, Note.g])
+  ///   == Chord([Note.c, Note.e.flat, Note.g])
   ///
   /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
   ///   .transposeBy(Interval.M3)
-  ///     == const Chord([
+  ///     == Chord([
   ///          Note.b.inOctave(4),
   ///          Note.d.sharp.inOctave(5),
   ///          Note.f.sharp.inOctave(5)

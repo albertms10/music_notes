@@ -4,7 +4,8 @@
 [![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause/)
 
-A simple Dart library that provides a comprehensive set of utilities for working with music theory concepts through a beautifully crafted API.
+A simple Dart library that provides a comprehensive set of utilities
+for working with music theory concepts through a beautifully crafted API.
 
 ## Features
 
@@ -12,7 +13,7 @@ A simple Dart library that provides a comprehensive set of utilities for working
 - Intervals and qualities
 - Notes, frequencies, accidentals, and enharmonic operations
 - Scales and scale degrees
-- Tonalities, key signatures, and modes
+- Keys, key signatures, and modes
 - Tuning systems (_work in progress_)
 
 ## Usage
@@ -23,7 +24,9 @@ Import the package into your Dart code:
 import 'package:music_notes/music_notes.dart';
 ```
 
-Now, you can use the provided APIs to perform various music theory operations. For more detailed usage instructions and examples, please refer to the [API documentation](https://pub.dev/documentation/music_notes/latest/).
+Now, you can use the provided APIs to perform various music theory operations.
+For more detailed usage instructions and examples, please refer to the
+[API documentation](https://pub.dev/documentation/music_notes/latest/).
 
 ### Notes
 
@@ -44,7 +47,7 @@ Note.g.flat.flat; // G𝄫
 Note.f.sharp.sharp.sharp; // F𝄪♯
 ```
 
-And position them in the octave, resulting in `PositionedNote`s:
+And position them in the octave, resulting in `Pitch`es:
 
 ```dart
 Note.f.inOctave(4); // F4
@@ -55,8 +58,8 @@ Or just parse them in both scientific and Helmholtz notations:
 
 ```dart
 Note.parse('a#'); // A♯
-PositionedNote.parse("g''"); // G5
-PositionedNote.parse('Eb3'); // E♭3
+Pitch.parse("g''"); // G5
+Pitch.parse('Eb3'); // E♭3
 ```
 
 ### Intervals
@@ -64,14 +67,14 @@ PositionedNote.parse('Eb3'); // E♭3
 Create an `Interval`:
 
 ```dart
-const Interval.perfect(5, PerfectQuality.perfect); // P5
 Interval.P4; // P4
+const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 ```
 
 Or turn it descending:
 
 ```dart
--Interval.P4; // desc P4
+-Interval.m6; // desc m6
 Interval.M3.descending(); // desc M3
 ```
 
@@ -83,32 +86,33 @@ Note.d.interval(Note.f.sharp).inverted; // m6
 Note.g.flat.transposeBy(-Interval.m3); // E♭
 ```
 
-And even play with the circle of fifths or any circle of intervals up to a distance:
+And even play with the circle of fifths or any circle of intervals
+up to a distance:
 
 ```dart
-Interval.P5.circleFrom(Note.c, distance: 12);
+Interval.P5.circleFrom(Note.c, distance: 12).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths();
 // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
 ```
 
-### Tonalities
+### Keys
 
-Create a `Tonality` or get it from a given `Note`:
+Create a `Key` or get it from a given `Note`:
 
 ```dart
-const Tonality(Note.e, TonalMode.minor); // E minor
+const Key(Note.e, TonalMode.minor); // E minor
 Note.a.flat.major; // A♭ major
 ```
 
 Know its `KeySignature`:
 
 ```dart
-Note.d.major.keySignature; // 2 (F♯ C♯)
-Note.e.flat.minor.keySignature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+Note.d.major.signature; // 2 (F♯ C♯)
+Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
-And its relative `Tonality`:
+And its relative `Key`:
 
 ```dart
 Note.d.major.relative; // B minor
@@ -120,15 +124,26 @@ Note.c.minor.relative; // E♭ major
 Create a `KeySignature`:
 
 ```dart
-KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
 KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
+KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
+KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 ```
 
-And know its tonalities:
+And know its `Key`s:
 
 ```dart
-KeySignature([Note.f.sharp]).tonalities.major; // G major
-KeySignature.fromDistance(-3).tonalities.minor; // C minor
+KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+KeySignature.empty.keys[TonalMode.minor]; // A minor
+```
+
+Non-canonical key signatures are also supported, although they
+return `null` when asked about their fifths distance or keys:
+
+```dart
+KeySignature([Note.a.flat])
+  ..isCanonical // false
+  ..distance // null
+  ..keys; // <TonalMode, Key>{}
 ```
 
 ### Modes
@@ -166,7 +181,7 @@ ScalePattern.majorPentatonic.on(Note.g.flat);
 // G♭ Major pentatonic (G♭ A♭ B♭ D♭ E♭ G♭)
 ```
 
-Or get it from a `Tonality`:
+Or get it from a `Key`:
 
 ```dart
 Note.a.flat.major.scale; // A♭ Major (ionian) (A♭ B♭ C D♭ E♭ F G A♭)
@@ -184,7 +199,7 @@ Note.c.major.scale.functionChord(
 
 ### Chords
 
-Create a `Chord` from a series of `Note`s or from a `ChordPattern`:
+Create a `Chord` from a series of `Note`s or a `ChordPattern`:
 
 ```dart
 Chord([Note.a, Note.c.sharp, Note.e]); // A maj. (A C♯ E)
@@ -210,34 +225,30 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 
 ### Frequencies
 
-Get the `Frequency` of a `PositionedNote`:
+Get the `Frequency` of a `Pitch`:
 
 ```dart
-Note.a.inOctave(4).frequency(); // 440.0 Hz
+Note.a.inOctave(4).frequency(); // 440
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
-      tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
-    ); // 456.1401436878537 Hz
+      tuningSystem:
+          EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
+    ); // 456.1401436878537
 ```
 
 Get the closest note from a given `Frequency`:
 
 ```dart
-const Frequency(415).closestPositionedNote();
-// (G♯4, cents: -1.2706247484469828 ¢, hertz: -0.3046975799451275)
+const Frequency(432).closestPitch(); // A4-32
+const Frequency(314).closestPitch(); // E♭4+16
 ```
 
-And combining both methods, the harmonic series of a given `PositionedNote`:
+And combining both methods, the harmonic series of a given `Pitch`:
 
 ```dart
-Note.c
-    .inOctave(1)
-    .frequency()
-    .harmonics(upToIndex: 15)
-    .map((frequency) => frequency.closestPositionedNote().displayString())
-    .toSet();
-// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, E4-14, F♯4-49, G4+2,
-// A♭4+41, A♯4-31, B4-12, C5}
+Note.c.inOctave(1).frequency().harmonics(upToIndex: 15).closestPitches;
+// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4,
+// D4+4, E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
 ```
 
 ### In a nutshell
@@ -266,6 +277,16 @@ This library is inspired by a range of music theory projects.
 ## Contributing
 
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/albertms10/music_notes/pulls).
+
+## Star History
+
+<a href="https://star-history.com/#albertms10/music_notes&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+  </picture>
+</a>
 
 ## License
 

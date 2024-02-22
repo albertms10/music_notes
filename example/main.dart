@@ -17,41 +17,47 @@ void main() {
   Note.b.flat.inOctave(5); // B♭5
 
   Note.parse('a#'); // A♯
-  PositionedNote.parse("g''"); // G5
-  PositionedNote.parse('Eb3'); // E♭3
+  Pitch.parse("g''"); // G5
+  Pitch.parse('Eb3'); // E♭3
 
   // Intervals
-  const Interval.perfect(15, PerfectQuality.perfect); // P15
   Interval.P4; // P4
+  const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 
-  -Interval.P4; // desc P4
+  -Interval.m6; // desc m6
   Interval.M3.descending(); // desc M3
 
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inverted; // m6
   Note.g.flat.transposeBy(-Interval.m3); // E♭
 
-  Interval.P5.circleFrom(Note.c, distance: 12);
+  Interval.P5.circleFrom(Note.c, distance: 12).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
   Note.c.circleOfFifths();
   // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
 
-  // Tonalities
-  const Tonality(Note.e, TonalMode.minor); // E minor
+  // Keys
+  const Key(Note.e, TonalMode.minor); // E minor
   Note.a.flat.major; // A♭ major
 
-  Note.d.major.keySignature; // 2 (F♯ C♯)
-  Note.e.flat.minor.keySignature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+  Note.d.major.signature; // 2 (F♯ C♯)
+  Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 
   Note.d.major.relative; // B minor
   Note.c.minor.relative; // E♭ major
 
   // Key signatures
-  KeySignature([Note.b.flat, Note.e.flat]); // 2 (B♭ E♭)
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
+  KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
+  KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 
-  KeySignature([Note.f.sharp]).tonalities.major; // G major
-  KeySignature.fromDistance(-3).tonalities.minor; // C minor
+  KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+  KeySignature.empty.keys[TonalMode.minor]; // A minor
+
+  KeySignature([Note.a.flat])
+    ..isCanonical // false
+    ..distance // null
+    ..keys; // <TonalMode, Key>{}
 
   // Modes
   TonalMode.minor.scale; // ScalePattern.minor
@@ -92,23 +98,19 @@ void main() {
   Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 
   // Frequencies
-  Note.a.inOctave(4).frequency(); // 440.0 Hz
+  Note.a.inOctave(4).frequency(); // 440
   Note.b.flat.inOctave(4).frequency(
         referenceFrequency: const Frequency(256),
-        tuningSystem: EqualTemperament.edo12(referenceNote: Note.c.inOctave(4)),
-      ); // 456.1401436878537 Hz
+        tuningSystem:
+            EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
+      ); // 456.1401436878537
 
-  const Frequency(415).closestPositionedNote();
-  // (G♯4, cents: -1.2706247484469828 ¢, hertz: -0.3046975799451275)
+  const Frequency(432).closestPitch(); // A4-32
+  const Frequency(314).closestPitch(); // E♭4+16
 
-  Note.c
-      .inOctave(1)
-      .frequency()
-      .harmonics(upToIndex: 15)
-      .map((frequency) => frequency.closestPositionedNote().displayString())
-      .toSet();
-  // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, E4-14, F♯4-49, G4+2,
-  // A♭4+41, A♯4-31, B4-12, C5}
+  Note.c.inOctave(1).frequency().harmonics(upToIndex: 15).closestPitches;
+  // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4,
+  // D4+4, E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
 
   // In a nutshell
   ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)

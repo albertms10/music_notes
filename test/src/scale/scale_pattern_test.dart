@@ -4,31 +4,37 @@ import 'package:test/test.dart';
 void main() {
   group('ScalePattern', () {
     group('.fromChordPattern()', () {
-      test(
-        'should create a new ScalePattern from the given ChordPattern',
-        () {
-          expect(
-            ScalePattern.fromChordPattern(ChordPattern.augmentedTriad),
-            ScalePattern.lydianAugmented,
-          );
-          expect(
-            ScalePattern.fromChordPattern(ChordPattern.majorTriad),
-            ScalePattern.major,
-          );
-          expect(
-            ScalePattern.fromChordPattern(ChordPattern.minorTriad),
-            ScalePattern.naturalMinor,
-          );
-          expect(
-            ScalePattern.fromChordPattern(ChordPattern.diminishedTriad),
-            ScalePattern.locrian,
-          );
-        },
-      );
+      test('creates a new ScalePattern from the given ChordPattern', () {
+        expect(
+          ScalePattern.fromChordPattern(ChordPattern.augmentedTriad),
+          ScalePattern.lydianAugmented,
+        );
+        expect(
+          ScalePattern.fromChordPattern(ChordPattern.majorTriad),
+          ScalePattern.major,
+        );
+        expect(
+          ScalePattern.fromChordPattern(ChordPattern.minorTriad),
+          ScalePattern.naturalMinor,
+        );
+        expect(
+          ScalePattern.fromChordPattern(ChordPattern.diminishedTriad),
+          ScalePattern.locrian,
+        );
+      });
+    });
+
+    group('.length', () {
+      test('returns the length of this ScalePattern', () {
+        expect(ScalePattern.minorPentatonic.length, 5);
+        expect(ScalePattern.major.length, 7);
+        expect(ScalePattern.octatonic.length, 8);
+        expect(ScalePattern.chromatic.length, 12);
+      });
     });
 
     group('.on()', () {
-      test('should return the major Scale on Note', () {
+      test('returns the major Scale on Note', () {
         expect(
           ScalePattern.major.on(Note.a.flat),
           Scale([
@@ -83,7 +89,7 @@ void main() {
         );
       });
 
-      test('should return the natural minor Scale on Note', () {
+      test('returns the natural minor Scale on Note', () {
         expect(
           ScalePattern.naturalMinor.on(Note.d.sharp.inOctave(5)),
           Scale([
@@ -112,7 +118,7 @@ void main() {
         );
       });
 
-      test('should return the harmonic minor Scale on Note', () {
+      test('returns the harmonic minor Scale on Note', () {
         expect(
           ScalePattern.harmonicMinor.on(Note.b.flat.inOctave(4)),
           Scale([
@@ -141,7 +147,7 @@ void main() {
         );
       });
 
-      test('should return the melodic minor Scale on Note', () {
+      test('returns the melodic minor Scale on Note', () {
         expect(
           ScalePattern.melodicMinor.on(Note.d),
           Scale(
@@ -194,7 +200,7 @@ void main() {
         );
       });
 
-      test('should return the whole-tone Scale on Note', () {
+      test('returns the whole-tone Scale on Note', () {
         expect(
           ScalePattern.wholeTone.on(PitchClass.c),
           const Scale([
@@ -233,7 +239,7 @@ void main() {
         );
       });
 
-      test('should return the chromatic Scale on Note', () {
+      test('returns the chromatic Scale on Note', () {
         expect(
           ScalePattern.chromatic.on(Note.c),
           Scale([
@@ -290,7 +296,7 @@ void main() {
         );
       });
 
-      test('should return the major pentatonic Scale on Note', () {
+      test('returns the major pentatonic Scale on Note', () {
         expect(
           ScalePattern.majorPentatonic.on(Note.c),
           const Scale([Note.c, Note.d, Note.e, Note.g, Note.a, Note.c]),
@@ -319,7 +325,7 @@ void main() {
         );
       });
 
-      test('should return the minor pentatonic Scale on Note', () {
+      test('returns the minor pentatonic Scale on Note', () {
         expect(
           ScalePattern.minorPentatonic.on(Note.a),
           const Scale([Note.a, Note.c, Note.d, Note.e, Note.g, Note.a]),
@@ -332,7 +338,7 @@ void main() {
     });
 
     group('.mirrored', () {
-      test('should return the mirrored version of this ScalePattern', () {
+      test('returns the mirrored version of this ScalePattern', () {
         expect(ScalePattern.lydian.mirrored, ScalePattern.locrian);
         expect(ScalePattern.ionian.mirrored, ScalePattern.phrygian);
         expect(ScalePattern.mixolydian.mirrored, ScalePattern.aeolian);
@@ -369,8 +375,7 @@ void main() {
 
     group('.degreePatterns', () {
       test(
-        'should return the ChordPattern for each scale degree of this '
-        'ScalePattern',
+        'returns the ChordPattern for each scale degree of this ScalePattern',
         () {
           expect(ScalePattern.major.degreePatterns, const [
             ChordPattern.majorTriad,
@@ -414,8 +419,7 @@ void main() {
 
     group('.degreePattern()', () {
       test(
-        'should return the ChordPattern for the ScaleDegree of this '
-        'ScalePattern',
+        'returns the ChordPattern for the ScaleDegree of this ScalePattern',
         () {
           expect(
             ScalePattern.major.degreePattern(ScaleDegree.i),
@@ -488,8 +492,24 @@ void main() {
       );
     });
 
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this ScalePattern is enharmonically equivalent to '
+        'other',
+        () {
+          expect(
+            const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+                .isEnharmonicWith(
+              const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
+            ),
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('.name', () {
-      test('should return the name of this ScalePattern', () {
+      test('returns the name of this ScalePattern', () {
         expect(ScalePattern.ionian.name, 'Major (ionian)');
         expect(ScalePattern.dorian.name, 'Dorian');
         expect(ScalePattern.phrygian.name, 'Phrygian');
@@ -510,7 +530,7 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return the string representation of this ScalePattern', () {
+      test('returns the string representation of this ScalePattern', () {
         expect(
           ScalePattern.ionian.toString(),
           'Major (ionian) (M2 M2 m2 M2 M2 M2 m2)',
@@ -543,7 +563,7 @@ void main() {
     });
 
     group('.hashCode', () {
-      test('should ignore equal ScalePattern instances in a Set', () {
+      test('ignores equal ScalePattern instances in a Set', () {
         final collection = {
           ScalePattern.major,
           ScalePattern.aeolian,

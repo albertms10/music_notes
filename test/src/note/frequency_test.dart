@@ -1,18 +1,16 @@
-import 'dart:collection' show SplayTreeSet;
-
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Frequency', () {
     group('constructor', () {
-      test('should throw an assertion error when arguments are incorrect', () {
+      test('throws an assertion error when arguments are incorrect', () {
         expect(() => Frequency(-0.1), throwsA(isA<AssertionError>()));
       });
     });
 
     group('.isHumanAudible', () {
-      test('should return whether the frequency is audible by humans', () {
+      test('returns whether the frequency is audible by humans', () {
         expect(const Frequency(0).isHumanAudible, isFalse);
         expect(const Frequency(100).isHumanAudible, isTrue);
         expect(const Frequency(400).isHumanAudible, isTrue);
@@ -21,71 +19,58 @@ void main() {
       });
     });
 
-    group('.closestPositionedNote()', () {
-      test('should return the closest PositionedNote to this Frequency', () {
+    group('.closestPitch()', () {
+      test('returns the closest Pitch to this Frequency', () {
         expect(
-          const Frequency(440).closestPositionedNote(),
-          (Note.a.inOctave(4), cents: const Cent(0), hertz: 0.0),
+          const Frequency(440).closestPitch(),
+          Note.a.inOctave(4) + const Cent(0),
         );
         expect(
-          const Frequency(455).closestPositionedNote(),
-          (
-            Note.a.sharp.inOctave(4),
-            cents: const Cent(-41.96437412632116),
-            hertz: -11.163761518089927,
-          ),
+          const Frequency(455).closestPitch(),
+          Note.a.sharp.inOctave(4) - const Cent(41.96437412632116),
         );
         expect(
-          const Frequency(467).closestPositionedNote(),
-          (
-            Note.b.flat.inOctave(4),
-            cents: const Cent(3.1028314220028586),
-            hertz: 0.8362384819100726,
-          ),
+          const Frequency(467).closestPitch(),
+          Note.b.flat.inOctave(4) + const Cent(3.1028314220028586),
         );
         expect(
-          const Frequency(256).closestPositionedNote(),
-          (
-            Note.c.inOctave(4),
-            cents: const Cent(-37.63165622959142),
-            hertz: -5.625565300598623,
-          ),
+          const Frequency(256).closestPitch(),
+          Note.c.inOctave(4) - const Cent(37.63165622959142),
         );
 
         expect(
           const Frequency(440)
-              .closestPositionedNote(referenceFrequency: const Frequency(415)),
-          (
-            Note.b.flat.inOctave(4),
-            cents: const Cent(1.270624748447127),
-            hertz: 0.32281584089247417,
-          ),
+              .closestPitch(referenceFrequency: const Frequency(415)),
+          Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
         expect(
-          const Frequency(512).closestPositionedNote(
+          const Frequency(512).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          (Note.c.inOctave(5), cents: const Cent(0), hertz: 0.0),
+          Note.c.inOctave(5) + const Cent(0),
         );
         expect(
-          const Frequency(440).closestPositionedNote(
+          const Frequency(440).closestPitch(
             referenceFrequency: const Frequency(512),
             tuningSystem:
-                EqualTemperament.edo12(referenceNote: Note.c.inOctave(5)),
+                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
           ),
-          (
-            Note.a.inOctave(4),
-            cents: const Cent(37.63165622959145),
-            hertz: 9.461035390098175,
-          ),
+          Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
+      });
+
+      test('returns the same Frequency after Pitch.frequency()', () {
+        final pitch = Note.a.inOctave(5);
+        final closestPitch = pitch.frequency().closestPitch();
+        expect(closestPitch.pitch, pitch);
+        expect(closestPitch.cents, const Cent(0));
       });
     });
 
     group('.harmonic()', () {
-      test('should return the harmonic at index from this Frequency', () {
+      test('returns the harmonic at index from this Frequency', () {
         expect(const Frequency(880).harmonic(-3), const Frequency(220));
         expect(const Frequency(440).harmonic(-1), const Frequency(220));
         expect(const Frequency(110).harmonic(0), const Frequency(110));
@@ -96,8 +81,7 @@ void main() {
 
     group('.harmonics()', () {
       test(
-        'should return a Set of the harmonic series up to index from this '
-        'Frequency',
+        'returns a Set of the harmonic series up to index from this Frequency',
         () {
           expect(
             const Frequency(512).harmonics(upToIndex: -15),
@@ -157,134 +141,12 @@ void main() {
       );
     });
 
-    group('operator +()', () {
-      test('should add other to this Frequency', () {
-        expect(
-          const Frequency(0) + const Frequency(1200),
-          const Frequency(1200),
-        );
-        expect(
-          const Frequency(277.18) + const Frequency(415.3),
-          const Frequency(692.48),
-        );
-        expect(
-          const Frequency(440) + const Frequency(220),
-          const Frequency(660),
-        );
+    group('.format()', () {
+      test('returns the string format of this Frequency', () {
+        expect(const Frequency(440).format(), '440 Hz');
+        expect(const Frequency(415.62).format(), '415.62 Hz');
+        expect(const Frequency(2200.2968).format(), '2200.2968 Hz');
       });
-    });
-
-    group('operator -()', () {
-      test('should subtract other from this Frequency', () {
-        expect(
-          const Frequency(20000.12) - const Frequency(0),
-          const Frequency(20000.12),
-        );
-        expect(
-          const Frequency(415.3) - const Frequency(277.18),
-          const Frequency(138.12),
-        );
-        expect(
-          const Frequency(440) - const Frequency(220),
-          const Frequency(220),
-        );
-      });
-    });
-
-    group('operator *()', () {
-      test('should multiply this Frequency by factor', () {
-        expect(const Frequency(467) * 0, const Frequency(0));
-        expect(const Frequency(2200.2) * 1, const Frequency(2200.2));
-        expect(const Frequency(415.3) * 2, const Frequency(830.6));
-        expect(const Frequency(440) * 0.5, const Frequency(220));
-      });
-    });
-
-    group('operator /()', () {
-      test('should divide this Frequency by factor', () {
-        expect(const Frequency(467) / 1, const Frequency(467));
-        expect(const Frequency(415.3) / 2, const Frequency(207.65));
-        expect(const Frequency(440) / 0.5, const Frequency(880));
-      });
-    });
-
-    group('.toString()', () {
-      test('should return the string representation of this Frequency', () {
-        expect(const Frequency(440).toString(), '440.0 Hz');
-        expect(const Frequency(415.62).toString(), '415.62 Hz');
-        expect(const Frequency(2200.2968).toString(), '2200.2968 Hz');
-      });
-    });
-
-    group('.hashCode', () {
-      test('should ignore equal Frequency instances in a Set', () {
-        final collection = {
-          const Frequency(432),
-          const Frequency(440),
-          const Frequency(467),
-        };
-        collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [Frequency(432), Frequency(440), Frequency(467)],
-        );
-      });
-    });
-
-    group('.compareTo()', () {
-      test('should correctly sort Frequency items in a collection', () {
-        final orderedSet = SplayTreeSet<Frequency>.of({
-          const Frequency(2000),
-          const Frequency(10),
-          const Frequency(400),
-          const Frequency(500),
-        });
-        expect(orderedSet.toList(), const [
-          Frequency(10),
-          Frequency(400),
-          Frequency(500),
-          Frequency(2000),
-        ]);
-      });
-    });
-  });
-
-  group('ClosestPositionedNoteExtension', () {
-    group('.displayString()', () {
-      test(
-        'should return the string representation of this '
-        'ClosestPositionedNote',
-        () {
-          expect(
-              Note.c
-                  .inOctave(1)
-                  .frequency()
-                  .harmonics(upToIndex: 15)
-                  .map(
-                    (frequency) =>
-                        frequency.closestPositionedNote().displayString(),
-                  )
-                  .toSet(),
-              const {
-                'C1',
-                'C2',
-                'G2+2',
-                'C3',
-                'E3-14',
-                'G3+2',
-                'A♯3-31',
-                'C4',
-                'D4+4',
-                'E4-14',
-                'F♯4-49',
-                'G4+2',
-                'A♭4+41',
-                'A♯4-31',
-                'B4-12',
-                'C5',
-              });
-        },
-      );
     });
   });
 }

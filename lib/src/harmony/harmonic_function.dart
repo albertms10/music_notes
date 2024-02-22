@@ -1,6 +1,16 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/quality.dart';
+import '../scale/scale.dart';
+import '../scale/scale_degree.dart';
 
 /// A harmonic function.
+///
+/// ---
+/// See also:
+/// * [Scale].
+/// * [ScaleDegree].
 @immutable
 class HarmonicFunction {
   /// The scale degrees that define this [HarmonicFunction].

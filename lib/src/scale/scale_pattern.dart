@@ -1,8 +1,20 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show IterableEquality;
+import 'package:meta/meta.dart' show immutable;
+
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../interval/interval_class.dart';
+import '../scalable.dart';
+import 'scale.dart';
+import 'scale_degree.dart';
 
 /// A set of musical intervals that conform a musical scale.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
+///
+/// ---
+/// See also:
+/// * [Scale].
 @immutable
 final class ScalePattern {
   /// The interval steps that define this [ScalePattern].
@@ -230,6 +242,17 @@ final class ScalePattern {
         _ => major,
       };
 
+  /// The length of this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.length == 5
+  /// ScalePattern.major.length == 7
+  /// ScalePattern.octatonic.length == 8
+  /// ScalePattern.chromatic.length == 12
+  /// ```
+  int get length => degreePatterns.length;
+
   /// The descending interval steps that define this [ScalePattern].
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
@@ -255,9 +278,9 @@ final class ScalePattern {
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-        // We iterate over the `reversed` descending step list to make sure both
-        // regular and descending scales match, e.g., their octave in
-        // `PositionedNote` lists.
+        // We iterate over the `reversed` descending step list to make sure
+        // both regular and descending scales match, e.g., their octave in
+        // `Pitch` lists.
         _descendingIntervalSteps?.reversed
             .fold(
               [scalable],
@@ -326,6 +349,22 @@ final class ScalePattern {
     ]);
   }
 
+  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+  ///   .isEnharmonicWith(ScalePattern([Interval.m2, Interval.A2, Interval.d3]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(ScalePattern other) =>
+      const IterableEquality<IntervalClass>()
+          .equals(intervalSteps.toClass(), other.intervalSteps.toClass()) &&
+      const IterableEquality<IntervalClass>().equals(
+        (_descendingIntervalSteps ?? const []).toClass(),
+        (other._descendingIntervalSteps ?? const []).toClass(),
+      );
+
   /// Returns the name associated with this [ScalePattern].
   ///
   /// Example:
@@ -355,7 +394,7 @@ final class ScalePattern {
   @override
   String toString() {
     final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps!.join(' ')}'
+        ? ', ${_descendingIntervalSteps.join(' ')}'
         : '';
 
     return '$name (${intervalSteps.join(' ')}$descendingSteps)';
@@ -364,16 +403,16 @@ final class ScalePattern {
   @override
   bool operator ==(Object other) =>
       other is ScalePattern &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(intervalSteps, other.intervalSteps) &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
   int get hashCode => Object.hash(
         Object.hashAll(intervalSteps),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps!)
+            ? Object.hashAll(_descendingIntervalSteps)
             : null,
       );
 }

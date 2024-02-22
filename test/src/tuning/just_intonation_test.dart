@@ -3,17 +3,17 @@ import 'package:test/test.dart';
 
 void main() {
   group('JustIntonation', () {
-    group('.generatorCents', () {
+    group('.generator', () {
       test(
-        'should return the number of cents for the generator at Interval.P5 in '
+        'returns the number of cents for the generator at Interval.P5 in '
         'this JustIntonation',
         () {
-          const generatorCents = Cent(701.9550008653874);
-          expect(const PythagoreanTuning().generatorCents, generatorCents);
+          const generator = Cent(701.9550008653874);
+          expect(const PythagoreanTuning().generator, generator);
           expect(
-            PythagoreanTuning(referenceNote: Note.a.flat.inOctave(3))
-                .generatorCents,
-            generatorCents,
+            PythagoreanTuning(referencePitch: Note.a.flat.inOctave(3))
+                .generator,
+            generator,
           );
         },
       );
@@ -22,7 +22,7 @@ void main() {
 
   group('PythagoreanTuning', () {
     group('.ratio()', () {
-      test('should return the ratio from Note in this PythagoreanTuning', () {
+      test('returns the Ratio from Note in this PythagoreanTuning', () {
         expect(
           const PythagoreanTuning().ratio(Note.c.inOctave(4)),
           const Ratio(1 / 1),
@@ -99,11 +99,11 @@ void main() {
     });
 
     group('.pythagoreanComma', () {
-      test('should return the ratio and cents of the Pythagorean comma', () {
+      test('returns the Ratio of the Pythagorean comma', () {
         const pythagoreanComma = Ratio(1.0136432647705078);
         expect(const PythagoreanTuning().pythagoreanComma, pythagoreanComma);
         expect(
-          PythagoreanTuning(referenceNote: Note.f.sharp.inOctave(5))
+          PythagoreanTuning(referencePitch: Note.f.sharp.inOctave(5))
               .pythagoreanComma,
           pythagoreanComma,
         );

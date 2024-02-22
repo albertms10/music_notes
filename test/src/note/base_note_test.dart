@@ -5,12 +5,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('BaseNote', () {
-    test('should throw a FormatException when source is invalid', () {
+    test('throws a FormatException when source is invalid', () {
       expect(() => BaseNote.parse('x'), throwsFormatException);
     });
 
     group('.parse()', () {
-      test('should parse source as a BaseNote and return its value', () {
+      test('parses source as a BaseNote and return its value', () {
         expect(BaseNote.parse('a'), BaseNote.a);
         expect(BaseNote.parse('b'), BaseNote.b);
         expect(BaseNote.parse('c'), BaseNote.c);
@@ -30,41 +30,40 @@ void main() {
     });
 
     group('.intervalSize()', () {
-      test(
-        'should return the Interval size between this BaseNote and other',
-        () {
-          expect(BaseNote.c.intervalSize(BaseNote.c), 1);
-          expect(BaseNote.d.intervalSize(BaseNote.e), 2);
-          expect(BaseNote.e.intervalSize(BaseNote.f), 2);
-          expect(BaseNote.b.intervalSize(BaseNote.c), 2);
-          expect(BaseNote.a.intervalSize(BaseNote.c), 3);
-          expect(BaseNote.f.intervalSize(BaseNote.b), 4);
-          expect(BaseNote.b.intervalSize(BaseNote.e), 4);
-          expect(BaseNote.a.intervalSize(BaseNote.e), 5);
-          expect(BaseNote.c.intervalSize(BaseNote.a), 6);
-          expect(BaseNote.a.intervalSize(BaseNote.g), 7);
-        },
-      );
+      test('returns the Interval size between this BaseNote and other', () {
+        expect(BaseNote.c.intervalSize(BaseNote.c), 1);
+        expect(BaseNote.d.intervalSize(BaseNote.e), 2);
+        expect(BaseNote.e.intervalSize(BaseNote.f), 2);
+        expect(BaseNote.b.intervalSize(BaseNote.c), 2);
+        expect(BaseNote.a.intervalSize(BaseNote.c), 3);
+        expect(BaseNote.f.intervalSize(BaseNote.b), 4);
+        expect(BaseNote.b.intervalSize(BaseNote.e), 4);
+        expect(BaseNote.a.intervalSize(BaseNote.e), 5);
+        expect(BaseNote.c.intervalSize(BaseNote.a), 6);
+        expect(BaseNote.a.intervalSize(BaseNote.g), 7);
+      });
     });
 
     group('.difference()', () {
-      test('should return the difference in semitones with other', () {
-        expect(BaseNote.b.difference(BaseNote.c), -11);
-        expect(BaseNote.a.difference(BaseNote.d), -7);
+      test('returns the difference in semitones with another BaseNote', () {
+        expect(BaseNote.f.difference(BaseNote.b), -6);
+        expect(BaseNote.e.difference(BaseNote.b), -5);
         expect(BaseNote.e.difference(BaseNote.c), -4);
+        expect(BaseNote.d.difference(BaseNote.b), -3);
         expect(BaseNote.e.difference(BaseNote.d), -2);
+        expect(BaseNote.c.difference(BaseNote.b), -1);
         expect(BaseNote.c.difference(BaseNote.c), 0);
+        expect(BaseNote.b.difference(BaseNote.c), 1);
         expect(BaseNote.c.difference(BaseNote.d), 2);
         expect(BaseNote.c.difference(BaseNote.e), 4);
+        expect(BaseNote.a.difference(BaseNote.d), 5);
         expect(BaseNote.c.difference(BaseNote.f), 5);
-        expect(BaseNote.e.difference(BaseNote.b), 7);
-        expect(BaseNote.d.difference(BaseNote.b), 9);
-        expect(BaseNote.c.difference(BaseNote.b), 11);
+        expect(BaseNote.b.difference(BaseNote.f), 6);
       });
     });
 
     group('.positiveDifference()', () {
-      test('should return the positive difference in semitones with other', () {
+      test('returns the positive difference in semitones with other', () {
         expect(BaseNote.c.positiveDifference(BaseNote.c), 0);
         expect(BaseNote.b.positiveDifference(BaseNote.c), 1);
         expect(BaseNote.c.positiveDifference(BaseNote.d), 2);
@@ -80,31 +79,24 @@ void main() {
     });
 
     group('.transposeBySize()', () {
-      test('should throw an assertion error when size is zero', () {
-        expect(
-          () => BaseNote.c.transposeBySize(0),
-          throwsA(isA<AssertionError>()),
-        );
-      });
-
-      test('should transpose this BaseNote by Interval size', () {
-        expect(BaseNote.f.transposeBySize(-8), BaseNote.f);
-        expect(BaseNote.g.transposeBySize(-3), BaseNote.e);
-        expect(BaseNote.c.transposeBySize(-2), BaseNote.b);
-        expect(BaseNote.d.transposeBySize(-1), BaseNote.d);
-        expect(BaseNote.c.transposeBySize(1), BaseNote.c);
-        expect(BaseNote.d.transposeBySize(2), BaseNote.e);
-        expect(BaseNote.e.transposeBySize(3), BaseNote.g);
-        expect(BaseNote.e.transposeBySize(4), BaseNote.a);
-        expect(BaseNote.f.transposeBySize(5), BaseNote.c);
-        expect(BaseNote.a.transposeBySize(6), BaseNote.f);
-        expect(BaseNote.b.transposeBySize(7), BaseNote.a);
-        expect(BaseNote.c.transposeBySize(8), BaseNote.c);
+      test('transposes this BaseNote by Interval size', () {
+        expect(BaseNote.f.transposeBySize(-Size.octave), BaseNote.f);
+        expect(BaseNote.g.transposeBySize(-Size.third), BaseNote.e);
+        expect(BaseNote.c.transposeBySize(-Size.second), BaseNote.b);
+        expect(BaseNote.d.transposeBySize(-Size.unison), BaseNote.d);
+        expect(BaseNote.c.transposeBySize(Size.unison), BaseNote.c);
+        expect(BaseNote.d.transposeBySize(Size.second), BaseNote.e);
+        expect(BaseNote.e.transposeBySize(Size.third), BaseNote.g);
+        expect(BaseNote.e.transposeBySize(Size.fourth), BaseNote.a);
+        expect(BaseNote.f.transposeBySize(Size.fifth), BaseNote.c);
+        expect(BaseNote.a.transposeBySize(Size.sixth), BaseNote.f);
+        expect(BaseNote.b.transposeBySize(Size.seventh), BaseNote.a);
+        expect(BaseNote.c.transposeBySize(Size.octave), BaseNote.c);
       });
     });
 
     group('.compareTo()', () {
-      test('should correctly sort BaseNote items in a collection', () {
+      test('sorts BaseNotes in a collection', () {
         final orderedSet = SplayTreeSet<BaseNote>.of({
           BaseNote.b,
           BaseNote.e,

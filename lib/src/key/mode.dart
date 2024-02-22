@@ -1,9 +1,20 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../note/note.dart';
+import '../scale/scale_pattern.dart';
+import 'key.dart';
 
 /// A type of musical scale coupled with a set of characteristic melodic and
 /// harmonic behaviors.
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
+///
+/// ---
+/// See also:
+/// * [Key].
+/// * [ScalePattern].
+@immutable
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;
@@ -48,6 +59,10 @@ enum TonalMode implements Mode {
   /// ```
   TonalMode get opposite =>
       this == TonalMode.major ? TonalMode.minor : TonalMode.major;
+
+  @override
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.tonalMode(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);

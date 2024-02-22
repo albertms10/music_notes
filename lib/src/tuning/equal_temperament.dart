@@ -1,16 +1,32 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:collection/collection.dart' show ListEquality;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../note/base_note.dart';
+import '../note/note.dart';
+import '../note/pitch.dart';
+import 'cent.dart';
+import 'ratio.dart';
+import 'tuning_system.dart';
 
 /// A representation of an equal temperament tuning system.
+///
+/// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
+///
+/// ---
+/// See also:
+/// * [TuningSystem].
 @immutable
 class EqualTemperament extends TuningSystem {
-  /// The equal divisions of the octave between each [BaseNote] and the next
-  /// one.
-  final Map<BaseNote, int> divisions;
+  /// The equal divisions between each [BaseNote] and the next one.
+  final List<int> steps;
 
-  /// Creates a new [EqualTemperament] from [referenceNote] and [divisions].
+  /// Creates a new [EqualTemperament] from [referencePitch] and [steps].
   const EqualTemperament({
-    required this.divisions,
-    super.referenceNote = _defaultReferenceNote,
+    required this.steps,
+    super.referencePitch = _defaultReferencePitch,
   });
 
   /// Creates a new [EqualTemperament] from [octaveDivisions] and
@@ -38,78 +54,67 @@ class EqualTemperament extends TuningSystem {
   }
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referenceNote = _defaultReferenceNote})
-      : divisions = const {
-          BaseNote.c: 2,
-          BaseNote.d: 2,
-          BaseNote.e: 1,
-          BaseNote.f: 2,
-          BaseNote.g: 2,
-          BaseNote.a: 2,
-          BaseNote.b: 1,
-        };
+  const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
+      : steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referenceNote = _defaultReferenceNote})
-      : divisions = const {
-          BaseNote.c: 3,
-          BaseNote.d: 3,
-          BaseNote.e: 2,
-          BaseNote.f: 3,
-          BaseNote.g: 3,
-          BaseNote.a: 3,
-          BaseNote.b: 2,
-        };
+  const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
+      : steps = const [3, 3, 2, 3, 3, 3, 2];
 
-  static const _defaultReferenceNote = PositionedNote(Note.a, octave: 4);
+  static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
 
   /// Returns the equal divisions of the octave of this [EqualTemperament].
   ///
-  /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
-  int get octaveDivisions =>
-      divisions.values.reduce((value, element) => value + element);
+  /// See [EDO](https://en.xen.wiki/w/EDO).
+  int get edo => steps.reduce((value, element) => value + element);
 
-  /// Returns the ratio from [semitones] for this [EqualTemperament].
+  /// The cents for each division step in this [EqualTemperament].
+  ///
+  /// Example:
+  /// ```dart
+  /// const EqualTemperament.edo12().cents.toList()
+  ///   == const [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100]
+  ///       as List<Cent>
+  /// ```
+  Iterable<Cent> get cents sync* {
+    yield const Cent(0);
+    final edo = this.edo;
+    for (var i = 1; i < edo; i++) {
+      yield ratioFromSemitones(i).cents;
+    }
+  }
+
+  /// Returns the [Ratio] from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///
   /// Example:
   /// ```dart
-  /// const EqualTemperament.edo12().ratioFromSemitones() == Ratio(1.059463)
-  /// const EqualTemperament.edo19().ratioFromSemitones() == Ratio(1.037155)
+  /// const EqualTemperament.edo12().ratioFromSemitones(1) == Ratio(1.059463)
+  /// const EqualTemperament.edo19().ratioFromSemitones(1) == Ratio(1.037155)
   /// ```
-  Ratio ratioFromSemitones([int semitones = 1]) =>
-      Ratio(math.pow(2, semitones / octaveDivisions));
+  Ratio ratioFromSemitones(int semitones) =>
+      Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(PositionedNote note) =>
-      ratioFromSemitones(referenceNote.difference(note));
+  Ratio ratio(Pitch pitch) =>
+      ratioFromSemitones(referencePitch.difference(pitch));
+
+  /// The reference generator cents.
+  static const referenceGeneratorCents = Cent(700);
 
   @override
-  Cent get generatorCents {
-    var semitonesUpToP5 = 0;
-    for (final divisionEntry in SplayTreeMap.of(divisions).entries) {
-      if (divisionEntry.key == BaseNote.g) break;
-      semitonesUpToP5 += divisionEntry.value;
-    }
-
-    return ratioFromSemitones(semitonesUpToP5).cents;
-  }
+  Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() => 'EDO $octaveDivisions '
-      '(${SplayTreeMap.of(divisions).values.join(" ")})';
+  String toString() => 'EDO $edo (${steps.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
       other is EqualTemperament &&
-      const UnorderedIterableEquality<(BaseNote, int)>()
-          .equals(divisions.recordEntries, other.divisions.recordEntries) &&
-      referenceNote == other.referenceNote;
+      const ListEquality<int>().equals(steps, other.steps) &&
+      referencePitch == other.referencePitch;
 
   @override
-  int get hashCode => Object.hash(
-        Object.hashAllUnordered(divisions.recordEntries),
-        referenceNote,
-      );
+  int get hashCode => Object.hash(Object.hashAll(steps), referencePitch);
 }
