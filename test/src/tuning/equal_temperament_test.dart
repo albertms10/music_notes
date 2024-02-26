@@ -85,11 +85,11 @@ void main() {
       test('returns the string representation of this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().toString(),
-          'EDO 12 (2 2 1 2 2 2 1)',
+          'EDO 12 (A:2 B:1 C:2 D:2 E:1 F:2 G:2)',
         );
         expect(
           const EqualTemperament.edo19().toString(),
-          'EDO 19 (3 3 2 3 3 3 2)',
+          'EDO 19 (A:3 B:2 C:3 D:3 E:2 F:3 G:3)',
         );
       });
     });
@@ -98,9 +98,9 @@ void main() {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(steps: [1, 2]).hashCode,
+          EqualTemperament(steps: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(steps: [1, 2]).hashCode,
+          EqualTemperament(steps: {BaseNote.c: 1, BaseNote.d: 2}).hashCode,
         );
       });
 
@@ -110,8 +110,12 @@ void main() {
           isNot(const EqualTemperament.edo19().hashCode),
         );
         expect(
-          const EqualTemperament(steps: [1, 2]).hashCode,
-          isNot(const EqualTemperament(steps: [2, 1]).hashCode),
+          const EqualTemperament(steps: {BaseNote.c: 1, BaseNote.d: 2})
+              .hashCode,
+          isNot(
+            const EqualTemperament(steps: {BaseNote.c: 2, BaseNote.d: 1})
+                .hashCode,
+          ),
         );
       });
     });
