@@ -44,16 +44,13 @@ void main() {
         expect(TonalMode.minor.toString(system: NoteNotation.german), 'Moll');
 
         expect(
-          TonalMode.major.toString(system: NoteNotation.italian),
+          TonalMode.major.toString(system: NoteNotation.romance),
           'maggiore',
         );
         expect(
-          TonalMode.minor.toString(system: NoteNotation.italian),
+          TonalMode.minor.toString(system: NoteNotation.romance),
           'minore',
         );
-
-        expect(TonalMode.major.toString(system: NoteNotation.french), 'majeur');
-        expect(TonalMode.minor.toString(system: NoteNotation.french), 'mineur');
       });
     });
   });

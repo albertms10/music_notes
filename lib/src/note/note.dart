@@ -452,11 +452,8 @@ abstract class NoteNotation {
   /// The German alphabetic [NoteNotation] system.
   static const german = GermanNoteNotation();
 
-  /// The Italian solmization [NoteNotation] system.
-  static const italian = ItalianNoteNotation();
-
-  /// The French solmization [NoteNotation] system.
-  static const french = FrenchNoteNotation();
+  /// The Romance solmization [NoteNotation] system.
+  static const romance = RomanceNoteNotation();
 
   /// Returns the string notation for [note].
   String note(Note note) =>
@@ -546,10 +543,10 @@ final class GermanNoteNotation extends NoteNotation {
   }
 }
 
-/// The Italian alphabetic notation system.
-final class ItalianNoteNotation extends NoteNotation {
-  /// Creates a new [ItalianNoteNotation].
-  const ItalianNoteNotation();
+/// The Romance alphabetic notation system.
+final class RomanceNoteNotation extends NoteNotation {
+  /// Creates a new [RomanceNoteNotation].
+  const RomanceNoteNotation();
 
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
@@ -566,28 +563,5 @@ final class ItalianNoteNotation extends NoteNotation {
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
         TonalMode.major => 'maggiore',
         TonalMode.minor => 'minore',
-      };
-}
-
-/// The French alphabetic notation system.
-final class FrenchNoteNotation extends NoteNotation {
-  /// Creates a new [FrenchNoteNotation].
-  const FrenchNoteNotation();
-
-  @override
-  String baseNote(BaseNote baseNote) => switch (baseNote) {
-        BaseNote.c => 'Ut',
-        BaseNote.d => 'Ré',
-        BaseNote.e => 'Mi',
-        BaseNote.f => 'Fa',
-        BaseNote.g => 'Sol',
-        BaseNote.a => 'La',
-        BaseNote.b => 'Si',
-      };
-
-  @override
-  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-        TonalMode.major => 'majeur',
-        TonalMode.minor => 'mineur',
       };
 }
