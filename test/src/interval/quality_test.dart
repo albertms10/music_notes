@@ -11,6 +11,8 @@ void main() {
         expect(() => PerfectQuality.parse('a'), throwsFormatException);
         expect(() => PerfectQuality.parse('Abc'), throwsFormatException);
         expect(() => PerfectQuality.parse('abc'), throwsFormatException);
+        expect(() => PerfectQuality.parse('mm'), throwsFormatException);
+        expect(() => PerfectQuality.parse('MM'), throwsFormatException);
         expect(() => PerfectQuality.parse('p'), throwsFormatException);
         expect(() => PerfectQuality.parse('PP'), throwsFormatException);
         expect(() => PerfectQuality.parse('D'), throwsFormatException);
@@ -23,6 +25,8 @@ void main() {
         expect(() => ImperfectQuality.parse('abc'), throwsFormatException);
         expect(() => ImperfectQuality.parse('mm'), throwsFormatException);
         expect(() => ImperfectQuality.parse('MM'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('p'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('PP'), throwsFormatException);
         expect(() => ImperfectQuality.parse('D'), throwsFormatException);
         expect(() => ImperfectQuality.parse('Def'), throwsFormatException);
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);

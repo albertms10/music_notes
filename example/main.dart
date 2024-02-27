@@ -24,8 +24,8 @@ void main() {
   Interval.P4; // P4
   const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 
-  -Interval.m6; // desc m6
-  Interval.M3.descending(); // desc M3
+  -Interval.m6; // m-6
+  Interval.M3.descending(); // M-3
 
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inverted; // m6
