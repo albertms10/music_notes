@@ -153,7 +153,7 @@ final class Interval implements Comparable<Interval> {
   static const A13 =
       Interval.imperfect(Size.thirteenth, ImperfectQuality.augmented);
 
-  static final _regExp = RegExp(r'(\w+?)(\d+)');
+  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
@@ -198,7 +198,7 @@ final class Interval implements Comparable<Interval> {
   /// Example:
   /// ```dart
   /// Interval.parse('m3') == Interval.m3
-  /// Interval.parse('P5') == Interval.perfectFifth
+  /// Interval.parse('P-5') == -Interval.P5
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(String source) {
@@ -419,14 +419,10 @@ final class Interval implements Comparable<Interval> {
 
   @override
   String toString() {
-    final naming = '${quality.symbol}${size.abs()}';
-    final descendingAbbreviation = isDescending ? 'desc ' : '';
-    if (isCompound) {
-      return '$descendingAbbreviation$naming '
-          '(${quality.symbol}${simplified.size.abs()})';
-    }
+    final naming = '${quality.symbol}$size';
+    if (!isCompound) return naming;
 
-    return '$descendingAbbreviation$naming';
+    return '$naming (${quality.symbol}${simplified.size})';
   }
 
   @override
