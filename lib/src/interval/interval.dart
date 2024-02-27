@@ -418,12 +418,8 @@ final class Interval implements Comparable<Interval> {
   Interval operator -() => Interval._(-size, quality);
 
   @override
-  String toString() {
-    final naming = '${quality.symbol}$size';
-    if (!isCompound) return naming;
-
-    return '$naming (${quality.symbol}${simplified.size})';
-  }
+  String toString({IntervalNotation system = IntervalNotation.scientific}) =>
+      system.interval(this);
 
   @override
   bool operator ==(Object other) =>
@@ -437,4 +433,44 @@ final class Interval implements Comparable<Interval> {
         () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);
+}
+
+/// The abstraction for [Interval] notation systems.
+@immutable
+abstract class IntervalNotation {
+  /// Creates a new [IntervalNotation].
+  const IntervalNotation();
+
+  /// The scientific [IntervalNotation] system.
+  static const scientific = ScientificIntervalNotation();
+
+  /// Returns the string notation for [interval].
+  String interval(Interval interval);
+
+  /// Returns the string notation for [size].
+  String size(Size size);
+
+  /// Returns the string notation for [quality].
+  String quality(Quality quality);
+}
+
+/// The scientific interval notation system.
+final class ScientificIntervalNotation extends IntervalNotation {
+  /// Creates a new [ScientificIntervalNotation].
+  const ScientificIntervalNotation();
+
+  @override
+  String interval(Interval interval) {
+    final quality = interval.quality.toString(system: this);
+    final naming = '$quality${interval.size.format(system: this)}';
+    if (!interval.isCompound) return naming;
+
+    return '$naming ($quality${interval.simplified.size.format(system: this)})';
+  }
+
+  @override
+  String size(Size size) => '$size';
+
+  @override
+  String quality(Quality quality) => quality.symbol;
 }
