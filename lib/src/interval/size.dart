@@ -158,6 +158,10 @@ extension type const Size._(int value) implements int {
         isCompound ? absShift.nonZeroMod(Size.octave) * sign : value,
       );
 
+  /// Returns the string format of this [Size].
+  String format({IntervalNotation system = IntervalNotation.scientific}) =>
+      system.size(this);
+
   /// The negation of this [Size].
   ///
   /// Example:

@@ -29,7 +29,8 @@ sealed class Quality implements Comparable<Quality> {
   Quality get inverted;
 
   @override
-  String toString() => '$symbol (${semitones.toDeltaString()})';
+  String toString({IntervalNotation system = IntervalNotation.scientific}) =>
+      system.quality(this);
 
   @override
   bool operator ==(Object other) =>
