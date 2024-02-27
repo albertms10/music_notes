@@ -161,57 +161,30 @@ void main() {
         );
       });
 
-      test('returns the Italian string representation of this Key', () {
+      test('returns the Romance string representation of this Key', () {
         expect(
-          Note.c.major.toString(system: NoteNotation.italian),
+          Note.c.major.toString(system: NoteNotation.romance),
           'Do maggiore',
         );
         expect(
-          Note.d.minor.toString(system: NoteNotation.italian),
+          Note.d.minor.toString(system: NoteNotation.romance),
           'Re minore',
         );
         expect(
-          Note.a.flat.major.toString(system: NoteNotation.italian),
+          Note.a.flat.major.toString(system: NoteNotation.romance),
           'La♭ maggiore',
         );
         expect(
-          Note.f.sharp.minor.toString(system: NoteNotation.italian),
+          Note.f.sharp.minor.toString(system: NoteNotation.romance),
           'Fa♯ minore',
         );
         expect(
-          Note.g.sharp.sharp.major.toString(system: NoteNotation.italian),
+          Note.g.sharp.sharp.major.toString(system: NoteNotation.romance),
           'Sol𝄪 maggiore',
         );
         expect(
-          Note.e.flat.flat.minor.toString(system: NoteNotation.italian),
+          Note.e.flat.flat.minor.toString(system: NoteNotation.romance),
           'Mi𝄫 minore',
-        );
-      });
-
-      test('returns the French string representation of this Key', () {
-        expect(
-          Note.c.major.toString(system: NoteNotation.french),
-          'Ut majeur',
-        );
-        expect(
-          Note.d.minor.toString(system: NoteNotation.french),
-          'Ré mineur',
-        );
-        expect(
-          Note.a.flat.major.toString(system: NoteNotation.french),
-          'La♭ majeur',
-        );
-        expect(
-          Note.f.sharp.minor.toString(system: NoteNotation.french),
-          'Fa♯ mineur',
-        );
-        expect(
-          Note.g.sharp.sharp.major.toString(system: NoteNotation.french),
-          'Sol𝄪 majeur',
-        );
-        expect(
-          Note.e.flat.flat.minor.toString(system: NoteNotation.french),
-          'Mi𝄫 mineur',
         );
       });
     });
