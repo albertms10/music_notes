@@ -13,6 +13,12 @@ void main() {
 
       test('parses source as a ClosestPitch and return its value', () {
         expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
+        expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
+        expect(ClosestPitch.parse('G-0-0.0'), ClosestPitch(Note.g.inOctave(0)));
+        expect(
+          ClosestPitch.parse('Db-2'),
+          ClosestPitch(Note.d.flat.inOctave(-2)),
+        );
         expect(
           ClosestPitch.parse('G3+6'),
           ClosestPitch(Note.g.inOctave(3), cents: const Cent(6)),
@@ -20,6 +26,14 @@ void main() {
         expect(
           ClosestPitch.parse('E♭5-14.6'),
           ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(-14.6)),
+        );
+        expect(
+          ClosestPitch.parse('F#-1+45.3'),
+          ClosestPitch(Note.f.sharp.inOctave(-1), cents: const Cent(45.3)),
+        );
+        expect(
+          ClosestPitch.parse('Abb-3-5.97'),
+          ClosestPitch(Note.a.flat.flat.inOctave(-3), cents: const Cent(-5.97)),
         );
         expect(
           ClosestPitch.parse('Cx2+36.23912'),
