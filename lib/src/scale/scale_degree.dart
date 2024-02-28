@@ -80,7 +80,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   bool get isLowered => semitonesDelta.isNegative;
 
-  /// Returns this [ScaleDegree] raised by 1 semitone.
+  /// This [ScaleDegree] raised by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -93,7 +93,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta + 1,
       );
 
-  /// Returns this [ScaleDegree] lowered by 1 semitone.
+  /// This [ScaleDegree] lowered by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -106,7 +106,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta - 1,
       );
 
-  /// Returns this [ScaleDegree] as [ImperfectQuality.major].
+  /// This [ScaleDegree] as [ImperfectQuality.major].
   ///
   /// Example:
   /// ```dart
@@ -120,7 +120,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta,
       );
 
-  /// Returns this [ScaleDegree] as [ImperfectQuality.minor].
+  /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
   /// Example:
   /// ```dart

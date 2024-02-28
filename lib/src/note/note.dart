@@ -93,11 +93,11 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
         () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
       ];
 
-  /// Returns the number of semitones that correspond to this [Note]
-  /// from [BaseNote.c].
+  /// The semitones distance of this [Note] relative to [Note.c].
   ///
   /// Example:
   /// ```dart
+  /// Note.c.semitones == 0
   /// Note.d.semitones == 2
   /// Note.f.sharp.semitones == 6
   /// Note.b.sharp.semitones == 12
@@ -106,7 +106,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   @override
   int get semitones => baseNote.semitones + accidental.semitones;
 
-  /// Returns the difference in semitones between this [Note] and [other].
+  /// The difference in semitones between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -117,7 +117,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   @override
   int difference(Note other) => super.difference(other);
 
-  /// Returns this [Note] sharpened by 1 semitone.
+  /// This [Note] sharpened by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -126,7 +126,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get sharp => Note(baseNote, accidental + 1);
 
-  /// Returns this [Note] flattened by 1 semitone.
+  /// This [Note] flattened by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -135,7 +135,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get flat => Note(baseNote, accidental - 1);
 
-  /// Returns this [Note] natural, without accidental.
+  /// This [Note] without an accidental (natural).
   ///
   /// Example:
   /// ```dart
@@ -145,7 +145,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get natural => Note(baseNote);
 
-  /// Returns the [TonalMode.major] [Key] from this [Note].
+  /// The [TonalMode.major] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
@@ -154,7 +154,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Key get major => Key(this, TonalMode.major);
 
-  /// Returns the [TonalMode.minor] [Key] from this [Note].
+  /// The [TonalMode.minor] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
@@ -163,7 +163,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Key get minor => Key(this, TonalMode.minor);
 
-  /// Returns the [ChordPattern.diminishedTriad] on this [Note].
+  /// The [ChordPattern.diminishedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
@@ -172,7 +172,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
-  /// Returns the [ChordPattern.minorTriad] on this [Note].
+  /// The [ChordPattern.minorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
@@ -181,7 +181,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// Returns the [ChordPattern.majorTriad] on this [Note].
+  /// The [ChordPattern.majorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
@@ -190,7 +190,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
 
-  /// Returns the [ChordPattern.augmentedTriad] on this [Note].
+  /// The [ChordPattern.augmentedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
@@ -199,8 +199,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// Returns this [Note] respelled by [baseNote] while keeping the same
-  /// number of [semitones].
+  /// This [Note] respelled by [baseNote] while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -218,8 +218,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     return Note(baseNote, Accidental(deltaSemitones));
   }
 
-  /// Returns this [Note] respelled by [BaseNote.ordinal] distance while keeping
-  /// the same number of [semitones].
+  /// This [Note] respelled by [BaseNote.ordinal] distance while keeping the
+  /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
@@ -229,7 +229,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   Note respellByBaseNoteDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
 
-  /// Returns this [Note] respelled upwards while keeping the same number of
+  /// This [Note] respelled upwards while keeping the same number of
   /// [semitones].
   ///
   /// Example:
@@ -239,7 +239,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get respelledUpwards => respellByBaseNoteDistance(1);
 
-  /// Returns this [Note] respelled downwards while keeping the same number of
+  /// This [Note] respelled downwards while keeping the same number of
   /// [semitones].
   ///
   /// Example:
@@ -249,8 +249,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Note get respelledDownwards => respellByBaseNoteDistance(-1);
 
-  /// Returns this [Note] respelled by [accidental] while keeping the same
-  /// number of [semitones].
+  /// This [Note] respelled by [accidental] while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -265,8 +265,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     return Note(baseNote, accidental);
   }
 
-  /// Returns this [Note] with the simplest [Accidental] spelling while keeping
-  /// the same number of [semitones].
+  /// This [Note] with the simplest [Accidental] spelling while keeping the
+  /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
@@ -288,7 +288,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   bool isEnharmonicWith(Note other) => toPitchClass() == other.toPitchClass();
 
-  /// Returns this [Note] positioned in the given [octave] as a [Pitch].
+  /// This [Note] positioned in the given [octave] as a [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -297,7 +297,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// Returns the circle of fifths starting from this [Note] up to [distance].
+  /// The circle of fifths starting from this [Note] up to [distance].
   ///
   /// Example:
   /// ```dart
@@ -324,7 +324,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
             Interval.P5.circleFrom(this, distance: -distance).skip(1).toList(),
       );
 
-  /// Returns the flattened version of [circleOfFifths] from this [Note] up to
+  /// The flattened version of [circleOfFifths] from this [Note] up to
   /// [distance].
   ///
   /// Example:
@@ -354,7 +354,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     return [...flats.reversed, this, ...sharps];
   }
 
-  /// Returns the distance in relation to the circle of fifths.
+  /// The distance in relation to the circle of fifths.
   ///
   /// Example:
   /// ```dart
@@ -364,7 +364,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   int get circleOfFifthsDistance => Note.c.fifthsDistanceWith(this);
 
-  /// Returns the fifths distance between this [Note] and [other].
+  /// The fifths distance between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -375,7 +375,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   int fifthsDistanceWith(Note other) =>
       Interval.P5.distanceBetween(this, other).$1;
 
-  /// Returns the [Interval] between this [Note] and [other].
+  /// The [Interval] between this [Note] and [other].
   ///
   /// Example:
   /// ```dart
@@ -455,21 +455,21 @@ abstract class NoteNotation {
   /// The Romance solmization [NoteNotation] system.
   static const romance = RomanceNoteNotation();
 
-  /// Returns the string notation for [note].
+  /// The string notation for [note].
   String note(Note note) =>
       note.baseNote.toString(system: this) +
       note.accidental.toString(system: this);
 
-  /// Returns the string notation for [baseNote].
+  /// The string notation for [baseNote].
   String baseNote(BaseNote baseNote);
 
-  /// Returns the string notation for [accidental].
+  /// The string notation for [accidental].
   String accidental(Accidental accidental);
 
-  /// Returns the string notation for [tonalMode].
+  /// The string notation for [tonalMode].
   String tonalMode(TonalMode tonalMode);
 
-  /// Returns the string notation for [key].
+  /// The string notation for [key].
   String key(Key key) {
     final note = key.note.toString(system: this);
     final mode = key.mode.toString(system: this);

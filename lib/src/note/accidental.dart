@@ -178,7 +178,7 @@ final class Accidental implements Comparable<Accidental> {
     return singleAccidentals + doubleAccidentals;
   }
 
-  /// Returns this [Accidental] incremented by [semitones].
+  /// This [Accidental] incremented by [semitones].
   ///
   /// Example:
   /// ```dart

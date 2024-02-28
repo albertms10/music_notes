@@ -257,7 +257,7 @@ final class ScalePattern {
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
 
-  /// Returns the scale of notes starting from [scalable].
+  /// The scale of notes starting from [scalable].
   ///
   /// Example:
   /// ```dart
@@ -290,7 +290,7 @@ final class ScalePattern {
             .toList(),
       );
 
-  /// Returns the mirrored scale version of this [ScalePattern].
+  /// The mirrored scale version of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -303,7 +303,7 @@ final class ScalePattern {
         _descendingIntervalSteps != null ? intervalSteps : null,
       );
 
-  /// Returns the [ChordPattern] for each scale degree in this [ScalePattern].
+  /// The [ChordPattern] for each scale degree in this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -322,7 +322,7 @@ final class ScalePattern {
           degreePattern(ScaleDegree(i)),
       ];
 
-  /// Returns the [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -349,7 +349,7 @@ final class ScalePattern {
     ]);
   }
 
-  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
   /// Example:
   /// ```dart
@@ -365,7 +365,7 @@ final class ScalePattern {
         (other._descendingIntervalSteps ?? const []).toClass(),
       );
 
-  /// Returns the name associated with this [ScalePattern].
+  /// The name associated with this [ScalePattern].
   ///
   /// Example:
   /// ```dart

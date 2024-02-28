@@ -25,7 +25,7 @@ sealed class Quality implements Comparable<Quality> {
   /// The symbol of this [Quality].
   String get symbol;
 
-  /// Returns the inverted version of this [Quality].
+  /// The inverted version of this [Quality].
   Quality get inverted;
 
   @override
@@ -115,7 +115,7 @@ final class PerfectQuality extends Quality {
         _ => Quality._augmentedSymbol * semitones,
       };
 
-  /// Returns the inverted version of this [PerfectQuality].
+  /// The inverted version of this [PerfectQuality].
   ///
   /// Example:
   /// ```dart
@@ -205,7 +205,7 @@ final class ImperfectQuality extends Quality {
         _ => Quality._augmentedSymbol * (semitones - 1),
       };
 
-  /// Returns the inverted version of this [ImperfectQuality].
+  /// The inverted version of this [ImperfectQuality].
   ///
   /// Example:
   /// ```dart

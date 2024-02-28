@@ -69,7 +69,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// Returns the [Chord] from [scalable].
+  /// The [Chord] built on top of [scalable].
   ///
   /// Example:
   /// ```dart
@@ -84,7 +84,7 @@ class ChordPattern with Chordable<ChordPattern> {
         ),
       );
 
-  /// Returns the root triad of this [ChordPattern].
+  /// The root triad of this [ChordPattern].
   ///
   /// Example:
   /// ```dart
@@ -104,7 +104,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Whether this [ChordPattern] is [ImperfectQuality.augmented].
   bool get isAugmented => rootTriad == augmentedTriad;
 
-  /// Returns the list of modifier [Interval]s from the root note.
+  /// The modifier [Interval]s from the root note.
   ///
   /// Example:
   /// ```dart
@@ -172,7 +172,7 @@ class ChordPattern with Chordable<ChordPattern> {
     return ChordPattern([...filteredIntervals, interval]..sort());
   }
 
-  /// Returns the abbreviated quality representing this [ChordPattern].
+  /// The abbreviated [Quality] representing this [ChordPattern].
   ///
   /// Example:
   /// ```dart

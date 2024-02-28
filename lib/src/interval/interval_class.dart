@@ -62,7 +62,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// [Interval.A4] or [Interval.d5].
   static const tritone = IntervalClass(6);
 
-  /// Returns the different spellings at [distance] sharing the same number of
+  /// The [Interval] spellings at [distance] sharing the same number of
   /// [semitones].
   ///
   /// Example:
@@ -106,7 +106,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
     });
   }
 
-  /// Returns the [Interval] that matches with [preferredQuality] from this
+  /// The [Interval] that matches with [preferredQuality] from this
   /// [IntervalClass].
   ///
   /// Example:

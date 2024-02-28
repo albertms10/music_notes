@@ -17,7 +17,7 @@ extension type const Ratio._(num value) implements num {
   const Ratio(this.value)
       : assert(value > 0, 'Value must be positive, non-zero');
 
-  /// Returns the number of cents for this [Ratio].
+  /// The number of cents for this [Ratio].
   ///
   /// Example:
   /// ```dart

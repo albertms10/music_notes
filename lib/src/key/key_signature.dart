@@ -51,7 +51,7 @@ final class KeySignature implements Comparable<KeySignature> {
     );
   }
 
-  /// Returns the main [Accidental] of this [KeySignature].
+  /// The main [Accidental] of this [KeySignature].
   ///
   /// Example:
   /// ```dart
@@ -74,7 +74,7 @@ final class KeySignature implements Comparable<KeySignature> {
   KeySignature get clean =>
       KeySignature(notes.where((note) => !note.accidental.isNatural).toList());
 
-  /// Returns the fifths distance of this [KeySignature].
+  /// The fifths distance of this [KeySignature].
   ///
   /// Example:
   /// ```dart
@@ -112,7 +112,8 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   bool get isCanonical => distance != null;
 
-  /// Returns a [Map] with the two keys that are defined by this [KeySignature].
+  /// Returns a [Map] with the keys defined by this [KeySignature], or empty
+  /// when [KeySignature.isCanonical] returns `false`.
   ///
   /// Example:
   /// ```dart
@@ -120,6 +121,8 @@ final class KeySignature implements Comparable<KeySignature> {
   ///   TonalMode.major: Note.b.flat.major,
   ///   TonalMode.minor: Note.g.minor,
   /// }
+  ///
+  /// KeySignature([Note.g.flat]).keys == {}
   /// ```
   Map<TonalMode, Key> get keys {
     final distance = this.distance;

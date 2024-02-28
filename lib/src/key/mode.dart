@@ -50,7 +50,7 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  /// Returns the opposite of this [TonalMode].
+  /// The opposite of this [TonalMode].
   ///
   /// Example:
   /// ```dart
@@ -99,7 +99,7 @@ enum ModalMode implements Mode {
 
   const ModalMode(this.scale, {required this.brightness});
 
-  /// Returns the mirrored version of this [ModalMode].
+  /// The mirrored version of this [ModalMode].
   ///
   /// Follows the DBQ property where the mirrored mode has the opposite
   /// [brightness] value.

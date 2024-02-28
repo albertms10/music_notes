@@ -142,7 +142,7 @@ void main() {
     });
 
     group('.format()', () {
-      test('returns the string format of this Frequency', () {
+      test('returns this Frequency formatted as a string', () {
         expect(const Frequency(440).format(), '440 Hz');
         expect(const Frequency(415.62).format(), '415.62 Hz');
         expect(const Frequency(2200.2968).format(), '2200.2968 Hz');
