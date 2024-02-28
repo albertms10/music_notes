@@ -458,10 +458,13 @@ abstract class NoteNotation {
   /// Returns the string notation for [note].
   String note(Note note) =>
       note.baseNote.toString(system: this) +
-      (note.accidental.isNatural ? '' : note.accidental.symbol);
+      note.accidental.toString(system: this);
 
   /// Returns the string notation for [baseNote].
   String baseNote(BaseNote baseNote);
+
+  /// Returns the string notation for [accidental].
+  String accidental(Accidental accidental);
 
   /// Returns the string notation for [tonalMode].
   String tonalMode(TonalMode tonalMode);
@@ -485,9 +488,11 @@ final class EnglishNoteNotation extends NoteNotation {
   const EnglishNoteNotation({this.showNatural = false});
 
   @override
-  String note(Note note) => showNatural
-      ? note.baseNote.toString(system: this) + note.accidental.symbol
-      : super.note(note);
+  String accidental(Accidental accidental) {
+    if (!showNatural && accidental.isNatural) return '';
+
+    return accidental.symbol;
+  }
 
   @override
   String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
@@ -541,12 +546,19 @@ final class GermanNoteNotation extends NoteNotation {
 
     return '$casedNote-$mode';
   }
+
+  @override
+  String accidental(Accidental accidental) => '';
 }
 
 /// The Romance alphabetic notation system.
 final class RomanceNoteNotation extends NoteNotation {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
   /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation();
+  const RomanceNoteNotation({this.showNatural = false});
 
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
@@ -558,6 +570,13 @@ final class RomanceNoteNotation extends NoteNotation {
         BaseNote.a => 'La',
         BaseNote.b => 'Si',
       };
+
+  @override
+  String accidental(Accidental accidental) {
+    if (!showNatural && accidental.isNatural) return '';
+
+    return accidental.symbol;
+  }
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
