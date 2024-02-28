@@ -499,6 +499,8 @@ final class EnglishNoteNotation extends NoteNotation {
 }
 
 /// The German alphabetic notation system.
+///
+/// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
 final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation();
@@ -510,20 +512,25 @@ final class GermanNoteNotation extends NoteNotation {
         final note when note.accidental.isFlat => switch (note.baseNote) {
             BaseNote.a ||
             BaseNote.e =>
-              '${note.baseNote.toString(system: this)}s'
-                  '${'es' * (note.accidental.semitones.abs() - 1)}',
-            final baseNote => '${baseNote.toString(system: this)}'
-                '${'es' * note.accidental.semitones.abs()}',
+              '${note.baseNote.toString(system: this)}'
+                  '${note.accidental.toString(system: this).substring(1)}',
+            _ => super.note(note),
           },
         // Sharpened and natural notes.
-        final note => '${note.baseNote.toString(system: this)}'
-            '${'is' * note.accidental.semitones}',
+        final note => super.note(note),
       };
 
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
         BaseNote.b => 'H',
         final baseNote => baseNote.name.toUpperCase(),
+      };
+
+  @override
+  String accidental(Accidental accidental) => switch (accidental) {
+        final accidental when accidental.isFlat =>
+          'es' * accidental.semitones.abs(),
+        final accidental => 'is' * accidental.semitones,
       };
 
   @override
@@ -543,9 +550,6 @@ final class GermanNoteNotation extends NoteNotation {
 
     return '$casedNote-$mode';
   }
-
-  @override
-  String accidental(Accidental accidental) => '';
 }
 
 /// The Romance alphabetic notation system.
