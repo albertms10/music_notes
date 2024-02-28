@@ -455,19 +455,22 @@ abstract class NoteNotation {
   /// The Romance solmization [NoteNotation] system.
   static const romance = RomanceNoteNotation();
 
+  /// The Shearer solmization [NoteNotation] system.
+  static const shearer = ShearerNoteNotation();
+
   /// Returns the string notation for [note].
   String note(Note note) =>
       note.baseNote.toString(system: this) +
       note.accidental.toString(system: this);
 
   /// Returns the string notation for [baseNote].
-  String baseNote(BaseNote baseNote);
+  String baseNote(BaseNote baseNote) => baseNote.name;
 
   /// Returns the string notation for [accidental].
-  String accidental(Accidental accidental);
+  String accidental(Accidental accidental) => accidental.symbol;
 
   /// Returns the string notation for [tonalMode].
-  String tonalMode(TonalMode tonalMode);
+  String tonalMode(TonalMode tonalMode) => tonalMode.name;
 
   /// Returns the string notation for [key].
   String key(Key key) {
@@ -488,14 +491,11 @@ final class EnglishNoteNotation extends NoteNotation {
   const EnglishNoteNotation({this.showNatural = false});
 
   @override
-  String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
-
-  @override
   String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
 
   @override
-  String tonalMode(TonalMode tonalMode) => tonalMode.name;
+  String accidental(Accidental accidental) =>
+      !showNatural && accidental.isNatural ? '' : accidental.symbol;
 }
 
 /// The German alphabetic notation system.
@@ -543,9 +543,6 @@ final class GermanNoteNotation extends NoteNotation {
 
     return '$casedNote-$mode';
   }
-
-  @override
-  String accidental(Accidental accidental) => '';
 }
 
 /// The Romance alphabetic notation system.
@@ -576,5 +573,39 @@ final class RomanceNoteNotation extends NoteNotation {
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
         TonalMode.major => 'maggiore',
         TonalMode.minor => 'minore',
+      };
+}
+
+/// The Shearer notation system.
+final class ShearerNoteNotation extends NoteNotation {
+  /// Creates a new [ShearerNoteNotation].
+  const ShearerNoteNotation();
+
+  @override
+  String note(Note note) {
+    final baseNote = note.baseNote.toString(system: this);
+    if (note.accidental.isNatural) return baseNote;
+
+    return baseNote[0] + note.accidental.toString(system: this);
+  }
+
+  @override
+  String baseNote(BaseNote baseNote) => switch (baseNote) {
+        BaseNote.c => 'do',
+        BaseNote.d => 're',
+        BaseNote.e => 'mi',
+        BaseNote.f => 'fa',
+        BaseNote.g => 'so',
+        BaseNote.a => 'la',
+        BaseNote.b => 'ti',
+      };
+
+  @override
+  String accidental(Accidental accidental) => switch (accidental) {
+        Accidental.doubleFlat => 'aw',
+        Accidental.flat => 'e',
+        Accidental.sharp => 'i',
+        Accidental.doubleSharp => 'ai',
+        _ => '',
       };
 }
