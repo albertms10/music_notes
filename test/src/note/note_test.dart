@@ -833,10 +833,13 @@ void main() {
   });
 }
 
-class _SubNoteNotation extends NoteNotation {
+final class _SubNoteNotation extends NoteNotation {
   @override
   String baseNote(BaseNote baseNote) => throw UnimplementedError();
 
   @override
   String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
+
+  @override
+  String accidental(Accidental accidental) => throw UnimplementedError();
 }

@@ -190,7 +190,10 @@ final class Accidental implements Comparable<Accidental> {
       Accidental(this.semitones.incrementBy(semitones));
 
   @override
-  String toString() => '$name ($symbol)';
+  String toString({
+    NoteNotation system = const EnglishNoteNotation(showNatural: true),
+  }) =>
+      system.accidental(this);
 
   @override
   bool operator ==(Object other) =>

@@ -126,17 +126,17 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this Accidental', () {
-        expect(const Accidental(5).toString(), '×5 sharp (♯𝄪𝄪)');
-        expect(const Accidental(4).toString(), '×4 sharp (𝄪𝄪)');
-        expect(Accidental.tripleSharp.toString(), 'Triple sharp (♯𝄪)');
-        expect(Accidental.doubleSharp.toString(), 'Double sharp (𝄪)');
-        expect(Accidental.sharp.toString(), 'Sharp (♯)');
-        expect(Accidental.natural.toString(), 'Natural (♮)');
-        expect(Accidental.flat.toString(), 'Flat (♭)');
-        expect(Accidental.doubleFlat.toString(), 'Double flat (𝄫)');
-        expect(Accidental.tripleFlat.toString(), 'Triple flat (♭𝄫)');
-        expect(const Accidental(-4).toString(), '×4 flat (𝄫𝄫)');
-        expect(const Accidental(-5).toString(), '×5 flat (♭𝄫𝄫)');
+        expect(const Accidental(5).toString(), '♯𝄪𝄪');
+        expect(const Accidental(4).toString(), '𝄪𝄪');
+        expect(Accidental.tripleSharp.toString(), '♯𝄪');
+        expect(Accidental.doubleSharp.toString(), '𝄪');
+        expect(Accidental.sharp.toString(), '♯');
+        expect(Accidental.natural.toString(), '♮');
+        expect(Accidental.flat.toString(), '♭');
+        expect(Accidental.doubleFlat.toString(), '𝄫');
+        expect(Accidental.tripleFlat.toString(), '♭𝄫');
+        expect(const Accidental(-4).toString(), '𝄫𝄫');
+        expect(const Accidental(-5).toString(), '♭𝄫𝄫');
       });
     });
 
