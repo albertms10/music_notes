@@ -1277,7 +1277,7 @@ void main() {
   });
 }
 
-class _SubPitchNotation extends PitchNotation {
+final class _SubPitchNotation extends PitchNotation {
   @override
   String pitch(Pitch pitch) => throw UnimplementedError();
 }
