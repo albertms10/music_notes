@@ -488,11 +488,8 @@ final class EnglishNoteNotation extends NoteNotation {
   const EnglishNoteNotation({this.showNatural = false});
 
   @override
-  String accidental(Accidental accidental) {
-    if (!showNatural && accidental.isNatural) return '';
-
-    return accidental.symbol;
-  }
+  String accidental(Accidental accidental) =>
+      !showNatural && accidental.isNatural ? '' : accidental.symbol;
 
   @override
   String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
@@ -572,11 +569,8 @@ final class RomanceNoteNotation extends NoteNotation {
       };
 
   @override
-  String accidental(Accidental accidental) {
-    if (!showNatural && accidental.isNatural) return '';
-
-    return accidental.symbol;
-  }
+  String accidental(Accidental accidental) =>
+      !showNatural && accidental.isNatural ? '' : accidental.symbol;
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
