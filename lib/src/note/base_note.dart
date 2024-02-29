@@ -84,7 +84,7 @@ enum BaseNote implements Comparable<BaseNote> {
     }
   }
 
-  /// Returns the ordinal number of this [BaseNote].
+  /// The ordinal number of this [BaseNote].
   ///
   /// Example:
   /// ```dart
@@ -94,7 +94,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int get ordinal => values.indexOf(this) + 1;
 
-  /// Returns the [Size] that conforms between this [BaseNote] and [other].
+  /// The [Size] that conforms between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
@@ -108,7 +108,7 @@ enum BaseNote implements Comparable<BaseNote> {
             1,
       );
 
-  /// Returns the difference in semitones between this [BaseNote] and [other].
+  /// The difference in semitones between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
@@ -118,8 +118,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int difference(BaseNote other) => Note(this).difference(Note(other));
 
-  /// Returns the positive difference in semitones between this [BaseNote] and
-  /// [other].
+  /// The positive difference in semitones between this [BaseNote] and [other].
   ///
   /// When [difference] would return a negative value, this method returns the
   /// difference with [other] being in the next octave.

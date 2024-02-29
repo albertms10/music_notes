@@ -28,8 +28,7 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
-  /// Returns the [TonalMode.major] or [TonalMode.minor] relative [Key]
-  /// of this [Key].
+  /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///
   /// Example:
   /// ```dart
@@ -43,8 +42,7 @@ final class Key implements Comparable<Key> {
         mode.opposite,
       );
 
-  /// Returns the [TonalMode.major] or [TonalMode.minor] parallel [Key]
-  /// of this [Key].
+  /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///
   /// See [Parallel key](https://en.wikipedia.org/wiki/Parallel_key).
   ///
@@ -55,7 +53,7 @@ final class Key implements Comparable<Key> {
   /// ```
   Key get parallel => Key(note, mode.opposite);
 
-  /// Returns the [KeySignature] of this [Key].
+  /// The [KeySignature] of this [Key].
   ///
   /// Example:
   /// ```dart
@@ -80,7 +78,7 @@ final class Key implements Comparable<Key> {
   /// ```
   bool get isTheoretical => signature.distance!.abs() > 7;
 
-  /// Returns the scale notes of this [Key].
+  /// The scale notes of this [Key].
   ///
   /// Example:
   /// ```dart

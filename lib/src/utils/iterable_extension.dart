@@ -1,6 +1,6 @@
 /// An Iterable num extension.
 extension IterableNumExtension<T extends num> on Iterable<T> {
-  /// Returns the closest number to [target] in this [Iterable].
+  /// The closest number to [target] in this [Iterable].
   ///
   /// Example:
   /// ```dart

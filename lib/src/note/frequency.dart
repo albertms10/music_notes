@@ -32,8 +32,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   bool get isHumanAudible => HearingRange.human.isAudible(this);
 
-  /// Returns the [ClosestPitch] to this [Frequency] from [referenceFrequency]
-  /// and [tuningSystem].
+  /// The [ClosestPitch] to this [Frequency] from [referenceFrequency] and
+  /// [tuningSystem].
   ///
   /// Example:
   /// ```dart
@@ -80,7 +80,7 @@ extension type const Frequency._(num hertz) implements num {
     );
   }
 
-  /// Returns the harmonic at [index] from this [Frequency], including negative
+  /// The harmonic at [index] from this [Frequency], including negative
   /// values as part of the [undertone series](https://en.wikipedia.org/wiki/Undertone_series).
   ///
   /// Example:
@@ -117,7 +117,7 @@ extension type const Frequency._(num hertz) implements num {
         for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
       };
 
-  /// Returns the string format of this [Frequency].
+  /// This [Frequency] formatted as a string.
   ///
   /// Example:
   /// ```dart
@@ -129,7 +129,7 @@ extension type const Frequency._(num hertz) implements num {
 
 /// A [Frequency] Iterable extension.
 extension FrequencyIterableExtension on Iterable<Frequency> {
-  /// Returns the set of [ClosestPitch] for each [Frequency] element.
+  /// The set of [ClosestPitch] for each [Frequency] element.
   ///
   /// Example:
   /// ```dart

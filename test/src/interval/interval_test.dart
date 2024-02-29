@@ -300,36 +300,36 @@ void main() {
       });
     });
 
-    group('.simplified', () {
-      test('returns the simplified of this Interval', () {
+    group('.simple', () {
+      test('returns the simplified version of this Interval', () {
         expect(
-          const Interval.perfect(Size(-22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-22), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(-15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-15), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
-        expect((-Interval.M13).simplified, -Interval.M6);
-        expect((-Interval.P11).simplified, -Interval.P4);
-        expect((-Interval.m9).simplified, -Interval.m2);
-        expect((-Interval.A8).simplified, -Interval.A8);
-        expect((-Interval.P8).simplified, -Interval.P8);
-        expect((-Interval.M3).simplified, -Interval.M3);
-        expect((-Interval.P1).simplified, -Interval.P1);
-        expect(Interval.P1.simplified, Interval.P1);
-        expect(Interval.M3.simplified, Interval.M3);
-        expect(Interval.P8.simplified, Interval.P8);
-        expect(Interval.A8.simplified, Interval.A8);
-        expect(Interval.m9.simplified, Interval.m2);
-        expect(Interval.P11.simplified, Interval.P4);
-        expect(Interval.M13.simplified, Interval.M6);
+        expect((-Interval.M13).simple, -Interval.M6);
+        expect((-Interval.P11).simple, -Interval.P4);
+        expect((-Interval.m9).simple, -Interval.m2);
+        expect((-Interval.A8).simple, -Interval.A8);
+        expect((-Interval.P8).simple, -Interval.P8);
+        expect((-Interval.M3).simple, -Interval.M3);
+        expect((-Interval.P1).simple, -Interval.P1);
+        expect(Interval.P1.simple, Interval.P1);
+        expect(Interval.M3.simple, Interval.M3);
+        expect(Interval.P8.simple, Interval.P8);
+        expect(Interval.A8.simple, Interval.A8);
+        expect(Interval.m9.simple, Interval.m2);
+        expect(Interval.P11.simple, Interval.P4);
+        expect(Interval.M13.simple, Interval.M6);
         expect(
-          const Interval.perfect(Size(15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(15), PerfectQuality.perfect).simple,
           Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(22), PerfectQuality.perfect).simple,
           Interval.P8,
         );
       });

@@ -58,7 +58,7 @@ class ClosestPitch {
     return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
   }
 
-  /// Returns the [Frequency] of this [ClosestPitch] from [referenceFrequency]
+  /// The [Frequency] of this [ClosestPitch] from [referenceFrequency]
   /// and [tuningSystem].
   ///
   /// Example:
@@ -77,7 +77,7 @@ class ClosestPitch {
             cents.ratio,
       );
 
-  /// Returns the string representation of this [ClosestPitch] record.
+  /// The string representation of this [ClosestPitch] record.
   ///
   /// Example:
   /// ```dart
