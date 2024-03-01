@@ -159,7 +159,7 @@ extension type const Size._(int value) implements int {
       );
 
   /// This [Size] formatted as a string.
-  String format({IntervalNotation system = IntervalNotation.scientific}) =>
+  String format({IntervalNotation system = IntervalNotation.standard}) =>
       system.size(this);
 
   /// The negation of this [Size].

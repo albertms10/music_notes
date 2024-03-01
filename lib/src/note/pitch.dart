@@ -511,6 +511,8 @@ abstract class PitchNotation {
   String pitch(Pitch pitch);
 }
 
+/// The scientific [Pitch] notation system.
+///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
 final class ScientificPitchNotation extends PitchNotation {
   /// Creates a new [ScientificPitchNotation].
@@ -520,6 +522,8 @@ final class ScientificPitchNotation extends PitchNotation {
   String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
 }
 
+/// The Helmholtz [Pitch] notation system.
+///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].

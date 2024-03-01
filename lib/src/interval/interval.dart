@@ -418,7 +418,7 @@ final class Interval implements Comparable<Interval> {
   Interval operator -() => Interval._(-size, quality);
 
   @override
-  String toString({IntervalNotation system = IntervalNotation.scientific}) =>
+  String toString({IntervalNotation system = IntervalNotation.standard}) =>
       system.interval(this);
 
   @override
@@ -441,8 +441,8 @@ abstract class IntervalNotation {
   /// Creates a new [IntervalNotation].
   const IntervalNotation();
 
-  /// The scientific [IntervalNotation] system.
-  static const scientific = ScientificIntervalNotation();
+  /// The standard [IntervalNotation] system.
+  static const standard = StandardIntervalNotation();
 
   /// The string notation for [interval].
   String interval(Interval interval);
@@ -454,10 +454,10 @@ abstract class IntervalNotation {
   String quality(Quality quality);
 }
 
-/// The scientific interval notation system.
-final class ScientificIntervalNotation extends IntervalNotation {
-  /// Creates a new [ScientificIntervalNotation].
-  const ScientificIntervalNotation();
+/// The standard [Interval] notation system.
+final class StandardIntervalNotation extends IntervalNotation {
+  /// Creates a new [StandardIntervalNotation].
+  const StandardIntervalNotation();
 
   @override
   String interval(Interval interval) {

@@ -29,7 +29,7 @@ sealed class Quality implements Comparable<Quality> {
   Quality get inverted;
 
   @override
-  String toString({IntervalNotation system = IntervalNotation.scientific}) =>
+  String toString({IntervalNotation system = IntervalNotation.standard}) =>
       system.quality(this);
 
   @override
