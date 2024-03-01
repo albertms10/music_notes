@@ -15,7 +15,7 @@ import 'tuning_system.dart';
 extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)
-      : assert(value > 0, 'Value must be positive, non-zero');
+      : assert(value > 0, 'Value must be greater than zero.');
 
   /// The number of cents for this [Ratio].
   ///
