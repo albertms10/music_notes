@@ -162,7 +162,7 @@ final class Interval implements Comparable<Interval> {
           ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
                   4 <
               2,
-          'Interval must be perfect',
+          'Interval must be perfect.',
         );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
@@ -172,7 +172,7 @@ final class Interval implements Comparable<Interval> {
           ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
                   4 >=
               2,
-          'Interval must be imperfect',
+          'Interval must be imperfect.',
         );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].

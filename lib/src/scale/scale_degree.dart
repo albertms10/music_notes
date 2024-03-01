@@ -31,7 +31,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     this.quality,
     this.inversion = 0,
     this.semitonesDelta = 0,
-  });
+  })  : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
+        assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
 
   /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);

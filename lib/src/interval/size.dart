@@ -10,7 +10,7 @@ import 'quality.dart';
 @immutable
 extension type const Size._(int value) implements int {
   /// Creates a new [Size] from [value].
-  const Size(this.value) : assert(value != 0, 'Value must be non-zero');
+  const Size(this.value) : assert(value != 0, 'Value must be non-zero.');
 
   /// A unison [Size].
   static const unison = Size(1);

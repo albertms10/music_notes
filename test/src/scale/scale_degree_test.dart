@@ -5,6 +5,21 @@ import 'package:test/test.dart';
 
 void main() {
   group('ScaleDegree', () {
+    group('constructor', () {
+      test('throws an assertion error when arguments are incorrect', () {
+        expect(() => ScaleDegree(-1), throwsA(isA<AssertionError>()));
+        expect(() => ScaleDegree(0), throwsA(isA<AssertionError>()));
+        expect(
+          () => ScaleDegree(1, inversion: -1),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => ScaleDegree(-2, inversion: -3),
+          throwsA(isA<AssertionError>()),
+        );
+      });
+    });
+
     group('.isRaised', () {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
