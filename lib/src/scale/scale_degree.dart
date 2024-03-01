@@ -135,37 +135,10 @@ class ScaleDegree implements Comparable<ScaleDegree> {
       );
 
   @override
-  String toString() {
-    final buffer = StringBuffer();
-    if (semitonesDelta != 0) {
-      buffer.write(Accidental(semitonesDelta).symbol);
-    }
-    final romanNumeral = switch (ordinal) {
-      1 => 'I',
-      2 => 'II',
-      3 => 'III',
-      4 => 'IV',
-      5 => 'V',
-      6 => 'VI',
-      7 => 'VII',
-      _ => '',
-    };
-
-    if (quality != null && quality!.semitones <= 0) {
-      buffer.write(romanNumeral.toLowerCase());
-    } else {
-      buffer.write(romanNumeral);
-    }
-
-    switch (inversion) {
-      case 1:
-        buffer.write('6');
-      case 2:
-        buffer.write('64');
-    }
-
-    return buffer.toString();
-  }
+  String toString({
+    ScaleDegreeNotation system = ScaleDegreeNotation.standard,
+  }) =>
+      system.scaleDegree(this);
 
   @override
   bool operator ==(Object other) =>
@@ -193,4 +166,56 @@ class ScaleDegree implements Comparable<ScaleDegree> {
           return 0;
         },
       ]);
+}
+
+/// The abstraction for [ScaleDegree] notation systems.
+@immutable
+abstract class ScaleDegreeNotation {
+  /// Creates a new [ScaleDegreeNotation].
+  const ScaleDegreeNotation();
+
+  /// The standard [ScaleDegreeNotation] system.
+  static const standard = StandardScaleDegreeNotation();
+
+  /// The string notation for [scaleDegree].
+  String scaleDegree(ScaleDegree scaleDegree);
+}
+
+/// The standard [ScaleDegree] notation system.
+final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
+  /// Creates a new [StandardScaleDegreeNotation].
+  const StandardScaleDegreeNotation();
+
+  @override
+  String scaleDegree(ScaleDegree scaleDegree) {
+    final buffer = StringBuffer();
+    if (scaleDegree.semitonesDelta != 0) {
+      buffer.write(Accidental(scaleDegree.semitonesDelta).symbol);
+    }
+    final romanNumeral = switch (scaleDegree.ordinal) {
+      1 => 'I',
+      2 => 'II',
+      3 => 'III',
+      4 => 'IV',
+      5 => 'V',
+      6 => 'VI',
+      7 => 'VII',
+      _ => '',
+    };
+
+    if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0) {
+      buffer.write(romanNumeral.toLowerCase());
+    } else {
+      buffer.write(romanNumeral);
+    }
+
+    switch (scaleDegree.inversion) {
+      case 1:
+        buffer.write('6');
+      case 2:
+        buffer.write('64');
+    }
+
+    return buffer.toString();
+  }
 }
