@@ -478,7 +478,7 @@ abstract class NoteNotation {
   }
 }
 
-/// The English alphabetic notation system.
+/// The English alphabetic [Note] notation system.
 final class EnglishNoteNotation extends NoteNotation {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
@@ -498,7 +498,7 @@ final class EnglishNoteNotation extends NoteNotation {
   String tonalMode(TonalMode tonalMode) => tonalMode.name;
 }
 
-/// The German alphabetic notation system.
+/// The German alphabetic [Note] notation system.
 ///
 /// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
 final class GermanNoteNotation extends NoteNotation {
@@ -552,7 +552,7 @@ final class GermanNoteNotation extends NoteNotation {
   }
 }
 
-/// The Romance alphabetic notation system.
+/// The Romance alphabetic [Note] notation system.
 final class RomanceNoteNotation extends NoteNotation {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.

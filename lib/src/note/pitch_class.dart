@@ -291,29 +291,33 @@ abstract class PitchClassNotation {
   const PitchClassNotation();
 
   /// The enharmonic spellings [PitchClassNotation] system.
-  static const enharmonicSpellings = PitchClassEnharmonicSpellingsNotation();
+  static const enharmonicSpellings = EnharmonicSpellingsPitchClassNotation();
 
   /// The integer [PitchClassNotation] system.
-  static const integer = PitchClassIntegerNotation();
+  static const integer = IntegerPitchClassNotation();
 
   /// The string notation for [pitchClass].
   String pitchClass(PitchClass pitchClass);
 }
 
+/// The enharmonic spellings [PitchClass] notation system.
+///
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
-final class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
-  /// Creates a new [PitchClassEnharmonicSpellingsNotation].
-  const PitchClassEnharmonicSpellingsNotation();
+final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
+  /// Creates a new [EnharmonicSpellingsPitchClassNotation].
+  const EnharmonicSpellingsPitchClassNotation();
 
   @override
   String pitchClass(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 }
 
+/// The integer [PitchClass] notation system.
+///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-final class PitchClassIntegerNotation extends PitchClassNotation {
-  /// Creates a new [PitchClassIntegerNotation].
-  const PitchClassIntegerNotation();
+final class IntegerPitchClassNotation extends PitchClassNotation {
+  /// Creates a new [IntegerPitchClassNotation].
+  const IntegerPitchClassNotation();
 
   @override
   String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {

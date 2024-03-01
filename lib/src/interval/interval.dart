@@ -454,7 +454,7 @@ abstract class IntervalNotation {
   String quality(Quality quality);
 }
 
-/// The standard interval notation system.
+/// The standard [Interval] notation system.
 final class StandardIntervalNotation extends IntervalNotation {
   /// Creates a new [StandardIntervalNotation].
   const StandardIntervalNotation();
