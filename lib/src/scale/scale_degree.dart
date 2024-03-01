@@ -178,6 +178,9 @@ abstract class ScaleDegreeNotation {
   /// The standard [ScaleDegreeNotation] system.
   static const standard = StandardScaleDegreeNotation();
 
+  /// The movable Do [ScaleDegreeNotation] system.
+  static const movableDo = MovableDoScaleDegreeNotation();
+
   /// The string notation for [scaleDegree].
   String scaleDegree(ScaleDegree scaleDegree);
 }
@@ -219,4 +222,49 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
 
     return buffer.toString();
   }
+}
+
+/// The movable Do [ScaleDegree] notation system.
+///
+/// See [Movable Do solfège](https://en.wikipedia.org/wiki/Solf%C3%A8ge#Movable_do_solf%C3%A8ge).
+final class MovableDoScaleDegreeNotation extends ScaleDegreeNotation {
+  /// Creates a new [MovableDoScaleDegreeNotation].
+  const MovableDoScaleDegreeNotation();
+
+  @override
+  String scaleDegree(ScaleDegree scaleDegree) => switch (scaleDegree) {
+        ScaleDegree(ordinal: 1) => switch (scaleDegree) {
+            _ when scaleDegree.isRaised => 'Di',
+            _ => 'Do',
+          },
+        ScaleDegree(ordinal: 2) => switch (scaleDegree) {
+            _ when scaleDegree.isLowered => 'Ra',
+            _ when scaleDegree.isRaised => 'Ri',
+            _ => 'Re',
+          },
+        ScaleDegree(ordinal: 3) => switch (scaleDegree) {
+            _ when scaleDegree.isLowered => 'Me',
+            _ => 'Mi',
+          },
+        ScaleDegree(ordinal: 4) => switch (scaleDegree) {
+            _ when scaleDegree.isRaised => 'Fi',
+            _ => 'Fa',
+          },
+        ScaleDegree(ordinal: 5) => switch (scaleDegree) {
+            _ when scaleDegree.isLowered => 'Se',
+            _ when scaleDegree.isRaised => 'Si',
+            _ => 'Sol',
+          },
+        ScaleDegree(ordinal: 6) => switch (scaleDegree) {
+            _ when scaleDegree.isLowered => 'Le',
+            _ when scaleDegree.isRaised => 'Li',
+            _ => 'La',
+          },
+        ScaleDegree(ordinal: 7) => switch (scaleDegree) {
+            _ when scaleDegree.isLowered => 'Te',
+            _ => 'Ti',
+          },
+        _ =>
+          throw FormatException('Unsupported ScaleDegree', scaleDegree.ordinal),
+      };
 }

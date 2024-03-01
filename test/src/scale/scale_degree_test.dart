@@ -97,17 +97,116 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the string representation of this ScaleDegree', () {
-        expect(ScaleDegree.i.toString(), 'I');
-        expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
-        expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
-        expect(
-          const ScaleDegree(4, quality: ImperfectQuality.minor).toString(),
-          'iv',
-        );
-        expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
-        expect(ScaleDegree.vii.toString(), 'VII');
-      });
+      test(
+        'returns the standard string representation of this ScaleDegree',
+        () {
+          expect(ScaleDegree.i.toString(), 'I');
+          expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
+          expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
+          expect(
+            const ScaleDegree(4, quality: ImperfectQuality.minor).toString(),
+            'iv',
+          );
+          expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
+          expect(ScaleDegree.vii.toString(), 'VII');
+        },
+      );
+
+      test(
+        'returns the movable Do string representation of this ScaleDegree',
+        () {
+          expect(
+            ScaleDegree.i.toString(system: ScaleDegreeNotation.movableDo),
+            'Do',
+          );
+          expect(
+            ScaleDegree.i.raised
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Di',
+          );
+
+          expect(
+            ScaleDegree.ii.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Ra',
+          );
+          expect(
+            ScaleDegree.ii.toString(system: ScaleDegreeNotation.movableDo),
+            'Re',
+          );
+          expect(
+            ScaleDegree.ii.raised
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Ri',
+          );
+
+          expect(
+            ScaleDegree.iii.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Me',
+          );
+          expect(
+            ScaleDegree.iii.toString(system: ScaleDegreeNotation.movableDo),
+            'Mi',
+          );
+
+          expect(
+            ScaleDegree.iv.toString(system: ScaleDegreeNotation.movableDo),
+            'Fa',
+          );
+          expect(
+            ScaleDegree.iv.raised
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Fi',
+          );
+
+          expect(
+            ScaleDegree.v.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Se',
+          );
+          expect(
+            ScaleDegree.v.toString(system: ScaleDegreeNotation.movableDo),
+            'Sol',
+          );
+          expect(
+            ScaleDegree.v.raised
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Si',
+          );
+
+          expect(
+            ScaleDegree.vi.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Le',
+          );
+          expect(
+            ScaleDegree.vi.toString(system: ScaleDegreeNotation.movableDo),
+            'La',
+          );
+          expect(
+            ScaleDegree.vi.raised
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Li',
+          );
+
+          expect(
+            ScaleDegree.vii.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Te',
+          );
+          expect(
+            ScaleDegree.vii.toString(system: ScaleDegreeNotation.movableDo),
+            'Ti',
+          );
+
+          expect(
+            () => const ScaleDegree(8)
+                .toString(system: ScaleDegreeNotation.movableDo),
+            throwsFormatException,
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
