@@ -234,6 +234,8 @@ final class MovableDoScaleDegreeNotation extends ScaleDegreeNotation {
   @override
   String scaleDegree(ScaleDegree scaleDegree) => switch (scaleDegree) {
         ScaleDegree(ordinal: 1) => switch (scaleDegree) {
+            // TODO(albertms10): duplicated from `ScaleDegree.vii`
+            _ when scaleDegree.isLowered => 'Ti',
             _ when scaleDegree.isRaised => 'Di',
             _ => 'Do',
           },

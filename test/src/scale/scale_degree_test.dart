@@ -116,6 +116,11 @@ void main() {
         'returns the movable Do string representation of this ScaleDegree',
         () {
           expect(
+            ScaleDegree.i.lowered
+                .toString(system: ScaleDegreeNotation.movableDo),
+            'Ti',
+          );
+          expect(
             ScaleDegree.i.toString(system: ScaleDegreeNotation.movableDo),
             'Do',
           );
