@@ -50,15 +50,17 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  /// The opposite of this [TonalMode].
+  /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
   /// ```dart
-  /// TonalMode.major.opposite == TonalMode.minor
-  /// TonalMode.minor.opposite == TonalMode.major
+  /// TonalMode.major.parallel == TonalMode.minor
+  /// TonalMode.minor.parallel == TonalMode.major
   /// ```
-  TonalMode get opposite =>
-      this == TonalMode.major ? TonalMode.minor : TonalMode.major;
+  TonalMode get parallel => switch (this) {
+        TonalMode.major => TonalMode.minor,
+        TonalMode.minor => TonalMode.major,
+      };
 
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
