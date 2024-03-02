@@ -19,12 +19,6 @@ sealed class Quality implements Comparable<Quality> {
   /// Creates a new [Quality] from [semitones].
   const Quality(this.semitones);
 
-  static const _diminishedSymbol = 'd';
-  static const _augmentedSymbol = 'A';
-
-  /// The symbol of this [Quality].
-  String get symbol;
-
   /// The inverted version of this [Quality].
   Quality get inverted;
 
@@ -78,13 +72,6 @@ final class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  static const _perfectSymbol = 'P';
-
-  static final _regExp = RegExp(
-    '^(${Quality._diminishedSymbol}+|$_perfectSymbol|'
-    '${Quality._augmentedSymbol}+)\$',
-  );
-
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [PerfectQuality], a
@@ -96,24 +83,11 @@ final class PerfectQuality extends Quality {
   /// PerfectQuality.parse('dd') == PerfectQuality.doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
-  factory PerfectQuality.parse(String source) {
-    if (!_regExp.hasMatch(source)) {
-      throw FormatException('Invalid PerfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      Quality._diminishedSymbol => PerfectQuality(-source.length),
-      _perfectSymbol => PerfectQuality.perfect,
-      _ /* Quality._augmentedSymbol */ => PerfectQuality(source.length),
-    };
-  }
-
-  @override
-  String get symbol => switch (semitones) {
-        < 0 => Quality._diminishedSymbol * semitones.abs(),
-        0 => _perfectSymbol,
-        _ => Quality._augmentedSymbol * semitones,
-      };
+  factory PerfectQuality.parse(
+    String source, {
+    IntervalNotation system = IntervalNotation.standard,
+  }) =>
+      system.parsePerfectQuality(source);
 
   /// The inverted version of this [PerfectQuality].
   ///
@@ -165,14 +139,6 @@ final class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  static const _minorSymbol = 'm';
-  static const _majorSymbol = 'M';
-
-  static final _regExp = RegExp(
-    '^(${Quality._diminishedSymbol}+|$_minorSymbol|$_majorSymbol|'
-    '${Quality._augmentedSymbol}+)\$',
-  );
-
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [ImperfectQuality], a
@@ -184,26 +150,11 @@ final class ImperfectQuality extends Quality {
   /// ImperfectQuality.parse('A') == ImperfectQuality.augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
-  factory ImperfectQuality.parse(String source) {
-    if (!_regExp.hasMatch(source)) {
-      throw FormatException('Invalid PerfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      Quality._diminishedSymbol => ImperfectQuality(-source.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
-      _ /* Quality._augmentedSymbol */ => ImperfectQuality(source.length + 1),
-    };
-  }
-
-  @override
-  String get symbol => switch (semitones) {
-        < 0 => Quality._diminishedSymbol * semitones.abs(),
-        0 => _minorSymbol,
-        1 => _majorSymbol,
-        _ => Quality._augmentedSymbol * (semitones - 1),
-      };
+  factory ImperfectQuality.parse(
+    String source, {
+    IntervalNotation system = IntervalNotation.standard,
+  }) =>
+      system.parseImperfectQuality(source);
 
   /// The inverted version of this [ImperfectQuality].
   ///

@@ -153,8 +153,6 @@ final class Interval implements Comparable<Interval> {
   static const A13 =
       Interval.imperfect(Size.thirteenth, ImperfectQuality.augmented);
 
-  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
-
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
       // Copied from [Size.isPerfect] to allow const.
@@ -201,16 +199,11 @@ final class Interval implements Comparable<Interval> {
   /// Interval.parse('P-5') == -Interval.P5
   /// Interval.parse('z') // throws a FormatException
   /// ```
-  factory Interval.parse(String source) {
-    final match = _regExp.firstMatch(source);
-    if (match == null) throw FormatException('Invalid Interval', source);
-
-    final size = Size(int.parse(match[2]!));
-    final parseFactory =
-        size.isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
-
-    return Interval._(size, parseFactory(match[1]!));
-  }
+  factory Interval.parse(
+    String source, {
+    IntervalNotation system = IntervalNotation.standard,
+  }) =>
+      system.parseInterval(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -447,17 +440,53 @@ abstract class IntervalNotation {
   /// The string notation for [interval].
   String interval(Interval interval);
 
+  /// Parse [source] as an [Interval].
+  Interval parseInterval(String source);
+
   /// The string notation for [size].
   String size(Size size);
 
+  /// Parse [source] as a [Size].
+  Size parseSize(String source);
+
   /// The string notation for [quality].
   String quality(Quality quality);
+
+  /// Parse [source] as a [PerfectQuality].
+  PerfectQuality parsePerfectQuality(String source);
+
+  /// Parse [source] as an [ImperfectQuality].
+  ImperfectQuality parseImperfectQuality(String source);
 }
 
 /// The standard [Interval] notation system.
 final class StandardIntervalNotation extends IntervalNotation {
   /// Creates a new [StandardIntervalNotation].
   const StandardIntervalNotation();
+
+  static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
+
+  /// The symbol for a diminished [Quality].
+  static const diminishedSymbol = 'd';
+
+  /// The symbol for a [PerfectQuality].
+  static const perfectSymbol = 'P';
+
+  /// The symbol for an augmented [Quality].
+  static const augmentedSymbol = 'A';
+
+  /// The symbol for a minor [ImperfectQuality].
+  static const minorSymbol = 'm';
+
+  /// The symbol for a major [ImperfectQuality].
+  static const majorSymbol = 'M';
+
+  static final _perfectQualityRegExp =
+      RegExp('^($diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)\$');
+
+  static final _imperfectQualityRegExp = RegExp(
+    '^($diminishedSymbol+|$minorSymbol|$majorSymbol|$augmentedSymbol+)\$',
+  );
 
   @override
   String interval(Interval interval) {
@@ -469,8 +498,62 @@ final class StandardIntervalNotation extends IntervalNotation {
   }
 
   @override
+  Interval parseInterval(String source) {
+    final match = _intervalRegExp.firstMatch(source);
+    if (match == null) throw FormatException('Invalid Interval', source);
+
+    final size = parseSize(match[2]!);
+    final parseFactory =
+        size.isPerfect ? parsePerfectQuality : parseImperfectQuality;
+
+    return Interval._(size, parseFactory(match[1]!));
+  }
+
+  @override
   String size(Size size) => '$size';
 
   @override
-  String quality(Quality quality) => quality.symbol;
+  Size parseSize(String source) => Size(int.parse(source));
+
+  @override
+  String quality(Quality quality) => switch (quality) {
+        PerfectQuality() => switch (quality.semitones) {
+            < 0 => diminishedSymbol * quality.semitones.abs(),
+            0 => perfectSymbol,
+            _ => augmentedSymbol * quality.semitones,
+          },
+        ImperfectQuality() => switch (quality.semitones) {
+            < 0 => diminishedSymbol * quality.semitones.abs(),
+            0 => minorSymbol,
+            1 => majorSymbol,
+            _ => augmentedSymbol * (quality.semitones - 1),
+          },
+      };
+
+  @override
+  PerfectQuality parsePerfectQuality(String source) {
+    if (!_perfectQualityRegExp.hasMatch(source)) {
+      throw FormatException('Invalid PerfectQuality', source);
+    }
+
+    return switch (source[0]) {
+      diminishedSymbol => PerfectQuality(-source.length),
+      perfectSymbol => PerfectQuality.perfect,
+      _ /* augmentedSymbol */ => PerfectQuality(source.length),
+    };
+  }
+
+  @override
+  ImperfectQuality parseImperfectQuality(String source) {
+    if (!_imperfectQualityRegExp.hasMatch(source)) {
+      throw FormatException('Invalid PerfectQuality', source);
+    }
+
+    return switch (source[0]) {
+      diminishedSymbol => ImperfectQuality(-source.length),
+      minorSymbol => ImperfectQuality.minor,
+      majorSymbol => ImperfectQuality.major,
+      _ /* augmentedSymbol */ => ImperfectQuality(source.length + 1),
+    };
+  }
 }
