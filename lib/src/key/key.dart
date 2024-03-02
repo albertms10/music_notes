@@ -39,7 +39,7 @@ final class Key implements Comparable<Key> {
         note.transposeBy(
           Interval.m3.descending(isDescending: mode == TonalMode.major),
         ),
-        mode.opposite,
+        mode.parallel,
       );
 
   /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
@@ -51,7 +51,7 @@ final class Key implements Comparable<Key> {
   /// Note.d.minor.parallel == Note.d.major
   /// Note.b.flat.major.parallel == Note.b.flat.minor
   /// ```
-  Key get parallel => Key(note, mode.opposite);
+  Key get parallel => Key(note, mode.parallel);
 
   /// The [KeySignature] of this [Key].
   ///
