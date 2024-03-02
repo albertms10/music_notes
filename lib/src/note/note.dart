@@ -527,11 +527,8 @@ final class GermanNoteNotation extends NoteNotation {
       };
 
   @override
-  String accidental(Accidental accidental) => switch (accidental) {
-        final accidental when accidental.isFlat =>
-          'es' * accidental.semitones.abs(),
-        final accidental => 'is' * accidental.semitones,
-      };
+  String accidental(Accidental accidental) =>
+      (accidental.isFlat ? 'es' : 'is') * accidental.semitones.abs();
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
@@ -544,8 +541,8 @@ final class GermanNoteNotation extends NoteNotation {
     final note = key.note.toString(system: this);
     final mode = key.mode.toString(system: this);
     final casedNote = switch (key.mode) {
+      TonalMode.major => note,
       TonalMode.minor => note.toLowerCase(),
-      _ => note,
     };
 
     return '$casedNote-$mode';
