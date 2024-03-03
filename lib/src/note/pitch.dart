@@ -36,23 +36,6 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Creates a new [Pitch] from [note] and [octave].
   const Pitch(this.note, {required this.octave});
 
-  static const _superPrime = '′';
-  static const _superPrimeAlt = "'";
-  static const _subPrime = '͵';
-  static const _subPrimeAlt = ',';
-
-  static const _primeSymbols = [
-    _superPrime,
-    _superPrimeAlt,
-    _subPrime,
-    _subPrimeAlt,
-  ];
-
-  static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
-  static final _helmholtzNotationRegExp =
-      RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
-          '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
-
   /// Parse [source] as a [Pitch] and return its value.
   ///
   /// If the [source] string does not contain a valid [Pitch], a
@@ -64,38 +47,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Pitch.parse("c'") == Note.c.inOctave(4)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory Pitch.parse(String source) {
-    final scientificNotationMatch =
-        _scientificNotationRegExp.firstMatch(source);
-    if (scientificNotationMatch != null) {
-      return Pitch(
-        Note.parse(scientificNotationMatch[1]!),
-        octave: int.parse(scientificNotationMatch[2]!),
-      );
-    }
-
-    final helmholtzNotationMatch = _helmholtzNotationRegExp.firstMatch(source);
-    if (helmholtzNotationMatch != null) {
-      const middleOctave = 3;
-      final notePart = helmholtzNotationMatch[1]!;
-      final primes = helmholtzNotationMatch[2]?.split('');
-      final octave = notePart[0].isUpperCase
-          ? switch (primes?.first) {
-              '' || null => middleOctave - 1,
-              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
-              _ => throw FormatException('Invalid Pitch', source),
-            }
-          : switch (primes?.first) {
-              '' || null => middleOctave,
-              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
-              _ => throw FormatException('Invalid Pitch', source),
-            };
-
-      return Pitch(Note.parse(notePart), octave: octave);
-    }
-
-    throw FormatException('Invalid Pitch', source);
-  }
+  factory Pitch.parse(String source) => PitchNotation.tryParsePitch(source);
 
   /// The [octave] that corresponds to the semitones from root height.
   ///
@@ -507,8 +459,33 @@ abstract class PitchNotation {
   /// The Helmholtz [PitchNotation] system.
   static const helmholtz = HelmholtzPitchNotation();
 
+  static const _chain = [
+    scientific,
+    helmholtz,
+  ];
+
+  /// Tries to parse [source] as a [Pitch] in any [PitchNotation] system.
+  /// Otherwise, throws a [FormatException].
+  static Pitch tryParsePitch(String source) {
+    for (final system in _chain) {
+      final match = system.match(source);
+      if (match != null) return system.parsePitch(match);
+    }
+
+    throw FormatException('Invalid Pitch', source);
+  }
+
+  /// The regular expression to match against a source.
+  RegExp get regExp;
+
   /// The string representation for [pitch].
   String pitch(Pitch pitch);
+
+  /// Whether [source] matches with this [PitchNotation] system.
+  RegExpMatch? match(String source) => regExp.firstMatch(source);
+
+  /// Parse [match] as a [Pitch].
+  Pitch parsePitch(RegExpMatch match);
 }
 
 /// The scientific [Pitch] notation system.
@@ -520,6 +497,15 @@ final class ScientificPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
+
+  @override
+  RegExp get regExp => RegExp(r'^(.+?)([-]?\d+)$');
+
+  @override
+  Pitch parsePitch(RegExpMatch match) => Pitch(
+        Note.parse(match[1]!),
+        octave: int.parse(match[2]!),
+      );
 }
 
 /// The Helmholtz [Pitch] notation system.
@@ -529,6 +515,18 @@ final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation();
 
+  static const _superPrime = '′';
+  static const _superPrimeAlt = "'";
+  static const _subPrime = '͵';
+  static const _subPrimeAlt = ',';
+
+  static const _primeSymbols = [
+    _superPrime,
+    _superPrimeAlt,
+    _subPrime,
+    _subPrimeAlt,
+  ];
+
   @override
   String pitch(Pitch pitch) {
     final accidental = pitch.note.accidental;
@@ -536,10 +534,35 @@ final class HelmholtzPitchNotation extends PitchNotation {
 
     if (pitch.octave >= 3) {
       return '${pitch.note.baseNote.name}$accidentalSymbol'
-          '${Pitch._superPrime * (pitch.octave - 3)}';
+          '${_superPrime * (pitch.octave - 3)}';
     }
 
     return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+        '${_subPrime * (pitch.octave - 2).abs()}';
+  }
+
+  @override
+  RegExp get regExp => RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
+      '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
+
+  @override
+  Pitch parsePitch(RegExpMatch match) {
+    const middleOctave = 3;
+    final notePart = match[1]!;
+    final primesPart = match[2];
+    final primes = primesPart?.split('');
+    final octave = notePart[0].isUpperCase
+        ? switch (primes?.first) {
+            '' || null => middleOctave - 1,
+            _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
+            _ => throw FormatException('Invalid Pitch', primesPart),
+          }
+        : switch (primes?.first) {
+            '' || null => middleOctave,
+            _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+            _ => throw FormatException('Invalid Pitch', primesPart),
+          };
+
+    return Pitch(Note.parse(notePart), octave: octave);
   }
 }

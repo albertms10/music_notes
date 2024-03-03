@@ -38,8 +38,8 @@ enum BaseNote implements Comparable<BaseNote> {
   /// Creates a new [BaseNote] from [semitones].
   const BaseNote(this.semitones);
 
-  /// Returns a [BaseNote] that matches with [semitones] as in [BaseNote],
-  /// otherwise returns `null`.
+  /// Returns a [BaseNote] that matches with [semitones] as in [BaseNote].
+  /// Otherwise, returns `null`.
   ///
   /// Example:
   /// ```dart
