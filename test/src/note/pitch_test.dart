@@ -1282,7 +1282,7 @@ final class _SubPitchNotation extends PitchNotation {
   String pitch(Pitch pitch) => throw UnimplementedError();
 
   @override
-  Pitch parsePitch(RegExpMatch match) => throw UnimplementedError();
+  Pitch parse(RegExpMatch match) => throw UnimplementedError();
 
   @override
   RegExp get regExp => throw UnimplementedError();

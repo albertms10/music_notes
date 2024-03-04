@@ -6,6 +6,7 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/size.dart';
 import '../music.dart';
+import '../notation_system.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
@@ -47,7 +48,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Pitch.parse("c'") == Note.c.inOctave(4)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory Pitch.parse(String source) => PitchNotation.tryParsePitch(source);
+  factory Pitch.parse(
+    String source, {
+    List<PitchNotation> chain = PitchNotation._chain,
+  }) =>
+      chain.parse(source);
 
   /// The [octave] that corresponds to the semitones from root height.
   ///
@@ -449,7 +454,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
 
 /// The abstraction for [Pitch] notation systems.
 @immutable
-abstract class PitchNotation {
+abstract class PitchNotation extends NotationSystem<Pitch> {
   /// Creates a new [PitchNotation].
   const PitchNotation();
 
@@ -464,28 +469,8 @@ abstract class PitchNotation {
     helmholtz,
   ];
 
-  /// Tries to parse [source] as a [Pitch] in any [PitchNotation] system.
-  /// Otherwise, throws a [FormatException].
-  static Pitch tryParsePitch(String source) {
-    for (final system in _chain) {
-      final match = system.match(source);
-      if (match != null) return system.parsePitch(match);
-    }
-
-    throw FormatException('Invalid Pitch', source);
-  }
-
-  /// The regular expression to match against a source.
-  RegExp get regExp;
-
   /// The string representation for [pitch].
   String pitch(Pitch pitch);
-
-  /// Whether [source] matches with this [PitchNotation] system.
-  RegExpMatch? match(String source) => regExp.firstMatch(source);
-
-  /// Parse [match] as a [Pitch].
-  Pitch parsePitch(RegExpMatch match);
 }
 
 /// The scientific [Pitch] notation system.
@@ -502,7 +487,7 @@ final class ScientificPitchNotation extends PitchNotation {
   RegExp get regExp => RegExp(r'^(.+?)([-]?\d+)$');
 
   @override
-  Pitch parsePitch(RegExpMatch match) => Pitch(
+  Pitch parse(RegExpMatch match) => Pitch(
         Note.parse(match[1]!),
         octave: int.parse(match[2]!),
       );
@@ -546,7 +531,7 @@ final class HelmholtzPitchNotation extends PitchNotation {
       '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
 
   @override
-  Pitch parsePitch(RegExpMatch match) {
+  Pitch parse(RegExpMatch match) {
     const middleOctave = 3;
     final notePart = match[1]!;
     final primesPart = match[2];
