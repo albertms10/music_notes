@@ -39,6 +39,41 @@ void main() {
       });
     });
 
+    group('.fromBinary()', () {
+      test('creates a new ScalePattern from a binary sequence', () {
+        expect(ScalePattern.fromBinary('101010110101'.b), ScalePattern.major);
+        expect(
+          ScalePattern.fromBinary('10110101101'.b),
+          ScalePattern.naturalMinor,
+        );
+        expect(
+          ScalePattern.fromBinary('101010101101'.b, '10110101101'.b),
+          ScalePattern.melodicMinor,
+        );
+        expect(
+          ScalePattern.fromBinary('111111111111'.b),
+          ScalePattern.chromatic,
+        );
+        expect(
+          ScalePattern.fromBinary('1010010101'.b),
+          ScalePattern.majorPentatonic,
+        );
+      });
+    });
+
+    group('.toBinary()', () {
+      test('returns the binary representation of this ScalePattern', () {
+        expect(ScalePattern.major.toBinary(), ('101010110101'.b, null));
+        expect(ScalePattern.naturalMinor.toBinary(), ('10110101101'.b, null));
+        expect(
+          ScalePattern.melodicMinor.toBinary(),
+          ('101010101101'.b, '10110101101'.b),
+        );
+        expect(ScalePattern.chromatic.toBinary(), ('111111111111'.b, null));
+        expect(ScalePattern.majorPentatonic.toBinary(), ('1010010101'.b, null));
+      });
+    });
+
     group('.length', () {
       test('returns the length of this ScalePattern', () {
         expect(ScalePattern.minorPentatonic.length, 5);
@@ -633,4 +668,9 @@ void main() {
       });
     });
   });
+}
+
+extension on String {
+  /// Parse this [String] as a binary integer.
+  int get b => int.parse(this, radix: 2);
 }

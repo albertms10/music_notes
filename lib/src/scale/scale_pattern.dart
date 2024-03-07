@@ -4,6 +4,8 @@ import 'package:meta/meta.dart' show immutable;
 import '../class_mixin.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../music.dart';
+import '../note/pitch_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
@@ -246,6 +248,70 @@ final class ScalePattern {
 
     // TODO(albertms10): add support for other triad constructions.
     return major;
+  }
+
+  /// Creates a new [ScalePattern] from a binary [sequence] in integer form.
+  ///
+  /// This method and [ScalePattern.toBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// extension on String { int get b => int.parse(this, radix: 2); }
+  ///
+  /// ScalePattern.fromBinary('101010110101'.b) == ScalePattern.major
+  /// ScalePattern.fromBinary('111111111111'.b) == ScalePattern.chromatic
+  /// ScalePattern.fromBinary('1010010101'.b) == ScalePattern.majorPentatonic
+  /// ScalePattern.fromBinary('101010101101'.b, '10110101101'.b)
+  ///   == ScalePattern.melodicMinor
+  /// ```
+  factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
+    assert(sequence > 0, 'Sequence must be greater than 0');
+
+    int bitAt(int sequence, int index) => sequence & 1 << index;
+
+    final degrees = [
+      for (int i = 0; i < chromaticDivisions; i++)
+        if (bitAt(sequence, i) != 0) PitchClass(i),
+      PitchClass.c,
+    ];
+    final descendingDegrees = descendingSequence == null
+        ? null
+        : [
+            PitchClass.c,
+            for (int i = chromaticDivisions - 1; i >= 0; i--)
+              if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+          ];
+
+    return Scale(degrees, descendingDegrees).pattern;
+  }
+
+  /// Returns the binary representation of this [ScalePattern].
+  ///
+  /// This method and [ScalePattern.fromBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// extension on String { int get b => int.parse(this, radix: 2); }
+  ///
+  /// ScalePattern.major.toBinary() == ('101010110101'.b, null)
+  /// ScalePattern.chromatic.toBinary() == ('111111111111'.b, null)
+  /// ScalePattern.majorPentatonic.toBinary() == ('1010010101'.b, null)
+  /// ScalePattern.melodicMinor.toBinary()
+  ///   == ('101010101101'.b, '10110101101'.b)
+  /// ```
+  (int sequence, int? descendingSequence) toBinary() {
+    int toBit(int sequence, Scalable<PitchClass> scalable) =>
+        sequence | 1 << scalable.semitones;
+
+    final scale = on(PitchClass.c);
+    final sequence = scale.degrees.fold(0, toBit);
+    final cachedDescending = scale.descendingDegrees;
+    final descendingSequence =
+        cachedDescending.reversed.isEnharmonicWith(scale.degrees)
+            ? null
+            : cachedDescending.fold(0, toBit);
+
+    return (sequence, descendingSequence);
   }
 
   /// The length of this [ScalePattern].
