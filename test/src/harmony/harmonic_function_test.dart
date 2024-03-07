@@ -1,8 +1,19 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('HarmonicFunction', () {
+    group('.scaleDegrees', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          HarmonicFunction.i.scaleDegrees,
+          isA<UnmodifiableListView<ScaleDegree>>(),
+        );
+      });
+    });
+
     group('operator /()', () {
       test('returns the HarmonicFunction relating this to other', () {
         expect(
