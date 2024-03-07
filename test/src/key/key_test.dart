@@ -138,26 +138,26 @@ void main() {
       });
 
       test('returns the German string representation of this Key', () {
-        expect(Note.c.major.toString(system: NoteNotation.german), 'C-Dur');
+        expect(Note.c.major.toString(system: NoteNotation.german), 'C-dur');
         expect(
           Note.d.minor.toString(system: NoteNotation.german),
-          'd-Moll',
+          'd-moll',
         );
         expect(
           Note.a.flat.major.toString(system: NoteNotation.german),
-          'As-Dur',
+          'As-dur',
         );
         expect(
           Note.f.sharp.minor.toString(system: NoteNotation.german),
-          'fis-Moll',
+          'fis-moll',
         );
         expect(
           Note.g.sharp.sharp.major.toString(system: NoteNotation.german),
-          'Gisis-Dur',
+          'Gisis-dur',
         );
         expect(
           Note.e.flat.flat.minor.toString(system: NoteNotation.german),
-          'eses-Moll',
+          'eses-moll',
         );
       });
 
