@@ -232,15 +232,15 @@ final class ScalePattern {
   /// ScalePattern.fromChordPattern(ChordPattern.minorTriad)
   ///   == ScalePattern.naturalMinor
   /// ```
-  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) =>
-      switch (chordPattern) {
-        final chord when chord.isAugmented => lydianAugmented,
-        final chord when chord.isMajor => major,
-        final chord when chord.isMinor => naturalMinor,
-        final chord when chord.isDiminished => locrian,
-        // TODO(albertms10): add support for other triad constructions.
-        _ => major,
-      };
+  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) {
+    if (chordPattern.isAugmented) return lydianAugmented;
+    if (chordPattern.isMajor) return major;
+    if (chordPattern.isMinor) return naturalMinor;
+    if (chordPattern.isDiminished) return locrian;
+
+    // TODO(albertms10): add support for other triad constructions.
+    return major;
+  }
 
   /// The length of this [ScalePattern].
   ///
@@ -257,7 +257,7 @@ final class ScalePattern {
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
 
-  /// Returns the scale of notes starting from [scalable].
+  /// The scale of notes starting from [scalable].
   ///
   /// Example:
   /// ```dart
@@ -290,7 +290,7 @@ final class ScalePattern {
             .toList(),
       );
 
-  /// Returns the mirrored scale version of this [ScalePattern].
+  /// The mirrored scale version of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -303,7 +303,7 @@ final class ScalePattern {
         _descendingIntervalSteps != null ? intervalSteps : null,
       );
 
-  /// Returns the [ChordPattern] for each scale degree in this [ScalePattern].
+  /// The [ChordPattern] for each scale degree in this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -322,7 +322,7 @@ final class ScalePattern {
           degreePattern(ScaleDegree(i)),
       ];
 
-  /// Returns the [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -337,19 +337,20 @@ final class ScalePattern {
       return ChordPattern.fromQuality(scaleDegree.quality!);
     }
 
-    Interval step(int ordinal) =>
-        intervalSteps[(ordinal - 1) % intervalSteps.length];
-
-    Interval addNextStep(int ordinal) => step(ordinal) + step(ordinal + 1);
-
-    // Calculate the diatonic pattern from this Scale's `intervalSteps`.
+    // Deduce the diatonic `ChordPattern` from this `Scale.intervalSteps`.
     return ChordPattern.fromIntervalSteps([
-      addNextStep(scaleDegree.ordinal),
-      addNextStep(scaleDegree.ordinal + 2),
+      _addNextStepTo(scaleDegree.ordinal),
+      _addNextStepTo(scaleDegree.ordinal + 2),
     ]);
   }
 
-  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  Interval _stepFrom(int ordinal) =>
+      intervalSteps[(ordinal - 1) % intervalSteps.length];
+
+  Interval _addNextStepTo(int ordinal) =>
+      _stepFrom(ordinal) + _stepFrom(ordinal + 1);
+
+  /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
   /// Example:
   /// ```dart
@@ -365,7 +366,7 @@ final class ScalePattern {
         (other._descendingIntervalSteps ?? const []).toClass(),
       );
 
-  /// Returns the name associated with this [ScalePattern].
+  /// The name associated with this [ScalePattern].
   ///
   /// Example:
   /// ```dart

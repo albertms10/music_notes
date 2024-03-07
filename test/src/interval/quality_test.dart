@@ -11,6 +11,8 @@ void main() {
         expect(() => PerfectQuality.parse('a'), throwsFormatException);
         expect(() => PerfectQuality.parse('Abc'), throwsFormatException);
         expect(() => PerfectQuality.parse('abc'), throwsFormatException);
+        expect(() => PerfectQuality.parse('mm'), throwsFormatException);
+        expect(() => PerfectQuality.parse('MM'), throwsFormatException);
         expect(() => PerfectQuality.parse('p'), throwsFormatException);
         expect(() => PerfectQuality.parse('PP'), throwsFormatException);
         expect(() => PerfectQuality.parse('D'), throwsFormatException);
@@ -23,6 +25,8 @@ void main() {
         expect(() => ImperfectQuality.parse('abc'), throwsFormatException);
         expect(() => ImperfectQuality.parse('mm'), throwsFormatException);
         expect(() => ImperfectQuality.parse('MM'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('p'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('PP'), throwsFormatException);
         expect(() => ImperfectQuality.parse('D'), throwsFormatException);
         expect(() => ImperfectQuality.parse('Def'), throwsFormatException);
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);
@@ -89,22 +93,22 @@ void main() {
 
     group('.toString()', () {
       test('returns a string representation of this Quality', () {
-        expect(PerfectQuality.triplyDiminished.toString(), 'ddd (-3)');
-        expect(PerfectQuality.doublyDiminished.toString(), 'dd (-2)');
-        expect(PerfectQuality.diminished.toString(), 'd (-1)');
-        expect(PerfectQuality.perfect.toString(), 'P (+0)');
-        expect(PerfectQuality.augmented.toString(), 'A (+1)');
-        expect(PerfectQuality.doublyAugmented.toString(), 'AA (+2)');
-        expect(PerfectQuality.triplyAugmented.toString(), 'AAA (+3)');
+        expect(PerfectQuality.triplyDiminished.toString(), 'ddd');
+        expect(PerfectQuality.doublyDiminished.toString(), 'dd');
+        expect(PerfectQuality.diminished.toString(), 'd');
+        expect(PerfectQuality.perfect.toString(), 'P');
+        expect(PerfectQuality.augmented.toString(), 'A');
+        expect(PerfectQuality.doublyAugmented.toString(), 'AA');
+        expect(PerfectQuality.triplyAugmented.toString(), 'AAA');
 
-        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd (-3)');
-        expect(ImperfectQuality.doublyDiminished.toString(), 'dd (-2)');
-        expect(ImperfectQuality.diminished.toString(), 'd (-1)');
-        expect(ImperfectQuality.minor.toString(), 'm (+0)');
-        expect(ImperfectQuality.major.toString(), 'M (+1)');
-        expect(ImperfectQuality.augmented.toString(), 'A (+2)');
-        expect(ImperfectQuality.doublyAugmented.toString(), 'AA (+3)');
-        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA (+4)');
+        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd');
+        expect(ImperfectQuality.doublyDiminished.toString(), 'dd');
+        expect(ImperfectQuality.diminished.toString(), 'd');
+        expect(ImperfectQuality.minor.toString(), 'm');
+        expect(ImperfectQuality.major.toString(), 'M');
+        expect(ImperfectQuality.augmented.toString(), 'A');
+        expect(ImperfectQuality.doublyAugmented.toString(), 'AA');
+        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA');
       });
     });
 

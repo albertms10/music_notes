@@ -88,7 +88,7 @@ class EqualTemperament extends TuningSystem {
 
   static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
 
-  /// Returns the equal divisions of the octave of this [EqualTemperament].
+  /// The equal divisions of the octave of this [EqualTemperament].
   ///
   /// See [EDO](https://en.xen.wiki/w/EDO).
   int get edo => steps.values.reduce((value, element) => value + element);
@@ -112,7 +112,7 @@ class EqualTemperament extends TuningSystem {
   static Ratio _ratioFromSemitones(int semitones, int edo) =>
       Ratio(math.pow(2, semitones / edo));
 
-  /// Returns the [Ratio] from [semitones] for this [EqualTemperament].
+  /// The [Ratio] from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///

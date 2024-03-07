@@ -10,7 +10,7 @@ import 'quality.dart';
 @immutable
 extension type const Size._(int value) implements int {
   /// Creates a new [Size] from [value].
-  const Size(this.value) : assert(value != 0, 'Value must be non-zero');
+  const Size(this.value) : assert(value != 0, 'Value must be non-zero.');
 
   /// A unison [Size].
   static const unison = Size(1);
@@ -64,8 +64,8 @@ extension type const Size._(int value) implements int {
     Size.octave: 12, // P
   };
 
-  /// Returns the [Size] that matches with [semitones] in [_sizeToSemitones],
-  /// otherwise returns `null`.
+  /// The [Size] that matches with [semitones] in [_sizeToSemitones].
+  /// Otherwise, returns `null`.
   ///
   /// Example:
   /// ```dart
@@ -94,7 +94,7 @@ extension type const Size._(int value) implements int {
     return Size(absResult * semitones.nonZeroSign);
   }
 
-  /// Returns the number of semitones of this [Size] as in [_sizeToSemitones].
+  /// The number of semitones of this [Size] as in [_sizeToSemitones].
   ///
   /// Example:
   /// ```dart
@@ -106,23 +106,23 @@ extension type const Size._(int value) implements int {
   /// (-Size.ninth).semitones == -13
   /// ```
   int get semitones {
-    final simplifiedAbs = simplified.abs();
+    final simpleAbs = simple.abs();
     final octaveShift = chromaticDivisions * (absShift ~/ Size.octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(simplifiedAbs == Size.octave ? 1 : simplifiedAbs);
+    final size = Size(simpleAbs == Size.octave ? 1 : simpleAbs);
 
     return (_sizeToSemitones[size]! + octaveShift) * sign;
   }
 
-  /// Returns the absolute [Size] value taking octave shift into account.
+  /// The absolute [Size] value taking octave shift into account.
   int get absShift {
     final sizeAbs = abs();
 
     return sizeAbs + sizeAbs ~/ Size.octave;
   }
 
-  /// Returns whether this [Size] conforms a perfect interval.
+  /// Whether this [Size] conforms a perfect interval.
   ///
   /// Example:
   /// ```dart
@@ -132,7 +132,7 @@ extension type const Size._(int value) implements int {
   /// ```
   bool get isPerfect => absShift % (Size.octave / 2) < 2;
 
-  /// Returns whether this [Size] is greater than [Size.octave]
+  /// Whether this [Size] is greater than [Size.octave].
   ///
   /// Example:
   /// ```dart
@@ -145,18 +145,22 @@ extension type const Size._(int value) implements int {
   /// ```
   bool get isCompound => abs() > Size.octave;
 
-  /// Returns the simplified version of this [Size].
+  /// The simplified version of this [Size].
   ///
   /// Example:
   /// ```dart
-  /// Size.thirteenth.simplified == Size.sixth
-  /// (-Size.ninth).simplified == -Size.second
-  /// Size.octave.simplified == Size.octave
-  /// const Size(-22).simplified == -Size.octave
+  /// Size.thirteenth.simple == Size.sixth
+  /// (-Size.ninth).simple == -Size.second
+  /// Size.octave.simple == Size.octave
+  /// const Size(-22).simple == -Size.octave
   /// ```
-  Size get simplified => Size(
+  Size get simple => Size(
         isCompound ? absShift.nonZeroMod(Size.octave) * sign : value,
       );
+
+  /// This [Size] formatted as a string.
+  String format({IntervalNotation system = IntervalNotation.standard}) =>
+      system.size(this);
 
   /// The negation of this [Size].
   ///

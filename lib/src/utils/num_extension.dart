@@ -1,6 +1,7 @@
 /// A num extension.
 extension NumExtension on num {
-  /// Returns a delta string representation of this [num].
+  /// The delta string representation of this [num]
+  /// (showing always the positive sign).
   ///
   /// Example:
   /// ```dart

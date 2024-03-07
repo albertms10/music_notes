@@ -1,6 +1,6 @@
 /// An Iterable num extension.
 extension IterableNumExtension<T extends num> on Iterable<T> {
-  /// Returns the closest number to [target] in this [Iterable].
+  /// The closest number to [target] in this [Iterable].
   ///
   /// Example:
   /// ```dart
@@ -15,7 +15,7 @@ extension IterableNumExtension<T extends num> on Iterable<T> {
 
 /// Compares multiple comparators.
 int compareMultiple(List<int Function()> comparators) {
-  assert(comparators.length > 1, 'Provide more than one comparator');
+  assert(comparators.length > 1, 'Provide more than one comparator.');
   late int compareValue;
   for (final comparator in comparators) {
     compareValue = comparator();

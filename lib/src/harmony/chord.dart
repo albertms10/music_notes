@@ -30,7 +30,7 @@ class Chord<T extends Scalable<T>>
   /// The root [Scalable] of this [Chord].
   T get root => items.first;
 
-  /// Returns the [ChordPattern] for this [Chord].
+  /// The [ChordPattern] for this [Chord].
   ///
   /// The pattern is calculated based on the intervals between the notes
   /// rather than from the root note. This approach helps differentiate
@@ -47,7 +47,7 @@ class Chord<T extends Scalable<T>>
   ChordPattern get pattern =>
       ChordPattern.fromIntervalSteps(items.intervalSteps);
 
-  /// Returns the list of modifier [T]s from the root note.
+  /// The modifier [T]s from the root note.
   ///
   /// Example:
   /// ```dart

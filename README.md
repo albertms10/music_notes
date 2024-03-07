@@ -74,8 +74,8 @@ const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 Or turn it descending:
 
 ```dart
--Interval.m6; // desc m6
-Interval.M3.descending(); // desc M3
+-Interval.m6; // m-6
+Interval.M3.descending(); // M-3
 ```
 
 Calculate the `Interval` between two notes:

@@ -243,8 +243,11 @@ void main() {
       });
 
       test('returns an empty Map when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.d.flat]).keys, <TonalMode, Key>{});
-        expect(KeySignature([Note.c.sharp.sharp]).keys, <TonalMode, Key>{});
+        expect(KeySignature([Note.d.flat]).keys, const <TonalMode, Key>{});
+        expect(
+          KeySignature([Note.c.sharp.sharp]).keys,
+          const <TonalMode, Key>{},
+        );
       });
     });
 

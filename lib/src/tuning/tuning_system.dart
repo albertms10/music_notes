@@ -18,7 +18,7 @@ abstract class TuningSystem {
   /// Creates a new [TuningSystem].
   const TuningSystem({required this.referencePitch});
 
-  /// Returns the number of [Cent] for the generator at [Interval.P5] in this
+  /// The number of [Cent] for the generator at [Interval.P5] in this
   /// [TuningSystem].
   ///
   /// Example:
@@ -31,7 +31,7 @@ abstract class TuningSystem {
   /// ![Temperaments](https://upload.wikimedia.org/wikipedia/commons/4/4c/Rank-2_temperaments_with_the_generator_close_to_a_fifth_and_period_an_octave.jpg)
   Cent get generator;
 
-  /// Returns the [Ratio] from [pitch] in this [TuningSystem].
+  /// The [Ratio] from [pitch] in this [TuningSystem].
   ///
   /// Example:
   /// ```dart

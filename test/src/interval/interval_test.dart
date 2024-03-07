@@ -83,6 +83,13 @@ void main() {
         expect(() => Interval.parse('x'), throwsFormatException);
         expect(() => Interval.parse('x4'), throwsFormatException);
         expect(() => Interval.parse('x6'), throwsFormatException);
+        expect(() => Interval.parse('M+6'), throwsFormatException);
+        expect(() => Interval.parse('P--6'), throwsFormatException);
+        expect(() => Interval.parse('P6'), throwsFormatException);
+        expect(() => Interval.parse('m4'), throwsFormatException);
+        expect(() => Interval.parse('p5'), throwsFormatException);
+        expect(() => Interval.parse('a2'), throwsFormatException);
+        expect(() => Interval.parse('D3'), throwsFormatException);
       });
 
       test('parses source as an Interval and return its value', () {
@@ -91,15 +98,21 @@ void main() {
           const Interval.perfect(Size.fourth, PerfectQuality.doublyAugmented),
         );
         expect(Interval.parse('A5'), Interval.A5);
+        expect(Interval.parse('A-1'), -Interval.A1);
         expect(Interval.parse('P1'), Interval.P1);
         expect(
           Interval.parse('P22'),
           const Interval.perfect(Size(22), PerfectQuality.perfect),
         );
         expect(Interval.parse('d5'), Interval.d5);
+        expect(Interval.parse('d-5'), -Interval.d5);
         expect(
           Interval.parse('dd8'),
           const Interval.perfect(Size.octave, PerfectQuality.doublyDiminished),
+        );
+        expect(
+          Interval.parse('dd-8'),
+          -const Interval.perfect(Size.octave, PerfectQuality.doublyDiminished),
         );
 
         expect(
@@ -111,11 +124,13 @@ void main() {
         );
         expect(Interval.parse('A6'), Interval.A6);
         expect(Interval.parse('M3'), Interval.M3);
+        expect(Interval.parse('M-3'), -Interval.M3);
         expect(
           Interval.parse('M16'),
           const Interval.imperfect(Size(16), ImperfectQuality.major),
         );
         expect(Interval.parse('m2'), Interval.m2);
+        expect(Interval.parse('m-2'), -Interval.m2);
         expect(Interval.parse('d7'), Interval.d7);
         expect(
           Interval.parse('dd9'),
@@ -285,36 +300,36 @@ void main() {
       });
     });
 
-    group('.simplified', () {
-      test('returns the simplified of this Interval', () {
+    group('.simple', () {
+      test('returns the simplified version of this Interval', () {
         expect(
-          const Interval.perfect(Size(-22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-22), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(-15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-15), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
-        expect((-Interval.M13).simplified, -Interval.M6);
-        expect((-Interval.P11).simplified, -Interval.P4);
-        expect((-Interval.m9).simplified, -Interval.m2);
-        expect((-Interval.A8).simplified, -Interval.A8);
-        expect((-Interval.P8).simplified, -Interval.P8);
-        expect((-Interval.M3).simplified, -Interval.M3);
-        expect((-Interval.P1).simplified, -Interval.P1);
-        expect(Interval.P1.simplified, Interval.P1);
-        expect(Interval.M3.simplified, Interval.M3);
-        expect(Interval.P8.simplified, Interval.P8);
-        expect(Interval.A8.simplified, Interval.A8);
-        expect(Interval.m9.simplified, Interval.m2);
-        expect(Interval.P11.simplified, Interval.P4);
-        expect(Interval.M13.simplified, Interval.M6);
+        expect((-Interval.M13).simple, -Interval.M6);
+        expect((-Interval.P11).simple, -Interval.P4);
+        expect((-Interval.m9).simple, -Interval.m2);
+        expect((-Interval.A8).simple, -Interval.A8);
+        expect((-Interval.P8).simple, -Interval.P8);
+        expect((-Interval.M3).simple, -Interval.M3);
+        expect((-Interval.P1).simple, -Interval.P1);
+        expect(Interval.P1.simple, Interval.P1);
+        expect(Interval.M3.simple, Interval.M3);
+        expect(Interval.P8.simple, Interval.P8);
+        expect(Interval.A8.simple, Interval.A8);
+        expect(Interval.m9.simple, Interval.m2);
+        expect(Interval.P11.simple, Interval.P4);
+        expect(Interval.M13.simple, Interval.M6);
         expect(
-          const Interval.perfect(Size(15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(15), PerfectQuality.perfect).simple,
           Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(22), PerfectQuality.perfect).simple,
           Interval.P8,
         );
       });
@@ -597,22 +612,22 @@ void main() {
     group('.toString()', () {
       test('returns the string representation of this Interval', () {
         expect(Interval.M2.toString(), 'M2');
-        expect((-Interval.m3).toString(), 'desc m3');
+        expect((-Interval.m3).toString(), 'm-3');
         expect(Interval.A4.toString(), 'A4');
-        expect((-Interval.P5).toString(), 'desc P5');
+        expect((-Interval.P5).toString(), 'P-5');
         expect(Interval.d7.toString(), 'd7');
-        expect((-Interval.d8).toString(), 'desc d8');
+        expect((-Interval.d8).toString(), 'd-8');
         expect(Interval.M9.toString(), 'M9 (M2)');
         expect(
           const Interval.imperfect(Size(-10), ImperfectQuality.minor)
               .toString(),
-          'desc m10 (m3)',
+          'm-10 (m-3)',
         );
         expect(Interval.A11.toString(), 'A11 (A4)');
         expect(
           const Interval.imperfect(Size(-14), ImperfectQuality.major)
               .toString(),
-          'desc M14 (M7)',
+          'M-14 (M-7)',
         );
         expect(
           const Interval.perfect(Size(15), PerfectQuality.perfect).toString(),
@@ -621,7 +636,7 @@ void main() {
         expect(
           const Interval.imperfect(Size(-16), ImperfectQuality.diminished)
               .toString(),
-          'desc d16 (d2)',
+          'd-16 (d-2)',
         );
         expect(
           const Interval.perfect(Size(22), PerfectQuality.perfect).toString(),

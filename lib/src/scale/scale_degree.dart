@@ -31,7 +31,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     this.quality,
     this.inversion = 0,
     this.semitonesDelta = 0,
-  });
+  })  : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
+        assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
 
   /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);
@@ -80,7 +81,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   bool get isLowered => semitonesDelta.isNegative;
 
-  /// Returns this [ScaleDegree] raised by 1 semitone.
+  /// This [ScaleDegree] raised by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -93,7 +94,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta + 1,
       );
 
-  /// Returns this [ScaleDegree] lowered by 1 semitone.
+  /// This [ScaleDegree] lowered by 1 semitone.
   ///
   /// Example:
   /// ```dart
@@ -106,7 +107,21 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta - 1,
       );
 
-  /// Returns this [ScaleDegree] as [ImperfectQuality.major].
+  /// This [ScaleDegree] inverted.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
+  /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
+  /// ```
+  ScaleDegree get inverted => ScaleDegree(
+        ordinal,
+        quality: quality,
+        inversion: inversion + 1,
+        semitonesDelta: semitonesDelta,
+      );
+
+  /// This [ScaleDegree] as [ImperfectQuality.major].
   ///
   /// Example:
   /// ```dart
@@ -120,7 +135,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta,
       );
 
-  /// Returns this [ScaleDegree] as [ImperfectQuality.minor].
+  /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
   /// Example:
   /// ```dart
@@ -134,38 +149,40 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta,
       );
 
+  /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.i.romanNumeral == 'I'
+  /// ScaleDegree.vii.romanNumeral == 'VII'
+  /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
+  /// ```
+  String get romanNumeral => switch (ordinal) {
+        1 => 'I',
+        2 => 'II',
+        3 => 'III',
+        4 => 'IV',
+        5 => 'V',
+        6 => 'VI',
+        7 => 'VII',
+        _ => '$ordinal',
+      };
+
+  /// The string representation of this [ScaleDegree] based on [system].
+  ///
+  /// See [ScaleDegreeNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.iii.toString() == 'III'
+  /// ScaleDegree.vi.minor.lowered.toString() == '♭vi'
+  /// ScaleDegree.neapolitanSixth.toString() == '♭II6'
+  /// ```
   @override
-  String toString() {
-    final buffer = StringBuffer();
-    if (semitonesDelta != 0) {
-      buffer.write(Accidental(semitonesDelta).symbol);
-    }
-    final romanNumeral = switch (ordinal) {
-      1 => 'I',
-      2 => 'II',
-      3 => 'III',
-      4 => 'IV',
-      5 => 'V',
-      6 => 'VI',
-      7 => 'VII',
-      _ => '',
-    };
-
-    if (quality != null && quality!.semitones <= 0) {
-      buffer.write(romanNumeral.toLowerCase());
-    } else {
-      buffer.write(romanNumeral);
-    }
-
-    switch (inversion) {
-      case 1:
-        buffer.write('6');
-      case 2:
-        buffer.write('64');
-    }
-
-    return buffer.toString();
-  }
+  String toString({
+    ScaleDegreeNotation system = ScaleDegreeNotation.standard,
+  }) =>
+      system.scaleDegree(this);
 
   @override
   bool operator ==(Object other) =>
@@ -193,4 +210,39 @@ class ScaleDegree implements Comparable<ScaleDegree> {
           return 0;
         },
       ]);
+}
+
+/// The abstraction for [ScaleDegree] notation systems.
+@immutable
+abstract class ScaleDegreeNotation {
+  /// Creates a new [ScaleDegreeNotation].
+  const ScaleDegreeNotation();
+
+  /// The standard [ScaleDegreeNotation] system.
+  static const standard = StandardScaleDegreeNotation();
+
+  /// The string notation for [scaleDegree].
+  String scaleDegree(ScaleDegree scaleDegree);
+}
+
+/// The standard [ScaleDegree] notation system.
+final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
+  /// Creates a new [StandardScaleDegreeNotation].
+  const StandardScaleDegreeNotation();
+
+  @override
+  String scaleDegree(ScaleDegree scaleDegree) {
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          Accidental(scaleDegree.semitonesDelta).symbol,
+        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        switch (scaleDegree.inversion) { 1 => '6', 2 => '64', _ => '' },
+      ]);
+
+    return buffer.toString();
+  }
 }

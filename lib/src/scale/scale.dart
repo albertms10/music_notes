@@ -46,7 +46,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   List<T> get descendingDegrees =>
       _descendingDegrees ?? degrees.reversed.toList();
 
-  /// Returns the [ScalePattern] of this [Scale].
+  /// The [ScalePattern] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -58,7 +58,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
         _descendingDegrees?.descendingIntervalSteps.toList(),
       );
 
-  /// Returns the reversed of this [Scale].
+  /// The reversed of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -69,7 +69,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> get reversed =>
       Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
 
-  /// Returns the [Chord] for each [ScaleDegree] of this [Scale].
+  /// The [Chord] for each [ScaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -86,7 +86,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   List<Chord<T>> get degreeChords =>
       [for (var i = 1; i < degrees.length; i++) degreeChord(ScaleDegree(i))];
 
-  /// Returns the [T] for the [scaleDegree] of this [Scale].
+  /// The [T] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -106,7 +106,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
     );
   }
 
-  /// Returns the [Chord] for the [scaleDegree] of this [Scale].
+  /// The [Chord] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -116,7 +116,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
-  /// Returns the [Chord] for the [harmonicFunction] of this [Scale].
+  /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -140,7 +140,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
           )
           .degreeChord(harmonicFunction.scaleDegrees.first);
 
-  /// Returns whether this [Scale] is enharmonically equivalent to [other].
+  /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
   /// Example:
   /// ```dart
