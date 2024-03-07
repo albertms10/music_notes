@@ -33,7 +33,7 @@ void main() {
         );
         expect(
           const PythagoreanTuning().ratio(Note.d.flat.inOctave(4)),
-          const Ratio(1.0534979423868311), // 256 / 243
+          closeTo(const Ratio(256 / 243), 1e-15),
         );
         expect(
           const PythagoreanTuning().ratio(Note.d.inOctave(4)),
@@ -61,7 +61,7 @@ void main() {
         );
         expect(
           const PythagoreanTuning().ratio(Note.g.flat.inOctave(4)),
-          const Ratio(1.4046639231824414), // 1024 / 729
+          closeTo(const Ratio(1024 / 729), 1e-15),
         );
         expect(
           const PythagoreanTuning().ratio(Note.g.inOctave(4)),
