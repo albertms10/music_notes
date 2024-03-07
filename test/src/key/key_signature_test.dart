@@ -1,10 +1,20 @@
-import 'dart:collection' show SplayTreeSet;
+import 'dart:collection'
+    show SplayTreeSet, UnmodifiableListView, UnmodifiableMapView;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('KeySignature', () {
+    group('.notes', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          KeySignature([Note.f.sharp]).notes,
+          isA<UnmodifiableListView<Note>>(),
+        );
+      });
+    });
+
     group('.fromDistance()', () {
       test('creates a new KeySignature from the given distance', () {
         expect(
@@ -122,6 +132,13 @@ void main() {
     });
 
     group('.keys', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          KeySignature([Note.f.sharp]).keys,
+          isA<UnmodifiableMapView<TonalMode, Key>>(),
+        );
+      });
+
       test('returns the TonalMode to Keys Map for this KeySignature', () {
         expect(
           KeySignature.fromDistance(-10).keys,

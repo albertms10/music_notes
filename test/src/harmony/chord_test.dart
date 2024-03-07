@@ -1,8 +1,19 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Chord', () {
+    group('.items', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ChordPattern.majorTriad.on(Note.c).items,
+          isA<UnmodifiableListView<Note>>(),
+        );
+      });
+    });
+
     group('.root', () {
       test('returns the root of this Chord', () {
         expect(ChordPattern.majorTriad.on(Note.f).root, Note.f);
