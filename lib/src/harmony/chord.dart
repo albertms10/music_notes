@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart'
+    show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../chordable.dart';
@@ -21,16 +22,18 @@ import 'chord_pattern.dart';
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
     implements Transposable<Chord<T>> {
-  /// The [Scalable] items this [Chord] is built of.
-  final List<T> items;
+  final List<T> _items;
 
-  /// Creates a new [Chord] from [items].
-  const Chord(this.items);
+  /// The [Scalable] items this [Chord] is built of.
+  List<T> get items => UnmodifiableListView(_items);
+
+  /// Creates a new [Chord] from [_items].
+  const Chord(this._items);
 
   /// The root [Scalable] of this [Chord].
-  T get root => items.first;
+  T get root => _items.first;
 
-  /// Returns the [ChordPattern] for this [Chord].
+  /// The [ChordPattern] for this [Chord].
   ///
   /// The pattern is calculated based on the intervals between the notes
   /// rather than from the root note. This approach helps differentiate
@@ -45,15 +48,15 @@ class Chord<T extends Scalable<T>>
   ///   == ChordPattern.majorTriad.add7().add9()
   /// ```
   ChordPattern get pattern =>
-      ChordPattern.fromIntervalSteps(items.intervalSteps);
+      ChordPattern.fromIntervalSteps(_items.intervalSteps);
 
-  /// Returns the list of modifier [T]s from the root note.
+  /// The modifier [T]s from the root note.
   ///
   /// Example:
   /// ```dart
   /// Note.a.majorTriad.add7().add9().modifiers == const [Note.g, Note.b]
   /// ```
-  List<T> get modifiers => items.skip(3).toList();
+  List<T> get modifiers => _items.skip(3).toList();
 
   /// Returns a new [Chord] with an [ImperfectQuality.diminished] root triad.
   ///
@@ -117,15 +120,15 @@ class Chord<T extends Scalable<T>>
   /// ```
   @override
   Chord<T> transposeBy(Interval interval) =>
-      Chord(items.transposeBy(interval).toList());
+      Chord(_items.transposeBy(interval).toList());
 
   @override
-  String toString() => '$root ${pattern.abbreviation} (${items.join(' ')})';
+  String toString() => '$root ${pattern.abbreviation} (${_items.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
-      other is Chord<T> && ListEquality<T>().equals(items, other.items);
+      other is Chord<T> && ListEquality<T>().equals(_items, other._items);
 
   @override
-  int get hashCode => Object.hashAll(items);
+  int get hashCode => Object.hashAll(_items);
 }

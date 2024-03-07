@@ -1,6 +1,6 @@
 /// An extension on [Map].
 extension MapExtension<K, V> on Map<K, V> {
-  /// Returns the record entries of this [Map].
+  /// The record entries of this [Map].
   ///
   /// It allows for a stable hash code implementation without using [MapEntry].
   ///

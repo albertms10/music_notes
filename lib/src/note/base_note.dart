@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:music_notes/utils.dart';
 
-import '../interval/interval.dart';
+import '../interval/size.dart';
 import '../music.dart';
 import 'note.dart';
 
@@ -84,7 +84,7 @@ enum BaseNote implements Comparable<BaseNote> {
     }
   }
 
-  /// Returns the ordinal number of this [BaseNote].
+  /// The ordinal number of this [BaseNote].
   ///
   /// Example:
   /// ```dart
@@ -94,21 +94,21 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int get ordinal => values.indexOf(this) + 1;
 
-  /// Returns the [Interval.size] that conforms between this [BaseNote] and
-  /// [other].
+  /// The [Size] that conforms between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.d.intervalSize(BaseNote.f) == 3
-  /// BaseNote.a.intervalSize(BaseNote.e) == 5
+  /// BaseNote.d.intervalSize(BaseNote.f) == Size.third
+  /// BaseNote.a.intervalSize(BaseNote.e) == Size.fifth
   /// ```
-  int intervalSize(BaseNote other) =>
-      other.ordinal -
-      ordinal +
-      (ordinal > other.ordinal ? values.length : 0) +
-      1;
+  Size intervalSize(BaseNote other) => Size(
+        other.ordinal -
+            ordinal +
+            (ordinal > other.ordinal ? values.length : 0) +
+            1,
+      );
 
-  /// Returns the difference in semitones between this [BaseNote] and [other].
+  /// The difference in semitones between this [BaseNote] and [other].
   ///
   /// Example:
   /// ```dart
@@ -118,8 +118,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   int difference(BaseNote other) => Note(this).difference(Note(other));
 
-  /// Returns the positive difference in semitones between this [BaseNote] and
-  /// [other].
+  /// The positive difference in semitones between this [BaseNote] and [other].
   ///
   /// When [difference] would return a negative value, this method returns the
   /// difference with [other] being in the next octave.
@@ -140,16 +139,16 @@ enum BaseNote implements Comparable<BaseNote> {
   ///
   /// Example:
   /// ```dart
-  /// BaseNote.g.transposeBySize(1) == BaseNote.g
-  /// BaseNote.g.transposeBySize(5) == BaseNote.d
+  /// BaseNote.g.transposeBySize(Size.unison) == BaseNote.g
+  /// BaseNote.g.transposeBySize(Size.fifth) == BaseNote.d
   /// BaseNote.a.transposeBySize(-3) == BaseNote.f
   /// ```
-  BaseNote transposeBySize(int size) {
-    assert(size != 0, 'Size must be non-zero');
+  BaseNote transposeBySize(Size size) =>
+      BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
 
-    return BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
-  }
-
+  /// The string representation of this [BaseNote] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.baseNote(this);

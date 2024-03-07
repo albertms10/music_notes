@@ -68,7 +68,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  /// Returns the different spellings at [distance] sharing the same number of
+  /// The different spellings at [distance] sharing the same number of
   /// [semitones].
   ///
   /// Example:
@@ -115,8 +115,7 @@ final class PitchClass extends Scalable<PitchClass>
     );
   }
 
-  /// Returns the [Note] that matches [withAccidental] from this
-  /// [PitchClass].
+  /// The [Note] that matches [withAccidental] from this [PitchClass].
   ///
   /// Throws an [ArgumentError] when [withAccidental] does not match with any
   /// possible note.
@@ -151,8 +150,7 @@ final class PitchClass extends Scalable<PitchClass>
         .first;
   }
 
-  /// Returns the [Note] that matches with [preferredAccidental] from this
-  /// [PitchClass].
+  /// The [Note] that matches with [preferredAccidental] from this [PitchClass].
   ///
   /// Like [resolveSpelling] except that this function returns the closest note
   /// where a similar call to [resolveSpelling] would throw an [ArgumentError].
@@ -185,8 +183,8 @@ final class PitchClass extends Scalable<PitchClass>
   PitchClass transposeBy(Interval interval) =>
       PitchClass(semitones + interval.semitones);
 
-  /// Returns the [IntervalClass] expressed as [Interval] between this
-  /// [PitchClass] and [other].
+  /// The [IntervalClass] expressed as [Interval] between this [PitchClass] and
+  /// [other].
   ///
   /// Example:
   /// ```dart
@@ -203,7 +201,7 @@ final class PitchClass extends Scalable<PitchClass>
         .descending(isDescending: diff.isNegative);
   }
 
-  /// Returns the difference in semitones between this [PitchClass] and [other].
+  /// The difference in semitones between this [PitchClass] and [other].
   ///
   /// Example:
   /// ```dart
@@ -214,16 +212,18 @@ final class PitchClass extends Scalable<PitchClass>
   @override
   int difference(PitchClass other) => super.difference(other);
 
-  /// Performs a pitch-class multiplication modulo [chromaticDivisions] of this
+  /// A pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].
   ///
   /// Example:
   /// ```dart
   /// PitchClass.cSharp * 7 == PitchClass.g
   /// PitchClass.d * 7 == PitchClass.d
+  /// // observe one semitone upwards results in ascending fifths G -> D.
   ///
   /// PitchClass.cSharp * 5 == PitchClass.f
   /// PitchClass.d * 5 == PitchClass.aSharp
+  /// // observe one semitone upwards results in ascending fourths F -> B-flat.
   /// ```
   ///
   /// The multiplication by the two meaningful operations (5 and 7) gives us the
@@ -231,16 +231,32 @@ final class PitchClass extends Scalable<PitchClass>
   /// chromatic scale as follows:
   ///
   /// ```dart
-  /// ScalePattern.chromatic.on(PitchClass.c)
-  ///   .degrees.map((note) => note * 7)
-  ///     == Interval.P5.circleFrom(PitchClass.c, distance: 12)
+  /// final chromaticScale = ScalePattern.chromatic.on(PitchClass.c);
+  ///
+  /// // Cycle of fourths transform
+  /// chromaticScale.degrees.map((note) => note * 5)
+  ///   == Interval.P4.circleFrom(PitchClass.c, distance: 12)
+  ///
+  /// // Cycle of fifths transform
+  /// chromaticScale.degrees.map((note) => note * 7)
+  ///   == Interval.P5.circleFrom(PitchClass.c, distance: 12)
+  ///
+  /// // Inversion
+  /// chromaticScale.degrees.map((note) => note * 11)
+  ///   .toList() == chromaticScale.descendingDegrees
+  ///
+  /// // Whole-tone transform
+  /// final wholeToneScale = ScalePattern.wholeTone.on(PitchClass.c);
+  /// chromaticScale.degrees.skip(6).map((note) => note * 2)
+  ///   .toList() == wholeToneScale.degrees
   /// ```
   ///
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
   PitchClass operator *(int factor) => PitchClass(semitones * factor);
 
-  /// Returns the string representation of this [PitchClass] based on
-  /// [system].
+  /// The string representation of this [PitchClass] based on [system].
+  ///
+  /// See [PitchClassNotation] for all system implementations.
   ///
   /// Example:
   /// ```dart
@@ -277,29 +293,33 @@ abstract class PitchClassNotation {
   const PitchClassNotation();
 
   /// The enharmonic spellings [PitchClassNotation] system.
-  static const enharmonicSpellings = PitchClassEnharmonicSpellingsNotation();
+  static const enharmonicSpellings = EnharmonicSpellingsPitchClassNotation();
 
   /// The integer [PitchClassNotation] system.
-  static const integer = PitchClassIntegerNotation();
+  static const integer = IntegerPitchClassNotation();
 
-  /// Returns the string notation for [pitchClass].
+  /// The string notation for [pitchClass].
   String pitchClass(PitchClass pitchClass);
 }
 
+/// The enharmonic spellings [PitchClass] notation system.
+///
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
-final class PitchClassEnharmonicSpellingsNotation extends PitchClassNotation {
-  /// Creates a new [PitchClassEnharmonicSpellingsNotation].
-  const PitchClassEnharmonicSpellingsNotation();
+final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
+  /// Creates a new [EnharmonicSpellingsPitchClassNotation].
+  const EnharmonicSpellingsPitchClassNotation();
 
   @override
   String pitchClass(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 }
 
+/// The integer [PitchClass] notation system.
+///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-final class PitchClassIntegerNotation extends PitchClassNotation {
-  /// Creates a new [PitchClassIntegerNotation].
-  const PitchClassIntegerNotation();
+final class IntegerPitchClassNotation extends PitchClassNotation {
+  /// Creates a new [IntegerPitchClassNotation].
+  const IntegerPitchClassNotation();
 
   @override
   String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {

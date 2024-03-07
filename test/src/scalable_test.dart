@@ -82,7 +82,10 @@ void main() {
 
     group('.numericRepresentation', () {
       test('returns the numeric representation of this ScalableIterable', () {
-        expect(<PitchClass>{}.numericRepresentation.toList(), const <int>[]);
+        expect(
+          const <PitchClass>{}.numericRepresentation.toList(),
+          const <int>[],
+        );
         expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
         expect(
           {
@@ -109,7 +112,7 @@ void main() {
         'returns the delta numeric representation of this ScalableIterable',
         () {
           expect(
-            <PitchClass>{}.deltaNumericRepresentation.toList(),
+            const <PitchClass>{}.deltaNumericRepresentation.toList(),
             const <int>[],
           );
           expect({PitchClass.g}.deltaNumericRepresentation.toList(), const [0]);

@@ -1,4 +1,4 @@
-import 'dart:collection';
+import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
@@ -79,26 +79,19 @@ void main() {
     });
 
     group('.transposeBySize()', () {
-      test('throws an assertion error when size is zero', () {
-        expect(
-          () => BaseNote.c.transposeBySize(0),
-          throwsA(isA<AssertionError>()),
-        );
-      });
-
       test('transposes this BaseNote by Interval size', () {
-        expect(BaseNote.f.transposeBySize(-8), BaseNote.f);
-        expect(BaseNote.g.transposeBySize(-3), BaseNote.e);
-        expect(BaseNote.c.transposeBySize(-2), BaseNote.b);
-        expect(BaseNote.d.transposeBySize(-1), BaseNote.d);
-        expect(BaseNote.c.transposeBySize(1), BaseNote.c);
-        expect(BaseNote.d.transposeBySize(2), BaseNote.e);
-        expect(BaseNote.e.transposeBySize(3), BaseNote.g);
-        expect(BaseNote.e.transposeBySize(4), BaseNote.a);
-        expect(BaseNote.f.transposeBySize(5), BaseNote.c);
-        expect(BaseNote.a.transposeBySize(6), BaseNote.f);
-        expect(BaseNote.b.transposeBySize(7), BaseNote.a);
-        expect(BaseNote.c.transposeBySize(8), BaseNote.c);
+        expect(BaseNote.f.transposeBySize(-Size.octave), BaseNote.f);
+        expect(BaseNote.g.transposeBySize(-Size.third), BaseNote.e);
+        expect(BaseNote.c.transposeBySize(-Size.second), BaseNote.b);
+        expect(BaseNote.d.transposeBySize(-Size.unison), BaseNote.d);
+        expect(BaseNote.c.transposeBySize(Size.unison), BaseNote.c);
+        expect(BaseNote.d.transposeBySize(Size.second), BaseNote.e);
+        expect(BaseNote.e.transposeBySize(Size.third), BaseNote.g);
+        expect(BaseNote.e.transposeBySize(Size.fourth), BaseNote.a);
+        expect(BaseNote.f.transposeBySize(Size.fifth), BaseNote.c);
+        expect(BaseNote.a.transposeBySize(Size.sixth), BaseNote.f);
+        expect(BaseNote.b.transposeBySize(Size.seventh), BaseNote.a);
+        expect(BaseNote.c.transposeBySize(Size.octave), BaseNote.c);
       });
     });
 

@@ -1,8 +1,19 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
+    group('.steps', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          const EqualTemperament.edo12().steps,
+          isA<UnmodifiableListView<int>>(),
+        );
+      });
+    });
+
     group('.edo', () {
       test('returns the EDO for this EqualTemperament', () {
         expect(const EqualTemperament.edo12().edo, 12);
@@ -13,7 +24,7 @@ void main() {
     group('.ratioFromSemitones()', () {
       test('returns the Ratio from semitones for this EqualTemperament', () {
         expect(
-          const EqualTemperament.edo12().ratioFromSemitones(),
+          const EqualTemperament.edo12().ratioFromSemitones(1),
           const Ratio(1.0594630943592953),
         );
         expect(
@@ -22,7 +33,7 @@ void main() {
         );
 
         expect(
-          const EqualTemperament.edo19().ratioFromSemitones(),
+          const EqualTemperament.edo19().ratioFromSemitones(1),
           const Ratio(1.0371550444461919),
         );
         expect(
@@ -91,9 +102,9 @@ void main() {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(steps: [1, 2]).hashCode,
+          EqualTemperament([1, 2]).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament(steps: [1, 2]).hashCode,
+          EqualTemperament([1, 2]).hashCode,
         );
       });
 
@@ -103,8 +114,8 @@ void main() {
           isNot(const EqualTemperament.edo19().hashCode),
         );
         expect(
-          const EqualTemperament(steps: [1, 2]).hashCode,
-          isNot(const EqualTemperament(steps: [2, 1]).hashCode),
+          const EqualTemperament([1, 2]).hashCode,
+          isNot(const EqualTemperament([2, 1]).hashCode),
         );
       });
     });

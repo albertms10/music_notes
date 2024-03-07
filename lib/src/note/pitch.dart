@@ -4,6 +4,7 @@ import 'package:music_notes/utils.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../interval/size.dart';
 import '../music.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
@@ -96,7 +97,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     throw FormatException('Invalid Pitch', source);
   }
 
-  /// Returns the [octave] that corresponds to the semitones from root height.
+  /// The [octave] that corresponds to the semitones from root height.
   ///
   /// Example:
   /// ```dart
@@ -107,7 +108,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   static int octaveFromSemitones(int semitones) =>
       (semitones / chromaticDivisions).floor();
 
-  /// Returns the number of semitones of this [Pitch] from C0 (root).
+  /// The number of semitones of this [Pitch] from C0 (root).
   ///
   /// Example:
   /// ```dart
@@ -122,7 +123,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
   static const _higherMidiPitch = Pitch(Note.g, octave: 9);
 
-  /// Returns the MIDI number (an integer from 0 to 127) of this [Pitch],
+  /// The MIDI number (an integer from 0 to 127) of this [Pitch],
   /// or `null` for pitches out of the MIDI range.
   ///
   /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
@@ -135,13 +136,13 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.inOctave(9).midiNumber == 127
   /// Note.a.flat.inOctave(9).midiNumber == null
   /// ```
-  int? get midiNumber => switch (this) {
-        < _lowerMidiPitch || > _higherMidiPitch => null,
-        _ => semitones + chromaticDivisions,
-      };
+  int? get midiNumber {
+    if (this case < _lowerMidiPitch || > _higherMidiPitch) return null;
 
-  /// Returns the difference in semitones between this [Pitch] and
-  /// [other].
+    return semitones + chromaticDivisions;
+  }
+
+  /// The difference in semitones between this [Pitch] and [other].
   ///
   /// Example:
   /// ```dart
@@ -152,7 +153,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   @override
   int difference(Pitch other) => other.semitones - semitones;
 
-  /// Returns the [ChordPattern.diminishedTriad] on this [Pitch].
+  /// The [ChordPattern.diminishedTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -172,7 +173,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Chord<Pitch> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
-  /// Returns the [ChordPattern.minorTriad] on this [Pitch].
+  /// The [ChordPattern.minorTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -192,7 +193,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Chord<Pitch> get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// Returns the [ChordPattern.majorTriad] on this [Pitch].
+  /// The [ChordPattern.majorTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -212,7 +213,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Chord<Pitch> get majorTriad => ChordPattern.majorTriad.on(this);
 
-  /// Returns the [ChordPattern.augmentedTriad] on this [Pitch].
+  /// The [ChordPattern.augmentedTriad] on this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -232,7 +233,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Chord<Pitch> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// Returns this [Pitch] respelled by [baseNote] while keeping the
+  /// This [Pitch] respelled by [baseNote] while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -255,8 +256,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// Returns this [Pitch] respelled by [BaseNote.ordinal] distance
-  /// while keeping the same number of [semitones].
+  /// This [Pitch] respelled by [BaseNote.ordinal] distance while keeping the
+  /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
@@ -268,8 +269,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   Pitch respellByBaseNoteDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
 
-  /// Returns this [Pitch] respelled upwards while keeping the same
-  /// number of [semitones].
+  /// This [Pitch] respelled upwards while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -278,8 +279,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Pitch get respelledUpwards => respellByBaseNoteDistance(1);
 
-  /// Returns this [Pitch] respelled downwards while keeping the same
-  /// number of [semitones].
+  /// This [Pitch] respelled downwards while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -288,8 +289,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Pitch get respelledDownwards => respellByBaseNoteDistance(-1);
 
-  /// Returns this [Pitch] respelled by [accidental] while keeping the
-  /// same number of [semitones].
+  /// This [Pitch] respelled by [accidental] while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -311,8 +312,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// Returns this [Pitch] with the simplest [Accidental] spelling
-  /// while keeping the same number of [semitones].
+  /// This [Pitch] with the simplest [Accidental] spelling while keeping the
+  /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
@@ -328,7 +329,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.
   /// This correctly handles cases with the same number of semitones
-  /// but in different octaves (e.g., B♯3 but C4, C♭4 but B3).
+  /// but in different octaves (e.g., B♯3 but C4, or C♭4 but B3).
   int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
 
@@ -355,7 +356,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// Returns the exact interval between this [Pitch] and [other].
+  /// The interval between this [Pitch] and [other].
   ///
   /// Example:
   /// ```dart
@@ -370,12 +371,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
     return Interval.fromSemitones(
-      intervalSize + octaveShift,
+      Size(intervalSize + octaveShift),
       difference(other),
     );
   }
 
-  /// Returns the [Frequency] of this [Pitch] from [referenceFrequency] and
+  /// The [Frequency] of this [Pitch] from [referenceFrequency] and
   /// [tuningSystem].
   ///
   /// Example:
@@ -405,9 +406,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     Frequency referenceFrequency = const Frequency(440),
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
-      referenceFrequency * tuningSystem.ratio(this).value;
+      Frequency(referenceFrequency * tuningSystem.ratio(this));
 
-  /// Returns the string representation of this [Pitch] based on [system].
+  /// The string representation of this [Pitch] based on [system].
+  ///
+  /// See [PitchNotation] for all system implementations.
   ///
   /// Example:
   /// ```dart
@@ -417,8 +420,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// Note.c.inOctave(4).toString(system: PitchNotation.helmholtz) == 'c′'
   /// Note.a.inOctave(3).toString(system: PitchNotation.helmholtz) == 'a'
-  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz)
-  ///   == 'B♭͵'
+  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz) == 'B♭͵'
   /// ```
   @override
   String toString({PitchNotation system = PitchNotation.scientific}) =>
@@ -508,10 +510,12 @@ abstract class PitchNotation {
   /// The Helmholtz [PitchNotation] system.
   static const helmholtz = HelmholtzPitchNotation();
 
-  /// Returns the string representation for [pitch].
+  /// The string representation for [pitch].
   String pitch(Pitch pitch);
 }
 
+/// The scientific [Pitch] notation system.
+///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
 final class ScientificPitchNotation extends PitchNotation {
   /// Creates a new [ScientificPitchNotation].
@@ -521,6 +525,8 @@ final class ScientificPitchNotation extends PitchNotation {
   String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
 }
 
+/// The Helmholtz [Pitch] notation system.
+///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
   /// Creates a new [HelmholtzPitchNotation].

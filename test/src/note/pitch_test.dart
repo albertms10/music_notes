@@ -39,15 +39,13 @@ void main() {
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
         expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
 
+        var pitch = Note.b.flat.flat.inOctave(-2);
+        expect(Pitch.parse(pitch.toString()), pitch);
+
+        pitch = Note.a.sharp.inOctave(7);
         expect(
-          Pitch.parse(Note.b.flat.flat.inOctave(-2).toString()),
-          Note.b.flat.flat.inOctave(-2),
-        );
-        expect(
-          Pitch.parse(
-            Note.a.sharp.inOctave(7).toString(system: PitchNotation.helmholtz),
-          ),
-          Note.a.sharp.inOctave(7),
+          Pitch.parse(pitch.toString(system: PitchNotation.helmholtz)),
+          pitch,
         );
       });
     });
@@ -64,7 +62,7 @@ void main() {
           expect(Pitch.octaveFromSemitones(-12), -1);
           expect(Pitch.octaveFromSemitones(-11), -1);
           expect(Pitch.octaveFromSemitones(-1), -1);
-          expect(Pitch.octaveFromSemitones(0), 0); // C
+          expect(Pitch.octaveFromSemitones(0), 0); // root C
           expect(Pitch.octaveFromSemitones(1), 0);
           expect(Pitch.octaveFromSemitones(11), 0);
           expect(Pitch.octaveFromSemitones(12), 1);
@@ -612,23 +610,23 @@ void main() {
         expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(5)),
-          const Interval.perfect(15, PerfectQuality.perfect),
+          const Interval.perfect(Size(15), PerfectQuality.perfect),
         );
 
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(6)),
-          const Interval.perfect(22, PerfectQuality.perfect),
+          const Interval.perfect(Size(22), PerfectQuality.perfect),
         );
 
         expect(
           Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-          const Interval.perfect(29, PerfectQuality.perfect),
+          const Interval.perfect(Size(29), PerfectQuality.perfect),
         );
 
         expect(
           skip: true,
           () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
-          const Interval.perfect(29, PerfectQuality.perfect),
+          const Interval.perfect(Size(29), PerfectQuality.perfect),
         );
       });
     });
@@ -886,23 +884,23 @@ void main() {
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(15), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(6),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(22), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(7),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(29), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(8),
         );
       });
@@ -1277,7 +1275,7 @@ void main() {
   });
 }
 
-class _SubPitchNotation extends PitchNotation {
+final class _SubPitchNotation extends PitchNotation {
   @override
   String pitch(Pitch pitch) => throw UnimplementedError();
 }

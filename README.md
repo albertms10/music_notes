@@ -67,15 +67,15 @@ Pitch.parse('Eb3'); // E♭3
 Create an `Interval`:
 
 ```dart
-const Interval.perfect(5, PerfectQuality.perfect); // P5
 Interval.P4; // P4
+const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 ```
 
 Or turn it descending:
 
 ```dart
--Interval.m6; // desc m6
-Interval.M3.descending(); // desc M3
+-Interval.m6; // m-6
+Interval.M3.descending(); // M-3
 ```
 
 Calculate the `Interval` between two notes:
@@ -132,8 +132,8 @@ KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 And know its `Key`s:
 
 ```dart
-KeySignature([Note.f.sharp]).keys!.major; // G major
-KeySignature.empty.keys!.minor; // A minor
+KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+KeySignature.empty.keys[TonalMode.minor]; // A minor
 ```
 
 Non-canonical key signatures are also supported, although they
@@ -143,7 +143,7 @@ return `null` when asked about their fifths distance or keys:
 KeySignature([Note.a.flat])
   ..isCanonical // false
   ..distance // null
-  ..keys; // null
+  ..keys; // <TonalMode, Key>{}
 ```
 
 ### Modes
@@ -228,12 +228,12 @@ Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 Get the `Frequency` of a `Pitch`:
 
 ```dart
-Note.a.inOctave(4).frequency(); // 440 Hz
+Note.a.inOctave(4).frequency(); // 440
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
       tuningSystem:
           EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
-    ); // 456.1401436878537 Hz
+    ); // 456.1401436878537
 ```
 
 Get the closest note from a given `Frequency`:
@@ -277,6 +277,16 @@ This library is inspired by a range of music theory projects.
 ## Contributing
 
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/albertms10/music_notes/pulls).
+
+## Star History
+
+<a href="https://star-history.com/#albertms10/music_notes&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=albertms10/music_notes&type=Date" />
+  </picture>
+</a>
 
 ## License
 
