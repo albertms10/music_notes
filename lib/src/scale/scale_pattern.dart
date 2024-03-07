@@ -257,8 +257,11 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.fromBinary(int.parse('101010110101', radix: 2))
-  ///   == ScalePattern.major
+  /// int b(String sequence) => int.parse(sequence, radix: 2);
+  ///
+  /// ScalePattern.fromBinary(b('101010110101')) == ScalePattern.major
+  /// ScalePattern.fromBinary(b('10110101101')) == ScalePattern.naturalMinor
+  /// ScalePattern.fromBinary(b('111111111111')) == ScalePattern.chromatic
   /// ```
   factory ScalePattern.fromBinary(int sequence) {
     assert(sequence > 0, 'Sequence must be greater than 0');
@@ -277,6 +280,8 @@ final class ScalePattern {
   /// Example:
   /// ```dart
   /// ScalePattern.major.toBinary() == int.parse('101010110101', radix: 2)
+  /// ScalePattern.naturalMinor.toBinary() == int.parse('10110101101', radix: 2)
+  /// ScalePattern.chromatic.toBinary() == int.parse('111111111111', radix: 2)
   /// ```
   int toBinary() => on(PitchClass.c)
       .degrees
