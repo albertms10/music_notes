@@ -1,13 +1,13 @@
 import 'package:collection/collection.dart'
-    show IterableEquality, ListEquality, UnmodifiableListView;
+    show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../class_mixin.dart';
 import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../interval/size.dart';
-import '../note/pitch_class.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'scale_degree.dart';
@@ -148,6 +148,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
   /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
+  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
+  ///
   /// Example:
   /// ```dart
   /// const Scale([Note.c, Note.d, Note.f, Note.g])
@@ -155,12 +157,9 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///     == true
   /// ```
   bool isEnharmonicWith(Scale<T> other) =>
-      const IterableEquality<PitchClass>()
-          .equals(_degrees.toClass(), other._degrees.toClass()) &&
-      const IterableEquality<PitchClass>().equals(
-        (_descendingDegrees ?? const []).toClass(),
-        (other._descendingDegrees ?? const []).toClass(),
-      );
+      _degrees.isEnharmonicWith(other._degrees) &&
+      (_descendingDegrees ?? const [])
+          .isEnharmonicWith(other._descendingDegrees ?? const []);
 
   /// Transposes this [Scale] by [interval].
   ///

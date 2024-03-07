@@ -3,6 +3,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../class_mixin.dart';
 import '../note/note.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
@@ -16,7 +17,9 @@ import 'size.dart';
 /// * [Quality].
 /// * [IntervalClass].
 @immutable
-final class Interval implements Comparable<Interval> {
+final class Interval
+    with ClassMixin<IntervalClass>
+    implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final Size size;
@@ -221,6 +224,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.semitones == 6
   /// (-Interval.M3).semitones == -4
   /// ```
+  @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
   /// Whether this [Interval] is descending.
@@ -391,6 +395,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.d4.toClass() == IntervalClass.M3
   /// Interval.P8.toClass() == IntervalClass.P1
   /// ```
+  @override
   IntervalClass toClass() => IntervalClass(semitones);
 
   /// The string representation of this [Interval] based on [system].
