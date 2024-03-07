@@ -1,5 +1,4 @@
-import 'package:collection/collection.dart'
-    show IterableEquality, UnmodifiableListView;
+import 'package:collection/collection.dart' show UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord_pattern.dart';
@@ -262,15 +261,27 @@ final class ScalePattern {
   /// ScalePattern.fromBinary(b('101010110101')) == ScalePattern.major
   /// ScalePattern.fromBinary(b('10110101101')) == ScalePattern.naturalMinor
   /// ScalePattern.fromBinary(b('111111111111')) == ScalePattern.chromatic
+  /// ScalePattern.fromBinary(b('1010010101')) == ScalePattern.majorPentatonic
   /// ```
-  factory ScalePattern.fromBinary(int sequence) {
+  factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
-    return Scale([
-      for (int i = 0; i < chromaticDivisions; i++)
-        if (sequence & 1 << i != 0) PitchClass(i),
-      PitchClass.c,
-    ]).pattern;
+    int bitAt(int sequence, int index) => sequence & 1 << index;
+
+    return Scale(
+      [
+        for (int i = 0; i < chromaticDivisions; i++)
+          if (bitAt(sequence, i) != 0) PitchClass(i),
+        PitchClass.c,
+      ],
+      descendingSequence == null
+          ? null
+          : [
+              PitchClass.c,
+              for (int i = chromaticDivisions - 1; i >= 0; i--)
+                if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+            ],
+    ).pattern;
   }
 
   /// Returns the binary representation of this [ScalePattern].
@@ -282,10 +293,23 @@ final class ScalePattern {
   /// ScalePattern.major.toBinary() == int.parse('101010110101', radix: 2)
   /// ScalePattern.naturalMinor.toBinary() == int.parse('10110101101', radix: 2)
   /// ScalePattern.chromatic.toBinary() == int.parse('111111111111', radix: 2)
+  /// ScalePattern.majorPentatonic.toBinary()
+  ///   == int.parse('1010010101', radix: 2)
   /// ```
-  int toBinary() => on(PitchClass.c)
-      .degrees
-      .fold(0, (sequence, scalable) => sequence | 1 << scalable.semitones);
+  (int, int?) toBinary() {
+    int toBit(int sequence, Scalable<PitchClass> scalable) =>
+        sequence | 1 << scalable.semitones;
+
+    final scale = on(PitchClass.c);
+    final ascendingSequence = scale.degrees.fold(0, toBit);
+    final cachedDescending = scale.descendingDegrees;
+    final descendingSequence =
+        cachedDescending.reversed.isEnharmonicWith(scale.degrees)
+            ? null
+            : cachedDescending.fold(0, toBit);
+
+    return (ascendingSequence, descendingSequence);
+  }
 
   /// The length of this [ScalePattern].
   ///

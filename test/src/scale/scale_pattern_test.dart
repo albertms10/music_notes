@@ -41,26 +41,38 @@ void main() {
 
     group('.fromBinary()', () {
       test('creates a new ScalePattern from a binary sequence', () {
+        expect(ScalePattern.fromBinary(_b('101010110101')), ScalePattern.major);
         expect(
-          ScalePattern.fromBinary(int.parse('101010110101', radix: 2)),
-          ScalePattern.major,
+          ScalePattern.fromBinary(_b('10110101101')),
+          ScalePattern.naturalMinor,
         );
         expect(
-          ScalePattern.fromBinary(int.parse('111111111111', radix: 2)),
+          ScalePattern.fromBinary(_b('101010101101'), _b('10110101101')),
+          ScalePattern.melodicMinor,
+        );
+        expect(
+          ScalePattern.fromBinary(_b('111111111111')),
           ScalePattern.chromatic,
+        );
+        expect(
+          ScalePattern.fromBinary(_b('1010010101')),
+          ScalePattern.majorPentatonic,
         );
       });
     });
 
     group('.toBinary()', () {
       test('returns the binary representation of this ScalePattern', () {
+        expect(ScalePattern.major.toBinary(), (_b('101010110101'), null));
+        expect(ScalePattern.naturalMinor.toBinary(), (_b('10110101101'), null));
         expect(
-          ScalePattern.major.toBinary(),
-          int.parse('101010110101', radix: 2),
+          ScalePattern.melodicMinor.toBinary(),
+          (_b('101010101101'), _b('10110101101')),
         );
+        expect(ScalePattern.chromatic.toBinary(), (_b('111111111111'), null));
         expect(
-          ScalePattern.chromatic.toBinary(),
-          int.parse('111111111111', radix: 2),
+          ScalePattern.majorPentatonic.toBinary(),
+          (_b('1010010101'), null),
         );
       });
     });
@@ -660,3 +672,5 @@ void main() {
     });
   });
 }
+
+int _b(String sequence) => int.parse(sequence, radix: 2);
