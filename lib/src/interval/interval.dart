@@ -417,6 +417,17 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval operator -() => Interval._(-size, quality);
 
+  /// The string representation of this [Interval] based on [system].
+  ///
+  /// See [IntervalNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.M3.toString() == 'M3'
+  /// (-Interval.d5).toString() == 'd-5'
+  /// const Interval.perfect(Size.twelfth, PerfectQuality.perfect).toString()
+  ///   == 'P12 (P5)'
+  /// ```
   @override
   String toString({IntervalNotation system = IntervalNotation.standard}) =>
       system.interval(this);

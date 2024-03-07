@@ -256,6 +256,8 @@ final class PitchClass extends Scalable<PitchClass>
 
   /// The string representation of this [PitchClass] based on [system].
   ///
+  /// See [PitchClassNotation] for all system implementations.
+  ///
   /// Example:
   /// ```dart
   /// PitchClass.c.toString() == '{C}'

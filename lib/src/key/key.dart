@@ -90,6 +90,21 @@ final class Key implements Comparable<Key> {
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
+  /// The string representation of this [Key] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.minor.toString() == 'C minor'
+  /// Note.e.flat.major.toString() == 'E♭ major'
+  ///
+  /// Note.c.major.toString(system: NoteNotation.romance) == 'Do maggiore'
+  /// Note.a.minor.toString(system: NoteNotation.romance) == 'La minore'
+  ///
+  /// Note.e.flat.major.toString(system: NoteNotation.german) == 'Es-dur'
+  /// Note.g.sharp.minor.toString(system: NoteNotation.german) == 'gis-moll'
+  /// ```
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.key(this);

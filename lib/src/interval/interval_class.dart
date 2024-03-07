@@ -165,6 +165,14 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// ```
   IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 
+  /// The string representation of this [IntervalClass].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.M2.toString() == '{M2|d3}'
+  /// IntervalClass.P4.toString() == '{P4}'
+  /// IntervalClass.tritone.toString() == '{A4|d5}'
+  /// ```
   @override
   String toString() => '{${spellings().join('|')}}';
 

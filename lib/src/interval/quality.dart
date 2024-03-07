@@ -28,6 +28,20 @@ sealed class Quality implements Comparable<Quality> {
   /// The inverted version of this [Quality].
   Quality get inverted;
 
+  /// The string representation of this [Quality] based on [system].
+  ///
+  /// See [IntervalNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.diminished.toString() == 'd'
+  /// PerfectQuality.doublyAugmented.toString() == 'AA'
+  ///
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
+  /// ```
   @override
   String toString({IntervalNotation system = IntervalNotation.standard}) =>
       system.quality(this);
@@ -108,6 +122,14 @@ final class PerfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [PerfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.augmented.toString() == 'A'
+  /// PerfectQuality.doublyDiminished.toString() == 'dd'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
@@ -197,6 +219,15 @@ final class ImperfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [ImperfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.diminished.toString() == 'd'
+  /// ImperfectQuality.triplyAugmented.toString() == 'AAA'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),

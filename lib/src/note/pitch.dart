@@ -410,6 +410,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
 
   /// The string representation of this [Pitch] based on [system].
   ///
+  /// See [PitchNotation] for all system implementations.
+  ///
   /// Example:
   /// ```dart
   /// Note.c.inOctave(4).toString() == 'C4'

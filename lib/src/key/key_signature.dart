@@ -28,8 +28,8 @@ final class KeySignature implements Comparable<KeySignature> {
   /// An empty [KeySignature].
   static const empty = KeySignature([]);
 
-  static const _firstFlatNote = Note(BaseNote.b, Accidental.flat);
-  static const _firstSharpNote = Note(BaseNote.f, Accidental.sharp);
+  static const _firstCanonicalFlatNote = Note(BaseNote.b, Accidental.flat);
+  static const _firstCanonicalSharpNote = Note(BaseNote.f, Accidental.sharp);
 
   /// Creates a new [KeySignature] from fifths [distance].
   ///
@@ -42,7 +42,9 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final firstNote = distance.isNegative ? _firstFlatNote : _firstSharpNote;
+    final firstNote = distance.isNegative
+        ? _firstCanonicalFlatNote
+        : _firstCanonicalSharpNote;
 
     return KeySignature(
       Interval.P5
@@ -81,6 +83,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.empty.distance == 0
   /// KeySignature([Note.f.sharp, Note.c.sharp]).distance == 2
   /// KeySignature.fromDistance(-4).distance == -4
+  /// KeySignature([Note.g.sharp]).distance == null
   /// ```
   int? get distance {
     if (accidental.isNatural) return 0;
@@ -88,7 +91,7 @@ final class KeySignature implements Comparable<KeySignature> {
     final cleanNotes = clean.notes;
     final apparentDistance = cleanNotes.length * accidental.semitones.sign;
     final apparentFirstNote =
-        accidental.isFlat ? _firstFlatNote : _firstSharpNote;
+        accidental.isFlat ? _firstCanonicalFlatNote : _firstCanonicalSharpNote;
     final circle = Interval.P5.circleFrom(
       apparentFirstNote,
       distance: apparentDistance.incrementBy(-1),
