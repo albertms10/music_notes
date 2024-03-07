@@ -149,6 +149,25 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta,
       );
 
+  /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.i.romanNumeral == 'I'
+  /// ScaleDegree.vii.romanNumeral == 'VII'
+  /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
+  /// ```
+  String get romanNumeral => switch (ordinal) {
+        1 => 'I',
+        2 => 'II',
+        3 => 'III',
+        4 => 'IV',
+        5 => 'V',
+        6 => 'VI',
+        7 => 'VII',
+        _ => '$ordinal',
+      };
+
   @override
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,
@@ -203,33 +222,16 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
 
   @override
   String scaleDegree(ScaleDegree scaleDegree) {
-    final buffer = StringBuffer();
-    if (scaleDegree.semitonesDelta != 0) {
-      buffer.write(Accidental(scaleDegree.semitonesDelta).symbol);
-    }
-    final romanNumeral = switch (scaleDegree.ordinal) {
-      1 => 'I',
-      2 => 'II',
-      3 => 'III',
-      4 => 'IV',
-      5 => 'V',
-      6 => 'VI',
-      7 => 'VII',
-      _ => '',
-    };
-
-    if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0) {
-      buffer.write(romanNumeral.toLowerCase());
-    } else {
-      buffer.write(romanNumeral);
-    }
-
-    switch (scaleDegree.inversion) {
-      case 1:
-        buffer.write('6');
-      case 2:
-        buffer.write('64');
-    }
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          Accidental(scaleDegree.semitonesDelta).symbol,
+        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        switch (scaleDegree.inversion) { 1 => '6', 2 => '64', _ => '' },
+      ]);
 
     return buffer.toString();
   }
