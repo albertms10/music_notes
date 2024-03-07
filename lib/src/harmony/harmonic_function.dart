@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart'
+    show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../interval/quality.dart';
@@ -13,11 +14,13 @@ import '../scale/scale_degree.dart';
 /// * [ScaleDegree].
 @immutable
 class HarmonicFunction {
-  /// The scale degrees that define this [HarmonicFunction].
-  final List<ScaleDegree> scaleDegrees;
+  final List<ScaleDegree> _scaleDegrees;
 
-  /// Creates a new [HarmonicFunction] from [scaleDegrees].
-  const HarmonicFunction(this.scaleDegrees);
+  /// The scale degrees that define this [HarmonicFunction].
+  List<ScaleDegree> get scaleDegrees => UnmodifiableListView(_scaleDegrees);
+
+  /// Creates a new [HarmonicFunction] from [_scaleDegrees].
+  const HarmonicFunction(this._scaleDegrees);
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction([ScaleDegree.i]);
@@ -59,7 +62,7 @@ class HarmonicFunction {
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,
   }) =>
-      scaleDegrees
+      _scaleDegrees
           .map((scaleDegree) => scaleDegree.toString(system: system))
           .join('/');
 
@@ -76,14 +79,14 @@ class HarmonicFunction {
   ///      ])
   /// ```
   HarmonicFunction operator /(HarmonicFunction other) =>
-      HarmonicFunction([...scaleDegrees, ...other.scaleDegrees]);
+      HarmonicFunction([..._scaleDegrees, ...other._scaleDegrees]);
 
   @override
   bool operator ==(Object other) =>
       other is HarmonicFunction &&
       const ListEquality<ScaleDegree>()
-          .equals(scaleDegrees, other.scaleDegrees);
+          .equals(_scaleDegrees, other._scaleDegrees);
 
   @override
-  int get hashCode => Object.hashAll(scaleDegrees);
+  int get hashCode => Object.hashAll(_scaleDegrees);
 }

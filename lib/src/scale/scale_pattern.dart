@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart' show IterableEquality;
+import 'package:collection/collection.dart'
+    show IterableEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord_pattern.dart';
@@ -19,16 +20,22 @@ import 'scale_degree.dart';
 /// * [Scale].
 @immutable
 final class ScalePattern {
-  /// The interval steps that define this [ScalePattern].
-  final List<Interval> intervalSteps;
+  final List<Interval> _intervalSteps;
 
-  /// The descending interval steps that define this [ScalePattern] (if
-  /// different).
+  /// The interval steps that define this [ScalePattern].
+  List<Interval> get intervalSteps => UnmodifiableListView(_intervalSteps);
+
+  /// The descending interval steps that define this [ScalePattern].
+  /// If null, the result is the same as calling `_intervalSteps.reversed`.
   final List<Interval>? _descendingIntervalSteps;
 
-  /// Creates a new [ScalePattern] from [intervalSteps] and optional
+  /// The descending interval steps that define this [ScalePattern].
+  List<Interval> get descendingIntervalSteps =>
+      UnmodifiableListView(_descendingIntervalSteps ?? _intervalSteps.reversed);
+
+  /// Creates a new [ScalePattern] from [_intervalSteps] and optional
   /// [_descendingIntervalSteps].
-  const ScalePattern(this.intervalSteps, [this._descendingIntervalSteps]);
+  const ScalePattern(this._intervalSteps, [this._descendingIntervalSteps]);
 
   /// ![C Ionian scale](https://upload.wikimedia.org/score/p/2/p2fun2296uif26uyy61yxjli7ocfq9d/p2fun229.png).
   static const ionian = ScalePattern([
@@ -286,10 +293,6 @@ final class ScalePattern {
   /// ```
   int get length => degreePatterns.length;
 
-  /// The descending interval steps that define this [ScalePattern].
-  List<Interval> get descendingIntervalSteps =>
-      _descendingIntervalSteps ?? intervalSteps.reversed.toList();
-
   /// The scale of notes starting from [scalable].
   ///
   /// Example:
@@ -307,7 +310,7 @@ final class ScalePattern {
   ///        Note.c])
   /// ```
   Scale<T> on<T extends Scalable<T>>(T scalable) => Scale(
-        intervalSteps.fold(
+        _intervalSteps.fold(
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
@@ -333,7 +336,7 @@ final class ScalePattern {
   /// ```
   ScalePattern get mirrored => ScalePattern(
         descendingIntervalSteps,
-        _descendingIntervalSteps != null ? intervalSteps : null,
+        _descendingIntervalSteps != null ? _intervalSteps : null,
       );
 
   /// The [ChordPattern] for each scale degree in this [ScalePattern].
@@ -351,7 +354,7 @@ final class ScalePattern {
   /// ]
   /// ```
   List<ChordPattern> get degreePatterns => [
-        for (var i = 1; i <= intervalSteps.length; i++)
+        for (var i = 1; i <= _intervalSteps.length; i++)
           degreePattern(ScaleDegree(i)),
       ];
 
@@ -370,7 +373,7 @@ final class ScalePattern {
       return ChordPattern.fromQuality(scaleDegree.quality!);
     }
 
-    // Deduce the diatonic `ChordPattern` from this `Scale.intervalSteps`.
+    // Deduce the diatonic `ChordPattern` from this `intervalSteps`.
     return ChordPattern.fromIntervalSteps([
       _addNextStepTo(scaleDegree.ordinal),
       _addNextStepTo(scaleDegree.ordinal + 2),
@@ -378,7 +381,7 @@ final class ScalePattern {
   }
 
   Interval _stepFrom(int ordinal) =>
-      intervalSteps[(ordinal - 1) % intervalSteps.length];
+      _intervalSteps[(ordinal - 1) % _intervalSteps.length];
 
   Interval _addNextStepTo(int ordinal) =>
       _stepFrom(ordinal) + _stepFrom(ordinal + 1);
@@ -393,7 +396,7 @@ final class ScalePattern {
   /// ```
   bool isEnharmonicWith(ScalePattern other) =>
       const IterableEquality<IntervalClass>()
-          .equals(intervalSteps.toClass(), other.intervalSteps.toClass()) &&
+          .equals(_intervalSteps.toClass(), other._intervalSteps.toClass()) &&
       const IterableEquality<IntervalClass>().equals(
         (_descendingIntervalSteps ?? const []).toClass(),
         (other._descendingIntervalSteps ?? const []).toClass(),
@@ -431,22 +434,18 @@ final class ScalePattern {
         ? ', ${_descendingIntervalSteps.join(' ')}'
         : '';
 
-    return '$name (${intervalSteps.join(' ')}$descendingSteps)';
+    return '$name (${_intervalSteps.join(' ')}$descendingSteps)';
   }
 
   @override
   bool operator ==(Object other) =>
-      other is ScalePattern &&
-      const IterableEquality<Interval>()
-          .equals(intervalSteps, other.intervalSteps) &&
-      const IterableEquality<Interval>()
-          .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
+      other is ScalePattern && isEnharmonicWith(other);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(intervalSteps),
+        Object.hashAll(_intervalSteps.toClass()),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps)
+            ? Object.hashAll(_descendingIntervalSteps.toClass())
             : null,
       );
 }

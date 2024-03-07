@@ -1,8 +1,23 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('ScalePattern', () {
+    group('.intervalSteps', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ScalePattern.aeolian.intervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+        expect(
+          ScalePattern.chromatic.descendingIntervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+      });
+    });
+
     group('.fromChordPattern()', () {
       test('creates a new ScalePattern from the given ChordPattern', () {
         expect(
@@ -588,9 +603,20 @@ void main() {
       });
     });
 
+    group('operator ==()', () {
+      test('returns true when other is enharmonic', () {
+        expect(
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal ScalePattern instances in a Set', () {
         final collection = {
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
           // ignore: equal_elements_in_set
@@ -613,6 +639,7 @@ void main() {
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
+          ScalePattern([Interval.A4]),
           ScalePattern.major,
           ScalePattern.aeolian,
           ScalePattern.mixolydian,
