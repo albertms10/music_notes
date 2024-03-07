@@ -406,17 +406,13 @@ final class ScalePattern {
 
   @override
   bool operator ==(Object other) =>
-      other is ScalePattern &&
-      const IterableEquality<Interval>()
-          .equals(_intervalSteps, other._intervalSteps) &&
-      const IterableEquality<Interval>()
-          .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
+      other is ScalePattern && isEnharmonicWith(other);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(_intervalSteps),
+        Object.hashAll(_intervalSteps.toClass()),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps)
+            ? Object.hashAll(_descendingIntervalSteps.toClass())
             : null,
       );
 }
