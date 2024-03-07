@@ -259,29 +259,30 @@ final class ScalePattern {
   /// int b(String sequence) => int.parse(sequence, radix: 2);
   ///
   /// ScalePattern.fromBinary(b('101010110101')) == ScalePattern.major
-  /// ScalePattern.fromBinary(b('10110101101')) == ScalePattern.naturalMinor
   /// ScalePattern.fromBinary(b('111111111111')) == ScalePattern.chromatic
   /// ScalePattern.fromBinary(b('1010010101')) == ScalePattern.majorPentatonic
+  /// ScalePattern.fromBinary(b('101010101101'), b('10110101101'))
+  ///   == ScalePattern.melodicMinor
   /// ```
   factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
     int bitAt(int sequence, int index) => sequence & 1 << index;
 
-    return Scale(
-      [
-        for (int i = 0; i < chromaticDivisions; i++)
-          if (bitAt(sequence, i) != 0) PitchClass(i),
-        PitchClass.c,
-      ],
-      descendingSequence == null
-          ? null
-          : [
-              PitchClass.c,
-              for (int i = chromaticDivisions - 1; i >= 0; i--)
-                if (bitAt(descendingSequence, i) != 0) PitchClass(i),
-            ],
-    ).pattern;
+    final degrees = [
+      for (int i = 0; i < chromaticDivisions; i++)
+        if (bitAt(sequence, i) != 0) PitchClass(i),
+      PitchClass.c,
+    ];
+    final descendingDegrees = descendingSequence == null
+        ? null
+        : [
+            PitchClass.c,
+            for (int i = chromaticDivisions - 1; i >= 0; i--)
+              if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+          ];
+
+    return Scale(degrees, descendingDegrees).pattern;
   }
 
   /// Returns the binary representation of this [ScalePattern].
@@ -290,25 +291,27 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.toBinary() == int.parse('101010110101', radix: 2)
-  /// ScalePattern.naturalMinor.toBinary() == int.parse('10110101101', radix: 2)
-  /// ScalePattern.chromatic.toBinary() == int.parse('111111111111', radix: 2)
-  /// ScalePattern.majorPentatonic.toBinary()
-  ///   == int.parse('1010010101', radix: 2)
+  /// int b(String sequence) => int.parse(sequence, radix: 2);
+  ///
+  /// ScalePattern.major.toBinary() == (b('101010110101'), null)
+  /// ScalePattern.chromatic.toBinary() == (b('111111111111'), null)
+  /// ScalePattern.majorPentatonic.toBinary() == (b('1010010101'), null)
+  /// ScalePattern.melodicMinor.toBinary()
+  ///   == (b('101010101101'), b('10110101101'))
   /// ```
-  (int, int?) toBinary() {
+  (int sequence, int? descendingSequence) toBinary() {
     int toBit(int sequence, Scalable<PitchClass> scalable) =>
         sequence | 1 << scalable.semitones;
 
     final scale = on(PitchClass.c);
-    final ascendingSequence = scale.degrees.fold(0, toBit);
+    final sequence = scale.degrees.fold(0, toBit);
     final cachedDescending = scale.descendingDegrees;
     final descendingSequence =
         cachedDescending.reversed.isEnharmonicWith(scale.degrees)
             ? null
             : cachedDescending.fold(0, toBit);
 
-    return (ascendingSequence, descendingSequence);
+    return (sequence, descendingSequence);
   }
 
   /// The length of this [ScalePattern].
