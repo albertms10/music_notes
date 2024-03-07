@@ -107,6 +107,20 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta - 1,
       );
 
+  /// This [ScaleDegree] inverted.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
+  /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
+  /// ```
+  ScaleDegree get inverted => ScaleDegree(
+        ordinal,
+        quality: quality,
+        inversion: inversion + 1,
+        semitonesDelta: semitonesDelta,
+      );
+
   /// This [ScaleDegree] as [ImperfectQuality.major].
   ///
   /// Example:
