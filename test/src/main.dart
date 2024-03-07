@@ -4,6 +4,7 @@ import 'harmony/harmonic_function_test.dart' as harmonic_function_test;
 import 'interval/interval_class_test.dart' as interval_class_test;
 import 'interval/interval_test.dart' as interval_test;
 import 'interval/quality_test.dart' as quality_test;
+import 'interval/size_test.dart' as size_test;
 import 'key/key_signature_test.dart' as key_signature_test;
 import 'key/key_test.dart' as key_test;
 import 'key/mode_test.dart' as mode_test;
@@ -31,6 +32,7 @@ void main() {
   interval_class_test.main();
   interval_test.main();
   quality_test.main();
+  size_test.main();
   accidental_test.main();
   base_note_test.main();
   closest_pitch_test.main();

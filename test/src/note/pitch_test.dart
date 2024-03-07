@@ -495,16 +495,6 @@ void main() {
       });
     });
 
-    group('.toClass()', () {
-      test('creates a new PitchClass from semitones', () {
-        expect(Note.c.inOctave(4).toClass(), PitchClass.c);
-        expect(Note.d.sharp.inOctave(3).toClass(), PitchClass.dSharp);
-        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.inOctave(6).toClass(), PitchClass.f);
-        expect(Note.c.flat.flat.inOctave(5).toClass(), PitchClass.aSharp);
-      });
-    });
-
     group('.interval()', () {
       test('returns the Interval between this Pitch and other', () {
         expect(Note.c.inOctave(4).interval(Note.c.inOctave(4)), Interval.P1);
@@ -622,23 +612,23 @@ void main() {
         expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(5)),
-          const Interval.perfect(15, PerfectQuality.perfect),
+          const Interval.perfect(Size(15), PerfectQuality.perfect),
         );
 
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(6)),
-          const Interval.perfect(22, PerfectQuality.perfect),
+          const Interval.perfect(Size(22), PerfectQuality.perfect),
         );
 
         expect(
           Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-          const Interval.perfect(29, PerfectQuality.perfect),
+          const Interval.perfect(Size(29), PerfectQuality.perfect),
         );
 
         expect(
           skip: true,
           () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
-          const Interval.perfect(29, PerfectQuality.perfect),
+          const Interval.perfect(Size(29), PerfectQuality.perfect),
         );
       });
     });
@@ -896,23 +886,23 @@ void main() {
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(15), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(6),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(22), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(7),
         );
 
         expect(
-          Note.c
-              .inOctave(4)
-              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.inOctave(4).transposeBy(
+                const Interval.perfect(Size(29), PerfectQuality.perfect),
+              ),
           Note.c.inOctave(8),
         );
       });
@@ -1287,7 +1277,7 @@ void main() {
   });
 }
 
-class _SubPitchNotation extends PitchNotation {
+final class _SubPitchNotation extends PitchNotation {
   @override
   String pitch(Pitch pitch) => throw UnimplementedError();
 }

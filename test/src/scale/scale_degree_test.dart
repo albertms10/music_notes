@@ -5,6 +5,21 @@ import 'package:test/test.dart';
 
 void main() {
   group('ScaleDegree', () {
+    group('constructor', () {
+      test('throws an assertion error when arguments are incorrect', () {
+        expect(() => ScaleDegree(-1), throwsA(isA<AssertionError>()));
+        expect(() => ScaleDegree(0), throwsA(isA<AssertionError>()));
+        expect(
+          () => ScaleDegree(1, inversion: -1),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => ScaleDegree(-2, inversion: -3),
+          throwsA(isA<AssertionError>()),
+        );
+      });
+    });
+
     group('.isRaised', () {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
@@ -46,6 +61,20 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('returns this ScaleDegree inverted', () {
+        expect(ScaleDegree.ii.inverted, const ScaleDegree(2, inversion: 1));
+        expect(
+          ScaleDegree.vi.lowered.lowered.inverted.inverted,
+          const ScaleDegree(6, semitonesDelta: -2, inversion: 2),
+        );
+        expect(
+          ScaleDegree.iii.inverted.inverted.inverted,
+          const ScaleDegree(3, inversion: 3),
+        );
+      });
+    });
+
     group('.major', () {
       test('returns this ScaleDegree as major', () {
         expect(
@@ -78,6 +107,23 @@ void main() {
           ScaleDegree.iv.major.minor,
           const ScaleDegree(4, quality: ImperfectQuality.minor),
         );
+      });
+    });
+
+    group('.romanNumeral', () {
+      test('returns the roman numeral of this ScaleDegree', () {
+        expect(ScaleDegree.i.romanNumeral, 'I');
+        expect(ScaleDegree.ii.minor.romanNumeral, 'II');
+        expect(ScaleDegree.iii.minor.inverted.romanNumeral, 'III');
+        expect(ScaleDegree.iv.major.lowered.romanNumeral, 'IV');
+        expect(ScaleDegree.v.minor.raised.romanNumeral, 'V');
+        expect(ScaleDegree.vi.romanNumeral, 'VI');
+        expect(ScaleDegree.vii.romanNumeral, 'VII');
+      });
+
+      test('returns the ordinal number if higher than 7', () {
+        expect(const ScaleDegree(8).romanNumeral, '8');
+        expect(const ScaleDegree(20).romanNumeral, '20');
       });
     });
 

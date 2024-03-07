@@ -1,8 +1,9 @@
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart' show IterableEquality;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
+import '../interval/interval_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
@@ -231,15 +232,15 @@ final class ScalePattern {
   /// ScalePattern.fromChordPattern(ChordPattern.minorTriad)
   ///   == ScalePattern.naturalMinor
   /// ```
-  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) =>
-      switch (chordPattern) {
-        final chord when chord.isAugmented => lydianAugmented,
-        final chord when chord.isMajor => major,
-        final chord when chord.isMinor => naturalMinor,
-        final chord when chord.isDiminished => locrian,
-        // TODO(albertms10): add support for other triad constructions.
-        _ => major,
-      };
+  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) {
+    if (chordPattern.isAugmented) return lydianAugmented;
+    if (chordPattern.isMajor) return major;
+    if (chordPattern.isMinor) return naturalMinor;
+    if (chordPattern.isDiminished) return locrian;
+
+    // TODO(albertms10): add support for other triad constructions.
+    return major;
+  }
 
   /// The length of this [ScalePattern].
   ///
@@ -256,7 +257,7 @@ final class ScalePattern {
   List<Interval> get descendingIntervalSteps =>
       _descendingIntervalSteps ?? intervalSteps.reversed.toList();
 
-  /// Returns the scale of notes starting from [scalable].
+  /// The scale of notes starting from [scalable].
   ///
   /// Example:
   /// ```dart
@@ -289,7 +290,7 @@ final class ScalePattern {
             .toList(),
       );
 
-  /// Returns the mirrored scale version of this [ScalePattern].
+  /// The mirrored scale version of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -302,7 +303,7 @@ final class ScalePattern {
         _descendingIntervalSteps != null ? intervalSteps : null,
       );
 
-  /// Returns the [ChordPattern] for each scale degree in this [ScalePattern].
+  /// The [ChordPattern] for each scale degree in this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -321,7 +322,7 @@ final class ScalePattern {
           degreePattern(ScaleDegree(i)),
       ];
 
-  /// Returns the [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -336,19 +337,36 @@ final class ScalePattern {
       return ChordPattern.fromQuality(scaleDegree.quality!);
     }
 
-    Interval step(int ordinal) =>
-        intervalSteps[(ordinal - 1) % intervalSteps.length];
-
-    Interval addNextStep(int ordinal) => step(ordinal) + step(ordinal + 1);
-
-    // Calculate the diatonic pattern from this Scale's `intervalSteps`.
+    // Deduce the diatonic `ChordPattern` from this `Scale.intervalSteps`.
     return ChordPattern.fromIntervalSteps([
-      addNextStep(scaleDegree.ordinal),
-      addNextStep(scaleDegree.ordinal + 2),
+      _addNextStepTo(scaleDegree.ordinal),
+      _addNextStepTo(scaleDegree.ordinal + 2),
     ]);
   }
 
-  /// Returns the name associated with this [ScalePattern].
+  Interval _stepFrom(int ordinal) =>
+      intervalSteps[(ordinal - 1) % intervalSteps.length];
+
+  Interval _addNextStepTo(int ordinal) =>
+      _stepFrom(ordinal) + _stepFrom(ordinal + 1);
+
+  /// Whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+  ///   .isEnharmonicWith(ScalePattern([Interval.m2, Interval.A2, Interval.d3]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(ScalePattern other) =>
+      const IterableEquality<IntervalClass>()
+          .equals(intervalSteps.toClass(), other.intervalSteps.toClass()) &&
+      const IterableEquality<IntervalClass>().equals(
+        (_descendingIntervalSteps ?? const []).toClass(),
+        (other._descendingIntervalSteps ?? const []).toClass(),
+      );
+
+  /// The name associated with this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -386,9 +404,9 @@ final class ScalePattern {
   @override
   bool operator ==(Object other) =>
       other is ScalePattern &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(intervalSteps, other.intervalSteps) &&
-      const ListEquality<Interval>()
+      const IterableEquality<Interval>()
           .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
 
   @override
