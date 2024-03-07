@@ -539,7 +539,7 @@ final class GermanNoteNotation extends NoteNotation {
   @override
   String key(Key key) {
     final note = key.note.toString(system: this);
-    final mode = key.mode.toString(system: this);
+    final mode = key.mode.toString(system: this).toLowerCase();
     final casedNote = switch (key.mode) {
       TonalMode.major => note,
       TonalMode.minor => note.toLowerCase(),
