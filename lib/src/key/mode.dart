@@ -62,6 +62,9 @@ enum TonalMode implements Mode {
         TonalMode.minor => TonalMode.major,
       };
 
+  /// The string representation of this [TonalMode] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.tonalMode(this);

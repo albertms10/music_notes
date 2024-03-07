@@ -168,6 +168,16 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         _ => '$ordinal',
       };
 
+  /// The string representation of this [ScaleDegree] based on [system].
+  ///
+  /// See [ScaleDegreeNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.iii.toString() == 'III'
+  /// ScaleDegree.vi.minor.lowered.toString() == '♭vi'
+  /// ScaleDegree.neapolitanSixth.toString() == '♭II6'
+  /// ```
   @override
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,

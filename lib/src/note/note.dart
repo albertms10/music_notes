@@ -423,6 +423,16 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   PitchClass toPitchClass() => PitchClass(semitones);
 
+  /// The string representation of this [Note] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.toString() == 'D♭'
+  /// Note.d.flat.toString(system: NoteNotation.romance) == 'Re♭'
+  /// Note.d.flat.toString(system: NoteNotation.german) == 'Des'
+  /// ```
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.note(this);
@@ -510,10 +520,8 @@ final class GermanNoteNotation extends NoteNotation {
         Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
         // Flattened notes.
         final note when note.accidental.isFlat => switch (note.baseNote) {
-            BaseNote.a ||
-            BaseNote.e =>
-              '${note.baseNote.toString(system: this)}'
-                  '${note.accidental.toString(system: this).substring(1)}',
+            BaseNote.a || BaseNote.e => note.baseNote.toString(system: this) +
+                note.accidental.toString(system: this).substring(1),
             _ => super.note(note),
           },
         // Sharpened and natural notes.
