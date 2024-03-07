@@ -256,12 +256,12 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// int b(String sequence) => int.parse(sequence, radix: 2);
+  /// extension on String { int get b => int.parse(this, radix: 2); }
   ///
-  /// ScalePattern.fromBinary(b('101010110101')) == ScalePattern.major
-  /// ScalePattern.fromBinary(b('111111111111')) == ScalePattern.chromatic
-  /// ScalePattern.fromBinary(b('1010010101')) == ScalePattern.majorPentatonic
-  /// ScalePattern.fromBinary(b('101010101101'), b('10110101101'))
+  /// ScalePattern.fromBinary('101010110101'.b) == ScalePattern.major
+  /// ScalePattern.fromBinary('111111111111'.b) == ScalePattern.chromatic
+  /// ScalePattern.fromBinary('1010010101'.b) == ScalePattern.majorPentatonic
+  /// ScalePattern.fromBinary('101010101101'.b, '10110101101'.b)
   ///   == ScalePattern.melodicMinor
   /// ```
   factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
@@ -291,13 +291,13 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// int b(String sequence) => int.parse(sequence, radix: 2);
+  /// extension on String { int get b => int.parse(this, radix: 2); }
   ///
-  /// ScalePattern.major.toBinary() == (b('101010110101'), null)
-  /// ScalePattern.chromatic.toBinary() == (b('111111111111'), null)
-  /// ScalePattern.majorPentatonic.toBinary() == (b('1010010101'), null)
+  /// ScalePattern.major.toBinary() == ('101010110101'.b, null)
+  /// ScalePattern.chromatic.toBinary() == ('111111111111'.b, null)
+  /// ScalePattern.majorPentatonic.toBinary() == ('1010010101'.b, null)
   /// ScalePattern.melodicMinor.toBinary()
-  ///   == (b('101010101101'), b('10110101101'))
+  ///   == ('101010101101'.b, '10110101101'.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
     int toBit(int sequence, Scalable<PitchClass> scalable) =>

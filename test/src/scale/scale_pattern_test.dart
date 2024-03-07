@@ -41,21 +41,21 @@ void main() {
 
     group('.fromBinary()', () {
       test('creates a new ScalePattern from a binary sequence', () {
-        expect(ScalePattern.fromBinary(_b('101010110101')), ScalePattern.major);
+        expect(ScalePattern.fromBinary('101010110101'.b), ScalePattern.major);
         expect(
-          ScalePattern.fromBinary(_b('10110101101')),
+          ScalePattern.fromBinary('10110101101'.b),
           ScalePattern.naturalMinor,
         );
         expect(
-          ScalePattern.fromBinary(_b('101010101101'), _b('10110101101')),
+          ScalePattern.fromBinary('101010101101'.b, '10110101101'.b),
           ScalePattern.melodicMinor,
         );
         expect(
-          ScalePattern.fromBinary(_b('111111111111')),
+          ScalePattern.fromBinary('111111111111'.b),
           ScalePattern.chromatic,
         );
         expect(
-          ScalePattern.fromBinary(_b('1010010101')),
+          ScalePattern.fromBinary('1010010101'.b),
           ScalePattern.majorPentatonic,
         );
       });
@@ -63,17 +63,14 @@ void main() {
 
     group('.toBinary()', () {
       test('returns the binary representation of this ScalePattern', () {
-        expect(ScalePattern.major.toBinary(), (_b('101010110101'), null));
-        expect(ScalePattern.naturalMinor.toBinary(), (_b('10110101101'), null));
+        expect(ScalePattern.major.toBinary(), ('101010110101'.b, null));
+        expect(ScalePattern.naturalMinor.toBinary(), ('10110101101'.b, null));
         expect(
           ScalePattern.melodicMinor.toBinary(),
-          (_b('101010101101'), _b('10110101101')),
+          ('101010101101'.b, '10110101101'.b),
         );
-        expect(ScalePattern.chromatic.toBinary(), (_b('111111111111'), null));
-        expect(
-          ScalePattern.majorPentatonic.toBinary(),
-          (_b('1010010101'), null),
-        );
+        expect(ScalePattern.chromatic.toBinary(), ('111111111111'.b, null));
+        expect(ScalePattern.majorPentatonic.toBinary(), ('1010010101'.b, null));
       });
     });
 
@@ -673,4 +670,7 @@ void main() {
   });
 }
 
-int _b(String sequence) => int.parse(sequence, radix: 2);
+extension on String {
+  /// Parse this [String] as a binary integer.
+  int get b => int.parse(this, radix: 2);
+}
