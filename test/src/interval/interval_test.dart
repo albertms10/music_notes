@@ -8,19 +8,11 @@ void main() {
     group('constructor', () {
       test('throws an assertion error when arguments are incorrect', () {
         expect(
-          () => Interval.perfect(0, PerfectQuality.perfect),
+          () => Interval.perfect(Size.second, PerfectQuality.diminished),
           throwsA(isA<AssertionError>()),
         );
         expect(
-          () => Interval.imperfect(0, ImperfectQuality.minor),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => Interval.perfect(2, PerfectQuality.diminished),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => Interval.imperfect(5, ImperfectQuality.augmented),
+          () => Interval.imperfect(Size.fifth, ImperfectQuality.augmented),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -28,61 +20,61 @@ void main() {
 
     group('.fromSemitones()', () {
       test('creates a new Interval from semitones', () {
-        expect(Interval.fromSemitones(1, -1), Interval.d1);
-        expect(Interval.fromSemitones(-1, 1), -Interval.d1);
-        expect(Interval.fromSemitones(1, 0), Interval.P1);
-        expect(Interval.fromSemitones(-1, 0), -Interval.P1);
-        expect(Interval.fromSemitones(1, 1), Interval.A1);
-        expect(Interval.fromSemitones(-1, -1), -Interval.A1);
+        expect(Interval.fromSemitones(Size.unison, -1), Interval.d1);
+        expect(Interval.fromSemitones(-Size.unison, 1), -Interval.d1);
+        expect(Interval.fromSemitones(Size.unison, 0), Interval.P1);
+        expect(Interval.fromSemitones(-Size.unison, 0), -Interval.P1);
+        expect(Interval.fromSemitones(Size.unison, 1), Interval.A1);
+        expect(Interval.fromSemitones(-Size.unison, -1), -Interval.A1);
 
-        expect(Interval.fromSemitones(2, 0), Interval.d2);
-        expect(Interval.fromSemitones(-2, 0), -Interval.d2);
-        expect(Interval.fromSemitones(2, 1), Interval.m2);
-        expect(Interval.fromSemitones(-2, -1), -Interval.m2);
-        expect(Interval.fromSemitones(2, 2), Interval.M2);
-        expect(Interval.fromSemitones(-2, -2), -Interval.M2);
-        expect(Interval.fromSemitones(2, 3), Interval.A2);
-        expect(Interval.fromSemitones(-2, -3), -Interval.A2);
+        expect(Interval.fromSemitones(Size.second, 0), Interval.d2);
+        expect(Interval.fromSemitones(-Size.second, 0), -Interval.d2);
+        expect(Interval.fromSemitones(Size.second, 1), Interval.m2);
+        expect(Interval.fromSemitones(-Size.second, -1), -Interval.m2);
+        expect(Interval.fromSemitones(Size.second, 2), Interval.M2);
+        expect(Interval.fromSemitones(-Size.second, -2), -Interval.M2);
+        expect(Interval.fromSemitones(Size.second, 3), Interval.A2);
+        expect(Interval.fromSemitones(-Size.second, -3), -Interval.A2);
 
-        expect(Interval.fromSemitones(3, 2), Interval.d3);
-        expect(Interval.fromSemitones(-3, -2), -Interval.d3);
-        expect(Interval.fromSemitones(3, 3), Interval.m3);
-        expect(Interval.fromSemitones(-3, -3), -Interval.m3);
-        expect(Interval.fromSemitones(3, 4), Interval.M3);
-        expect(Interval.fromSemitones(-3, -4), -Interval.M3);
-        expect(Interval.fromSemitones(3, 5), Interval.A3);
-        expect(Interval.fromSemitones(-3, -5), -Interval.A3);
+        expect(Interval.fromSemitones(Size.third, 2), Interval.d3);
+        expect(Interval.fromSemitones(-Size.third, -2), -Interval.d3);
+        expect(Interval.fromSemitones(Size.third, 3), Interval.m3);
+        expect(Interval.fromSemitones(-Size.third, -3), -Interval.m3);
+        expect(Interval.fromSemitones(Size.third, 4), Interval.M3);
+        expect(Interval.fromSemitones(-Size.third, -4), -Interval.M3);
+        expect(Interval.fromSemitones(Size.third, 5), Interval.A3);
+        expect(Interval.fromSemitones(-Size.third, -5), -Interval.A3);
 
-        expect(Interval.fromSemitones(4, 4), Interval.d4);
-        expect(Interval.fromSemitones(-4, -4), -Interval.d4);
-        expect(Interval.fromSemitones(4, 5), Interval.P4);
-        expect(Interval.fromSemitones(-4, -5), -Interval.P4);
-        expect(Interval.fromSemitones(4, 6), Interval.A4);
-        expect(Interval.fromSemitones(-4, -6), -Interval.A4);
+        expect(Interval.fromSemitones(Size.fourth, 4), Interval.d4);
+        expect(Interval.fromSemitones(-Size.fourth, -4), -Interval.d4);
+        expect(Interval.fromSemitones(Size.fourth, 5), Interval.P4);
+        expect(Interval.fromSemitones(-Size.fourth, -5), -Interval.P4);
+        expect(Interval.fromSemitones(Size.fourth, 6), Interval.A4);
+        expect(Interval.fromSemitones(-Size.fourth, -6), -Interval.A4);
 
-        expect(Interval.fromSemitones(5, 6), Interval.d5);
-        expect(Interval.fromSemitones(-5, -6), -Interval.d5);
-        expect(Interval.fromSemitones(5, 7), Interval.P5);
-        expect(Interval.fromSemitones(-5, -7), -Interval.P5);
-        expect(Interval.fromSemitones(5, 8), Interval.A5);
-        expect(Interval.fromSemitones(-5, -8), -Interval.A5);
+        expect(Interval.fromSemitones(Size.fifth, 6), Interval.d5);
+        expect(Interval.fromSemitones(-Size.fifth, -6), -Interval.d5);
+        expect(Interval.fromSemitones(Size.fifth, 7), Interval.P5);
+        expect(Interval.fromSemitones(-Size.fifth, -7), -Interval.P5);
+        expect(Interval.fromSemitones(Size.fifth, 8), Interval.A5);
+        expect(Interval.fromSemitones(-Size.fifth, -8), -Interval.A5);
 
-        expect(Interval.fromSemitones(6, 8), Interval.m6);
-        expect(Interval.fromSemitones(-6, -8), -Interval.m6);
-        expect(Interval.fromSemitones(6, 9), Interval.M6);
-        expect(Interval.fromSemitones(-6, -9), -Interval.M6);
+        expect(Interval.fromSemitones(Size.sixth, 8), Interval.m6);
+        expect(Interval.fromSemitones(-Size.sixth, -8), -Interval.m6);
+        expect(Interval.fromSemitones(Size.sixth, 9), Interval.M6);
+        expect(Interval.fromSemitones(-Size.sixth, -9), -Interval.M6);
 
-        expect(Interval.fromSemitones(7, 10), Interval.m7);
-        expect(Interval.fromSemitones(-7, -10), -Interval.m7);
-        expect(Interval.fromSemitones(7, 11), Interval.M7);
-        expect(Interval.fromSemitones(-7, -11), -Interval.M7);
+        expect(Interval.fromSemitones(Size.seventh, 10), Interval.m7);
+        expect(Interval.fromSemitones(-Size.seventh, -10), -Interval.m7);
+        expect(Interval.fromSemitones(Size.seventh, 11), Interval.M7);
+        expect(Interval.fromSemitones(-Size.seventh, -11), -Interval.M7);
 
-        expect(Interval.fromSemitones(8, 11), Interval.d8);
-        expect(Interval.fromSemitones(-8, -11), -Interval.d8);
-        expect(Interval.fromSemitones(8, 12), Interval.P8);
-        expect(Interval.fromSemitones(-8, -12), -Interval.P8);
-        expect(Interval.fromSemitones(8, 13), Interval.A8);
-        expect(Interval.fromSemitones(-8, -13), -Interval.A8);
+        expect(Interval.fromSemitones(Size.octave, 11), Interval.d8);
+        expect(Interval.fromSemitones(-Size.octave, -11), -Interval.d8);
+        expect(Interval.fromSemitones(Size.octave, 12), Interval.P8);
+        expect(Interval.fromSemitones(-Size.octave, -12), -Interval.P8);
+        expect(Interval.fromSemitones(Size.octave, 13), Interval.A8);
+        expect(Interval.fromSemitones(-Size.octave, -13), -Interval.A8);
       });
     });
 
@@ -91,84 +83,63 @@ void main() {
         expect(() => Interval.parse('x'), throwsFormatException);
         expect(() => Interval.parse('x4'), throwsFormatException);
         expect(() => Interval.parse('x6'), throwsFormatException);
+        expect(() => Interval.parse('M+6'), throwsFormatException);
+        expect(() => Interval.parse('P--6'), throwsFormatException);
+        expect(() => Interval.parse('P6'), throwsFormatException);
+        expect(() => Interval.parse('m4'), throwsFormatException);
+        expect(() => Interval.parse('p5'), throwsFormatException);
+        expect(() => Interval.parse('a2'), throwsFormatException);
+        expect(() => Interval.parse('D3'), throwsFormatException);
       });
 
       test('parses source as an Interval and return its value', () {
         expect(
           Interval.parse('AA4'),
-          const Interval.perfect(4, PerfectQuality.doublyAugmented),
+          const Interval.perfect(Size.fourth, PerfectQuality.doublyAugmented),
         );
         expect(Interval.parse('A5'), Interval.A5);
+        expect(Interval.parse('A-1'), -Interval.A1);
         expect(Interval.parse('P1'), Interval.P1);
         expect(
           Interval.parse('P22'),
-          const Interval.perfect(22, PerfectQuality.perfect),
+          const Interval.perfect(Size(22), PerfectQuality.perfect),
         );
         expect(Interval.parse('d5'), Interval.d5);
+        expect(Interval.parse('d-5'), -Interval.d5);
         expect(
           Interval.parse('dd8'),
-          const Interval.perfect(8, PerfectQuality.doublyDiminished),
+          const Interval.perfect(Size.octave, PerfectQuality.doublyDiminished),
+        );
+        expect(
+          Interval.parse('dd-8'),
+          -const Interval.perfect(Size.octave, PerfectQuality.doublyDiminished),
         );
 
         expect(
           Interval.parse('AA3'),
-          const Interval.imperfect(3, ImperfectQuality.doublyAugmented),
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyAugmented,
+          ),
         );
         expect(Interval.parse('A6'), Interval.A6);
         expect(Interval.parse('M3'), Interval.M3);
+        expect(Interval.parse('M-3'), -Interval.M3);
         expect(
           Interval.parse('M16'),
-          const Interval.imperfect(16, ImperfectQuality.major),
+          const Interval.imperfect(Size(16), ImperfectQuality.major),
         );
         expect(Interval.parse('m2'), Interval.m2);
+        expect(Interval.parse('m-2'), -Interval.m2);
         expect(Interval.parse('d7'), Interval.d7);
         expect(
           Interval.parse('dd9'),
-          const Interval.imperfect(9, ImperfectQuality.doublyDiminished),
+          const Interval.imperfect(
+            Size.ninth,
+            ImperfectQuality.doublyDiminished,
+          ),
         );
       });
-    });
-
-    group('.sizeFromSemitones()', () {
-      test(
-        'returns the Interval size corresponding to the given semitones',
-        () {
-          expect(Interval.sizeFromSemitones(-12), -8);
-          expect(Interval.sizeFromSemitones(-5), -4);
-          expect(Interval.sizeFromSemitones(-3), -3);
-          expect(Interval.sizeFromSemitones(-1), -2);
-          expect(Interval.sizeFromSemitones(0), 1);
-          expect(Interval.sizeFromSemitones(1), 2);
-          expect(Interval.sizeFromSemitones(3), 3);
-          expect(Interval.sizeFromSemitones(5), 4);
-          expect(Interval.sizeFromSemitones(7), 5);
-          expect(Interval.sizeFromSemitones(8), 6);
-          expect(Interval.sizeFromSemitones(10), 7);
-          expect(Interval.sizeFromSemitones(12), 8);
-          expect(Interval.sizeFromSemitones(13), 9);
-          expect(Interval.sizeFromSemitones(15), 10);
-          expect(Interval.sizeFromSemitones(17), 11);
-          expect(Interval.sizeFromSemitones(19), 12);
-          expect(Interval.sizeFromSemitones(20), 13);
-          expect(Interval.sizeFromSemitones(22), 14);
-          expect(Interval.sizeFromSemitones(24), 15);
-          expect(Interval.sizeFromSemitones(36), 22);
-          expect(Interval.sizeFromSemitones(48), 29);
-        },
-      );
-
-      test(
-        'returns null when no Interval size corresponds to the given semitones',
-        () {
-          expect(Interval.sizeFromSemitones(-4), isNull);
-          expect(Interval.sizeFromSemitones(-2), isNull);
-          expect(Interval.sizeFromSemitones(2), isNull);
-          expect(Interval.sizeFromSemitones(4), isNull);
-          expect(Interval.sizeFromSemitones(6), isNull);
-          expect(Interval.sizeFromSemitones(9), isNull);
-          expect(Interval.sizeFromSemitones(11), isNull);
-        },
-      );
     });
 
     group('.semitones', () {
@@ -225,17 +196,17 @@ void main() {
         expect((-Interval.M13).semitones, -21);
 
         expect(
-          const Interval.perfect(15, PerfectQuality.perfect).semitones,
+          const Interval.perfect(Size(15), PerfectQuality.perfect).semitones,
           24,
         );
 
         expect(
-          const Interval.perfect(22, PerfectQuality.perfect).semitones,
+          const Interval.perfect(Size(22), PerfectQuality.perfect).semitones,
           36,
         );
 
         expect(
-          const Interval.perfect(29, PerfectQuality.perfect).semitones,
+          const Interval.perfect(Size(29), PerfectQuality.perfect).semitones,
           48,
         );
       });
@@ -248,7 +219,7 @@ void main() {
         expect(Interval.d1.isDescending, isFalse);
         expect(Interval.M9.isDescending, isFalse);
         expect(
-          const Interval.perfect(-4, PerfectQuality.doublyAugmented)
+          const Interval.perfect(Size(-4), PerfectQuality.doublyAugmented)
               .isDescending,
           isTrue,
         );
@@ -329,36 +300,36 @@ void main() {
       });
     });
 
-    group('.simplified', () {
-      test('returns the simplified of this Interval', () {
+    group('.simple', () {
+      test('returns the simplified version of this Interval', () {
         expect(
-          const Interval.perfect(-22, PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-22), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
         expect(
-          const Interval.perfect(-15, PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-15), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
-        expect((-Interval.M13).simplified, -Interval.M6);
-        expect((-Interval.P11).simplified, -Interval.P4);
-        expect((-Interval.m9).simplified, -Interval.m2);
-        expect((-Interval.A8).simplified, -Interval.A8);
-        expect((-Interval.P8).simplified, -Interval.P8);
-        expect((-Interval.M3).simplified, -Interval.M3);
-        expect((-Interval.P1).simplified, -Interval.P1);
-        expect(Interval.P1.simplified, Interval.P1);
-        expect(Interval.M3.simplified, Interval.M3);
-        expect(Interval.P8.simplified, Interval.P8);
-        expect(Interval.A8.simplified, Interval.A8);
-        expect(Interval.m9.simplified, Interval.m2);
-        expect(Interval.P11.simplified, Interval.P4);
-        expect(Interval.M13.simplified, Interval.M6);
+        expect((-Interval.M13).simple, -Interval.M6);
+        expect((-Interval.P11).simple, -Interval.P4);
+        expect((-Interval.m9).simple, -Interval.m2);
+        expect((-Interval.A8).simple, -Interval.A8);
+        expect((-Interval.P8).simple, -Interval.P8);
+        expect((-Interval.M3).simple, -Interval.M3);
+        expect((-Interval.P1).simple, -Interval.P1);
+        expect(Interval.P1.simple, Interval.P1);
+        expect(Interval.M3.simple, Interval.M3);
+        expect(Interval.P8.simple, Interval.P8);
+        expect(Interval.A8.simple, Interval.A8);
+        expect(Interval.m9.simple, Interval.m2);
+        expect(Interval.P11.simple, Interval.P4);
+        expect(Interval.M13.simple, Interval.M6);
         expect(
-          const Interval.perfect(15, PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(15), PerfectQuality.perfect).simple,
           Interval.P8,
         );
         expect(
-          const Interval.perfect(22, PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(22), PerfectQuality.perfect).simple,
           Interval.P8,
         );
       });
@@ -428,21 +399,21 @@ void main() {
 
     group('.respellBySize()', () {
       test('returns this Interval respelled by size', () {
-        expect(Interval.A4.respellBySize(5), Interval.d5);
-        expect(Interval.d5.respellBySize(4), Interval.A4);
-        expect(Interval.M2.respellBySize(3), Interval.d3);
+        expect(Interval.A4.respellBySize(Size.fifth), Interval.d5);
+        expect(Interval.d5.respellBySize(Size.fourth), Interval.A4);
+        expect(Interval.M2.respellBySize(Size.third), Interval.d3);
         expect(
-          Interval.M3.respellBySize(5),
-          const Interval.perfect(5, PerfectQuality.triplyDiminished),
+          Interval.M3.respellBySize(Size.fifth),
+          const Interval.perfect(Size.fifth, PerfectQuality.triplyDiminished),
         );
-        expect(Interval.P1.respellBySize(2), Interval.d2);
-        expect(Interval.m2.respellBySize(1), Interval.A1);
+        expect(Interval.P1.respellBySize(Size.second), Interval.d2);
+        expect(Interval.m2.respellBySize(Size.unison), Interval.A1);
 
-        expect((-Interval.M3).respellBySize(-4), -Interval.d4);
-        expect((-Interval.d5).respellBySize(-4), -Interval.A4);
+        expect((-Interval.M3).respellBySize(-Size.fourth), -Interval.d4);
+        expect((-Interval.d5).respellBySize(-Size.fourth), -Interval.A4);
         expect(
-          (-Interval.P4).respellBySize(-5),
-          const Interval.perfect(-5, PerfectQuality.doublyDiminished),
+          (-Interval.P4).respellBySize(-Size.fifth),
+          const Interval.perfect(Size(-5), PerfectQuality.doublyDiminished),
         );
       });
     });
@@ -629,10 +600,10 @@ void main() {
       test('returns the negation of this Interval', () {
         expect(
           -Interval.M2,
-          const Interval.imperfect(-2, ImperfectQuality.major),
+          const Interval.imperfect(Size(-2), ImperfectQuality.major),
         );
         expect(
-          -const Interval.imperfect(-6, ImperfectQuality.minor),
+          -const Interval.imperfect(Size(-6), ImperfectQuality.minor),
           Interval.m6,
         );
       });
@@ -641,40 +612,43 @@ void main() {
     group('.toString()', () {
       test('returns the string representation of this Interval', () {
         expect(Interval.M2.toString(), 'M2');
-        expect((-Interval.m3).toString(), 'desc m3');
+        expect((-Interval.m3).toString(), 'm-3');
         expect(Interval.A4.toString(), 'A4');
-        expect((-Interval.P5).toString(), 'desc P5');
+        expect((-Interval.P5).toString(), 'P-5');
         expect(Interval.d7.toString(), 'd7');
-        expect((-Interval.d8).toString(), 'desc d8');
+        expect((-Interval.d8).toString(), 'd-8');
         expect(Interval.M9.toString(), 'M9 (M2)');
         expect(
-          const Interval.imperfect(-10, ImperfectQuality.minor).toString(),
-          'desc m10 (m3)',
+          const Interval.imperfect(Size(-10), ImperfectQuality.minor)
+              .toString(),
+          'm-10 (m-3)',
         );
         expect(Interval.A11.toString(), 'A11 (A4)');
         expect(
-          const Interval.imperfect(-14, ImperfectQuality.major).toString(),
-          'desc M14 (M7)',
+          const Interval.imperfect(Size(-14), ImperfectQuality.major)
+              .toString(),
+          'M-14 (M-7)',
         );
         expect(
-          const Interval.perfect(15, PerfectQuality.perfect).toString(),
+          const Interval.perfect(Size(15), PerfectQuality.perfect).toString(),
           'P15 (P8)',
         );
         expect(
-          const Interval.imperfect(-16, ImperfectQuality.diminished).toString(),
-          'desc d16 (d2)',
+          const Interval.imperfect(Size(-16), ImperfectQuality.diminished)
+              .toString(),
+          'd-16 (d-2)',
         );
         expect(
-          const Interval.perfect(22, PerfectQuality.perfect).toString(),
+          const Interval.perfect(Size(22), PerfectQuality.perfect).toString(),
           'P22 (P8)',
         );
 
         expect(
-          const Interval.perfect(5, PerfectQuality(-4)).toString(),
+          const Interval.perfect(Size.fifth, PerfectQuality(-4)).toString(),
           'dddd5',
         );
         expect(
-          const Interval.imperfect(10, ImperfectQuality(6)).toString(),
+          const Interval.imperfect(Size.tenth, ImperfectQuality(6)).toString(),
           'AAAAA10 (AAAAA3)',
         );
       });

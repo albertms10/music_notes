@@ -611,20 +611,23 @@ void main() {
         expect(Note.c.transposeBy(Interval.M13), Note.a);
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(15, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(15), PerfectQuality.perfect),
+          ),
           Note.c,
         );
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(22, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(22), PerfectQuality.perfect),
+          ),
           Note.c,
         );
 
         expect(
-          Note.c
-              .transposeBy(const Interval.perfect(29, PerfectQuality.perfect)),
+          Note.c.transposeBy(
+            const Interval.perfect(Size(29), PerfectQuality.perfect),
+          ),
           Note.c,
         );
       });
@@ -743,38 +746,20 @@ void main() {
         );
       });
 
-      test('returns the Italian string representation of this Note', () {
-        expect(Note.c.toString(system: NoteNotation.italian), 'Do');
-        expect(Note.c.sharp.toString(system: NoteNotation.italian), 'Do♯');
-        expect(Note.d.toString(system: NoteNotation.italian), 'Re');
-        expect(Note.d.flat.toString(system: NoteNotation.italian), 'Re♭');
-        expect(Note.e.toString(system: NoteNotation.italian), 'Mi');
-        expect(Note.b.flat.toString(system: NoteNotation.italian), 'Si♭');
-        expect(Note.f.sharp.toString(system: NoteNotation.italian), 'Fa♯');
+      test('returns the Romance string representation of this Note', () {
+        expect(Note.c.toString(system: NoteNotation.romance), 'Do');
+        expect(Note.c.sharp.toString(system: NoteNotation.romance), 'Do♯');
+        expect(Note.d.toString(system: NoteNotation.romance), 'Re');
+        expect(Note.d.flat.toString(system: NoteNotation.romance), 'Re♭');
+        expect(Note.e.toString(system: NoteNotation.romance), 'Mi');
+        expect(Note.b.flat.toString(system: NoteNotation.romance), 'Si♭');
+        expect(Note.f.sharp.toString(system: NoteNotation.romance), 'Fa♯');
         expect(
-          Note.a.sharp.sharp.toString(system: NoteNotation.italian),
+          Note.a.sharp.sharp.toString(system: NoteNotation.romance),
           'La𝄪',
         );
         expect(
-          Note.g.flat.flat.toString(system: NoteNotation.italian),
-          'Sol𝄫',
-        );
-      });
-
-      test('returns the French string representation of this Note', () {
-        expect(Note.c.toString(system: NoteNotation.french), 'Ut');
-        expect(Note.c.sharp.toString(system: NoteNotation.french), 'Ut♯');
-        expect(Note.d.toString(system: NoteNotation.french), 'Ré');
-        expect(Note.d.flat.toString(system: NoteNotation.french), 'Ré♭');
-        expect(Note.e.toString(system: NoteNotation.french), 'Mi');
-        expect(Note.b.flat.toString(system: NoteNotation.french), 'Si♭');
-        expect(Note.f.sharp.toString(system: NoteNotation.french), 'Fa♯');
-        expect(
-          Note.a.sharp.sharp.toString(system: NoteNotation.french),
-          'La𝄪',
-        );
-        expect(
-          Note.g.flat.flat.toString(system: NoteNotation.french),
+          Note.g.flat.flat.toString(system: NoteNotation.romance),
           'Sol𝄫',
         );
       });
@@ -848,10 +833,13 @@ void main() {
   });
 }
 
-class _SubNoteNotation extends NoteNotation {
+final class _SubNoteNotation extends NoteNotation {
   @override
   String baseNote(BaseNote baseNote) => throw UnimplementedError();
 
   @override
   String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
+
+  @override
+  String accidental(Accidental accidental) => throw UnimplementedError();
 }

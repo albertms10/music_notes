@@ -518,6 +518,22 @@ void main() {
       );
     });
 
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this ScalePattern is enharmonically equivalent to '
+        'other',
+        () {
+          expect(
+            const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+                .isEnharmonicWith(
+              const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
+            ),
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('.name', () {
       test('returns the name of this ScalePattern', () {
         expect(ScalePattern.ionian.name, 'Major (ionian)');

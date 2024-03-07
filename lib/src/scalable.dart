@@ -1,4 +1,5 @@
 import 'interval/interval.dart';
+import 'interval/interval_class.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
 import 'transposable.dart';
@@ -21,10 +22,10 @@ abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
   /// ```
   PitchClass toClass() => PitchClass(semitones);
 
-  /// Returns the [Interval] between this [Scalable] and [other].
+  /// The [Interval] between this [Scalable] and [other].
   Interval interval(T other);
 
-  /// Returns the difference in semitones between this [Scalable] and [other].
+  /// The difference in semitones between this [Scalable] and [other].
   int difference(T other) {
     final diff = other.semitones - semitones;
 
@@ -36,25 +37,28 @@ abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
 
 /// A Scalable iterable.
 extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
-  /// Returns the [Interval]s between [T]s in this [Iterable].
+  /// The [Interval]s between [T]s in this [Iterable].
   Iterable<Interval> get intervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i).interval(elementAt(i + 1));
     }
   }
 
-  /// Returns the descending [Interval]s between [T]s this [Iterable].
+  /// The descending [Interval]s between [T]s this [Iterable].
   Iterable<Interval> get descendingIntervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
 
+  /// The [PitchClass] representation of this [ScalableIterable].
+  Iterable<PitchClass> toClass() => map((scalable) => scalable.toClass());
+
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 
-  /// Returns the inverse of this [ScalableIterable].
+  /// The inverse of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -70,7 +74,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     }
   }
 
-  /// Returns the retrograde of this [ScalableIterable].
+  /// The retrograde of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -79,7 +83,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
-  /// Returns the numeric representation of this [ScalableIterable].
+  /// The numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -90,7 +94,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
         (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
       );
 
-  /// Returns the delta numeric representation of this [ScalableIterable].
+  /// The delta numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
@@ -104,4 +108,10 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i - 1).difference(elementAt(i));
     }
   }
+}
+
+/// An Interval iterable.
+extension IntervalIterable<T extends Interval> on Iterable<T> {
+  /// The [PitchClass] representation of this [IntervalIterable].
+  Iterable<IntervalClass> toClass() => map((interval) => interval.toClass());
 }

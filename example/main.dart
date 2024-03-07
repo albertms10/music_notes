@@ -21,11 +21,11 @@ void main() {
   Pitch.parse('Eb3'); // E♭3
 
   // Intervals
-  const Interval.perfect(15, PerfectQuality.perfect); // P15
   Interval.P4; // P4
+  const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
 
-  -Interval.m6; // desc m6
-  Interval.M3.descending(); // desc M3
+  -Interval.m6; // m-6
+  Interval.M3.descending(); // M-3
 
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inverted; // m6
@@ -51,13 +51,13 @@ void main() {
   KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
   KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
 
-  KeySignature([Note.f.sharp]).keys!.major; // G major
-  KeySignature.empty.keys!.minor; // A minor
+  KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+  KeySignature.empty.keys[TonalMode.minor]; // A minor
 
   KeySignature([Note.a.flat])
     ..isCanonical // false
     ..distance // null
-    ..keys; // null
+    ..keys; // <TonalMode, Key>{}
 
   // Modes
   TonalMode.minor.scale; // ScalePattern.minor
@@ -98,12 +98,12 @@ void main() {
   Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
 
   // Frequencies
-  Note.a.inOctave(4).frequency(); // 440 Hz
+  Note.a.inOctave(4).frequency(); // 440
   Note.b.flat.inOctave(4).frequency(
         referenceFrequency: const Frequency(256),
         tuningSystem:
             EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
-      ); // 456.1401436878537 Hz
+      ); // 456.1401436878537
 
   const Frequency(432).closestPitch(); // A4-32
   const Frequency(314).closestPitch(); // E♭4+16

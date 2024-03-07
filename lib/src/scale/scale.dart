@@ -1,10 +1,12 @@
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart' show IterableEquality, ListEquality;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../interval/size.dart';
+import '../note/pitch_class.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'scale_degree.dart';
@@ -44,7 +46,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   List<T> get descendingDegrees =>
       _descendingDegrees ?? degrees.reversed.toList();
 
-  /// Returns the [ScalePattern] of this [Scale].
+  /// The [ScalePattern] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -56,7 +58,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
         _descendingDegrees?.descendingIntervalSteps.toList(),
       );
 
-  /// Returns the reversed of this [Scale].
+  /// The reversed of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -67,7 +69,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> get reversed =>
       Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
 
-  /// Returns the [Chord] for each [ScaleDegree] of this [Scale].
+  /// The [Chord] for each [ScaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -84,7 +86,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   List<Chord<T>> get degreeChords =>
       [for (var i = 1; i < degrees.length; i++) degreeChord(ScaleDegree(i))];
 
-  /// Returns the [T] for the [scaleDegree] of this [Scale].
+  /// The [T] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -98,13 +100,13 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
     return scalable.transposeBy(
       Interval.perfect(
-        1,
+        Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
     );
   }
 
-  /// Returns the [Chord] for the [scaleDegree] of this [Scale].
+  /// The [Chord] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -114,7 +116,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
-  /// Returns the [Chord] for the [harmonicFunction] of this [Scale].
+  /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -137,6 +139,22 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
             ).on(scale.degree(scaleDegree)),
           )
           .degreeChord(harmonicFunction.scaleDegrees.first);
+
+  /// Whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Scale([Note.c, Note.d, Note.f, Note.g])
+  ///   .isEnharmonicWith(Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(Scale<T> other) =>
+      const IterableEquality<PitchClass>()
+          .equals(degrees.toClass(), other.degrees.toClass()) &&
+      const IterableEquality<PitchClass>().equals(
+        (_descendingDegrees ?? const []).toClass(),
+        (other._descendingDegrees ?? const []).toClass(),
+      );
 
   /// Transposes this [Scale] by [interval].
   ///

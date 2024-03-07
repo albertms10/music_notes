@@ -10,7 +10,6 @@
     "helmholtz",
     "heptatonic",
     "ionian",
-    "italian",
     "locrian",
     "lydian",
     "maggiore",
@@ -22,6 +21,7 @@
     "phrygian",
     "pythagorean",
     "sublist",
+    "Versetzungszeichen",
     "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {

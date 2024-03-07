@@ -9,6 +9,7 @@ export 'src/harmony/harmonic_function.dart';
 export 'src/interval/interval.dart';
 export 'src/interval/interval_class.dart';
 export 'src/interval/quality.dart';
+export 'src/interval/size.dart';
 export 'src/key/key.dart';
 export 'src/key/key_signature.dart';
 export 'src/key/mode.dart';
