@@ -87,12 +87,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```dart
   /// ScaleDegree.vi.raised == const ScaleDegree(6, semitonesDelta: 1)
   /// ```
-  ScaleDegree get raised => ScaleDegree(
-        ordinal,
-        quality: quality,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta + 1,
-      );
+  ScaleDegree get raised => copyWith(semitonesDelta: semitonesDelta + 1);
 
   /// This [ScaleDegree] lowered by 1 semitone.
   ///
@@ -100,12 +95,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```dart
   /// ScaleDegree.ii.lowered == const ScaleDegree(2, semitonesDelta: -1)
   /// ```
-  ScaleDegree get lowered => ScaleDegree(
-        ordinal,
-        quality: quality,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta - 1,
-      );
+  ScaleDegree get lowered => copyWith(semitonesDelta: semitonesDelta - 1);
 
   /// This [ScaleDegree] inverted.
   ///
@@ -114,12 +104,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
   /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
   /// ```
-  ScaleDegree get inverted => ScaleDegree(
-        ordinal,
-        quality: quality,
-        inversion: inversion + 1,
-        semitonesDelta: semitonesDelta,
-      );
+  ScaleDegree get inverted => copyWith(inversion: inversion + 1);
 
   /// This [ScaleDegree] as [ImperfectQuality.major].
   ///
@@ -128,12 +113,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.ii.major
   ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
   /// ```
-  ScaleDegree get major => ScaleDegree(
-        ordinal,
-        quality: ImperfectQuality.major,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta,
-      );
+  ScaleDegree get major => copyWith(quality: ImperfectQuality.major);
 
   /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
@@ -142,11 +122,27 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.v.minor
   ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
   /// ```
-  ScaleDegree get minor => ScaleDegree(
-        ordinal,
-        quality: ImperfectQuality.minor,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta,
+  ScaleDegree get minor => copyWith(quality: ImperfectQuality.minor);
+
+  /// Creates a new [ScaleDegree] from this one by updating individual
+  /// properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.i.copyWith(inversion: 2) == ScaleDegree.i.inverted.inverted
+  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == ScaleDegree.vi.lowered
+  /// ```
+  ScaleDegree copyWith({
+    int? ordinal,
+    ImperfectQuality? quality,
+    int? inversion,
+    int? semitonesDelta,
+  }) =>
+      ScaleDegree(
+        ordinal ?? this.ordinal,
+        quality: quality ?? this.quality,
+        inversion: inversion ?? this.inversion,
+        semitonesDelta: semitonesDelta ?? this.semitonesDelta,
       );
 
   /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].

@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart' show IterableEquality, ListEquality;
+import 'package:collection/collection.dart'
+    show IterableEquality, ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../harmony/chord.dart';
@@ -22,14 +23,22 @@ import 'scale_pattern.dart';
 /// * [ScaleDegree].
 @immutable
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
-  /// The [Scalable] degrees that define this [Scale].
-  final List<T> degrees;
+  final List<T> _degrees;
 
-  /// The descending [Scalable] degrees that define this [Scale] (if different).
+  /// The [Scalable] degrees that define this [Scale].
+  List<T> get degrees => UnmodifiableListView(_degrees);
+
+  /// The descending [Scalable] degrees that define this [Scale].
+  /// If null, the result is the same as calling `_degrees.reversed`.
   final List<T>? _descendingDegrees;
 
-  /// Creates a new [Scale] instance from [degrees].
-  const Scale(this.degrees, [this._descendingDegrees]);
+  /// The descending [Scalable] degrees that define this [Scale].
+  List<T> get descendingDegrees =>
+      UnmodifiableListView(_descendingDegrees ?? _degrees.reversed);
+
+  /// Creates a new [Scale] instance from [_degrees] and optional
+  /// [_descendingDegrees].
+  const Scale(this._degrees, [this._descendingDegrees]);
 
   /// The length of this [Scale].
   ///
@@ -40,11 +49,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ScalePattern.octatonic.on(Note.d.flat).length == 8
   /// ScalePattern.chromatic.on(Note.c).length == 12
   /// ```
-  int get length => degrees.length - 1;
-
-  /// The descending [Scalable] degrees that define this [Scale].
-  List<T> get descendingDegrees =>
-      _descendingDegrees ?? degrees.reversed.toList();
+  int get length => _degrees.length - 1;
 
   /// The [ScalePattern] of this [Scale].
   ///
@@ -54,7 +59,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern => ScalePattern(
-        degrees.intervalSteps.toList(),
+        _degrees.intervalSteps.toList(),
         _descendingDegrees?.descendingIntervalSteps.toList(),
       );
 
@@ -67,7 +72,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///        Note.a])
   /// ```
   Scale<T> get reversed =>
-      Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
+      Scale(descendingDegrees, _descendingDegrees != null ? _degrees : null);
 
   /// The [Chord] for each [ScaleDegree] of this [Scale].
   ///
@@ -83,8 +88,9 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> get degreeChords =>
-      [for (var i = 1; i < degrees.length; i++) degreeChord(ScaleDegree(i))];
+  List<Chord<T>> get degreeChords => [
+        for (var i = 1; i < _degrees.length; i++) degreeChord(ScaleDegree(i)),
+      ];
 
   /// The [T] for the [scaleDegree] of this [Scale].
   ///
@@ -95,7 +101,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = degrees[scaleDegree.ordinal - 1];
+    final scalable = _degrees[scaleDegree.ordinal - 1];
     if (scaleDegree.semitonesDelta == 0) return scalable;
 
     return scalable.transposeBy(
@@ -150,7 +156,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```
   bool isEnharmonicWith(Scale<T> other) =>
       const IterableEquality<PitchClass>()
-          .equals(degrees.toClass(), other.degrees.toClass()) &&
+          .equals(_degrees.toClass(), other._degrees.toClass()) &&
       const IterableEquality<PitchClass>().equals(
         (_descendingDegrees ?? const []).toClass(),
         (other._descendingDegrees ?? const []).toClass(),
@@ -165,24 +171,25 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        degrees.transposeBy(interval).toList(),
+        _degrees.transposeBy(interval).toList(),
         _descendingDegrees?.transposeBy(interval).toList(),
       );
 
   @override
-  String toString() => '${degrees.first} ${pattern.name} (${degrees.join(' ')}'
+  String toString() =>
+      '${_degrees.first} ${pattern.name} (${_degrees.join(' ')}'
       '${_descendingDegrees != null ? ', '
           '${_descendingDegrees.join(' ')}' : ''})';
 
   @override
   bool operator ==(Object other) =>
       other is Scale<T> &&
-      ListEquality<T>().equals(degrees, other.degrees) &&
+      ListEquality<T>().equals(_degrees, other._degrees) &&
       ListEquality<T>().equals(_descendingDegrees, other._descendingDegrees);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(degrees),
+        Object.hashAll(_degrees),
         _descendingDegrees != null ? Object.hashAll(_descendingDegrees) : null,
       );
 }

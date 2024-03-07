@@ -1,8 +1,23 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('ScalePattern', () {
+    group('.intervalSteps', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ScalePattern.aeolian.intervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+        expect(
+          ScalePattern.chromatic.descendingIntervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+      });
+    });
+
     group('.fromChordPattern()', () {
       test('creates a new ScalePattern from the given ChordPattern', () {
         expect(

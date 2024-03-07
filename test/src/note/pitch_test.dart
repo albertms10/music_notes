@@ -39,15 +39,13 @@ void main() {
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
         expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
 
+        var pitch = Note.b.flat.flat.inOctave(-2);
+        expect(Pitch.parse(pitch.toString()), pitch);
+
+        pitch = Note.a.sharp.inOctave(7);
         expect(
-          Pitch.parse(Note.b.flat.flat.inOctave(-2).toString()),
-          Note.b.flat.flat.inOctave(-2),
-        );
-        expect(
-          Pitch.parse(
-            Note.a.sharp.inOctave(7).toString(system: PitchNotation.helmholtz),
-          ),
-          Note.a.sharp.inOctave(7),
+          Pitch.parse(pitch.toString(system: PitchNotation.helmholtz)),
+          pitch,
         );
       });
     });
@@ -64,7 +62,7 @@ void main() {
           expect(Pitch.octaveFromSemitones(-12), -1);
           expect(Pitch.octaveFromSemitones(-11), -1);
           expect(Pitch.octaveFromSemitones(-1), -1);
-          expect(Pitch.octaveFromSemitones(0), 0); // C
+          expect(Pitch.octaveFromSemitones(0), 0); // root C
           expect(Pitch.octaveFromSemitones(1), 0);
           expect(Pitch.octaveFromSemitones(11), 0);
           expect(Pitch.octaveFromSemitones(12), 1);

@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:collection/collection.dart' show MapEquality;
+import 'package:collection/collection.dart'
+    show MapEquality, UnmodifiableMapView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
@@ -21,12 +22,14 @@ import 'tuning_system.dart';
 /// * [TuningSystem].
 @immutable
 class EqualTemperament extends TuningSystem {
-  /// The equal divisions between each [BaseNote] and the next one.
-  final Map<BaseNote, int> steps;
+  final Map<BaseNote, int> _steps;
 
-  /// Creates a new [EqualTemperament] from [referencePitch] and [steps].
-  const EqualTemperament({
-    required this.steps,
+  /// The equal divisions between each [BaseNote] and the next one.
+  Map<BaseNote, int> get steps => UnmodifiableMapView(_steps);
+
+  /// Creates a new [EqualTemperament] from [_steps] and [referencePitch].
+  const EqualTemperament(
+    this._steps, {
     super.referencePitch = _defaultReferencePitch,
   });
 
@@ -59,12 +62,12 @@ class EqualTemperament extends TuningSystem {
           divisions..update(baseNote, (value) => value + 1, ifAbsent: () => 1),
     );
 
-    return EqualTemperament(steps: divisions, referencePitch: referencePitch);
+    return EqualTemperament(divisions, referencePitch: referencePitch);
   }
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
   const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
-      : steps = const {
+      : _steps = const {
           BaseNote.a: 2,
           BaseNote.b: 1,
           BaseNote.c: 2,
@@ -76,7 +79,7 @@ class EqualTemperament extends TuningSystem {
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
   const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
-      : steps = const {
+      : _steps = const {
           BaseNote.a: 3,
           BaseNote.b: 2,
           BaseNote.c: 3,
@@ -91,7 +94,7 @@ class EqualTemperament extends TuningSystem {
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
   /// See [EDO](https://en.xen.wiki/w/EDO).
-  int get edo => steps.values.reduce((value, element) => value + element);
+  int get edo => _steps.values.reduce((value, element) => value + element);
 
   /// The cents for each division step in this [EqualTemperament].
   ///
@@ -135,16 +138,20 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() =>
-      'EDO $edo (${steps.entries.map((entry) => '${entry.key}:${entry.value}').join(' ')})';
+  String toString() {
+    final steps =
+        _steps.entries.map((entry) => '${entry.key}:${entry.value}').join(' ');
+
+    return 'EDO $edo ($steps)';
+  }
 
   @override
   bool operator ==(Object other) =>
       other is EqualTemperament &&
-      const MapEquality<BaseNote, int>().equals(steps, other.steps) &&
+      const MapEquality<BaseNote, int>().equals(_steps, other._steps) &&
       referencePitch == other.referencePitch;
 
   @override
   int get hashCode =>
-      Object.hash(Object.hashAll(steps.recordEntries), referencePitch);
+      Object.hash(Object.hashAll(_steps.recordEntries), referencePitch);
 }
