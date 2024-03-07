@@ -110,6 +110,23 @@ void main() {
       });
     });
 
+    group('.romanNumeral', () {
+      test('returns the roman numeral of this ScaleDegree', () {
+        expect(ScaleDegree.i.romanNumeral, 'I');
+        expect(ScaleDegree.ii.minor.romanNumeral, 'II');
+        expect(ScaleDegree.iii.minor.inverted.romanNumeral, 'III');
+        expect(ScaleDegree.iv.major.lowered.romanNumeral, 'IV');
+        expect(ScaleDegree.v.minor.raised.romanNumeral, 'V');
+        expect(ScaleDegree.vi.romanNumeral, 'VI');
+        expect(ScaleDegree.vii.romanNumeral, 'VII');
+      });
+
+      test('returns the ordinal number if higher than 7', () {
+        expect(const ScaleDegree(8).romanNumeral, '8');
+        expect(const ScaleDegree(20).romanNumeral, '20');
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ScaleDegree', () {
         expect(ScaleDegree.i.toString(), 'I');
