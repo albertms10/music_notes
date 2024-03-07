@@ -179,13 +179,14 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.majorTriad.abbreviation == 'maj.'
   /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
   /// ```
-  String get abbreviation => switch (this) {
-        final chord when chord.isDiminished => 'dim.',
-        final chord when chord.isMinor => 'min.',
-        final chord when chord.isMajor => 'maj.',
-        final chord when chord.isAugmented => 'aug.',
-        _ => '?',
-      };
+  String get abbreviation {
+    if (isDiminished) return 'dim.';
+    if (isMinor) return 'min.';
+    if (isMajor) return 'maj.';
+    if (isAugmented) return 'aug.';
+
+    return '?';
+  }
 
   @override
   String toString() => '$abbreviation (${intervals.join(' ')})';

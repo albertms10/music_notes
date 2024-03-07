@@ -146,6 +146,9 @@ enum BaseNote implements Comparable<BaseNote> {
   BaseNote transposeBySize(Size size) =>
       BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
 
+  /// The string representation of this [BaseNote] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.baseNote(this);
