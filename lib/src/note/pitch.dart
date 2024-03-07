@@ -136,10 +136,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.inOctave(9).midiNumber == 127
   /// Note.a.flat.inOctave(9).midiNumber == null
   /// ```
-  int? get midiNumber => switch (this) {
-        < _lowerMidiPitch || > _higherMidiPitch => null,
-        _ => semitones + chromaticDivisions,
-      };
+  int? get midiNumber {
+    if (this case < _lowerMidiPitch || > _higherMidiPitch) return null;
+
+    return semitones + chromaticDivisions;
+  }
 
   /// The difference in semitones between this [Pitch] and [other].
   ///
