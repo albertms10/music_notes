@@ -232,15 +232,15 @@ final class ScalePattern {
   /// ScalePattern.fromChordPattern(ChordPattern.minorTriad)
   ///   == ScalePattern.naturalMinor
   /// ```
-  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) =>
-      switch (chordPattern) {
-        final chord when chord.isAugmented => lydianAugmented,
-        final chord when chord.isMajor => major,
-        final chord when chord.isMinor => naturalMinor,
-        final chord when chord.isDiminished => locrian,
-        // TODO(albertms10): add support for other triad constructions.
-        _ => major,
-      };
+  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) {
+    if (chordPattern.isAugmented) return lydianAugmented;
+    if (chordPattern.isMajor) return major;
+    if (chordPattern.isMinor) return naturalMinor;
+    if (chordPattern.isDiminished) return locrian;
+
+    // TODO(albertms10): add support for other triad constructions.
+    return major;
+  }
 
   /// The length of this [ScalePattern].
   ///
