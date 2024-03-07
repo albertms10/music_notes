@@ -5,7 +5,6 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/interval_class.dart';
 import '../music.dart';
-import '../note/note.dart';
 import '../note/pitch_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
@@ -272,7 +271,7 @@ final class ScalePattern {
   /// ```dart
   /// ScalePattern.major.toBinary() == int.parse('101010110101', radix: 2)
   /// ```
-  int toBinary() => on(Note.c)
+  int toBinary() => on(PitchClass.c)
       .degrees
       .fold(0, (sequence, scalable) => sequence | 1 << scalable.semitones);
 
