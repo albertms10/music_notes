@@ -1,10 +1,9 @@
-import 'package:collection/collection.dart'
-    show IterableEquality, UnmodifiableListView;
+import 'package:collection/collection.dart' show UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../class_mixin.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
-import '../interval/interval_class.dart';
 import '../scalable.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
@@ -353,7 +352,9 @@ final class ScalePattern {
   Interval _addNextStepTo(int ordinal) =>
       _stepFrom(ordinal) + _stepFrom(ordinal + 1);
 
-  /// Whether this [Scale] is enharmonically equivalent to [other].
+  /// Whether this [ScalePattern] is enharmonically equivalent to [other].
+  ///
+  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
   ///
   /// Example:
   /// ```dart

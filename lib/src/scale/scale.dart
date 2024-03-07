@@ -2,6 +2,7 @@ import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../class_mixin.dart';
 import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';
@@ -146,6 +147,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
           .degreeChord(harmonicFunction.scaleDegrees.first);
 
   /// Whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
   ///
   /// Example:
   /// ```dart

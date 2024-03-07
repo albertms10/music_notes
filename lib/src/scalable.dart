@@ -1,18 +1,15 @@
-import 'package:collection/collection.dart' show IterableEquality;
-
+import 'class_mixin.dart';
 import 'interval/interval.dart';
-import 'interval/interval_class.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
 import 'transposable.dart';
 
 /// A interface for items that can form scales.
-abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
+abstract class Scalable<T extends Scalable<T>>
+    with ClassMixin<PitchClass>
+    implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
-
-  /// The number of semitones that define this [Scalable].
-  int get semitones;
 
   /// Creates a new [PitchClass] from [semitones].
   ///
@@ -22,6 +19,7 @@ abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
   /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
   /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
   /// ```
+  @override
   PitchClass toClass() => PitchClass(semitones);
 
   /// The [Interval] between this [Scalable] and [other].
@@ -52,22 +50,6 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
-
-  /// The [PitchClass] representation of this [ScalableIterable].
-  Iterable<PitchClass> toClass() => map((scalable) => scalable.toClass());
-
-  /// Whether this [Iterable] is enharmonically equivalent to [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// [Note.c.sharp, Note.f, Note.a.flat]
-  ///   .isEnharmonicWith([Note.d.flat, Note.e.sharp, Note.g.sharp])
-  ///     == true
-  ///
-  /// [Note.d.sharp].isEnharmonicWith([Note.a.flat]) == false
-  /// ```
-  bool isEnharmonicWith(Iterable<T> other) =>
-      const IterableEquality<PitchClass>().equals(toClass(), other.toClass());
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
@@ -123,24 +105,4 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i - 1).difference(elementAt(i));
     }
   }
-}
-
-/// An Interval iterable.
-extension IntervalIterable<T extends Interval> on Iterable<T> {
-  /// The [PitchClass] representation of this [IntervalIterable].
-  Iterable<IntervalClass> toClass() => map((interval) => interval.toClass());
-
-  /// Whether this [Iterable] is enharmonically equivalent to [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// const [Interval.m2, Interval.m3, Interval.M2]
-  ///   .isEnharmonicWith(const [Interval.m2, Interval.A2, Interval.d3])
-  ///     == true
-  ///
-  /// const [Interval.m2].isEnharmonicWith(const [Interval.P4]) == false
-  /// ```
-  bool isEnharmonicWith(Iterable<T> other) =>
-      const IterableEquality<IntervalClass>()
-          .equals(toClass(), other.toClass());
 }
