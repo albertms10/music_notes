@@ -577,9 +577,20 @@ void main() {
       });
     });
 
+    group('operator ==()', () {
+      test('returns true when other is enharmonic', () {
+        expect(
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal ScalePattern instances in a Set', () {
         final collection = {
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
           // ignore: equal_elements_in_set
@@ -602,6 +613,7 @@ void main() {
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
+          ScalePattern([Interval.A4]),
           ScalePattern.major,
           ScalePattern.aeolian,
           ScalePattern.mixolydian,
