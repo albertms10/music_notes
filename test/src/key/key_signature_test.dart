@@ -251,6 +251,27 @@ void main() {
       });
     });
 
+    group('.incrementBy()', () {
+      test('returns a new KeyGignature increasing the fifths distance', () {
+        expect(KeySignature.empty.incrementBy(-1), KeySignature([Note.b.flat]));
+        expect(KeySignature.empty.incrementBy(0), KeySignature.empty);
+        expect(KeySignature.empty.incrementBy(1), KeySignature([Note.f.sharp]));
+
+        expect(
+          KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3),
+          KeySignature.fromDistance(5),
+        );
+        expect(
+          KeySignature.fromDistance(-3).incrementBy(-1),
+          KeySignature([Note.b.flat, Note.e.flat]),
+        );
+      });
+
+      test('returns null when this KeySignature is not canonical', () {
+        expect(KeySignature([Note.e.flat]).incrementBy(1), isNull);
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this KeySignature', () {
         expect(

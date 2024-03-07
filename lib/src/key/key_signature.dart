@@ -139,6 +139,27 @@ final class KeySignature implements Comparable<KeySignature> {
 
   static const _noteNotation = EnglishNoteNotation(showNatural: true);
 
+  /// Returns a new [KeySignature] incrementing its fifths [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature.empty.incrementBy(1) == KeySignature([Note.f.sharp])
+  ///
+  /// KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3)
+  ///   == KeySignature.fromDistance(5)
+  ///
+  /// KeySignature.fromDistance(-3).incrementBy(-1)
+  ///   == KeySignature([Note.b.flat, Note.e.flat])
+  ///
+  /// KeySignature([Note.e.flat]).incrementBy(1) == null
+  /// ```
+  KeySignature? incrementBy(int distance) {
+    final cachedDistance = this.distance;
+    if (cachedDistance == null) return null;
+
+    return KeySignature.fromDistance(cachedDistance.incrementBy(distance));
+  }
+
   @override
   String toString() => '$distance (${notes.map(
         (note) => note.toString(system: _noteNotation),
