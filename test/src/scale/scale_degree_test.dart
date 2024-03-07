@@ -61,6 +61,20 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('returns this ScaleDegree inverted', () {
+        expect(ScaleDegree.ii.inverted, const ScaleDegree(2, inversion: 1));
+        expect(
+          ScaleDegree.vi.lowered.lowered.inverted.inverted,
+          const ScaleDegree(6, semitonesDelta: -2, inversion: 2),
+        );
+        expect(
+          ScaleDegree.iii.inverted.inverted.inverted,
+          const ScaleDegree(3, inversion: 3),
+        );
+      });
+    });
+
     group('.major', () {
       test('returns this ScaleDegree as major', () {
         expect(
