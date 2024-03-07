@@ -166,7 +166,7 @@ final class IntervalClass implements Comparable<IntervalClass> {
   IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 
   @override
-  String toString() => '{${spellings().join('|')}}';
+  String toString() => spellings().join('|');
 
   @override
   bool operator ==(Object other) =>

@@ -308,8 +308,7 @@ final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
   const EnharmonicSpellingsPitchClassNotation();
 
   @override
-  String pitchClass(PitchClass pitchClass) =>
-      '{${pitchClass.spellings().join('|')}}';
+  String pitchClass(PitchClass pitchClass) => pitchClass.spellings().join('|');
 }
 
 /// The integer [PitchClass] notation system.
