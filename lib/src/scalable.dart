@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart' show IterableEquality;
+
 import 'interval/interval.dart';
 import 'interval/interval_class.dart';
 import 'music.dart';
@@ -53,6 +55,19 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
 
   /// The [PitchClass] representation of this [ScalableIterable].
   Iterable<PitchClass> toClass() => map((scalable) => scalable.toClass());
+
+  /// Whether this [Iterable] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c.sharp, Note.f, Note.a.flat]
+  ///   .isEnharmonicWith([Note.d.flat, Note.e.sharp, Note.g.sharp])
+  ///     == true
+  ///
+  /// [Note.d.sharp].isEnharmonicWith([Note.a.flat]) == false
+  /// ```
+  bool isEnharmonicWith(Iterable<T> other) =>
+      const IterableEquality<PitchClass>().equals(toClass(), other.toClass());
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
@@ -114,4 +129,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
 extension IntervalIterable<T extends Interval> on Iterable<T> {
   /// The [PitchClass] representation of this [IntervalIterable].
   Iterable<IntervalClass> toClass() => map((interval) => interval.toClass());
+
+  /// Whether this [Iterable] is enharmonically equivalent to [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// const [Interval.m2, Interval.m3, Interval.M2]
+  ///   .isEnharmonicWith(const [Interval.m2, Interval.A2, Interval.d3])
+  ///     == true
+  ///
+  /// const [Interval.m2].isEnharmonicWith(const [Interval.P4]) == false
+  /// ```
+  bool isEnharmonicWith(Iterable<T> other) =>
+      const IterableEquality<IntervalClass>()
+          .equals(toClass(), other.toClass());
 }

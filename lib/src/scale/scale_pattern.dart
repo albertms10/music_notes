@@ -362,11 +362,9 @@ final class ScalePattern {
   ///     == true
   /// ```
   bool isEnharmonicWith(ScalePattern other) =>
-      const IterableEquality<IntervalClass>()
-          .equals(_intervalSteps.toClass(), other._intervalSteps.toClass()) &&
-      const IterableEquality<IntervalClass>().equals(
-        (_descendingIntervalSteps ?? const []).toClass(),
-        (other._descendingIntervalSteps ?? const []).toClass(),
+      _intervalSteps.isEnharmonicWith(other._intervalSteps) &&
+      (_descendingIntervalSteps ?? const []).isEnharmonicWith(
+        other._descendingIntervalSteps ?? const [],
       );
 
   /// The name associated with this [ScalePattern].
