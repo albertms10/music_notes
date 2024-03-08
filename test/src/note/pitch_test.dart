@@ -1070,6 +1070,16 @@ void main() {
       });
     });
 
+    group('.harmonics()', () {
+      test('returns the ClosestPitch set of harmonic series', () {
+        expect(
+          Note.c.inOctave(1).harmonics(upToIndex: 15).toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+      });
+    });
+
     group('.toString()', () {
       test('returns the scientific string representation of this Pitch', () {
         expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
