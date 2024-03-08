@@ -14,9 +14,9 @@ extension IterableExtension<E> on Iterable<E> {
       reduce((closest, element) {
         if (difference == null && closest is! num) {
           throw ArgumentError.value(
-            'Provide difference when elements are not num',
-            'difference',
             difference,
+            'difference',
+            'Provide difference when elements are not num',
           );
         }
 

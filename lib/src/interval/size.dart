@@ -130,7 +130,9 @@ extension type const Size._(int value) implements int {
   /// Size.fourth.perfect == Interval.P4
   /// (-Size.fifth).perfect == -Interval.P5
   /// ```
-  Interval get perfect => Interval.perfect(this);
+  Interval get perfect => isPerfect
+      ? Interval.perfect(this)
+      : (throw ArgumentError.value(this, 'size', 'Invalid perfect size'));
 
   /// The [ImperfectQuality.major] interval from this [Size].
   ///
@@ -140,7 +142,9 @@ extension type const Size._(int value) implements int {
   /// Size.sixth.major == Interval.M6
   /// (-Size.ninth).major == -Interval.M9
   /// ```
-  Interval get major => Interval.imperfect(this, ImperfectQuality.major);
+  Interval get major => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.major);
 
   /// The [ImperfectQuality.minor] interval from this [Size].
   ///
@@ -150,7 +154,9 @@ extension type const Size._(int value) implements int {
   /// Size.seventh.minor == Interval.m7
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
-  Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+  Interval get minor => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.minor);
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
   /// from this [Size].

@@ -51,26 +51,41 @@ void main() {
         expect(Size.fourth.perfect, Interval.P4);
         expect((-Size.fifth).perfect, -Interval.P5);
       });
+
+      test('throws an ArgumentError if Size is not perfect', () {
+        expect(() => Size.second.perfect, throwsArgumentError);
+        expect(() => Size.sixth.perfect, throwsArgumentError);
+      });
     });
 
     group('.major', () {
-      test('returns the perfect Interval from this Size', () {
+      test('returns the major Interval from this Size', () {
         expect(Size.second.major, Interval.M2);
         expect(Size.sixth.major, Interval.M6);
         expect((-Size.ninth).major, -Interval.M9);
       });
+
+      test('throws an ArgumentError if Size is perfect', () {
+        expect(() => Size.unison.major, throwsArgumentError);
+        expect(() => Size.fifth.major, throwsArgumentError);
+      });
     });
 
     group('.minor', () {
-      test('returns the perfect Interval from this Size', () {
+      test('returns the minor Interval from this Size', () {
         expect(Size.third.minor, Interval.m3);
         expect(Size.seventh.minor, Interval.m7);
         expect((-Size.sixth).minor, -Interval.m6);
       });
+
+      test('throws an ArgumentError if Size is perfect', () {
+        expect(() => Size.octave.major, throwsArgumentError);
+        expect(() => Size.fourth.major, throwsArgumentError);
+      });
     });
 
     group('.diminished', () {
-      test('returns the perfect Interval from this Size', () {
+      test('returns the diminished Interval from this Size', () {
         expect(Size.second.diminished, Interval.d2);
         expect(Size.fifth.diminished, Interval.d5);
         expect((-Size.seventh).diminished, -Interval.d7);
@@ -78,7 +93,7 @@ void main() {
     });
 
     group('.augmented', () {
-      test('returns the perfect Interval from this Size', () {
+      test('returns the augmented Interval from this Size', () {
         expect(Size.third.augmented, Interval.A3);
         expect(Size.fourth.augmented, Interval.A4);
         expect((-Size.sixth).augmented, -Interval.A6);
