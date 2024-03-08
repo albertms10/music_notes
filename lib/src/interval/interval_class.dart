@@ -1,6 +1,16 @@
 // ignore_for_file: constant_identifier_names
 
-part of '../../music_notes.dart';
+import 'dart:collection' show SplayTreeSet;
+
+import 'package:collection/collection.dart' show IterableExtension;
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../music.dart';
+import '../note/pitch_class.dart';
+import 'interval.dart';
+import 'quality.dart';
+import 'size.dart';
 
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.
@@ -9,6 +19,10 @@ part of '../../music_notes.dart';
 /// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
+///
+/// ---
+/// See also:
+/// * [Interval].
 @immutable
 final class IntervalClass implements Comparable<IntervalClass> {
   /// The distance in semitones that defines this [IntervalClass].
@@ -48,19 +62,30 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// [Interval.A4] or [Interval.d5].
   static const tritone = IntervalClass(6);
 
-  /// Returns the different spellings at [distance] sharing the same number of
+  /// The [Interval] spellings at [distance] sharing the same number of
   /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.m2.spellings() == {Interval.m2}
+  /// IntervalClass.tritone.spellings() == {Interval.A4, Interval.d5}
+  /// IntervalClass.m3.spellings(distance: 1) == {
+  ///     Interval.A2,
+  ///     Interval.m3,
+  ///     const Interval.perfect(4, PerfectQuality.doublyDiminished)
+  ///   }
+  /// ```
   Set<Interval> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final size = Interval.sizeFromSemitones(semitones);
+    final size = Size.fromSemitones(semitones);
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
         Interval.fromSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSemitones(size.incrementBy(-i), semitones),
-          Interval.fromSemitones(size.incrementBy(i), semitones),
+            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
+          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -70,15 +95,42 @@ final class IntervalClass implements Comparable<IntervalClass> {
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(-i))!,
+          Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
         Interval.fromSemitones(
-          Interval.sizeFromSemitones(semitones.incrementBy(i))!,
+          Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
       ],
     });
+  }
+
+  /// The [Interval] that matches with [preferredQuality] from this
+  /// [IntervalClass].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.m3.resolveClosestSpelling() == Interval.m3
+  /// IntervalClass.tritone.resolveClosestSpelling() == Interval.A4
+  /// IntervalClass.tritone.resolveClosestSpelling(PerfectQuality.diminished)
+  ///   == Interval.d5
+  /// ```
+  Interval resolveClosestSpelling([Quality? preferredQuality]) {
+    if (preferredQuality != null) {
+      final interval = spellings(distance: 1).firstWhereOrNull(
+        (interval) => interval.quality == preferredQuality,
+      );
+      if (interval != null) return interval;
+    }
+
+    // Find the Interval with the smaller Quality delta semitones.
+    return spellings()
+        .sorted(
+          (a, b) =>
+              a.quality.semitones.abs().compareTo(b.quality.semitones.abs()),
+        )
+        .first;
   }
 
   /// Adds [other] to this [IntervalClass].
@@ -111,9 +163,16 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// IntervalClass.M2 * 0 == IntervalClass.P1
   /// IntervalClass.m3 * 2 == IntervalClass.tritone
   /// ```
-  IntervalClass operator *(int factor) =>
-      IntervalClass(semitones * factor.abs());
+  IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 
+  /// The string representation of this [IntervalClass].
+  ///
+  /// Example:
+  /// ```dart
+  /// IntervalClass.M2.toString() == '{M2|d3}'
+  /// IntervalClass.P4.toString() == '{P4}'
+  /// IntervalClass.tritone.toString() == '{A4|d5}'
+  /// ```
   @override
   String toString() => '{${spellings().join('|')}}';
 

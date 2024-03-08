@@ -5,57 +5,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('Quality', () {
-    group('.fromInterval()', () {
-      test('should create a new Quality from an Interval size', () {
-        expect(Quality.fromInterval(1, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(1, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(1, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(2, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(2, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(2, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(2, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(3, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(3, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(3, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(3, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(4, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(4, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(4, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(5, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(5, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(5, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(6, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(6, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(6, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(6, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(7, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(7, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(7, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(7, 2), ImperfectQuality.augmented);
-
-        expect(Quality.fromInterval(8, -1), PerfectQuality.diminished);
-        expect(Quality.fromInterval(8, 0), PerfectQuality.perfect);
-        expect(Quality.fromInterval(8, 1), PerfectQuality.augmented);
-
-        expect(Quality.fromInterval(13, -1), ImperfectQuality.diminished);
-        expect(Quality.fromInterval(13, 0), ImperfectQuality.minor);
-        expect(Quality.fromInterval(13, 1), ImperfectQuality.major);
-        expect(Quality.fromInterval(13, 2), ImperfectQuality.augmented);
-      });
-    });
-
     group('.parse()', () {
-      test('should throw a FormatException when source is invalid', () {
+      test('throws a FormatException when source is invalid', () {
         expect(() => PerfectQuality.parse('x'), throwsFormatException);
         expect(() => PerfectQuality.parse('a'), throwsFormatException);
         expect(() => PerfectQuality.parse('Abc'), throwsFormatException);
         expect(() => PerfectQuality.parse('abc'), throwsFormatException);
+        expect(() => PerfectQuality.parse('mm'), throwsFormatException);
+        expect(() => PerfectQuality.parse('MM'), throwsFormatException);
         expect(() => PerfectQuality.parse('p'), throwsFormatException);
         expect(() => PerfectQuality.parse('PP'), throwsFormatException);
         expect(() => PerfectQuality.parse('D'), throwsFormatException);
@@ -68,43 +25,39 @@ void main() {
         expect(() => ImperfectQuality.parse('abc'), throwsFormatException);
         expect(() => ImperfectQuality.parse('mm'), throwsFormatException);
         expect(() => ImperfectQuality.parse('MM'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('p'), throwsFormatException);
+        expect(() => ImperfectQuality.parse('PP'), throwsFormatException);
         expect(() => ImperfectQuality.parse('D'), throwsFormatException);
         expect(() => ImperfectQuality.parse('Def'), throwsFormatException);
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);
       });
 
-      test(
-        'should parse source as a PerfectQuality and return its value',
-        () {
-          expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
-          expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
-          expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
-          expect(PerfectQuality.parse('d'), PerfectQuality.diminished);
-          expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
-        },
-      );
+      test('parses source as a PerfectQuality and return its value', () {
+        expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
+        expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
+        expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
+        expect(PerfectQuality.parse('d'), PerfectQuality.diminished);
+        expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
+      });
 
-      test(
-        'should parse source as an ImperfectQuality and return its value',
-        () {
-          expect(
-            ImperfectQuality.parse('AAA'),
-            ImperfectQuality.triplyAugmented,
-          );
-          expect(ImperfectQuality.parse('A'), ImperfectQuality.augmented);
-          expect(ImperfectQuality.parse('M'), ImperfectQuality.major);
-          expect(ImperfectQuality.parse('m'), ImperfectQuality.minor);
-          expect(ImperfectQuality.parse('d'), ImperfectQuality.diminished);
-          expect(
-            ImperfectQuality.parse('ddd'),
-            ImperfectQuality.triplyDiminished,
-          );
-        },
-      );
+      test('parses source as an ImperfectQuality and return its value', () {
+        expect(
+          ImperfectQuality.parse('AAA'),
+          ImperfectQuality.triplyAugmented,
+        );
+        expect(ImperfectQuality.parse('A'), ImperfectQuality.augmented);
+        expect(ImperfectQuality.parse('M'), ImperfectQuality.major);
+        expect(ImperfectQuality.parse('m'), ImperfectQuality.minor);
+        expect(ImperfectQuality.parse('d'), ImperfectQuality.diminished);
+        expect(
+          ImperfectQuality.parse('ddd'),
+          ImperfectQuality.triplyDiminished,
+        );
+      });
     });
 
     group('.inverted', () {
-      test('should return the inverted of this Quality', () {
+      test('returns the inverted of this Quality', () {
         expect(
           PerfectQuality.triplyDiminished.inverted,
           PerfectQuality.triplyAugmented,
@@ -139,28 +92,28 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return a string representation of this Quality', () {
-        expect(PerfectQuality.triplyDiminished.toString(), 'ddd (-3)');
-        expect(PerfectQuality.doublyDiminished.toString(), 'dd (-2)');
-        expect(PerfectQuality.diminished.toString(), 'd (-1)');
-        expect(PerfectQuality.perfect.toString(), 'P (+0)');
-        expect(PerfectQuality.augmented.toString(), 'A (+1)');
-        expect(PerfectQuality.doublyAugmented.toString(), 'AA (+2)');
-        expect(PerfectQuality.triplyAugmented.toString(), 'AAA (+3)');
+      test('returns a string representation of this Quality', () {
+        expect(PerfectQuality.triplyDiminished.toString(), 'ddd');
+        expect(PerfectQuality.doublyDiminished.toString(), 'dd');
+        expect(PerfectQuality.diminished.toString(), 'd');
+        expect(PerfectQuality.perfect.toString(), 'P');
+        expect(PerfectQuality.augmented.toString(), 'A');
+        expect(PerfectQuality.doublyAugmented.toString(), 'AA');
+        expect(PerfectQuality.triplyAugmented.toString(), 'AAA');
 
-        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd (-3)');
-        expect(ImperfectQuality.doublyDiminished.toString(), 'dd (-2)');
-        expect(ImperfectQuality.diminished.toString(), 'd (-1)');
-        expect(ImperfectQuality.minor.toString(), 'm (+0)');
-        expect(ImperfectQuality.major.toString(), 'M (+1)');
-        expect(ImperfectQuality.augmented.toString(), 'A (+2)');
-        expect(ImperfectQuality.doublyAugmented.toString(), 'AA (+3)');
-        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA (+4)');
+        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd');
+        expect(ImperfectQuality.doublyDiminished.toString(), 'dd');
+        expect(ImperfectQuality.diminished.toString(), 'd');
+        expect(ImperfectQuality.minor.toString(), 'm');
+        expect(ImperfectQuality.major.toString(), 'M');
+        expect(ImperfectQuality.augmented.toString(), 'A');
+        expect(ImperfectQuality.doublyAugmented.toString(), 'AA');
+        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA');
       });
     });
 
     group('.hashCode', () {
-      test('should ignore equal Quality instances in a Set', () {
+      test('ignores equal Quality instances in a Set', () {
         final collection = {
           const PerfectQuality(5),
           const ImperfectQuality(5),
@@ -180,16 +133,16 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort Quality items in a collection', () {
-        final orderedSet = SplayTreeSet<Quality>.of(const [
-          PerfectQuality(5),
-          ImperfectQuality(5),
+      test('sorts Qualities in a collection', () {
+        final orderedSet = SplayTreeSet<Quality>.of({
+          const PerfectQuality(5),
+          const ImperfectQuality(5),
           ImperfectQuality.major,
           PerfectQuality.perfect,
           PerfectQuality.diminished,
           ImperfectQuality.diminished,
           ImperfectQuality.augmented,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           ImperfectQuality.diminished,
           PerfectQuality.diminished,

@@ -1,13 +1,28 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart'
+    show IterableExtension, ListEquality, UnmodifiableListView;
+import 'package:meta/meta.dart' show immutable;
+
+import '../chordable.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../scalable.dart';
+import 'chord.dart';
 
 /// A musical chord pattern.
+///
+/// ---
+/// See also:
+/// * [Chord].
+/// * [Interval].
 @immutable
 class ChordPattern with Chordable<ChordPattern> {
-  /// The intervals from the root note.
-  final List<Interval> intervals;
+  final List<Interval> _intervals;
 
-  /// Creates a new [ChordPattern] from [intervals].
-  const ChordPattern(this.intervals);
+  /// The intervals from the root note.
+  List<Interval> get intervals => UnmodifiableListView(_intervals);
+
+  /// Creates a new [ChordPattern] from [_intervals].
+  const ChordPattern(this._intervals);
 
   /// A diminished triad [ChordPattern].
   static const diminishedTriad = ChordPattern([Interval.m3, Interval.d5]);
@@ -25,12 +40,12 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.intervalSteps([Interval.m3, Interval.M3])
+  /// ChordPattern.fromIntervalSteps([Interval.m3, Interval.M3])
   ///   == ChordPattern.minorTriad
-  /// ChordPattern.intervalSteps([Interval.M3, Interval.M3])
+  /// ChordPattern.fromIntervalSteps([Interval.M3, Interval.M3])
   ///   == ChordPattern.augmentedTriad
   /// ```
-  factory ChordPattern.intervalSteps(List<Interval> intervalSteps) =>
+  factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
       ChordPattern(
         intervalSteps.skip(1).fold(
           [intervalSteps.first],
@@ -56,7 +71,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// Returns the [Chord<T>] from [scalable].
+  /// The [Chord] built on top of [scalable].
   ///
   /// Example:
   /// ```dart
@@ -64,20 +79,20 @@ class ChordPattern with Chordable<ChordPattern> {
   ///   == const Chord([Note.c, Note.e, Note.g])
   /// ```
   Chord<T> on<T extends Scalable<T>>(T scalable) => Chord(
-        intervals.fold(
+        _intervals.fold(
           [scalable],
           (chordItems, interval) =>
               [...chordItems, scalable.transposeBy(interval)],
         ),
       );
 
-  /// Returns the root triad of this [ChordPattern].
+  /// The root triad of this [ChordPattern].
   ///
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().add9().rootTriad == ChordPattern.majorTriad
   /// ```
-  ChordPattern get rootTriad => ChordPattern(intervals.sublist(0, 2));
+  ChordPattern get rootTriad => ChordPattern(_intervals.sublist(0, 2));
 
   /// Whether this [ChordPattern] is [ImperfectQuality.diminished].
   bool get isDiminished => rootTriad == diminishedTriad;
@@ -91,14 +106,14 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Whether this [ChordPattern] is [ImperfectQuality.augmented].
   bool get isAugmented => rootTriad == augmentedTriad;
 
-  /// Returns the list of modifier [Interval]s from the root note.
+  /// The modifier [Interval]s from the root note.
   ///
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().add9().modifiers
   ///   == const [Interval.m7, Interval.M9]
   /// ```
-  List<Interval> get modifiers => intervals.skip(2).toList();
+  List<Interval> get modifiers => _intervals.skip(2).toList();
 
   /// Returns a new [ChordPattern] with an [ImperfectQuality.diminished] root
   /// triad.
@@ -110,7 +125,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   @override
   ChordPattern get diminished =>
-      ChordPattern([...diminishedTriad.intervals, ...modifiers]);
+      ChordPattern([...diminishedTriad._intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] with an [ImperfectQuality.minor] root
   /// triad.
@@ -122,7 +137,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   @override
   ChordPattern get minor =>
-      ChordPattern([...minorTriad.intervals, ...modifiers]);
+      ChordPattern([...minorTriad._intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] with an [ImperfectQuality.major] root
   /// triad.
@@ -134,7 +149,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   @override
   ChordPattern get major =>
-      ChordPattern([...majorTriad.intervals, ...modifiers]);
+      ChordPattern([...majorTriad._intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] with an [ImperfectQuality.augmented] root
   /// triad.
@@ -146,33 +161,34 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   @override
   ChordPattern get augmented =>
-      ChordPattern([...augmentedTriad.intervals, ...modifiers]);
+      ChordPattern([...augmentedTriad._intervals, ...modifiers]);
 
   /// Returns a new [ChordPattern] adding [interval].
   @override
-  ChordPattern add(Interval interval, {List<int>? replaceSizes}) {
+  ChordPattern add(Interval interval, {Set<int>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
-    final filteredIntervals = intervals.whereNot(
+    final filteredIntervals = _intervals.whereNot(
       (chordInterval) => sizesToReplace.contains(chordInterval.size),
     );
 
     return ChordPattern([...filteredIntervals, interval]..sort());
   }
 
-  /// Returns the abbreviated quality representing this [ChordPattern].
+  /// The abbreviated [Quality] representing this [ChordPattern].
   ///
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.abbreviation == 'maj.'
   /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
   /// ```
-  String get abbreviation => switch (this) {
-        final chord when chord.isDiminished => 'dim.',
-        final chord when chord.isMinor => 'min.',
-        final chord when chord.isMajor => 'maj.',
-        final chord when chord.isAugmented => 'aug.',
-        _ => '?',
-      };
+  String get abbreviation {
+    if (isDiminished) return 'dim.';
+    if (isMinor) return 'min.';
+    if (isMajor) return 'maj.';
+    if (isAugmented) return 'aug.';
+
+    return '?';
+  }
 
   /// Returns the [Interval] from [intervals] that matches the given [size], if
   /// any.
@@ -230,13 +246,13 @@ class ChordPattern with Chordable<ChordPattern> {
   }
 
   @override
-  String toString() => '$abbreviation (${intervals.join(' ')})';
+  String toString() => '$abbreviation (${_intervals.join(' ')})';
 
   @override
   bool operator ==(Object other) =>
       other is ChordPattern &&
-      const ListEquality<Interval>().equals(intervals, other.intervals);
+      const ListEquality<Interval>().equals(_intervals, other._intervals);
 
   @override
-  int get hashCode => Object.hashAll(intervals);
+  int get hashCode => Object.hashAll(_intervals);
 }

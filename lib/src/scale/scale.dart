@@ -1,25 +1,57 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart'
+    show ListEquality, UnmodifiableListView;
+import 'package:meta/meta.dart' show immutable;
+
+import '../class_mixin.dart';
+import '../harmony/chord.dart';
+import '../harmony/harmonic_function.dart';
+import '../interval/interval.dart';
+import '../interval/quality.dart';
+import '../interval/size.dart';
+import '../scalable.dart';
+import '../transposable.dart';
+import 'scale_degree.dart';
+import 'scale_pattern.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
+///
+/// ---
+/// See also:
+/// * [ScalePattern].
+/// * [ScaleDegree].
 @immutable
 class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
-  /// The [Scalable<T>] degrees that define this [Scale<T>].
-  final List<T> degrees;
+  final List<T> _degrees;
 
-  /// The descending [Scalable<T>] degrees that define this [Scale<T>] (if
-  /// different).
+  /// The [Scalable] degrees that define this [Scale].
+  List<T> get degrees => UnmodifiableListView(_degrees);
+
+  /// The descending [Scalable] degrees that define this [Scale].
+  /// If null, the result is the same as calling `_degrees.reversed`.
   final List<T>? _descendingDegrees;
 
-  /// Creates a new [Scale<T>] instance from [degrees].
-  const Scale(this.degrees, [this._descendingDegrees]);
-
-  /// The descending [Scalable<T>] degrees that define this [Scale<T>].
+  /// The descending [Scalable] degrees that define this [Scale].
   List<T> get descendingDegrees =>
-      _descendingDegrees ?? degrees.reversed.toList();
+      UnmodifiableListView(_descendingDegrees ?? _degrees.reversed);
 
-  /// Returns the [ScalePattern] of this [Scale<T>].
+  /// Creates a new [Scale] instance from [_degrees] and optional
+  /// [_descendingDegrees].
+  const Scale(this._degrees, [this._descendingDegrees]);
+
+  /// The length of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.on(Note.f).length == 5
+  /// ScalePattern.major.on(Note.e).length == 7
+  /// ScalePattern.octatonic.on(Note.d.flat).length == 8
+  /// ScalePattern.chromatic.on(Note.c).length == 12
+  /// ```
+  int get length => _degrees.length - 1;
+
+  /// The [ScalePattern] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -27,11 +59,11 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern => ScalePattern(
-        degrees._intervals,
-        _descendingDegrees?._descendingIntervals,
+        _degrees.intervalSteps.toList(),
+        _descendingDegrees?.descendingIntervalSteps.toList(),
       );
 
-  /// Returns the reversed of this [Scale<T>].
+  /// The reversed of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -40,9 +72,9 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///        Note.a])
   /// ```
   Scale<T> get reversed =>
-      Scale(descendingDegrees, _descendingDegrees != null ? degrees : null);
+      Scale(descendingDegrees, _descendingDegrees != null ? _degrees : null);
 
-  /// Returns the [Chord<T>] for each [ScaleDegree] of this [Scale<T>].
+  /// The [Chord] for each [ScaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -56,10 +88,11 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> get degreeChords =>
-      [for (var i = 1; i < degrees.length; i++) degreeChord(ScaleDegree(i))];
+  List<Chord<T>> get degreeChords => [
+        for (var i = 1; i < _degrees.length; i++) degreeChord(ScaleDegree(i)),
+      ];
 
-  /// Returns the [T] for the [scaleDegree] of this [Scale<T>].
+  /// The [T] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -68,18 +101,18 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = degrees[scaleDegree.ordinal - 1];
+    final scalable = _degrees[scaleDegree.ordinal - 1];
     if (scaleDegree.semitonesDelta == 0) return scalable;
 
     return scalable.transposeBy(
       Interval.perfect(
-        1,
+        Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
     );
   }
 
-  /// Returns the [Chord<T>] for the [scaleDegree] of this [Scale<T>].
+  /// The [Chord] for the [scaleDegree] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -89,7 +122,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
 
-  /// Returns the [Chord<T>] for the [harmonicFunction] of this [Scale<T>].
+  /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
   /// Example:
   /// ```dart
@@ -113,32 +146,49 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
           )
           .degreeChord(harmonicFunction.scaleDegrees.first);
 
-  /// Returns this [Scale<T>] transposed by [interval].
+  /// Whether this [Scale] is enharmonically equivalent to [other].
+  ///
+  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
+  ///
+  /// Example:
+  /// ```dart
+  /// const Scale([Note.c, Note.d, Note.f, Note.g])
+  ///   .isEnharmonicWith(Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(Scale<T> other) =>
+      _degrees.isEnharmonicWith(other._degrees) &&
+      (_descendingDegrees ?? const [])
+          .isEnharmonicWith(other._descendingDegrees ?? const []);
+
+  /// Transposes this [Scale] by [interval].
   ///
   /// Example:
   /// ```dart
   /// Note.c.major.scale.transposeBy(Interval.m3) == Note.e.flat.major.scale
+  /// Note.f.sharp.minor.scale.transposeBy(-Interval.A4) == Note.c.minor.scale
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        degrees._transposeBy(interval),
-        _descendingDegrees?._transposeBy(interval),
+        _degrees.transposeBy(interval).toList(),
+        _descendingDegrees?.transposeBy(interval).toList(),
       );
 
   @override
-  String toString() => '${degrees.first} ${pattern.name} (${degrees.join(' ')}'
+  String toString() =>
+      '${_degrees.first} ${pattern.name} (${_degrees.join(' ')}'
       '${_descendingDegrees != null ? ', '
-          '${_descendingDegrees!.join(' ')}' : ''})';
+          '${_descendingDegrees.join(' ')}' : ''})';
 
   @override
   bool operator ==(Object other) =>
       other is Scale<T> &&
-      ListEquality<T>().equals(degrees, other.degrees) &&
+      ListEquality<T>().equals(_degrees, other._degrees) &&
       ListEquality<T>().equals(_descendingDegrees, other._descendingDegrees);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(degrees),
-        _descendingDegrees != null ? Object.hashAll(_descendingDegrees!) : null,
+        Object.hashAll(_degrees),
+        _descendingDegrees != null ? Object.hashAll(_descendingDegrees) : null,
       );
 }

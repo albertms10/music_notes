@@ -1,9 +1,20 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../note/note.dart';
+import '../scale/scale_pattern.dart';
+import 'key.dart';
 
 /// A type of musical scale coupled with a set of characteristic melodic and
 /// harmonic behaviors.
 ///
 /// See [Mode (music)](https://en.wikipedia.org/wiki/Mode_(music)).
+///
+/// ---
+/// See also:
+/// * [Key].
+/// * [ScalePattern].
+@immutable
 sealed class Mode implements Enum, Comparable<Mode> {
   /// The [ScalePattern] related to this [Mode].
   ScalePattern get scale;
@@ -39,15 +50,24 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  /// Returns the opposite of this [TonalMode].
+  /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
   /// ```dart
-  /// TonalMode.major.opposite == TonalMode.minor
-  /// TonalMode.minor.opposite == TonalMode.major
+  /// TonalMode.major.parallel == TonalMode.minor
+  /// TonalMode.minor.parallel == TonalMode.major
   /// ```
-  TonalMode get opposite =>
-      this == TonalMode.major ? TonalMode.minor : TonalMode.major;
+  TonalMode get parallel => switch (this) {
+        TonalMode.major => TonalMode.minor,
+        TonalMode.minor => TonalMode.major,
+      };
+
+  /// The string representation of this [TonalMode] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
+  @override
+  String toString({NoteNotation system = NoteNotation.english}) =>
+      system.tonalMode(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);
@@ -84,7 +104,7 @@ enum ModalMode implements Mode {
 
   const ModalMode(this.scale, {required this.brightness});
 
-  /// Returns the mirrored version of this [ModalMode].
+  /// The mirrored version of this [ModalMode].
   ///
   /// Follows the DBQ property where the mirrored mode has the opposite
   /// [brightness] value.

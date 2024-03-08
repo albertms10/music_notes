@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('PitchClass', () {
     group('constructor', () {
-      test('should create a new PitchClass from semitones', () {
+      test('creates a new PitchClass from semitones', () {
         // ignore: use_named_constants
         expect(const PitchClass(-2), PitchClass.aSharp);
         // ignore: use_named_constants
@@ -15,7 +15,7 @@ void main() {
     });
 
     group('.spellings()', () {
-      test('should return the correct Note spellings for this PitchClass', () {
+      test('returns the correct Note spellings for this PitchClass', () {
         expect(PitchClass.c.spellings(), {Note.c});
         expect(
           PitchClass.c.spellings(distance: 1),
@@ -116,7 +116,7 @@ void main() {
     });
 
     group('.resolveSpelling()', () {
-      test('should return the Note that matches with the accidental', () {
+      test('returns the Note that matches with Accidental', () {
         expect(PitchClass.c.resolveSpelling(), Note.c);
         expect(PitchClass.c.resolveSpelling(Accidental.sharp), Note.b.sharp);
         expect(
@@ -192,7 +192,7 @@ void main() {
       });
 
       test(
-        'should throw an ArgumentError when withAccidental does not match with '
+        'throws an ArgumentError when withAccidental does not match with '
         'any Note',
         () {
           expect(
@@ -216,32 +216,29 @@ void main() {
     });
 
     group('.resolveClosestSpelling()', () {
-      test(
-        'should return the Note that matches with the preferred accidental',
-        () {
-          expect(PitchClass.c.resolveClosestSpelling(), Note.c);
-          expect(
-            PitchClass.c.resolveClosestSpelling(Accidental.sharp),
-            Note.b.sharp,
-          );
-          expect(
-            PitchClass.c.resolveClosestSpelling(Accidental.doubleFlat),
-            Note.d.flat.flat,
-          );
+      test('returns the Note that matches with the preferred Accidental', () {
+        expect(PitchClass.c.resolveClosestSpelling(), Note.c);
+        expect(
+          PitchClass.c.resolveClosestSpelling(Accidental.sharp),
+          Note.b.sharp,
+        );
+        expect(
+          PitchClass.c.resolveClosestSpelling(Accidental.doubleFlat),
+          Note.d.flat.flat,
+        );
 
-          expect(PitchClass.cSharp.resolveClosestSpelling(), Note.c.sharp);
-          expect(
-            PitchClass.cSharp.resolveClosestSpelling(Accidental.flat),
-            Note.d.flat,
-          );
+        expect(PitchClass.cSharp.resolveClosestSpelling(), Note.c.sharp);
+        expect(
+          PitchClass.cSharp.resolveClosestSpelling(Accidental.flat),
+          Note.d.flat,
+        );
 
-          // ... Similar to `.resolveSpelling()`.
-        },
-      );
+        // ... Similar to `.resolveSpelling()`.
+      });
 
       test(
-        'should return the closest Note where a similar call to '
-        '.resolveSpelling() would throw',
+        'returns the closest Note where a similar call to .resolveSpelling() '
+        'would throw',
         () {
           expect(
             PitchClass.cSharp.resolveClosestSpelling(Accidental.natural),
@@ -258,7 +255,7 @@ void main() {
     });
 
     group('.interval()', () {
-      test('should return the Interval between this PitchClass and other', () {
+      test('returns the Interval between this PitchClass and other', () {
         expect(PitchClass.c.interval(PitchClass.c), Interval.P1);
         expect(PitchClass.c.interval(PitchClass.cSharp), Interval.m2);
 
@@ -272,21 +269,40 @@ void main() {
         expect(PitchClass.c.interval(PitchClass.f), Interval.P4);
         expect(PitchClass.gSharp.interval(PitchClass.cSharp), Interval.P4);
         expect(PitchClass.gSharp.interval(PitchClass.d), Interval.A4);
-        expect(PitchClass.c.interval(PitchClass.fSharp), Interval.A4);
+        expect(PitchClass.c.interval(PitchClass.fSharp), -Interval.A4);
 
-        expect(PitchClass.c.interval(PitchClass.g), Interval.P4);
-        expect(PitchClass.c.interval(PitchClass.gSharp), Interval.M3);
+        expect(PitchClass.c.interval(PitchClass.g), -Interval.P4);
+        expect(PitchClass.c.interval(PitchClass.gSharp), -Interval.M3);
 
-        expect(PitchClass.c.interval(PitchClass.a), Interval.m3);
-        expect(PitchClass.c.interval(PitchClass.aSharp), Interval.M2);
+        expect(PitchClass.c.interval(PitchClass.a), -Interval.m3);
+        expect(PitchClass.c.interval(PitchClass.aSharp), -Interval.M2);
 
-        expect(PitchClass.c.interval(PitchClass.b), Interval.m2);
-        expect(PitchClass.b.interval(PitchClass.aSharp), Interval.m2);
+        expect(PitchClass.c.interval(PitchClass.b), -Interval.m2);
+        expect(PitchClass.b.interval(PitchClass.aSharp), -Interval.m2);
+      });
+    });
+
+    group('.difference()', () {
+      test('returns the difference in semitones with another PitchClass', () {
+        expect(PitchClass.d.difference(PitchClass.gSharp), -6);
+        expect(PitchClass.dSharp.difference(PitchClass.aSharp), -5);
+        expect(PitchClass.d.difference(PitchClass.aSharp), -4);
+        expect(PitchClass.cSharp.difference(PitchClass.aSharp), -3);
+        expect(PitchClass.cSharp.difference(PitchClass.b), -2);
+        expect(PitchClass.c.difference(PitchClass.b), -1);
+        expect(PitchClass.c.difference(PitchClass.c), 0);
+        expect(PitchClass.c.difference(PitchClass.cSharp), 1);
+        expect(PitchClass.b.difference(PitchClass.c), 1);
+        expect(PitchClass.f.difference(PitchClass.g), 2);
+        expect(PitchClass.f.difference(PitchClass.gSharp), 3);
+        expect(PitchClass.e.difference(PitchClass.gSharp), 4);
+        expect(PitchClass.a.difference(PitchClass.d), 5);
+        expect(PitchClass.a.difference(PitchClass.dSharp), 6);
       });
     });
 
     group('.transposeBy()', () {
-      test('should return this PitchClass transposed by Interval', () {
+      test('transposes this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
         expect(PitchClass.c.transposeBy(-Interval.d1), PitchClass.cSharp);
         expect(PitchClass.c.transposeBy(Interval.P1), PitchClass.c);
@@ -306,27 +322,9 @@ void main() {
       });
     });
 
-    group('.integerNotation', () {
-      test('should return the integer notation for this PitchClass', () {
-        expect(PitchClass.c.integerNotation, '0');
-        expect(PitchClass.cSharp.integerNotation, '1');
-        expect(PitchClass.d.integerNotation, '2');
-        expect(PitchClass.dSharp.integerNotation, '3');
-        expect(PitchClass.e.integerNotation, '4');
-        expect(PitchClass.f.integerNotation, '5');
-        expect(PitchClass.fSharp.integerNotation, '6');
-        expect(PitchClass.g.integerNotation, '7');
-        expect(PitchClass.gSharp.integerNotation, '8');
-        expect(PitchClass.a.integerNotation, '9');
-        expect(PitchClass.aSharp.integerNotation, 't');
-        expect(PitchClass.b.integerNotation, 'e');
-      });
-    });
-
-    group('operator *', () {
+    group('operator *()', () {
       test(
-        'should return the pitch-class multiplication modulo 12 of this '
-        'PitchClass',
+        'returns the pitch-class multiplication modulo 12 of this PitchClass',
         () {
           expect(PitchClass.cSharp * 7, PitchClass.g);
           expect(PitchClass.d * 5, PitchClass.aSharp);
@@ -350,15 +348,89 @@ void main() {
     });
 
     group('.toString()', () {
-      test('should return a string representation of this PitchClass', () {
-        expect(PitchClass.c.toString(), '{C}');
-        expect(PitchClass.g.toString(), '{G}');
-        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+      test(
+        'returns the enharmonic spellings string representation of '
+        'this PitchClass',
+        () {
+          expect(PitchClass.c.toString(), '{C}');
+          expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
+          expect(PitchClass.d.toString(), '{D}');
+          expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+          expect(PitchClass.e.toString(), '{E}');
+          expect(PitchClass.f.toString(), '{F}');
+          expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
+          expect(PitchClass.g.toString(), '{G}');
+          expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
+          expect(PitchClass.a.toString(), '{A}');
+          expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
+          expect(PitchClass.b.toString(), '{B}');
+        },
+      );
+
+      test('returns the integer string representation of this PitchClass', () {
+        expect(
+          PitchClass.c.toString(system: PitchClassNotation.integer),
+          '0',
+        );
+        expect(
+          PitchClass.cSharp.toString(system: PitchClassNotation.integer),
+          '1',
+        );
+        expect(
+          PitchClass.d.toString(system: PitchClassNotation.integer),
+          '2',
+        );
+        expect(
+          PitchClass.dSharp.toString(system: PitchClassNotation.integer),
+          '3',
+        );
+        expect(
+          PitchClass.e.toString(system: PitchClassNotation.integer),
+          '4',
+        );
+        expect(
+          PitchClass.f.toString(system: PitchClassNotation.integer),
+          '5',
+        );
+        expect(
+          PitchClass.fSharp.toString(system: PitchClassNotation.integer),
+          '6',
+        );
+        expect(
+          PitchClass.g.toString(system: PitchClassNotation.integer),
+          '7',
+        );
+        expect(
+          PitchClass.gSharp.toString(system: PitchClassNotation.integer),
+          '8',
+        );
+        expect(
+          PitchClass.a.toString(system: PitchClassNotation.integer),
+          '9',
+        );
+        expect(
+          PitchClass.aSharp.toString(system: PitchClassNotation.integer),
+          't',
+        );
+        expect(
+          PitchClass.b.toString(system: PitchClassNotation.integer),
+          'e',
+        );
       });
+
+      test(
+        'returns the string representation extending PitchClassNotation',
+        () {
+          expect(
+            () => PitchClass.aSharp.toString(system: _SubPitchClassNotation()),
+            throwsUnimplementedError,
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
-      test('should ignore equal PitchClass instances in a Set', () {
+      test('ignores equal PitchClass instances in a Set', () {
         final collection = {PitchClass.f, PitchClass.aSharp};
         collection.addAll(collection);
         expect(
@@ -369,12 +441,12 @@ void main() {
     });
 
     group('.compareTo()', () {
-      test('should correctly sort PitchClass items in a collection', () {
-        final orderedSet = SplayTreeSet<PitchClass>.of(const [
+      test('sorts PitchClasses in a collection', () {
+        final orderedSet = SplayTreeSet<PitchClass>.of({
           PitchClass.fSharp,
           PitchClass.c,
           PitchClass.d,
-        ]);
+        });
         expect(orderedSet.toList(), const [
           PitchClass.c,
           PitchClass.d,
@@ -383,4 +455,9 @@ void main() {
       });
     });
   });
+}
+
+class _SubPitchClassNotation extends PitchClassNotation {
+  @override
+  String pitchClass(PitchClass pitchClass) => throw UnimplementedError();
 }

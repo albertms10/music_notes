@@ -1,8 +1,10 @@
 {
   "cSpell.ignoreWords": ["music"],
   "cSpell.words": [
+    "barline",
     "chordable",
     "Chordable",
+    "Didymean",
     "dorian",
     "enharmonically",
     "helmholtz",
@@ -10,11 +12,17 @@
     "ionian",
     "locrian",
     "lydian",
+    "maggiore",
+    "majeur",
+    "mineur",
     "mixolydian",
     "neapolitan",
     "octatonic",
     "phrygian",
-    "sublist"
+    "pythagorean",
+    "sublist",
+    "Versetzungszeichen",
+    "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
     "′": true

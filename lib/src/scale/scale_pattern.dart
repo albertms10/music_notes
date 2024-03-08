@@ -1,20 +1,40 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart' show UnmodifiableListView;
+import 'package:meta/meta.dart' show immutable;
+
+import '../class_mixin.dart';
+import '../harmony/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../music.dart';
+import '../note/pitch_class.dart';
+import '../scalable.dart';
+import 'scale.dart';
+import 'scale_degree.dart';
 
 /// A set of musical intervals that conform a musical scale.
 ///
 /// See [Scale (music)](https://en.wikipedia.org/wiki/Scale_(music)).
+///
+/// ---
+/// See also:
+/// * [Scale].
 @immutable
 final class ScalePattern {
-  /// The interval steps that define this [ScalePattern].
-  final List<Interval> intervalSteps;
+  final List<Interval> _intervalSteps;
 
-  /// The descending interval steps that define this [ScalePattern] (if
-  /// different).
+  /// The interval steps that define this [ScalePattern].
+  List<Interval> get intervalSteps => UnmodifiableListView(_intervalSteps);
+
+  /// The descending interval steps that define this [ScalePattern].
+  /// If null, the result is the same as calling `_intervalSteps.reversed`.
   final List<Interval>? _descendingIntervalSteps;
 
-  /// Creates a new [ScalePattern] from [intervalSteps] and optional
+  /// The descending interval steps that define this [ScalePattern].
+  List<Interval> get descendingIntervalSteps =>
+      UnmodifiableListView(_descendingIntervalSteps ?? _intervalSteps.reversed);
+
+  /// Creates a new [ScalePattern] from [_intervalSteps] and optional
   /// [_descendingIntervalSteps].
-  const ScalePattern(this.intervalSteps, [this._descendingIntervalSteps]);
+  const ScalePattern(this._intervalSteps, [this._descendingIntervalSteps]);
 
   /// ![C Ionian scale](https://upload.wikimedia.org/score/p/2/p2fun2296uif26uyy61yxjli7ocfq9d/p2fun229.png).
   static const ionian = ScalePattern([
@@ -220,21 +240,91 @@ final class ScalePattern {
   /// ScalePattern.fromChordPattern(ChordPattern.minorTriad)
   ///   == ScalePattern.naturalMinor
   /// ```
-  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) =>
-      switch (chordPattern) {
-        final chord when chord.isAugmented => lydianAugmented,
-        final chord when chord.isMajor => major,
-        final chord when chord.isMinor => naturalMinor,
-        final chord when chord.isDiminished => locrian,
-        // TODO(albertms10): add support for other triad constructions.
-        _ => major,
-      };
+  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) {
+    if (chordPattern.isAugmented) return lydianAugmented;
+    if (chordPattern.isMajor) return major;
+    if (chordPattern.isMinor) return naturalMinor;
+    if (chordPattern.isDiminished) return locrian;
 
-  /// The descending interval steps that define this [ScalePattern].
-  List<Interval> get descendingIntervalSteps =>
-      _descendingIntervalSteps ?? intervalSteps.reversed.toList();
+    // TODO(albertms10): add support for other triad constructions.
+    return major;
+  }
 
-  /// Returns the scale of notes starting from [scalable].
+  /// Creates a new [ScalePattern] from a binary [sequence] in integer form.
+  ///
+  /// This method and [ScalePattern.toBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// extension on int { int get b => int.parse(toString(), radix: 2); }
+  ///
+  /// ScalePattern.fromBinary(101010110101.b) == ScalePattern.major
+  /// ScalePattern.fromBinary(111111111111.b) == ScalePattern.chromatic
+  /// ScalePattern.fromBinary(1010010101.b) == ScalePattern.majorPentatonic
+  /// ScalePattern.fromBinary(101010101101.b, 10110101101.b)
+  ///   == ScalePattern.melodicMinor
+  /// ```
+  factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
+    assert(sequence > 0, 'Sequence must be greater than 0');
+
+    int bitAt(int sequence, int index) => sequence & 1 << index;
+
+    final degrees = [
+      for (int i = 0; i < chromaticDivisions; i++)
+        if (bitAt(sequence, i) != 0) PitchClass(i),
+      PitchClass.c,
+    ];
+    final descendingDegrees = descendingSequence == null
+        ? null
+        : [
+            PitchClass.c,
+            for (int i = chromaticDivisions - 1; i >= 0; i--)
+              if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+          ];
+
+    return Scale(degrees, descendingDegrees).pattern;
+  }
+
+  /// Returns the binary representation of this [ScalePattern].
+  ///
+  /// This method and [ScalePattern.fromBinary] are inverses of each other.
+  ///
+  /// Example:
+  /// ```dart
+  /// extension on int { int get b => int.parse(toString(), radix: 2); }
+  ///
+  /// ScalePattern.major.toBinary() == (101010110101.b, null)
+  /// ScalePattern.chromatic.toBinary() == (111111111111.b, null)
+  /// ScalePattern.majorPentatonic.toBinary() == (1010010101.b, null)
+  /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
+  /// ```
+  (int sequence, int? descendingSequence) toBinary() {
+    int toBit(int sequence, Scalable<PitchClass> scalable) =>
+        sequence | 1 << scalable.semitones;
+
+    final scale = on(PitchClass.c);
+    final sequence = scale.degrees.fold(0, toBit);
+    final cachedDescending = scale.descendingDegrees;
+    final descendingSequence =
+        cachedDescending.reversed.isEnharmonicWith(scale.degrees)
+            ? null
+            : cachedDescending.fold(0, toBit);
+
+    return (sequence, descendingSequence);
+  }
+
+  /// The length of this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.minorPentatonic.length == 5
+  /// ScalePattern.major.length == 7
+  /// ScalePattern.octatonic.length == 8
+  /// ScalePattern.chromatic.length == 12
+  /// ```
+  int get length => degreePatterns.length;
+
+  /// The scale of notes starting from [scalable].
   ///
   /// Example:
   /// ```dart
@@ -251,13 +341,13 @@ final class ScalePattern {
   ///        Note.c])
   /// ```
   Scale<T> on<T extends Scalable<T>>(T scalable) => Scale(
-        intervalSteps.fold(
+        _intervalSteps.fold(
           [scalable],
           (scale, interval) => [...scale, scale.last.transposeBy(interval)],
         ),
-        // We iterate over the `reversed` descending step list to make sure both
-        // regular and descending scales match, e.g., their octave in
-        // `PositionedNote` lists.
+        // We iterate over the `reversed` descending step list to make sure
+        // both regular and descending scales match, e.g., their octave in
+        // `Pitch` lists.
         _descendingIntervalSteps?.reversed
             .fold(
               [scalable],
@@ -267,7 +357,7 @@ final class ScalePattern {
             .toList(),
       );
 
-  /// Returns the mirrored scale version of this [ScalePattern].
+  /// The mirrored scale version of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -277,10 +367,10 @@ final class ScalePattern {
   /// ```
   ScalePattern get mirrored => ScalePattern(
         descendingIntervalSteps,
-        _descendingIntervalSteps != null ? intervalSteps : null,
+        _descendingIntervalSteps != null ? _intervalSteps : null,
       );
 
-  /// Returns the [ChordPattern] for each scale degree in this [ScalePattern].
+  /// The [ChordPattern] for each scale degree in this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -295,11 +385,11 @@ final class ScalePattern {
   /// ]
   /// ```
   List<ChordPattern> get degreePatterns => [
-        for (var i = 1; i <= intervalSteps.length; i++)
+        for (var i = 1; i <= _intervalSteps.length; i++)
           degreePattern(ScaleDegree(i)),
       ];
 
-  /// Returns the [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -314,19 +404,36 @@ final class ScalePattern {
       return ChordPattern.fromQuality(scaleDegree.quality!);
     }
 
-    Interval step(int ordinal) =>
-        intervalSteps[(ordinal - 1) % intervalSteps.length];
-
-    Interval addNextStep(int ordinal) => step(ordinal) + step(ordinal + 1);
-
-    // Calculate the diatonic pattern from this Scale's `intervalSteps`.
-    return ChordPattern.intervalSteps([
-      addNextStep(scaleDegree.ordinal),
-      addNextStep(scaleDegree.ordinal + 2),
+    // Deduce the diatonic `ChordPattern` from this `intervalSteps`.
+    return ChordPattern.fromIntervalSteps([
+      _addNextStepTo(scaleDegree.ordinal),
+      _addNextStepTo(scaleDegree.ordinal + 2),
     ]);
   }
 
-  /// Returns the name associated with this [ScalePattern].
+  Interval _stepFrom(int ordinal) =>
+      _intervalSteps[(ordinal - 1) % _intervalSteps.length];
+
+  Interval _addNextStepTo(int ordinal) =>
+      _stepFrom(ordinal) + _stepFrom(ordinal + 1);
+
+  /// Whether this [ScalePattern] is enharmonically equivalent to [other].
+  ///
+  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
+  ///
+  /// Example:
+  /// ```dart
+  /// const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
+  ///   .isEnharmonicWith(ScalePattern([Interval.m2, Interval.A2, Interval.d3]))
+  ///     == true
+  /// ```
+  bool isEnharmonicWith(ScalePattern other) =>
+      _intervalSteps.isEnharmonicWith(other._intervalSteps) &&
+      (_descendingIntervalSteps ?? const []).isEnharmonicWith(
+        other._descendingIntervalSteps ?? const [],
+      );
+
+  /// The name associated with this [ScalePattern].
   ///
   /// Example:
   /// ```dart
@@ -355,25 +462,21 @@ final class ScalePattern {
   @override
   String toString() {
     final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps!.join(' ')}'
+        ? ', ${_descendingIntervalSteps.join(' ')}'
         : '';
 
-    return '$name (${intervalSteps.join(' ')}$descendingSteps)';
+    return '$name (${_intervalSteps.join(' ')}$descendingSteps)';
   }
 
   @override
   bool operator ==(Object other) =>
-      other is ScalePattern &&
-      const ListEquality<Interval>()
-          .equals(intervalSteps, other.intervalSteps) &&
-      const ListEquality<Interval>()
-          .equals(_descendingIntervalSteps, other._descendingIntervalSteps);
+      other is ScalePattern && isEnharmonicWith(other);
 
   @override
   int get hashCode => Object.hash(
-        Object.hashAll(intervalSteps),
+        Object.hashAll(_intervalSteps.toClass()),
         _descendingIntervalSteps != null
-            ? Object.hashAll(_descendingIntervalSteps!)
+            ? Object.hashAll(_descendingIntervalSteps.toClass())
             : null,
       );
 }

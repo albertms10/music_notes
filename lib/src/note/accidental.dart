@@ -1,6 +1,13 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'note.dart';
 
 /// An accidental.
+///
+/// ---
+/// See also:
+/// * [Note].
 @immutable
 final class Accidental implements Comparable<Accidental> {
   /// The number of semitones above or below the natural note.
@@ -13,37 +20,38 @@ final class Accidental implements Comparable<Accidental> {
   /// Creates a new [Accidental] from [semitones].
   const Accidental(this.semitones);
 
-  /// A triple sharp [Accidental].
-  static const Accidental tripleSharp = Accidental(3);
+  /// A triple sharp (♯𝄪) [Accidental].
+  static const tripleSharp = Accidental(3);
 
-  /// A double sharp [Accidental].
-  static const Accidental doubleSharp = Accidental(2);
+  /// A double sharp (𝄪) [Accidental].
+  static const doubleSharp = Accidental(2);
 
-  /// A sharp [Accidental].
-  static const Accidental sharp = Accidental(1);
+  /// A sharp (♯) [Accidental].
+  static const sharp = Accidental(1);
 
-  /// A natural [Accidental].
-  static const Accidental natural = Accidental(0);
+  /// A natural (♮) [Accidental].
+  static const natural = Accidental(0);
 
-  /// A flat [Accidental].
-  static const Accidental flat = Accidental(-1);
+  /// A flat (♭) [Accidental].
+  static const flat = Accidental(-1);
 
-  /// A double flat [Accidental].
-  static const Accidental doubleFlat = Accidental(-2);
+  /// A double flat (𝄫) [Accidental].
+  static const doubleFlat = Accidental(-2);
 
-  /// A triple flat [Accidental].
-  static const Accidental tripleFlat = Accidental(-3);
+  /// A triple flat (♭𝄫) [Accidental].
+  static const tripleFlat = Accidental(-3);
 
-  static const String _doubleSharpSymbol = '𝄪';
-  static const String _doubleSharpSymbolAlt = 'x';
-  static const String _sharpSymbol = '♯';
-  static const String _sharpSymbolAlt = '#';
-  static const String _naturalSymbol = '♮';
-  static const String _flatSymbol = '♭';
-  static const String _flatSymbolAlt = 'b';
-  static const String _doubleFlatSymbol = '𝄫';
+  static const _doubleSharpSymbol = '𝄪';
+  static const _doubleSharpSymbolAlt = 'x';
+  static const _sharpSymbol = '♯';
+  static const _sharpSymbolAlt = '#';
+  static const _naturalSymbol = '♮';
+  static const _flatSymbol = '♭';
+  static const _flatSymbolAlt = 'b';
+  static const _doubleFlatSymbol = '𝄫';
 
-  static const List<String> _symbols = [
+  /// The list of valid symbols for an [Accidental].
+  static const symbols = [
     _doubleSharpSymbol,
     _doubleSharpSymbolAlt,
     _sharpSymbol,
@@ -88,6 +96,38 @@ final class Accidental implements Comparable<Accidental> {
     return Accidental(semitones);
   }
 
+  /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.flat.isFlat == true
+  /// Accidental.doubleFlat.isFlat == true
+  /// Accidental.sharp.isFlat == false
+  /// Accidental.natural.isFlat == false
+  /// ```
+  bool get isFlat => semitones.isNegative;
+
+  /// Whether this [Accidental] is natural (♮).
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.natural.isNatural == true
+  /// Accidental.sharp.isNatural == false
+  /// Accidental.flat.isNatural == false
+  /// ```
+  bool get isNatural => semitones == 0;
+
+  /// Whether this [Accidental] is sharp (♯, 𝄪, etc.).
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp.isSharp == true
+  /// Accidental.doubleSharp.isSharp == true
+  /// Accidental.flat.isSharp == false
+  /// Accidental.natural.isSharp == false
+  /// ```
+  bool get isSharp => semitones > 0;
+
   /// The name of this [Accidental].
   ///
   /// Example:
@@ -96,7 +136,8 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.doubleFlat.name == 'Double flat'
   /// Accidental.natural.name == 'Natural'
   /// ```
-  String? get name => switch (semitones) {
+  String get name => switch (semitones) {
+        > 3 => '×$semitones sharp',
         3 => 'Triple sharp',
         2 => 'Double sharp',
         1 => 'Sharp',
@@ -104,7 +145,7 @@ final class Accidental implements Comparable<Accidental> {
         -1 => 'Flat',
         -2 => 'Double flat',
         -3 => 'Triple flat',
-        _ => null,
+        _ => '×${semitones.abs()} flat',
       };
 
   /// The symbol of this [Accidental].
@@ -113,8 +154,8 @@ final class Accidental implements Comparable<Accidental> {
   /// natural symbol (♮).
   ///
   /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
-  /// double sharp/flat symbols (𝄪, 𝄫) depending on the number of semitones
-  /// above/below the natural note.
+  /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
+  /// above or below the natural note.
   ///
   /// Example:
   /// ```dart
@@ -137,26 +178,51 @@ final class Accidental implements Comparable<Accidental> {
     return singleAccidentals + doubleAccidentals;
   }
 
-  /// Returns the incremented [Accidental] enum item of this by [n].
+  /// This [Accidental] incremented by [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Accidental.flat.increment(2) == Accidental.tripleFlat
-  /// Accidental.sharp.increment(1) == Accidental.doubleSharp
-  /// Accidental.sharp.increment(-1) == Accidental.natural
+  /// Accidental.flat.incrementBy(2) == Accidental.tripleFlat
+  /// Accidental.sharp.incrementBy(1) == Accidental.doubleSharp
+  /// Accidental.sharp.incrementBy(-1) == Accidental.natural
   /// ```
-  Accidental increment(int n) => Accidental(semitones.incrementBy(n));
+  Accidental incrementBy(int semitones) =>
+      Accidental(this.semitones.incrementBy(semitones));
 
+  /// The string representation of this [Accidental] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
-  String toString() => [
-        if (name != null) name,
-        symbol,
-        '(${semitones.toDeltaString()})',
-      ].join(' ');
+  String toString({
+    NoteNotation system = const EnglishNoteNotation(showNatural: true),
+  }) =>
+      system.accidental(this);
 
   @override
   bool operator ==(Object other) =>
       other is Accidental && semitones == other.semitones;
+
+  /// Adds [semitones] to this [Accidental].
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp + 1 == Accidental.doubleSharp
+  /// Accidental.flat + 2 == Accidental.sharp
+  /// Accidental.doubleFlat + 1 == Accidental.flat
+  /// ```
+  Accidental operator +(int semitones) =>
+      Accidental(this.semitones + semitones);
+
+  /// Subtracts [semitones] from this [Accidental].
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.sharp - 1 == Accidental.natural
+  /// Accidental.flat - 2 == Accidental.tripleFlat
+  /// Accidental.doubleSharp - 1 == Accidental.sharp
+  /// ```
+  Accidental operator -(int semitones) =>
+      Accidental(this.semitones - semitones);
 
   @override
   int get hashCode => semitones.hashCode;

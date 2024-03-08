@@ -1,120 +1,141 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+
+import '../tuning/equal_temperament.dart';
+import '../tuning/ratio.dart';
+import '../tuning/tuning_system.dart';
+import 'closest_pitch.dart';
+import 'hearing_range.dart';
+import 'pitch.dart';
+import 'pitch_class.dart';
 
 /// Represents an absolute pitch, a physical frequency.
+///
+/// ---
+/// See also:
+/// * [Pitch].
+/// * [ClosestPitch].
 @immutable
-class Frequency implements Comparable<Frequency> {
-  /// The value of this [Frequency] in Hertz.
-  final double hertz;
-
+extension type const Frequency._(num hertz) implements num {
   /// Creates a new [Frequency] instance from [hertz].
-  const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive');
+  const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive.');
 
   /// The symbol for the Hertz unit.
   static const hertzUnitSymbol = 'Hz';
 
-  /// Whether this [Frequency] is inside the human hearing range.
+  /// Whether this [Frequency] is inside the [HearingRange.human].
   ///
   /// Example:
   /// ```dart
   /// const Frequency(880).isHumanAudible == true
-  /// Note.a.inOctave(4).equalTemperamentFrequency().isHumanAudible == true
-  /// Note.g.inOctave(12).equalTemperamentFrequency(const Frequency(442))
-  ///   .isHumanAudible == false
+  /// Note.a.inOctave(4).frequency().isHumanAudible == true
+  /// Note.g.inOctave(12).frequency().isHumanAudible == false
   /// ```
-  bool get isHumanAudible {
-    const minFrequency = 20;
-    const maxFrequency = 20000;
+  bool get isHumanAudible => HearingRange.human.isAudible(this);
 
-    return hertz >= minFrequency && hertz <= maxFrequency;
-  }
-
-  /// Returns the closest [PositionedNote] to this [Frequency] from
-  /// [referenceNote] and [referenceFrequency], with the difference in `cents`
-  /// and `hertz`.
+  /// The [ClosestPitch] to this [Frequency] from [referenceFrequency] and
+  /// [tuningSystem].
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(467).closestPositionedNote()
-  ///   == (Note.a.sharp.inOctave(4), cents: 3.1028, hertz: 0.8362)
+  /// const Frequency(467).closestPitch()
+  ///   == Note.a.sharp.inOctave(4) + const Cent(3.1028)
   ///
-  /// const Frequency(260).closestPositionedNote()
-  ///   == (Note.c.inOctave(4), cents: -10.7903, hertz: -1.6256)
+  /// const Frequency(260).closestPitch()
+  ///   == Note.c.inOctave(4) - const Cent(10.7903)
   /// ```
   ///
-  /// This method and [PositionedNote.equalTemperamentFrequency] are inverses of
-  /// each other for a specific input `frequency`.
+  /// This method and [ClosestPitch.frequency] are inverses of each other for a
+  /// specific input `frequency`.
   ///
   /// ```dart
-  /// const frequency = Frequency(442);
-  /// final (note, cents: _, :hertz) = frequency.closestPositionedNote();
-  /// note.equalTemperamentFrequency() == Frequency(frequency.hertz - hertz);
+  /// const frequency = Frequency(415);
+  /// frequency.closestPitch().frequency() == frequency;
   /// ```
-  (PositionedNote, {double cents, double hertz}) closestPositionedNote({
-    PositionedNote referenceNote = const PositionedNote(Note.a, octave: 4),
+  ClosestPitch closestPitch({
     Frequency referenceFrequency = const Frequency(440),
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
-    final cents =
-        EqualTemperament.edo12.cents(hertz / referenceFrequency.hertz);
-    final semitones = referenceNote.semitones + (cents / 100).round();
+    final cents = Ratio(hertz / referenceFrequency).cents;
+    final semitones =
+        tuningSystem.referencePitch.semitones + (cents / 100).round();
 
-    final closestNote = PitchClass(semitones)
+    final closestPitch = PitchClass(semitones)
         .resolveClosestSpelling()
-        .inOctave(PositionedNote.octaveFromSemitones(semitones));
+        .inOctave(Pitch.octaveFromSemitones(semitones));
 
-    final closestNoteFrequency = closestNote.equalTemperamentFrequency(
-      referenceNote: referenceNote,
+    final closestPitchFrequency = closestPitch.frequency(
       referenceFrequency: referenceFrequency,
+      tuningSystem: tuningSystem,
     );
+    final hertzDelta = hertz - closestPitchFrequency;
 
-    return (
-      closestNote,
-      hertz: hertz - closestNoteFrequency.hertz,
-      cents: EqualTemperament.edo12.cents(hertz / closestNoteFrequency.hertz),
+    // Whether `closestPitch` is closer to the upwards spelling (so, positive
+    // `hertzDelta`), e.g. `Accidental.flat` instead of `Accidental.sharp`.
+    final isCloserToUpwardsSpelling =
+        closestPitch.note.accidental.isSharp && !hertzDelta.isNegative;
+
+    return ClosestPitch(
+      isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
+      cents: Ratio(hertz / closestPitchFrequency).cents,
     );
   }
 
-  /// Adds [other] to this [Frequency].
+  /// The harmonic at [index] from this [Frequency], including negative
+  /// values as part of the [undertone series](https://en.wikipedia.org/wiki/Undertone_series).
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440) + const Frequency(220) == const Frequency(660)
+  /// const Frequency(220).harmonic(1) == const Frequency(440)
+  /// const Frequency(880).harmonic(-3) == const Frequency(220)
+  ///
+  /// Note.c.inOctave(1).frequency().harmonic(3).closestPitch()
+  ///   == Note.e.inOctave(3) - const Cent(14)
   /// ```
-  Frequency operator +(Frequency other) => Frequency(hertz + other.hertz);
+  Frequency harmonic(int index) => Frequency(
+        index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
+      );
 
-  /// Subtracts [other] from this [Frequency].
+  /// Returns a [Set] of the [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
+  /// [upToIndex] from this [Frequency].
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440) - const Frequency(220) == const Frequency(220)
+  /// Note.a.inOctave(3).frequency().harmonics(upToIndex: 2)
+  ///   == {const Frequency(220), const Frequency(440), const Frequency(660)}
+  ///
+  /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
+  ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
+  ///
+  /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7).closestPitches
+  ///     .toString() == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4}'
   /// ```
-  Frequency operator -(Frequency other) => Frequency(hertz - other.hertz);
+  ///
+  /// ---
+  /// See also:
+  /// - [FrequencyIterableExtension.closestPitches].
+  Set<Frequency> harmonics({required int upToIndex}) => {
+        for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
+      };
 
-  /// Multiplies this [Frequency] by [factor].
+  /// This [Frequency] formatted as a string.
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440) * 2 == const Frequency(880)
-  /// const Frequency(440) * 0.5 == const Frequency(220)
+  /// const Frequency(440).format() == '440 Hz'
+  /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
-  Frequency operator *(num factor) => Frequency(hertz * factor);
+  String format() => '$hertz $hertzUnitSymbol';
+}
 
-  /// Divides this [Frequency] by [factor].
+/// A [Frequency] Iterable extension.
+extension FrequencyIterableExtension on Iterable<Frequency> {
+  /// The set of [ClosestPitch] for each [Frequency] element.
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440) / 2 == const Frequency(220)
+  /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7).closestPitches
+  ///     .toString() == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4}'
   /// ```
-  Frequency operator /(num factor) => Frequency(hertz / factor);
-
-  @override
-  String toString() => '$hertz $hertzUnitSymbol';
-
-  @override
-  bool operator ==(Object other) => other is Frequency && hertz == other.hertz;
-
-  @override
-  int get hashCode => hertz.hashCode;
-
-  @override
-  int compareTo(Frequency other) => hertz.compareTo(other.hertz);
+  Set<ClosestPitch> get closestPitches =>
+      map((frequency) => frequency.closestPitch()).toSet();
 }

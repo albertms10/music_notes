@@ -2,38 +2,33 @@
 /// working with music theory concepts.
 library music_notes;
 
-import 'dart:collection' show SplayTreeSet;
-import 'dart:math' as math show log, pow;
-
-import 'package:collection/collection.dart'
-    show IterableExtension, ListEquality;
-import 'package:meta/meta.dart' show immutable;
-
-import 'utils/int_extension.dart';
-import 'utils/iterable.dart';
-import 'utils/num_extension.dart';
-import 'utils/string_extension.dart';
-
-part 'src/chordable.dart';
-part 'src/harmony/chord.dart';
-part 'src/harmony/chord_pattern.dart';
-part 'src/harmony/harmonic_function.dart';
-part 'src/interval/interval.dart';
-part 'src/interval/interval_class.dart';
-part 'src/interval/quality.dart';
-part 'src/music.dart';
-part 'src/note/accidental.dart';
-part 'src/note/base_note.dart';
-part 'src/note/frequency.dart';
-part 'src/note/note.dart';
-part 'src/note/pitch_class.dart';
-part 'src/note/positioned_note.dart';
-part 'src/scalable.dart';
-part 'src/scale/scale.dart';
-part 'src/scale/scale_degree.dart';
-part 'src/scale/scale_pattern.dart';
-part 'src/tonality/key_signature.dart';
-part 'src/tonality/mode.dart';
-part 'src/tonality/tonality.dart';
-part 'src/transposable.dart';
-part 'src/tuning/tuning_system.dart';
+export 'src/chordable.dart';
+export 'src/harmony/chord.dart';
+export 'src/harmony/chord_pattern.dart';
+export 'src/harmony/harmonic_function.dart';
+export 'src/interval/interval.dart';
+export 'src/interval/interval_class.dart';
+export 'src/interval/quality.dart';
+export 'src/interval/size.dart';
+export 'src/key/key.dart';
+export 'src/key/key_signature.dart';
+export 'src/key/mode.dart';
+export 'src/music.dart';
+export 'src/note/accidental.dart';
+export 'src/note/base_note.dart';
+export 'src/note/closest_pitch.dart';
+export 'src/note/frequency.dart';
+export 'src/note/hearing_range.dart';
+export 'src/note/note.dart';
+export 'src/note/pitch.dart';
+export 'src/note/pitch_class.dart';
+export 'src/scalable.dart';
+export 'src/scale/scale.dart';
+export 'src/scale/scale_degree.dart';
+export 'src/scale/scale_pattern.dart';
+export 'src/transposable.dart';
+export 'src/tuning/cent.dart';
+export 'src/tuning/equal_temperament.dart';
+export 'src/tuning/just_intonation.dart';
+export 'src/tuning/ratio.dart';
+export 'src/tuning/tuning_system.dart';

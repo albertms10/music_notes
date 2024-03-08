@@ -1,28 +1,108 @@
-part of '../music_notes.dart';
+import 'class_mixin.dart';
+import 'interval/interval.dart';
+import 'music.dart';
+import 'note/pitch_class.dart';
+import 'transposable.dart';
 
 /// A interface for items that can form scales.
-abstract interface class Scalable<T> implements Transposable<T> {
-  @override
-  T transposeBy(Interval interval);
+abstract class Scalable<T extends Scalable<T>>
+    with ClassMixin<PitchClass>
+    implements Transposable<T> {
+  /// Creates a new [Scalable].
+  const Scalable();
 
-  /// Returns the [Interval] between this [T] and [other].
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == PitchClass.c
+  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
+  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// ```
+  @override
+  PitchClass toClass() => PitchClass(semitones);
+
+  /// The [Interval] between this [Scalable] and [other].
   Interval interval(T other);
+
+  /// The difference in semitones between this [Scalable] and [other].
+  int difference(T other) {
+    final diff = other.semitones - semitones;
+
+    return diff.abs() < chromaticDivisions ~/ 2
+        ? diff
+        : diff - chromaticDivisions * diff.sign;
+  }
 }
 
-extension _ScalableIterable<T extends Scalable<T>> on Iterable<T> {
-  /// Returns the [Interval]s between [T]s in this [Iterable<T>].
-  List<Interval> get _intervals => [
-        for (var i = 0; i < length - 1; i++)
-          elementAt(i).interval(elementAt(i + 1)),
-      ];
+/// A Scalable iterable.
+extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
+  /// The [Interval]s between [T]s in this [Iterable].
+  Iterable<Interval> get intervalSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      yield elementAt(i).interval(elementAt(i + 1));
+    }
+  }
 
-  /// Returns the descending [Interval]s between [T]s this [Iterable<T>].
-  List<Interval> get _descendingIntervals => [
-        for (var i = 0; i < length - 1; i++)
-          elementAt(i + 1).interval(elementAt(i)),
-      ];
+  /// The descending [Interval]s between [T]s this [Iterable].
+  Iterable<Interval> get descendingIntervalSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      yield elementAt(i + 1).interval(elementAt(i));
+    }
+  }
 
-  /// Returns this [Iterable<T>] transposed by [interval].
-  List<T> _transposeBy(Interval interval) =>
-      [for (final item in this) item.transposeBy(interval)];
+  /// Transposes this [Iterable] by [interval].
+  Iterable<T> transposeBy(Interval interval) =>
+      map((item) => item.transposeBy(interval));
+
+  /// The inverse of this [ScalableIterable].
+  ///
+  /// Example:
+  /// ```dart
+  /// {Note.b, Note.a.sharp, Note.d}.inverse.toSet()
+  ///   == {Note.b, Note.c, Note.g.sharp}
+  /// ```
+  Iterable<T> get inverse sync* {
+    if (isEmpty) return;
+    yield first;
+    var last = first;
+    for (var i = 1; i < length; i++) {
+      yield last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
+    }
+  }
+
+  /// The retrograde of this [ScalableIterable].
+  ///
+  /// Example:
+  /// ```dart
+  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
+  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
+  /// ```
+  Iterable<T> get retrograde => toList().reversed;
+
+  /// The numeric representation of this [ScalableIterable].
+  ///
+  /// Example:
+  /// ```dart
+  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
+  ///   .numericRepresentation.toSet() == const {0, 11, 3}
+  /// ```
+  Iterable<int> get numericRepresentation => map(
+        (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
+      );
+
+  /// The delta numeric representation of this [ScalableIterable].
+  ///
+  /// Example:
+  /// ```dart
+  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
+  /// ```
+  Iterable<int> get deltaNumericRepresentation sync* {
+    if (isEmpty) return;
+    yield 0;
+    for (var i = 1; i < length; i++) {
+      yield elementAt(i - 1).difference(elementAt(i));
+    }
+  }
 }
