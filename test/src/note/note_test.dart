@@ -610,26 +610,9 @@ void main() {
         expect(Note.c.transposeBy(Interval.m13), Note.a.flat);
         expect(Note.c.transposeBy(Interval.M13), Note.a);
 
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(15), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
-
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(22), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
-
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(29), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
+        expect(Note.c.transposeBy(const Interval.perfect(Size(15))), Note.c);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(22))), Note.c);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(29))), Note.c);
       });
     });
 
