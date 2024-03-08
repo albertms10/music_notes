@@ -136,7 +136,7 @@ final class PitchClass extends Scalable<PitchClass>
       throw ArgumentError.value(
         '$withAccidental',
         'preferredAccidental',
-        'Impossible match for',
+        'Impossible match for $this',
       );
     }
 
