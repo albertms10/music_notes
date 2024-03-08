@@ -69,6 +69,7 @@ Create an `Interval`:
 ```dart
 Interval.P4; // P4
 const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+Size.sixth.augmented; // A6
 ```
 
 Or turn it descending:
