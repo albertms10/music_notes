@@ -15,6 +15,7 @@ void main() {
               .closestTo(DateTime.now()),
           throwsArgumentError,
         );
+        expect(() => const ['A', 'B'].closestTo('C'), throwsArgumentError);
       });
 
       test('returns the closest element to target in this Iterable', () {

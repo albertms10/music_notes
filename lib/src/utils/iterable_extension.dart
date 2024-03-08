@@ -10,21 +10,23 @@ extension IterableExtension<E> on Iterable<E> {
   ///     .closestTo(Note.g, (a, b) => b.semitones - a.semitones)
   ///   == Note.f.sharp
   /// ```
-  E closestTo(E target, [num Function(E a, E b)? difference]) => reduce(
-        (closest, element) {
-          if (difference == null && closest is! num) {
-            throw ArgumentError(
-              'Provide difference when elements are not num',
-              'difference',
-            );
-          }
-          difference ??= (a, b) => (b as num) - (a as num);
-          return difference!(element, target).abs() <
-                  difference!(closest, target).abs()
-              ? element
-              : closest;
-        },
-      );
+  E closestTo(E target, [num Function(E a, E b)? difference]) =>
+      reduce((closest, element) {
+        if (difference == null && closest is! num) {
+          throw ArgumentError.value(
+            'Provide difference when elements are not num',
+            'difference',
+            difference,
+          );
+        }
+
+        difference ??= (a, b) => (b as num) - (a as num);
+
+        return difference!(element, target).abs() <
+                difference!(closest, target).abs()
+            ? element
+            : closest;
+      });
 }
 
 /// Compares multiple comparators.
