@@ -95,7 +95,7 @@ extension type const Frequency._(num hertz) implements num {
         index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
       );
 
-  /// Returns a [Set] of the [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
+  /// The [Set] of [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
   /// [upToIndex] from this [Frequency].
   ///
   /// Example:
