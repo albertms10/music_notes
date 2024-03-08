@@ -122,6 +122,68 @@ extension type const Size._(int value) implements int {
     return sizeAbs + sizeAbs ~/ Size.octave;
   }
 
+  /// The [PerfectQuality.perfect] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.unison.perfect == Interval.P1
+  /// Size.fourth.perfect == Interval.P4
+  /// (-Size.fifth).perfect == -Interval.P5
+  /// ```
+  Interval get perfect => isPerfect
+      ? Interval.perfect(this)
+      : (throw ArgumentError.value(this, 'size', 'Invalid perfect size'));
+
+  /// The [ImperfectQuality.major] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.second.major == Interval.M2
+  /// Size.sixth.major == Interval.M6
+  /// (-Size.ninth).major == -Interval.M9
+  /// ```
+  Interval get major => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.major);
+
+  /// The [ImperfectQuality.minor] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.third.minor == Interval.m3
+  /// Size.seventh.minor == Interval.m7
+  /// (-Size.sixth).minor == -Interval.m6
+  /// ```
+  Interval get minor => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.minor);
+
+  /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
+  /// from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.second.diminished == Interval.d2
+  /// Size.fifth.diminished == Interval.d5
+  /// (-Size.seventh).diminished == -Interval.d7
+  /// ```
+  Interval get diminished => isPerfect
+      ? Interval.perfect(this, PerfectQuality.diminished)
+      : Interval.imperfect(this, ImperfectQuality.diminished);
+
+  /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
+  /// from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.third.augmented == Interval.A3
+  /// Size.fourth.augmented == Interval.A4
+  /// (-Size.sixth).augmented == -Interval.A6
+  /// ```
+  Interval get augmented => isPerfect
+      ? Interval.perfect(this, PerfectQuality.augmented)
+      : Interval.imperfect(this, ImperfectQuality.augmented);
+
   /// Whether this [Size] conforms a perfect interval.
   ///
   /// Example:

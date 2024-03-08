@@ -23,6 +23,7 @@ void main() {
   // Intervals
   Interval.P4; // P4
   const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+  Size.sixth.augmented; // A6
 
   -Interval.m6; // m-6
   Interval.M3.descending(); // M-3
