@@ -567,10 +567,8 @@ final class HelmholtzPitchNotation extends PitchNotation {
   String pitch(Pitch pitch) {
     final note = pitch.note.toString(system: noteSystem);
 
-    if (pitch.octave >= 3) {
-      return '${note.toLowerCase()}${Pitch._superPrime * (pitch.octave - 3)}';
-    }
-
-    return '$note${Pitch._subPrime * (pitch.octave - 2).abs()}';
+    return pitch.octave >= 3
+        ? '${note.toLowerCase()}${Pitch._superPrime * (pitch.octave - 3)}'
+        : '$note${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }
