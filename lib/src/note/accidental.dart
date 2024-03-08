@@ -178,7 +178,7 @@ final class Accidental implements Comparable<Accidental> {
     return singleAccidentals + doubleAccidentals;
   }
 
-  /// Returns this [Accidental] incremented by [semitones].
+  /// This [Accidental] incremented by [semitones].
   ///
   /// Example:
   /// ```dart
@@ -189,8 +189,14 @@ final class Accidental implements Comparable<Accidental> {
   Accidental incrementBy(int semitones) =>
       Accidental(this.semitones.incrementBy(semitones));
 
+  /// The string representation of this [Accidental] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
-  String toString() => '$name ($symbol)';
+  String toString({
+    NoteNotation system = const EnglishNoteNotation(showNatural: true),
+  }) =>
+      system.accidental(this);
 
   @override
   bool operator ==(Object other) =>

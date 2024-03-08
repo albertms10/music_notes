@@ -1,8 +1,23 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Scale', () {
+    group('.degrees', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ScalePattern.aeolian.on(Note.c).degrees,
+          isA<UnmodifiableListView<Note>>(),
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.c).descendingDegrees,
+          isA<UnmodifiableListView<Note>>(),
+        );
+      });
+    });
+
     group('.length', () {
       test('returns the length of this Scale', () {
         expect(ScalePattern.minorPentatonic.on(Note.f).length, 5);

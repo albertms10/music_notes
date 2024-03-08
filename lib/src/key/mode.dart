@@ -50,16 +50,21 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  /// Returns the opposite of this [TonalMode].
+  /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
   /// ```dart
-  /// TonalMode.major.opposite == TonalMode.minor
-  /// TonalMode.minor.opposite == TonalMode.major
+  /// TonalMode.major.parallel == TonalMode.minor
+  /// TonalMode.minor.parallel == TonalMode.major
   /// ```
-  TonalMode get opposite =>
-      this == TonalMode.major ? TonalMode.minor : TonalMode.major;
+  TonalMode get parallel => switch (this) {
+        TonalMode.major => TonalMode.minor,
+        TonalMode.minor => TonalMode.major,
+      };
 
+  /// The string representation of this [TonalMode] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.tonalMode(this);
@@ -99,7 +104,7 @@ enum ModalMode implements Mode {
 
   const ModalMode(this.scale, {required this.brightness});
 
-  /// Returns the mirrored version of this [ModalMode].
+  /// The mirrored version of this [ModalMode].
   ///
   /// Follows the DBQ property where the mirrored mode has the opposite
   /// [brightness] value.

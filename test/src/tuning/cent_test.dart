@@ -15,7 +15,7 @@ void main() {
     });
 
     group('.format()', () {
-      test('returns the string format of this Cent', () {
+      test('returns this Cent formatted as a string', () {
         expect(const Cent(700).format(), '700 ¢');
         expect(const Cent(701.95).format(), '701.95 ¢');
       });

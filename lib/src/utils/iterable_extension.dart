@@ -1,6 +1,6 @@
 /// An Iterable extension.
 extension IterableExtension<E> on Iterable<E> {
-  /// Returns the closest element [E] to [target].
+  /// The closest element [E] to [target].
   ///
   /// Example:
   /// ```dart
@@ -29,7 +29,7 @@ extension IterableExtension<E> on Iterable<E> {
 
 /// Compares multiple comparators.
 int compareMultiple(List<int Function()> comparators) {
-  assert(comparators.length > 1, 'Provide more than one comparator');
+  assert(comparators.length > 1, 'Provide more than one comparator.');
   late int compareValue;
   for (final comparator in comparators) {
     compareValue = comparator();

@@ -3,6 +3,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../class_mixin.dart';
 import '../note/note.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
@@ -16,7 +17,9 @@ import 'size.dart';
 /// * [Quality].
 /// * [IntervalClass].
 @immutable
-final class Interval implements Comparable<Interval> {
+final class Interval
+    with ClassMixin<IntervalClass>
+    implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final Size size;
@@ -153,7 +156,7 @@ final class Interval implements Comparable<Interval> {
   static const A13 =
       Interval.imperfect(Size.thirteenth, ImperfectQuality.augmented);
 
-  static final _regExp = RegExp(r'(\w+?)(\d+)');
+  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, PerfectQuality this.quality)
@@ -162,7 +165,7 @@ final class Interval implements Comparable<Interval> {
           ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
                   4 <
               2,
-          'Interval must be perfect',
+          'Interval must be perfect.',
         );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
@@ -172,7 +175,7 @@ final class Interval implements Comparable<Interval> {
           ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
                   4 >=
               2,
-          'Interval must be imperfect',
+          'Interval must be imperfect.',
         );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
@@ -198,7 +201,7 @@ final class Interval implements Comparable<Interval> {
   /// Example:
   /// ```dart
   /// Interval.parse('m3') == Interval.m3
-  /// Interval.parse('P5') == Interval.perfectFifth
+  /// Interval.parse('P-5') == -Interval.P5
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(String source) {
@@ -212,7 +215,7 @@ final class Interval implements Comparable<Interval> {
     return Interval._(size, parseFactory(match[1]!));
   }
 
-  /// Returns the number of semitones of this [Interval].
+  /// The number of semitones of this [Interval].
   ///
   /// Example:
   /// ```dart
@@ -221,6 +224,7 @@ final class Interval implements Comparable<Interval> {
   /// Interval.A4.semitones == 6
   /// (-Interval.M3).semitones == -4
   /// ```
+  @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
   /// Whether this [Interval] is descending.
@@ -247,7 +251,7 @@ final class Interval implements Comparable<Interval> {
         quality,
       );
 
-  /// Returns the inverted of this [Interval].
+  /// The inverted of this [Interval].
   ///
   /// Example:
   /// ```dart
@@ -266,25 +270,25 @@ final class Interval implements Comparable<Interval> {
   /// Interval.P11.inverted == Interval.P5
   /// ```
   Interval get inverted {
-    final diff = 9 - simplified.size.abs();
+    final diff = 9 - simple.size.abs();
     final invertedSize =
         Size((diff.isNegative ? diff.abs() + 2 : diff) * size.sign);
 
     return Interval._(invertedSize, quality.inverted);
   }
 
-  /// Returns the simplified of this [Interval].
+  /// The simplified version of this [Interval].
   ///
   /// Example:
   /// ```dart
-  /// Interval.m9.simplified == Interval.m2
-  /// Interval.P11.simplified == Interval.P4
-  /// Interval.P8.simplified == Interval.P8
-  /// (-Interval.M3).simplified == -Interval.M3
+  /// Interval.m9.simple == Interval.m2
+  /// Interval.P11.simple == Interval.P4
+  /// Interval.P8.simple == Interval.P8
+  /// (-Interval.M3).simple == -Interval.M3
   /// ```
-  Interval get simplified => Interval._(size.simplified, quality);
+  Interval get simple => Interval._(size.simple, quality);
 
-  /// Returns whether this [Interval] is greater than [Size.octave].
+  /// Whether this [Interval] is greater than [Size.octave].
   ///
   /// Example:
   /// ```dart
@@ -313,10 +317,10 @@ final class Interval implements Comparable<Interval> {
         ImperfectQuality(:final semitones) =>
           semitones.isNegative && semitones > 1,
       } ||
-      const {2, 7}.contains(simplified.size.abs());
+      const {Size.second, Size.seventh}.contains(simple.size.abs());
 
-  /// Returns this [Interval] respelled by [size] while keeping the same
-  /// number of [semitones].
+  /// This [Interval] respelled by [size] while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
@@ -325,7 +329,7 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval respellBySize(Size size) => Interval.fromSemitones(size, semitones);
 
-  /// Returns the iteration distance of this [Interval] between [scalable1] and
+  /// The iteration distance of this [Interval] between [scalable1] and
   /// [scalable2], including all visited `notes`.
   ///
   /// Example:
@@ -357,7 +361,7 @@ final class Interval implements Comparable<Interval> {
     }
   }
 
-  /// Returns the circle of this [Interval] from [scalable] up to [distance].
+  /// The circle of this [Interval] from [scalable] up to [distance].
   ///
   /// Example:
   /// ```dart
@@ -391,7 +395,23 @@ final class Interval implements Comparable<Interval> {
   /// Interval.d4.toClass() == IntervalClass.M3
   /// Interval.P8.toClass() == IntervalClass.P1
   /// ```
+  @override
   IntervalClass toClass() => IntervalClass(semitones);
+
+  /// The string representation of this [Interval] based on [system].
+  ///
+  /// See [IntervalNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.M3.toString() == 'M3'
+  /// (-Interval.d5).toString() == 'd-5'
+  /// const Interval.perfect(Size.twelfth, PerfectQuality.perfect).toString()
+  ///   == 'P12 (P5)'
+  /// ```
+  @override
+  String toString({IntervalNotation system = IntervalNotation.standard}) =>
+      system.interval(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -417,17 +437,53 @@ final class Interval implements Comparable<Interval> {
   /// ```
   Interval operator -() => Interval._(-size, quality);
 
-  @override
-  String toString() {
-    final naming = '${quality.symbol}${size.abs()}';
-    final descendingAbbreviation = isDescending ? 'desc ' : '';
-    if (isCompound) {
-      return '$descendingAbbreviation$naming '
-          '(${quality.symbol}${simplified.size.abs()})';
-    }
+  /// Whether this [Interval] is smaller than [other], regardless of their
+  /// direction (ascending or descending).
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.m3 < Interval.P5 == true
+  /// Interval.m7 < Interval.P5 == false
+  /// Interval.d4 < Interval.d4 == false
+  /// Interval.M3 < -Interval.P4 == true
+  /// ```
+  bool operator <(Interval other) => semitones.abs() < other.semitones.abs();
 
-    return '$descendingAbbreviation$naming';
-  }
+  /// Whether this [Interval] is smaller than or equal to [other], regardless of
+  /// their direction (ascending or descending).
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.m3 <= Interval.P5 == true
+  /// Interval.m7 <= Interval.P5 == false
+  /// Interval.d4 <= Interval.d4 == true
+  /// Interval.P4 <= -Interval.P4 == true
+  /// ```
+  bool operator <=(Interval other) => semitones.abs() <= other.semitones.abs();
+
+  /// Whether this [Interval] is larger than [other], regardless of their
+  /// direction (ascending or descending).
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5 > Interval.m3 == true
+  /// Interval.P5 > Interval.m7 == false
+  /// Interval.d4 > Interval.d4 == false
+  /// -Interval.P4 > Interval.M3 == true
+  /// ```
+  bool operator >(Interval other) => semitones.abs() > other.semitones.abs();
+
+  /// Whether this [Interval] is larger than or equal to [other], regardless of
+  /// their direction (ascending or descending).
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5 >= Interval.m3 == true
+  /// Interval.P5 >= Interval.m7 == false
+  /// Interval.d4 >= Interval.d4 == true
+  /// -Interval.P4 >= Interval.P4 == true
+  /// ```
+  bool operator >=(Interval other) => semitones.abs() >= other.semitones.abs();
 
   @override
   bool operator ==(Object other) =>
@@ -441,4 +497,44 @@ final class Interval implements Comparable<Interval> {
         () => size.compareTo(other.size),
         () => semitones.compareTo(other.semitones),
       ]);
+}
+
+/// The abstraction for [Interval] notation systems.
+@immutable
+abstract class IntervalNotation {
+  /// Creates a new [IntervalNotation].
+  const IntervalNotation();
+
+  /// The standard [IntervalNotation] system.
+  static const standard = StandardIntervalNotation();
+
+  /// The string notation for [interval].
+  String interval(Interval interval);
+
+  /// The string notation for [size].
+  String size(Size size);
+
+  /// The string notation for [quality].
+  String quality(Quality quality);
+}
+
+/// The standard [Interval] notation system.
+final class StandardIntervalNotation extends IntervalNotation {
+  /// Creates a new [StandardIntervalNotation].
+  const StandardIntervalNotation();
+
+  @override
+  String interval(Interval interval) {
+    final quality = interval.quality.toString(system: this);
+    final naming = '$quality${interval.size.format(system: this)}';
+    if (!interval.isCompound) return naming;
+
+    return '$naming ($quality${interval.simple.size.format(system: this)})';
+  }
+
+  @override
+  String size(Size size) => '$size';
+
+  @override
+  String quality(Quality quality) => quality.symbol;
 }

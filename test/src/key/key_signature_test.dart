@@ -1,10 +1,20 @@
-import 'dart:collection' show SplayTreeSet;
+import 'dart:collection'
+    show SplayTreeSet, UnmodifiableListView, UnmodifiableMapView;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('KeySignature', () {
+    group('.notes', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          KeySignature([Note.f.sharp]).notes,
+          isA<UnmodifiableListView<Note>>(),
+        );
+      });
+    });
+
     group('.fromDistance()', () {
       test('creates a new KeySignature from the given distance', () {
         expect(
@@ -121,144 +131,161 @@ void main() {
       });
     });
 
-    group('.key()', () {
-      test('returns the Key from TonalMode', () {
+    group('.keys', () {
+      test('returns an unmodifiable collection', () {
         expect(
-          KeySignature.fromDistance(-4).key(TonalMode.major),
-          Note.a.flat.major,
-        );
-        expect(
-          KeySignature.fromDistance(-4).key(TonalMode.minor),
-          Note.f.minor,
-        );
-        expect(
-          KeySignature.fromDistance(-2).key(TonalMode.major),
-          Note.b.flat.major,
-        );
-        expect(
-          KeySignature.fromDistance(-2).key(TonalMode.minor),
-          Note.g.minor,
-        );
-        expect(KeySignature.empty.key(TonalMode.major), Note.c.major);
-        expect(KeySignature.empty.key(TonalMode.minor), Note.a.minor);
-        expect(
-          KeySignature.fromDistance(1).key(TonalMode.major),
-          Note.g.major,
-        );
-        expect(
-          KeySignature.fromDistance(1).key(TonalMode.minor),
-          Note.e.minor,
-        );
-        expect(
-          KeySignature.fromDistance(5).key(TonalMode.major),
-          Note.b.major,
-        );
-        expect(
-          KeySignature.fromDistance(5).key(TonalMode.minor),
-          Note.g.sharp.minor,
+          KeySignature([Note.f.sharp]).keys,
+          isA<UnmodifiableMapView<TonalMode, Key>>(),
         );
       });
 
-      test('returns null when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.c.flat]).key(TonalMode.major), isNull);
+      test('returns the TonalMode to Keys Map for this KeySignature', () {
         expect(
-          KeySignature([Note.f.sharp, Note.e.sharp]).key(TonalMode.minor),
-          isNull,
+          KeySignature.fromDistance(-10).keys,
+          {
+            TonalMode.major: Note.e.flat.flat.major,
+            TonalMode.minor: Note.c.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-9).keys,
+          {
+            TonalMode.major: Note.b.flat.flat.major,
+            TonalMode.minor: Note.g.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-8).keys,
+          {
+            TonalMode.major: Note.f.flat.major,
+            TonalMode.minor: Note.d.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-7).keys,
+          {
+            TonalMode.major: Note.c.flat.major,
+            TonalMode.minor: Note.a.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-6).keys,
+          {
+            TonalMode.major: Note.g.flat.major,
+            TonalMode.minor: Note.e.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-5).keys,
+          {
+            TonalMode.major: Note.d.flat.major,
+            TonalMode.minor: Note.b.flat.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(-4).keys,
+          {TonalMode.major: Note.a.flat.major, TonalMode.minor: Note.f.minor},
+        );
+        expect(
+          KeySignature.fromDistance(-3).keys,
+          {TonalMode.major: Note.e.flat.major, TonalMode.minor: Note.c.minor},
+        );
+        expect(
+          KeySignature.fromDistance(-2).keys,
+          {TonalMode.major: Note.b.flat.major, TonalMode.minor: Note.g.minor},
+        );
+        expect(
+          KeySignature.fromDistance(-1).keys,
+          {TonalMode.major: Note.f.major, TonalMode.minor: Note.d.minor},
+        );
+        expect(
+          KeySignature.empty.keys,
+          {TonalMode.major: Note.c.major, TonalMode.minor: Note.a.minor},
+        );
+        expect(
+          KeySignature.fromDistance(1).keys,
+          {TonalMode.major: Note.g.major, TonalMode.minor: Note.e.minor},
+        );
+        expect(
+          KeySignature.fromDistance(2).keys,
+          {TonalMode.major: Note.d.major, TonalMode.minor: Note.b.minor},
+        );
+        expect(
+          KeySignature.fromDistance(3).keys,
+          {TonalMode.major: Note.a.major, TonalMode.minor: Note.f.sharp.minor},
+        );
+        expect(
+          KeySignature.fromDistance(4).keys,
+          {TonalMode.major: Note.e.major, TonalMode.minor: Note.c.sharp.minor},
+        );
+        expect(
+          KeySignature.fromDistance(5).keys,
+          {TonalMode.major: Note.b.major, TonalMode.minor: Note.g.sharp.minor},
+        );
+        expect(
+          KeySignature.fromDistance(6).keys,
+          {
+            TonalMode.major: Note.f.sharp.major,
+            TonalMode.minor: Note.d.sharp.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(7).keys,
+          {
+            TonalMode.major: Note.c.sharp.major,
+            TonalMode.minor: Note.a.sharp.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(8).keys,
+          {
+            TonalMode.major: Note.g.sharp.major,
+            TonalMode.minor: Note.e.sharp.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(9).keys,
+          {
+            TonalMode.major: Note.d.sharp.major,
+            TonalMode.minor: Note.b.sharp.minor,
+          },
+        );
+        expect(
+          KeySignature.fromDistance(10).keys,
+          {
+            TonalMode.major: Note.a.sharp.major,
+            TonalMode.minor: Note.f.sharp.sharp.minor,
+          },
+        );
+      });
+
+      test('returns an empty Map when this KeySignature is not canonical', () {
+        expect(KeySignature([Note.d.flat]).keys, const <TonalMode, Key>{});
+        expect(
+          KeySignature([Note.c.sharp.sharp]).keys,
+          const <TonalMode, Key>{},
         );
       });
     });
 
-    group('.keys', () {
-      test('returns the Keys for this KeySignature', () {
+    group('.incrementBy()', () {
+      test('returns a new KeyGignature increasing the fifths distance', () {
+        expect(KeySignature.empty.incrementBy(-1), KeySignature([Note.b.flat]));
+        expect(KeySignature.empty.incrementBy(0), KeySignature.empty);
+        expect(KeySignature.empty.incrementBy(1), KeySignature([Note.f.sharp]));
+
         expect(
-          KeySignature.fromDistance(-10).keys,
-          (major: Note.e.flat.flat.major, minor: Note.c.flat.minor),
+          KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3),
+          KeySignature.fromDistance(5),
         );
         expect(
-          KeySignature.fromDistance(-9).keys,
-          (major: Note.b.flat.flat.major, minor: Note.g.flat.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-8).keys,
-          (major: Note.f.flat.major, minor: Note.d.flat.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-7).keys,
-          (major: Note.c.flat.major, minor: Note.a.flat.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-6).keys,
-          (major: Note.g.flat.major, minor: Note.e.flat.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-5).keys,
-          (major: Note.d.flat.major, minor: Note.b.flat.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-4).keys,
-          (major: Note.a.flat.major, minor: Note.f.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-3).keys,
-          (major: Note.e.flat.major, minor: Note.c.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-2).keys,
-          (major: Note.b.flat.major, minor: Note.g.minor),
-        );
-        expect(
-          KeySignature.fromDistance(-1).keys,
-          (major: Note.f.major, minor: Note.d.minor),
-        );
-        expect(
-          KeySignature.empty.keys,
-          (major: Note.c.major, minor: Note.a.minor),
-        );
-        expect(
-          KeySignature.fromDistance(1).keys,
-          (major: Note.g.major, minor: Note.e.minor),
-        );
-        expect(
-          KeySignature.fromDistance(2).keys,
-          (major: Note.d.major, minor: Note.b.minor),
-        );
-        expect(
-          KeySignature.fromDistance(3).keys,
-          (major: Note.a.major, minor: Note.f.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(4).keys,
-          (major: Note.e.major, minor: Note.c.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(5).keys,
-          (major: Note.b.major, minor: Note.g.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(6).keys,
-          (major: Note.f.sharp.major, minor: Note.d.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(7).keys,
-          (major: Note.c.sharp.major, minor: Note.a.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(8).keys,
-          (major: Note.g.sharp.major, minor: Note.e.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(9).keys,
-          (major: Note.d.sharp.major, minor: Note.b.sharp.minor),
-        );
-        expect(
-          KeySignature.fromDistance(10).keys,
-          (major: Note.a.sharp.major, minor: Note.f.sharp.sharp.minor),
+          KeySignature.fromDistance(-3).incrementBy(-1),
+          KeySignature([Note.b.flat, Note.e.flat]),
         );
       });
 
       test('returns null when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.d.flat]).keys, isNull);
-        expect(KeySignature([Note.c.sharp.sharp]).keys, isNull);
+        expect(KeySignature([Note.e.flat]).incrementBy(1), isNull);
       });
     });
 

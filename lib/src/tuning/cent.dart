@@ -22,10 +22,10 @@ extension type const Cent(num value) implements num {
   /// The number of cents in an [Interval.P8].
   static const octaveCents = Cent(chromaticDivisions * 100);
 
-  /// Returns the [Ratio] for this [Cent].
+  /// The [Ratio] for this [Cent].
   Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
 
-  /// Returns the string format of this [Cent].
+  /// This [Cent] formatted as a string.
   ///
   /// Example:
   /// ```dart
