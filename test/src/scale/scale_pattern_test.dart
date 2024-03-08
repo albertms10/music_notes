@@ -1,8 +1,23 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('ScalePattern', () {
+    group('.intervalSteps', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ScalePattern.aeolian.intervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+        expect(
+          ScalePattern.chromatic.descendingIntervalSteps,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+      });
+    });
+
     group('.fromChordPattern()', () {
       test('creates a new ScalePattern from the given ChordPattern', () {
         expect(
@@ -21,6 +36,38 @@ void main() {
           ScalePattern.fromChordPattern(ChordPattern.diminishedTriad),
           ScalePattern.locrian,
         );
+      });
+    });
+
+    group('.fromBinary()', () {
+      test('creates a new ScalePattern from a binary sequence', () {
+        expect(ScalePattern.fromBinary(101010110101.b), ScalePattern.major);
+        expect(
+          ScalePattern.fromBinary(10110101101.b),
+          ScalePattern.naturalMinor,
+        );
+        expect(
+          ScalePattern.fromBinary(101010101101.b, 10110101101.b),
+          ScalePattern.melodicMinor,
+        );
+        expect(ScalePattern.fromBinary(111111111111.b), ScalePattern.chromatic);
+        expect(
+          ScalePattern.fromBinary(1010010101.b),
+          ScalePattern.majorPentatonic,
+        );
+      });
+    });
+
+    group('.toBinary()', () {
+      test('returns the binary representation of this ScalePattern', () {
+        expect(ScalePattern.major.toBinary(), (101010110101.b, null));
+        expect(ScalePattern.naturalMinor.toBinary(), (10110101101.b, null));
+        expect(
+          ScalePattern.melodicMinor.toBinary(),
+          (101010101101.b, 10110101101.b),
+        );
+        expect(ScalePattern.chromatic.toBinary(), (111111111111.b, null));
+        expect(ScalePattern.majorPentatonic.toBinary(), (1010010101.b, null));
       });
     });
 
@@ -562,9 +609,20 @@ void main() {
       });
     });
 
+    group('operator ==()', () {
+      test('returns true when other is enharmonic', () {
+        expect(
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal ScalePattern instances in a Set', () {
         final collection = {
+          const ScalePattern([Interval.A4]),
+          const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
           // ignore: equal_elements_in_set
@@ -587,6 +645,7 @@ void main() {
         };
         collection.addAll(collection);
         expect(collection.toList(), const [
+          ScalePattern([Interval.A4]),
           ScalePattern.major,
           ScalePattern.aeolian,
           ScalePattern.mixolydian,
@@ -606,4 +665,9 @@ void main() {
       });
     });
   });
+}
+
+extension on int {
+  /// Parse this [String] as a binary integer.
+  int get b => int.parse(toString(), radix: 2);
 }

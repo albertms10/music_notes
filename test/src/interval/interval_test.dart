@@ -300,36 +300,36 @@ void main() {
       });
     });
 
-    group('.simplified', () {
-      test('returns the simplified of this Interval', () {
+    group('.simple', () {
+      test('returns the simplified version of this Interval', () {
         expect(
-          const Interval.perfect(Size(-22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-22), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(-15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(-15), PerfectQuality.perfect).simple,
           -Interval.P8,
         );
-        expect((-Interval.M13).simplified, -Interval.M6);
-        expect((-Interval.P11).simplified, -Interval.P4);
-        expect((-Interval.m9).simplified, -Interval.m2);
-        expect((-Interval.A8).simplified, -Interval.A8);
-        expect((-Interval.P8).simplified, -Interval.P8);
-        expect((-Interval.M3).simplified, -Interval.M3);
-        expect((-Interval.P1).simplified, -Interval.P1);
-        expect(Interval.P1.simplified, Interval.P1);
-        expect(Interval.M3.simplified, Interval.M3);
-        expect(Interval.P8.simplified, Interval.P8);
-        expect(Interval.A8.simplified, Interval.A8);
-        expect(Interval.m9.simplified, Interval.m2);
-        expect(Interval.P11.simplified, Interval.P4);
-        expect(Interval.M13.simplified, Interval.M6);
+        expect((-Interval.M13).simple, -Interval.M6);
+        expect((-Interval.P11).simple, -Interval.P4);
+        expect((-Interval.m9).simple, -Interval.m2);
+        expect((-Interval.A8).simple, -Interval.A8);
+        expect((-Interval.P8).simple, -Interval.P8);
+        expect((-Interval.M3).simple, -Interval.M3);
+        expect((-Interval.P1).simple, -Interval.P1);
+        expect(Interval.P1.simple, Interval.P1);
+        expect(Interval.M3.simple, Interval.M3);
+        expect(Interval.P8.simple, Interval.P8);
+        expect(Interval.A8.simple, Interval.A8);
+        expect(Interval.m9.simple, Interval.m2);
+        expect(Interval.P11.simple, Interval.P4);
+        expect(Interval.M13.simple, Interval.M6);
         expect(
-          const Interval.perfect(Size(15), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(15), PerfectQuality.perfect).simple,
           Interval.P8,
         );
         expect(
-          const Interval.perfect(Size(22), PerfectQuality.perfect).simplified,
+          const Interval.perfect(Size(22), PerfectQuality.perfect).simple,
           Interval.P8,
         );
       });
@@ -607,6 +607,61 @@ void main() {
           Interval.m6,
         );
       });
+    });
+
+    group('operator <()', () {
+      test('returns whether this Interval is smaller than other', () {
+        expect(Interval.m2 < Interval.M3, isTrue);
+        expect(Interval.M2 < -Interval.P5, isTrue);
+
+        expect(Interval.m3 < Interval.m2, isFalse);
+        expect(Interval.P4 < Interval.P4, isFalse);
+        expect(Interval.A4 < Interval.d5, isFalse);
+        expect(-Interval.m6 < Interval.d5, isFalse);
+      });
+    });
+
+    group('operator <=()', () {
+      test(
+        'returns whether this Interval is smaller than or equal to other',
+        () {
+          expect(Interval.P1 <= Interval.M3, isTrue);
+          expect(Interval.m2 <= -Interval.A4, isTrue);
+          expect(Interval.d8 <= Interval.d8, isTrue);
+          expect(-Interval.A4 <= Interval.d5, isTrue);
+
+          expect(Interval.m3 <= Interval.m2, isFalse);
+          expect(-Interval.m6 <= Interval.d5, isFalse);
+        },
+      );
+    });
+
+    group('operator >()', () {
+      test('returns whether this Interval is larger than other', () {
+        expect(Interval.M3 > Interval.m2, isTrue);
+        expect(-Interval.P5 > Interval.M2, isTrue);
+
+        expect(Interval.m2 > Interval.m3, isFalse);
+        expect(Interval.P4 > Interval.P4, isFalse);
+        expect(Interval.d8 > Interval.M7, isFalse);
+        expect(Interval.A5 > -Interval.m6, isFalse);
+      });
+    });
+
+    group('operator >=()', () {
+      test(
+        'returns whether this Interval is larger than or equal to other',
+        () {
+          expect(Interval.M3 >= Interval.m2, isTrue);
+          expect(-Interval.P5 >= Interval.M2, isTrue);
+          expect(Interval.P4 >= Interval.P4, isTrue);
+          expect(Interval.d8 >= Interval.m7, isTrue);
+          expect(Interval.A5 >= -Interval.m6, isTrue);
+
+          expect(Interval.m2 >= Interval.m3, isFalse);
+          expect(-Interval.A1 >= Interval.m3, isFalse);
+        },
+      );
     });
 
     group('.toString()', () {

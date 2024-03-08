@@ -25,11 +25,25 @@ sealed class Quality implements Comparable<Quality> {
   /// The symbol of this [Quality].
   String get symbol;
 
-  /// Returns the inverted version of this [Quality].
+  /// The inverted version of this [Quality].
   Quality get inverted;
 
+  /// The string representation of this [Quality] based on [system].
+  ///
+  /// See [IntervalNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.diminished.toString() == 'd'
+  /// PerfectQuality.doublyAugmented.toString() == 'AA'
+  ///
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
+  /// ```
   @override
-  String toString({IntervalNotation system = IntervalNotation.scientific}) =>
+  String toString({IntervalNotation system = IntervalNotation.standard}) =>
       system.quality(this);
 
   @override
@@ -108,6 +122,14 @@ final class PerfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [PerfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.augmented.toString() == 'A'
+  /// PerfectQuality.doublyDiminished.toString() == 'dd'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
@@ -115,7 +137,7 @@ final class PerfectQuality extends Quality {
         _ => Quality._augmentedSymbol * semitones,
       };
 
-  /// Returns the inverted version of this [PerfectQuality].
+  /// The inverted version of this [PerfectQuality].
   ///
   /// Example:
   /// ```dart
@@ -197,6 +219,15 @@ final class ImperfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [ImperfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.diminished.toString() == 'd'
+  /// ImperfectQuality.triplyAugmented.toString() == 'AAA'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
@@ -205,7 +236,7 @@ final class ImperfectQuality extends Quality {
         _ => Quality._augmentedSymbol * (semitones - 1),
       };
 
-  /// Returns the inverted version of this [ImperfectQuality].
+  /// The inverted version of this [ImperfectQuality].
   ///
   /// Example:
   /// ```dart

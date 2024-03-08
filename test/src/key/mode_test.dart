@@ -28,10 +28,10 @@ void main() {
   });
 
   group('TonalMode', () {
-    group('.opposite', () {
-      test('returns the correct opposite TonalMode', () {
-        expect(TonalMode.major.opposite, TonalMode.minor);
-        expect(TonalMode.minor.opposite, TonalMode.major);
+    group('.parallel', () {
+      test('returns the correct parallel TonalMode', () {
+        expect(TonalMode.major.parallel, TonalMode.minor);
+        expect(TonalMode.minor.parallel, TonalMode.major);
       });
     });
 
