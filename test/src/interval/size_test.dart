@@ -79,8 +79,8 @@ void main() {
       });
 
       test('throws an ArgumentError if Size is perfect', () {
-        expect(() => Size.octave.major, throwsArgumentError);
-        expect(() => Size.fourth.major, throwsArgumentError);
+        expect(() => Size.octave.minor, throwsArgumentError);
+        expect(() => Size.fourth.minor, throwsArgumentError);
       });
     });
 
