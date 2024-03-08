@@ -36,7 +36,7 @@ final class Interval
   static const d1 = Interval.perfect(Size.unison, PerfectQuality.diminished);
 
   /// A perfect unison [Interval].
-  static const P1 = Interval.perfect(Size.unison, PerfectQuality.perfect);
+  static const P1 = Interval.perfect(Size.unison);
 
   /// An augmented unison [Interval].
   static const A1 = Interval.perfect(Size.unison, PerfectQuality.augmented);
@@ -70,7 +70,7 @@ final class Interval
   static const d4 = Interval.perfect(Size.fourth, PerfectQuality.diminished);
 
   /// A perfect fourth [Interval].
-  static const P4 = Interval.perfect(Size.fourth, PerfectQuality.perfect);
+  static const P4 = Interval.perfect(Size.fourth);
 
   /// An augmented fourth [Interval].
   static const A4 = Interval.perfect(Size.fourth, PerfectQuality.augmented);
@@ -79,7 +79,7 @@ final class Interval
   static const d5 = Interval.perfect(Size.fifth, PerfectQuality.diminished);
 
   /// A perfect fifth [Interval].
-  static const P5 = Interval.perfect(Size.fifth, PerfectQuality.perfect);
+  static const P5 = Interval.perfect(Size.fifth);
 
   /// An augmented fifth [Interval].
   static const A5 = Interval.perfect(Size.fifth, PerfectQuality.augmented);
@@ -114,7 +114,7 @@ final class Interval
   static const d8 = Interval.perfect(Size.octave, PerfectQuality.diminished);
 
   /// A perfect octave [Interval].
-  static const P8 = Interval.perfect(Size.octave, PerfectQuality.perfect);
+  static const P8 = Interval.perfect(Size.octave);
 
   /// An augmented octave [Interval].
   static const A8 = Interval.perfect(Size.octave, PerfectQuality.augmented);
@@ -135,7 +135,7 @@ final class Interval
   static const d11 = Interval.perfect(Size.eleventh, PerfectQuality.diminished);
 
   /// A perfect eleventh [Interval].
-  static const P11 = Interval.perfect(Size.eleventh, PerfectQuality.perfect);
+  static const P11 = Interval.perfect(Size.eleventh);
 
   /// An augmented eleventh [Interval].
   static const A11 = Interval.perfect(Size.eleventh, PerfectQuality.augmented);
@@ -159,9 +159,12 @@ final class Interval
   static final _regExp = RegExp(r'(\w+?)(-?\d+)');
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
-  const Interval.perfect(this.size, PerfectQuality this.quality)
-      // Copied from [Size.isPerfect] to allow const.
-      : assert(
+  const Interval.perfect(
+    this.size, [
+    PerfectQuality this.quality = PerfectQuality.perfect,
+  ])
+  // Copied from [Size.isPerfect] to allow const.
+  : assert(
           ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
                   4 <
               2,
