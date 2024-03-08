@@ -1,15 +1,22 @@
-import 'dart:collection' show UnmodifiableListView;
+import 'dart:collection' show UnmodifiableListView, UnmodifiableMapView;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
+    group('constructor', () {
+      test('should create a new EqualTemperament from octave divisions', () {
+        expect(EqualTemperament.edo(12), const EqualTemperament.edo12());
+        expect(EqualTemperament.edo(19), const EqualTemperament.edo19());
+      });
+    });
+
     group('.steps', () {
       test('returns an unmodifiable collection', () {
         expect(
           const EqualTemperament.edo12().steps,
-          isA<UnmodifiableListView<int>>(),
+          isA<UnmodifiableMapView<BaseNote, int>>(),
         );
       });
     });
@@ -89,11 +96,11 @@ void main() {
       test('returns the string representation of this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().toString(),
-          'EDO 12 (2 2 1 2 2 2 1)',
+          'EDO 12 (A:2 B:1 C:2 D:2 E:1 F:2 G:2)',
         );
         expect(
           const EqualTemperament.edo19().toString(),
-          'EDO 19 (3 3 2 3 3 3 2)',
+          'EDO 19 (A:3 B:2 C:3 D:3 E:2 F:3 G:3)',
         );
       });
     });
@@ -102,9 +109,9 @@ void main() {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament([1, 2]).hashCode,
+          EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament([1, 2]).hashCode,
+          EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
         );
       });
 
@@ -114,8 +121,10 @@ void main() {
           isNot(const EqualTemperament.edo19().hashCode),
         );
         expect(
-          const EqualTemperament([1, 2]).hashCode,
-          isNot(const EqualTemperament([2, 1]).hashCode),
+          const EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+          isNot(
+            const EqualTemperament({BaseNote.c: 2, BaseNote.d: 1}).hashCode,
+          ),
         );
       });
     });

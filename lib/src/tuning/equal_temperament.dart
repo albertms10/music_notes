@@ -1,11 +1,12 @@
 import 'dart:math' as math;
 
 import 'package:collection/collection.dart'
-    show ListEquality, UnmodifiableListView;
+    show MapEquality, UnmodifiableMapView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../note/base_note.dart';
+import '../note/frequency.dart';
 import '../note/note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
@@ -21,10 +22,10 @@ import 'tuning_system.dart';
 /// * [TuningSystem].
 @immutable
 class EqualTemperament extends TuningSystem {
-  final List<int> _steps;
+  final Map<BaseNote, int> _steps;
 
   /// The equal divisions between each [BaseNote] and the next one.
-  List<int> get steps => UnmodifiableListView(_steps);
+  Map<BaseNote, int> get steps => UnmodifiableMapView(_steps);
 
   /// Creates a new [EqualTemperament] from [_steps] and [referencePitch].
   const EqualTemperament(
@@ -32,20 +33,68 @@ class EqualTemperament extends TuningSystem {
     super.referencePitch = _defaultReferencePitch,
   });
 
+  /// Creates a new [EqualTemperament] from [edo] and
+  /// [referencePitch].
+  factory EqualTemperament.edo(
+    int edo, {
+    Pitch referencePitch = _defaultReferencePitch,
+  }) {
+    assert(edo > 0, 'Octave divisions must be greater than zero.');
+    final baseFrequency = referencePitch.frequency();
+    final frequencies = [
+      for (var i = 0; i < edo; i++)
+        Frequency(baseFrequency * _ratioFromSemitones(i, edo)),
+    ];
+
+    final baseNotes = frequencies.map(
+      (frequency) => frequency
+          .closestPitch()
+          .pitch
+          // TODO(albertm10): the issue comes with the spelling decision.
+          .respelledDownwards
+          .respelledSimple
+          .note
+          .baseNote,
+    );
+    final divisions = baseNotes.fold(
+      <BaseNote, int>{},
+      (divisions, baseNote) =>
+          divisions..update(baseNote, (value) => value + 1, ifAbsent: () => 1),
+    );
+
+    return EqualTemperament(divisions, referencePitch: referencePitch);
+  }
+
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
   const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
-      : _steps = const [2, 2, 1, 2, 2, 2, 1];
+      : _steps = const {
+          BaseNote.a: 2,
+          BaseNote.b: 1,
+          BaseNote.c: 2,
+          BaseNote.d: 2,
+          BaseNote.e: 1,
+          BaseNote.f: 2,
+          BaseNote.g: 2,
+        };
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
   const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
-      : _steps = const [3, 3, 2, 3, 3, 3, 2];
+      : _steps = const {
+          BaseNote.a: 3,
+          BaseNote.b: 2,
+          BaseNote.c: 3,
+          BaseNote.d: 3,
+          BaseNote.e: 2,
+          BaseNote.f: 3,
+          BaseNote.g: 3,
+        };
 
   static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
   /// See [EDO](https://en.xen.wiki/w/EDO).
-  int get edo => _steps.reduce((value, element) => value + element);
+  int get edo => _steps.values.reduce((value, element) => value + element);
 
   /// The cents for each division step in this [EqualTemperament].
   ///
@@ -63,6 +112,9 @@ class EqualTemperament extends TuningSystem {
     }
   }
 
+  static Ratio _ratioFromSemitones(int semitones, int edo) =>
+      Ratio(math.pow(2, semitones / edo));
+
   /// The [Ratio] from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
@@ -73,7 +125,7 @@ class EqualTemperament extends TuningSystem {
   /// const EqualTemperament.edo19().ratioFromSemitones(1) == Ratio(1.037155)
   /// ```
   Ratio ratioFromSemitones(int semitones) =>
-      Ratio(math.pow(2, semitones / edo));
+      _ratioFromSemitones(semitones, edo);
 
   @override
   Ratio ratio(Pitch pitch) =>
@@ -86,14 +138,20 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() => 'EDO $edo (${_steps.join(' ')})';
+  String toString() {
+    final steps =
+        _steps.entries.map((entry) => '${entry.key}:${entry.value}').join(' ');
+
+    return 'EDO $edo ($steps)';
+  }
 
   @override
   bool operator ==(Object other) =>
       other is EqualTemperament &&
-      const ListEquality<int>().equals(_steps, other._steps) &&
+      const MapEquality<BaseNote, int>().equals(_steps, other._steps) &&
       referencePitch == other.referencePitch;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(_steps), referencePitch);
+  int get hashCode =>
+      Object.hash(Object.hashAll(_steps.recordEntries), referencePitch);
 }
