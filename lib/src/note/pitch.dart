@@ -526,7 +526,7 @@ abstract class PitchNotation {
   static const scientific = ScientificPitchNotation();
 
   /// The Helmholtz [PitchNotation] system.
-  static const helmholtz = HelmholtzPitchNotation();
+  static const helmholtz = HelmholtzPitchNotation.english;
 
   /// The string representation for [pitch].
   String pitch(Pitch pitch);
@@ -547,20 +547,30 @@ final class ScientificPitchNotation extends PitchNotation {
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
+  /// The [NoteNotation] system for the [Pitch.note] part.
+  final NoteNotation noteSystem;
+
   /// Creates a new [HelmholtzPitchNotation].
-  const HelmholtzPitchNotation();
+  const HelmholtzPitchNotation({this.noteSystem = NoteNotation.english});
+
+  /// The [NoteNotation.english] variant of this [HelmholtzPitchNotation].
+  static const english = HelmholtzPitchNotation();
+
+  /// The [NoteNotation.german] variant of this [HelmholtzPitchNotation].
+  static const german = HelmholtzPitchNotation(noteSystem: NoteNotation.german);
+
+  /// The [NoteNotation.romance] variant of this [HelmholtzPitchNotation].
+  static const romance =
+      HelmholtzPitchNotation(noteSystem: NoteNotation.romance);
 
   @override
   String pitch(Pitch pitch) {
-    final accidental = pitch.note.accidental;
-    final accidentalSymbol = accidental.isNatural ? '' : accidental.symbol;
+    final note = pitch.note.toString(system: noteSystem);
 
     if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidentalSymbol'
-          '${Pitch._superPrime * (pitch.octave - 3)}';
+      return '${note.toLowerCase()}${Pitch._superPrime * (pitch.octave - 3)}';
     }
 
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+    return '$note${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }

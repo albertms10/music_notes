@@ -1094,7 +1094,7 @@ void main() {
         expect(Note.e.inOctave(7).toString(), 'E7');
       });
 
-      test('returns the Helmholtz string representation of this Pitch', () {
+      test('returns the English Helmholtz string representation', () {
         expect(
           Note.g.sharp.inOctave(-1).toString(system: PitchNotation.helmholtz),
           'G♯͵͵͵',
@@ -1134,6 +1134,112 @@ void main() {
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
           'e′′′′',
+        );
+      });
+
+      test('returns the German Helmholtz string representation', () {
+        expect(
+          Note.g.sharp
+              .inOctave(-1)
+              .toString(system: HelmholtzPitchNotation.german),
+          'Gis͵͵͵',
+        );
+        expect(
+          Note.d.flat
+              .inOctave(0)
+              .toString(system: HelmholtzPitchNotation.german),
+          'Des͵͵',
+        );
+        expect(
+          Note.b.flat
+              .inOctave(1)
+              .toString(system: HelmholtzPitchNotation.german),
+          'B͵',
+        );
+        expect(
+          Note.g.inOctave(2).toString(system: HelmholtzPitchNotation.german),
+          'G',
+        );
+        expect(
+          Note.a.inOctave(3).toString(system: HelmholtzPitchNotation.german),
+          'a',
+        );
+        expect(
+          Note.c.inOctave(4).toString(system: HelmholtzPitchNotation.german),
+          'c′',
+        );
+        expect(
+          Note.c.sharp
+              .inOctave(4)
+              .toString(system: HelmholtzPitchNotation.german),
+          'cis′',
+        );
+        expect(
+          Note.a.inOctave(4).toString(system: HelmholtzPitchNotation.german),
+          'a′',
+        );
+        expect(
+          Note.a.flat
+              .inOctave(5)
+              .toString(system: HelmholtzPitchNotation.german),
+          'as′′',
+        );
+        expect(
+          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
+          'e′′′′',
+        );
+      });
+
+      test('returns the Romance Helmholtz string representation', () {
+        expect(
+          Note.g.sharp
+              .inOctave(-1)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Sol♯͵͵͵',
+        );
+        expect(
+          Note.d.flat
+              .inOctave(0)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Re♭͵͵',
+        );
+        expect(
+          Note.b.flat
+              .inOctave(1)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Si♭͵',
+        );
+        expect(
+          Note.g.inOctave(2).toString(system: HelmholtzPitchNotation.romance),
+          'Sol',
+        );
+        expect(
+          Note.a.inOctave(3).toString(system: HelmholtzPitchNotation.romance),
+          'la',
+        );
+        expect(
+          Note.c.inOctave(4).toString(system: HelmholtzPitchNotation.romance),
+          'do′',
+        );
+        expect(
+          Note.c.sharp
+              .inOctave(4)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'do♯′',
+        );
+        expect(
+          Note.a.inOctave(4).toString(system: HelmholtzPitchNotation.romance),
+          'la′',
+        );
+        expect(
+          Note.a.flat
+              .inOctave(5)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'la♭′′',
+        );
+        expect(
+          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
+          'mi′′′′',
         );
       });
 
