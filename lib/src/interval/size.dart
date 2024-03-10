@@ -148,6 +148,46 @@ extension type const Size._(int size) implements int {
       ? Interval.perfect(this, PerfectQuality.augmented)
       : Interval.imperfect(this, ImperfectQuality.augmented);
 
+  static int _inverted(Size size) {
+    final diff = 9 - size.simple.size.abs();
+
+    return (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
+  }
+
+  /// The inverted of this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.third.inverted == Size.sixth
+  /// Size.fourth.inverted == Size.fifth
+  /// Size.seventh.inverted == Size.second
+  /// (-Size.unison).inverted == -Size.octave
+  /// ```
+  ///
+  /// If this [Size] is greater than [Size.octave], the simplified inversion
+  /// is returned instead.
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.ninth.inverted == Size.seventh
+  /// Size.eleventh.inverted == Size.fifth
+  /// ```
+  Size get inverted => Size(_inverted(this));
+
+  static int _simple(Size size) =>
+      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
+
+  /// The simplified version of this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.thirteenth.simple == Size.sixth
+  /// (-Size.ninth).simple == -Size.second
+  /// Size.octave.simple == Size.octave
+  /// const Size(-22).simple == -Size.octave
+  /// ```
+  Size get simple => Size(_simple(this));
+
   /// Whether this [Size] conforms a perfect interval.
   ///
   /// Example:
@@ -171,19 +211,16 @@ extension type const Size._(int size) implements int {
   /// ```
   bool get isCompound => abs() > octave;
 
-  static int _simple(Size size) =>
-      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
-
-  /// The simplified version of this [Size].
+  /// Whether this [Size] is dissonant.
   ///
   /// Example:
   /// ```dart
-  /// Size.thirteenth.simple == Size.sixth
-  /// (-Size.ninth).simple == -Size.second
-  /// Size.octave.simple == Size.octave
-  /// const Size(-22).simple == -Size.octave
+  /// Size.unison.isDissonant == false
+  /// Size.fifth.isDissonant == false
+  /// Size.seventh.isDissonant == true
+  /// (-Size.ninth).isDissonant == true
   /// ```
-  Size get simple => Size(_simple(this));
+  bool get isDissonant => const {second, seventh}.contains(simple.size.abs());
 
   /// This [Size] formatted as a string.
   String format({IntervalNotation system = IntervalNotation.standard}) =>
@@ -219,6 +256,9 @@ extension type const PerfectSize._(int size) implements Size {
   /// (-Size.fifth).perfect == -Interval.P5
   /// ```
   Interval get perfect => Interval.perfect(this);
+
+  @redeclare
+  PerfectSize get inverted => PerfectSize(Size._inverted(this));
 
   @redeclare
   PerfectSize get simple => PerfectSize(Size._simple(this));
@@ -263,6 +303,9 @@ extension type const ImperfectSize._(int size) implements Size {
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
   Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+
+  @redeclare
+  ImperfectSize get inverted => ImperfectSize(Size._inverted(this));
 
   @redeclare
   ImperfectSize get simple => ImperfectSize(Size._simple(this));
