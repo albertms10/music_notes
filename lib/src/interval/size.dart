@@ -171,6 +171,10 @@ extension type const Size._(int size) implements int {
   /// ```
   bool get isCompound => abs() > Size.octave;
 
+  static int _simple(Size size) => size.isCompound
+      ? size.absShift.nonZeroMod(Size.octave) * size.sign
+      : size;
+
   /// The simplified version of this [Size].
   ///
   /// Example:
@@ -180,9 +184,7 @@ extension type const Size._(int size) implements int {
   /// Size.octave.simple == Size.octave
   /// const Size(-22).simple == -Size.octave
   /// ```
-  Size get simple => Size(
-        isCompound ? absShift.nonZeroMod(Size.octave) * sign : size,
-      );
+  Size get simple => Size(_simple(this));
 
   /// This [Size] formatted as a string.
   String format({IntervalNotation system = IntervalNotation.standard}) =>
@@ -205,9 +207,7 @@ extension type const PerfectSize._(int size) implements Size {
   const PerfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 <
-              2,
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
           'Interval must be perfect.',
         );
 
@@ -220,6 +220,9 @@ extension type const PerfectSize._(int size) implements Size {
   /// (-Size.fifth).perfect == -Interval.P5
   /// ```
   Interval get perfect => Interval.perfect(this);
+
+  @redeclare
+  PerfectSize get simple => PerfectSize(Size._simple(this));
 
   /// The negation of this [PerfectSize].
   ///
@@ -238,9 +241,7 @@ extension type const ImperfectSize._(int size) implements Size {
   const ImperfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 >=
-              2,
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
           'Interval must be imperfect.',
         );
 
@@ -263,6 +264,9 @@ extension type const ImperfectSize._(int size) implements Size {
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
   Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+
+  @redeclare
+  ImperfectSize get simple => ImperfectSize(Size._simple(this));
 
   /// The negation of this [ImperfectSize].
   ///
