@@ -8,48 +8,48 @@ import 'quality.dart';
 
 /// An [Interval] size.
 @immutable
-extension type const Size._(int value) implements int {
-  /// Creates a new [Size] from [value].
-  const Size(this.value) : assert(value != 0, 'Value must be non-zero.');
+extension type const Size._(int size) implements int {
+  /// Creates a new [Size] from [size].
+  const Size(this.size) : assert(size != 0, 'Value must be non-zero.');
 
   /// A unison [Size].
-  static const unison = Size(1);
+  static const unison = PerfectSize(1);
 
   /// A second [Size].
-  static const second = Size(2);
+  static const second = ImperfectSize(2);
 
   /// A third [Size].
-  static const third = Size(3);
+  static const third = ImperfectSize(3);
 
   /// A fourth [Size].
-  static const fourth = Size(4);
+  static const fourth = PerfectSize(4);
 
   /// A fifth [Size].
-  static const fifth = Size(5);
+  static const fifth = PerfectSize(5);
 
   /// A sixth [Size].
-  static const sixth = Size(6);
+  static const sixth = ImperfectSize(6);
 
   /// A seventh [Size].
-  static const seventh = Size(7);
+  static const seventh = ImperfectSize(7);
 
   /// An octave [Size].
-  static const octave = Size(8);
+  static const octave = PerfectSize(8);
 
   /// A ninth [Size].
-  static const ninth = Size(9);
+  static const ninth = ImperfectSize(9);
 
   /// A tenth [Size].
-  static const tenth = Size(10);
+  static const tenth = ImperfectSize(10);
 
   /// An eleventh [Size].
-  static const eleventh = Size(11);
+  static const eleventh = PerfectSize(11);
 
   /// A twelfth [Size].
-  static const twelfth = Size(12);
+  static const twelfth = PerfectSize(12);
 
   /// A thirteenth [Size].
-  static const thirteenth = Size(13);
+  static const thirteenth = ImperfectSize(13);
 
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
@@ -122,42 +122,6 @@ extension type const Size._(int value) implements int {
     return sizeAbs + sizeAbs ~/ Size.octave;
   }
 
-  /// The [PerfectQuality.perfect] interval from this [Size].
-  ///
-  /// Example:
-  /// ```dart
-  /// Size.unison.perfect == Interval.P1
-  /// Size.fourth.perfect == Interval.P4
-  /// (-Size.fifth).perfect == -Interval.P5
-  /// ```
-  Interval get perfect => isPerfect
-      ? Interval.perfect(this)
-      : (throw ArgumentError.value(this, 'size', 'Invalid perfect size'));
-
-  /// The [ImperfectQuality.major] interval from this [Size].
-  ///
-  /// Example:
-  /// ```dart
-  /// Size.second.major == Interval.M2
-  /// Size.sixth.major == Interval.M6
-  /// (-Size.ninth).major == -Interval.M9
-  /// ```
-  Interval get major => isPerfect
-      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
-      : Interval.imperfect(this, ImperfectQuality.major);
-
-  /// The [ImperfectQuality.minor] interval from this [Size].
-  ///
-  /// Example:
-  /// ```dart
-  /// Size.third.minor == Interval.m3
-  /// Size.seventh.minor == Interval.m7
-  /// (-Size.sixth).minor == -Interval.m6
-  /// ```
-  Interval get minor => isPerfect
-      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
-      : Interval.imperfect(this, ImperfectQuality.minor);
-
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
   /// from this [Size].
   ///
@@ -217,7 +181,7 @@ extension type const Size._(int value) implements int {
   /// const Size(-22).simple == -Size.octave
   /// ```
   Size get simple => Size(
-        isCompound ? absShift.nonZeroMod(Size.octave) * sign : value,
+        isCompound ? absShift.nonZeroMod(Size.octave) * sign : size,
       );
 
   /// This [Size] formatted as a string.
@@ -232,5 +196,87 @@ extension type const Size._(int value) implements int {
   /// -const Size(-7) == Size.seventh
   /// ```
   @redeclare
-  Size operator -() => Size(-value);
+  Size operator -() => Size(-size);
+}
+
+/// An [Interval.perfect] size.
+extension type const PerfectSize._(int size) implements Size {
+  /// Creates a new [PerfectSize] from [size].
+  const PerfectSize(this.size)
+      // Copied from [Size.isPerfect] to allow const.
+      : assert(
+          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
+                  4 <
+              2,
+          'Interval must be perfect.',
+        );
+
+  /// The [PerfectQuality.perfect] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.unison.perfect == Interval.P1
+  /// Size.fourth.perfect == Interval.P4
+  /// (-Size.fifth).perfect == -Interval.P5
+  /// ```
+  Interval get perfect => isPerfect
+      ? Interval.perfect(this)
+      : (throw ArgumentError.value(this, 'size', 'Invalid perfect size'));
+
+  /// The negation of this [PerfectSize].
+  ///
+  /// Example:
+  /// ```dart
+  /// -Size.fifth == const Size(-5)
+  /// -const Size(-8) == Size.octave
+  /// ```
+  @redeclare
+  PerfectSize operator -() => PerfectSize(-size);
+}
+
+/// An [Interval.imperfect] size.
+extension type const ImperfectSize._(int size) implements Size {
+  /// Creates a new [ImperfectSize] from [size].
+  const ImperfectSize(this.size)
+      // Copied from [Size.isPerfect] to allow const.
+      : assert(
+          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
+                  4 >=
+              2,
+          'Interval must be imperfect.',
+        );
+
+  /// The [ImperfectQuality.major] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.second.major == Interval.M2
+  /// Size.sixth.major == Interval.M6
+  /// (-Size.ninth).major == -Interval.M9
+  /// ```
+  Interval get major => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.major);
+
+  /// The [ImperfectQuality.minor] interval from this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.third.minor == Interval.m3
+  /// Size.seventh.minor == Interval.m7
+  /// (-Size.sixth).minor == -Interval.m6
+  /// ```
+  Interval get minor => isPerfect
+      ? (throw ArgumentError.value(this, 'size', 'Invalid imperfect size'))
+      : Interval.imperfect(this, ImperfectQuality.minor);
+
+  /// The negation of this [ImperfectSize].
+  ///
+  /// Example:
+  /// ```dart
+  /// -Size.third == const Size(-3)
+  /// -const Size(-7) == Size.seventh
+  /// ```
+  @redeclare
+  ImperfectSize operator -() => ImperfectSize(-size);
 }

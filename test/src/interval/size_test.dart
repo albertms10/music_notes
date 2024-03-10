@@ -53,8 +53,8 @@ void main() {
       });
 
       test('throws an ArgumentError if Size is not perfect', () {
-        expect(() => Size.second.perfect, throwsArgumentError);
-        expect(() => Size.sixth.perfect, throwsArgumentError);
+        expect(() => (2 as PerfectSize).perfect, throwsArgumentError);
+        expect(() => (6 as PerfectSize).perfect, throwsArgumentError);
       });
     });
 
@@ -66,8 +66,8 @@ void main() {
       });
 
       test('throws an ArgumentError if Size is perfect', () {
-        expect(() => Size.unison.major, throwsArgumentError);
-        expect(() => Size.fifth.major, throwsArgumentError);
+        expect(() => (1 as ImperfectSize).major, throwsArgumentError);
+        expect(() => (5 as ImperfectSize).major, throwsArgumentError);
       });
     });
 
@@ -79,8 +79,8 @@ void main() {
       });
 
       test('throws an ArgumentError if Size is perfect', () {
-        expect(() => Size.octave.minor, throwsArgumentError);
-        expect(() => Size.fourth.minor, throwsArgumentError);
+        expect(() => (8 as ImperfectSize).minor, throwsArgumentError);
+        expect(() => (4 as ImperfectSize).minor, throwsArgumentError);
       });
     });
 
