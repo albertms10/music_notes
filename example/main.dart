@@ -21,11 +21,12 @@ void main() {
   Pitch.parse('Eb3'); // E♭3
 
   // Intervals
-  Interval.P4; // P4
   const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+  Interval.d5; // d5
   Size.sixth.augmented; // A6
+  Size.twelfth.simple.perfect; // P5
 
-  -Interval.m6; // m-6
+  -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
 
   Note.c.interval(Note.g); // P5

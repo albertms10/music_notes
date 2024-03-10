@@ -54,14 +54,14 @@ extension type const Size._(int size) implements int {
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
   static const _sizeToSemitones = {
-    Size.unison: 0, // P
-    Size.second: 1, // m
-    Size.third: 3, // m
-    Size.fourth: 5, // P
-    Size.fifth: 7, // P
-    Size.sixth: 8, // m
-    Size.seventh: 10, // m
-    Size.octave: 12, // P
+    unison: 0, // P
+    second: 1, // m
+    third: 3, // m
+    fourth: 5, // P
+    fifth: 7, // P
+    sixth: 8, // m
+    seventh: 10, // m
+    octave: 12, // P
   };
 
   /// The [Size] that matches with [semitones] in [_sizeToSemitones].
@@ -107,10 +107,10 @@ extension type const Size._(int size) implements int {
   /// ```
   int get semitones {
     final simpleAbs = simple.abs();
-    final octaveShift = chromaticDivisions * (absShift ~/ Size.octave);
+    final octaveShift = chromaticDivisions * (absShift ~/ octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(simpleAbs == Size.octave ? 1 : simpleAbs);
+    final size = Size(simpleAbs == octave ? 1 : simpleAbs);
 
     return (_sizeToSemitones[size]! + octaveShift) * sign;
   }
@@ -119,7 +119,7 @@ extension type const Size._(int size) implements int {
   int get absShift {
     final sizeAbs = abs();
 
-    return sizeAbs + sizeAbs ~/ Size.octave;
+    return sizeAbs + sizeAbs ~/ octave;
   }
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
@@ -156,7 +156,7 @@ extension type const Size._(int size) implements int {
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => absShift % (Size.octave / 2) < 2;
+  bool get isPerfect => absShift % (octave / 2) < 2;
 
   /// Whether this [Size] is greater than [Size.octave].
   ///
@@ -169,7 +169,10 @@ extension type const Size._(int size) implements int {
   /// (-Size.eleventh).isCompound == true
   /// Size.thirteenth.isCompound == true
   /// ```
-  bool get isCompound => abs() > Size.octave;
+  bool get isCompound => abs() > octave;
+
+  static int _simple(Size size) =>
+      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
 
   /// The simplified version of this [Size].
   ///
@@ -180,9 +183,7 @@ extension type const Size._(int size) implements int {
   /// Size.octave.simple == Size.octave
   /// const Size(-22).simple == -Size.octave
   /// ```
-  Size get simple => Size(
-        isCompound ? absShift.nonZeroMod(Size.octave) * sign : size,
-      );
+  Size get simple => Size(_simple(this));
 
   /// This [Size] formatted as a string.
   String format({IntervalNotation system = IntervalNotation.standard}) =>
@@ -205,9 +206,7 @@ extension type const PerfectSize._(int size) implements Size {
   const PerfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 <
-              2,
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
           'Interval must be perfect.',
         );
 
@@ -220,6 +219,9 @@ extension type const PerfectSize._(int size) implements Size {
   /// (-Size.fifth).perfect == -Interval.P5
   /// ```
   Interval get perfect => Interval.perfect(this);
+
+  @redeclare
+  PerfectSize get simple => PerfectSize(Size._simple(this));
 
   /// The negation of this [PerfectSize].
   ///
@@ -238,9 +240,7 @@ extension type const ImperfectSize._(int size) implements Size {
   const ImperfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 >=
-              2,
+          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
           'Interval must be imperfect.',
         );
 
@@ -263,6 +263,9 @@ extension type const ImperfectSize._(int size) implements Size {
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
   Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+
+  @redeclare
+  ImperfectSize get simple => ImperfectSize(Size._simple(this));
 
   /// The negation of this [ImperfectSize].
   ///

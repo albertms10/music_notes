@@ -67,15 +67,16 @@ Pitch.parse('Eb3'); // E♭3
 Create an `Interval`:
 
 ```dart
-Interval.P4; // P4
 const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+Interval.d5; // d5
 Size.sixth.augmented; // A6
+Size.eleventh.simple.perfect; // P4
 ```
 
 Or turn it descending:
 
 ```dart
--Interval.m6; // m-6
+-Interval.m7; // m-7
 Interval.M3.descending(); // M-3
 ```
 
