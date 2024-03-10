@@ -54,14 +54,14 @@ extension type const Size._(int size) implements int {
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
   static const _sizeToSemitones = {
-    Size.unison: 0, // P
-    Size.second: 1, // m
-    Size.third: 3, // m
-    Size.fourth: 5, // P
-    Size.fifth: 7, // P
-    Size.sixth: 8, // m
-    Size.seventh: 10, // m
-    Size.octave: 12, // P
+    unison: 0, // P
+    second: 1, // m
+    third: 3, // m
+    fourth: 5, // P
+    fifth: 7, // P
+    sixth: 8, // m
+    seventh: 10, // m
+    octave: 12, // P
   };
 
   /// The [Size] that matches with [semitones] in [_sizeToSemitones].
@@ -107,10 +107,10 @@ extension type const Size._(int size) implements int {
   /// ```
   int get semitones {
     final simpleAbs = simple.abs();
-    final octaveShift = chromaticDivisions * (absShift ~/ Size.octave);
+    final octaveShift = chromaticDivisions * (absShift ~/ octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(simpleAbs == Size.octave ? 1 : simpleAbs);
+    final size = Size(simpleAbs == octave ? 1 : simpleAbs);
 
     return (_sizeToSemitones[size]! + octaveShift) * sign;
   }
@@ -119,7 +119,7 @@ extension type const Size._(int size) implements int {
   int get absShift {
     final sizeAbs = abs();
 
-    return sizeAbs + sizeAbs ~/ Size.octave;
+    return sizeAbs + sizeAbs ~/ octave;
   }
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
@@ -156,7 +156,7 @@ extension type const Size._(int size) implements int {
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => absShift % (Size.octave / 2) < 2;
+  bool get isPerfect => absShift % (octave / 2) < 2;
 
   /// Whether this [Size] is greater than [Size.octave].
   ///
@@ -169,11 +169,10 @@ extension type const Size._(int size) implements int {
   /// (-Size.eleventh).isCompound == true
   /// Size.thirteenth.isCompound == true
   /// ```
-  bool get isCompound => abs() > Size.octave;
+  bool get isCompound => abs() > octave;
 
-  static int _simple(Size size) => size.isCompound
-      ? size.absShift.nonZeroMod(Size.octave) * size.sign
-      : size;
+  static int _simple(Size size) =>
+      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
 
   /// The simplified version of this [Size].
   ///
