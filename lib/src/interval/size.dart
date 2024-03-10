@@ -12,43 +12,43 @@ extension type const Size._(int size) implements int {
   /// Creates a new [Size] from [size].
   const Size(this.size) : assert(size != 0, 'Value must be non-zero.');
 
-  /// A unison [Size].
+  /// A unison [PerfectSize].
   static const unison = PerfectSize(1);
 
-  /// A second [Size].
+  /// A second [ImperfectSize].
   static const second = ImperfectSize(2);
 
-  /// A third [Size].
+  /// A third [ImperfectSize].
   static const third = ImperfectSize(3);
 
-  /// A fourth [Size].
+  /// A fourth [PerfectSize].
   static const fourth = PerfectSize(4);
 
-  /// A fifth [Size].
+  /// A fifth [PerfectSize].
   static const fifth = PerfectSize(5);
 
-  /// A sixth [Size].
+  /// A sixth [ImperfectSize].
   static const sixth = ImperfectSize(6);
 
-  /// A seventh [Size].
+  /// A seventh [ImperfectSize].
   static const seventh = ImperfectSize(7);
 
-  /// An octave [Size].
+  /// An octave [PerfectSize].
   static const octave = PerfectSize(8);
 
-  /// A ninth [Size].
+  /// A ninth [ImperfectSize].
   static const ninth = ImperfectSize(9);
 
-  /// A tenth [Size].
+  /// A tenth [ImperfectSize].
   static const tenth = ImperfectSize(10);
 
-  /// An eleventh [Size].
+  /// An eleventh [PerfectSize].
   static const eleventh = PerfectSize(11);
 
-  /// A twelfth [Size].
+  /// A twelfth [PerfectSize].
   static const twelfth = PerfectSize(12);
 
-  /// A thirteenth [Size].
+  /// A thirteenth [ImperfectSize].
   static const thirteenth = ImperfectSize(13);
 
   /// [Size] to the corresponding [ImperfectQuality.minor] or
@@ -211,7 +211,7 @@ extension type const PerfectSize._(int size) implements Size {
           'Interval must be perfect.',
         );
 
-  /// The [PerfectQuality.perfect] interval from this [Size].
+  /// The [PerfectQuality.perfect] interval from this [PerfectSize].
   ///
   /// Example:
   /// ```dart
@@ -244,7 +244,7 @@ extension type const ImperfectSize._(int size) implements Size {
           'Interval must be imperfect.',
         );
 
-  /// The [ImperfectQuality.major] interval from this [Size].
+  /// The [ImperfectQuality.major] interval from this [ImperfectSize].
   ///
   /// Example:
   /// ```dart
@@ -254,7 +254,7 @@ extension type const ImperfectSize._(int size) implements Size {
   /// ```
   Interval get major => Interval.imperfect(this, ImperfectQuality.major);
 
-  /// The [ImperfectQuality.minor] interval from this [Size].
+  /// The [ImperfectQuality.minor] interval from this [ImperfectSize].
   ///
   /// Example:
   /// ```dart
