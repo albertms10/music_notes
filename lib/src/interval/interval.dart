@@ -264,21 +264,15 @@ final class Interval
   /// (-Interval.P1).inverted == -Interval.P8
   /// ```
   ///
-  /// If this [Interval] is greater than [Size.octave], the simplified inversion
-  /// is returned instead.
+  /// If this [Interval.size] is greater than [Size.octave], the simplified
+  /// inversion is returned instead.
   ///
   /// Example:
   /// ```dart
   /// Interval.m9.inverted == Interval.M7
   /// Interval.P11.inverted == Interval.P5
   /// ```
-  Interval get inverted {
-    final diff = 9 - simple.size.abs();
-    final invertedSize =
-        Size((diff.isNegative ? diff.abs() + 2 : diff) * size.sign);
-
-    return Interval._(invertedSize, quality.inverted);
-  }
+  Interval get inverted => Interval._(size.inverted, quality.inverted);
 
   /// The simplified version of this [Interval].
   ///

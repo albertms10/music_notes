@@ -171,6 +171,32 @@ extension type const Size._(int size) implements int {
   /// ```
   bool get isCompound => abs() > octave;
 
+  static int _inverted(Size size) {
+    final diff = 9 - size.simple.size.abs();
+
+    return (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
+  }
+
+  /// The inverted of this [Size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.third.inverted == Size.sixth
+  /// Size.fourth.inverted == Size.fifth
+  /// Size.seventh.inverted == Size.second
+  /// (-Size.unison).inverted == -Size.octave
+  /// ```
+  ///
+  /// If this [Size] is greater than [Size.octave], the simplified inversion
+  /// is returned instead.
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.ninth.inverted == Size.seventh
+  /// Size.eleventh.inverted == Size.fifth
+  /// ```
+  Size get inverted => Size(_inverted(this));
+
   static int _simple(Size size) =>
       size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
 
@@ -221,6 +247,9 @@ extension type const PerfectSize._(int size) implements Size {
   Interval get perfect => Interval.perfect(this);
 
   @redeclare
+  PerfectSize get inverted => PerfectSize(Size._inverted(this));
+
+  @redeclare
   PerfectSize get simple => PerfectSize(Size._simple(this));
 
   /// The negation of this [PerfectSize].
@@ -263,6 +292,9 @@ extension type const ImperfectSize._(int size) implements Size {
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
   Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+
+  @redeclare
+  ImperfectSize get inverted => ImperfectSize(Size._inverted(this));
 
   @redeclare
   ImperfectSize get simple => ImperfectSize(Size._simple(this));
