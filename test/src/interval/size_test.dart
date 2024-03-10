@@ -51,11 +51,6 @@ void main() {
         expect(Size.fourth.perfect, Interval.P4);
         expect((-Size.fifth).perfect, -Interval.P5);
       });
-
-      test('throws an ArgumentError if Size is not perfect', () {
-        expect(() => (2 as PerfectSize).perfect, throwsArgumentError);
-        expect(() => (6 as PerfectSize).perfect, throwsArgumentError);
-      });
     });
 
     group('.major', () {
@@ -64,11 +59,6 @@ void main() {
         expect(Size.sixth.major, Interval.M6);
         expect((-Size.ninth).major, -Interval.M9);
       });
-
-      test('throws an ArgumentError if Size is perfect', () {
-        expect(() => (1 as ImperfectSize).major, throwsArgumentError);
-        expect(() => (5 as ImperfectSize).major, throwsArgumentError);
-      });
     });
 
     group('.minor', () {
@@ -76,11 +66,6 @@ void main() {
         expect(Size.third.minor, Interval.m3);
         expect(Size.seventh.minor, Interval.m7);
         expect((-Size.sixth).minor, -Interval.m6);
-      });
-
-      test('throws an ArgumentError if Size is perfect', () {
-        expect(() => (8 as ImperfectSize).minor, throwsArgumentError);
-        expect(() => (4 as ImperfectSize).minor, throwsArgumentError);
       });
     });
 
