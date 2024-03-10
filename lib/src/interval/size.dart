@@ -148,29 +148,6 @@ extension type const Size._(int size) implements int {
       ? Interval.perfect(this, PerfectQuality.augmented)
       : Interval.imperfect(this, ImperfectQuality.augmented);
 
-  /// Whether this [Size] conforms a perfect interval.
-  ///
-  /// Example:
-  /// ```dart
-  /// Size.fifth.isPerfect == true
-  /// Size.sixth.isPerfect == false
-  /// (-Size.eleventh).isPerfect == true
-  /// ```
-  bool get isPerfect => absShift % (octave / 2) < 2;
-
-  /// Whether this [Size] is greater than [Size.octave].
-  ///
-  /// Example:
-  /// ```dart
-  /// Size.fifth.isCompound == false
-  /// (-Size.sixth).isCompound == false
-  /// Size.octave.isCompound == false
-  /// Size.ninth.isCompound == true
-  /// (-Size.eleventh).isCompound == true
-  /// Size.thirteenth.isCompound == true
-  /// ```
-  bool get isCompound => abs() > octave;
-
   static int _inverted(Size size) {
     final diff = 9 - size.simple.size.abs();
 
@@ -210,6 +187,40 @@ extension type const Size._(int size) implements int {
   /// const Size(-22).simple == -Size.octave
   /// ```
   Size get simple => Size(_simple(this));
+
+  /// Whether this [Size] conforms a perfect interval.
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.fifth.isPerfect == true
+  /// Size.sixth.isPerfect == false
+  /// (-Size.eleventh).isPerfect == true
+  /// ```
+  bool get isPerfect => absShift % (octave / 2) < 2;
+
+  /// Whether this [Size] is greater than [Size.octave].
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.fifth.isCompound == false
+  /// (-Size.sixth).isCompound == false
+  /// Size.octave.isCompound == false
+  /// Size.ninth.isCompound == true
+  /// (-Size.eleventh).isCompound == true
+  /// Size.thirteenth.isCompound == true
+  /// ```
+  bool get isCompound => abs() > octave;
+
+  /// Whether this [Size] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// Size.unison.isDissonant == false
+  /// Size.fifth.isDissonant == false
+  /// Size.seventh.isDissonant == true
+  /// (-Size.ninth).isDissonant == true
+  /// ```
+  bool get isDissonant => const {second, seventh}.contains(simple.size.abs());
 
   /// This [Size] formatted as a string.
   String format({IntervalNotation system = IntervalNotation.standard}) =>

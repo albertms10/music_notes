@@ -314,7 +314,7 @@ final class Interval
         ImperfectQuality(:final semitones) =>
           semitones.isNegative && semitones > 1,
       } ||
-      const {Size.second, Size.seventh}.contains(simple.size.abs());
+      size.isDissonant;
 
   /// This [Interval] respelled by [size] while keeping the same number of
   /// [semitones].
