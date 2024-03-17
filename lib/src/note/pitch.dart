@@ -292,17 +292,20 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// This [Pitch] respelled by [accidental] while keeping the same number of
   /// [semitones].
   ///
+  /// When no respelling is possible with [accidental], the next closest
+  /// spelling is returned.
+  ///
   /// Example:
   /// ```dart
   /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
   ///   == Note.d.sharp.inOctave(4)
   /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
   ///   == Note.c.flat.inOctave(5)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp) == null
+  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
+  ///   == Note.f.sharp.sharp.inOctave(4)
   /// ```
-  Pitch? respellByAccidental(Accidental accidental) {
+  Pitch respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
-    if (respelledNote == null) return null;
 
     return Pitch(
       respelledNote,
@@ -322,9 +325,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
   ///   == Note.g.sharp.inOctave(4)
   /// ```
-  Pitch get respelledSimple =>
-      respellByAccidental(Accidental.natural) ??
-      respellByAccidental(Accidental(note.accidental.semitones.sign))!;
+  Pitch get respelledSimple => respellByAccidental(Accidental.natural);
 
   /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.

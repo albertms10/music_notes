@@ -252,17 +252,24 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// This [Note] respelled by [accidental] while keeping the same number of
   /// [semitones].
   ///
+  /// When no respelling is possible with [accidental], the next closest
+  /// spelling is returned.
+  ///
   /// Example:
   /// ```dart
   /// Note.e.flat.respellByAccidental(Accidental.sharp) == Note.d.sharp
   /// Note.b.respellByAccidental(Accidental.flat) == Note.c.flat
-  /// Note.g.respellByAccidental(Accidental.sharp) == null
+  /// Note.g.respellByAccidental(Accidental.sharp) == Note.f.sharp.sharp
   /// ```
-  Note? respellByAccidental(Accidental accidental) {
+  Note respellByAccidental(Accidental accidental) {
     final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
-    if (baseNote == null) return null;
+    if (baseNote != null) return Note(baseNote, accidental);
 
-    return Note(baseNote, accidental);
+    if (accidental.isNatural) {
+      return respellByAccidental(Accidental(this.accidental.semitones.sign));
+    }
+
+    return respellByAccidental(accidental.incrementBy(1));
   }
 
   /// This [Note] with the simplest [Accidental] spelling while keeping the
@@ -274,9 +281,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.flat.flat.respelledSimple == Note.c
   /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
   /// ```
-  Note get respelledSimple =>
-      respellByAccidental(Accidental.natural) ??
-      respellByAccidental(Accidental(accidental.semitones.sign))!;
+  Note get respelledSimple => respellByAccidental(Accidental.natural);
 
   /// This [Note] positioned in the given [octave] as a [Pitch].
   ///
