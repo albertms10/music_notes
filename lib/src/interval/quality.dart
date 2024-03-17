@@ -28,6 +28,9 @@ sealed class Quality implements Comparable<Quality> {
   /// The inverted version of this [Quality].
   Quality get inverted;
 
+  /// Whether this [Quality] is dissonant.
+  bool get isDissonant;
+
   /// The string representation of this [Quality] based on [system].
   ///
   /// See [IntervalNotation] for all system implementations.
@@ -147,6 +150,17 @@ final class PerfectQuality extends Quality {
   @override
   PerfectQuality get inverted => PerfectQuality(-semitones);
 
+  /// Whether this [PerfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.isDissonant == false
+  /// PerfectQuality.diminished.isDissonant == true
+  /// PerfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant => semitones != 0;
+
   @override
   // Overridden hashCode already present in the super class.
   // ignore: hash_and_equals
@@ -245,6 +259,18 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   ImperfectQuality get inverted => ImperfectQuality(1 - semitones);
+
+  /// Whether this [ImperfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.isDissonant == false
+  /// ImperfectQuality.minor.isDissonant == false
+  /// ImperfectQuality.diminished.isDissonant == true
+  /// ImperfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant => semitones.isNegative && semitones > 1;
 
   @override
   // Overridden hashCode already present in the super class.

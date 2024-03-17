@@ -308,13 +308,7 @@ final class Interval
   /// Interval.M7.isDissonant == true
   /// (-Interval.m9).isDissonant == true
   /// ```
-  bool get isDissonant =>
-      switch (quality) {
-        PerfectQuality(:final semitones) => semitones != 0,
-        ImperfectQuality(:final semitones) =>
-          semitones.isNegative && semitones > 1,
-      } ||
-      size.isDissonant;
+  bool get isDissonant => quality.isDissonant || size.isDissonant;
 
   /// This [Interval] respelled by [size] while keeping the same number of
   /// [semitones].
