@@ -223,10 +223,10 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.respellByBaseNoteDistance(-1) == Note.f.sharp
-  /// Note.e.sharp.respellByBaseNoteDistance(2) == Note.g.flat.flat
+  /// Note.g.flat.respellByOrdinalDistance(-1) == Note.f.sharp
+  /// Note.e.sharp.respellByOrdinalDistance(2) == Note.g.flat.flat
   /// ```
-  Note respellByBaseNoteDistance(int distance) =>
+  Note respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
 
   /// This [Note] respelled upwards while keeping the same number of
@@ -237,7 +237,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.sharp.respelledUpwards == Note.a.flat
   /// Note.e.sharp.respelledUpwards == Note.f
   /// ```
-  Note get respelledUpwards => respellByBaseNoteDistance(1);
+  Note get respelledUpwards => respellByOrdinalDistance(1);
 
   /// This [Note] respelled downwards while keeping the same number of
   /// [semitones].
@@ -247,7 +247,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.flat.respelledDownwards == Note.f.sharp
   /// Note.c.respelledDownwards == Note.b.sharp
   /// ```
-  Note get respelledDownwards => respellByBaseNoteDistance(-1);
+  Note get respelledDownwards => respellByOrdinalDistance(-1);
 
   /// This [Note] respelled by [accidental] while keeping the same number of
   /// [semitones].

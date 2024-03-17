@@ -89,8 +89,8 @@ final class PitchClass extends Scalable<PitchClass>
         {
           note,
           for (var i = 1; i <= distance; i++) ...[
-            note.respellByBaseNoteDistance(distance),
-            note.respellByBaseNoteDistance(-distance),
+            note.respellByOrdinalDistance(distance),
+            note.respellByOrdinalDistance(-distance),
           ],
         },
         Note.compareByClosestDistance,
@@ -107,8 +107,8 @@ final class PitchClass extends Scalable<PitchClass>
         aboveNote,
         belowNote,
         for (var i = 1; i <= distance; i++) ...[
-          belowNote.respellByBaseNoteDistance(distance),
-          aboveNote.respellByBaseNoteDistance(-distance),
+          belowNote.respellByOrdinalDistance(distance),
+          aboveNote.respellByOrdinalDistance(-distance),
         ],
       },
       Note.compareByClosestDistance,

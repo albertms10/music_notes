@@ -199,30 +199,30 @@ void main() {
       });
     });
 
-    group('.respellByBaseNoteDistance()', () {
-      test('returns this Note respelled by BaseNote', () {
-        expect(Note.c.sharp.respellByBaseNoteDistance(1), Note.d.flat);
-        expect(Note.d.flat.respellByBaseNoteDistance(-1), Note.c.sharp);
-        expect(Note.c.respellByBaseNoteDistance(1), Note.d.flat.flat);
-        expect(Note.d.respellByBaseNoteDistance(-1), Note.c.sharp.sharp);
-        expect(Note.g.flat.respellByBaseNoteDistance(-1), Note.f.sharp);
-        expect(Note.e.sharp.respellByBaseNoteDistance(2), Note.g.flat.flat);
-        expect(Note.f.respellByBaseNoteDistance(7), Note.f);
+    group('.respellByOrdinalDistance()', () {
+      test('returns this Note respelled by ordinal distance', () {
+        expect(Note.c.sharp.respellByOrdinalDistance(1), Note.d.flat);
+        expect(Note.d.flat.respellByOrdinalDistance(-1), Note.c.sharp);
+        expect(Note.c.respellByOrdinalDistance(1), Note.d.flat.flat);
+        expect(Note.d.respellByOrdinalDistance(-1), Note.c.sharp.sharp);
+        expect(Note.g.flat.respellByOrdinalDistance(-1), Note.f.sharp);
+        expect(Note.e.sharp.respellByOrdinalDistance(2), Note.g.flat.flat);
+        expect(Note.f.respellByOrdinalDistance(7), Note.f);
 
         expect(
-          Note.f.respellByBaseNoteDistance(2),
+          Note.f.respellByOrdinalDistance(2),
           const Note(BaseNote.a, Accidental(-4)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(3),
+          Note.f.respellByOrdinalDistance(3),
           const Note(BaseNote.b, Accidental(-6)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(4),
+          Note.f.respellByOrdinalDistance(4),
           const Note(BaseNote.c, Accidental(5)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(-3),
+          Note.f.respellByOrdinalDistance(-3),
           const Note(BaseNote.c, Accidental(5)),
         );
       });
