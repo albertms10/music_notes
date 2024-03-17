@@ -1,3 +1,9 @@
+## 0.17.1
+
+- fix(deps): 🚚 move `test` to dev_dependencies [#441](https://github.com/albertms10/music_notes/pull/441)
+
+**Full Changelog**: [`v0.17.0...v0.17.1`](https://github.com/albertms10/music_notes/compare/v0.17.0...v0.17.1)
+
 ## 0.17.0
 
 - refactor!(key_signature): ♻️ rewrite `keys` method to return a Map [#401](https://github.com/albertms10/music_notes/pull/401)
