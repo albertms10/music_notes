@@ -261,12 +261,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1)
+  /// Note.g.flat.inOctave(4).respellByOrdinalDistance(-1)
   ///   == Note.f.sharp.inOctave(4)
-  /// Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2)
+  /// Note.e.sharp.inOctave(4).respellByOrdinalDistance(2)
   ///   == Note.g.flat.flat.inOctave(4)
   /// ```
-  Pitch respellByBaseNoteDistance(int distance) =>
+  Pitch respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
 
   /// This [Pitch] respelled upwards while keeping the same number of
@@ -277,7 +277,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.sharp.inOctave(4).respelledUpwards == Note.a.flat.inOctave(4)
   /// Note.e.sharp.inOctave(4).respelledUpwards == Note.f.inOctave(4)
   /// ```
-  Pitch get respelledUpwards => respellByBaseNoteDistance(1);
+  Pitch get respelledUpwards => respellByOrdinalDistance(1);
 
   /// This [Pitch] respelled downwards while keeping the same number of
   /// [semitones].
@@ -287,7 +287,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.flat.inOctave(4).respelledDownwards == Note.f.sharp.inOctave(4)
   /// Note.c.inOctave(4).respelledDownwards == Note.b.sharp.inOctave(4)
   /// ```
-  Pitch get respelledDownwards => respellByBaseNoteDistance(-1);
+  Pitch get respelledDownwards => respellByOrdinalDistance(-1);
 
   /// This [Pitch] respelled by [accidental] while keeping the same number of
   /// [semitones].

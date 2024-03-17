@@ -299,63 +299,63 @@ void main() {
       });
     });
 
-    group('.respellByBaseNoteDistance()', () {
+    group('.respellByOrdinalDistance()', () {
       test('returns this Pitch respelled by BaseNote', () {
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(1),
+          Note.c.sharp.inOctave(4).respellByOrdinalDistance(1),
           Note.d.flat.inOctave(4),
         );
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.sharp.inOctave(4).respellByOrdinalDistance(-1),
           Note.b.sharp.sharp.inOctave(3),
         );
         expect(
-          Note.d.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.d.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.c.sharp.inOctave(4),
         );
         expect(
-          Note.c.inOctave(4).respellByBaseNoteDistance(1),
+          Note.c.inOctave(4).respellByOrdinalDistance(1),
           Note.d.flat.flat.inOctave(4),
         );
         expect(
-          Note.c.inOctave(3).respellByBaseNoteDistance(-1),
+          Note.c.inOctave(3).respellByOrdinalDistance(-1),
           Note.b.sharp.inOctave(2),
         );
         expect(
-          Note.c.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.b.inOctave(3),
         );
         expect(
-          Note.d.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.d.inOctave(4).respellByOrdinalDistance(-1),
           Note.c.sharp.sharp.inOctave(4),
         );
         expect(
-          Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.g.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.f.sharp.inOctave(4),
         );
         expect(
-          Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2),
+          Note.e.sharp.inOctave(4).respellByOrdinalDistance(2),
           Note.g.flat.flat.inOctave(4),
         );
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(7),
+          Note.f.inOctave(4).respellByOrdinalDistance(7),
           Note.f.inOctave(4),
         );
 
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(2),
+          Note.f.inOctave(4).respellByOrdinalDistance(2),
           const Note(BaseNote.a, Accidental(-4)).inOctave(4),
         );
         expect(
-          Note.g.inOctave(4).respellByBaseNoteDistance(3),
+          Note.g.inOctave(4).respellByOrdinalDistance(3),
           const Note(BaseNote.c, Accidental(-5)).inOctave(5),
         );
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(4),
+          Note.f.inOctave(4).respellByOrdinalDistance(4),
           const Note(BaseNote.c, Accidental(5)).inOctave(4),
         );
         expect(
-          Note.d.inOctave(4).respellByBaseNoteDistance(-3),
+          Note.d.inOctave(4).respellByOrdinalDistance(-3),
           const Note(BaseNote.a, Accidental(5)).inOctave(3),
         );
       });
