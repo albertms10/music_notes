@@ -300,7 +300,7 @@ void main() {
     });
 
     group('.respellByOrdinalDistance()', () {
-      test('returns this Pitch respelled by BaseNote', () {
+      test('returns this Pitch respelled by ordinal distance', () {
         expect(
           Note.c.sharp.inOctave(4).respellByOrdinalDistance(1),
           Note.d.flat.inOctave(4),

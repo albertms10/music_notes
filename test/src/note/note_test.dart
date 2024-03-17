@@ -200,7 +200,7 @@ void main() {
     });
 
     group('.respellByOrdinalDistance()', () {
-      test('returns this Note respelled by BaseNote', () {
+      test('returns this Note respelled by ordinal distance', () {
         expect(Note.c.sharp.respellByOrdinalDistance(1), Note.d.flat);
         expect(Note.d.flat.respellByOrdinalDistance(-1), Note.c.sharp);
         expect(Note.c.respellByOrdinalDistance(1), Note.d.flat.flat);
