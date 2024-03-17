@@ -438,27 +438,30 @@ void main() {
         );
       });
 
-      test('returns null when no respelling is possible', () {
+      test('returns the next closest spelling when no possible respelling', () {
         expect(
           Note.d.inOctave(4).respellByAccidental(Accidental.sharp),
-          isNull,
+          Note.c.sharp.sharp.inOctave(4),
         );
-        expect(Note.d.inOctave(2).respellByAccidental(Accidental.flat), isNull);
+        expect(
+          Note.d.inOctave(2).respellByAccidental(Accidental.flat),
+          Note.e.flat.flat.inOctave(2),
+        );
         expect(
           Note.e.inOctave(3).respellByAccidental(Accidental.doubleFlat),
-          isNull,
+          Note.g.flat.flat.flat.inOctave(3),
         );
         expect(
           Note.f.inOctave(-1).respellByAccidental(Accidental.doubleSharp),
-          isNull,
+          Note.d.sharp.sharp.sharp.inOctave(-1),
         );
         expect(
           Note.b.inOctave(0).respellByAccidental(Accidental.doubleFlat),
-          isNull,
+          Note.c.flat.flat.flat.inOctave(1),
         );
         expect(
           Note.c.inOctave(7).respellByAccidental(Accidental.doubleSharp),
-          isNull,
+          Note.a.sharp.sharp.sharp.inOctave(6),
         );
       });
     });

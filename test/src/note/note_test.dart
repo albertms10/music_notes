@@ -266,13 +266,28 @@ void main() {
         );
       });
 
-      test('returns null when no respelling is possible', () {
-        expect(Note.d.respellByAccidental(Accidental.sharp), isNull);
-        expect(Note.d.respellByAccidental(Accidental.flat), isNull);
-        expect(Note.e.respellByAccidental(Accidental.doubleFlat), isNull);
-        expect(Note.f.respellByAccidental(Accidental.doubleSharp), isNull);
-        expect(Note.b.respellByAccidental(Accidental.doubleFlat), isNull);
-        expect(Note.c.respellByAccidental(Accidental.doubleSharp), isNull);
+      test('returns the next closest spelling when no possible respelling', () {
+        expect(
+          Note.d.respellByAccidental(Accidental.sharp),
+          Note.c.sharp.sharp,
+        );
+        expect(Note.d.respellByAccidental(Accidental.flat), Note.e.flat.flat);
+        expect(
+          Note.e.respellByAccidental(Accidental.doubleFlat),
+          Note.g.flat.flat.flat,
+        );
+        expect(
+          Note.f.respellByAccidental(Accidental.doubleSharp),
+          Note.d.sharp.sharp.sharp,
+        );
+        expect(
+          Note.b.respellByAccidental(Accidental.doubleFlat),
+          Note.d.flat.flat.flat,
+        );
+        expect(
+          Note.c.respellByAccidental(Accidental.doubleSharp),
+          Note.a.sharp.sharp.sharp,
+        );
       });
     });
 
