@@ -220,7 +220,11 @@ extension type const Size._(int size) implements int {
   /// Size.seventh.isDissonant == true
   /// (-Size.ninth).isDissonant == true
   /// ```
-  bool get isDissonant => const {second, seventh}.contains(simple.size.abs());
+  bool get isDissonant {
+    if (simple.size.abs() case second || seventh) return true;
+
+    return false;
+  }
 
   /// This [Size] formatted as a string.
   String format({IntervalNotation system = IntervalNotation.standard}) =>
