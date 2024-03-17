@@ -227,6 +227,8 @@ extension type const Size._(int size) implements int {
   }
 
   /// This [Size] formatted as a string.
+  ///
+  /// See [IntervalNotation] for all system implementations.
   String format({IntervalNotation system = IntervalNotation.standard}) =>
       system.size(this);
 

@@ -254,7 +254,8 @@ final class Interval
         quality,
       );
 
-  /// The inverted of this [Interval].
+  /// The inverted of this [Interval], regardless of its direction (ascending or
+  /// descending).
   ///
   /// Example:
   /// ```dart
@@ -397,8 +398,7 @@ final class Interval
   /// ```dart
   /// Interval.M3.toString() == 'M3'
   /// (-Interval.d5).toString() == 'd-5'
-  /// const Interval.perfect(Size.twelfth, PerfectQuality.perfect).toString()
-  ///   == 'P12 (P5)'
+  /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
   String toString({IntervalNotation system = IntervalNotation.standard}) =>
@@ -423,8 +423,8 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// -Interval.m3 == const Interval.imperfect(-3, ImperfectQuality.minor)
-  /// -const Interval.perfect(-5, PerfectQuality.perfect) == Interval.P5
+  /// -Interval.perfect(-Size.fifth) == Interval.P5
+  /// -Interval.m3 == (-Size.third).minor
   /// ```
   Interval operator -() => Interval._(-size, quality);
 
