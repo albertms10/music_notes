@@ -265,6 +265,10 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
     final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
     if (baseNote != null) return Note(baseNote, accidental);
 
+    if (accidental.isNatural) {
+      return respellByAccidental(Accidental(this.accidental.semitones.sign));
+    }
+
     return respellByAccidental(accidental.incrementBy(1));
   }
 
@@ -277,9 +281,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.flat.flat.respelledSimple == Note.c
   /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
   /// ```
-  Note get respelledSimple =>
-      respellByAccidental(Accidental.natural) ??
-      respellByAccidental(Accidental(accidental.semitones.sign))!;
+  Note get respelledSimple => respellByAccidental(Accidental.natural);
 
   /// This [Note] positioned in the given [octave] as a [Pitch].
   ///

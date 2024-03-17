@@ -325,9 +325,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
   ///   == Note.g.sharp.inOctave(4)
   /// ```
-  Pitch get respelledSimple =>
-      respellByAccidental(Accidental.natural) ??
-      respellByAccidental(Accidental(note.accidental.semitones.sign))!;
+  Pitch get respelledSimple => respellByAccidental(Accidental.natural);
 
   /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.

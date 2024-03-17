@@ -402,7 +402,7 @@ void main() {
       });
     });
 
-    group('.respellByBaseAccidental()', () {
+    group('.respellByAccidental()', () {
       test('returns this Pitch respelled by Accidental', () {
         expect(
           Note.a.sharp.inOctave(4).respellByAccidental(Accidental.flat),
@@ -440,6 +440,31 @@ void main() {
 
       test('returns the next closest spelling when no possible respelling', () {
         expect(
+          Note.d.flat.inOctave(3).respellByAccidental(Accidental.natural),
+          Note.d.flat.inOctave(3),
+        );
+        expect(
+          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2),
+        );
+        expect(
+          Note.e.flat.flat.flat
+              .inOctave(5)
+              .respellByAccidental(Accidental.natural),
+          Note.d.flat.inOctave(5),
+        );
+        expect(
+          Note.e.sharp.sharp
+              .inOctave(-1)
+              .respellByAccidental(Accidental.natural),
+          Note.f.sharp.inOctave(-1),
+        );
+
+        expect(
+          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2),
+        );
+        expect(
           Note.d.inOctave(4).respellByAccidental(Accidental.sharp),
           Note.c.sharp.sharp.inOctave(4),
         );
@@ -457,7 +482,7 @@ void main() {
         );
         expect(
           Note.b.inOctave(0).respellByAccidental(Accidental.doubleFlat),
-          Note.c.flat.flat.flat.inOctave(1),
+          Note.d.flat.flat.flat.inOctave(1),
         );
         expect(
           Note.c.inOctave(7).respellByAccidental(Accidental.doubleSharp),

@@ -248,7 +248,7 @@ void main() {
       });
     });
 
-    group('.respellByBaseAccidental()', () {
+    group('.respellByAccidental()', () {
       test('returns this Note respelled by Accidental', () {
         expect(Note.a.sharp.respellByAccidental(Accidental.flat), Note.b.flat);
         expect(Note.g.flat.respellByAccidental(Accidental.sharp), Note.f.sharp);
@@ -267,6 +267,23 @@ void main() {
       });
 
       test('returns the next closest spelling when no possible respelling', () {
+        expect(
+          Note.d.flat.respellByAccidental(Accidental.natural),
+          Note.d.flat,
+        );
+        expect(
+          Note.a.sharp.respellByAccidental(Accidental.natural),
+          Note.a.sharp,
+        );
+        expect(
+          Note.b.flat.flat.flat.respellByAccidental(Accidental.natural),
+          Note.a.flat,
+        );
+        expect(
+          Note.b.sharp.sharp.respellByAccidental(Accidental.natural),
+          Note.c.sharp,
+        );
+
         expect(
           Note.d.respellByAccidental(Accidental.sharp),
           Note.c.sharp.sharp,
