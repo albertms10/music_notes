@@ -122,10 +122,7 @@ void main() {
         expect(Interval.parse('A6'), Interval.A6);
         expect(Interval.parse('M3'), Interval.M3);
         expect(Interval.parse('M-3'), -Interval.M3);
-        expect(
-          Interval.parse('M16'),
-          const Interval.imperfect(Size(16), ImperfectQuality.major),
-        );
+        expect(Interval.parse('M16'), const ImperfectSize(16).major);
         expect(Interval.parse('m2'), Interval.m2);
         expect(Interval.parse('m-2'), -Interval.m2);
         expect(Interval.parse('d7'), Interval.d7);
@@ -572,14 +569,8 @@ void main() {
 
     group('operator -()', () {
       test('returns the negation of this Interval', () {
-        expect(
-          -Interval.M2,
-          const Interval.imperfect(Size(-2), ImperfectQuality.major),
-        );
-        expect(
-          -const Interval.imperfect(Size(-6), ImperfectQuality.minor),
-          Interval.m6,
-        );
+        expect(-Interval.M2, -Size.second.major);
+        expect(-const ImperfectSize(-6).minor, Interval.m6);
       });
     });
 
@@ -647,23 +638,11 @@ void main() {
         expect(Interval.d7.toString(), 'd7');
         expect((-Interval.d8).toString(), 'd-8');
         expect(Interval.M9.toString(), 'M9 (M2)');
-        expect(
-          const Interval.imperfect(Size(-10), ImperfectQuality.minor)
-              .toString(),
-          'm-10 (m-3)',
-        );
+        expect((-Size.tenth).minor.toString(), 'm-10 (m-3)');
         expect(Interval.A11.toString(), 'A11 (A4)');
-        expect(
-          const Interval.imperfect(Size(-14), ImperfectQuality.major)
-              .toString(),
-          'M-14 (M-7)',
-        );
+        expect(const ImperfectSize(-14).major.toString(), 'M-14 (M-7)');
         expect(const Interval.perfect(Size(15)).toString(), 'P15 (P8)');
-        expect(
-          const Interval.imperfect(Size(-16), ImperfectQuality.diminished)
-              .toString(),
-          'd-16 (d-2)',
-        );
+        expect(const Size(-16).diminished.toString(), 'd-16 (d-2)');
         expect(const Interval.perfect(Size(22)).toString(), 'P22 (P8)');
 
         expect(
