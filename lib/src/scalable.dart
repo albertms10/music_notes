@@ -1,5 +1,6 @@
 import 'class_mixin.dart';
 import 'interval/interval.dart';
+import 'interval/size.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
 import 'transposable.dart';
@@ -50,6 +51,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c, Note.d, Note.e, Note.f.sharp].isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      intervalSteps.every((interval) => interval.size.abs() <= Size.second);
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>

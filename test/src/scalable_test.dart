@@ -15,6 +15,30 @@ void main() {
   });
 
   group('ScalableIterable', () {
+    group('.isStepwise', () {
+      test('returns whether this Iterable is entirely in stepwise motion', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].isStepwise, isTrue);
+        expect(
+          skip: 'Should descending Note intervals be accounted '
+              'as, e.g., Interval.M2 instead of Interval.m7?',
+          () => [Note.g, Note.a, Note.g, Note.f.sharp, Note.e.flat].isStepwise,
+          isTrue,
+        );
+        expect(
+          skip: 'Descending Pitch intervals are still unsupported.',
+          () => [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(3),
+          ].isStepwise,
+          isTrue,
+        );
+
+        expect(const [Note.c, Note.e, Note.g, Note.a].isStepwise, isFalse);
+      });
+    });
+
     group('.inverse', () {
       test('returns the inverse of this ScalableIterable', () {
         expect(const <PitchClass>{}.inverse.toList(), const <PitchClass>[]);
