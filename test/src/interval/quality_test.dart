@@ -91,6 +91,27 @@ void main() {
       });
     });
 
+    group('.isDissonant', () {
+      test('returns whether this Quality is dissonant', () {
+        expect(PerfectQuality.triplyDiminished.isDissonant, isTrue);
+        expect(PerfectQuality.doublyDiminished.isDissonant, isTrue);
+        expect(PerfectQuality.diminished.isDissonant, isTrue);
+        expect(PerfectQuality.perfect.isDissonant, isFalse);
+        expect(PerfectQuality.augmented.isDissonant, isTrue);
+        expect(PerfectQuality.doublyAugmented.isDissonant, isTrue);
+        expect(PerfectQuality.triplyAugmented.isDissonant, isTrue);
+
+        expect(ImperfectQuality.triplyDiminished.isDissonant, isTrue);
+        expect(ImperfectQuality.doublyDiminished.isDissonant, isTrue);
+        expect(ImperfectQuality.diminished.isDissonant, isTrue);
+        expect(ImperfectQuality.minor.isDissonant, isFalse);
+        expect(ImperfectQuality.major.isDissonant, isFalse);
+        expect(ImperfectQuality.augmented.isDissonant, isTrue);
+        expect(ImperfectQuality.doublyAugmented.isDissonant, isTrue);
+        expect(ImperfectQuality.triplyAugmented.isDissonant, isTrue);
+      });
+    });
+
     group('.toString()', () {
       test('returns a string representation of this Quality', () {
         expect(PerfectQuality.triplyDiminished.toString(), 'ddd');
