@@ -270,7 +270,11 @@ final class ImperfectQuality extends Quality {
   /// ImperfectQuality.augmented.isDissonant == true
   /// ```
   @override
-  bool get isDissonant => semitones.isNegative && semitones > 1;
+  bool get isDissonant {
+    if (this case major || minor) return false;
+
+    return true;
+  }
 
   @override
   // Overridden hashCode already present in the super class.
