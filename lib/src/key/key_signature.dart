@@ -1,5 +1,10 @@
 import 'package:collection/collection.dart'
-    show IterableEquality, IterableExtension, ListEquality;
+    show
+        IterableEquality,
+        IterableExtension,
+        ListEquality,
+        UnmodifiableListView,
+        UnmodifiableMapView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
@@ -18,18 +23,20 @@ import 'mode.dart';
 /// * [Key].
 @immutable
 final class KeySignature implements Comparable<KeySignature> {
+  final List<Note> _notes;
+
   /// The set of [Note] that define this [KeySignature], which may include
   /// cancellation [Accidental.natural]s.
-  final List<Note> notes;
+  List<Note> get notes => UnmodifiableListView(_notes);
 
-  /// Creates a new [KeySignature] from [notes].
-  const KeySignature(this.notes);
+  /// Creates a new [KeySignature] from [_notes].
+  const KeySignature(this._notes);
 
   /// An empty [KeySignature].
   static const empty = KeySignature([]);
 
-  static const _firstFlatNote = Note(BaseNote.b, Accidental.flat);
-  static const _firstSharpNote = Note(BaseNote.f, Accidental.sharp);
+  static const _firstCanonicalFlatNote = Note(BaseNote.b, Accidental.flat);
+  static const _firstCanonicalSharpNote = Note(BaseNote.f, Accidental.sharp);
 
   /// Creates a new [KeySignature] from fifths [distance].
   ///
@@ -42,7 +49,9 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final firstNote = distance.isNegative ? _firstFlatNote : _firstSharpNote;
+    final firstNote = distance.isNegative
+        ? _firstCanonicalFlatNote
+        : _firstCanonicalSharpNote;
 
     return KeySignature(
       Interval.P5
@@ -60,7 +69,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.empty.accidental == Accidental.natural
   /// ```
   Accidental get accidental =>
-      clean.notes.firstOrNull?.accidental ?? Accidental.natural;
+      clean._notes.firstOrNull?.accidental ?? Accidental.natural;
 
   /// Returns a new [KeySignature] without cancellation [Accidental.natural]s.
   ///
@@ -72,7 +81,7 @@ final class KeySignature implements Comparable<KeySignature> {
   ///   == KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp])
   /// ```
   KeySignature get clean =>
-      KeySignature(notes.where((note) => !note.accidental.isNatural).toList());
+      KeySignature(_notes.where((note) => !note.accidental.isNatural).toList());
 
   /// The fifths distance of this [KeySignature].
   ///
@@ -81,14 +90,15 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature.empty.distance == 0
   /// KeySignature([Note.f.sharp, Note.c.sharp]).distance == 2
   /// KeySignature.fromDistance(-4).distance == -4
+  /// KeySignature([Note.g.sharp]).distance == null
   /// ```
   int? get distance {
     if (accidental.isNatural) return 0;
 
-    final cleanNotes = clean.notes;
+    final cleanNotes = clean._notes;
     final apparentDistance = cleanNotes.length * accidental.semitones.sign;
     final apparentFirstNote =
-        accidental.isFlat ? _firstFlatNote : _firstSharpNote;
+        accidental.isFlat ? _firstCanonicalFlatNote : _firstCanonicalSharpNote;
     final circle = Interval.P5.circleFrom(
       apparentFirstNote,
       distance: apparentDistance.incrementBy(-1),
@@ -126,18 +136,42 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   Map<TonalMode, Key> get keys {
     final distance = this.distance;
-    if (distance == null) return {};
+    if (distance == null) return const {};
 
     final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
     final major = rootNote.major;
 
-    return {TonalMode.major: major, TonalMode.minor: major.relative};
+    return UnmodifiableMapView({
+      TonalMode.major: major,
+      TonalMode.minor: major.relative,
+    });
   }
 
   static const _noteNotation = EnglishNoteNotation(showNatural: true);
 
+  /// Returns a new [KeySignature] incrementing its fifths [distance].
+  ///
+  /// Example:
+  /// ```dart
+  /// KeySignature.empty.incrementBy(1) == KeySignature([Note.f.sharp])
+  ///
+  /// KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3)
+  ///   == KeySignature.fromDistance(5)
+  ///
+  /// KeySignature.fromDistance(-3).incrementBy(-1)
+  ///   == KeySignature([Note.b.flat, Note.e.flat])
+  ///
+  /// KeySignature([Note.e.flat]).incrementBy(1) == null
+  /// ```
+  KeySignature? incrementBy(int distance) {
+    final cachedDistance = this.distance;
+    if (cachedDistance == null) return null;
+
+    return KeySignature.fromDistance(cachedDistance.incrementBy(distance));
+  }
+
   @override
-  String toString() => '$distance (${notes.map(
+  String toString() => '$distance (${_notes.map(
         (note) => note.toString(system: _noteNotation),
       ).join(' ')})';
 
@@ -157,28 +191,28 @@ final class KeySignature implements Comparable<KeySignature> {
     if (this == empty) return other;
 
     final cancelledNotes = accidental == other.accidental
-        ? clean.notes.whereNot(other.notes.contains)
-        : clean.notes;
+        ? clean._notes.whereNot(other._notes.contains)
+        : clean._notes;
 
     return KeySignature([
       ...cancelledNotes.map((note) => note.natural).toSet(),
-      ...other.notes,
+      ...other._notes,
     ]);
   }
 
   @override
   bool operator ==(Object other) =>
       other is KeySignature &&
-      const ListEquality<Note>().equals(notes, other.notes);
+      const ListEquality<Note>().equals(_notes, other._notes);
 
   @override
-  int get hashCode => Object.hash(notes, accidental);
+  int get hashCode => Object.hash(_notes, accidental);
 
   @override
   int compareTo(KeySignature other) => compareMultiple([
         () => accidental.compareTo(other.accidental),
         () =>
-            notes.length.compareTo(other.notes.length) *
+            _notes.length.compareTo(other._notes.length) *
             accidental.semitones.nonZeroSign,
       ]);
 }

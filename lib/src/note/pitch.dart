@@ -136,10 +136,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.inOctave(9).midiNumber == 127
   /// Note.a.flat.inOctave(9).midiNumber == null
   /// ```
-  int? get midiNumber => switch (this) {
-        < _lowerMidiPitch || > _higherMidiPitch => null,
-        _ => semitones + chromaticDivisions,
-      };
+  int? get midiNumber {
+    if (this case < _lowerMidiPitch || > _higherMidiPitch) return null;
+
+    return semitones + chromaticDivisions;
+  }
 
   /// The difference in semitones between this [Pitch] and [other].
   ///
@@ -260,12 +261,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1)
+  /// Note.g.flat.inOctave(4).respellByOrdinalDistance(-1)
   ///   == Note.f.sharp.inOctave(4)
-  /// Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2)
+  /// Note.e.sharp.inOctave(4).respellByOrdinalDistance(2)
   ///   == Note.g.flat.flat.inOctave(4)
   /// ```
-  Pitch respellByBaseNoteDistance(int distance) =>
+  Pitch respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
 
   /// This [Pitch] respelled upwards while keeping the same number of
@@ -276,7 +277,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.sharp.inOctave(4).respelledUpwards == Note.a.flat.inOctave(4)
   /// Note.e.sharp.inOctave(4).respelledUpwards == Note.f.inOctave(4)
   /// ```
-  Pitch get respelledUpwards => respellByBaseNoteDistance(1);
+  Pitch get respelledUpwards => respellByOrdinalDistance(1);
 
   /// This [Pitch] respelled downwards while keeping the same number of
   /// [semitones].
@@ -286,10 +287,13 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.g.flat.inOctave(4).respelledDownwards == Note.f.sharp.inOctave(4)
   /// Note.c.inOctave(4).respelledDownwards == Note.b.sharp.inOctave(4)
   /// ```
-  Pitch get respelledDownwards => respellByBaseNoteDistance(-1);
+  Pitch get respelledDownwards => respellByOrdinalDistance(-1);
 
   /// This [Pitch] respelled by [accidental] while keeping the same number of
   /// [semitones].
+  ///
+  /// When no respelling is possible with [accidental], the next closest
+  /// spelling is returned.
   ///
   /// Example:
   /// ```dart
@@ -297,11 +301,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///   == Note.d.sharp.inOctave(4)
   /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
   ///   == Note.c.flat.inOctave(5)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp) == null
+  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
+  ///   == Note.f.sharp.sharp.inOctave(4)
   /// ```
-  Pitch? respellByAccidental(Accidental accidental) {
+  Pitch respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
-    if (respelledNote == null) return null;
 
     return Pitch(
       respelledNote,
@@ -321,9 +325,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
   ///   == Note.g.sharp.inOctave(4)
   /// ```
-  Pitch get respelledSimple =>
-      respellByAccidental(Accidental.natural) ??
-      respellByAccidental(Accidental(note.accidental.semitones.sign))!;
+  Pitch get respelledSimple => respellByAccidental(Accidental.natural);
 
   /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.
@@ -407,7 +409,27 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   }) =>
       Frequency(referenceFrequency * tuningSystem.ratio(this));
 
+  /// The [ClosestPitch] set of harmonics series [upToIndex] from this [Pitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(1).harmonics(upToIndex: 15).toString();
+  ///   == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+  ///     'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}'
+  /// ```
+  Set<ClosestPitch> harmonics({
+    required int upToIndex,
+    Frequency referenceFrequency = const Frequency(440),
+    TuningSystem tuningSystem = const EqualTemperament.edo12(),
+  }) =>
+      frequency(
+        referenceFrequency: referenceFrequency,
+        tuningSystem: tuningSystem,
+      ).harmonics(upToIndex: upToIndex).closestPitches;
+
   /// The string representation of this [Pitch] based on [system].
+  ///
+  /// See [PitchNotation] for all system implementations.
   ///
   /// Example:
   /// ```dart
@@ -505,7 +527,7 @@ abstract class PitchNotation {
   static const scientific = ScientificPitchNotation();
 
   /// The Helmholtz [PitchNotation] system.
-  static const helmholtz = HelmholtzPitchNotation();
+  static const helmholtz = HelmholtzPitchNotation.english;
 
   /// The string representation for [pitch].
   String pitch(Pitch pitch);
@@ -526,20 +548,28 @@ final class ScientificPitchNotation extends PitchNotation {
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
+  /// The [NoteNotation] system for the [Pitch.note] part.
+  final NoteNotation noteSystem;
+
   /// Creates a new [HelmholtzPitchNotation].
-  const HelmholtzPitchNotation();
+  const HelmholtzPitchNotation({this.noteSystem = NoteNotation.english});
+
+  /// The [NoteNotation.english] variant of this [HelmholtzPitchNotation].
+  static const english = HelmholtzPitchNotation();
+
+  /// The [NoteNotation.german] variant of this [HelmholtzPitchNotation].
+  static const german = HelmholtzPitchNotation(noteSystem: NoteNotation.german);
+
+  /// The [NoteNotation.romance] variant of this [HelmholtzPitchNotation].
+  static const romance =
+      HelmholtzPitchNotation(noteSystem: NoteNotation.romance);
 
   @override
   String pitch(Pitch pitch) {
-    final accidental = pitch.note.accidental;
-    final accidentalSymbol = accidental.isNatural ? '' : accidental.symbol;
+    final note = pitch.note.toString(system: noteSystem);
 
-    if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidentalSymbol'
-          '${Pitch._superPrime * (pitch.octave - 3)}';
-    }
-
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${Pitch._subPrime * (pitch.octave - 2).abs()}';
+    return pitch.octave >= 3
+        ? '${note.toLowerCase()}${Pitch._superPrime * (pitch.octave - 3)}'
+        : '$note${Pitch._subPrime * (pitch.octave - 2).abs()}';
   }
 }

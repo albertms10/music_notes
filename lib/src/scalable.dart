@@ -1,16 +1,15 @@
+import 'class_mixin.dart';
 import 'interval/interval.dart';
-import 'interval/interval_class.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
 import 'transposable.dart';
 
 /// A interface for items that can form scales.
-abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
+abstract class Scalable<T extends Scalable<T>>
+    with ClassMixin<PitchClass>
+    implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
-
-  /// The number of semitones that define this [Scalable].
-  int get semitones;
 
   /// Creates a new [PitchClass] from [semitones].
   ///
@@ -20,6 +19,7 @@ abstract class Scalable<T extends Scalable<T>> implements Transposable<T> {
   /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
   /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
   /// ```
+  @override
   PitchClass toClass() => PitchClass(semitones);
 
   /// The [Interval] between this [Scalable] and [other].
@@ -50,9 +50,6 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
-
-  /// The [PitchClass] representation of this [ScalableIterable].
-  Iterable<PitchClass> toClass() => map((scalable) => scalable.toClass());
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
@@ -108,10 +105,4 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i - 1).difference(elementAt(i));
     }
   }
-}
-
-/// An Interval iterable.
-extension IntervalIterable<T extends Interval> on Iterable<T> {
-  /// The [PitchClass] representation of this [IntervalIterable].
-  Iterable<IntervalClass> toClass() => map((interval) => interval.toClass());
 }

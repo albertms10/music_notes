@@ -39,15 +39,13 @@ void main() {
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
         expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
 
+        var pitch = Note.b.flat.flat.inOctave(-2);
+        expect(Pitch.parse(pitch.toString()), pitch);
+
+        pitch = Note.a.sharp.inOctave(7);
         expect(
-          Pitch.parse(Note.b.flat.flat.inOctave(-2).toString()),
-          Note.b.flat.flat.inOctave(-2),
-        );
-        expect(
-          Pitch.parse(
-            Note.a.sharp.inOctave(7).toString(system: PitchNotation.helmholtz),
-          ),
-          Note.a.sharp.inOctave(7),
+          Pitch.parse(pitch.toString(system: PitchNotation.helmholtz)),
+          pitch,
         );
       });
     });
@@ -64,7 +62,7 @@ void main() {
           expect(Pitch.octaveFromSemitones(-12), -1);
           expect(Pitch.octaveFromSemitones(-11), -1);
           expect(Pitch.octaveFromSemitones(-1), -1);
-          expect(Pitch.octaveFromSemitones(0), 0); // C
+          expect(Pitch.octaveFromSemitones(0), 0); // root C
           expect(Pitch.octaveFromSemitones(1), 0);
           expect(Pitch.octaveFromSemitones(11), 0);
           expect(Pitch.octaveFromSemitones(12), 1);
@@ -301,63 +299,63 @@ void main() {
       });
     });
 
-    group('.respellByBaseNoteDistance()', () {
-      test('returns this Pitch respelled by BaseNote', () {
+    group('.respellByOrdinalDistance()', () {
+      test('returns this Pitch respelled by ordinal distance', () {
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(1),
+          Note.c.sharp.inOctave(4).respellByOrdinalDistance(1),
           Note.d.flat.inOctave(4),
         );
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.sharp.inOctave(4).respellByOrdinalDistance(-1),
           Note.b.sharp.sharp.inOctave(3),
         );
         expect(
-          Note.d.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.d.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.c.sharp.inOctave(4),
         );
         expect(
-          Note.c.inOctave(4).respellByBaseNoteDistance(1),
+          Note.c.inOctave(4).respellByOrdinalDistance(1),
           Note.d.flat.flat.inOctave(4),
         );
         expect(
-          Note.c.inOctave(3).respellByBaseNoteDistance(-1),
+          Note.c.inOctave(3).respellByOrdinalDistance(-1),
           Note.b.sharp.inOctave(2),
         );
         expect(
-          Note.c.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.c.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.b.inOctave(3),
         );
         expect(
-          Note.d.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.d.inOctave(4).respellByOrdinalDistance(-1),
           Note.c.sharp.sharp.inOctave(4),
         );
         expect(
-          Note.g.flat.inOctave(4).respellByBaseNoteDistance(-1),
+          Note.g.flat.inOctave(4).respellByOrdinalDistance(-1),
           Note.f.sharp.inOctave(4),
         );
         expect(
-          Note.e.sharp.inOctave(4).respellByBaseNoteDistance(2),
+          Note.e.sharp.inOctave(4).respellByOrdinalDistance(2),
           Note.g.flat.flat.inOctave(4),
         );
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(7),
+          Note.f.inOctave(4).respellByOrdinalDistance(7),
           Note.f.inOctave(4),
         );
 
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(2),
+          Note.f.inOctave(4).respellByOrdinalDistance(2),
           const Note(BaseNote.a, Accidental(-4)).inOctave(4),
         );
         expect(
-          Note.g.inOctave(4).respellByBaseNoteDistance(3),
+          Note.g.inOctave(4).respellByOrdinalDistance(3),
           const Note(BaseNote.c, Accidental(-5)).inOctave(5),
         );
         expect(
-          Note.f.inOctave(4).respellByBaseNoteDistance(4),
+          Note.f.inOctave(4).respellByOrdinalDistance(4),
           const Note(BaseNote.c, Accidental(5)).inOctave(4),
         );
         expect(
-          Note.d.inOctave(4).respellByBaseNoteDistance(-3),
+          Note.d.inOctave(4).respellByOrdinalDistance(-3),
           const Note(BaseNote.a, Accidental(5)).inOctave(3),
         );
       });
@@ -404,7 +402,7 @@ void main() {
       });
     });
 
-    group('.respellByBaseAccidental()', () {
+    group('.respellByAccidental()', () {
       test('returns this Pitch respelled by Accidental', () {
         expect(
           Note.a.sharp.inOctave(4).respellByAccidental(Accidental.flat),
@@ -440,27 +438,55 @@ void main() {
         );
       });
 
-      test('returns null when no respelling is possible', () {
+      test('returns the next closest spelling when no possible respelling', () {
+        expect(
+          Note.d.flat.inOctave(3).respellByAccidental(Accidental.natural),
+          Note.d.flat.inOctave(3),
+        );
+        expect(
+          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2),
+        );
+        expect(
+          Note.e.flat.flat.flat
+              .inOctave(5)
+              .respellByAccidental(Accidental.natural),
+          Note.d.flat.inOctave(5),
+        );
+        expect(
+          Note.e.sharp.sharp
+              .inOctave(-1)
+              .respellByAccidental(Accidental.natural),
+          Note.f.sharp.inOctave(-1),
+        );
+
+        expect(
+          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2),
+        );
         expect(
           Note.d.inOctave(4).respellByAccidental(Accidental.sharp),
-          isNull,
+          Note.c.sharp.sharp.inOctave(4),
         );
-        expect(Note.d.inOctave(2).respellByAccidental(Accidental.flat), isNull);
+        expect(
+          Note.d.inOctave(2).respellByAccidental(Accidental.flat),
+          Note.e.flat.flat.inOctave(2),
+        );
         expect(
           Note.e.inOctave(3).respellByAccidental(Accidental.doubleFlat),
-          isNull,
+          Note.g.flat.flat.flat.inOctave(3),
         );
         expect(
           Note.f.inOctave(-1).respellByAccidental(Accidental.doubleSharp),
-          isNull,
+          Note.d.sharp.sharp.sharp.inOctave(-1),
         );
         expect(
           Note.b.inOctave(0).respellByAccidental(Accidental.doubleFlat),
-          isNull,
+          Note.d.flat.flat.flat.inOctave(1),
         );
         expect(
           Note.c.inOctave(7).respellByAccidental(Accidental.doubleSharp),
-          isNull,
+          Note.a.sharp.sharp.sharp.inOctave(6),
         );
       });
     });
@@ -612,23 +638,23 @@ void main() {
         expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(5)),
-          const Interval.perfect(Size(15), PerfectQuality.perfect),
+          const Interval.perfect(Size(15)),
         );
 
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(6)),
-          const Interval.perfect(Size(22), PerfectQuality.perfect),
+          const Interval.perfect(Size(22)),
         );
 
         expect(
           Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-          const Interval.perfect(Size(29), PerfectQuality.perfect),
+          const Interval.perfect(Size(29)),
         );
 
         expect(
           skip: true,
           () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
-          const Interval.perfect(Size(29), PerfectQuality.perfect),
+          const Interval.perfect(Size(29)),
         );
       });
     });
@@ -886,23 +912,17 @@ void main() {
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(
-                const Interval.perfect(Size(15), PerfectQuality.perfect),
-              ),
+          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(15))),
           Note.c.inOctave(6),
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(
-                const Interval.perfect(Size(22), PerfectQuality.perfect),
-              ),
+          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(22))),
           Note.c.inOctave(7),
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(
-                const Interval.perfect(Size(29), PerfectQuality.perfect),
-              ),
+          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(29))),
           Note.c.inOctave(8),
         );
       });
@@ -1072,6 +1092,16 @@ void main() {
       });
     });
 
+    group('.harmonics()', () {
+      test('returns the ClosestPitch set of harmonic series', () {
+        expect(
+          Note.c.inOctave(1).harmonics(upToIndex: 15).toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+      });
+    });
+
     group('.toString()', () {
       test('returns the scientific string representation of this Pitch', () {
         expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
@@ -1086,7 +1116,7 @@ void main() {
         expect(Note.e.inOctave(7).toString(), 'E7');
       });
 
-      test('returns the Helmholtz string representation of this Pitch', () {
+      test('returns the English Helmholtz string representation', () {
         expect(
           Note.g.sharp.inOctave(-1).toString(system: PitchNotation.helmholtz),
           'G♯͵͵͵',
@@ -1126,6 +1156,112 @@ void main() {
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
           'e′′′′',
+        );
+      });
+
+      test('returns the German Helmholtz string representation', () {
+        expect(
+          Note.g.sharp
+              .inOctave(-1)
+              .toString(system: HelmholtzPitchNotation.german),
+          'Gis͵͵͵',
+        );
+        expect(
+          Note.d.flat
+              .inOctave(0)
+              .toString(system: HelmholtzPitchNotation.german),
+          'Des͵͵',
+        );
+        expect(
+          Note.b.flat
+              .inOctave(1)
+              .toString(system: HelmholtzPitchNotation.german),
+          'B͵',
+        );
+        expect(
+          Note.g.inOctave(2).toString(system: HelmholtzPitchNotation.german),
+          'G',
+        );
+        expect(
+          Note.a.inOctave(3).toString(system: HelmholtzPitchNotation.german),
+          'a',
+        );
+        expect(
+          Note.c.inOctave(4).toString(system: HelmholtzPitchNotation.german),
+          'c′',
+        );
+        expect(
+          Note.c.sharp
+              .inOctave(4)
+              .toString(system: HelmholtzPitchNotation.german),
+          'cis′',
+        );
+        expect(
+          Note.a.inOctave(4).toString(system: HelmholtzPitchNotation.german),
+          'a′',
+        );
+        expect(
+          Note.a.flat
+              .inOctave(5)
+              .toString(system: HelmholtzPitchNotation.german),
+          'as′′',
+        );
+        expect(
+          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
+          'e′′′′',
+        );
+      });
+
+      test('returns the Romance Helmholtz string representation', () {
+        expect(
+          Note.g.sharp
+              .inOctave(-1)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Sol♯͵͵͵',
+        );
+        expect(
+          Note.d.flat
+              .inOctave(0)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Re♭͵͵',
+        );
+        expect(
+          Note.b.flat
+              .inOctave(1)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'Si♭͵',
+        );
+        expect(
+          Note.g.inOctave(2).toString(system: HelmholtzPitchNotation.romance),
+          'Sol',
+        );
+        expect(
+          Note.a.inOctave(3).toString(system: HelmholtzPitchNotation.romance),
+          'la',
+        );
+        expect(
+          Note.c.inOctave(4).toString(system: HelmholtzPitchNotation.romance),
+          'do′',
+        );
+        expect(
+          Note.c.sharp
+              .inOctave(4)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'do♯′',
+        );
+        expect(
+          Note.a.inOctave(4).toString(system: HelmholtzPitchNotation.romance),
+          'la′',
+        );
+        expect(
+          Note.a.flat
+              .inOctave(5)
+              .toString(system: HelmholtzPitchNotation.romance),
+          'la♭′′',
+        );
+        expect(
+          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
+          'mi′′′′',
         );
       });
 

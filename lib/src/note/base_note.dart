@@ -141,11 +141,34 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.g.transposeBySize(Size.unison) == BaseNote.g
   /// BaseNote.g.transposeBySize(Size.fifth) == BaseNote.d
-  /// BaseNote.a.transposeBySize(-3) == BaseNote.f
+  /// BaseNote.a.transposeBySize(-Size.third) == BaseNote.f
   /// ```
   BaseNote transposeBySize(Size size) =>
       BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
 
+  /// The next ordinal [BaseNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// BaseNote.c.next == BaseNote.d
+  /// BaseNote.f.next == BaseNote.a
+  /// BaseNote.b.next == BaseNote.c
+  /// ```
+  BaseNote get next => transposeBySize(Size.second);
+
+  /// The previous ordinal [BaseNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// BaseNote.e.previous == BaseNote.d
+  /// BaseNote.g.previous == BaseNote.f
+  /// BaseNote.c.previous == BaseNote.b
+  /// ```
+  BaseNote get previous => transposeBySize(-Size.second);
+
+  /// The string representation of this [BaseNote] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.baseNote(this);

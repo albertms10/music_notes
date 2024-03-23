@@ -67,14 +67,16 @@ Pitch.parse('Eb3'); // E♭3
 Create an `Interval`:
 
 ```dart
-Interval.P4; // P4
-const Interval.perfect(Size.twelfth, PerfectQuality.perfect); // P12
+const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+Interval.d5; // d5
+Size.sixth.augmented; // A6
+Size.eleventh.simple.perfect; // P4
 ```
 
 Or turn it descending:
 
 ```dart
--Interval.m6; // m-6
+-Interval.m7; // m-7
 Interval.M3.descending(); // M-3
 ```
 
@@ -246,9 +248,9 @@ const Frequency(314).closestPitch(); // E♭4+16
 And combining both methods, the harmonic series of a given `Pitch`:
 
 ```dart
-Note.c.inOctave(1).frequency().harmonics(upToIndex: 15).closestPitches;
-// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4,
-// D4+4, E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
+Note.c.inOctave(1).harmonics(upToIndex: 15);
+// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
+// E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
 ```
 
 ### In a nutshell

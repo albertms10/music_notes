@@ -1,4 +1,4 @@
-import 'dart:collection';
+import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
@@ -92,6 +92,24 @@ void main() {
         expect(BaseNote.a.transposeBySize(Size.sixth), BaseNote.f);
         expect(BaseNote.b.transposeBySize(Size.seventh), BaseNote.a);
         expect(BaseNote.c.transposeBySize(Size.octave), BaseNote.c);
+      });
+    });
+
+    group('.next', () {
+      test('returns the next ordinal BaseNote', () {
+        expect(BaseNote.c.next, BaseNote.d);
+        expect(BaseNote.e.next, BaseNote.f);
+        expect(BaseNote.f.next, BaseNote.g);
+        expect(BaseNote.b.next, BaseNote.c);
+      });
+    });
+
+    group('.previous', () {
+      test('returns the previous ordinal BaseNote', () {
+        expect(BaseNote.b.previous, BaseNote.a);
+        expect(BaseNote.f.previous, BaseNote.e);
+        expect(BaseNote.d.previous, BaseNote.c);
+        expect(BaseNote.c.previous, BaseNote.b);
       });
     });
 

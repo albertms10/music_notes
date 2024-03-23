@@ -87,12 +87,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```dart
   /// ScaleDegree.vi.raised == const ScaleDegree(6, semitonesDelta: 1)
   /// ```
-  ScaleDegree get raised => ScaleDegree(
-        ordinal,
-        quality: quality,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta + 1,
-      );
+  ScaleDegree get raised => copyWith(semitonesDelta: semitonesDelta + 1);
 
   /// This [ScaleDegree] lowered by 1 semitone.
   ///
@@ -100,12 +95,16 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```dart
   /// ScaleDegree.ii.lowered == const ScaleDegree(2, semitonesDelta: -1)
   /// ```
-  ScaleDegree get lowered => ScaleDegree(
-        ordinal,
-        quality: quality,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta - 1,
-      );
+  ScaleDegree get lowered => copyWith(semitonesDelta: semitonesDelta - 1);
+
+  /// This [ScaleDegree] inverted.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
+  /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
+  /// ```
+  ScaleDegree get inverted => copyWith(inversion: inversion + 1);
 
   /// This [ScaleDegree] as [ImperfectQuality.major].
   ///
@@ -114,12 +113,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.ii.major
   ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
   /// ```
-  ScaleDegree get major => ScaleDegree(
-        ordinal,
-        quality: ImperfectQuality.major,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta,
-      );
+  ScaleDegree get major => copyWith(quality: ImperfectQuality.major);
 
   /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
@@ -128,13 +122,58 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.v.minor
   ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
   /// ```
-  ScaleDegree get minor => ScaleDegree(
-        ordinal,
-        quality: ImperfectQuality.minor,
-        inversion: inversion,
-        semitonesDelta: semitonesDelta,
+  ScaleDegree get minor => copyWith(quality: ImperfectQuality.minor);
+
+  /// Creates a new [ScaleDegree] from this one by updating individual
+  /// properties.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.i.copyWith(inversion: 2) == ScaleDegree.i.inverted.inverted
+  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == ScaleDegree.vi.lowered
+  /// ```
+  ScaleDegree copyWith({
+    int? ordinal,
+    ImperfectQuality? quality,
+    int? inversion,
+    int? semitonesDelta,
+  }) =>
+      ScaleDegree(
+        ordinal ?? this.ordinal,
+        quality: quality ?? this.quality,
+        inversion: inversion ?? this.inversion,
+        semitonesDelta: semitonesDelta ?? this.semitonesDelta,
       );
 
+  /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.i.romanNumeral == 'I'
+  /// ScaleDegree.vii.romanNumeral == 'VII'
+  /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
+  /// ```
+  String get romanNumeral => switch (ordinal) {
+        1 => 'I',
+        2 => 'II',
+        3 => 'III',
+        4 => 'IV',
+        5 => 'V',
+        6 => 'VI',
+        7 => 'VII',
+        _ => '$ordinal',
+      };
+
+  /// The string representation of this [ScaleDegree] based on [system].
+  ///
+  /// See [ScaleDegreeNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.iii.toString() == 'III'
+  /// ScaleDegree.vi.minor.lowered.toString() == '♭vi'
+  /// ScaleDegree.neapolitanSixth.toString() == '♭II6'
+  /// ```
   @override
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,
@@ -189,33 +228,16 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
 
   @override
   String scaleDegree(ScaleDegree scaleDegree) {
-    final buffer = StringBuffer();
-    if (scaleDegree.semitonesDelta != 0) {
-      buffer.write(Accidental(scaleDegree.semitonesDelta).symbol);
-    }
-    final romanNumeral = switch (scaleDegree.ordinal) {
-      1 => 'I',
-      2 => 'II',
-      3 => 'III',
-      4 => 'IV',
-      5 => 'V',
-      6 => 'VI',
-      7 => 'VII',
-      _ => '',
-    };
-
-    if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0) {
-      buffer.write(romanNumeral.toLowerCase());
-    } else {
-      buffer.write(romanNumeral);
-    }
-
-    switch (scaleDegree.inversion) {
-      case 1:
-        buffer.write('6');
-      case 2:
-        buffer.write('64');
-    }
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          Accidental(scaleDegree.semitonesDelta).symbol,
+        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        switch (scaleDegree.inversion) { 1 => '6', 2 => '64', _ => '' },
+      ]);
 
     return buffer.toString();
   }
