@@ -13,7 +13,6 @@ import '../scalable.dart';
 import 'accidental.dart';
 import 'base_note.dart';
 import 'pitch.dart';
-import 'pitch_class.dart';
 
 /// A musical note.
 ///
@@ -407,16 +406,6 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
       Accidental(semitonesOctaveMod * interval.size.sign),
     );
   }
-
-  /// Creates a new [PitchClass] from [semitones].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.toPitchClass() == PitchClass.c
-  /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
-  /// ```
-  PitchClass toPitchClass() => PitchClass(semitones);
 
   /// The string representation of this [Note] based on [system].
   ///

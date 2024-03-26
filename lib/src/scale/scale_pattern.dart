@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
-import '../class_mixin.dart';
+import '../enharmonic.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../music.dart';

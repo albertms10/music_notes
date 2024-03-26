@@ -15,7 +15,7 @@ import 'size.dart';
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.
 ///
-/// The largest [IntervalClass] is [IntervalClass.tritone] (6) since any greater
+/// The largest [IntervalClass] is the [tritone] (6 semitones) since any greater
 /// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).

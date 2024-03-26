@@ -1,4 +1,4 @@
-import 'class_mixin.dart';
+import 'enharmonic.dart';
 import 'interval/interval.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
@@ -6,7 +6,7 @@ import 'transposable.dart';
 
 /// A interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>
-    with ClassMixin<PitchClass>
+    with Enharmonic<PitchClass>
     implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
