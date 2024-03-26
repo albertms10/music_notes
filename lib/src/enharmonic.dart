@@ -1,14 +1,14 @@
 import 'package:collection/collection.dart' show IterableEquality;
 
-/// A Class mixin.
-mixin ClassMixin<Class> {
-  /// The number of semitones that define this [Class].
+/// An enharmonic mixin.
+mixin Enharmonic<C> {
+  /// The number of semitones that define this [C].
   int get semitones;
 
-  /// Creates a new [Class] from [semitones].
-  Class toClass();
+  /// Creates a new [C] from [semitones].
+  C toClass();
 
-  /// Whether [Class] is enharmonically equivalent to [other].
+  /// Whether [C] is enharmonically equivalent to [other].
   ///
   /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
   ///
@@ -18,14 +18,13 @@ mixin ClassMixin<Class> {
   /// Note.c.isEnharmonicWith(Note.b.sharp) == true
   /// Note.e.isEnharmonicWith(Note.f) == false
   /// ```
-  bool isEnharmonicWith(ClassMixin<Class> other) =>
-      toClass() == other.toClass();
+  bool isEnharmonicWith(Enharmonic<C> other) => toClass() == other.toClass();
 }
 
-/// A Class iterable.
-extension ClassIterable<Class> on Iterable<ClassMixin<Class>> {
-  /// The [Class] representation of this [Iterable].
-  Iterable<Class> toClass() => map((interval) => interval.toClass());
+/// An enharmonic iterable.
+extension EnharmonicIterable<C> on Iterable<Enharmonic<C>> {
+  /// The [C] representation of this [Iterable].
+  Iterable<C> toClass() => map((interval) => interval.toClass());
 
   /// Whether this [Iterable] is enharmonically equivalent to [other].
   ///
@@ -45,6 +44,6 @@ extension ClassIterable<Class> on Iterable<ClassMixin<Class>> {
   ///
   /// const [Interval.m2].isEnharmonicWith(const [Interval.P4]) == false
   /// ```
-  bool isEnharmonicWith(Iterable<ClassMixin<Class>> other) =>
-      IterableEquality<Class>().equals(toClass(), other.toClass());
+  bool isEnharmonicWith(Iterable<Enharmonic<C>> other) =>
+      IterableEquality<C>().equals(toClass(), other.toClass());
 }

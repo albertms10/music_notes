@@ -2,7 +2,7 @@ import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
-import '../class_mixin.dart';
+import '../enharmonic.dart';
 import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';

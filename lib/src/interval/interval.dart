@@ -3,7 +3,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../class_mixin.dart';
+import '../enharmonic.dart';
 import '../note/note.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
@@ -18,7 +18,7 @@ import 'size.dart';
 /// * [IntervalClass].
 @immutable
 final class Interval
-    with ClassMixin<IntervalClass>
+    with Enharmonic<IntervalClass>
     implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
@@ -327,9 +327,9 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.P5.distanceBetween(Note.c, Note.d)
-  ///   == (2, notes: const [Note.c, Note.g, Note.d])
+  ///   == const (2, notes: [Note.c, Note.g, Note.d])
   /// Interval.P5.distanceBetween(Note.a, Note.g)
-  ///   == (-2, notes: const [Note.a, Note.d, Note.g])
+  ///   == const (-2, notes: [Note.a, Note.d, Note.g])
   /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d)
   ///   == (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
   /// Interval.P4.distanceBetween(Note.f, Note.a.flat)
