@@ -250,6 +250,11 @@ final class ScalePattern {
     return major;
   }
 
+  static int _bitAt(int sequence, int index) => sequence & 1 << index;
+
+  static int _toBit(int sequence, Scalable<PitchClass> scalable) =>
+      sequence | 1 << scalable.semitones;
+
   /// Creates a new [ScalePattern] from a binary [sequence] in integer form.
   ///
   /// This method and [ScalePattern.toBinary] are inverses of each other.
@@ -267,11 +272,9 @@ final class ScalePattern {
   factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
-    int bitAt(int sequence, int index) => sequence & 1 << index;
-
     final degrees = [
       for (int i = 0; i < chromaticDivisions; i++)
-        if (bitAt(sequence, i) != 0) PitchClass(i),
+        if (_bitAt(sequence, i) != 0) PitchClass(i),
       PitchClass.c,
     ];
     final descendingDegrees = descendingSequence == null
@@ -279,7 +282,7 @@ final class ScalePattern {
         : [
             PitchClass.c,
             for (int i = chromaticDivisions - 1; i >= 0; i--)
-              if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+              if (_bitAt(descendingSequence, i) != 0) PitchClass(i),
           ];
 
     return Scale(degrees, descendingDegrees).pattern;
@@ -299,16 +302,13 @@ final class ScalePattern {
   /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
-    int toBit(int sequence, Scalable<PitchClass> scalable) =>
-        sequence | 1 << scalable.semitones;
-
     final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, toBit);
+    final sequence = scale.degrees.fold(0, _toBit);
     final cachedDescending = scale.descendingDegrees;
     final descendingSequence =
         cachedDescending.reversed.isEnharmonicWith(scale.degrees)
             ? null
-            : cachedDescending.fold(0, toBit);
+            : cachedDescending.fold(0, _toBit);
 
     return (sequence, descendingSequence);
   }
