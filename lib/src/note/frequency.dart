@@ -34,7 +34,7 @@ extension type const Frequency._(num hertz) implements num {
   /// Note.a.inOctave(4).frequency().isHumanAudible == true
   /// Note.g.inOctave(12).frequency().isHumanAudible == false
   /// ```
-  bool get isHumanAudible => HearingRange.human.isAudible(this);
+  bool get isHumanAudible => HearingRange.human.isAudibleAt(this);
 
   /// The [ClosestPitch] to this [Frequency] from [referenceFrequency],
   /// [tuningSystem] and [temperature].

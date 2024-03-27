@@ -20,7 +20,7 @@ class HearingRange {
   static const human = HearingRange(min: Frequency(20), max: Frequency(20000));
 
   /// Whether [frequency] is audible in this [HearingRange].
-  bool isAudible(Frequency frequency) => frequency >= min && frequency <= max;
+  bool isAudibleAt(Frequency frequency) => frequency >= min && frequency <= max;
 
   @override
   String toString() => '${min.format()} ≤ f ≤ ${max.format()}';
