@@ -1143,9 +1143,11 @@ void main() {
         expect(
           Note.c
               .inOctave(1)
-              .harmonics(upToIndex: 7, temperature: const Celsius(18))
+              .harmonics(upToIndex: 15, temperature: const Celsius(18))
               .toString(),
-          '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6}',
+          '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
+          // TODO(albertms10): should be `F♯4-43`.
+          'E4-8, F4+57, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
         );
       });
     });
