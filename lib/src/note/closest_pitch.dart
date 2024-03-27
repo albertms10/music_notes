@@ -75,9 +75,10 @@ class ClosestPitch {
         pitch.frequency(
               referenceFrequency: referenceFrequency,
               tuningSystem: tuningSystem,
+              temperature: temperature,
             ) *
             cents.ratio,
-      ).at(temperature);
+      );
 
   /// The string representation of this [ClosestPitch] record.
   ///
