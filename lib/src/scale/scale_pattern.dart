@@ -288,7 +288,7 @@ final class ScalePattern {
     return Scale(degrees, descendingDegrees).pattern;
   }
 
-  /// Returns the binary representation of this [ScalePattern].
+  /// The binary representation of this [ScalePattern].
   ///
   /// This method and [ScalePattern.fromBinary] are inverses of each other.
   ///

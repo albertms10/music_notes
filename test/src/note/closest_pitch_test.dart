@@ -60,6 +60,13 @@ void main() {
       test('returns the same Frequency after Frequency.closestPitch()', () {
         const frequency = Frequency(415);
         expect(frequency.closestPitch().frequency(), frequency);
+
+        expect(
+          frequency
+              .closestPitch(temperature: const Celsius(18))
+              .frequency(temperature: const Celsius(18)),
+          frequency,
+        );
       });
     });
 

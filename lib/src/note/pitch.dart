@@ -9,6 +9,7 @@ import '../music.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
+import '../tuning/temperature.dart';
 import '../tuning/tuning_system.dart';
 import 'accidental.dart';
 import 'base_note.dart';
@@ -377,8 +378,8 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// The [Frequency] of this [Pitch] from [referenceFrequency] and
-  /// [tuningSystem].
+  /// The [Frequency] of this [Pitch] from [referenceFrequency],
+  /// [tuningSystem] and [frequency].
   ///
   /// Example:
   /// ```dart
@@ -396,18 +397,24 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ) == const Frequency(430.54)
   /// ```
   ///
+  /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))
+  ///   == const Frequency(438.46)
+  /// Note.a.inOctave(4).frequency(temperature: const Celsius(24))
+  ///   == const Frequency(443.08)
+  ///
   /// This method and [Frequency.closestPitch] are inverses of each other for a
   /// specific `pitch`.
   ///
   /// ```dart
-  /// final pitch = Note.a.inOctave(5);
-  /// pitch.frequency().closestPitch().pitch == pitch;
+  /// final reference = Note.a.inOctave(5);
+  /// reference.frequency().closestPitch().pitch == reference;
   /// ```
   Frequency frequency({
     Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
+    Celsius temperature = Celsius.reference,
   }) =>
-      Frequency(referenceFrequency * tuningSystem.ratio(this));
+      Frequency(referenceFrequency * tuningSystem.ratio(this)).at(temperature);
 
   /// The [ClosestPitch] set of harmonics series [upToIndex] from this [Pitch].
   ///
@@ -421,10 +428,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     required int upToIndex,
     Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
+    Celsius temperature = Celsius.reference,
   }) =>
       frequency(
         referenceFrequency: referenceFrequency,
         tuningSystem: tuningSystem,
+        temperature: temperature,
       ).harmonics(upToIndex: upToIndex).closestPitches;
 
   /// The string representation of this [Pitch] based on [system].

@@ -59,6 +59,19 @@ void main() {
           ),
           Note.a.inOctave(4) + const Cent(37.63165622959145),
         );
+
+        expect(
+          const Frequency(440).closestPitch(temperature: const Celsius(24)),
+          Note.a.inOctave(4) - const Cent(12.060895566170192),
+        );
+        expect(
+          const Frequency(440).closestPitch(temperature: const Celsius(18)),
+          Note.a.inOctave(4) + const Cent(6.062103827228064),
+        );
+        expect(
+          const Frequency(256).closestPitch(temperature: const Celsius(18)),
+          Note.c.inOctave(4) - const Cent(31.569552402363644),
+        );
       });
 
       test('returns the same Frequency after Pitch.frequency()', () {

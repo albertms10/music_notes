@@ -2,6 +2,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../tuning/equal_temperament.dart';
 import '../tuning/ratio.dart';
+import '../tuning/temperature.dart';
 import '../tuning/tuning_system.dart';
 import 'closest_pitch.dart';
 import 'hearing_range.dart';
@@ -35,8 +36,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   bool get isHumanAudible => HearingRange.human.isAudible(this);
 
-  /// The [ClosestPitch] to this [Frequency] from [referenceFrequency] and
-  /// [tuningSystem].
+  /// The [ClosestPitch] to this [Frequency] from [referenceFrequency],
+  /// [tuningSystem] and [temperature].
   ///
   /// Example:
   /// ```dart
@@ -45,20 +46,24 @@ extension type const Frequency._(num hertz) implements num {
   ///
   /// const Frequency(260).closestPitch()
   ///   == Note.c.inOctave(4) - const Cent(10.7903)
+  ///
+  /// const Frequency(440).closestPitch(temperature: const Celsius(24))
+  ///   == Note.a.inOctave(4) - const Cent(12.06)
   /// ```
   ///
   /// This method and [ClosestPitch.frequency] are inverses of each other for a
   /// specific input `frequency`.
   ///
   /// ```dart
-  /// const frequency = Frequency(415);
-  /// frequency.closestPitch().frequency() == frequency;
+  /// const reference = Frequency(415);
+  /// reference.closestPitch().frequency() == reference;
   /// ```
   ClosestPitch closestPitch({
     Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
+    Celsius temperature = Celsius.reference,
   }) {
-    final cents = Ratio(hertz / referenceFrequency).cents;
+    final cents = Ratio(at(temperature) / referenceFrequency).cents;
     final semitones =
         tuningSystem.referencePitch.semitones + (cents / 100).round();
 
@@ -69,6 +74,7 @@ extension type const Frequency._(num hertz) implements num {
     final closestPitchFrequency = closestPitch.frequency(
       referenceFrequency: referenceFrequency,
       tuningSystem: tuningSystem,
+      temperature: temperature,
     );
     final hertzDelta = hertz - closestPitchFrequency;
 
@@ -141,4 +147,22 @@ extension FrequencyIterableExtension on Iterable<Frequency> {
   /// ```
   Set<ClosestPitch> get closestPitches =>
       map((frequency) => frequency.closestPitch()).toSet();
+}
+
+/// A Frequency extension based on temperature.
+extension TemperatureFrequency on Frequency {
+  /// Speed of sound at [Celsius.zero] in m/s.
+  static const _baseSpeedOfSound = 331.3;
+
+  /// The speed of sound in m/s based on [temperature].
+  ///
+  /// See [Speed of sound in ideal gases and air](https://en.wikipedia.org/wiki/Speed_of_sound#Speed_of_sound_in_ideal_gases_and_air).
+  static num speedOfSoundAt(Celsius temperature) =>
+      _baseSpeedOfSound + 0.6 * temperature;
+
+  /// This [Frequency] at [temperature], based on [reference].
+  Frequency at(Celsius temperature, {Celsius reference = Celsius.reference}) =>
+      Frequency(
+        hertz * (speedOfSoundAt(temperature) / speedOfSoundAt(reference)),
+      );
 }

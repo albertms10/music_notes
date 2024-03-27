@@ -995,6 +995,19 @@ void main() {
           Note.b.inOctave(4).frequency(),
           const Frequency(493.8833012561241),
         );
+
+        expect(
+          Note.a.inOctave(4).frequency(temperature: const Celsius(18)),
+          const Frequency(438.4619866006409),
+        );
+        expect(
+          Note.a.inOctave(4).frequency(temperature: const Celsius(24)),
+          const Frequency(443.07602679871826),
+        );
+        expect(
+          Note.c.inOctave(4).frequency(temperature: const Celsius(18)),
+          const Frequency(260.71105706185494),
+        );
       });
 
       test('returns the Frequency of this Pitch at 438 Hz', () {
