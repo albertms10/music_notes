@@ -66,7 +66,7 @@ class ClosestPitch {
   /// (Note.a.inOctave(4) + const Cent(12)).frequency() == const Frequency(443)
   /// ```
   Frequency frequency({
-    Frequency referenceFrequency = const Frequency(440),
+    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
       Frequency(
