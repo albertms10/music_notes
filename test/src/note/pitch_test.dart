@@ -1112,6 +1112,43 @@ void main() {
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
         );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(
+                upToIndex: 15,
+                referenceFrequency: const Frequency(438),
+              )
+              .toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(
+                upToIndex: 15,
+                referenceFrequency: const Frequency(256),
+                tuningSystem: EqualTemperament.edo12(
+                  referencePitch: Note.c.inOctave(4),
+                ),
+              )
+              .toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(upToIndex: 15, temperature: const Celsius(18))
+              .toString(),
+          '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
+          // TODO(albertms10): should be `F♯4-43`.
+          'E4-8, F4+57, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
+        );
       });
     });
 
