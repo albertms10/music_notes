@@ -404,7 +404,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// pitch.frequency().closestPitch().pitch == pitch;
   /// ```
   Frequency frequency({
-    Frequency referenceFrequency = const Frequency(440),
+    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
       Frequency(referenceFrequency * tuningSystem.ratio(this));
@@ -419,7 +419,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Set<ClosestPitch> harmonics({
     required int upToIndex,
-    Frequency referenceFrequency = const Frequency(440),
+    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) =>
       frequency(

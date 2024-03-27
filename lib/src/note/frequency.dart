@@ -22,6 +22,9 @@ extension type const Frequency._(num hertz) implements num {
   /// The symbol for the Hertz unit.
   static const hertzUnitSymbol = 'Hz';
 
+  /// The standard reference [Frequency].
+  static const reference = Frequency(440);
+
   /// Whether this [Frequency] is inside the [HearingRange.human].
   ///
   /// Example:
@@ -52,7 +55,7 @@ extension type const Frequency._(num hertz) implements num {
   /// frequency.closestPitch().frequency() == frequency;
   /// ```
   ClosestPitch closestPitch({
-    Frequency referenceFrequency = const Frequency(440),
+    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
   }) {
     final cents = Ratio(hertz / referenceFrequency).cents;
