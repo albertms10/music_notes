@@ -397,6 +397,11 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ) == const Frequency(430.54)
   /// ```
   ///
+  /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))
+  ///   == const Frequency(438.46)
+  /// Note.a.inOctave(4).frequency(temperature: const Celsius(24))
+  ///   == const Frequency(443.08)
+  ///
   /// This method and [Frequency.closestPitch] are inverses of each other for a
   /// specific `pitch`.
   ///

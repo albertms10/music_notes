@@ -44,11 +44,11 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(467).closestPitch()
   ///   == Note.a.sharp.inOctave(4) + const Cent(3.1028)
   ///
-  /// const Frequency(440).closestPitch(temperature: const Celsius(24))
-  ///   == Note.a.inOctave(4) - const Cent(11.98)
-  ///
   /// const Frequency(260).closestPitch()
   ///   == Note.c.inOctave(4) - const Cent(10.7903)
+  ///
+  /// const Frequency(440).closestPitch(temperature: const Celsius(24))
+  ///   == Note.a.inOctave(4) - const Cent(12.06)
   /// ```
   ///
   /// This method and [ClosestPitch.frequency] are inverses of each other for a
