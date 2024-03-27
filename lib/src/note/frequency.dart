@@ -114,14 +114,11 @@ extension type const Frequency._(num hertz) implements num {
   ///
   /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
-  ///
-  /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7).closestPitches
-  ///     .toString() == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4}'
   /// ```
   ///
   /// ---
   /// See also:
-  /// - [FrequencyIterableExtension.closestPitches].
+  /// * [Pitch.harmonics] for a [ClosestPitch] set of harmonic series.
   Set<Frequency> harmonics({required int upToIndex}) => {
         for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
       };
@@ -134,19 +131,6 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
   String format() => '$hertz $hertzUnitSymbol';
-}
-
-/// A [Frequency] Iterable extension.
-extension FrequencyIterableExtension on Iterable<Frequency> {
-  /// The set of [ClosestPitch] for each [Frequency] element.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(1).frequency().harmonics(upToIndex: 7).closestPitches
-  ///     .toString() == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4}'
-  /// ```
-  Set<ClosestPitch> get closestPitches =>
-      map((frequency) => frequency.closestPitch()).toSet();
 }
 
 /// A Frequency extension based on temperature.

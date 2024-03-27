@@ -433,8 +433,18 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       frequency(
         referenceFrequency: referenceFrequency,
         tuningSystem: tuningSystem,
-        temperature: temperature,
-      ).harmonics(upToIndex: upToIndex).closestPitches;
+        // we deliberately omit the temperature here, as the subsequent call to
+        // `Frequency.closestPitch` will already take it into account.
+      )
+          .harmonics(upToIndex: upToIndex)
+          .map(
+            (frequency) => frequency.closestPitch(
+              referenceFrequency: referenceFrequency,
+              tuningSystem: tuningSystem,
+              temperature: temperature,
+            ),
+          )
+          .toSet();
 
   /// The string representation of this [Pitch] based on [system].
   ///
