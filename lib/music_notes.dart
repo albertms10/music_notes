@@ -31,4 +31,5 @@ export 'src/tuning/cent.dart';
 export 'src/tuning/equal_temperament.dart';
 export 'src/tuning/just_intonation.dart';
 export 'src/tuning/ratio.dart';
+export 'src/tuning/temperature.dart';
 export 'src/tuning/tuning_system.dart';

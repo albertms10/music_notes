@@ -3,6 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
+import '../tuning/temperature.dart';
 import '../tuning/tuning_system.dart';
 import 'frequency.dart';
 import 'pitch.dart';
@@ -58,8 +59,8 @@ class ClosestPitch {
     return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
   }
 
-  /// The [Frequency] of this [ClosestPitch] from [referenceFrequency]
-  /// and [tuningSystem].
+  /// The [Frequency] of this [ClosestPitch] from [referenceFrequency],
+  /// [tuningSystem] and [temperature].
   ///
   /// Example:
   /// ```dart
@@ -68,6 +69,7 @@ class ClosestPitch {
   Frequency frequency({
     Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
+    Celsius temperature = Celsius.reference,
   }) =>
       Frequency(
         pitch.frequency(
@@ -75,7 +77,7 @@ class ClosestPitch {
               tuningSystem: tuningSystem,
             ) *
             cents.ratio,
-      );
+      ).at(temperature);
 
   /// The string representation of this [ClosestPitch] record.
   ///
