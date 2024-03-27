@@ -151,10 +151,12 @@ extension FrequencyIterableExtension on Iterable<Frequency> {
 
 /// A Frequency extension based on temperature.
 extension TemperatureFrequency on Frequency {
-  // Speed of sound at [Celsius.zero] in m/s.
+  /// Speed of sound at [Celsius.zero] in m/s.
   static const _baseSpeedOfSound = 331.3;
 
-  /// See [Speed of sound](https://en.wikipedia.org/wiki/Speed_of_sound#Tables).
+  /// The speed of sound in m/s based on [temperature].
+  ///
+  /// See [Speed of sound in ideal gases and air](https://en.wikipedia.org/wiki/Speed_of_sound#Speed_of_sound_in_ideal_gases_and_air).
   static num speedOfSoundAt(Celsius temperature) =>
       _baseSpeedOfSound + 0.6 * temperature;
 
