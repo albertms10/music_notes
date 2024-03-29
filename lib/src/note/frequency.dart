@@ -110,7 +110,7 @@ extension type const Frequency._(num hertz) implements num {
   /// Example:
   /// ```dart
   /// Note.a.inOctave(3).frequency().harmonics(upToIndex: 2)
-  ///   == {const Frequency(220), const Frequency(440), const Frequency(660)}
+  ///   == const {Frequency(220), Frequency(440), Frequency(660)}
   ///
   /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
   ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
