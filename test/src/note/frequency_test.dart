@@ -76,9 +76,14 @@ void main() {
 
       test('returns the same Frequency after Pitch.frequency()', () {
         final pitch = Note.a.inOctave(5);
-        final closestPitch = pitch.frequency().closestPitch();
-        expect(closestPitch.pitch, pitch);
-        expect(closestPitch.cents, const Cent(0));
+        var closestPitch = pitch.frequency().closestPitch();
+        expect(closestPitch, pitch + const Cent(0));
+
+        const temperature = Celsius(18);
+        closestPitch = pitch
+            .frequency(temperature: temperature)
+            .closestPitch(temperature: temperature);
+        expect(closestPitch, pitch + const Cent(0));
       });
     });
 
