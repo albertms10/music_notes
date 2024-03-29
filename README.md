@@ -1,8 +1,10 @@
 ![Analysis CI](https://github.com/albertms10/music_notes/workflows/Analysis%20CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/albertms10/music_notes/badge.svg?branch=main)](https://coveralls.io/github/albertms10/music_notes?branch=main)
-[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 [![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/albertms10/music_notes/badge)](https://api.securityscorecards.dev/projects/github.com/music_notes/cabin_booking)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/8718/badge)](https://www.bestpractices.dev/projects/8718)
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause/)
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
 A simple Dart library that provides a comprehensive set of utilities
 for working with music theory concepts through a beautifully crafted API.
