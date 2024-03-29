@@ -124,35 +124,35 @@ void main() {
           );
           expect(
             const Frequency(400).harmonics(upToIndex: -1),
-            {const Frequency(400), const Frequency(200)},
+            const {Frequency(400), Frequency(200)},
           );
           expect(
             const Frequency(220).harmonics(upToIndex: 0),
-            {const Frequency(220)},
+            const {Frequency(220)},
           );
           expect(
             const Frequency(110).harmonics(upToIndex: 1),
-            {const Frequency(110), const Frequency(220)},
+            const {Frequency(110), Frequency(220)},
           );
           expect(
             const Frequency(32).harmonics(upToIndex: 15),
-            {
-              const Frequency(32),
-              const Frequency(64),
-              const Frequency(96),
-              const Frequency(128),
-              const Frequency(160),
-              const Frequency(192),
-              const Frequency(224),
-              const Frequency(256),
-              const Frequency(288),
-              const Frequency(320),
-              const Frequency(352),
-              const Frequency(384),
-              const Frequency(416),
-              const Frequency(448),
-              const Frequency(480),
-              const Frequency(512),
+            const {
+              Frequency(32),
+              Frequency(64),
+              Frequency(96),
+              Frequency(128),
+              Frequency(160),
+              Frequency(192),
+              Frequency(224),
+              Frequency(256),
+              Frequency(288),
+              Frequency(320),
+              Frequency(352),
+              Frequency(384),
+              Frequency(416),
+              Frequency(448),
+              Frequency(480),
+              Frequency(512),
             },
           );
         },
