@@ -29,5 +29,6 @@
   },
   "files.associations": {
     "*.lock": "yaml"
-  }
+  },
+  "git.alwaysSignOff": true
 }
