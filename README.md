@@ -67,7 +67,7 @@ Note.f.inOctave(4); // F4
 Note.b.flat.inOctave(5); // B♭5
 ```
 
-Or just parse them in both scientific and Helmholtz notations:
+Or parse them in both scientific and Helmholtz notations:
 
 ```dart
 Note.parse('a#'); // A♯
@@ -105,6 +105,33 @@ Note.a.flat.respelledDownwards; // G♯
 Note.b.sharp.inOctave(4).respelledSimple; // C5
 ```
 
+Compare two `Pitch`es based on their semitones:
+
+```dart
+Note.c.inOctave(4) < Note.c.inOctave(5); // true
+Note.d.inOctave(3) > Note.f.inOctave(4); // false
+Note.a.flat.inOctave(5) >= Note.g.sharp.inOctave(5); // true
+```
+
+Represent them as [`PitchClass`es](https://en.wikipedia.org/wiki/Pitch_class):
+
+```dart
+Note.d.flat.toClass(); // {C♯|D♭}
+Note.a.inOctave(4).toClass(); // {A}
+```
+
+Perform [`PitchClass` multiplications (modulo 12)](<https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12>):
+
+```dart
+PitchClass.cSharp * 7; // {G}
+PitchClass.d * 7; // {D}
+// observe one semitone upwards results in ascending fifths G -> D.
+
+PitchClass.cSharp * 5; // {F}
+PitchClass.d * 5; // {A♯|B♭}
+// observe one semitone upwards results in ascending fourths F -> B-flat.
+```
+
 Represent them using any notation system:
 
 ```dart
@@ -115,6 +142,11 @@ Note.d.flat
 
 Note.b.flat.inOctave(-1).toString(); // B♭-1
 Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
+
+PitchClass.c.toString(); // {C}
+PitchClass.dSharp.toString(); // {D♯|E♭}
+PitchClass.f.toString(system: PitchClassNotation.integer); // 5
+PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
 ```
 
 ### Intervals
@@ -128,7 +160,15 @@ Size.sixth.augmented; // A6
 Size.eleventh.simple.perfect; // P4
 ```
 
-Or turn it descending:
+Or parse it from a string:
+
+```dart
+Interval.parse('m3'); // m3
+Interval.parse('P-5'); // P-5
+Interval.parse('AA6'); // AA6
+```
+
+Turn it descending:
 
 ```dart
 -Interval.m7; // m-7
@@ -363,6 +403,21 @@ And combining both methods, the harmonic series of a given `Pitch`:
 Note.c.inOctave(1).harmonics(upToIndex: 15);
 // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
 // E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
+```
+
+Create a `ClosestPitch` by adding or subtracting `Cent`s to a `Pitch`:
+
+```dart
+Note.f.sharp.inOctave(4) + const Cent(16); // F♯4+16
+Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5-8
+```
+
+Or parse a `ClosestPitch` from a string:
+
+```dart
+ClosestPitch.parse('A4'); // A4
+ClosestPitch.parse('A4+12.4'); // A4+12.4
+ClosestPitch.parse('E♭3-28'); // E♭3-28
 ```
 
 ### In a nutshell

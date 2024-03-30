@@ -45,6 +45,19 @@ void main() {
   Note.a.flat.respelledDownwards; // G♯
   Note.b.sharp.inOctave(4).respelledSimple; // C5
 
+  Note.c.inOctave(4) < Note.c.inOctave(5); // true
+  Note.d.inOctave(3) > Note.f.inOctave(4); // false
+  Note.a.flat.inOctave(5) >= Note.g.sharp.inOctave(5); // true
+
+  Note.d.flat.toClass(); // {C♯|D♭}
+  Note.a.inOctave(4).toClass(); // {A}
+
+  PitchClass.cSharp * 7; // {G}
+  PitchClass.d * 7; // {D}
+
+  PitchClass.cSharp * 5; // {F}
+  PitchClass.d * 5; // {A♯|B♭}
+
   Note.d.flat
     ..toString() // D♭
     ..toString(system: NoteNotation.romance) // Re♭
@@ -53,11 +66,20 @@ void main() {
   Note.b.flat.inOctave(-1).toString(); // B♭-1
   Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
 
+  PitchClass.c.toString(); // {C}
+  PitchClass.dSharp.toString(); // {D♯|E♭}
+  PitchClass.f.toString(system: PitchClassNotation.integer); // 5
+  PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
+
   // Intervals
   const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
   Interval.d5; // d5
   Size.sixth.augmented; // A6
   Size.eleventh.simple.perfect; // P4
+
+  Interval.parse('m3'); // m3
+  Interval.parse('P-5'); // P-5
+  Interval.parse('AA6'); // AA6
 
   -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
@@ -182,6 +204,13 @@ void main() {
   Note.c.inOctave(1).harmonics(upToIndex: 15);
   // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
   // E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
+
+  Note.f.sharp.inOctave(4) + const Cent(16); // F♯4+16
+  Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5-8
+
+  ClosestPitch.parse('A4'); // A4
+  ClosestPitch.parse('A4+12.4'); // A4+12.4
+  ClosestPitch.parse('E♭3-28'); // E♭3-28
 
   // In a nutshell
   ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
