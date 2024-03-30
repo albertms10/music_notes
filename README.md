@@ -292,8 +292,8 @@ Rearrange any set of `Note`s, `Pitch`es or `PitchClass`es
 as `inversion` or `retrograde`:
 
 ```dart
-{Note.b, Note.a.sharp, Note.d}.inversion.toSet(); // {B, C, G♯}
-{PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet();
+({Note.b, Note.a.sharp, Note.d}).inversion.toSet(); // {B, C, G♯}
+({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet();
 // {{F♯|G♭}, {G}, {D♯|E♭}}
 ```
 
