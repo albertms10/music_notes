@@ -49,6 +49,10 @@ void main() {
   Note.d.inOctave(3) > Note.f.inOctave(4); // false
   Note.a.flat.inOctave(5) >= Note.g.sharp.inOctave(5); // true
 
+  Note.f.sharp.isEnharmonicWith(Note.g.flat); // true
+  Note.c.inOctave(4).isEnharmonicWith(Note.b.sharp.inOctave(3)); // true
+  Note.a.isEnharmonicWith(Note.b.flat); // false
+
   Note.d.flat.toClass(); // {C♯|D♭}
   Note.a.inOctave(4).toClass(); // {A}
 
@@ -100,6 +104,30 @@ void main() {
   Note.a.flat.circleOfFifthsDistance; // -4
   Note.c.fifthsDistanceWith(Note.e.flat); // -3
   Note.b.fifthsDistanceWith(Note.f.sharp); // 1
+
+  Interval.M3.isEnharmonicWith(Interval.d4); // true
+  Interval.A4.isEnharmonicWith(Interval.d5); // true
+  Interval.P1.isEnharmonicWith(Interval.m2); // false
+
+  Interval.M2.toClass(); // {M2|d3}
+  Interval.m6.toClass(); // {M3|d4}
+  Interval.P8.toClass(); // {P1}
+
+  IntervalClass.tritone + IntervalClass.M2; // {M3|d4}
+  IntervalClass.M3 + IntervalClass.P4; // {m3}
+  IntervalClass.P4 - IntervalClass.m3; // {M2|d3}
+  IntervalClass.P1 - IntervalClass.m2; // {m2}
+
+  IntervalClass.P4 * -1; // {P4}
+  IntervalClass.M2 * 0; // {P1}
+  IntervalClass.m3 * 2; // {A4|d5}
+
+  Interval.m2.toString(); // m2
+  Interval.A6.toString(); // A6
+
+  IntervalClass.M2.toString(); // {M2|d3}
+  IntervalClass.P4.toString(); // {P4}
+  IntervalClass.tritone.toString(); // {A4|d5}
 
   // Keys
   const Key(Note.e, TonalMode.minor); // E minor

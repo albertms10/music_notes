@@ -113,6 +113,14 @@ Note.d.inOctave(3) > Note.f.inOctave(4); // false
 Note.a.flat.inOctave(5) >= Note.g.sharp.inOctave(5); // true
 ```
 
+Know whether two `Note`s or `Pitch`es are enharmonically equivalent:
+
+```dart
+Note.f.sharp.isEnharmonicWith(Note.g.flat); // true
+Note.c.inOctave(4).isEnharmonicWith(Note.b.sharp.inOctave(3)); // true
+Note.a.isEnharmonicWith(Note.b.flat); // false
+```
+
 Represent them as [`PitchClass`es](https://en.wikipedia.org/wiki/Pitch_class):
 
 ```dart
@@ -199,6 +207,46 @@ Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
 Note.c.fifthsDistanceWith(Note.e.flat); // -3
 Note.b.fifthsDistanceWith(Note.f.sharp); // 1
+```
+
+Know whether two `Interval`s are enharmonically equivalent:
+
+```dart
+Interval.M3.isEnharmonicWith(Interval.d4); // true
+Interval.A4.isEnharmonicWith(Interval.d5); // true
+Interval.P1.isEnharmonicWith(Interval.m2); // false
+```
+
+Represent them as [`IntervalClass`es](https://en.wikipedia.org/wiki/Interval_class):
+
+```dart
+Interval.M2.toClass(); // {M2|d3}
+Interval.m6.toClass(); // {M3|d4}
+Interval.P8.toClass(); // {P1}
+```
+
+Add, subtract and multiply `IntervalClass`es:
+
+```dart
+IntervalClass.tritone + IntervalClass.M2; // {M3|d4}
+IntervalClass.M3 + IntervalClass.P4; // {m3}
+IntervalClass.P4 - IntervalClass.m3; // {M2|d3}
+IntervalClass.P1 - IntervalClass.m2; // {m2}
+
+IntervalClass.P4 * -1; // {P4}
+IntervalClass.M2 * 0; // {P1}
+IntervalClass.m3 * 2; // {A4|d5}
+```
+
+Represent them as a string:
+
+```dart
+Interval.m2.toString(); // m2
+Interval.A6.toString(); // A6
+
+IntervalClass.M2.toString(); // {M2|d3}
+IntervalClass.P4.toString(); // {P4}
+IntervalClass.tritone.toString(); // {A4|d5}
 ```
 
 ### Keys
