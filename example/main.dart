@@ -30,7 +30,7 @@ void main() {
   Interval.M3.descending(); // M-3
 
   Note.c.interval(Note.g); // P5
-  Note.d.interval(Note.f.sharp).inverted; // m6
+  Note.d.interval(Note.f.sharp).inversion; // m6
   Note.g.flat.transposeBy(-Interval.m3); // E♭
 
   Interval.P5.circleFrom(Note.c, distance: 12).toList();

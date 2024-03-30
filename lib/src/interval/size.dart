@@ -148,20 +148,22 @@ extension type const Size._(int size) implements int {
       ? Interval.perfect(this, PerfectQuality.augmented)
       : Interval.imperfect(this, ImperfectQuality.augmented);
 
-  static int _inverted(Size size) {
+  static int _inversion(Size size) {
     final diff = 9 - size.simple.size.abs();
 
     return (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
   }
 
-  /// The inverted of this [Size].
+  /// The inversion of this [Size].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// Size.third.inverted == Size.sixth
-  /// Size.fourth.inverted == Size.fifth
-  /// Size.seventh.inverted == Size.second
-  /// (-Size.unison).inverted == -Size.octave
+  /// Size.third.inversion == Size.sixth
+  /// Size.fourth.inversion == Size.fifth
+  /// Size.seventh.inversion == Size.second
+  /// (-Size.unison).inversion == -Size.octave
   /// ```
   ///
   /// If this [Size] is greater than [Size.octave], the simplified inversion
@@ -169,10 +171,10 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.ninth.inverted == Size.seventh
-  /// Size.eleventh.inverted == Size.fifth
+  /// Size.ninth.inversion == Size.seventh
+  /// Size.eleventh.inversion == Size.fifth
   /// ```
-  Size get inverted => Size(_inverted(this));
+  Size get inversion => Size(_inversion(this));
 
   static int _simple(Size size) =>
       size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
@@ -264,7 +266,7 @@ extension type const PerfectSize._(int size) implements Size {
   Interval get perfect => Interval.perfect(this);
 
   @redeclare
-  PerfectSize get inverted => PerfectSize(Size._inverted(this));
+  PerfectSize get inversion => PerfectSize(Size._inversion(this));
 
   @redeclare
   PerfectSize get simple => PerfectSize(Size._simple(this));
@@ -311,7 +313,7 @@ extension type const ImperfectSize._(int size) implements Size {
   Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
 
   @redeclare
-  ImperfectSize get inverted => ImperfectSize(Size._inverted(this));
+  ImperfectSize get inversion => ImperfectSize(Size._inversion(this));
 
   @redeclare
   ImperfectSize get simple => ImperfectSize(Size._simple(this));

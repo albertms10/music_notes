@@ -254,15 +254,17 @@ final class Interval
         quality,
       );
 
-  /// The inverted of this [Interval], regardless of its direction (ascending or
-  /// descending).
+  /// The inversion of this [Interval], regardless of its direction (ascending
+  /// or descending).
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// Interval.m3.inverted == Interval.M6
-  /// Interval.A4.inverted == Interval.d5
-  /// Interval.M7.inverted == Interval.m2
-  /// (-Interval.P1).inverted == -Interval.P8
+  /// Interval.m3.inversion == Interval.M6
+  /// Interval.A4.inversion == Interval.d5
+  /// Interval.M7.inversion == Interval.m2
+  /// (-Interval.P1).inversion == -Interval.P8
   /// ```
   ///
   /// If this [Interval.size] is greater than [Size.octave], the simplified
@@ -270,10 +272,10 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.m9.inverted == Interval.M7
-  /// Interval.P11.inverted == Interval.P5
+  /// Interval.m9.inversion == Interval.M7
+  /// Interval.P11.inversion == Interval.P5
   /// ```
-  Interval get inverted => Interval._(size.inverted, quality.inverted);
+  Interval get inversion => Interval._(size.inversion, quality.inversion);
 
   /// The simplified version of this [Interval].
   ///
@@ -349,7 +351,7 @@ final class Interval
       }
       distance++;
       ascendingNotes.add(ascendingNotes.last.transposeBy(this));
-      descendingNotes.add(descendingNotes.last.transposeBy(inverted));
+      descendingNotes.add(descendingNotes.last.transposeBy(inversion));
     }
   }
 
