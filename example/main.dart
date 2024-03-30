@@ -4,9 +4,16 @@ import 'package:music_notes/music_notes.dart';
 
 void main() {
   // Notes
+  const Note(BaseNote.e, Accidental.flat); // E♭
   Note.c; // C
   Note.d; // D
   Note.f; // F
+
+  BaseNote.fromSemitones(2); // D
+  BaseNote.fromSemitones(9); // A
+
+  BaseNote.fromOrdinal(3); // E
+  BaseNote.fromOrdinal(7); // B
 
   Note.c.sharp; // C♯
   Note.d.flat; // D♭
@@ -20,23 +27,57 @@ void main() {
   Pitch.parse("g''"); // G5
   Pitch.parse('Eb3'); // E♭3
 
+  BaseNote.c.difference(BaseNote.e); // 4
+  BaseNote.a.difference(BaseNote.e); // -5
+  BaseNote.a.positiveDifference(BaseNote.e); // 7
+
+  Note.c.difference(Note.e.flat); // 3
+  Pitch.parse('C').difference(Pitch.parse("c''''")); // 60
+
+  Note.g.flat.transposeBy(-Interval.m3); // E♭
+  Note.b.inOctave(3).transposeBy(Interval.P5); // F♯4
+
+  Note.c.sharp.respellByBaseNote(BaseNote.d); // D♭
+  Note.e.flat.respellByAccidental(Accidental.sharp); // D♯
+  Note.g.flat.inOctave(3).respellByOrdinalDistance(-1); // F♯3
+
+  Note.g.sharp.respelledUpwards; // A♭
+  Note.a.flat.respelledDownwards; // G♯
+  Note.b.sharp.inOctave(4).respelledSimple; // C5
+
+  Note.d.flat
+    ..toString() // D♭
+    ..toString(system: NoteNotation.romance) // Re♭
+    ..toString(system: NoteNotation.german); // Des
+
+  Note.b.flat.inOctave(-1).toString(); // B♭-1
+  Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
+
   // Intervals
   const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
   Interval.d5; // d5
   Size.sixth.augmented; // A6
-  Size.twelfth.simple.perfect; // P5
+  Size.eleventh.simple.perfect; // P4
 
   -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
 
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inversion; // m6
-  Note.g.flat.transposeBy(-Interval.m3); // E♭
+
+  BaseNote.d.intervalSize(BaseNote.f); // 3
+  BaseNote.a.intervalSize(BaseNote.e); // 5
 
   Interval.P5.circleFrom(Note.c, distance: 12).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
   Note.c.circleOfFifths();
   // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
+  Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
+
+  Note.d.circleOfFifthsDistance; // 2
+  Note.a.flat.circleOfFifthsDistance; // -4
+  Note.c.fifthsDistanceWith(Note.e.flat); // -3
+  Note.b.fifthsDistanceWith(Note.f.sharp); // 1
 
   // Keys
   const Key(Note.e, TonalMode.minor); // E minor
@@ -45,13 +86,27 @@ void main() {
   Note.d.major.signature; // 2 (F♯ C♯)
   Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 
+  Note.e.major.isTheoretical; // false
+  Note.a.flat.minor.isTheoretical; // true
+
   Note.d.major.relative; // B minor
   Note.c.minor.relative; // E♭ major
+
+  Note.f.minor.parallel; // F major
+  Note.c.sharp.major.parallel; // C♯ minor
+
+  Note.d.flat.major.toString(); // D♭ major
+  Note.c.major.toString(system: NoteNotation.romance); // Do maggiore
+  Note.e.flat.minor.toString(system: NoteNotation.german); // es-moll
 
   // Key signatures
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
   KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
   KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
+
+  KeySignature.fromDistance(-4).incrementBy(-1); // -3 (B♭ E♭ A♭)
+  KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3);
+  // 5 (F♯ C♯ G♯ D♯ A♯)
 
   KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
   KeySignature.empty.keys[TonalMode.minor]; // A minor
@@ -86,6 +141,14 @@ void main() {
     HarmonicFunction.dominantV / HarmonicFunction.dominantV,
   ); // D maj. (D F♯ A)
 
+  ({Note.b, Note.a.sharp, Note.d}).inversion.toSet(); // {B, C, G♯}
+  ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet();
+  // {{F♯|G♭}, {G}, {D♯|E♭}}
+
+  ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
+    ..numericRepresentation.toSet() // {0, 11, 3, 5}
+    ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
+
   // Chords
   Chord([Note.a, Note.c.sharp, Note.e]); // A maj. (A C♯ E)
   ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
@@ -101,14 +164,20 @@ void main() {
 
   // Frequencies
   Note.a.inOctave(4).frequency(); // 440
+
+  final tuningSystem =
+      EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
   Note.b.flat.inOctave(4).frequency(
         referenceFrequency: const Frequency(256),
-        tuningSystem:
-            EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
+        tuningSystem: tuningSystem,
       ); // 456.1401436878537
+
+  Note.a.inOctave(4).frequency(temperature: const Celsius(18));
+  // 438.4619866006409
 
   const Frequency(432).closestPitch(); // A4-32
   const Frequency(314).closestPitch(); // E♭4+16
+  const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
 
   Note.c.inOctave(1).harmonics(upToIndex: 15);
   // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,

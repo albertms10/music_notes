@@ -45,7 +45,7 @@ Note.f; // F
 
 ```dart
 BaseNote.fromSemitones(2); // D
-BaseNote.fromSemitones(9) // A
+BaseNote.fromSemitones(9); // A
 
 BaseNote.fromOrdinal(3); // E
 BaseNote.fromOrdinal(7); // B
@@ -157,8 +157,8 @@ Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
 
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
-Note.c.fifthsDistanceWith(Note.e.flat) // -3
-Note.b.fifthsDistanceWith(Note.f.sharp) // 1
+Note.c.fifthsDistanceWith(Note.e.flat); // -3
+Note.b.fifthsDistanceWith(Note.f.sharp); // 1
 ```
 
 ### Keys
@@ -300,7 +300,7 @@ as `inversion` or `retrograde`:
 Or play with its numeric representation:
 
 ```dart
-{PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
   ..numericRepresentation.toSet() // {0, 11, 3, 5}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
@@ -338,7 +338,8 @@ Get the `Frequency` of a `Pitch`:
 ```dart
 Note.a.inOctave(4).frequency(); // 440
 
-final tuningSystem = EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
+final tuningSystem =
+    EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
       tuningSystem: tuningSystem,
@@ -348,7 +349,7 @@ Note.a.inOctave(4).frequency(temperature: const Celsius(18));
 // 438.4619866006409
 ```
 
-Get the closest note from a given `Frequency`:
+Get the closest `Pitch` from a given `Frequency`:
 
 ```dart
 const Frequency(432).closestPitch(); // A4-32
