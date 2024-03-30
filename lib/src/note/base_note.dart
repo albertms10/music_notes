@@ -114,7 +114,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
-  /// BaseNote.a.difference(BaseNote.d) == 5
+  /// BaseNote.a.difference(BaseNote.e) == -5
   /// ```
   int difference(BaseNote other) => Note(this).difference(Note(other));
 
@@ -127,7 +127,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.positiveDifference(BaseNote.c) == 0
   /// BaseNote.c.positiveDifference(BaseNote.e) == 4
-  /// BaseNote.a.positiveDifference(BaseNote.d) == 5
+  /// BaseNote.a.positiveDifference(BaseNote.e) == 7
   /// ```
   int positiveDifference(BaseNote other) {
     final diff = difference(other);

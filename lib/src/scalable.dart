@@ -63,7 +63,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// {Note.b, Note.a.sharp, Note.d}.inversion.toSet()
+  /// ({Note.b, Note.a.sharp, Note.d}).inversion.toSet()
   ///   == {Note.b, Note.c, Note.g.sharp}
   /// ```
   Iterable<T> get inversion sync* {
@@ -83,7 +83,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
+  /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
   ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
   Iterable<T> get retrograde => toList().reversed;
@@ -92,7 +92,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
   ///   .numericRepresentation.toSet() == const {0, 11, 3}
   /// ```
   Iterable<int> get numericRepresentation => map(
@@ -103,7 +103,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
   ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
   /// ```
   Iterable<int> get deltaNumericRepresentation sync* {
