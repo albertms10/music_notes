@@ -88,11 +88,36 @@ void main() {
   -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
 
+  Interval.m3.inversion; // M6
+  Interval.A4.inversion; // d5
+  Interval.m9.inversion; // M7
+
+  Interval.m9.simple; // m2
+  Interval.P11.simple; // P4
+  (-Interval.M3).simple; // M-3
+
+  Interval.P5.isCompound; // false
+  (-Interval.m6).isCompound; // false
+  Interval.M9.isCompound; // true
+  (-Interval.P11).isCompound; // true
+
+  Interval.P5.isDissonant; // false
+  Interval.d5.isDissonant; // true
+  Interval.M7.isDissonant; // true
+
+  Interval.A4.respellBySize(Size.fifth); // d5
+  Interval.d3.respellBySize(Size.second); // M2
+
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inversion; // m6
 
   BaseNote.d.intervalSize(BaseNote.f); // 3
   BaseNote.a.intervalSize(BaseNote.e); // 5
+
+  Interval.P5.distanceBetween(Note.c, Note.d);
+  // (2, notes: [Note.c, Note.g, Note.d])
+  Interval.P4.distanceBetween(Note.b.flat, Note.d);
+  // (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
 
   Interval.P5.circleFrom(Note.c, distance: 12).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
@@ -113,10 +138,16 @@ void main() {
   Interval.m6.toClass(); // {M3|d4}
   Interval.P8.toClass(); // {P1}
 
+  Interval.m3 < Interval.P5; // true
+  Interval.m7 <= Interval.P5; // false
+  -Interval.P4 > Interval.M3; // true
+
+  Interval.m2 + Interval.M2; // m3
+  Interval.M2 + Interval.P4; // P5
+
   IntervalClass.tritone + IntervalClass.M2; // {M3|d4}
   IntervalClass.M3 + IntervalClass.P4; // {m3}
   IntervalClass.P4 - IntervalClass.m3; // {M2|d3}
-  IntervalClass.P1 - IntervalClass.m2; // {m2}
 
   IntervalClass.P4 * -1; // {P4}
   IntervalClass.M2 * 0; // {P1}

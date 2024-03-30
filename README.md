@@ -183,6 +183,34 @@ Turn it descending:
 Interval.M3.descending(); // M-3
 ```
 
+Perform common interval operations:
+
+```dart
+Interval.m3.inversion; // M6
+Interval.A4.inversion; // d5
+Interval.m9.inversion; // M7
+
+Interval.m9.simple; // m2
+Interval.P11.simple; // P4
+(-Interval.M3).simple; // M-3
+
+Interval.P5.isCompound; // false
+(-Interval.m6).isCompound; // false
+Interval.M9.isCompound; // true
+(-Interval.P11).isCompound; // true
+
+Interval.P5.isDissonant; // false
+Interval.d5.isDissonant; // true
+Interval.M7.isDissonant; // true
+```
+
+Respell an `Interval` by size:
+
+```dart
+Interval.A4.respellBySize(Size.fifth); // d5
+Interval.d3.respellBySize(Size.second); // M2
+```
+
 Calculate the `Interval` between two notes:
 
 ```dart
@@ -191,6 +219,15 @@ Note.d.interval(Note.f.sharp).inversion; // m6
 
 BaseNote.d.intervalSize(BaseNote.f); // 3
 BaseNote.a.intervalSize(BaseNote.e); // 5
+```
+
+Know the intervallic distance between two notes:
+
+```dart
+Interval.P5.distanceBetween(Note.c, Note.d);
+// (2, notes: [Note.c, Note.g, Note.d])
+Interval.P4.distanceBetween(Note.b.flat, Note.d);
+// (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
 ```
 
 And even play with the circle of fifths or any circle of intervals
@@ -225,13 +262,23 @@ Interval.m6.toClass(); // {M3|d4}
 Interval.P8.toClass(); // {P1}
 ```
 
-Add, subtract and multiply `IntervalClass`es:
+Compare two `Interval`s based on their semitones:
 
 ```dart
+Interval.m3 < Interval.P5; // true
+Interval.m7 <= Interval.P5; // false
+-Interval.P4 > Interval.M3; // true
+```
+
+Add, subtract and multiply `Interval`s and `IntervalClass`es:
+
+```dart
+Interval.m2 + Interval.M2; // m3
+Interval.M2 + Interval.P4; // P5
+
 IntervalClass.tritone + IntervalClass.M2; // {M3|d4}
 IntervalClass.M3 + IntervalClass.P4; // {m3}
 IntervalClass.P4 - IntervalClass.m3; // {M2|d3}
-IntervalClass.P1 - IntervalClass.m2; // {m2}
 
 IntervalClass.P4 * -1; // {P4}
 IntervalClass.M2 * 0; // {P1}
@@ -376,7 +423,7 @@ Note.c.major.scale.functionChord(
 ); // D maj. (D F♯ A)
 ```
 
-Rearrange any set of `Note`s, `Pitch`es or `PitchClass`es
+Rearrange any collection of `Note`s, `Pitch`es or `PitchClass`es
 as `inversion` or `retrograde`:
 
 ```dart
