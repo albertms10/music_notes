@@ -6,17 +6,16 @@
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause/)
 [![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
-A simple Dart library that provides a comprehensive set of utilities
-for working with music theory concepts through a beautifully crafted API.
+A comprehensive Dart library for effortlessly working with music theory concepts,
+offering an elegant and beautifully crafted API.
 
 ## Features
 
-- Chords, harmonic functions, and circle of fifths
-- Intervals and qualities
-- Notes, frequencies, accidentals, and enharmonic operations
-- Scales and scale degrees
+- Notes, accidentals, and enharmonic operations
+- Intervals, qualities, and circle of fifths
+- Chords, scales, harmonic functions, inversions and retrogrades
 - Keys, key signatures, and modes
-- Tuning systems (_work in progress_)
+- Frequencies and tuning systems (_work in progress_)
 
 ## Usage
 
@@ -32,15 +31,27 @@ For more detailed usage instructions and examples, please refer to the
 
 ### Notes
 
-Define `Note`s from the musical scale:
+Define a `Note` from a `BaseNote` and an `Accidental`, or using their
+shorthand static constants:
 
 ```dart
+const Note(BaseNote.e, Accidental.flat); // E♭
 Note.c; // C
 Note.d; // D
 Note.f; // F
 ```
 
-Alter them:
+`BaseNote`s can be obtained from semitones or ordinal:
+
+```dart
+BaseNote.fromSemitones(2); // D
+BaseNote.fromSemitones(9) // A
+
+BaseNote.fromOrdinal(3); // E
+BaseNote.fromOrdinal(7); // B
+```
+
+Alter a `Note` with `sharp` or `flat`:
 
 ```dart
 Note.c.sharp; // C♯
@@ -62,6 +73,48 @@ Or just parse them in both scientific and Helmholtz notations:
 Note.parse('a#'); // A♯
 Pitch.parse("g''"); // G5
 Pitch.parse('Eb3'); // E♭3
+```
+
+Get their difference in semitones:
+
+```dart
+BaseNote.c.difference(BaseNote.e); // 4
+BaseNote.a.difference(BaseNote.e); // -5
+BaseNote.a.positiveDifference(BaseNote.e); // 7
+
+Note.c.difference(Note.e.flat); // 3
+Pitch.parse('C').difference(Pitch.parse("c''''")); // 60
+```
+
+Transpose them:
+
+```dart
+Note.g.flat.transposeBy(-Interval.m3); // E♭
+Note.b.inOctave(3).transposeBy(Interval.P5); // F♯4
+```
+
+Respell them by any criteria:
+
+```dart
+Note.c.sharp.respellByBaseNote(BaseNote.d); // D♭
+Note.e.flat.respellByAccidental(Accidental.sharp); // D♯
+Note.g.flat.inOctave(3).respellByOrdinalDistance(-1); // F♯3
+
+Note.g.sharp.respelledUpwards; // A♭
+Note.a.flat.respelledDownwards; // G♯
+Note.b.sharp.inOctave(4).respelledSimple; // C5
+```
+
+Represent them using any notation system:
+
+```dart
+Note.d.flat
+  ..toString() // D♭
+  ..toString(system: NoteNotation.romance) // Re♭
+  ..toString(system: NoteNotation.german); // Des
+
+Note.b.flat.inOctave(-1).toString(); // B♭-1
+Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
 ```
 
 ### Intervals
@@ -86,8 +139,10 @@ Calculate the `Interval` between two notes:
 
 ```dart
 Note.c.interval(Note.g); // P5
-Note.d.interval(Note.f.sharp).inverted; // m6
-Note.g.flat.transposeBy(-Interval.m3); // E♭
+Note.d.interval(Note.f.sharp).inversion; // m6
+
+BaseNote.d.intervalSize(BaseNote.f); // 3
+BaseNote.a.intervalSize(BaseNote.e); // 5
 ```
 
 And even play with the circle of fifths or any circle of intervals
@@ -98,6 +153,12 @@ Interval.P5.circleFrom(Note.c, distance: 12).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths();
 // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
+Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
+
+Note.d.circleOfFifthsDistance; // 2
+Note.a.flat.circleOfFifthsDistance; // -4
+Note.c.fifthsDistanceWith(Note.e.flat) // -3
+Note.b.fifthsDistanceWith(Note.f.sharp) // 1
 ```
 
 ### Keys
@@ -116,11 +177,29 @@ Note.d.major.signature; // 2 (F♯ C♯)
 Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
-And its relative `Key`:
+Whether it is theoretical:
+
+```dart
+Note.e.major.isTheoretical; // false
+Note.a.flat.minor.isTheoretical; // true
+```
+
+And its relative and parallel `Key`s:
 
 ```dart
 Note.d.major.relative; // B minor
 Note.c.minor.relative; // E♭ major
+
+Note.f.minor.parallel; // F major
+Note.c.sharp.major.parallel; // C♯ minor
+```
+
+Represent it using any notation system:
+
+```dart
+Note.d.flat.major.toString(); // D♭ major
+Note.c.major.toString(system: NoteNotation.romance); // Do maggiore
+Note.e.flat.minor.toString(system: NoteNotation.german); // es-moll
 ```
 
 ### Key signatures
@@ -131,6 +210,14 @@ Create a `KeySignature`:
 KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
 KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
 KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
+```
+
+Increment them by sharps or flats:
+
+```dart
+KeySignature.fromDistance(-4).incrementBy(-1); // -3 (B♭ E♭ A♭)
+KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3);
+// 5 (F♯ C♯ G♯ D♯ A♯)
 ```
 
 And know its `Key`s:
@@ -201,6 +288,23 @@ Note.c.major.scale.functionChord(
 ); // D maj. (D F♯ A)
 ```
 
+Rearrange any set of `Note`s, `Pitch`es or `PitchClass`es
+as `inversion` or `retrograde`:
+
+```dart
+{Note.b, Note.a.sharp, Note.d}.inversion.toSet(); // {B, C, G♯}
+{PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet();
+// {{F♯|G♭}, {G}, {D♯|E♭}}
+```
+
+Or play with its numeric representation:
+
+```dart
+{PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  ..numericRepresentation.toSet() // {0, 11, 3, 5}
+  ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
+```
+
 ### Chords
 
 Create a `Chord` from a series of `Note`s or a `ChordPattern`:
@@ -233,11 +337,15 @@ Get the `Frequency` of a `Pitch`:
 
 ```dart
 Note.a.inOctave(4).frequency(); // 440
+
+final tuningSystem = EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
 Note.b.flat.inOctave(4).frequency(
       referenceFrequency: const Frequency(256),
-      tuningSystem:
-          EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
+      tuningSystem: tuningSystem,
     ); // 456.1401436878537
+
+Note.a.inOctave(4).frequency(temperature: const Celsius(18));
+// 438.4619866006409
 ```
 
 Get the closest note from a given `Frequency`:
@@ -245,6 +353,7 @@ Get the closest note from a given `Frequency`:
 ```dart
 const Frequency(432).closestPitch(); // A4-32
 const Frequency(314).closestPitch(); // E♭4+16
+const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
 ```
 
 And combining both methods, the harmonic series of a given `Pitch`:
