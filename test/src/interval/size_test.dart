@@ -51,7 +51,7 @@ void main() {
         expect(Size.fourth.perfect, Interval.P4);
         expect((-Size.fifth).perfect, -Interval.P5);
 
-        expect(Size.twelfth.inverted.perfect, Interval.P4);
+        expect(Size.twelfth.inversion.perfect, Interval.P4);
         expect(Size.twelfth.simple.perfect, Interval.P5);
       });
     });
@@ -62,7 +62,7 @@ void main() {
         expect(Size.sixth.major, Interval.M6);
         expect((-Size.ninth).major, -Interval.M9);
 
-        expect(Size.thirteenth.inverted.major, Interval.M3);
+        expect(Size.thirteenth.inversion.major, Interval.M3);
         expect(Size.thirteenth.simple.major, Interval.M6);
       });
     });
@@ -73,7 +73,7 @@ void main() {
         expect(Size.seventh.minor, Interval.m7);
         expect((-Size.sixth).minor, -Interval.m6);
 
-        expect(Size.ninth.inverted.minor, Interval.m7);
+        expect(Size.ninth.inversion.minor, Interval.m7);
         expect(Size.ninth.simple.minor, Interval.m2);
       });
     });
@@ -84,7 +84,7 @@ void main() {
         expect(Size.fifth.diminished, Interval.d5);
         expect((-Size.seventh).diminished, -Interval.d7);
 
-        expect(Size.eleventh.inverted.diminished, Interval.d5);
+        expect(Size.eleventh.inversion.diminished, Interval.d5);
         expect(Size.eleventh.simple.diminished, Interval.d4);
       });
     });
@@ -95,7 +95,7 @@ void main() {
         expect(Size.fourth.augmented, Interval.A4);
         expect((-Size.sixth).augmented, -Interval.A6);
 
-        expect(Size.twelfth.inverted.augmented, Interval.A4);
+        expect(Size.twelfth.inversion.augmented, Interval.A4);
         expect(Size.twelfth.simple.augmented, Interval.A5);
       });
     });

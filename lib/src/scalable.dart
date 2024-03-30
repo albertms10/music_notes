@@ -55,14 +55,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 
-  /// The inverse of this [ScalableIterable].
+  /// The inversion of this [ScalableIterable].
+  ///
+  /// See [Inversion](https://en.wikipedia.org/wiki/Inversion_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart
-  /// {Note.b, Note.a.sharp, Note.d}.inverse.toSet()
+  /// {Note.b, Note.a.sharp, Note.d}.inversion.toSet()
   ///   == {Note.b, Note.c, Note.g.sharp}
   /// ```
-  Iterable<T> get inverse sync* {
+  Iterable<T> get inversion sync* {
     if (isEmpty) return;
     yield first;
     var last = first;
@@ -72,6 +76,10 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   }
 
   /// The retrograde of this [ScalableIterable].
+  ///
+  /// See [Retrograde](https://en.wikipedia.org/wiki/Retrograde_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart

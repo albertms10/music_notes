@@ -56,36 +56,36 @@ void main() {
       });
     });
 
-    group('.inverted', () {
-      test('returns the inverted of this Quality', () {
+    group('.inversion', () {
+      test('returns the inversion of this Quality', () {
         expect(
-          PerfectQuality.triplyDiminished.inverted,
+          PerfectQuality.triplyDiminished.inversion,
           PerfectQuality.triplyAugmented,
         );
-        expect(PerfectQuality.diminished.inverted, PerfectQuality.augmented);
-        expect(PerfectQuality.perfect.inverted, PerfectQuality.perfect);
-        expect(PerfectQuality.augmented.inverted, PerfectQuality.diminished);
+        expect(PerfectQuality.diminished.inversion, PerfectQuality.augmented);
+        expect(PerfectQuality.perfect.inversion, PerfectQuality.perfect);
+        expect(PerfectQuality.augmented.inversion, PerfectQuality.diminished);
         expect(
-          PerfectQuality.triplyAugmented.inverted,
+          PerfectQuality.triplyAugmented.inversion,
           PerfectQuality.triplyDiminished,
         );
 
         expect(
-          ImperfectQuality.doublyDiminished.inverted,
+          ImperfectQuality.doublyDiminished.inversion,
           ImperfectQuality.doublyAugmented,
         );
         expect(
-          ImperfectQuality.diminished.inverted,
+          ImperfectQuality.diminished.inversion,
           ImperfectQuality.augmented,
         );
-        expect(ImperfectQuality.minor.inverted, ImperfectQuality.major);
-        expect(ImperfectQuality.major.inverted, ImperfectQuality.minor);
+        expect(ImperfectQuality.minor.inversion, ImperfectQuality.major);
+        expect(ImperfectQuality.major.inversion, ImperfectQuality.minor);
         expect(
-          ImperfectQuality.augmented.inverted,
+          ImperfectQuality.augmented.inversion,
           ImperfectQuality.diminished,
         );
         expect(
-          ImperfectQuality.doublyAugmented.inverted,
+          ImperfectQuality.doublyAugmented.inversion,
           ImperfectQuality.doublyDiminished,
         );
       });

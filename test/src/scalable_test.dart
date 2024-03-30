@@ -15,12 +15,15 @@ void main() {
   });
 
   group('ScalableIterable', () {
-    group('.inverse', () {
-      test('returns the inverse of this ScalableIterable', () {
-        expect(const <PitchClass>{}.inverse.toList(), const <PitchClass>[]);
-        expect({PitchClass.cSharp}.inverse.toList(), const [PitchClass.cSharp]);
+    group('.inversion', () {
+      test('returns the inversion of this ScalableIterable', () {
+        expect(const <PitchClass>{}.inversion.toList(), const <PitchClass>[]);
         expect(
-          {Note.d, Note.f.sharp, Note.e, Note.g}.inverse.toList(),
+          {PitchClass.cSharp}.inversion.toList(),
+          const [PitchClass.cSharp],
+        );
+        expect(
+          {Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(),
           [Note.d, Note.b.flat, Note.c, Note.a],
         );
         expect(
@@ -29,7 +32,7 @@ void main() {
             Note.d.sharp.inOctave(4),
             Note.b.inOctave(3),
             Note.g.inOctave(3),
-          }.inverse.toList(),
+          }.inversion.toList(),
           [
             Note.c.inOctave(4),
             Note.b.flat.flat.inOctave(3),
@@ -39,7 +42,7 @@ void main() {
         );
         expect(
           {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
-              .inverse
+              .inversion
               .toList(),
           [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
         );
