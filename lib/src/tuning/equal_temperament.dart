@@ -30,14 +30,12 @@ class EqualTemperament extends TuningSystem {
   const EqualTemperament(this._steps, {super.fork = TuningFork.a440});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12([TuningFork fork = TuningFork.a440])
-      : _steps = const [2, 2, 1, 2, 2, 2, 1],
-        super(fork: fork);
+  const EqualTemperament.edo12({super.fork = TuningFork.a440})
+      : _steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19([TuningFork fork = TuningFork.a440])
-      : _steps = const [3, 3, 2, 3, 3, 3, 2],
-        super(fork: fork);
+  const EqualTemperament.edo19({super.fork = TuningFork.a440})
+      : _steps = const [3, 3, 2, 3, 3, 3, 2];
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///

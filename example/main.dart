@@ -255,7 +255,7 @@ void main() {
   TuningFork.c256; // C256
 
   Note.b.flat.inOctave(4).frequency(
-        tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
+        tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
       ); // 456.1401436878537
 
   const Frequency(432).closestPitch(); // A4-32

@@ -40,14 +40,14 @@ void main() {
 
         expect(
           const Frequency(440).closestPitch(
-            tuningSystem: const EqualTemperament.edo12(TuningFork.a415),
+            tuningSystem: const EqualTemperament.edo12(fork: TuningFork.a415),
           ),
           Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
         expect(
           const Frequency(512).closestPitch(
             tuningSystem: EqualTemperament.edo12(
-              Note.c.inOctave(5).at(const Frequency(512)),
+              fork: Note.c.inOctave(5).at(const Frequency(512)),
             ),
           ),
           Note.c.inOctave(5) + const Cent(0),
@@ -55,7 +55,7 @@ void main() {
         expect(
           const Frequency(440).closestPitch(
             tuningSystem: EqualTemperament.edo12(
-              Note.c.inOctave(5).at(const Frequency(512)),
+              fork: Note.c.inOctave(5).at(const Frequency(512)),
             ),
           ),
           Note.a.inOctave(4) + const Cent(37.63165622959145),

@@ -96,7 +96,7 @@ void main() {
           'EDO 19 (3 3 2 3 3 3 2) at A440',
         );
         expect(
-          const EqualTemperament.edo19(TuningFork.c256).toString(),
+          const EqualTemperament.edo19(fork: TuningFork.c256).toString(),
           'EDO 19 (3 3 2 3 3 3 2) at C256',
         );
       });

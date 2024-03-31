@@ -399,12 +399,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ///
   /// Note.b.flat.inOctave(4).frequency(
   ///   tuningSystem: EqualTemperament.edo12(
-  ///     Pitch.reference.at(const Frequency(438)),
+  ///     fork: Pitch.reference.at(const Frequency(438)),
   ///   ),
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).frequency(
-  ///   tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
+  ///   tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
   /// ) == const Frequency(430.54)
   ///
   /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))

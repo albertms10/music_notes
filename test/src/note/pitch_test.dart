@@ -1049,7 +1049,7 @@ void main() {
 
       test('returns the Frequency of this Pitch at 438 Hz', () {
         const tuningSystem = EqualTemperament.edo12(
-          TuningFork(Pitch.reference, Frequency(438)),
+          fork: TuningFork(Pitch.reference, Frequency(438)),
         );
         expect(
           Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
@@ -1122,7 +1122,7 @@ void main() {
       });
 
       test('returns the Frequency of this Pitch from 256 Hz (C4)', () {
-        const tuningSystem = EqualTemperament.edo12(TuningFork.c256);
+        const tuningSystem = EqualTemperament.edo12(fork: TuningFork.c256);
         expect(
           Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(256),
@@ -1148,7 +1148,7 @@ void main() {
               .harmonics(
                 upToIndex: 15,
                 tuningSystem: const EqualTemperament.edo12(
-                  TuningFork(Pitch.reference, Frequency(438)),
+                  fork: TuningFork(Pitch.reference, Frequency(438)),
                 ),
               )
               .toString(),
@@ -1161,7 +1161,8 @@ void main() {
               .inOctave(1)
               .harmonics(
                 upToIndex: 15,
-                tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
+                tuningSystem:
+                    const EqualTemperament.edo12(fork: TuningFork.c256),
               )
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
