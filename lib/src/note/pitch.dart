@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../enharmonic.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
@@ -332,8 +333,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// calculating the octave height, as it depends on the note name.
   /// This correctly handles cases with the same number of semitones
   /// but in different octaves (e.g., B♯3 but C4, or C♭4 but B3).
-  int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
+  static int _semitonesWithoutAccidental(int semitones, Note referenceNote) =>
       semitones - referenceNote.accidental.semitones;
+
+  @override
+  bool isEnharmonicWith(Enharmonic<PitchClass> other) =>
+      semitones == other.semitones;
 
   /// Transposes this [Pitch] by [interval].
   ///

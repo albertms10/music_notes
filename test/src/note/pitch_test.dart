@@ -928,6 +928,43 @@ void main() {
       });
     });
 
+    group('.toClass()', () {
+      test('creates a new PitchClass from semitones', () {
+        expect(Note.a.inOctave(4).toClass(), PitchClass.a);
+        expect(Note.a.sharp.inOctave(2).toClass(), PitchClass.aSharp);
+        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
+        expect(Note.b.sharp.sharp.inOctave(7).toClass(), PitchClass.cSharp);
+      });
+    });
+
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this Pitch is enharmonically equivalent to other',
+        () {
+          expect(
+            Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)),
+            isTrue,
+          );
+          expect(
+            Note.a.sharp.inOctave(4).isEnharmonicWith(Note.b.flat.inOctave(4)),
+            isTrue,
+          );
+          expect(
+            Note.a.inOctave(2).isEnharmonicWith(Note.b.flat.inOctave(4)),
+            isFalse,
+          );
+          expect(
+            Note.e.flat.inOctave(-1).isEnharmonicWith(Note.e.flat.inOctave(3)),
+            isFalse,
+          );
+          expect(
+            Note.b.sharp.inOctave(3).isEnharmonicWith(Note.c.inOctave(4)),
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('.frequency()', () {
       test('returns the Frequency of this Pitch at 440 Hz', () {
         expect(
