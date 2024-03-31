@@ -1147,6 +1147,9 @@ void main() {
               .inOctave(1)
               .harmonics(
                 upToIndex: 15,
+                tuningSystem: const EqualTemperament.edo12(
+                  TuningFork(Pitch.reference, Frequency(438)),
+                ),
               )
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
@@ -1158,6 +1161,7 @@ void main() {
               .inOctave(1)
               .harmonics(
                 upToIndex: 15,
+                tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
               )
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
