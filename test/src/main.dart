@@ -24,6 +24,7 @@ import 'tuning/cent_test.dart' as cent_test;
 import 'tuning/equal_temperament_test.dart' as equal_temperament_test;
 import 'tuning/just_intonation_test.dart' as just_intonation_test;
 import 'tuning/ratio_test.dart' as ratio_test;
+import 'tuning/tuning_fork_test.dart' as tuning_fork_test;
 
 void main() {
   chord_pattern_test.main();
@@ -52,4 +53,5 @@ void main() {
   equal_temperament_test.main();
   just_intonation_test.main();
   ratio_test.main();
+  tuning_fork_test.main();
 }

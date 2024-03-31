@@ -4,6 +4,7 @@ import '../interval/interval.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'ratio.dart';
+import 'tuning_fork.dart';
 
 /// A tuning system representation.
 ///
@@ -12,11 +13,11 @@ import 'ratio.dart';
 /// * [Pitch].
 @immutable
 abstract class TuningSystem {
-  /// The reference [Pitch] from which this [TuningSystem] is tuned.
-  final Pitch referencePitch;
+  /// The [TuningFork] from which this [TuningSystem] is based.
+  final TuningFork fork;
 
   /// Creates a new [TuningSystem].
-  const TuningSystem({required this.referencePitch});
+  const TuningSystem({required this.fork});
 
   /// The number of [Cent] for the generator at [Interval.P5] in this
   /// [TuningSystem].
@@ -35,13 +36,13 @@ abstract class TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// final pt = PythagoreanTuning(referencePitch: Note.c.inOctave(4));
-  /// pt.ratio(Note.d.inOctave(4)) == const Ratio(9 / 8)
-  /// pt.ratio(Note.f.inOctave(4)) == const Ratio(4 / 3)
-  ///
-  /// final edo12 = EqualTemperament.edo12(referencePitch: Note.a.inOctave(4));
+  /// final edo12 = EqualTemperament.edo12();
   /// edo12.ratio(Note.b.inOctave(4)) == const Ratio(1.12)
   /// edo12.ratio(Note.d.inOctave(5)) == const Ratio(1.33)
+  ///
+  /// final pt = PythagoreanTuning(fork: TuningFork.c256);
+  /// pt.ratio(Note.d.inOctave(4)) == const Ratio(9 / 8)
+  /// pt.ratio(Note.f.inOctave(4)) == const Ratio(4 / 3)
   /// ```
   Ratio ratio(Pitch pitch);
 }

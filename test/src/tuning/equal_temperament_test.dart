@@ -89,11 +89,15 @@ void main() {
       test('returns the string representation of this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().toString(),
-          'EDO 12 (2 2 1 2 2 2 1)',
+          'EDO 12 (2 2 1 2 2 2 1) at A440',
         );
         expect(
           const EqualTemperament.edo19().toString(),
-          'EDO 19 (3 3 2 3 3 3 2)',
+          'EDO 19 (3 3 2 3 3 3 2) at A440',
+        );
+        expect(
+          const EqualTemperament.edo19(fork: TuningFork.c256).toString(),
+          'EDO 19 (3 3 2 3 3 3 2) at C256',
         );
       });
     });

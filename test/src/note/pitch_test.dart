@@ -1048,95 +1048,87 @@ void main() {
       });
 
       test('returns the Frequency of this Pitch at 438 Hz', () {
-        const frequency = Frequency(438);
+        const tuningSystem = EqualTemperament.edo12(
+          fork: TuningFork(Pitch.reference, Frequency(438)),
+        );
         expect(
-          Note.c.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(260.4363581855959),
         );
         expect(
-          Note.c.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.c.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(275.92270992697723),
         );
         expect(
-          Note.d.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(275.92270992697723),
         );
         expect(
-          Note.d.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(292.3299280632375),
         );
         expect(
-          Note.d.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(309.7127701597078),
         );
         expect(
-          Note.e.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.e.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(309.7127701597078),
         );
         expect(
-          Note.e.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.e.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(328.1292498359933),
         );
         expect(
-          Note.f.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.f.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(347.6408303810357),
         );
         expect(
-          Note.f.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.f.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(368.31262988112695),
         );
         expect(
-          Note.g.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(368.31262988112695),
         );
         expect(
-          Note.g.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(390.2136385454686),
         );
         expect(
-          Note.g.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(413.41694895458176),
         );
         expect(
-          Note.a.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(413.41694895458176),
         );
         expect(
-          Note.a.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(438),
         );
         expect(
-          Note.a.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(464.0448353293713),
         );
         expect(
-          Note.b.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.b.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(464.0448353293713),
         );
         expect(
-          Note.b.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.b.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(491.63837715950535),
         );
       });
 
       test('returns the Frequency of this Pitch from 256 Hz (C4)', () {
-        const frequency = Frequency(256);
+        const tuningSystem = EqualTemperament.edo12(fork: TuningFork.c256);
         expect(
-          Note.c.inOctave(4).frequency(
-                referenceFrequency: frequency,
-                tuningSystem: EqualTemperament.edo12(
-                  referencePitch: Note.c.inOctave(4),
-                ),
-              ),
+          Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(256),
         );
         expect(
-          Note.a.inOctave(4).frequency(
-                referenceFrequency: frequency,
-                tuningSystem: EqualTemperament.edo12(
-                  referencePitch: Note.c.inOctave(4),
-                ),
-              ),
+          Note.a.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(430.5389646099018),
         );
       });
@@ -1155,7 +1147,9 @@ void main() {
               .inOctave(1)
               .harmonics(
                 upToIndex: 15,
-                referenceFrequency: const Frequency(438),
+                tuningSystem: const EqualTemperament.edo12(
+                  fork: TuningFork(Pitch.reference, Frequency(438)),
+                ),
               )
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
@@ -1167,10 +1161,8 @@ void main() {
               .inOctave(1)
               .harmonics(
                 upToIndex: 15,
-                referenceFrequency: const Frequency(256),
-                tuningSystem: EqualTemperament.edo12(
-                  referencePitch: Note.c.inOctave(4),
-                ),
+                tuningSystem:
+                    const EqualTemperament.edo12(fork: TuningFork.c256),
               )
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
