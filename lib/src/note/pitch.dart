@@ -38,6 +38,9 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Creates a new [Pitch] from [note] and [octave].
   const Pitch(this.note, {required this.octave});
 
+  /// The reference [Pitch].
+  static const reference = Pitch(Note.a, octave: 4);
+
   static const _superPrime = '′';
   static const _superPrimeAlt = "'";
   static const _subPrime = '͵';
