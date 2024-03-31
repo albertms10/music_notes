@@ -1,7 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:meta/meta.dart' show immutable;
-
 import 'cent.dart';
 import 'tuning_system.dart';
 
@@ -11,7 +9,6 @@ import 'tuning_system.dart';
 /// See also:
 /// * [TuningSystem].
 /// * [Cent].
-@immutable
 extension type const Ratio._(num value) implements num {
   /// Creates a new [Ratio] from [value].
   const Ratio(this.value)

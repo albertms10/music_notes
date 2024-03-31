@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart' show IterableExtension;
-import 'package:meta/meta.dart' show immutable, redeclare;
+import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
 import '../music.dart';
@@ -7,7 +7,6 @@ import 'interval.dart';
 import 'quality.dart';
 
 /// An [Interval] size.
-@immutable
 extension type const Size._(int size) implements int {
   /// Creates a new [Size] from [size].
   const Size(this.size) : assert(size != 0, 'Value must be non-zero.');
