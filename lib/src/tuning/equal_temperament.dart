@@ -6,7 +6,6 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../note/base_note.dart';
-import '../note/note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'ratio.dart';
@@ -27,20 +26,15 @@ class EqualTemperament extends TuningSystem {
   List<int> get steps => UnmodifiableListView(_steps);
 
   /// Creates a new [EqualTemperament] from [_steps] and [referencePitch].
-  const EqualTemperament(
-    this._steps, {
-    super.referencePitch = _defaultReferencePitch,
-  });
+  const EqualTemperament(this._steps, {super.referencePitch = Pitch.reference});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
+  const EqualTemperament.edo12({super.referencePitch = Pitch.reference})
       : _steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
+  const EqualTemperament.edo19({super.referencePitch = Pitch.reference})
       : _steps = const [3, 3, 2, 3, 3, 3, 2];
-
-  static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
