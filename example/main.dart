@@ -9,11 +9,11 @@ void main() {
   Note.d; // D
   Note.f; // F
 
-  BaseNote.fromSemitones(2); // D
-  BaseNote.fromSemitones(9); // A
+  BaseNote.fromSemitones(2); // BaseNote.d
+  BaseNote.fromSemitones(9); // BaseNote.a
 
-  BaseNote.fromOrdinal(3); // E
-  BaseNote.fromOrdinal(7); // B
+  BaseNote.fromOrdinal(3); // BaseNote.e
+  BaseNote.fromOrdinal(7); // BaseNote.b
 
   Note.c.sharp; // C♯
   Note.d.flat; // D♭
@@ -23,6 +23,7 @@ void main() {
   Note.f.inOctave(4); // F4
   Note.b.flat.inOctave(5); // B♭5
 
+  BaseNote.parse('b'); // BaseNote.b
   Note.parse('a#'); // A♯
   Pitch.parse("g''"); // G5
   Pitch.parse('Eb3'); // E♭3
@@ -72,6 +73,7 @@ void main() {
 
   PitchClass.c.toString(); // {C}
   PitchClass.dSharp.toString(); // {D♯|E♭}
+
   PitchClass.f.toString(system: PitchClassNotation.integer); // 5
   PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
 
@@ -97,7 +99,6 @@ void main() {
   (-Interval.M3).simple; // M-3
 
   Interval.P5.isCompound; // false
-  (-Interval.m6).isCompound; // false
   Interval.M9.isCompound; // true
   (-Interval.P11).isCompound; // true
 
@@ -127,6 +128,7 @@ void main() {
 
   Note.d.circleOfFifthsDistance; // 2
   Note.a.flat.circleOfFifthsDistance; // -4
+
   Note.c.fifthsDistanceWith(Note.e.flat); // -3
   Note.b.fifthsDistanceWith(Note.f.sharp); // 1
 

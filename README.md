@@ -44,11 +44,11 @@ Note.f; // F
 `BaseNote`s can be obtained from semitones or ordinal:
 
 ```dart
-BaseNote.fromSemitones(2); // D
-BaseNote.fromSemitones(9); // A
+BaseNote.fromSemitones(2); // BaseNote.d
+BaseNote.fromSemitones(9); // BaseNote.a
 
-BaseNote.fromOrdinal(3); // E
-BaseNote.fromOrdinal(7); // B
+BaseNote.fromOrdinal(3); // BaseNote.e
+BaseNote.fromOrdinal(7); // BaseNote.b
 ```
 
 Alter a `Note` with `sharp` or `flat`:
@@ -70,6 +70,7 @@ Note.b.flat.inOctave(5); // B♭5
 Or parse them in both scientific and Helmholtz notations:
 
 ```dart
+BaseNote.parse('b'); // BaseNote.b
 Note.parse('a#'); // A♯
 Pitch.parse("g''"); // G5
 Pitch.parse('Eb3'); // E♭3
@@ -153,6 +154,7 @@ Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
 
 PitchClass.c.toString(); // {C}
 PitchClass.dSharp.toString(); // {D♯|E♭}
+
 PitchClass.f.toString(system: PitchClassNotation.integer); // 5
 PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
 ```
@@ -195,7 +197,6 @@ Interval.P11.simple; // P4
 (-Interval.M3).simple; // M-3
 
 Interval.P5.isCompound; // false
-(-Interval.m6).isCompound; // false
 Interval.M9.isCompound; // true
 (-Interval.P11).isCompound; // true
 
@@ -230,7 +231,7 @@ Interval.P4.distanceBetween(Note.b.flat, Note.d);
 // (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
 ```
 
-And even play with the circle of fifths or any circle of intervals
+And even explore the circle of fifths or any circle of intervals
 up to a distance:
 
 ```dart
@@ -242,6 +243,7 @@ Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
 
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
+
 Note.c.fifthsDistanceWith(Note.e.flat); // -3
 Note.b.fifthsDistanceWith(Note.f.sharp); // 1
 ```
@@ -414,7 +416,7 @@ Note.a.flat.major.scale; // A♭ Major (ionian) (A♭ B♭ C D♭ E♭ F G A♭)
 Note.d.minor.scale; // D Natural minor (aeolian) (D E F G A B♭ C D)
 ```
 
-Even play with any `ScaleDegree` or `HarmonicFunction`:
+Even experiment with any `ScaleDegree` or `HarmonicFunction`:
 
 ```dart
 ScalePattern.lydian.on(Note.e).degree(ScaleDegree.iv); // A♯
@@ -432,7 +434,7 @@ as `inversion` or `retrograde`:
 // {{F♯|G♭}, {G}, {D♯|E♭}}
 ```
 
-Or play with its numeric representation:
+Or know its numeric representation:
 
 ```dart
 ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
