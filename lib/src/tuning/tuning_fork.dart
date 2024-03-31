@@ -80,7 +80,7 @@ final class CompactTuningForkNotation extends TuningForkNotation {
   @override
   String tuningFork(TuningFork tuningFork) {
     final pitch = tuningFork.pitch.octave == referenceOctave
-        ? tuningFork.pitch.note
+        ? '${tuningFork.pitch.note}'
         : '${tuningFork.pitch} ';
 
     return '$pitch${tuningFork.frequency}';
