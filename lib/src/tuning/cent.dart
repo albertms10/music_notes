@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:meta/meta.dart' show immutable, redeclare;
+import 'package:meta/meta.dart' show redeclare;
 
 import '../interval/interval.dart';
 import '../music.dart';
@@ -14,7 +14,6 @@ import 'tuning_system.dart';
 /// See also:
 /// * [TuningSystem].
 /// * [Ratio].
-@immutable
 extension type const Cent(num value) implements num {
   /// The unit symbol for [Cent].
   static const unitSymbol = '¢';

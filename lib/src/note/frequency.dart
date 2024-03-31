@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart' show immutable;
-
 import '../tuning/equal_temperament.dart';
 import '../tuning/ratio.dart';
 import '../tuning/temperature.dart';
@@ -15,7 +13,6 @@ import 'pitch_class.dart';
 /// See also:
 /// * [Pitch].
 /// * [ClosestPitch].
-@immutable
 extension type const Frequency._(num hertz) implements num {
   /// Creates a new [Frequency] instance from [hertz].
   const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive.');
