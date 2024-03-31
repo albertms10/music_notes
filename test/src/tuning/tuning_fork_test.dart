@@ -19,6 +19,17 @@ void main() {
           'A♭3 437.15',
         );
 
+        const compactSystem = CompactTuningForkNotation(referenceOctave: 3);
+        expect(TuningFork.a440.toString(system: compactSystem), 'A4 440');
+        expect(TuningFork.c256.toString(system: compactSystem), 'C4 256');
+        expect(
+          Note.d
+              .inOctave(3)
+              .at(const Frequency(314))
+              .toString(system: compactSystem),
+          'D314',
+        );
+
         expect(
           TuningFork.a440.toString(system: TuningForkNotation.scientific),
           'A4 = 440 Hz',
