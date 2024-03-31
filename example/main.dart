@@ -247,16 +247,16 @@ void main() {
 
   // Frequencies
   Note.a.inOctave(4).frequency(); // 440
-
-  final tuningSystem =
-      EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
-  Note.b.flat.inOctave(4).frequency(
-        referenceFrequency: const Frequency(256),
-        tuningSystem: tuningSystem,
-      ); // 456.1401436878537
-
   Note.a.inOctave(4).frequency(temperature: const Celsius(18));
   // 438.4619866006409
+
+  Note.a.inOctave(4).at(const Frequency(438)); // A438
+  TuningFork.a440; // A440
+  TuningFork.c256; // C256
+
+  Note.b.flat.inOctave(4).frequency(
+        tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
+      ); // 456.1401436878537
 
   const Frequency(432).closestPitch(); // A4-32
   const Frequency(314).closestPitch(); // E♭4+16

@@ -59,24 +59,19 @@ class ClosestPitch {
     return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
   }
 
-  /// The [Frequency] of this [ClosestPitch] from [referenceFrequency],
-  /// [tuningSystem] and [temperature].
+  /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
+  /// [temperature].
   ///
   /// Example:
   /// ```dart
   /// (Note.a.inOctave(4) + const Cent(12)).frequency() == const Frequency(443)
   /// ```
   Frequency frequency({
-    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
   }) =>
       Frequency(
-        pitch.frequency(
-              referenceFrequency: referenceFrequency,
-              tuningSystem: tuningSystem,
-              temperature: temperature,
-            ) *
+        pitch.frequency(tuningSystem: tuningSystem, temperature: temperature) *
             cents.ratio,
       );
 

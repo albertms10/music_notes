@@ -9,6 +9,7 @@ import '../note/base_note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'ratio.dart';
+import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// A representation of an equal temperament tuning system.
@@ -25,16 +26,18 @@ class EqualTemperament extends TuningSystem {
   /// The equal divisions between each [BaseNote] and the next one.
   List<int> get steps => UnmodifiableListView(_steps);
 
-  /// Creates a new [EqualTemperament] from [_steps] and [referencePitch].
-  const EqualTemperament(this._steps, {super.referencePitch = Pitch.reference});
+  /// Creates a new [EqualTemperament] from [_steps] and [fork].
+  const EqualTemperament(this._steps, {super.fork = TuningFork.a440});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referencePitch = Pitch.reference})
-      : _steps = const [2, 2, 1, 2, 2, 2, 1];
+  const EqualTemperament.edo12([TuningFork fork = TuningFork.a440])
+      : _steps = const [2, 2, 1, 2, 2, 2, 1],
+        super(fork: fork);
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referencePitch = Pitch.reference})
-      : _steps = const [3, 3, 2, 3, 3, 3, 2];
+  const EqualTemperament.edo19([TuningFork fork = TuningFork.a440])
+      : _steps = const [3, 3, 2, 3, 3, 3, 2],
+        super(fork: fork);
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
@@ -70,8 +73,7 @@ class EqualTemperament extends TuningSystem {
       Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(Pitch pitch) =>
-      ratioFromSemitones(referencePitch.difference(pitch));
+  Ratio ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
 
   /// The reference generator cents.
   static const referenceGeneratorCents = Cent(700);
@@ -86,8 +88,8 @@ class EqualTemperament extends TuningSystem {
   bool operator ==(Object other) =>
       other is EqualTemperament &&
       const ListEquality<int>().equals(_steps, other._steps) &&
-      referencePitch == other.referencePitch;
+      fork == other.fork;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(_steps), referencePitch);
+  int get hashCode => Object.hash(Object.hashAll(_steps), fork);
 }

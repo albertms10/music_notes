@@ -474,16 +474,25 @@ Get the `Frequency` of a `Pitch`:
 
 ```dart
 Note.a.inOctave(4).frequency(); // 440
-
-final tuningSystem =
-    EqualTemperament.edo12(referencePitch: Note.c.inOctave(4));
-Note.b.flat.inOctave(4).frequency(
-      referenceFrequency: const Frequency(256),
-      tuningSystem: tuningSystem,
-    ); // 456.1401436878537
-
 Note.a.inOctave(4).frequency(temperature: const Celsius(18));
 // 438.4619866006409
+```
+
+Create a `TuningFork` from a `Pitch` and a reference `Frequency`,
+or using its shorthand static constants:
+
+```dart
+Note.a.inOctave(4).at(const Frequency(438)); // A438
+TuningFork.a440; // A440
+TuningFork.c256; // C256
+```
+
+And use it in a `TuningSystem`:
+
+```dart
+Note.b.flat.inOctave(4).frequency(
+      tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
+    ); // 456.1401436878537
 ```
 
 Get the closest `Pitch` from a given `Frequency`:
@@ -494,7 +503,8 @@ const Frequency(314).closestPitch(); // E♭4+16
 const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
 ```
 
-And combining both methods, the harmonic series of a given `Pitch`:
+And combining both `frequency` and `closestPitch` methods,
+the harmonic series of a given `Pitch`:
 
 ```dart
 Note.c.inOctave(1).harmonics(upToIndex: 15);

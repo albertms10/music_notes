@@ -11,6 +11,7 @@ import '../scalable.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
+import '../tuning/tuning_fork.dart';
 import '../tuning/tuning_system.dart';
 import 'accidental.dart';
 import 'base_note.dart';
@@ -39,7 +40,10 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   const Pitch(this.note, {required this.octave});
 
   /// The reference [Pitch].
-  static const reference = Pitch(Note.a, octave: 4);
+  static const reference = Pitch(Note.a, octave: referenceOctave);
+
+  /// The reference octave.
+  static const referenceOctave = 4;
 
   static const _superPrime = '′';
   static const _superPrimeAlt = "'";
@@ -386,8 +390,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     );
   }
 
-  /// The [Frequency] of this [Pitch] from [referenceFrequency],
-  /// [tuningSystem] and [frequency].
+  /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
   ///
   /// Example:
   /// ```dart
@@ -395,20 +398,20 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// Note.c.inOctave(4).frequency() == const Frequency(261.63)
   ///
   /// Note.b.flat.inOctave(4).frequency(
-  ///   referenceFrequency: const Frequency(438),
+  ///   tuningSystem: EqualTemperament.edo12(
+  ///     Pitch.reference.at(const Frequency(438)),
+  ///   ),
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).frequency(
-  ///   referenceFrequency: const Frequency(256),
-  ///   tuningSystem:
-  ///       EqualTemperament.edo12(referencePitch: Note.c.inOctave(4)),
+  ///   tuningSystem: const EqualTemperament.edo12(TuningFork.c256),
   /// ) == const Frequency(430.54)
-  /// ```
   ///
   /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))
   ///   == const Frequency(438.46)
   /// Note.a.inOctave(4).frequency(temperature: const Celsius(24))
   ///   == const Frequency(443.08)
+  /// ```
   ///
   /// This method and [Frequency.closestPitch] are inverses of each other for a
   /// specific `pitch`.
@@ -418,13 +421,23 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// reference.frequency().closestPitch().pitch == reference;
   /// ```
   Frequency frequency({
-    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
   }) =>
-      Frequency(referenceFrequency * tuningSystem.ratio(this)).at(temperature);
+      Frequency(tuningSystem.fork.frequency * tuningSystem.ratio(this))
+          .at(temperature);
 
-  /// The [ClosestPitch] set of harmonics series [upToIndex] from this [Pitch].
+  /// Creates a new [TuningFork] from this [Pitch] at a given [frequency].
+  ///
+  /// Example:
+  /// ```dart
+  /// Pitch.reference.at(const Frequency(440)) == TuningFork.a440
+  /// Note.c.inOctave(4).at(const Frequency(256)) == TuningFork.c256
+  /// ```
+  TuningFork at(Frequency frequency) => TuningFork(this, frequency);
+
+  /// The [ClosestPitch] set of harmonics series [upToIndex] from this [Pitch]
+  /// from [tuningSystem] and [temperature].
   ///
   /// Example:
   /// ```dart
@@ -434,12 +447,10 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Set<ClosestPitch> harmonics({
     required int upToIndex,
-    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
   }) =>
       frequency(
-        referenceFrequency: referenceFrequency,
         tuningSystem: tuningSystem,
         // we deliberately omit the temperature here, as the subsequent call to
         // `Frequency.closestPitch` will already take it into account.
@@ -447,7 +458,6 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
           .harmonics(upToIndex: upToIndex)
           .map(
             (frequency) => frequency.closestPitch(
-              referenceFrequency: referenceFrequency,
               tuningSystem: tuningSystem,
               temperature: temperature,
             ),

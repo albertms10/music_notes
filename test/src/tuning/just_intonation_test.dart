@@ -11,8 +11,9 @@ void main() {
           const generator = Cent(701.9550008653874);
           expect(const PythagoreanTuning().generator, generator);
           expect(
-            PythagoreanTuning(referencePitch: Note.a.flat.inOctave(3))
-                .generator,
+            PythagoreanTuning(
+              fork: Note.a.flat.inOctave(3).at(Frequency.reference),
+            ).generator,
             generator,
           );
         },
@@ -103,8 +104,9 @@ void main() {
         const pythagoreanComma = Ratio(1.0136432647705078);
         expect(const PythagoreanTuning().pythagoreanComma, pythagoreanComma);
         expect(
-          PythagoreanTuning(referencePitch: Note.f.sharp.inOctave(5))
-              .pythagoreanComma,
+          PythagoreanTuning(
+            fork: Note.f.sharp.inOctave(5).at(Frequency.reference),
+          ).pythagoreanComma,
           pythagoreanComma,
         );
       });

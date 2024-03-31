@@ -33,8 +33,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   bool get isHumanAudible => HearingRange.human.isAudible(this);
 
-  /// The [ClosestPitch] to this [Frequency] from [referenceFrequency],
-  /// [tuningSystem] and [temperature].
+  /// The [ClosestPitch] to this [Frequency] from [tuningSystem] and
+  /// [temperature].
   ///
   /// Example:
   /// ```dart
@@ -56,20 +56,17 @@ extension type const Frequency._(num hertz) implements num {
   /// reference.closestPitch().frequency() == reference;
   /// ```
   ClosestPitch closestPitch({
-    Frequency referenceFrequency = Frequency.reference,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
   }) {
-    final cents = Ratio(at(temperature) / referenceFrequency).cents;
-    final semitones =
-        tuningSystem.referencePitch.semitones + (cents / 100).round();
+    final cents = Ratio(at(temperature) / tuningSystem.fork.frequency).cents;
+    final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
     final closestPitch = PitchClass(semitones)
         .resolveClosestSpelling()
         .inOctave(Pitch.octaveFromSemitones(semitones));
 
     final closestPitchFrequency = closestPitch.frequency(
-      referenceFrequency: referenceFrequency,
       tuningSystem: tuningSystem,
       temperature: temperature,
     );
