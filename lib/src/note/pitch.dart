@@ -423,9 +423,10 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
+    Celsius referenceTemperature = Celsius.reference,
   }) =>
       Frequency(tuningSystem.fork.frequency * tuningSystem.ratio(this))
-          .at(temperature);
+          .at(temperature, referenceTemperature);
 
   /// Creates a new [TuningFork] from this [Pitch] at a given [frequency].
   ///
@@ -449,6 +450,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     required int upToIndex,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
+    Celsius referenceTemperature = Celsius.reference,
   }) =>
       frequency(
         tuningSystem: tuningSystem,
@@ -460,6 +462,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
             (frequency) => frequency.closestPitch(
               tuningSystem: tuningSystem,
               temperature: temperature,
+              referenceTemperature: referenceTemperature,
             ),
           )
           .toSet();
