@@ -108,6 +108,24 @@ class ClosestPitch {
     return '$pitch${roundedCents.toDeltaString()}';
   }
 
+  /// Adds [cents] to this [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// ClosestPitch.parse('A4+8') + const Cent(12) == ClosestPitch.parse('A4+20')
+  /// ```
+  ClosestPitch operator +(Cent cents) =>
+      ClosestPitch(pitch, cents: Cent(this.cents + cents));
+
+  /// Subtracts [cents] from this [ClosestPitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// ClosestPitch.parse('A4+8') - const Cent(12) == ClosestPitch.parse('A4-4')
+  /// ```
+  ClosestPitch operator -(Cent cents) =>
+      ClosestPitch(pitch, cents: Cent(this.cents - cents));
+
   @override
   bool operator ==(Object other) =>
       other is ClosestPitch && pitch == other.pitch && cents == other.cents;

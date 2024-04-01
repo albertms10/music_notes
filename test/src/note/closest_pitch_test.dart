@@ -103,6 +103,46 @@ void main() {
       });
     });
 
+    group('operator +()', () {
+      test('adds Cents to this ClosestPitch', () {
+        expect(
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(12)) +
+              const Cent(16),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(28)),
+        );
+        expect(
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(12)) +
+              const Cent(-16),
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(-4)),
+        );
+        expect(
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-40)) +
+              const Cent(-24),
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-64)),
+        );
+      });
+    });
+
+    group('operator -()', () {
+      test('subtracts Cents from this ClosestPitch', () {
+        expect(
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(12)) -
+              const Cent(16),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(-4)),
+        );
+        expect(
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(12)) -
+              const Cent(-16),
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(28)),
+        );
+        expect(
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-40)) -
+              const Cent(24),
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-64)),
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal ClosestPitches', () {
         expect(
