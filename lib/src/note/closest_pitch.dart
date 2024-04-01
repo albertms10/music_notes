@@ -75,6 +75,17 @@ class ClosestPitch {
             cents.ratio,
       );
 
+  /// Respells this [ClosestPitch] to the simplest expression possible.
+  ///
+  /// Example:
+  /// ```dart
+  /// ClosestPitch.parse('A4+36').respelledSimple.toString() == 'A4+36'
+  /// ClosestPitch.parse('C#2+16').respelledSimple.toString() == 'D♭2+16'
+  /// ClosestPitch.parse('Bb3+67').respelledSimple.toString() == 'B3-32'
+  /// ClosestPitch.parse('F#5-152').respelledSimple.toString() == 'E5+48'
+  /// ```
+  ClosestPitch get respelledSimple => frequency().closestPitch();
+
   /// The string representation of this [ClosestPitch] record.
   ///
   /// Example:

@@ -71,6 +71,24 @@ void main() {
       });
     });
 
+    group('.respellSimple', () {
+      test('respells this ClosestPitch to the simplest expression', () {
+        expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
+        expect(
+          ClosestPitch.parse('C#2+16').respelledSimple.toString(),
+          'D♭2+16',
+        );
+        expect(
+          ClosestPitch.parse('Bb3+68').respelledSimple.toString(),
+          'B3-32',
+        );
+        expect(
+          ClosestPitch.parse('F#5-152').respelledSimple.toString(),
+          'E5+48',
+        );
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ClosestPitch', () {
         expect(
