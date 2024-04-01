@@ -18,11 +18,14 @@ extension type const Cent(num value) implements num {
   /// The unit symbol for [Cent].
   static const unitSymbol = '¢';
 
+  /// The [Cent] divisions per semitone.
+  static const divisionsPerSemitone = Cent(100);
+
   /// The number of cents in an [Interval.P8].
-  static const octaveCents = Cent(chromaticDivisions * 100);
+  static const octave = Cent(chromaticDivisions * divisionsPerSemitone);
 
   /// The [Ratio] for this [Cent].
-  Ratio get ratio => Ratio(math.pow(2, value / octaveCents));
+  Ratio get ratio => Ratio(math.pow(2, value / octave));
 
   /// This [Cent] formatted as a string.
   ///

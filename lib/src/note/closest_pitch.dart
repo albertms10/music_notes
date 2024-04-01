@@ -69,9 +69,14 @@ class ClosestPitch {
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
+    Celsius referenceTemperature = Celsius.reference,
   }) =>
       Frequency(
-        pitch.frequency(tuningSystem: tuningSystem, temperature: temperature) *
+        pitch.frequency(
+              tuningSystem: tuningSystem,
+              temperature: temperature,
+              referenceTemperature: referenceTemperature,
+            ) *
             cents.ratio,
       );
 

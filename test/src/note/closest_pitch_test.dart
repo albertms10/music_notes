@@ -71,7 +71,7 @@ void main() {
       });
     });
 
-    group('.respellSimple', () {
+    group('.respelledSimple', () {
       test('respells this ClosestPitch to the simplest expression', () {
         expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
         expect(
