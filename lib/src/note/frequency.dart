@@ -58,8 +58,11 @@ extension type const Frequency._(num hertz) implements num {
   ClosestPitch closestPitch({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
+    Celsius referenceTemperature = Celsius.reference,
   }) {
-    final cents = Ratio(at(temperature) / tuningSystem.fork.frequency).cents;
+    final cents = Ratio(
+      at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
+    ).cents;
     final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
     final closestPitch = PitchClass(semitones)
@@ -88,7 +91,7 @@ extension type const Frequency._(num hertz) implements num {
   /// See [Change of pitch with change of temperature](https://sengpielaudio.com/calculator-pitchchange.htm).
   ///
   /// ![Effect of a Local Temperature Change in an Organ Pipe](https://sengpielaudio.com/TonhoehenaenderungDurchTemperaturaenderung.gif)
-  Frequency at(Celsius temperature, {Celsius reference = Celsius.reference}) =>
+  Frequency at(Celsius temperature, [Celsius reference = Celsius.reference]) =>
       Frequency(hertz * temperature.ratio(reference));
 
   /// The harmonic at [index] from this [Frequency], including negative
