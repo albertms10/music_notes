@@ -30,5 +30,5 @@ extension type const Ratio._(num value) implements num {
   /// edo19.ratioFromSemitones(1).cents == const Cent(63.16)
   /// edo19.ratioFromSemitones(10).cents == const Cent(631.58)
   /// ```
-  Cent get cents => Cent(math.log(value) / math.log(2) * Cent.octaveCents);
+  Cent get cents => Cent(math.log(value) / math.log(2) * Cent.octave);
 }
