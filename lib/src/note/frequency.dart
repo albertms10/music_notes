@@ -83,6 +83,14 @@ extension type const Frequency._(num hertz) implements num {
     );
   }
 
+  /// This [Frequency] at [temperature], based on [reference].
+  ///
+  /// See [Change of pitch with change of temperature](https://sengpielaudio.com/calculator-pitchchange.htm).
+  ///
+  /// ![Effect of a Local Temperature Change in an Organ Pipe](https://sengpielaudio.com/TonhoehenaenderungDurchTemperaturaenderung.gif)
+  Frequency at(Celsius temperature, {Celsius reference = Celsius.reference}) =>
+      Frequency(hertz * temperature.ratio(reference));
+
   /// The harmonic at [index] from this [Frequency], including negative
   /// values as part of the [undertone series](https://en.wikipedia.org/wiki/Undertone_series).
   ///
@@ -125,22 +133,4 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
   String format() => '$hertz $hertzUnitSymbol';
-}
-
-/// A Frequency extension based on temperature.
-extension TemperatureFrequency on Frequency {
-  /// Speed of sound at [Celsius.zero] in m/s.
-  static const _baseSpeedOfSound = 331.3;
-
-  /// The speed of sound in m/s based on [temperature].
-  ///
-  /// See [Speed of sound in ideal gases and air](https://en.wikipedia.org/wiki/Speed_of_sound#Speed_of_sound_in_ideal_gases_and_air).
-  static num speedOfSoundAt(Celsius temperature) =>
-      _baseSpeedOfSound + 0.6 * temperature;
-
-  /// This [Frequency] at [temperature], based on [reference].
-  Frequency at(Celsius temperature, {Celsius reference = Celsius.reference}) =>
-      Frequency(
-        hertz * (speedOfSoundAt(temperature) / speedOfSoundAt(reference)),
-      );
 }
