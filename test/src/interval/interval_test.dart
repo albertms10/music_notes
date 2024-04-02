@@ -78,6 +78,19 @@ void main() {
       });
     });
 
+    group('fromSemitones()', () {
+      test('creates a new Interval from semitones', () {
+        expect(Interval.fromSemitones(0), Interval.P1);
+        expect(Interval.fromSemitones(2), Interval.M2);
+        expect(Interval.fromSemitones(-2), -Interval.M2);
+        expect(Interval.fromSemitones(3), Interval.m3);
+        expect(Interval.fromSemitones(-3), -Interval.m3);
+        expect(Interval.fromSemitones(5), Interval.P4);
+        expect(Interval.fromSemitones(20), Interval.m13);
+        expect(Interval.fromSemitones(-20), -Interval.m13);
+      });
+    });
+
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Interval.parse('x'), throwsFormatException);
