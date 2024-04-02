@@ -1,4 +1,4 @@
-import 'package:collection/collection.dart' show IterableExtension;
+import 'package:collection/collection.dart' show IterableExtension, minBy;
 import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
@@ -63,6 +63,28 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
+  /// Map a semitones value to a value between 0 and 12.
+  static int _normalizeSemitones(int semitones) {
+    final absoluteSemitones = semitones.abs();
+    return absoluteSemitones == chromaticDivisions
+        ? chromaticDivisions
+        : absoluteSemitones % chromaticDivisions;
+  }
+
+  /// Scale a given normalized Size (one of the entries in [_sizeToSemitones])
+  /// to the given [semitones].
+  factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
+    final absoluteSemitones = semitones.abs();
+    if (absoluteSemitones == chromaticDivisions) {
+      return Size(normalizedSize * semitones.sign);
+    }
+
+    final absResult =
+        normalizedSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
+
+    return Size(absResult * semitones.nonZeroSign);
+  }
+
   /// The [Size] that matches with [semitones] in [_sizeToSemitones].
   /// Otherwise, returns `null`.
   ///
@@ -74,23 +96,23 @@ extension type const Size._(int size) implements int {
   /// Size.fromSemitones(4) == null
   /// ```
   static Size? fromSemitones(int semitones) {
-    final absoluteSemitones = semitones.abs();
-    final matchingSize = _sizeToSemitones.keys.firstWhereOrNull(
-      (size) =>
-          (absoluteSemitones == chromaticDivisions
-              ? chromaticDivisions
-              : absoluteSemitones % chromaticDivisions) ==
-          _sizeToSemitones[size],
-    );
+    final normalizedSemitones = _normalizeSemitones(semitones);
+    final matchingSize = _sizeToSemitones.entries
+        .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
+        ?.key;
     if (matchingSize == null) return null;
-    if (absoluteSemitones == chromaticDivisions) {
-      return Size(matchingSize * semitones.sign);
-    }
+    return Size._scaleToSemitones(matchingSize, semitones);
+  }
 
-    final absResult =
-        matchingSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
-
-    return Size(absResult * semitones.nonZeroSign);
+  /// The [Size] that is nearest, truncating towards zero, to the given
+  /// interval in [semitones].
+  factory Size.nearestFromSemitones(int semitones) {
+    final normalizedSemitones = _normalizeSemitones(semitones);
+    final closest = minBy(
+      _sizeToSemitones.entries,
+      (entry) => (normalizedSemitones - entry.value).abs(),
+    )!;
+    return Size._scaleToSemitones(closest.key, semitones);
   }
 
   /// The number of semitones of this [Size] as in [_sizeToSemitones].

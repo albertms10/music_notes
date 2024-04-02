@@ -384,7 +384,7 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
     final octaveShift =
         (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
 
-    return Interval.fromSemitones(
+    return Interval.fromSizeAndSemitones(
       Size(intervalSize + octaveShift),
       difference(other),
     );

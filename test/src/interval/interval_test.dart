@@ -18,63 +18,63 @@ void main() {
       });
     });
 
-    group('.fromSemitones()', () {
-      test('creates a new Interval from semitones', () {
-        expect(Interval.fromSemitones(Size.unison, -1), Interval.d1);
-        expect(Interval.fromSemitones(-Size.unison, 1), -Interval.d1);
-        expect(Interval.fromSemitones(Size.unison, 0), Interval.P1);
-        expect(Interval.fromSemitones(-Size.unison, 0), -Interval.P1);
-        expect(Interval.fromSemitones(Size.unison, 1), Interval.A1);
-        expect(Interval.fromSemitones(-Size.unison, -1), -Interval.A1);
+    group('.fromSizeAndSemitones()', () {
+      test('creates a new Interval from size and semitones', () {
+        expect(Interval.fromSizeAndSemitones(Size.unison, -1), Interval.d1);
+        expect(Interval.fromSizeAndSemitones(-Size.unison, 1), -Interval.d1);
+        expect(Interval.fromSizeAndSemitones(Size.unison, 0), Interval.P1);
+        expect(Interval.fromSizeAndSemitones(-Size.unison, 0), -Interval.P1);
+        expect(Interval.fromSizeAndSemitones(Size.unison, 1), Interval.A1);
+        expect(Interval.fromSizeAndSemitones(-Size.unison, -1), -Interval.A1);
 
-        expect(Interval.fromSemitones(Size.second, 0), Interval.d2);
-        expect(Interval.fromSemitones(-Size.second, 0), -Interval.d2);
-        expect(Interval.fromSemitones(Size.second, 1), Interval.m2);
-        expect(Interval.fromSemitones(-Size.second, -1), -Interval.m2);
-        expect(Interval.fromSemitones(Size.second, 2), Interval.M2);
-        expect(Interval.fromSemitones(-Size.second, -2), -Interval.M2);
-        expect(Interval.fromSemitones(Size.second, 3), Interval.A2);
-        expect(Interval.fromSemitones(-Size.second, -3), -Interval.A2);
+        expect(Interval.fromSizeAndSemitones(Size.second, 0), Interval.d2);
+        expect(Interval.fromSizeAndSemitones(-Size.second, 0), -Interval.d2);
+        expect(Interval.fromSizeAndSemitones(Size.second, 1), Interval.m2);
+        expect(Interval.fromSizeAndSemitones(-Size.second, -1), -Interval.m2);
+        expect(Interval.fromSizeAndSemitones(Size.second, 2), Interval.M2);
+        expect(Interval.fromSizeAndSemitones(-Size.second, -2), -Interval.M2);
+        expect(Interval.fromSizeAndSemitones(Size.second, 3), Interval.A2);
+        expect(Interval.fromSizeAndSemitones(-Size.second, -3), -Interval.A2);
 
-        expect(Interval.fromSemitones(Size.third, 2), Interval.d3);
-        expect(Interval.fromSemitones(-Size.third, -2), -Interval.d3);
-        expect(Interval.fromSemitones(Size.third, 3), Interval.m3);
-        expect(Interval.fromSemitones(-Size.third, -3), -Interval.m3);
-        expect(Interval.fromSemitones(Size.third, 4), Interval.M3);
-        expect(Interval.fromSemitones(-Size.third, -4), -Interval.M3);
-        expect(Interval.fromSemitones(Size.third, 5), Interval.A3);
-        expect(Interval.fromSemitones(-Size.third, -5), -Interval.A3);
+        expect(Interval.fromSizeAndSemitones(Size.third, 2), Interval.d3);
+        expect(Interval.fromSizeAndSemitones(-Size.third, -2), -Interval.d3);
+        expect(Interval.fromSizeAndSemitones(Size.third, 3), Interval.m3);
+        expect(Interval.fromSizeAndSemitones(-Size.third, -3), -Interval.m3);
+        expect(Interval.fromSizeAndSemitones(Size.third, 4), Interval.M3);
+        expect(Interval.fromSizeAndSemitones(-Size.third, -4), -Interval.M3);
+        expect(Interval.fromSizeAndSemitones(Size.third, 5), Interval.A3);
+        expect(Interval.fromSizeAndSemitones(-Size.third, -5), -Interval.A3);
 
-        expect(Interval.fromSemitones(Size.fourth, 4), Interval.d4);
-        expect(Interval.fromSemitones(-Size.fourth, -4), -Interval.d4);
-        expect(Interval.fromSemitones(Size.fourth, 5), Interval.P4);
-        expect(Interval.fromSemitones(-Size.fourth, -5), -Interval.P4);
-        expect(Interval.fromSemitones(Size.fourth, 6), Interval.A4);
-        expect(Interval.fromSemitones(-Size.fourth, -6), -Interval.A4);
+        expect(Interval.fromSizeAndSemitones(Size.fourth, 4), Interval.d4);
+        expect(Interval.fromSizeAndSemitones(-Size.fourth, -4), -Interval.d4);
+        expect(Interval.fromSizeAndSemitones(Size.fourth, 5), Interval.P4);
+        expect(Interval.fromSizeAndSemitones(-Size.fourth, -5), -Interval.P4);
+        expect(Interval.fromSizeAndSemitones(Size.fourth, 6), Interval.A4);
+        expect(Interval.fromSizeAndSemitones(-Size.fourth, -6), -Interval.A4);
 
-        expect(Interval.fromSemitones(Size.fifth, 6), Interval.d5);
-        expect(Interval.fromSemitones(-Size.fifth, -6), -Interval.d5);
-        expect(Interval.fromSemitones(Size.fifth, 7), Interval.P5);
-        expect(Interval.fromSemitones(-Size.fifth, -7), -Interval.P5);
-        expect(Interval.fromSemitones(Size.fifth, 8), Interval.A5);
-        expect(Interval.fromSemitones(-Size.fifth, -8), -Interval.A5);
+        expect(Interval.fromSizeAndSemitones(Size.fifth, 6), Interval.d5);
+        expect(Interval.fromSizeAndSemitones(-Size.fifth, -6), -Interval.d5);
+        expect(Interval.fromSizeAndSemitones(Size.fifth, 7), Interval.P5);
+        expect(Interval.fromSizeAndSemitones(-Size.fifth, -7), -Interval.P5);
+        expect(Interval.fromSizeAndSemitones(Size.fifth, 8), Interval.A5);
+        expect(Interval.fromSizeAndSemitones(-Size.fifth, -8), -Interval.A5);
 
-        expect(Interval.fromSemitones(Size.sixth, 8), Interval.m6);
-        expect(Interval.fromSemitones(-Size.sixth, -8), -Interval.m6);
-        expect(Interval.fromSemitones(Size.sixth, 9), Interval.M6);
-        expect(Interval.fromSemitones(-Size.sixth, -9), -Interval.M6);
+        expect(Interval.fromSizeAndSemitones(Size.sixth, 8), Interval.m6);
+        expect(Interval.fromSizeAndSemitones(-Size.sixth, -8), -Interval.m6);
+        expect(Interval.fromSizeAndSemitones(Size.sixth, 9), Interval.M6);
+        expect(Interval.fromSizeAndSemitones(-Size.sixth, -9), -Interval.M6);
 
-        expect(Interval.fromSemitones(Size.seventh, 10), Interval.m7);
-        expect(Interval.fromSemitones(-Size.seventh, -10), -Interval.m7);
-        expect(Interval.fromSemitones(Size.seventh, 11), Interval.M7);
-        expect(Interval.fromSemitones(-Size.seventh, -11), -Interval.M7);
+        expect(Interval.fromSizeAndSemitones(Size.seventh, 10), Interval.m7);
+        expect(Interval.fromSizeAndSemitones(-Size.seventh, -10), -Interval.m7);
+        expect(Interval.fromSizeAndSemitones(Size.seventh, 11), Interval.M7);
+        expect(Interval.fromSizeAndSemitones(-Size.seventh, -11), -Interval.M7);
 
-        expect(Interval.fromSemitones(Size.octave, 11), Interval.d8);
-        expect(Interval.fromSemitones(-Size.octave, -11), -Interval.d8);
-        expect(Interval.fromSemitones(Size.octave, 12), Interval.P8);
-        expect(Interval.fromSemitones(-Size.octave, -12), -Interval.P8);
-        expect(Interval.fromSemitones(Size.octave, 13), Interval.A8);
-        expect(Interval.fromSemitones(-Size.octave, -13), -Interval.A8);
+        expect(Interval.fromSizeAndSemitones(Size.octave, 11), Interval.d8);
+        expect(Interval.fromSizeAndSemitones(-Size.octave, -11), -Interval.d8);
+        expect(Interval.fromSizeAndSemitones(Size.octave, 12), Interval.P8);
+        expect(Interval.fromSizeAndSemitones(-Size.octave, -12), -Interval.P8);
+        expect(Interval.fromSizeAndSemitones(Size.octave, 13), Interval.A8);
+        expect(Interval.fromSizeAndSemitones(-Size.octave, -13), -Interval.A8);
       });
     });
 
