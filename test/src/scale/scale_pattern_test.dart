@@ -666,8 +666,3 @@ void main() {
     });
   });
 }
-
-extension on int {
-  /// Parse this [String] as a binary integer.
-  int get b => int.parse(toString(), radix: 2);
-}
