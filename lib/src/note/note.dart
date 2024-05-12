@@ -437,8 +437,11 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
 /// The abstraction for [Note] notation systems.
 @immutable
 abstract class NoteNotation {
+  /// Whether to use ASCII characters.
+  final bool useAscii;
+
   /// Creates a new [NoteNotation].
-  const NoteNotation();
+  const NoteNotation({this.useAscii = false});
 
   /// The English alphabetic [NoteNotation] system.
   static const english = EnglishNoteNotation();
@@ -481,6 +484,10 @@ final class EnglishNoteNotation extends NoteNotation {
   /// Creates a new [EnglishNoteNotation].
   const EnglishNoteNotation({this.showNatural = false});
 
+  /// Creates a new [EnglishNoteNotation] with [useAscii] enabled.
+  const EnglishNoteNotation.ascii({this.showNatural = false})
+      : super(useAscii: true);
+
   @override
   String accidental(Accidental accidental) =>
       !showNatural && accidental.isNatural ? '' : accidental.symbol;
@@ -498,6 +505,9 @@ final class EnglishNoteNotation extends NoteNotation {
 final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation();
+
+  /// Creates a new [GermanNoteNotation] with [useAscii] enabled.
+  const GermanNoteNotation.ascii() : super(useAscii: true);
 
   @override
   String note(Note note) => switch (note) {
@@ -550,6 +560,10 @@ final class RomanceNoteNotation extends NoteNotation {
   /// Creates a new [RomanceNoteNotation].
   const RomanceNoteNotation({this.showNatural = false});
 
+  /// Creates a new [RomanceNoteNotation] with [useAscii] enabled.
+  const RomanceNoteNotation.ascii({this.showNatural = false})
+      : super(useAscii: true);
+
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
         BaseNote.c => 'Do',
@@ -563,7 +577,9 @@ final class RomanceNoteNotation extends NoteNotation {
 
   @override
   String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
+      !showNatural && accidental.isNatural
+          ? ''
+          : (useAscii ? accidental.asciiSymbol : accidental.symbol);
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
