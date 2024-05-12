@@ -93,10 +93,6 @@ final class MixedNum implements Comparable<MixedNum> {
           ? '$numerator/$denominator'
           : '$integer $numerator/$denominator';
 
-  /// Divides this [MixedNum] by [other].
-  MixedNum operator /(MixedNum other) =>
-      MixedNum.fromDouble(toDouble() / other.toDouble());
-
   @override
   bool operator ==(Object other) =>
       (other is num && other == toDouble()) ||
