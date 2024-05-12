@@ -28,6 +28,7 @@ void main() {
         expect(MixedNum.parse('2'), const MixedNum(2));
         expect(MixedNum.parse('5  3/5'), const MixedNum(5, 3, 5));
         expect(MixedNum.parse('4 5/4'), const MixedNum(4, 5, 4));
+        expect(MixedNum.parse('32 10/111'), const MixedNum(32, 10, 111));
         expect(MixedNum.parse('-4 3/4'), const MixedNum(-4, 3, 4));
       });
     });
