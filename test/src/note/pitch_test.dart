@@ -22,7 +22,7 @@ void main() {
         expect(() => Pitch.parse('3B,'), throwsFormatException);
       });
 
-      test('parses source as a Pitch and return its value', () {
+      test('parses source as a Pitch', () {
         expect(Pitch.parse('A4'), Note.a.inOctave(4));
         expect(Pitch.parse('d3'), Note.d.inOctave(3));
         expect(Pitch.parse('C-1'), Note.c.inOctave(-1));

@@ -92,7 +92,7 @@ void main() {
         expect(() => Interval.parse('D3'), throwsFormatException);
       });
 
-      test('parses source as an Interval and return its value', () {
+      test('parses source as an Interval', () {
         expect(
           Interval.parse('AA4'),
           const Interval.perfect(Size.fourth, PerfectQuality.doublyAugmented),
