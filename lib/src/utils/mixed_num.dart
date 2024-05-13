@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/utils.dart';
 
 /// A mixed number representation.
 @immutable
@@ -16,6 +15,10 @@ final class MixedNum implements Comparable<MixedNum> {
   /// Creates a new [MixedNum] from [integer], [numerator], and [denominator].
   const MixedNum(this.integer, [this.numerator = 0, this.denominator = 1])
       : assert(
+          integer >= 0,
+          'The whole part must be greater or equal than zero.',
+        ),
+        assert(
           numerator >= 0,
           'The denominator must be greater or equal than zero.',
         ),
@@ -47,6 +50,9 @@ final class MixedNum implements Comparable<MixedNum> {
 
   /// Creates a new [MixedNum] from [number] and [tolerance].
   factory MixedNum.fromDouble(double number, {int tolerance = 100}) {
+    assert(!number.isNegative, 'Number must be positive.');
+    assert(!tolerance.isNegative, 'Tolerance must be positive.');
+
     final wholePart = number.floor();
     final fracPart = number - wholePart;
 
@@ -56,13 +62,13 @@ final class MixedNum implements Comparable<MixedNum> {
     var bestDenominator = 1;
     var bestError = double.infinity;
 
-    for (var den = 1; den <= tolerance; ++den) {
-      final num = (fracPart * den).round();
-      final error = (fracPart - num / den).abs();
+    for (var denominator = 1; denominator <= tolerance; ++denominator) {
+      final numerator = (fracPart * denominator).round();
+      final error = (fracPart - numerator / denominator).abs();
       if (error < bestError) {
         bestError = error;
-        bestNumerator = num;
-        bestDenominator = den;
+        bestNumerator = numerator;
+        bestDenominator = denominator;
         gcdValue = bestNumerator.gcd(bestDenominator);
       }
       if (error == 0) break;
@@ -82,7 +88,7 @@ final class MixedNum implements Comparable<MixedNum> {
   MixedNum get simple => MixedNum.fromDouble(toDouble());
 
   /// This [MixedNum] as a [double].
-  double toDouble() => integer + _fractionPart * integer.nonZeroSign;
+  double toDouble() => integer + _fractionPart;
 
   double get _fractionPart => numerator / denominator;
 

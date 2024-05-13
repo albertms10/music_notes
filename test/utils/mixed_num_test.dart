@@ -9,6 +9,7 @@ void main() {
       test('throws an assertion error when arguments are incorrect', () {
         expect(() => MixedNum(1, -2), throwsA(isA<AssertionError>()));
         expect(() => MixedNum(1, 1, 0), throwsA(isA<AssertionError>()));
+        expect(() => MixedNum(-1), throwsA(isA<AssertionError>()));
       });
     });
 
@@ -29,7 +30,6 @@ void main() {
         expect(MixedNum.parse('5  3/5'), const MixedNum(5, 3, 5));
         expect(MixedNum.parse('4 5/4'), const MixedNum(4, 5, 4));
         expect(MixedNum.parse('32 10/111'), const MixedNum(32, 10, 111));
-        expect(MixedNum.parse('-4 3/4'), const MixedNum(-4, 3, 4));
       });
     });
 
@@ -47,6 +47,14 @@ void main() {
         );
         expect(MixedNum.fromDouble(1.375), const MixedNum(1, 3, 8));
       });
+
+      test('throws an assertion error when arguments are incorrect', () {
+        expect(() => MixedNum.fromDouble(-1), throwsA(isA<AssertionError>()));
+        expect(
+          () => MixedNum.fromDouble(1, tolerance: -1),
+          throwsA(isA<AssertionError>()),
+        );
+      });
     });
 
     group('.simple', () {
@@ -54,7 +62,6 @@ void main() {
         expect(const MixedNum(0, 1, 3).simple, const MixedNum(0, 1, 3));
         expect(const MixedNum(2).simple, const MixedNum(2));
         expect(const MixedNum(3, 1).simple, const MixedNum(4));
-        expect(const MixedNum(-3, 5, 5).simple, const MixedNum(-4));
         expect(const MixedNum(1, 5, 2).simple, const MixedNum(3, 1, 2));
       });
     });
@@ -74,7 +81,6 @@ void main() {
         expect(const MixedNum(0).toString(), '0');
         expect(const MixedNum(3).toString(), '3');
         expect(const MixedNum(0, 1, 3).toString(), '1/3');
-        expect(const MixedNum(-12, 3, 8).toString(), '-12 3/8');
         expect(const MixedNum(3, 5, 4).toString(), '3 5/4');
       });
     });
@@ -83,13 +89,11 @@ void main() {
       test('sorts MixedNums in a collection', () {
         final orderedSet = SplayTreeSet<MixedNum>.of({
           const MixedNum(0),
-          const MixedNum(-3, 1, 2),
           const MixedNum(1, 2, 2),
           const MixedNum(0, 7, 2),
           const MixedNum(0, 1, 9),
         });
         expect(orderedSet.toList(), const [
-          MixedNum(-3, 1, 2),
           MixedNum(0),
           MixedNum(0, 1, 9),
           MixedNum(1, 2, 2),
