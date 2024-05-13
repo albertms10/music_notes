@@ -42,31 +42,48 @@ final class Accidental implements Comparable<Accidental> {
   static const tripleFlat = Accidental(-3);
 
   static const _doubleSharpSymbol = '𝄪';
-  static const _doubleSharpSymbolAlt = 'x';
+  static const _doubleSharpSymbolAscii = 'x';
   static const _sharpSymbol = '♯';
-  static const _sharpSymbolAlt = '#';
+  static const _sharpSymbolAscii = '#';
   static const _naturalSymbol = '♮';
+  static const _naturalSymbolAscii = '';
   static const _flatSymbol = '♭';
-  static const _flatSymbolAlt = 'b';
+  static const _flatSymbolAscii = 'b';
   static const _doubleFlatSymbol = '𝄫';
 
-  /// The list of valid symbols for an [Accidental].
+  static const _symbols = (
+    doubleSharp: _doubleSharpSymbol,
+    sharp: _sharpSymbol,
+    natural: _naturalSymbol,
+    flat: _flatSymbol,
+    doubleFlat: _doubleFlatSymbol,
+  );
+
+  static const _asciiSymbols = (
+    doubleSharp: _doubleSharpSymbolAscii,
+    sharp: _sharpSymbolAscii,
+    natural: _naturalSymbolAscii,
+    flat: _flatSymbolAscii,
+    doubleFlat: '$_flatSymbolAscii$_flatSymbolAscii',
+  );
+
+  /// The list of all valid symbols for an [Accidental].
   static const symbols = [
     _doubleSharpSymbol,
-    _doubleSharpSymbolAlt,
+    _doubleSharpSymbolAscii,
     _sharpSymbol,
-    _sharpSymbolAlt,
+    _sharpSymbolAscii,
     _naturalSymbol,
     _flatSymbol,
-    _flatSymbolAlt,
+    _flatSymbolAscii,
     _doubleFlatSymbol,
   ];
 
   static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
-        _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
-        _sharpSymbol || _sharpSymbolAlt => 1,
-        _naturalSymbol || '' => 0,
-        _flatSymbol || _flatSymbolAlt => -1,
+        _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,
+        _sharpSymbol || _sharpSymbolAscii => 1,
+        _naturalSymbol || _naturalSymbolAscii => 0,
+        _flatSymbol || _flatSymbolAscii => -1,
         _doubleFlatSymbol => -2,
         _ => null,
       };
@@ -164,12 +181,34 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.doubleFlat.symbol == '𝄫'
   /// Accidental.tripleSharp.symbol == '♯𝄪'
   /// ```
-  String get symbol {
+  String get symbol => _symbol();
+
+  /// The ASCII symbol of this [Accidental].
+  ///
+  /// If the [Accidental] represents a natural note (0 semitones), returns an
+  /// empty string.
+  ///
+  /// For other accidentals, returns a combination of sharp (#), flat (b), or
+  /// double sharp or flat symbols (x, bb) depending on the number of semitones
+  /// above or below the natural note.
+  ///
+  /// Example:
+  /// ```dart
+  /// Accidental.flat.asciiSymbol == 'b'
+  /// Accidental.natural.asciiSymbol == ''
+  /// Accidental.doubleFlat.asciiSymbol == 'bb'
+  /// Accidental.tripleSharp.asciiSymbol == '#x'
+  /// ```
+  String get asciiSymbol => _symbol(useAscii: true);
+
+  String _symbol({bool useAscii = false}) {
+    final symbols = useAscii ? Accidental._asciiSymbols : Accidental._symbols;
     if (semitones == 0) return _naturalSymbol;
 
-    final accidentalSymbol = semitones.isNegative ? _flatSymbol : _sharpSymbol;
+    final accidentalSymbol =
+        semitones.isNegative ? symbols.flat : symbols.sharp;
     final doubleAccidentalSymbol =
-        semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol;
+        semitones.isNegative ? symbols.doubleFlat : symbols.doubleSharp;
 
     final absSemitones = semitones.abs();
     final singleAccidentals = accidentalSymbol * (absSemitones % 2);

@@ -46,15 +46,15 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   static const referenceOctave = 4;
 
   static const _superPrime = '′';
-  static const _superPrimeAlt = "'";
+  static const _superPrimeAscii = "'";
   static const _subPrime = '͵';
-  static const _subPrimeAlt = ',';
+  static const _subPrimeAscii = ',';
 
   static const _primeSymbols = [
     _superPrime,
-    _superPrimeAlt,
+    _superPrimeAscii,
     _subPrime,
-    _subPrimeAlt,
+    _subPrimeAscii,
   ];
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
@@ -91,12 +91,12 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
       final octave = notePart[0].isUpperCase
           ? switch (primes?.first) {
               '' || null => middleOctave - 1,
-              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
+              _subPrime || _subPrimeAscii => middleOctave - primes!.length - 1,
               _ => throw FormatException('Invalid Pitch', source),
             }
           : switch (primes?.first) {
               '' || null => middleOctave,
-              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+              _superPrime || _superPrimeAscii => middleOctave + primes!.length,
               _ => throw FormatException('Invalid Pitch', source),
             };
 
