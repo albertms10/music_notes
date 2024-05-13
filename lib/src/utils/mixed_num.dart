@@ -3,8 +3,8 @@ import 'package:meta/meta.dart' show immutable;
 /// A mixed number representation.
 @immutable
 final class MixedNum implements Comparable<MixedNum> {
-  /// The whole part.
-  final int integer;
+  /// The whole part integer.
+  final int wholePart;
 
   /// The numerator of the fraction part.
   final int numerator;
@@ -12,10 +12,10 @@ final class MixedNum implements Comparable<MixedNum> {
   /// The denominator of the fraction part.
   final int denominator;
 
-  /// Creates a new [MixedNum] from [integer], [numerator], and [denominator].
-  const MixedNum(this.integer, [this.numerator = 0, this.denominator = 1])
+  /// Creates a new [MixedNum] from [wholePart], [numerator], and [denominator].
+  const MixedNum(this.wholePart, [this.numerator = 0, this.denominator = 1])
       : assert(
-          integer >= 0,
+          wholePart >= 0,
           'The whole part must be greater or equal than zero.',
         ),
         assert(
@@ -88,16 +88,17 @@ final class MixedNum implements Comparable<MixedNum> {
   MixedNum get simple => MixedNum.fromDouble(toDouble());
 
   /// This [MixedNum] as a [double].
-  double toDouble() => integer + _fractionPart;
+  double toDouble() => wholePart + fractionPart;
 
-  double get _fractionPart => numerator / denominator;
+  /// The fraction part of this [MixedNum].
+  double get fractionPart => numerator / denominator;
 
   @override
-  String toString() => _fractionPart == 0
-      ? '$integer'
-      : integer == 0
+  String toString() => fractionPart == 0
+      ? '$wholePart'
+      : wholePart == 0
           ? '$numerator/$denominator'
-          : '$integer $numerator/$denominator';
+          : '$wholePart $numerator/$denominator';
 
   @override
   bool operator ==(Object other) =>
