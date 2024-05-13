@@ -98,7 +98,7 @@ class ClosestPitch {
   /// const Frequency(440).closestPitch().toString() == 'A4'
   /// const Frequency(228.9).closestPitch().toString() == 'A♯3-31'
   /// (Note.g.inOctave(2) + const Cent(2)).toString() == 'G2+2'
-  /// (Note.e.flat.inOctave(3) - const Cent(14)).toString() == 'E♭3-14'
+  /// (Note.e.flat.inOctave(3) - const Cent(14.6)).toString() == 'E♭3-15'
   /// ```
   @override
   String toString() {

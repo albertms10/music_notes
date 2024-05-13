@@ -231,6 +231,19 @@ final class ScalePattern {
     Interval.m2,
   ]);
 
+  /// See [Double harmonic scale](https://en.wikipedia.org/wiki/Double_harmonic_scale).
+  ///
+  /// ![C Double harmonic scale](https://upload.wikimedia.org/score/r/f/rf4xfu7bhu0k9n0ccidte6yjngjswnm/rf4xfu7b.png).
+  static const doubleHarmonicMajor = ScalePattern([
+    Interval.m2,
+    Interval.A2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
+    Interval.A2,
+    Interval.m2,
+  ]);
+
   /// Creates a new [ScalePattern] from the given [chordPattern].
   ///
   /// Example:
@@ -250,19 +263,12 @@ final class ScalePattern {
     return major;
   }
 
-  static int _bitAt(int sequence, int index) => sequence & 1 << index;
-
-  static int _toBit(int sequence, Scalable<PitchClass> scalable) =>
-      sequence | 1 << scalable.semitones;
-
   /// Creates a new [ScalePattern] from a binary [sequence] in integer form.
   ///
   /// This method and [ScalePattern.toBinary] are inverses of each other.
   ///
   /// Example:
   /// ```dart
-  /// extension on int { int get b => int.parse(toString(), radix: 2); }
-  ///
   /// ScalePattern.fromBinary(101010110101.b) == ScalePattern.major
   /// ScalePattern.fromBinary(111111111111.b) == ScalePattern.chromatic
   /// ScalePattern.fromBinary(1010010101.b) == ScalePattern.majorPentatonic
@@ -274,7 +280,7 @@ final class ScalePattern {
 
     final degrees = [
       for (int i = 0; i < chromaticDivisions; i++)
-        if (_bitAt(sequence, i) != 0) PitchClass(i),
+        if (sequence.bitAt(i) != 0) PitchClass(i),
       PitchClass.c,
     ];
     final descendingDegrees = descendingSequence == null
@@ -282,7 +288,7 @@ final class ScalePattern {
         : [
             PitchClass.c,
             for (int i = chromaticDivisions - 1; i >= 0; i--)
-              if (_bitAt(descendingSequence, i) != 0) PitchClass(i),
+              if (descendingSequence.bitAt(i) != 0) PitchClass(i),
           ];
 
     return Scale(degrees, descendingDegrees).pattern;
@@ -294,8 +300,6 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// extension on int { int get b => int.parse(toString(), radix: 2); }
-  ///
   /// ScalePattern.major.toBinary() == (101010110101.b, null)
   /// ScalePattern.chromatic.toBinary() == (111111111111.b, null)
   /// ScalePattern.majorPentatonic.toBinary() == (1010010101.b, null)
@@ -303,12 +307,12 @@ final class ScalePattern {
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
     final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, _toBit);
+    final sequence = scale.degrees.fold(0, BinarySequence.bitFrom);
     final cachedDescending = scale.descendingDegrees;
     final descendingSequence =
         cachedDescending.reversed.isEnharmonicWith(scale.degrees)
             ? null
-            : cachedDescending.fold(0, _toBit);
+            : cachedDescending.fold(0, BinarySequence.bitFrom);
 
     return (sequence, descendingSequence);
   }
@@ -456,6 +460,7 @@ final class ScalePattern {
         majorPentatonic => 'Major pentatonic',
         minorPentatonic => 'Minor pentatonic',
         octatonic => 'Octatonic',
+        doubleHarmonicMajor => 'Double harmonic major',
         _ => null,
       };
 
@@ -479,4 +484,17 @@ final class ScalePattern {
             ? Object.hashAll(_descendingIntervalSteps.toClass())
             : null,
       );
+}
+
+/// A binary sequence int extension.
+extension BinarySequence on int {
+  /// The bit at [index].
+  int bitAt(int index) => this & 1 << index;
+
+  /// The bit from [sequence] and [scalable] semitones.
+  static int bitFrom(int sequence, Scalable<PitchClass> scalable) =>
+      sequence | 1 << scalable.semitones;
+
+  /// This [int] as a binary integer.
+  int get b => int.parse(toString(), radix: 2);
 }

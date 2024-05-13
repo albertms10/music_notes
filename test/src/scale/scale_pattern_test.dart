@@ -382,6 +382,35 @@ void main() {
           Scale([Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g]),
         );
       });
+
+      test('returns the double harmonic major Scale on Note', () {
+        expect(
+          ScalePattern.doubleHarmonicMajor.on(Note.c),
+          Scale([
+            Note.c,
+            Note.d.flat,
+            Note.e,
+            Note.f,
+            Note.g,
+            Note.a.flat,
+            Note.b,
+            Note.c,
+          ]),
+        );
+        expect(
+          ScalePattern.doubleHarmonicMajor.on(Note.f.sharp),
+          Scale([
+            Note.f.sharp,
+            Note.g,
+            Note.a.sharp,
+            Note.b,
+            Note.c.sharp,
+            Note.d,
+            Note.e.sharp,
+            Note.f.sharp,
+          ]),
+        );
+      });
     });
 
     group('.mirrored', () {
@@ -573,6 +602,7 @@ void main() {
         expect(ScalePattern.majorPentatonic.name, 'Major pentatonic');
         expect(ScalePattern.minorPentatonic.name, 'Minor pentatonic');
         expect(ScalePattern.octatonic.name, 'Octatonic');
+        expect(ScalePattern.doubleHarmonicMajor.name, 'Double harmonic major');
       });
     });
 
@@ -605,6 +635,10 @@ void main() {
         expect(
           ScalePattern.octatonic.toString(),
           'Octatonic (M2 m2 M2 m2 M2 m2 M2 m2)',
+        );
+        expect(
+          ScalePattern.doubleHarmonicMajor.toString(),
+          'Double harmonic major (m2 A2 m2 M2 m2 A2 m2)',
         );
       });
     });
@@ -665,9 +699,4 @@ void main() {
       });
     });
   });
-}
-
-extension on int {
-  /// Parse this [String] as a binary integer.
-  int get b => int.parse(toString(), radix: 2);
 }

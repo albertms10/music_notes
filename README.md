@@ -523,7 +523,7 @@ Or parse a `ClosestPitch` from a string:
 
 ```dart
 ClosestPitch.parse('A4'); // A4
-ClosestPitch.parse('A4+12.4'); // A4+12.4
+ClosestPitch.parse('A4+12.6'); // A4+13
 ClosestPitch.parse('E♭3-28'); // E♭3-28
 ```
 
