@@ -381,10 +381,10 @@ final class Interval
     T scalable, {
     required int distance,
   }) sync* {
-    final distanceAbs = distance.abs();
+    final absDistance = distance.abs();
     yield scalable;
     var last = scalable;
-    for (var i = 0; i < distanceAbs; i++) {
+    for (var i = 0; i < absDistance; i++) {
       yield last =
           last.transposeBy(descending(isDescending: distance.isNegative));
     }

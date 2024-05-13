@@ -78,7 +78,7 @@ void main() {
       });
     });
 
-    group('fromSemitones()', () {
+    group('.fromSemitones()', () {
       test('creates a new Interval from semitones', () {
         expect(Interval.fromSemitones(0), Interval.P1);
         expect(Interval.fromSemitones(2), Interval.M2);

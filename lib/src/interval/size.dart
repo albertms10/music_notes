@@ -65,22 +65,22 @@ extension type const Size._(int size) implements int {
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {
-    final absoluteSemitones = semitones.abs();
-    return absoluteSemitones == chromaticDivisions
+    final absSemitones = semitones.abs();
+
+    return absSemitones == chromaticDivisions
         ? chromaticDivisions
-        : absoluteSemitones % chromaticDivisions;
+        : absSemitones % chromaticDivisions;
   }
 
   /// Scale a given normalized Size (one of the entries in [_sizeToSemitones])
   /// to the given [semitones].
   factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
-    final absoluteSemitones = semitones.abs();
-    if (absoluteSemitones == chromaticDivisions) {
+    final absSemitones = semitones.abs();
+    if (absSemitones == chromaticDivisions) {
       return Size(normalizedSize * semitones.sign);
     }
 
-    final absResult =
-        normalizedSize + (absoluteSemitones ~/ chromaticDivisions) * 7;
+    final absResult = normalizedSize + (absSemitones ~/ chromaticDivisions) * 7;
 
     return Size(absResult * semitones.nonZeroSign);
   }
@@ -101,6 +101,7 @@ extension type const Size._(int size) implements int {
         .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
         ?.key;
     if (matchingSize == null) return null;
+
     return Size._scaleToSemitones(matchingSize, semitones);
   }
 
@@ -112,6 +113,7 @@ extension type const Size._(int size) implements int {
       _sizeToSemitones.entries,
       (entry) => (normalizedSemitones - entry.value).abs(),
     )!;
+
     return Size._scaleToSemitones(closest.key, semitones);
   }
 
@@ -127,20 +129,20 @@ extension type const Size._(int size) implements int {
   /// (-Size.ninth).semitones == -13
   /// ```
   int get semitones {
-    final simpleAbs = simple.abs();
+    final absSimple = simple.abs();
     final octaveShift = chromaticDivisions * (absShift ~/ octave);
     // We exclude perfect octaves (simplified as 8) from the lookup to consider
     // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(simpleAbs == octave ? 1 : simpleAbs);
+    final size = Size(absSimple == octave ? 1 : absSimple);
 
     return (_sizeToSemitones[size]! + octaveShift) * sign;
   }
 
   /// The absolute [Size] value taking octave shift into account.
   int get absShift {
-    final sizeAbs = abs();
+    final absSize = abs();
 
-    return sizeAbs + sizeAbs ~/ octave;
+    return absSize + absSize ~/ octave;
   }
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
