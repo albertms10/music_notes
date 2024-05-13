@@ -377,7 +377,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
-  Interval interval(Note other) => Interval.fromSemitones(
+  Interval interval(Note other) => Interval.fromSizeAndSemitones(
         baseNote.intervalSize(other.baseNote),
         difference(other) % chromaticDivisions,
       );

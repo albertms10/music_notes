@@ -182,7 +182,7 @@ final class Interval
         );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
-  factory Interval.fromQualitySemitones(Size size, int semitones) {
+  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) {
     final qualityConstructor =
         size.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
@@ -190,10 +190,18 @@ final class Interval
   }
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
-  factory Interval.fromSemitones(Size size, int semitones) =>
-      Interval.fromQualitySemitones(
+  factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
+      Interval.fromSizeAndQualitySemitones(
         size,
         semitones * size.sign - size.semitones.abs(),
+      );
+
+  /// Creates a new [Interval] from the given distance in [semitones].
+  /// The size is inferred.
+  factory Interval.fromSemitones(int semitones) =>
+      Interval.fromSizeAndSemitones(
+        Size.nearestFromSemitones(semitones),
+        semitones,
       );
 
   /// Parse [source] as an [Interval] and return its value.
@@ -321,7 +329,8 @@ final class Interval
   /// Interval.A4.respellBySize(Size.fifth) == Interval.d5
   /// Interval.d3.respellBySize(Size.second) == Interval.M2
   /// ```
-  Interval respellBySize(Size size) => Interval.fromSemitones(size, semitones);
+  Interval respellBySize(Size size) =>
+      Interval.fromSizeAndSemitones(size, semitones);
 
   /// The iteration distance of this [Interval] between [scalable1] and
   /// [scalable2], including all visited `notes`.
@@ -372,10 +381,10 @@ final class Interval
     T scalable, {
     required int distance,
   }) sync* {
-    final distanceAbs = distance.abs();
+    final absDistance = distance.abs();
     yield scalable;
     var last = scalable;
-    for (var i = 0; i < distanceAbs; i++) {
+    for (var i = 0; i < absDistance; i++) {
       yield last =
           last.transposeBy(descending(isDescending: distance.isNegative));
     }
