@@ -437,6 +437,7 @@ final class Interval
   /// -Interval.perfect(-Size.fifth) == Interval.P5
   /// -Interval.m3 == (-Size.third).minor
   /// ```
+  // See https://github.com/dart-lang/sdk/issues/55728
   // ignore: prefer_const_constructors
   Interval operator -() => Interval._(-size, quality);
 
