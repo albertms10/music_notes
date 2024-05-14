@@ -437,6 +437,7 @@ final class Interval
   /// -Interval.perfect(-Size.fifth) == Interval.P5
   /// -Interval.m3 == (-Size.third).minor
   /// ```
+  // ignore: prefer_const_constructors
   Interval operator -() => Interval._(-size, quality);
 
   /// Whether this [Interval] is smaller than [other], regardless of their
