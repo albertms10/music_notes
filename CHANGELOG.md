@@ -73,7 +73,6 @@
 - feat(scale_degree): 🥅 assert `ordinal` and `inversion` integer values [#412](https://github.com/albertms10/music_notes/pull/412)
 - refactor!(mode): ♻️ rename `opposite` → `parallel` method [#414](https://github.com/albertms10/music_notes/pull/414)
 - refactor(note): ♻️ simplify `GermanNoteNotation.accidental` [#415](https://github.com/albertms10/music_notes/pull/415)
-- chore(deps): ⬆️ bump actions/cache from 4.0.0 to 4.0.1 [#418](https://github.com/albertms10/music_notes/pull/418)
 - refactor: ♻️ rewrite unnecessary `switch` expressions with `if` statements [#419](https://github.com/albertms10/music_notes/pull/419)
 - fix(key): 🐛 use lowercased `TonalMode` in `NoteNotation.german` keys [#421](https://github.com/albertms10/music_notes/pull/421)
 - feat(scale_degree): ✨ add `inverted` getter [#422](https://github.com/albertms10/music_notes/pull/422)
@@ -97,6 +96,10 @@
 - refactor(size): ♻️ redeclare `simple` in extension types to allow chaining [#438](https://github.com/albertms10/music_notes/pull/438)
 - feat(size): ✨ add `inverted`, `isDissonant` getters moved from `Interval` [#439](https://github.com/albertms10/music_notes/pull/439)
 
+### Dependabot updates
+
+- chore(deps): ⬆️ bump actions/cache from 4.0.0 to 4.0.1 [#418](https://github.com/albertms10/music_notes/pull/418)
+
 **Full Changelog**: [`v0.16.0...v0.17.0`](https://github.com/albertms10/music_notes/compare/v0.16.0...v0.17.0)
 
 ## 0.16.0
@@ -113,12 +116,10 @@
 - docs(key): 📖 addendum to rename `Tonality` → `Key` [#381](https://github.com/albertms10/music_notes/pull/381)
 - test(note): 🧪 `skip` failing tests [#382](https://github.com/albertms10/music_notes/pull/382)
 - feat(scale): ✨ add `length` getter [#383](https://github.com/albertms10/music_notes/pull/383)
-- chore(deps): ⬆️ bump actions/cache from 3.3.3 to 4.0.0 [#384](https://github.com/albertms10/music_notes/pull/384)
 - feat(note): ✨ rename `toPitchClass` and create `Pitch.toClass` methods [#385](https://github.com/albertms10/music_notes/pull/385)
 - refactor: ♻️ enforce `@immutable` and declare `final` Notation classes [#386](https://github.com/albertms10/music_notes/pull/386)
 - refactor: ♻️ rewrite `part of` directives in mini libraries [#387](https://github.com/albertms10/music_notes/pull/387)
 - test: 🧪 remove unnecessary `equals` matcher [#388](https://github.com/albertms10/music_notes/pull/388)
-- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.6.1 to 1.6.2 [#390](https://github.com/albertms10/music_notes/pull/390)
 - refactor(scalable): ♻️ move `toClass` method from `Pitch` [#391](https://github.com/albertms10/music_notes/pull/391)
 - feat(scale): ✨ add `isEnharmonicWith` methods [#393](https://github.com/albertms10/music_notes/pull/393)
 - build(pubspec): 🏗️ bump Dart SDK 3.3 [#395](https://github.com/albertms10/music_notes/pull/395)
@@ -130,6 +131,11 @@
 - perf(frequency): ⚡️ rewrite as extension type [#349](https://github.com/albertms10/music_notes/pull/349)
 - refactor(interval): ♻️ rewrite `Size` as extension type [#311](https://github.com/albertms10/music_notes/pull/311)
 - test(scalable): ⚡️ use `const` collection literals whenever possible [#400](https://github.com/albertms10/music_notes/pull/400)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump actions/cache from 3.3.3 to 4.0.0 [#384](https://github.com/albertms10/music_notes/pull/384)
+- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.6.1 to 1.6.2 [#390](https://github.com/albertms10/music_notes/pull/390)
 
 **Full Changelog**: [`v0.15.0...v0.16.0`](https://github.com/albertms10/music_notes/compare/v0.15.0...v0.16.0)
 
@@ -169,14 +175,17 @@
 - docs: 📖 remove wrong const keywords [#361](https://github.com/albertms10/music_notes/pull/361)
 - docs(accidental): 📖 add symbols to `static const` members [#366](https://github.com/albertms10/music_notes/pull/366)
 - feat(note): ✨ add `showNatural` option to `EnglishNoteNotation` [#365](https://github.com/albertms10/music_notes/pull/365)
-- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.6.0 to 1.6.1 [#363](https://github.com/albertms10/music_notes/pull/363)
-- chore(deps): ⬆️ bump actions/cache from 3.3.2 to 3.3.3 [#364](https://github.com/albertms10/music_notes/pull/364)
 - feat(key_signature): ✨ override `+` operator [#362](https://github.com/albertms10/music_notes/pull/362)
 - feat(key_signature): ✨ show cautionary accidentals in `+` when not present in `other` [#367](https://github.com/albertms10/music_notes/pull/367)
 - feat(tonality): ✨ add `parallel` getter [#368](https://github.com/albertms10/music_notes/pull/368)
 - fix(key_signature): 🐛 show each cancelled accidental once in edge key signatures [#369](https://github.com/albertms10/music_notes/pull/369)
 - perf(interval): ⚡️ rewrite `circleFrom` as a sync generator [#370](https://github.com/albertms10/music_notes/pull/370)
 - feat!(key_signature): 💥 check for `isCanonical` before evaluating `distance` [#371](https://github.com/albertms10/music_notes/pull/371)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.6.0 to 1.6.1 [#363](https://github.com/albertms10/music_notes/pull/363)
+- chore(deps): ⬆️ bump actions/cache from 3.3.2 to 3.3.3 [#364](https://github.com/albertms10/music_notes/pull/364)
 
 **Full Changelog**: [`v0.14.0...v0.15.0`](https://github.com/albertms10/music_notes/compare/v0.14.0...v0.15.0)
 
@@ -202,9 +211,12 @@
 - refactor(scalable): ♻️ move `semitones` to abstract class [#324](https://github.com/albertms10/music_notes/pull/324)
 - feat!(scalable): 💥 make `difference` return the closest number of semitones [#325](https://github.com/albertms10/music_notes/pull/325)
 - feat(scalable): ✨ add `inverse`, `retrograde` getters to `ScalableIterable` [#287](https://github.com/albertms10/music_notes/pull/287)
-- build(pubspec): ⬆️ bump `test` to 1.25.0 [#326](https://github.com/albertms10/music_notes/pull/326)
 - test(interval): ⚡️ use `const` for literals [#328](https://github.com/albertms10/music_notes/pull/328)
 - fix(pitch_class): 🐛 return descending intervals in `interval` method [#286](https://github.com/albertms10/music_notes/pull/286)
+
+### Dependabot updates
+
+- build(pubspec): ⬆️ bump `test` to 1.25.0 [#326](https://github.com/albertms10/music_notes/pull/326)
 
 **Full Changelog**: [`v0.13.0...v0.14.0`](https://github.com/albertms10/music_notes/compare/v0.13.0...v0.14.0)
 
@@ -218,12 +230,7 @@
 - docs(README): 📖 update recently added methods [#270](https://github.com/albertms10/music_notes/pull/270)
 - feat(positioned_note): ✨ rename frequency method and expose `tuningSystem` [#271](https://github.com/albertms10/music_notes/pull/271)
 - feat(interval)!: ✨ include `notes` in `distanceBetween` record [#272](https://github.com/albertms10/music_notes/pull/272)
-- chore(deps): ⬆️ bump actions/cache from 3.3.1 to 3.3.2 [#274](https://github.com/albertms10/music_notes/pull/274)
-- chore(deps): ⬆️ bump coverallsapp/github-action from 2.2.1 to 2.2.3 [#275](https://github.com/albertms10/music_notes/pull/275)
-- chore(deps): ⬆️ bump actions/checkout from 3.6.0 to 4.0.0 [#276](https://github.com/albertms10/music_notes/pull/276)
 - docs(README): 📖 fix CI badge [#277](https://github.com/albertms10/music_notes/pull/277)
-- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.5.0 to 1.5.1 [#278](https://github.com/albertms10/music_notes/pull/278)
-- chore(deps): ⬆️ bump actions/checkout from 4.0.0 to 4.1.0 [#279](https://github.com/albertms10/music_notes/pull/279)
 - refactor(chordable): ♻️ expect a `Set` for `replaceSizes` [#280](https://github.com/albertms10/music_notes/pull/280)
 - perf(scalable): ⚡️ rewrite extension methods to return `Iterable` [#281](https://github.com/albertms10/music_notes/pull/281)
 - refactor(scalable): ♻️ override `difference` and implement in `PitchClass` [#283](https://github.com/albertms10/music_notes/pull/283)
@@ -236,13 +243,21 @@
 - refactor(int_extension): ♻️ extract `nonZeroSign` method [#293](https://github.com/albertms10/music_notes/pull/293)
 - docs(positioned_note): 📖 address documentation examples [#295](https://github.com/albertms10/music_notes/pull/295)
 - perf(key_signature): ⚡️ remove unneeded variable declaration in `tonality` [#294](https://github.com/albertms10/music_notes/pull/294)
-- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.5.1 to 1.6.0 [#296](https://github.com/albertms10/music_notes/pull/296)
 - docs: 📖 remove type parameter references in doc comments [#297](https://github.com/albertms10/music_notes/pull/297)
 - docs(note): 📖 use regular comments for variables [#298](https://github.com/albertms10/music_notes/pull/298)
-- chore(deps): ⬆️ bump actions/checkout from 4.1.0 to 4.1.1 [#299](https://github.com/albertms10/music_notes/pull/299)
 - feat(tuning): ✨ introduce new `Ratio`, `Cent` and move `.cents` to former class [#300](https://github.com/albertms10/music_notes/pull/300)
 - refactor(tuning_system)!: ♻️ move `referenceNote` to `TuningSystem` [#301](https://github.com/albertms10/music_notes/pull/301)
 - feat(tuning)!: 💥 add `PythagoreanTuning` tuning system [#273](https://github.com/albertms10/music_notes/pull/273)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump actions/cache from 3.3.1 to 3.3.2 [#274](https://github.com/albertms10/music_notes/pull/274)
+- chore(deps): ⬆️ bump coverallsapp/github-action from 2.2.1 to 2.2.3 [#275](https://github.com/albertms10/music_notes/pull/275)
+- chore(deps): ⬆️ bump actions/checkout from 3.6.0 to 4.0.0 [#276](https://github.com/albertms10/music_notes/pull/276)
+- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.5.0 to 1.5.1 [#278](https://github.com/albertms10/music_notes/pull/278)
+- chore(deps): ⬆️ bump actions/checkout from 4.0.0 to 4.1.0 [#279](https://github.com/albertms10/music_notes/pull/279)
+- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.5.1 to 1.6.0 [#296](https://github.com/albertms10/music_notes/pull/296)
+- chore(deps): ⬆️ bump actions/checkout from 4.1.0 to 4.1.1 [#299](https://github.com/albertms10/music_notes/pull/299)
 
 **Full Changelog**: [`v0.12.0...v0.13.0`](https://github.com/albertms10/music_notes/compare/v0.12.0...v0.13.0)
 
@@ -275,8 +290,11 @@
 - ⚡️ perf(interval_class): remove unnecessary `abs` call on `operator *` [#259](https://github.com/albertms10/music_notes/pull/259)
 - ✨ feat(accidental): add `operator +-` [#260](https://github.com/albertms10/music_notes/pull/260)
 - ⚡️ perf: rewrite `map` calls in favor of `for` loops [#261](https://github.com/albertms10/music_notes/pull/261)
-- ⬆️ chore(deps): bump actions/checkout from 3.5.3 to 3.6.0 [#263](https://github.com/albertms10/music_notes/pull/263)
 - 📖 docs(README): write comprehensive API walkthrough [#243](https://github.com/albertms10/music_notes/pull/243)
+
+### Dependabot updates
+
+- ⬆️ chore(deps): bump actions/checkout from 3.5.3 to 3.6.0 [#263](https://github.com/albertms10/music_notes/pull/263)
 
 **Full Changelog**: [`v0.11.1...v0.12.0`](https://github.com/albertms10/music_notes/compare/v0.11.1...v0.12.0)
 
@@ -298,7 +316,6 @@
 - ✨ feat(note): add `respellByBaseNoteDistance` method [#214](https://github.com/albertms10/music_notes/pull/214)
 - ✨ feat(enharmonic): allow providing `distance` to `spellings` [#215](https://github.com/albertms10/music_notes/pull/215)
 - ♻️ refactor(accidental): extract parsable symbols from `parse` [#216](https://github.com/albertms10/music_notes/pull/216)
-- ⬆️ chore(deps): bump coverallsapp/github-action from 2.2.0 to 2.2.1 [#217](https://github.com/albertms10/music_notes/pull/217)
 - ✨ feat(enharmonic): remove semitones from `toString` output [#218](https://github.com/albertms10/music_notes/pull/218)
 - ✨ feat(enharmonic): use pipe `|` in `toString` output [#219](https://github.com/albertms10/music_notes/pull/219)
 - 💥 refactor(note)!: rewrite semitones starting from 0 instead of 1 [#220](https://github.com/albertms10/music_notes/pull/220)
@@ -312,6 +329,10 @@
 - ➖ chore(pubspec): remove `dart_code_metrics` dependency [#229](https://github.com/albertms10/music_notes/pull/229)
 - 💥 refactor(interval)!: rewrite `IntervalSizeExtension` methods as private [#227](https://github.com/albertms10/music_notes/pull/227)
 
+### Dependabot updates
+
+- ⬆️ chore(deps): bump coverallsapp/github-action from 2.2.0 to 2.2.1 [#217](https://github.com/albertms10/music_notes/pull/217)
+
 **Full Changelog**: [`v0.10.1...v0.11.0`](https://github.com/albertms10/music_notes/compare/v0.10.1...v0.11.0)
 
 ## 0.10.1
@@ -322,7 +343,7 @@
 - 🔥 refactor(enharmonic_note)!: remove `shortestFifthsDistance` methods [#202](https://github.com/albertms10/music_notes/pull/202)
 - ✨ feat(tuning_system): add class and test cases [#203](https://github.com/albertms10/music_notes/pull/203)
 - 📖 docs(README): write main library documentation [#204](https://github.com/albertms10/music_notes/pull/204)
-- ⬆️ chore(pubspec): pin dependencies versions [#205](https://github.com/albertms10/music_notes/pull/205)
+- 📌 chore(pubspec): pin dependencies versions [#205](https://github.com/albertms10/music_notes/pull/205)
 - 📖 docs(README): remove publisher badge [#206](https://github.com/albertms10/music_notes/pull/206)
 
 **Full Changelog**: [`v0.10.0...v0.10.1`](https://github.com/albertms10/music_notes/compare/v0.10.0...v0.10.1)
@@ -335,8 +356,6 @@
 - ✨ feat(string_extension): add `isUpperCase` and `isLowerCase` getters [#179](https://github.com/albertms10/music_notes/pull/179)
 - ✨ feat: add `parse` factory constructors to Note and Interval classes [#180](https://github.com/albertms10/music_notes/pull/180)
 - 🔧 chore(dependabot): add configuration file [#181](https://github.com/albertms10/music_notes/pull/181)
-- ⬆️ chore(deps): bump actions/checkout from 3.5.0 to 3.5.3 [#182](https://github.com/albertms10/music_notes/pull/182)
-- ⬆️ chore(deps): bump coverallsapp/github-action from 2.0.0 to 2.2.0 [#183](https://github.com/albertms10/music_notes/pull/183)
 - 💥 feat(key_signature)!: rewrite based on a list of Notes [#184](https://github.com/albertms10/music_notes/pull/184)
 - ♻️ refactor(key_signature): declare static `empty` constant [#185](https://github.com/albertms10/music_notes/pull/185)
 - ♻️ refactor(key_signature): simplify tonality methods [#186](https://github.com/albertms10/music_notes/pull/186)
@@ -351,6 +370,11 @@
 - ✨ feat(key_signature)!: rewrite `toString` method [#196](https://github.com/albertms10/music_notes/pull/196)
 - ♻️ refactor(analysis): enable ignored lints [#197](https://github.com/albertms10/music_notes/pull/197)
 - ✨ feat(interval): rewrite distance methods expecting `Scalable` arguments [#198](https://github.com/albertms10/music_notes/pull/198)
+
+### Dependabot updates
+
+- ⬆️ chore(deps): bump actions/checkout from 3.5.0 to 3.5.3 [#182](https://github.com/albertms10/music_notes/pull/182)
+- ⬆️ chore(deps): bump coverallsapp/github-action from 2.0.0 to 2.2.0 [#183](https://github.com/albertms10/music_notes/pull/183)
 
 **Full Changelog**: [`v0.9.0...v0.10.0`](https://github.com/albertms10/music_notes/compare/v0.9.0...v0.10.0)
 
