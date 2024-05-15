@@ -1,6 +1,6 @@
 /// A simple Dart library that provides a comprehensive set of utilities for
 /// working with music theory concepts.
-library music_notes;
+library;
 
 export 'src/chordable.dart';
 export 'src/harmony/chord.dart';
