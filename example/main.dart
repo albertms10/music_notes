@@ -69,7 +69,7 @@ void main() {
     ..toString(system: NoteNotation.german); // Des
 
   Note.b.flat.inOctave(-1).toString(); // B♭-1
-  Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
+  Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c‴
 
   PitchClass.c.toString(); // {C}
   PitchClass.dSharp.toString(); // {D♯|E♭}
