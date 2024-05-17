@@ -229,7 +229,8 @@ void main() {
   // {{F♯|G♭}, {G}, {D♯|E♭}}
 
   ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-    ..numericRepresentation.toSet() // {0, 11, 3, 5}
+    ..numericRepresentation().toSet() // {0, 11, 3, 5}
+    ..numericRepresentation(reference: PitchClass.d).toSet() // {9, 8, 0, 2}
     ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 
   // Chords
