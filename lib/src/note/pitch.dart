@@ -66,11 +66,15 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   ];
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
-  static final _helmholtzNotationRegExp =
-      RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)(${[
-    _compoundPrimeSymbols,
-    for (final symbol in _primeSymbols) '$symbol+',
-  ].join('|')})?\$');
+  static final _helmholtzNotationRegExp = RegExp(
+    '(^(?:${[
+      for (final baseNote in BaseNote.values) baseNote.name,
+    ].join('|')})[${Accidental.symbols.join()}]*)(${[
+      ..._compoundPrimeSymbols,
+      for (final symbol in _primeSymbols) '$symbol+',
+    ].join('|')})?\$',
+    caseSensitive: false,
+  );
 
   /// Parse [source] as a [Pitch] and return its value.
   ///

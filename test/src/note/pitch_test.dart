@@ -8,6 +8,7 @@ void main() {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
+        expect(() => Pitch.parse('aa'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
@@ -17,6 +18,7 @@ void main() {
         expect(() => Pitch.parse('f″″'), throwsFormatException);
 
         expect(() => Pitch.parse('D5,'), throwsFormatException);
+        expect(() => Pitch.parse('ba'), throwsFormatException);
         expect(() => Pitch.parse("d7'"), throwsFormatException);
         expect(() => Pitch.parse("e'4"), throwsFormatException);
         expect(() => Pitch.parse("'E3"), throwsFormatException);
