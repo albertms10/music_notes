@@ -13,6 +13,8 @@ void main() {
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
         expect(() => Pitch.parse('C,d'), throwsFormatException);
+        expect(() => Pitch.parse("d′'"), throwsFormatException);
+        expect(() => Pitch.parse('f″″'), throwsFormatException);
 
         expect(() => Pitch.parse('D5,'), throwsFormatException);
         expect(() => Pitch.parse("d7'"), throwsFormatException);
@@ -37,7 +39,8 @@ void main() {
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+        expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
+        expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
 
         var pitch = Note.b.flat.flat.inOctave(-2);
         expect(Pitch.parse(pitch.toString()), pitch);
@@ -1229,11 +1232,15 @@ void main() {
         );
         expect(
           Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
-          'f♯′′',
+          'f♯″',
         );
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
-          'e′′′′',
+          'e⁗',
+        );
+        expect(
+          Note.b.flat.inOctave(8).toString(system: PitchNotation.helmholtz),
+          'b♭′′′′′',
         );
       });
 
@@ -1282,11 +1289,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.german),
-          'as′′',
+          'as″',
         );
         expect(
           Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
-          'e′′′′',
+          'e⁗',
         );
       });
 
@@ -1335,11 +1342,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.romance),
-          'la♭′′',
+          'la♭″',
         );
         expect(
-          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
-          'mi′′′′',
+          Note.e.inOctave(6).toString(system: HelmholtzPitchNotation.romance),
+          'mi‴',
         );
       });
 
