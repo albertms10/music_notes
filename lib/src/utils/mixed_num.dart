@@ -20,7 +20,7 @@ final class MixedNum implements Comparable<MixedNum> {
         ),
         assert(
           numerator >= 0,
-          'The denominator must be greater or equal than zero.',
+          'The numerator must be greater or equal than zero.',
         ),
         assert(
           denominator > 0,
