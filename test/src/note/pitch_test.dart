@@ -1503,4 +1503,10 @@ void main() {
 final class _SubPitchNotation extends PitchNotation {
   @override
   String pitch(Pitch pitch) => throw UnimplementedError();
+
+  @override
+  Pitch parse(RegExpMatch match) => throw UnimplementedError();
+
+  @override
+  RegExp get regExp => throw UnimplementedError();
 }
