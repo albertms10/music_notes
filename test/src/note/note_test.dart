@@ -199,30 +199,30 @@ void main() {
       });
     });
 
-    group('.respellByBaseNoteDistance()', () {
-      test('returns this Note respelled by BaseNote', () {
-        expect(Note.c.sharp.respellByBaseNoteDistance(1), Note.d.flat);
-        expect(Note.d.flat.respellByBaseNoteDistance(-1), Note.c.sharp);
-        expect(Note.c.respellByBaseNoteDistance(1), Note.d.flat.flat);
-        expect(Note.d.respellByBaseNoteDistance(-1), Note.c.sharp.sharp);
-        expect(Note.g.flat.respellByBaseNoteDistance(-1), Note.f.sharp);
-        expect(Note.e.sharp.respellByBaseNoteDistance(2), Note.g.flat.flat);
-        expect(Note.f.respellByBaseNoteDistance(7), Note.f);
+    group('.respellByOrdinalDistance()', () {
+      test('returns this Note respelled by ordinal distance', () {
+        expect(Note.c.sharp.respellByOrdinalDistance(1), Note.d.flat);
+        expect(Note.d.flat.respellByOrdinalDistance(-1), Note.c.sharp);
+        expect(Note.c.respellByOrdinalDistance(1), Note.d.flat.flat);
+        expect(Note.d.respellByOrdinalDistance(-1), Note.c.sharp.sharp);
+        expect(Note.g.flat.respellByOrdinalDistance(-1), Note.f.sharp);
+        expect(Note.e.sharp.respellByOrdinalDistance(2), Note.g.flat.flat);
+        expect(Note.f.respellByOrdinalDistance(7), Note.f);
 
         expect(
-          Note.f.respellByBaseNoteDistance(2),
+          Note.f.respellByOrdinalDistance(2),
           const Note(BaseNote.a, Accidental(-4)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(3),
+          Note.f.respellByOrdinalDistance(3),
           const Note(BaseNote.b, Accidental(-6)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(4),
+          Note.f.respellByOrdinalDistance(4),
           const Note(BaseNote.c, Accidental(5)),
         );
         expect(
-          Note.f.respellByBaseNoteDistance(-3),
+          Note.f.respellByOrdinalDistance(-3),
           const Note(BaseNote.c, Accidental(5)),
         );
       });
@@ -248,7 +248,7 @@ void main() {
       });
     });
 
-    group('.respellByBaseAccidental()', () {
+    group('.respellByAccidental()', () {
       test('returns this Note respelled by Accidental', () {
         expect(Note.a.sharp.respellByAccidental(Accidental.flat), Note.b.flat);
         expect(Note.g.flat.respellByAccidental(Accidental.sharp), Note.f.sharp);
@@ -266,13 +266,45 @@ void main() {
         );
       });
 
-      test('returns null when no respelling is possible', () {
-        expect(Note.d.respellByAccidental(Accidental.sharp), isNull);
-        expect(Note.d.respellByAccidental(Accidental.flat), isNull);
-        expect(Note.e.respellByAccidental(Accidental.doubleFlat), isNull);
-        expect(Note.f.respellByAccidental(Accidental.doubleSharp), isNull);
-        expect(Note.b.respellByAccidental(Accidental.doubleFlat), isNull);
-        expect(Note.c.respellByAccidental(Accidental.doubleSharp), isNull);
+      test('returns the next closest spelling when no possible respelling', () {
+        expect(
+          Note.d.flat.respellByAccidental(Accidental.natural),
+          Note.d.flat,
+        );
+        expect(
+          Note.a.sharp.respellByAccidental(Accidental.natural),
+          Note.a.sharp,
+        );
+        expect(
+          Note.b.flat.flat.flat.respellByAccidental(Accidental.natural),
+          Note.a.flat,
+        );
+        expect(
+          Note.b.sharp.sharp.respellByAccidental(Accidental.natural),
+          Note.c.sharp,
+        );
+
+        expect(
+          Note.d.respellByAccidental(Accidental.sharp),
+          Note.c.sharp.sharp,
+        );
+        expect(Note.d.respellByAccidental(Accidental.flat), Note.e.flat.flat);
+        expect(
+          Note.e.respellByAccidental(Accidental.doubleFlat),
+          Note.g.flat.flat.flat,
+        );
+        expect(
+          Note.f.respellByAccidental(Accidental.doubleSharp),
+          Note.d.sharp.sharp.sharp,
+        );
+        expect(
+          Note.b.respellByAccidental(Accidental.doubleFlat),
+          Note.d.flat.flat.flat,
+        );
+        expect(
+          Note.c.respellByAccidental(Accidental.doubleSharp),
+          Note.a.sharp.sharp.sharp,
+        );
       });
     });
 
@@ -610,36 +642,19 @@ void main() {
         expect(Note.c.transposeBy(Interval.m13), Note.a.flat);
         expect(Note.c.transposeBy(Interval.M13), Note.a);
 
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(15), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
-
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(22), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
-
-        expect(
-          Note.c.transposeBy(
-            const Interval.perfect(Size(29), PerfectQuality.perfect),
-          ),
-          Note.c,
-        );
+        expect(Note.c.transposeBy(const Interval.perfect(Size(15))), Note.c);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(22))), Note.c);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(29))), Note.c);
       });
     });
 
-    group('.toPitchClass()', () {
+    group('.toClass()', () {
       test('creates a new PitchClass from semitones', () {
-        expect(Note.c.toPitchClass(), PitchClass.c);
-        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+        expect(Note.c.toClass(), PitchClass.c);
+        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
       });
     });
 

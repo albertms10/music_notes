@@ -1,14 +1,15 @@
 import 'dart:math' as math;
 
-import 'package:collection/collection.dart' show ListEquality;
+import 'package:collection/collection.dart'
+    show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../note/base_note.dart';
-import '../note/note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'ratio.dart';
+import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// A representation of an equal temperament tuning system.
@@ -20,29 +21,26 @@ import 'tuning_system.dart';
 /// * [TuningSystem].
 @immutable
 class EqualTemperament extends TuningSystem {
-  /// The equal divisions between each [BaseNote] and the next one.
-  final List<int> steps;
+  final List<int> _steps;
 
-  /// Creates a new [EqualTemperament] from [referencePitch] and [steps].
-  const EqualTemperament({
-    required this.steps,
-    super.referencePitch = _defaultReferencePitch,
-  });
+  /// The equal divisions between each [BaseNote] and the next one.
+  List<int> get steps => UnmodifiableListView(_steps);
+
+  /// Creates a new [EqualTemperament] from [_steps] and [fork].
+  const EqualTemperament(this._steps, {super.fork = TuningFork.a440});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
-      : steps = const [2, 2, 1, 2, 2, 2, 1];
+  const EqualTemperament.edo12({super.fork = TuningFork.a440})
+      : _steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
-      : steps = const [3, 3, 2, 3, 3, 3, 2];
-
-  static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
+  const EqualTemperament.edo19({super.fork = TuningFork.a440})
+      : _steps = const [3, 3, 2, 3, 3, 3, 2];
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
   /// See [EDO](https://en.xen.wiki/w/EDO).
-  int get edo => steps.reduce((value, element) => value + element);
+  int get edo => _steps.reduce((value, element) => value + element);
 
   /// The cents for each division step in this [EqualTemperament].
   ///
@@ -73,8 +71,7 @@ class EqualTemperament extends TuningSystem {
       Ratio(math.pow(2, semitones / edo));
 
   @override
-  Ratio ratio(Pitch pitch) =>
-      ratioFromSemitones(referencePitch.difference(pitch));
+  Ratio ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
 
   /// The reference generator cents.
   static const referenceGeneratorCents = Cent(700);
@@ -83,14 +80,14 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() => 'EDO $edo (${steps.join(' ')})';
+  String toString() => 'EDO $edo (${_steps.join(' ')}) at $fork';
 
   @override
   bool operator ==(Object other) =>
       other is EqualTemperament &&
-      const ListEquality<int>().equals(steps, other.steps) &&
-      referencePitch == other.referencePitch;
+      const ListEquality<int>().equals(_steps, other._steps) &&
+      fork == other.fork;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(steps), referencePitch);
+  int get hashCode => Object.hash(Object.hashAll(_steps), fork);
 }

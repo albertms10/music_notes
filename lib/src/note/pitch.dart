@@ -259,7 +259,6 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// ```
   Pitch? respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
-    if (respelledNote == null) return null;
 
     return Pitch(
       respelledNote,
@@ -465,7 +464,7 @@ abstract class PitchNotation extends NotationSystem<Pitch> {
   static const scientific = ScientificPitchNotation();
 
   /// The Helmholtz [PitchNotation] system.
-  static const helmholtz = HelmholtzPitchNotation();
+  static const helmholtz = HelmholtzPitchNotation.english;
 
   static const _chain = [
     scientific,
@@ -500,14 +499,25 @@ final class ScientificPitchNotation extends PitchNotation {
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
-  /// Creates a new [HelmholtzPitchNotation].
-  const HelmholtzPitchNotation();
+  /// The [NoteNotation] system for the [Pitch.note] part.
+  final NoteNotation noteSystem;
+
+  /// Creates a new [HelmholtzPitchNotation] from [noteSystem].
+  const HelmholtzPitchNotation({this.noteSystem = NoteNotation.english});
 
   static const _superPrime = '′';
+  static const _superDoublePrime = '″';
+  static const _superTriplePrime = '‴';
+  static const _superQuadruplePrime = '⁗';
   static const _superPrimeAlt = "'";
   static const _subPrime = '͵';
   static const _subPrimeAlt = ',';
 
+  static const _compoundPrimeSymbols = [
+    _superDoublePrime,
+    _superTriplePrime,
+    _superQuadruplePrime,
+  ];
   static const _primeSymbols = [
     _superPrime,
     _superPrimeAlt,
@@ -515,23 +525,44 @@ final class HelmholtzPitchNotation extends PitchNotation {
     _subPrimeAlt,
   ];
 
+  /// The [NoteNotation.english] variant of this [HelmholtzPitchNotation].
+  static const english = HelmholtzPitchNotation();
+
+  /// The [NoteNotation.german] variant of this [HelmholtzPitchNotation].
+  static const german = HelmholtzPitchNotation(noteSystem: NoteNotation.german);
+
+  /// The [NoteNotation.romance] variant of this [HelmholtzPitchNotation].
+  static const romance =
+      HelmholtzPitchNotation(noteSystem: NoteNotation.romance);
+
+  static String _symbols(int n) => switch (n) {
+        4 => _superQuadruplePrime,
+        3 => _superTriplePrime,
+        2 => _superDoublePrime,
+        < 0 => _subPrime * n.abs(),
+        _ => _superPrime * n,
+      };
+
   @override
   String pitch(Pitch pitch) {
-    final accidental = pitch.note.accidental;
-    final accidentalSymbol = accidental.isNatural ? '' : accidental.symbol;
+    final note = pitch.note.toString(system: noteSystem);
 
-    if (pitch.octave >= 3) {
-      return '${pitch.note.baseNote.name}$accidentalSymbol'
-          '${_superPrime * (pitch.octave - 3)}';
-    }
-
-    return '${pitch.note.baseNote.name.toUpperCase()}$accidentalSymbol'
-        '${_subPrime * (pitch.octave - 2).abs()}';
+    return switch (pitch.octave) {
+      >= 3 => '${note.toLowerCase()}${_symbols(pitch.octave - 3)}',
+      _ => '$note${_symbols(pitch.octave - 2)}',
+    };
   }
 
   @override
-  RegExp get regExp => RegExp('(^[A-Ga-g${Accidental.symbols.join()}]+)'
-      '(${[for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$');
+  RegExp get regExp => RegExp(
+        '(^(?:${[
+          for (final baseNote in BaseNote.values) baseNote.name,
+        ].join('|')})[${Accidental.symbols.join()}]*)(${[
+          ..._compoundPrimeSymbols,
+          for (final symbol in _primeSymbols) '$symbol+',
+        ].join('|')})?\$',
+        caseSensitive: false,
+      );
 
   @override
   Pitch parse(RegExpMatch match) {
@@ -548,6 +579,9 @@ final class HelmholtzPitchNotation extends PitchNotation {
         : switch (primes?.first) {
             '' || null => middleOctave,
             _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+            _superDoublePrime => middleOctave + primes!.length + 1,
+            _superTriplePrime => middleOctave + primes!.length + 2,
+            _superQuadruplePrime => middleOctave + primes!.length + 3,
             _ => throw FormatException('Invalid Pitch', primesPart),
           };
 

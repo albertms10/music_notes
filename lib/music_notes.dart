@@ -1,6 +1,6 @@
 /// A simple Dart library that provides a comprehensive set of utilities for
 /// working with music theory concepts.
-library music_notes;
+library;
 
 export 'src/chordable.dart';
 export 'src/harmony/chord.dart';
@@ -31,4 +31,6 @@ export 'src/tuning/cent.dart';
 export 'src/tuning/equal_temperament.dart';
 export 'src/tuning/just_intonation.dart';
 export 'src/tuning/ratio.dart';
+export 'src/tuning/temperature.dart';
+export 'src/tuning/tuning_fork.dart';
 export 'src/tuning/tuning_system.dart';

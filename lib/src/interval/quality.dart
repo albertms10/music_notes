@@ -25,8 +25,13 @@ sealed class Quality implements Comparable<Quality> {
   /// The symbol of this [Quality].
   String get symbol;
 
-  /// The inverted version of this [Quality].
-  Quality get inverted;
+  /// The inversion of this [Quality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
+  Quality get inversion;
+
+  /// Whether this [Quality] is dissonant.
+  bool get isDissonant;
 
   /// The string representation of this [Quality] based on [system].
   ///
@@ -137,15 +142,28 @@ final class PerfectQuality extends Quality {
         _ => Quality._augmentedSymbol * semitones,
       };
 
-  /// The inverted version of this [PerfectQuality].
+  /// The inversion of this [PerfectQuality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.inverted == PerfectQuality.perfect
-  /// PerfectQuality.augmented.inverted == PerfectQuality.diminished
+  /// PerfectQuality.perfect.inversion == PerfectQuality.perfect
+  /// PerfectQuality.augmented.inversion == PerfectQuality.diminished
   /// ```
   @override
-  PerfectQuality get inverted => PerfectQuality(-semitones);
+  PerfectQuality get inversion => PerfectQuality(-semitones);
+
+  /// Whether this [PerfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.isDissonant == false
+  /// PerfectQuality.diminished.isDissonant == true
+  /// PerfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant => semitones != 0;
 
   @override
   // Overridden hashCode already present in the super class.
@@ -236,15 +254,33 @@ final class ImperfectQuality extends Quality {
         _ => Quality._augmentedSymbol * (semitones - 1),
       };
 
-  /// The inverted version of this [ImperfectQuality].
+  /// The inversion of this [ImperfectQuality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.inverted == ImperfectQuality.major
-  /// ImperfectQuality.augmented.inverted == ImperfectQuality.diminished
+  /// ImperfectQuality.minor.inversion == ImperfectQuality.major
+  /// ImperfectQuality.augmented.inversion == ImperfectQuality.diminished
   /// ```
   @override
-  ImperfectQuality get inverted => ImperfectQuality(1 - semitones);
+  ImperfectQuality get inversion => ImperfectQuality(1 - semitones);
+
+  /// Whether this [ImperfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.isDissonant == false
+  /// ImperfectQuality.minor.isDissonant == false
+  /// ImperfectQuality.diminished.isDissonant == true
+  /// ImperfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant {
+    if (this case major || minor) return false;
+
+    return true;
+  }
 
   @override
   // Overridden hashCode already present in the super class.

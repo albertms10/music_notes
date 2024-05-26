@@ -15,7 +15,7 @@ import 'size.dart';
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.
 ///
-/// The largest [IntervalClass] is [IntervalClass.tritone] (6) since any greater
+/// The largest [IntervalClass] is the [tritone] (6 semitones) since any greater
 /// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
@@ -81,11 +81,14 @@ final class IntervalClass implements Comparable<IntervalClass> {
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        Interval.fromSemitones(size, semitones),
+        Interval.fromSizeAndSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
-          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
+            Interval.fromSizeAndSemitones(
+              Size(size.incrementBy(-i)),
+              semitones,
+            ),
+          Interval.fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -94,11 +97,11 @@ final class IntervalClass implements Comparable<IntervalClass> {
 
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),

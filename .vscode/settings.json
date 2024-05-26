@@ -20,6 +20,7 @@
     "octatonic",
     "phrygian",
     "pythagorean",
+    "redeclares",
     "sublist",
     "Versetzungszeichen",
     "Xenharmonic"
@@ -29,5 +30,6 @@
   },
   "files.associations": {
     "*.lock": "yaml"
-  }
+  },
+  "git.alwaysSignOff": true
 }

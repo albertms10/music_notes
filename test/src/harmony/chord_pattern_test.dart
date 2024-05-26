@@ -1,8 +1,19 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('ChordPattern', () {
+    group('.intervals', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ChordPattern.majorTriad.intervals,
+          isA<UnmodifiableListView<Interval>>(),
+        );
+      });
+    });
+
     group('.fromIntervalSteps()', () {
       test('creates a new ChordPattern from interval steps', () {
         expect(
