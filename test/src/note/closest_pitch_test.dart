@@ -11,7 +11,7 @@ void main() {
         expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
       });
 
-      test('parses source as a ClosestPitch and return its value', () {
+      test('parses source as a ClosestPitch', () {
         expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
         expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
         expect(ClosestPitch.parse('G-0-0.0'), ClosestPitch(Note.g.inOctave(0)));

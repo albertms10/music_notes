@@ -32,7 +32,7 @@ void main() {
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);
       });
 
-      test('parses source as a PerfectQuality and return its value', () {
+      test('parses source as a PerfectQuality', () {
         expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
         expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
         expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
@@ -40,7 +40,7 @@ void main() {
         expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
       });
 
-      test('parses source as an ImperfectQuality and return its value', () {
+      test('parses source as an ImperfectQuality', () {
         expect(
           ImperfectQuality.parse('AAA'),
           ImperfectQuality.triplyAugmented,

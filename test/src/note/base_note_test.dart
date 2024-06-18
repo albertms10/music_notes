@@ -10,7 +10,7 @@ void main() {
     });
 
     group('.parse()', () {
-      test('parses source as a BaseNote and return its value', () {
+      test('parses source as a BaseNote', () {
         expect(BaseNote.parse('a'), BaseNote.a);
         expect(BaseNote.parse('b'), BaseNote.b);
         expect(BaseNote.parse('c'), BaseNote.c);
