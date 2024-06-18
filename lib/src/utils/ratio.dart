@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 
+import 'num_extension.dart';
+
 /// A mixed number representation.
 @immutable
 final class Ratio implements Comparable<Ratio> {
@@ -10,7 +12,7 @@ final class Ratio implements Comparable<Ratio> {
   final int denominator;
 
   /// Creates a new [Ratio] from [numerator] and [denominator].
-  const Ratio(this.numerator, this.denominator)
+  const Ratio(this.numerator, [this.denominator = 1])
       : assert(denominator != 0, 'The denominator cannot be zero.');
 
   /// Creates a new [Ratio] from [wholePart], [numerator], and [denominator].
@@ -20,6 +22,9 @@ final class Ratio implements Comparable<Ratio> {
     this.denominator = 1,
   ])  : assert(denominator != 0, 'The denominator cannot be zero.'),
         numerator = wholePart * denominator + numerator;
+
+  /// A ratio of value zero.
+  static const zero = Ratio(0);
 
   /// The reference height of an organ pipe.
   static const reference = Ratio.fromMixed(8);
@@ -44,40 +49,36 @@ final class Ratio implements Comparable<Ratio> {
 
   /// Creates a new [Ratio] from [number] and [tolerance].
   factory Ratio.fromDouble(double number, {int tolerance = 100}) {
-    assert(!number.isNegative, 'Number must be positive.');
     assert(!tolerance.isNegative, 'Tolerance must be positive.');
 
-    final wholePart = number.floor();
-    final fracPart = number - wholePart;
+    if (number == 0) return Ratio.zero;
 
-    // Approximate the fractional part to a fraction.
-    var gcdValue = 1;
+    final sign = number.nonZeroSign;
+    number = number.abs();
+
+    final wholePart = number.floor();
+    final fractionalPart = number - wholePart;
+
     var bestNumerator = 1;
     var bestDenominator = 1;
-    var bestError = double.infinity;
+    var minError = (fractionalPart - (bestNumerator / bestDenominator)).abs();
 
-    for (var denominator = 1; denominator <= tolerance; ++denominator) {
-      final numerator = (fracPart * denominator).round();
-      final error = (fracPart - numerator / denominator).abs();
-      if (error < bestError) {
-        bestError = error;
+    for (var denominator = 1; denominator <= tolerance; denominator++) {
+      final numerator = (fractionalPart * denominator).round();
+      final approximation = numerator / denominator;
+      final error = (fractionalPart - approximation).abs();
+
+      if (error < minError) {
         bestNumerator = numerator;
         bestDenominator = denominator;
-        gcdValue = bestNumerator.gcd(bestDenominator);
+        minError = error;
       }
-      if (error == 0) break;
     }
 
-    // Simplify the fraction.
-    bestNumerator ~/= gcdValue;
-    bestDenominator ~/= gcdValue;
+    final finalNumerator = sign * (wholePart * bestDenominator + bestNumerator);
+    final finalDenominator = bestDenominator;
 
-    // Handle cases where the fractional part is 0 or 1.
-    if (bestNumerator == bestDenominator) {
-      return Ratio.fromMixed(wholePart + 1);
-    }
-
-    return Ratio.fromMixed(wholePart, bestNumerator, bestDenominator);
+    return Ratio(finalNumerator, finalDenominator);
   }
 
   /// The simplified version of this [Ratio].

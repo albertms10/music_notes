@@ -9,7 +9,7 @@ void main() {
   int_extension_test.main();
   iterable_extension_test.main();
   map_extension_test.main();
-  ratio_test.main();
   num_extension_test.main();
+  ratio_test.main();
   string_extension_test.main();
 }
