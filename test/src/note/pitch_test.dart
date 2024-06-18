@@ -8,13 +8,17 @@ void main() {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
+        expect(() => Pitch.parse('aa'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
         expect(() => Pitch.parse('C,d'), throwsFormatException);
+        expect(() => Pitch.parse("d′'"), throwsFormatException);
+        expect(() => Pitch.parse('f″″'), throwsFormatException);
 
         expect(() => Pitch.parse('D5,'), throwsFormatException);
+        expect(() => Pitch.parse('ba'), throwsFormatException);
         expect(() => Pitch.parse("d7'"), throwsFormatException);
         expect(() => Pitch.parse("e'4"), throwsFormatException);
         expect(() => Pitch.parse("'E3"), throwsFormatException);
@@ -37,7 +41,8 @@ void main() {
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+        expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
+        expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
 
         var pitch = Note.b.flat.flat.inOctave(-2);
         expect(Pitch.parse(pitch.toString()), pitch);
@@ -1175,8 +1180,7 @@ void main() {
               .harmonics(upToIndex: 15, temperature: const Celsius(18))
               .toString(),
           '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
-          // TODO(albertms10): should be `F♯4-43`.
-          'E4-8, F4+57, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
+          'E4-8, F♯4-43, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
         );
       });
     });
@@ -1230,11 +1234,15 @@ void main() {
         );
         expect(
           Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
-          'f♯′′',
+          'f♯″',
         );
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
-          'e′′′′',
+          'e⁗',
+        );
+        expect(
+          Note.b.flat.inOctave(8).toString(system: PitchNotation.helmholtz),
+          'b♭′′′′′',
         );
       });
 
@@ -1283,11 +1291,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.german),
-          'as′′',
+          'as″',
         );
         expect(
           Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
-          'e′′′′',
+          'e⁗',
         );
       });
 
@@ -1336,11 +1344,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.romance),
-          'la♭′′',
+          'la♭″',
         );
         expect(
-          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
-          'mi′′′′',
+          Note.e.inOctave(6).toString(system: HelmholtzPitchNotation.romance),
+          'mi‴',
         );
       });
 

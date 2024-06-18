@@ -83,13 +83,19 @@ void main() {
       });
     });
 
-    group('.numericRepresentation', () {
+    group('.numericRepresentation()', () {
       test('returns the numeric representation of this ScalableIterable', () {
         expect(
-          const <PitchClass>{}.numericRepresentation.toList(),
+          const <PitchClass>{}.numericRepresentation().toList(),
           const <int>[],
         );
-        expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
+        expect({PitchClass.g}.numericRepresentation().toList(), const [0]);
+        expect(
+          {PitchClass.b, PitchClass.aSharp, PitchClass.g, PitchClass.d}
+              .numericRepresentation(reference: PitchClass.g)
+              .toList(),
+          const [4, 3, 0, 7],
+        );
         expect(
           {
             PitchClass.b,
@@ -104,7 +110,7 @@ void main() {
             PitchClass.c,
             PitchClass.cSharp,
             PitchClass.a,
-          }.numericRepresentation.toList(),
+          }.numericRepresentation().toList(),
           const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
         );
       });

@@ -150,7 +150,7 @@ Note.d.flat
   ..toString(system: NoteNotation.german); // Des
 
 Note.b.flat.inOctave(-1).toString(); // B♭-1
-Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
+Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c‴
 
 PitchClass.c.toString(); // {C}
 PitchClass.dSharp.toString(); // {D♯|E♭}
@@ -438,7 +438,8 @@ Or know its numeric representation:
 
 ```dart
 ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-  ..numericRepresentation.toSet() // {0, 11, 3, 5}
+  ..numericRepresentation().toSet() // {0, 11, 3, 5}
+  ..numericRepresentation(reference: PitchClass.d).toSet() // {9, 8, 0, 2}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
 

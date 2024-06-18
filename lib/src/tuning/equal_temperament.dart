@@ -8,7 +8,6 @@ import 'package:music_notes/utils.dart';
 import '../note/base_note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
-import 'ratio.dart';
 import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
@@ -54,24 +53,23 @@ class EqualTemperament extends TuningSystem {
     yield const Cent(0);
     final edo = this.edo;
     for (var i = 1; i < edo; i++) {
-      yield ratioFromSemitones(i).cents;
+      yield Cent.fromRatio(ratioFromSemitones(i));
     }
   }
 
-  /// The [Ratio] from [semitones] for this [EqualTemperament].
+  /// The ratio from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///
   /// Example:
   /// ```dart
-  /// const EqualTemperament.edo12().ratioFromSemitones(1) == Ratio(1.059463)
-  /// const EqualTemperament.edo19().ratioFromSemitones(1) == Ratio(1.037155)
+  /// const EqualTemperament.edo12().ratioFromSemitones(1) == 1.059463
+  /// const EqualTemperament.edo19().ratioFromSemitones(1) == 1.037155
   /// ```
-  Ratio ratioFromSemitones(int semitones) =>
-      Ratio(math.pow(2, semitones / edo));
+  num ratioFromSemitones(int semitones) => math.pow(2, semitones / edo);
 
   @override
-  Ratio ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
+  num ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
 
   /// The reference generator cents.
   static const referenceGeneratorCents = Cent(700);

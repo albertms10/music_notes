@@ -88,15 +88,21 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
-  /// The numeric representation of this [ScalableIterable].
+  /// The numeric representation of this [ScalableIterable] from [reference].
+  /// The [first] element is used as the reference if none is provided.
   ///
   /// Example:
   /// ```dart
   /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
-  ///   .numericRepresentation.toSet() == const {0, 11, 3}
+  ///   .numericRepresentation().toSet() == const {0, 11, 3}
+  ///
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation(reference: PitchClass.g).toSet()
+  ///     == const {4, 3, 7}
   /// ```
-  Iterable<int> get numericRepresentation => map(
-        (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
+  Iterable<int> numericRepresentation({T? reference}) => map(
+        (scalable) =>
+            (reference ?? first).difference(scalable) % chromaticDivisions,
       );
 
   /// The delta numeric representation of this [ScalableIterable].
