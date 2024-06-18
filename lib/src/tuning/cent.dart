@@ -38,8 +38,7 @@ extension type const Cent(num value) implements num {
   /// Cent.fromRatio(edo19.ratioFromSemitones(1)) == const Cent(63.16)
   /// Cent.fromRatio(edo19.ratioFromSemitones(10)) == const Cent(631.58)
   /// ```
-  Cent.fromRatio(num ratio)
-      : value = math.log(ratio) / math.log(2) * Cent.octave;
+  Cent.fromRatio(num ratio) : value = math.log(ratio) / math.log(2) * octave;
 
   /// The ratio for this [Cent].
   num get ratio => math.pow(2, value / octave);
