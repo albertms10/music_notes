@@ -1,5 +1,5 @@
+import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
-import '../tuning/ratio.dart';
 import '../tuning/temperature.dart';
 import '../tuning/tuning_system.dart';
 import 'closest_pitch.dart';
@@ -60,9 +60,9 @@ extension type const Frequency._(num hertz) implements num {
     Celsius temperature = Celsius.reference,
     Celsius referenceTemperature = Celsius.reference,
   }) {
-    final cents = Ratio(
+    final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
-    ).cents;
+    );
     final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
     final closestPitch = PitchClass(semitones)
@@ -82,7 +82,7 @@ extension type const Frequency._(num hertz) implements num {
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
-      cents: Ratio(hertz / closestPitchFrequency).cents,
+      cents: Cent.fromRatio(hertz / closestPitchFrequency),
     );
   }
 

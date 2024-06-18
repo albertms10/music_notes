@@ -1,5 +1,3 @@
-import 'ratio.dart';
-
 /// The representation of a Celsius temperature.
 extension type const Celsius(num degrees) implements num {
   /// The absolute zero [Celsius] temperature.
@@ -18,11 +16,10 @@ extension type const Celsius(num degrees) implements num {
   static num _speedOfSoundAt(Celsius temperature) =>
       _baseSpeedOfSound + _speedFactorPerDegreeCelsius * temperature;
 
-  /// The speed of sound [Ratio] between this [Celsius] temperature and
+  /// The speed of sound ratio between this [Celsius] temperature and
   /// [reference].
   ///
   /// See [Speed of sound in ideal gases and air](https://en.wikipedia.org/wiki/Speed_of_sound#Speed_of_sound_in_ideal_gases_and_air).
-  Ratio ratio([Celsius reference = reference]) => Ratio(
-        _speedOfSoundAt(this) / _speedOfSoundAt(reference),
-      );
+  num ratio([Celsius reference = reference]) =>
+      _speedOfSoundAt(this) / _speedOfSoundAt(reference);
 }
