@@ -83,7 +83,7 @@ void main() {
 
     group('.toDouble()', () {
       test('returns this Ratio as a double', () {
-        expect(const Ratio.fromMixed(0).toDouble(), 0);
+        expect(Ratio.zero.toDouble(), 0);
         expect(const Ratio.fromMixed(2).toDouble(), 2);
         expect(const Ratio.fromMixed(0, 1, 3).toDouble(), 1 / 3);
         expect(const Ratio.fromMixed(1, 3, 8).toDouble(), 1.375);
@@ -93,7 +93,7 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this Ratio', () {
-        expect(const Ratio.fromMixed(0).toString(), '0');
+        expect(Ratio.zero.toString(), '0');
         expect(const Ratio.fromMixed(3).toString(), '3');
         expect(const Ratio.fromMixed(0, 1, 3).toString(), '1/3');
         expect(const Ratio.fromMixed(3, 5, 4).toString(), '4 1/4');
@@ -103,13 +103,13 @@ void main() {
     group('.compareTo()', () {
       test('sorts Ratios in a collection', () {
         final orderedSet = SplayTreeSet<Ratio>.of({
-          const Ratio.fromMixed(0),
+          Ratio.zero,
           const Ratio.fromMixed(1, 2, 2),
           const Ratio.fromMixed(0, 7, 2),
           const Ratio.fromMixed(0, 1, 9),
         });
         expect(orderedSet.toList(), const [
-          Ratio.fromMixed(0),
+          Ratio.zero,
           Ratio.fromMixed(0, 1, 9),
           Ratio.fromMixed(1, 2, 2),
           Ratio.fromMixed(0, 7, 2),
