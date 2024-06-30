@@ -6,6 +6,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../comparators.dart';
 import '../music.dart';
 import '../note/pitch_class.dart';
 import 'interval.dart';
@@ -24,7 +25,9 @@ import 'size.dart';
 /// See also:
 /// * [Interval].
 @immutable
-final class IntervalClass implements Comparable<IntervalClass> {
+final class IntervalClass
+    with Comparators<IntervalClass>
+    implements Comparable<IntervalClass> {
   /// The distance in semitones that defines this [IntervalClass].
   final int semitones;
 
