@@ -1,8 +1,10 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:meta/meta.dart' show immutable;
 
 import 'num_extension.dart';
 
-/// A mixed number representation.
+/// An exact ratio representation with numerator and denominator.
 @immutable
 final class Ratio implements Comparable<Ratio> {
   /// The numerator of the fraction part.
@@ -15,19 +17,19 @@ final class Ratio implements Comparable<Ratio> {
   const Ratio(this.numerator, [this.denominator = 1])
       : assert(denominator != 0, 'The denominator cannot be zero.');
 
+  /// A [Ratio] of value zero.
+  static const zero = Ratio(0);
+
   /// Creates a new [Ratio] from [wholePart], [numerator], and [denominator].
   const Ratio.fromMixed(
     int wholePart, [
     int numerator = 0,
     this.denominator = 1,
-  ])  : assert(denominator != 0, 'The denominator cannot be zero.'),
-        numerator = wholePart * denominator + numerator;
-
-  /// A ratio of value zero.
-  static const zero = Ratio(0);
-
-  /// The reference height of an organ pipe.
-  static const reference = Ratio.fromMixed(8);
+  ])  : assert(numerator >= 0, 'The numerator cannot be negative.'),
+        assert(denominator != 0, 'The denominator cannot be zero.'),
+        numerator = ((wholePart < 0 ? -wholePart : wholePart) * denominator +
+                numerator) *
+            (wholePart < 0 ? -1 : 1);
 
   static final _regExp = RegExp(r'^(-?\d+)\s*(?:(\d+)/(\d+))?$');
 
@@ -54,10 +56,10 @@ final class Ratio implements Comparable<Ratio> {
     if (number == 0) return Ratio.zero;
 
     final sign = number.nonZeroSign;
-    number = number.abs();
+    final absNumber = number.abs();
 
-    final wholePart = number.floor();
-    final fractionalPart = number - wholePart;
+    final wholePart = absNumber.floor();
+    final fractionalPart = absNumber - wholePart;
 
     var bestNumerator = 1;
     var bestDenominator = 1;
@@ -75,10 +77,9 @@ final class Ratio implements Comparable<Ratio> {
       }
     }
 
-    final finalNumerator = sign * (wholePart * bestDenominator + bestNumerator);
-    final finalDenominator = bestDenominator;
+    final numerator = sign * (wholePart * bestDenominator + bestNumerator);
 
-    return Ratio(finalNumerator, finalDenominator);
+    return Ratio(numerator, bestDenominator);
   }
 
   /// The simplified version of this [Ratio].
@@ -89,14 +90,16 @@ final class Ratio implements Comparable<Ratio> {
 
   @override
   String toString() {
-    final wholePart = numerator ~/ denominator;
-    final remainder = numerator % denominator;
+    final absNumerator = numerator.abs();
+    final wholePart = absNumerator ~/ denominator;
+    final remainder = absNumerator % denominator;
 
-    return remainder == 0
-        ? '$wholePart'
-        : wholePart == 0
-            ? '$remainder/$denominator'
-            : '$wholePart $remainder/$denominator';
+    return (numerator.isNegative ? '-' : '') +
+        (remainder == 0
+            ? '$wholePart'
+            : wholePart == 0
+                ? '$remainder/$denominator'
+                : '$wholePart $remainder/$denominator');
   }
 
   @override
@@ -109,4 +112,10 @@ final class Ratio implements Comparable<Ratio> {
 
   @override
   int compareTo(Ratio other) => toDouble().compareTo(other.toDouble());
+}
+
+/// An organ pipe height extension.
+extension OrganPipeHeight on Ratio {
+  /// The reference height [Ratio] of an organ pipe.
+  static const reference = Ratio.fromMixed(8);
 }

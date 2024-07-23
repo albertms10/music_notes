@@ -1,3 +1,5 @@
+// ignore_for_file: use_named_constants
+
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/utils.dart';
@@ -8,7 +10,15 @@ void main() {
     group('constructor', () {
       test('throws an assertion error when arguments are incorrect', () {
         expect(() => Ratio(1, 0), throwsA(isA<AssertionError>()));
+        expect(() => Ratio(-3, 0), throwsA(isA<AssertionError>()));
+      });
+    });
+
+    group('.fromMixed()', () {
+      test('throws an assertion error when arguments are incorrect', () {
         expect(() => Ratio.fromMixed(1, 1, 0), throwsA(isA<AssertionError>()));
+        expect(() => Ratio.fromMixed(-1, 1, 0), throwsA(isA<AssertionError>()));
+        expect(() => Ratio.fromMixed(1, -1), throwsA(isA<AssertionError>()));
       });
     });
 
@@ -94,9 +104,12 @@ void main() {
     group('.toString()', () {
       test('returns the string representation of this Ratio', () {
         expect(Ratio.zero.toString(), '0');
-        expect(const Ratio.fromMixed(3).toString(), '3');
+        expect(const Ratio(3).toString(), '3');
+        expect(const Ratio(-2, 3).toString(), '-2/3');
+        expect(const Ratio(-3, 2).toString(), '-1 1/2');
         expect(const Ratio.fromMixed(0, 1, 3).toString(), '1/3');
         expect(const Ratio.fromMixed(3, 5, 4).toString(), '4 1/4');
+        expect(const Ratio.fromMixed(-3, 5, 4).toString(), '-4 1/4');
       });
     });
 
