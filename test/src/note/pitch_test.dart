@@ -1390,11 +1390,7 @@ void main() {
       test('returns whether this Pitch is lower than other', () {
         expect(Note.a.inOctave(3) < Note.a.inOctave(4), isTrue);
         expect(Note.f.sharp.inOctave(4) < Note.a.inOctave(4), isTrue);
-        expect(
-          skip: 'See #477',
-          Note.g.sharp.inOctave(4) < Note.a.flat.inOctave(3),
-          isTrue,
-        );
+        expect(Note.g.sharp.inOctave(4) < Note.a.flat.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) < Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(4) < Note.a.flat.inOctave(3), isFalse);
@@ -1418,11 +1414,7 @@ void main() {
       test('returns whether this Pitch is higher than other', () {
         expect(Note.a.inOctave(4) > Note.a.inOctave(3), isTrue);
         expect(Note.a.inOctave(4) > Note.g.flat.inOctave(4), isTrue);
-        expect(
-          skip: 'See #477',
-          Note.a.flat.inOctave(4) > Note.g.sharp.inOctave(4),
-          isTrue,
-        );
+        expect(Note.a.flat.inOctave(4) > Note.g.sharp.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) > Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(3) > Note.a.flat.inOctave(4), isFalse);
