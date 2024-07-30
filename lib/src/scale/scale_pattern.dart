@@ -279,7 +279,7 @@ final class ScalePattern {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
     final degrees = [
-      for (int i = 0; i < chromaticDivisions; i++)
+      for (var i = 0; i < chromaticDivisions; i++)
         if (sequence.bitAt(i) != 0) PitchClass(i),
       PitchClass.c,
     ];
@@ -287,7 +287,7 @@ final class ScalePattern {
         ? null
         : [
             PitchClass.c,
-            for (int i = chromaticDivisions - 1; i >= 0; i--)
+            for (var i = chromaticDivisions - 1; i >= 0; i--)
               if (descendingSequence.bitAt(i) != 0) PitchClass(i),
           ];
 

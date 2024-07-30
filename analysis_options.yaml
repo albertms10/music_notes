@@ -6,6 +6,7 @@ linter:
     - avoid_classes_with_only_static_members
     - avoid_types_on_closure_parameters
     - type_literal_in_constant_pattern
+    - unnecessary_library_name
     - unnecessary_null_aware_operator_on_extension_on_nullable
 
 analyzer:

@@ -45,6 +45,48 @@ void main() {
       });
     });
 
+    group('.nearestFromSemitones()', () {
+      test('returns the Size corresponding exactly to the given semitones', () {
+        expect(Size.nearestFromSemitones(-12), -Size.octave);
+        expect(Size.nearestFromSemitones(-5), -Size.fourth);
+        expect(Size.nearestFromSemitones(-3), -Size.third);
+        expect(Size.nearestFromSemitones(-1), -Size.second);
+        expect(Size.nearestFromSemitones(0), Size.unison);
+        expect(Size.nearestFromSemitones(1), Size.second);
+        expect(Size.nearestFromSemitones(3), Size.third);
+        expect(Size.nearestFromSemitones(5), Size.fourth);
+        expect(Size.nearestFromSemitones(7), Size.fifth);
+        expect(Size.nearestFromSemitones(8), Size.sixth);
+        expect(Size.nearestFromSemitones(10), Size.seventh);
+        expect(Size.nearestFromSemitones(12), Size.octave);
+        expect(Size.nearestFromSemitones(13), Size.ninth);
+        expect(Size.nearestFromSemitones(15), Size.tenth);
+        expect(Size.nearestFromSemitones(17), Size.eleventh);
+        expect(Size.nearestFromSemitones(19), Size.twelfth);
+        expect(Size.nearestFromSemitones(20), Size.thirteenth);
+        expect(Size.nearestFromSemitones(22), const Size(14));
+        expect(Size.nearestFromSemitones(24), const Size(15));
+        expect(Size.nearestFromSemitones(36), const Size(22));
+        expect(Size.nearestFromSemitones(48), const Size(29));
+      });
+
+      test(
+        'returns the nearest Size when no Size'
+        ' corresponds exactly to the given semitones',
+        () {
+          expect(Size.nearestFromSemitones(-4), -Size.third);
+          expect(Size.nearestFromSemitones(-2), -Size.second);
+          expect(Size.nearestFromSemitones(2), Size.second);
+          expect(Size.nearestFromSemitones(4), Size.third);
+          expect(Size.nearestFromSemitones(6), Size.fourth);
+          expect(Size.nearestFromSemitones(9), Size.sixth);
+          expect(Size.nearestFromSemitones(11), Size.seventh);
+          expect(Size.nearestFromSemitones(14), Size.ninth);
+          expect(Size.nearestFromSemitones(-20), -Size.thirteenth);
+        },
+      );
+    });
+
     group('.perfect', () {
       test('returns the perfect Interval from this Size', () {
         expect(Size.unison.perfect, Interval.P1);

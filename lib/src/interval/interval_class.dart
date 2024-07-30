@@ -84,11 +84,14 @@ final class IntervalClass
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        Interval.fromSemitones(size, semitones),
+        Interval.fromSizeAndSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
-          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
+            Interval.fromSizeAndSemitones(
+              Size(size.incrementBy(-i)),
+              semitones,
+            ),
+          Interval.fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -97,11 +100,11 @@ final class IntervalClass
 
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
