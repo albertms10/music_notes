@@ -141,34 +141,5 @@ void main() {
         expect(Size.twelfth.simple.augmented, Interval.A5);
       });
     });
-/*
-    group('.simple', () {
-      test('returns the simplified version of this Size', () {
-        expect(Size.unison.simple, Size.unison);
-        expect((-Size.third).simple, -Size.third);
-        expect(Size.ninth.simple, Size.second);
-        expect((-Size.eleventh).simple, -Size.fourth);
-
-        expect(const Size(15).simple, Size.octave);
-        expect(const Size(16).simple, Size.second);
-        expect(const Size(17).simple, Size.third);
-        expect(const Size(18).simple, Size.fourth);
-        expect(const Size(19).simple, Size.fifth);
-        expect(const Size(20).simple, Size.sixth);
-        expect(const Size(21).simple, Size.seventh);
-        expect(const Size(22).simple, Size.octave);
-
-        expect(const Size(23).simple, Size.second);
-        expect(const Size(24).simple, Size.third);
-        expect(const Size(25).simple, Size.fourth);
-        expect(const Size(26).simple, Size.fifth);
-        expect(const Size(27).simple, Size.sixth);
-        expect(const Size(28).simple, Size.seventh);
-        expect(const Size(29).simple, Size.octave);
-
-        expect(const Size(36).simple, Size.octave);
-      });
-    });
-    */
   });
 }
