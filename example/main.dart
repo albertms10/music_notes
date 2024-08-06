@@ -89,6 +89,7 @@ void main() {
 
   -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
+  (-Interval.P4).descending(false); // P4
 
   Interval.m3.inversion; // M6
   Interval.A4.inversion; // d5

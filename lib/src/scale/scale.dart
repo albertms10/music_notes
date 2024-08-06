@@ -108,7 +108,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       Interval.perfect(
         Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
-      ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
+      ).descending(scaleDegree.semitonesDelta.isNegative),
     );
   }
 

@@ -183,6 +183,7 @@ Turn it descending:
 ```dart
 -Interval.m7; // m-7
 Interval.M3.descending(); // M-3
+(-Interval.P4).descending(false); // P4
 ```
 
 Perform common interval operations:
