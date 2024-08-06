@@ -253,11 +253,12 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.m2.descending() == -Interval.m2
-  /// Interval.M3.descending(isDescending: false) == Interval.M3
+  /// Interval.M3.descending(false) == Interval.M3
   /// (-Interval.P5).descending() == -Interval.P5
-  /// (-Interval.M7).descending(isDescending: false) == Interval.M7
+  /// (-Interval.M7).descending(false) == Interval.M7
   /// ```
-  Interval descending({bool isDescending = true}) => Interval._(
+  // ignore: avoid_positional_boolean_parameters
+  Interval descending([bool isDescending = true]) => Interval._(
         Size(size * (this.isDescending == isDescending ? 1 : -1)),
         quality,
       );
@@ -385,8 +386,7 @@ final class Interval
     yield scalable;
     var last = scalable;
     for (var i = 0; i < absDistance; i++) {
-      yield last =
-          last.transposeBy(descending(isDescending: distance.isNegative));
+      yield last = last.transposeBy(descending(distance.isNegative));
     }
   }
 

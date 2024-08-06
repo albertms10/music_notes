@@ -198,7 +198,7 @@ final class PitchClass extends Scalable<PitchClass>
 
     return IntervalClass(diff)
         .resolveClosestSpelling()
-        .descending(isDescending: diff.isNegative);
+        .descending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].
