@@ -1,3 +1,4 @@
+// To allow major (M) and minor (m) static constant names.
 // ignore_for_file: constant_identifier_names
 
 import 'package:meta/meta.dart' show immutable;
