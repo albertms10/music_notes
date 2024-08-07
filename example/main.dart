@@ -1,3 +1,4 @@
+// For documentation purposes.
 // ignore_for_file: unnecessary_statements, cascade_invocations
 
 import 'package:music_notes/music_notes.dart';
@@ -89,6 +90,7 @@ void main() {
 
   -Interval.m7; // m-7
   Interval.M3.descending(); // M-3
+  (-Interval.P4).descending(false); // P4
 
   Interval.m3.inversion; // M6
   Interval.A4.inversion; // d5

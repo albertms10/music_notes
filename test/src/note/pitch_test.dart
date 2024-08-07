@@ -26,7 +26,7 @@ void main() {
         expect(() => Pitch.parse('3B,'), throwsFormatException);
       });
 
-      test('parses source as a Pitch and return its value', () {
+      test('parses source as a Pitch', () {
         expect(Pitch.parse('A4'), Note.a.inOctave(4));
         expect(Pitch.parse('d3'), Note.d.inOctave(3));
         expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
@@ -1374,7 +1374,7 @@ void main() {
     });
 
     group('operator -()', () {
-      test('subtracts Cent to this Pitch', () {
+      test('subtracts Cents from this Pitch', () {
         expect(
           Note.a.inOctave(4) - const Cent(12),
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(-12)),
@@ -1438,9 +1438,9 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
         );
       });

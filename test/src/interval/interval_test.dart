@@ -105,7 +105,7 @@ void main() {
         expect(() => Interval.parse('D3'), throwsFormatException);
       });
 
-      test('parses source as an Interval and return its value', () {
+      test('parses source as an Interval', () {
         expect(
           Interval.parse('AA4'),
           const Interval.perfect(Size.fourth, PerfectQuality.doublyAugmented),
@@ -225,8 +225,8 @@ void main() {
     group('.descending()', () {
       test('returns the descending Interval based on isDescending', () {
         expect(Interval.M2.descending(), -Interval.M2);
-        expect(Interval.m3.descending(isDescending: false), Interval.m3);
-        expect((-Interval.m6).descending(isDescending: false), Interval.m6);
+        expect(Interval.m3.descending(false), Interval.m3);
+        expect((-Interval.m6).descending(false), Interval.m6);
         expect((-Interval.P8).descending(), -Interval.P8);
       });
 

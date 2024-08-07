@@ -659,9 +659,9 @@ void main() {
           const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.naturalMinor,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.ionian,
           ScalePattern.mixolydian,
           ScalePattern.wholeTone,
