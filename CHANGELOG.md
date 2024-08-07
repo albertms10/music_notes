@@ -7,7 +7,7 @@
 - refactor(tuning): ♻️ remove `Ratio` extension type in favor of `Cent.fromRatio` constructor [#510](https://github.com/albertms10/music_notes/pull/510)
 - refactor(utils): ♻️ move `nonZeroSign` method from `int` to `num` extension [#511](https://github.com/albertms10/music_notes/pull/511)
 - refactor!(interval): 💥 make `isDescending` parameter in `descending` method positional [#521](https://github.com/albertms10/music_notes/pull/521)
-- chore(pubspec): ⬇️ lower the Dart SDK bound to version 3.3 and upgrade anaysis CI to 3.5 [#522](https://github.com/albertms10/music_notes/pull/522)
+- chore(pubspec): ⬇️ lower the Dart SDK bound to version 3.3 and upgrade analysis CI to 3.5 [#522](https://github.com/albertms10/music_notes/pull/522)
 - refactor(analysis): 🕵️ add more lint rules and explain ignored diagnostics [#523](https://github.com/albertms10/music_notes/pull/523)
 - feat(utils): ✨ add `Rational` class representation and test cases [#493](https://github.com/albertms10/music_notes/pull/493)
 - feat!: 💥 make comparator operators agree with `compareTo` and `==` [#498](https://github.com/albertms10/music_notes/pull/498)
@@ -136,7 +136,7 @@
 
 ## 0.16.0
 
-- test: ♻️ shorten test descriptions [#372](https[#)](://github.com/albertms10/music_notes/pull/372))
+- test: ♻️ shorten test descriptions by dropping _should_ [#372](https://github.com/albertms10/music_notes/pull/372)
 - refactor!(key_signature): ♻️ change operator `+` → `|` [#373](https://github.com/albertms10/music_notes/pull/373)
 - feat(closest_pitch): ✨ add `frequency` method [#374](https://github.com/albertms10/music_notes/pull/374)
 - test(note): 🧪 add edge test cases for `circleOfFifthsDistance` [#375](https://github.com/albertms10/music_notes/pull/375)
@@ -179,7 +179,7 @@
 - feat(accidental): ✨ add `isNatural` getter [#332](https://github.com/albertms10/music_notes/pull/332)
 - docs(key_signature): 📖 address wrong `const` keyword [#333](https://github.com/albertms10/music_notes/pull/333)
 - docs: 📖 add examples to `spellings` methods [#334](https://github.com/albertms10/music_notes/pull/334)
-- feat(note): ✨ compare `spellings` [#335](https[#)](://github.com/albertms10/music_notes/pull/335))
+- feat(note): ✨ compare `spellings` by closest distance [#335](https://github.com/albertms10/music_notes/pull/335)
 - refactor(note): ♻️ extract `switch` expression to a local variable in `GermanNoteNotation.tonality` [#336](https://github.com/albertms10/music_notes/pull/336)
 - refactor(interval): ♻️ use `descending` in `circleFrom` [#337](https://github.com/albertms10/music_notes/pull/337)
 - refactor(frequency): ♻️ rewrite `ClosestPitch` record into a class [#339](https://github.com/albertms10/music_notes/pull/339)
@@ -546,7 +546,7 @@
 
 ## 0.4.0
 
-- test: consistently group test cases 2](https[#)](://github.com/albertms10/music_notes/pull/22))
+- test: consistently group test cases by content [#22](https://github.com/albertms10/music_notes/pull/22)
 - fix(enharmonic_note): address edge cases for `items` getter [#23](https://github.com/albertms10/music_notes/pull/23)
 - feat(accidental): bring `increment` method back [#24](https://github.com/albertms10/music_notes/pull/24)
 - test: add test cases for `toString` methods [#25](https://github.com/albertms10/music_notes/pull/25)
@@ -561,7 +561,7 @@
 - test(enharmonic_interval): add test cases for `transposeBy` [#34](https://github.com/albertms10/music_notes/pull/34)
 - refactor(music_item): implement `Comparable` and mark as immutable [#35](https://github.com/albertms10/music_notes/pull/35)
 - test: compare `.hashCode` Set as a List [#36](https://github.com/albertms10/music_notes/pull/36)
-- feat(tonality): improve `compareTo` sorting mode [#37](https[#)](://github.com/albertms10/music_notes/pull/37))
+- feat(tonality): improve `compareTo` sorting by note and mode [#37](https://github.com/albertms10/music_notes/pull/37)
 - test(interval): add test cases for interval-related members [#39](https://github.com/albertms10/music_notes/pull/39)
 - feat(intervals): add `isCompound` getter [#40](https://github.com/albertms10/music_notes/pull/40)
 - test(intervals): add test cases for `fromSemitones` [#41](https://github.com/albertms10/music_notes/pull/41)
@@ -599,7 +599,7 @@
 - refactor(notes): rename notes using the English convention [#12](https://github.com/albertms10/music_notes/pull/12)
 - refactor(accidental): rename `value` → `semitones` [#13](https://github.com/albertms10/music_notes/pull/13)
 - refactor(note): add static const constructors [#14](https://github.com/albertms10/music_notes/pull/14)
-- refactor(src): reorganize directories 5](https[#)](://github.com/albertms10/music_notes/pull/15))
+- refactor(src): reorganize directories by content [#15](https://github.com/albertms10/music_notes/pull/15)
 - refactor: rewrite `enum` members [#16](https://github.com/albertms10/music_notes/pull/16)
 - refactor(relative_tonalities): remove class [#17](https://github.com/albertms10/music_notes/pull/17)
 - refactor(int_mod_extension): rewrite mod functions into extension methods [#18](https://github.com/albertms10/music_notes/pull/18)
