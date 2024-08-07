@@ -445,7 +445,7 @@ final class Interval
 
   @override
   bool operator ==(Object other) =>
-      other is Interval && size == other.size && quality == other.quality;
+      other is Interval && size == other.size && semitones == other.semitones;
 
   @override
   int get hashCode => Object.hash(size, quality);

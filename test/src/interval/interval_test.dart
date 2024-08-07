@@ -697,6 +697,7 @@ void main() {
         final orderedSet = SplayTreeSet<Interval>.of({
           Interval.m2,
           Interval.P8,
+          Interval.d3,
           Interval.P1,
           Interval.A1,
         });
@@ -704,6 +705,7 @@ void main() {
           Interval.P1,
           Interval.A1,
           Interval.m2,
+          Interval.d3,
           Interval.P8,
         ]);
       });
