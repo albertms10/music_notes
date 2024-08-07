@@ -11,7 +11,7 @@ void main() {
         expect(() => Note.parse('x'), throwsFormatException);
       });
 
-      test('parses source as a Note and return its value', () {
+      test('parses source as a Note', () {
         expect(Note.parse('d'), Note.d);
         expect(Note.parse('g'), Note.g);
         expect(Note.parse('Bb'), Note.b.flat);

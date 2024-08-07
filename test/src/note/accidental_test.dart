@@ -10,7 +10,7 @@ void main() {
         expect(() => Accidental.parse('invalid'), throwsFormatException);
       });
 
-      test('parses source as an Accidental and return its value', () {
+      test('parses source as an Accidental', () {
         expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
         expect(Accidental.parse('#xx'), const Accidental(5));
         expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
