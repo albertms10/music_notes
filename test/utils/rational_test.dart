@@ -1,5 +1,3 @@
-// ignore_for_file: use_named_constants
-
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/utils.dart';
@@ -162,7 +160,7 @@ void main() {
           const Rational(2, 15),
         );
         expect(const Rational(1, 2) + const Rational(1, 2), const Rational(1));
-        expect(const Rational(-1, 3) + const Rational(1, 3), const Rational(0));
+        expect(const Rational(-1, 3) + const Rational(1, 3), Rational.zero);
       });
     });
 
@@ -176,7 +174,7 @@ void main() {
           const Rational(4, 5) - const Rational(-2, 3),
           const Rational(22, 15),
         );
-        expect(const Rational(1, 2) - const Rational(1, 2), const Rational(0));
+        expect(const Rational(1, 2) - const Rational(1, 2), Rational.zero);
         expect(
           const Rational(-1, 3) - const Rational(1, 3),
           const Rational(-2, 3),
@@ -187,7 +185,7 @@ void main() {
         expect(-const Rational(2, 3), const Rational(-2, 3));
         expect(-const Rational(-4, 5), const Rational(4, 5));
         expect(-const Rational(1), const Rational(-1));
-        expect(-const Rational(0), const Rational(0));
+        expect(-Rational.zero, Rational.zero);
       });
     });
 
