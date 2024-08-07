@@ -1,7 +1,7 @@
 name: music_notes
 description: A comprehensive Dart library for effortlessly working with music
   theory concepts.
-version: 0.18.0
+version: 0.19.0
 
 repository: https://github.com/albertms10/music_notes
 topics:
