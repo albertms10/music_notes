@@ -4,6 +4,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../comparators.dart';
 import '../enharmonic.dart';
 import '../note/note.dart';
 import '../scalable.dart';
@@ -19,7 +20,7 @@ import 'size.dart';
 /// * [IntervalClass].
 @immutable
 final class Interval
-    with Enharmonic<IntervalClass>
+    with Enharmonic<IntervalClass>, Comparators<Interval>
     implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
@@ -442,54 +443,6 @@ final class Interval
   // ignore: prefer_const_constructors
   Interval operator -() => Interval._(-size, quality);
 
-  /// Whether this [Interval] is smaller than [other], regardless of their
-  /// direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.m3 < Interval.P5 == true
-  /// Interval.m7 < Interval.P5 == false
-  /// Interval.d4 < Interval.d4 == false
-  /// Interval.M3 < -Interval.P4 == true
-  /// ```
-  bool operator <(Interval other) => semitones.abs() < other.semitones.abs();
-
-  /// Whether this [Interval] is smaller than or equal to [other], regardless of
-  /// their direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.m3 <= Interval.P5 == true
-  /// Interval.m7 <= Interval.P5 == false
-  /// Interval.d4 <= Interval.d4 == true
-  /// Interval.P4 <= -Interval.P4 == true
-  /// ```
-  bool operator <=(Interval other) => semitones.abs() <= other.semitones.abs();
-
-  /// Whether this [Interval] is larger than [other], regardless of their
-  /// direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5 > Interval.m3 == true
-  /// Interval.P5 > Interval.m7 == false
-  /// Interval.d4 > Interval.d4 == false
-  /// -Interval.P4 > Interval.M3 == true
-  /// ```
-  bool operator >(Interval other) => semitones.abs() > other.semitones.abs();
-
-  /// Whether this [Interval] is larger than or equal to [other], regardless of
-  /// their direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5 >= Interval.m3 == true
-  /// Interval.P5 >= Interval.m7 == false
-  /// Interval.d4 >= Interval.d4 == true
-  /// -Interval.P4 >= Interval.P4 == true
-  /// ```
-  bool operator >=(Interval other) => semitones.abs() >= other.semitones.abs();
-
   @override
   bool operator ==(Object other) =>
       other is Interval && size == other.size && quality == other.quality;
@@ -500,7 +453,7 @@ final class Interval
   @override
   int compareTo(Interval other) => compareMultiple([
         () => size.compareTo(other.size),
-        () => semitones.compareTo(other.semitones),
+        () => quality.compareTo(other.quality),
       ]);
 }
 

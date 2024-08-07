@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../comparators.dart';
 import '../enharmonic.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
@@ -29,7 +30,9 @@ import 'pitch_class.dart';
 /// * [Frequency].
 /// * [ClosestPitch].
 @immutable
-final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
+final class Pitch extends Scalable<Pitch>
+    with Comparators<Pitch>
+    implements Comparable<Pitch> {
   /// The note inside the octave.
   final Note note;
 
@@ -523,46 +526,6 @@ final class Pitch extends Scalable<Pitch> implements Comparable<Pitch> {
   /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
   /// ```
   ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
-
-  /// Whether this [Pitch] is lower than [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4) < Note.c.inOctave(5) == true
-  /// Note.a.inOctave(5) < Note.g.inOctave(4) == false
-  /// Note.d.inOctave(4) < Note.d.inOctave(4) == false
-  /// ```
-  bool operator <(Pitch other) => semitones < other.semitones;
-
-  /// Whether this [Pitch] is lower than or equal to [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(4) <= Note.c.inOctave(5) == true
-  /// Note.a.inOctave(5) <= Note.g.inOctave(4) == false
-  /// Note.d.inOctave(4) <= Note.d.inOctave(4) == true
-  /// ```
-  bool operator <=(Pitch other) => semitones <= other.semitones;
-
-  /// Whether this [Pitch] is higher than [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(5) > Note.c.inOctave(4) == true
-  /// Note.a.inOctave(4) > Note.g.inOctave(5) == false
-  /// Note.d.inOctave(4) > Note.d.inOctave(4) == false
-  /// ```
-  bool operator >(Pitch other) => semitones > other.semitones;
-
-  /// Whether this [Pitch] is higher than or equal to [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.inOctave(5) >= Note.c.inOctave(4) == true
-  /// Note.a.inOctave(4) >= Note.g.inOctave(5) == false
-  /// Note.d.inOctave(4) >= Note.d.inOctave(4) == true
-  /// ```
-  bool operator >=(Pitch other) => semitones >= other.semitones;
 
   @override
   bool operator ==(Object other) =>
