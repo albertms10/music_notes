@@ -143,17 +143,17 @@ void main() {
 
     group('.hashCode', () {
       test('returns the same hashCode for equal ScaleDegrees', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors test
         expect(ScaleDegree(1).hashCode, ScaleDegree(1).hashCode);
         expect(
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           ScaleDegree(
             2,
             quality: ImperfectQuality.major,
             inversion: 1,
             semitonesDelta: -1,
           ).hashCode,
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           ScaleDegree(
             2,
             quality: ImperfectQuality.major,

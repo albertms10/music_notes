@@ -1,5 +1,3 @@
-// ignore_for_file: use_named_constants
-
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';

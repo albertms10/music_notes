@@ -1,6 +1,6 @@
 import 'interval/interval.dart';
 
-/// A interface for items that can be transposed.
+/// An interface for items that can be transposed.
 // ignore: one_member_abstracts
 abstract interface class Transposable<T> {
   /// Transposes this [T] by [interval].

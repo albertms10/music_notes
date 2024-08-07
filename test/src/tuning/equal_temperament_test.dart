@@ -64,7 +64,7 @@ void main() {
 
     group('operator ==()', () {
       test('compares this EqualTemperament to other', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors test
         expect(EqualTemperament.edo12(), EqualTemperament.edo12());
         expect(
           const EqualTemperament.edo12(),
@@ -93,9 +93,9 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           EqualTemperament([1, 2]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           EqualTemperament([1, 2]).hashCode,
         );
       });
