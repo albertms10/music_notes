@@ -445,7 +445,7 @@ final class Interval
 
   @override
   bool operator ==(Object other) =>
-      other is Interval && size == other.size && semitones == other.semitones;
+      other is Interval && size == other.size && quality == other.quality;
 
   @override
   int get hashCode => Object.hash(size, quality);
@@ -453,7 +453,7 @@ final class Interval
   @override
   int compareTo(Interval other) => compareMultiple([
         () => size.compareTo(other.size),
-        () => semitones.compareTo(other.semitones),
+        () => quality.compareTo(other.quality),
       ]);
 }
 
