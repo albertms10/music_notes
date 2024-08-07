@@ -1,3 +1,4 @@
+// For documentation purposes.
 // ignore_for_file: unnecessary_statements, cascade_invocations
 
 import 'package:music_notes/music_notes.dart';

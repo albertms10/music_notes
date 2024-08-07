@@ -165,7 +165,7 @@ final class PitchClass extends Scalable<PitchClass>
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
       return resolveSpelling(preferredAccidental);
-      // ignore: avoid_catching_errors
+      // ignore: avoid_catching_errors to catch `ArgumentError`.
     } on ArgumentError {
       return resolveSpelling();
     }
