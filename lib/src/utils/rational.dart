@@ -32,8 +32,6 @@ final class Rational implements Comparable<Rational> {
 
   static final _regExp = RegExp(r'^(-?\d+)\s*(?:(\d+)/(\d+))?$');
 
-  static const _defaultTolerance = 100;
-
   /// Parses source as a [Rational].
   factory Rational.parse(String source) {
     final match = _regExp.firstMatch(source);
@@ -51,10 +49,7 @@ final class Rational implements Comparable<Rational> {
   }
 
   /// Creates a new [Rational] from [number] and [tolerance].
-  factory Rational.fromDouble(
-    double number, {
-    int tolerance = _defaultTolerance,
-  }) {
+  factory Rational.fromDouble(double number, {int tolerance = 100}) {
     assert(!tolerance.isNegative, 'Tolerance must be positive.');
 
     if (number == 0) return Rational.zero;
@@ -96,12 +91,12 @@ final class Rational implements Comparable<Rational> {
     );
   }
 
-  /// This [Rational] as a [double].
-  double toDouble() => _numerator / _denominator;
-
   /// Truncates this [Rational] to an integer and returns the result as an
   /// [int].
   int toInt() => toDouble().toInt();
+
+  /// This [Rational] as a [double].
+  double toDouble() => _numerator / _denominator;
 
   @override
   String toString() {

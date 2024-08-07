@@ -113,13 +113,23 @@ void main() {
       });
     });
 
+    group('.toInt()', () {
+      test('returns this Rational as an int', () {
+        expect(Rational.zero.toInt(), 0);
+        expect(const Rational.fromMixed(2).toInt(), 2);
+        expect(const Rational.fromMixed(0, 1, 3).toInt(), 0);
+        expect(const Rational.fromMixed(1, 3, 8).toInt(), 1);
+        expect(const Rational.fromMixed(-3, 5, 4).toInt(), -4);
+      });
+    });
+
     group('.toDouble()', () {
       test('returns this Rational as a double', () {
         expect(Rational.zero.toDouble(), 0);
         expect(const Rational.fromMixed(2).toDouble(), 2);
         expect(const Rational.fromMixed(0, 1, 3).toDouble(), 1 / 3);
         expect(const Rational.fromMixed(1, 3, 8).toDouble(), 1.375);
-        expect(const Rational.fromMixed(3, 5, 4).toDouble(), 4.25);
+        expect(const Rational.fromMixed(-3, 5, 4).toDouble(), -4.25);
       });
     });
 
