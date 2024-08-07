@@ -9,7 +9,6 @@ linter:
     - avoid_types_on_closure_parameters
     - do_not_use_environment
     - document_ignores
-    - invalid_runtime_check_with_js_interop_types
     - matching_super_parameters
     - no_literal_bool_comparisons
     - prefer_expression_function_bodies
