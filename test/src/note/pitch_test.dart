@@ -1374,7 +1374,7 @@ void main() {
     });
 
     group('operator -()', () {
-      test('subtracts Cent to this Pitch', () {
+      test('subtracts Cents from this Pitch', () {
         expect(
           Note.a.inOctave(4) - const Cent(12),
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(-12)),
