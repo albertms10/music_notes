@@ -1,3 +1,10 @@
+## 0.19.1
+
+- refactor(interval): 📖 remove ignored `prefer_const_constructors` lint [#524](https://github.com/albertms10/music_notes/pull/524)
+- docs(CHANGELOG): 🔖 fix typos and address linked Pull requests [#525](https://github.com/albertms10/music_notes/pull/525)
+
+**Full Changelog**: [`v0.19.0...v0.19.1`](https://github.com/albertms10/music_notes/compare/v0.19.0...v0.19.1)
+
 ## 0.19.0
 
 - chore(pubspec): 🏗️ bump Dart SDK 3.4.0 [#499](https://github.com/albertms10/music_notes/pull/499)
