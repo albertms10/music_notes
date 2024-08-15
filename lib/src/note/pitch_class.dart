@@ -89,8 +89,8 @@ final class PitchClass extends Scalable<PitchClass>
         {
           note,
           for (var i = 1; i <= distance; i++) ...[
-            note.respellByBaseNoteDistance(distance),
-            note.respellByBaseNoteDistance(-distance),
+            note.respellByOrdinalDistance(distance),
+            note.respellByOrdinalDistance(-distance),
           ],
         },
         Note.compareByClosestDistance,
@@ -107,8 +107,8 @@ final class PitchClass extends Scalable<PitchClass>
         aboveNote,
         belowNote,
         for (var i = 1; i <= distance; i++) ...[
-          belowNote.respellByBaseNoteDistance(distance),
-          aboveNote.respellByBaseNoteDistance(-distance),
+          belowNote.respellByOrdinalDistance(distance),
+          aboveNote.respellByOrdinalDistance(-distance),
         ],
       },
       Note.compareByClosestDistance,
@@ -136,7 +136,7 @@ final class PitchClass extends Scalable<PitchClass>
       throw ArgumentError.value(
         '$withAccidental',
         'preferredAccidental',
-        'Impossible match for',
+        'Impossible match for $this',
       );
     }
 
@@ -165,7 +165,7 @@ final class PitchClass extends Scalable<PitchClass>
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
       return resolveSpelling(preferredAccidental);
-      // ignore: avoid_catching_errors
+      // ignore: avoid_catching_errors to catch `ArgumentError`.
     } on ArgumentError {
       return resolveSpelling();
     }
@@ -198,7 +198,7 @@ final class PitchClass extends Scalable<PitchClass>
 
     return IntervalClass(diff)
         .resolveClosestSpelling()
-        .descending(isDescending: diff.isNegative);
+        .descending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].

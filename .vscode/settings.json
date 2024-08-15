@@ -4,6 +4,8 @@
     "barline",
     "chordable",
     "Chordable",
+    "codeql",
+    "coverallsapp",
     "Didymean",
     "dorian",
     "enharmonically",
@@ -18,8 +20,11 @@
     "mixolydian",
     "neapolitan",
     "octatonic",
+    "ossf",
     "phrygian",
+    "pubspec",
     "pythagorean",
+    "redeclares",
     "sublist",
     "Versetzungszeichen",
     "Xenharmonic"
@@ -29,5 +34,6 @@
   },
   "files.associations": {
     "*.lock": "yaml"
-  }
+  },
+  "git.alwaysSignOff": true
 }

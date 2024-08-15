@@ -145,7 +145,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
         semitonesDelta: semitonesDelta ?? this.semitonesDelta,
       );
 
-  /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].
+  /// The roman numeral of this [ScaleDegree] based on [ordinal].
   ///
   /// Example:
   /// ```dart

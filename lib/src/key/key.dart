@@ -37,7 +37,7 @@ final class Key implements Comparable<Key> {
   /// ```
   Key get relative => Key(
         note.transposeBy(
-          Interval.m3.descending(isDescending: mode == TonalMode.major),
+          Interval.m3.descending(mode == TonalMode.major),
         ),
         mode.parallel,
       );

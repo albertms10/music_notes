@@ -7,9 +7,9 @@ void main() {
   group('PitchClass', () {
     group('constructor', () {
       test('creates a new PitchClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(-2), PitchClass.aSharp);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(13), PitchClass.cSharp);
       });
     });

@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart' show UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
-import '../class_mixin.dart';
+import '../enharmonic.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../music.dart';
@@ -231,6 +231,19 @@ final class ScalePattern {
     Interval.m2,
   ]);
 
+  /// See [Double harmonic scale](https://en.wikipedia.org/wiki/Double_harmonic_scale).
+  ///
+  /// ![C Double harmonic scale](https://upload.wikimedia.org/score/r/f/rf4xfu7bhu0k9n0ccidte6yjngjswnm/rf4xfu7b.png).
+  static const doubleHarmonicMajor = ScalePattern([
+    Interval.m2,
+    Interval.A2,
+    Interval.m2,
+    Interval.M2,
+    Interval.m2,
+    Interval.A2,
+    Interval.m2,
+  ]);
+
   /// Creates a new [ScalePattern] from the given [chordPattern].
   ///
   /// Example:
@@ -256,8 +269,6 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// extension on int { int get b => int.parse(toString(), radix: 2); }
-  ///
   /// ScalePattern.fromBinary(101010110101.b) == ScalePattern.major
   /// ScalePattern.fromBinary(111111111111.b) == ScalePattern.chromatic
   /// ScalePattern.fromBinary(1010010101.b) == ScalePattern.majorPentatonic
@@ -267,51 +278,48 @@ final class ScalePattern {
   factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
-    int bitAt(int sequence, int index) => sequence & 1 << index;
-
     final degrees = [
-      for (int i = 0; i < chromaticDivisions; i++)
-        if (bitAt(sequence, i) != 0) PitchClass(i),
+      for (var i = 0; i < chromaticDivisions; i++)
+        if (sequence.bitAt(i) != 0) PitchClass(i),
       PitchClass.c,
     ];
     final descendingDegrees = descendingSequence == null
         ? null
         : [
             PitchClass.c,
-            for (int i = chromaticDivisions - 1; i >= 0; i--)
-              if (bitAt(descendingSequence, i) != 0) PitchClass(i),
+            for (var i = chromaticDivisions - 1; i >= 0; i--)
+              if (descendingSequence.bitAt(i) != 0) PitchClass(i),
           ];
 
     return Scale(degrees, descendingDegrees).pattern;
   }
 
-  /// Returns the binary representation of this [ScalePattern].
+  /// The binary representation of this [ScalePattern].
   ///
   /// This method and [ScalePattern.fromBinary] are inverses of each other.
   ///
   /// Example:
   /// ```dart
-  /// extension on int { int get b => int.parse(toString(), radix: 2); }
-  ///
   /// ScalePattern.major.toBinary() == (101010110101.b, null)
   /// ScalePattern.chromatic.toBinary() == (111111111111.b, null)
   /// ScalePattern.majorPentatonic.toBinary() == (1010010101.b, null)
   /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
-    int toBit(int sequence, Scalable<PitchClass> scalable) =>
-        sequence | 1 << scalable.semitones;
-
     final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, toBit);
+    final sequence = scale.degrees.fold(0, _setBit);
     final cachedDescending = scale.descendingDegrees;
     final descendingSequence =
         cachedDescending.reversed.isEnharmonicWith(scale.degrees)
             ? null
-            : cachedDescending.fold(0, toBit);
+            : cachedDescending.fold(0, _setBit);
 
     return (sequence, descendingSequence);
   }
+
+  /// Sets the bit from [sequence] at [scalable] semitones.
+  static int _setBit(int sequence, Scalable<PitchClass> scalable) =>
+      sequence.setBitAt(scalable.semitones);
 
   /// The length of this [ScalePattern].
   ///
@@ -456,6 +464,7 @@ final class ScalePattern {
         majorPentatonic => 'Major pentatonic',
         minorPentatonic => 'Minor pentatonic',
         octatonic => 'Octatonic',
+        doubleHarmonicMajor => 'Double harmonic major',
         _ => null,
       };
 
@@ -479,4 +488,45 @@ final class ScalePattern {
             ? Object.hashAll(_descendingIntervalSteps.toClass())
             : null,
       );
+}
+
+extension _BinarySequence on int {
+  /// The value of the bit at the specified [index].
+  ///
+  /// This method checks whether the bit at the given [index]
+  /// is set (1) or not (0).
+  /// It uses a bitwise AND operation with a mask `1 << index`
+  /// to isolate the bit.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.bitAt(0) == 0000.b // 0
+  /// 1010.b.bitAt(1) == 0010.b // 2
+  /// 1010.b.bitAt(2) == 0000.b // 0
+  /// 1010.b.bitAt(3) == 1000.b // 8
+  /// ```
+  int bitAt(int index) => this & (1 << index);
+
+  /// Sets the bit at the specified [index] to 1 and returns the new integer.
+  ///
+  /// This method uses a bitwise OR operation with a mask `1 << index`
+  /// to set the specific bit at the given [index] to 1,
+  /// leaving all other bits unchanged.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.setBit(0) == 1011.b // 11
+  /// 1010.b.setBit(2) == 1110.b // 14
+  /// ```
+  int setBitAt(int index) => this | (1 << index);
+}
+
+/// A binary sequence int extension.
+extension BinarySequence on int {
+  /// This [int] as a binary integer.
+  int get b => int.parse(toString(), radix: 2);
 }

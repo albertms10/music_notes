@@ -11,7 +11,7 @@ void main() {
         expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
       });
 
-      test('parses source as a ClosestPitch and return its value', () {
+      test('parses source as a ClosestPitch', () {
         expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
         expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
         expect(ClosestPitch.parse('G-0-0.0'), ClosestPitch(Note.g.inOctave(0)));
@@ -60,11 +60,43 @@ void main() {
       test('returns the same Frequency after Frequency.closestPitch()', () {
         const frequency = Frequency(415);
         expect(frequency.closestPitch().frequency(), frequency);
+
+        const temperature = Celsius(18);
+        expect(
+          frequency
+              .closestPitch(temperature: temperature)
+              .frequency(temperature: temperature),
+          frequency,
+        );
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('respells this ClosestPitch to the simplest expression', () {
+        expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
+        expect(
+          ClosestPitch.parse('C#2+16').respelledSimple.toString(),
+          'D♭2+16',
+        );
+        expect(
+          ClosestPitch.parse('Bb3+68').respelledSimple.toString(),
+          'B3-32',
+        );
+        expect(
+          ClosestPitch.parse('F#5-152').respelledSimple.toString(),
+          'E5+48',
+        );
       });
     });
 
     group('.toString()', () {
       test('returns the string representation of this ClosestPitch', () {
+        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A-3');
+        expect(
+          ClosestPitch(Note.f.sharp.inOctave(6), cents: const Cent(0.4))
+              .toString(),
+          'F♯6',
+        );
         expect(
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.456)).toString(),
           'A4+3',
@@ -74,15 +106,45 @@ void main() {
               .toString(),
           'D♭3-29',
         );
+      });
+    });
+
+    group('operator +()', () {
+      test('adds Cents to this ClosestPitch', () {
         expect(
-          Note.c
-              .inOctave(1)
-              .frequency()
-              .harmonics(upToIndex: 15)
-              .closestPitches
-              .toString(),
-          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, '
-          'D4+4, E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(12)) +
+              const Cent(16),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(28)),
+        );
+        expect(
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(12)) +
+              const Cent(-16),
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(-4)),
+        );
+        expect(
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-40)) +
+              const Cent(-24),
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-64)),
+        );
+      });
+    });
+
+    group('operator -()', () {
+      test('subtracts Cents from this ClosestPitch', () {
+        expect(
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(12)) -
+              const Cent(16),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(-4)),
+        );
+        expect(
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(12)) -
+              const Cent(-16),
+          ClosestPitch(Note.b.flat.inOctave(3), cents: const Cent(28)),
+        );
+        expect(
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-40)) -
+              const Cent(24),
+          ClosestPitch(Note.g.sharp.inOctave(2), cents: const Cent(-64)),
         );
       });
     });
