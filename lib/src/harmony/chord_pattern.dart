@@ -190,8 +190,7 @@ class ChordPattern with Chordable<ChordPattern> {
     return '?';
   }
 
-  /// Returns the [Interval] from [intervals] that matches the given [size], if
-  /// any.
+  /// Returns the [Interval] from [intervals] at the given [size], if any.
   ///
   /// Example:
   /// ```dart
@@ -200,7 +199,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.minorTriad.add7().size(7) == Interval.m7
   /// ChordPattern.augmentedTriad.size(9) == null
   /// ```
-  Interval? size(int size) =>
+  Interval? at(int size) =>
       intervals.firstWhereOrNull((interval) => interval.size == size);
 
   /// Returns the symbol of this [ChordPattern].
@@ -211,7 +210,7 @@ class ChordPattern with Chordable<ChordPattern> {
     if (isMinor) buffer.write('min');
 
     if (isDiminished) {
-      final seventh = size(7);
+      final seventh = at(7);
       if (seventh != null) {
         buffer.write(
           switch (seventh.quality) {
