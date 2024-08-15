@@ -571,3 +571,15 @@ final class RomanceNoteNotation extends NoteNotation {
         TonalMode.minor => 'minore',
       };
 }
+
+/// A list of notes extension.
+extension Notes on List<Note> {
+  /// Flattens all notes on this [List].
+  List<Note> get flat => map((note) => note.flat).toList();
+
+  /// Sharpens all notes on this [List].
+  List<Note> get sharp => map((note) => note.sharp).toList();
+
+  /// Makes all notes on this [List] natural.
+  List<Note> get natural => map((note) => note.natural).toList();
+}
