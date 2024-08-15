@@ -78,7 +78,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature([Note.f, Note.b.flat]).clean == KeySignature([Note.b.flat])
   ///
   /// (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3)).clean
-  ///   == KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp])
+  ///   == KeySignature([Note.f, Note.c, Note.g].sharp)
   /// ```
   KeySignature get clean =>
       KeySignature(_notes.where((note) => !note.accidental.isNatural).toList());

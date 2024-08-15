@@ -846,6 +846,38 @@ void main() {
       });
     });
   });
+
+  group('Notes', () {
+    group('.flat', () {
+      test('flattens all notes in this list', () {
+        expect(const <Note>[].flat, const <Note>[]);
+        expect(
+          [Note.a, Note.b.flat, Note.c.sharp, Note.d.sharp.sharp].flat,
+          [Note.a.flat, Note.b.flat.flat, Note.c, Note.d.sharp],
+        );
+      });
+    });
+
+    group('.sharp', () {
+      test('sharpens all notes in this list', () {
+        expect(const <Note>[].sharp, const <Note>[]);
+        expect(
+          [Note.g, Note.b.flat, Note.a.sharp, Note.b.flat.flat].sharp,
+          [Note.g.sharp, Note.b, Note.a.sharp.sharp, Note.b.flat],
+        );
+      });
+    });
+
+    group('.natural', () {
+      test('makes all notes in this list natural', () {
+        expect(const <Note>[].natural, const <Note>[]);
+        expect(
+          [Note.a, Note.b.flat, Note.c.sharp, Note.f.flat.flat].natural,
+          [Note.a, Note.b, Note.c, Note.f],
+        );
+      });
+    });
+  });
 }
 
 final class _SubNoteNotation extends NoteNotation {
