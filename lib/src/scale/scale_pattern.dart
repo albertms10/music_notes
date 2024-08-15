@@ -307,15 +307,19 @@ final class ScalePattern {
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
     final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, BinarySequence.bitFrom);
+    final sequence = scale.degrees.fold(0, _setBit);
     final cachedDescending = scale.descendingDegrees;
     final descendingSequence =
         cachedDescending.reversed.isEnharmonicWith(scale.degrees)
             ? null
-            : cachedDescending.fold(0, BinarySequence.bitFrom);
+            : cachedDescending.fold(0, _setBit);
 
     return (sequence, descendingSequence);
   }
+
+  /// Sets the bit from [sequence] at [scalable] semitones.
+  static int _setBit(int sequence, Scalable<PitchClass> scalable) =>
+      sequence.setBitAt(scalable.semitones);
 
   /// The length of this [ScalePattern].
   ///
@@ -486,15 +490,43 @@ final class ScalePattern {
       );
 }
 
+extension _BinarySequence on int {
+  /// The value of the bit at the specified [index].
+  ///
+  /// This method checks whether the bit at the given [index]
+  /// is set (1) or not (0).
+  /// It uses a bitwise AND operation with a mask `1 << index`
+  /// to isolate the bit.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.bitAt(0) == 0000.b // 0
+  /// 1010.b.bitAt(1) == 0010.b // 2
+  /// 1010.b.bitAt(2) == 0000.b // 0
+  /// 1010.b.bitAt(3) == 1000.b // 8
+  /// ```
+  int bitAt(int index) => this & (1 << index);
+
+  /// Sets the bit at the specified [index] to 1 and returns the new integer.
+  ///
+  /// This method uses a bitwise OR operation with a mask `1 << index`
+  /// to set the specific bit at the given [index] to 1,
+  /// leaving all other bits unchanged.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.setBit(0) == 1011.b // 11
+  /// 1010.b.setBit(2) == 1110.b // 14
+  /// ```
+  int setBitAt(int index) => this | (1 << index);
+}
+
 /// A binary sequence int extension.
 extension BinarySequence on int {
-  /// The bit at [index].
-  int bitAt(int index) => this & 1 << index;
-
-  /// The bit from [sequence] and [scalable] semitones.
-  static int bitFrom(int sequence, Scalable<PitchClass> scalable) =>
-      sequence | 1 << scalable.semitones;
-
   /// This [int] as a binary integer.
   int get b => int.parse(toString(), radix: 2);
 }
