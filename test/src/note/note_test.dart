@@ -341,9 +341,9 @@ void main() {
       );
     });
 
-    group('.circleOfFifths()', () {
-      test('returns the circle of fifths starting from this Note', () {
-        var (:sharps, :flats) = Note.c.circleOfFifths();
+    group('.splitCircleOfFifths()', () {
+      test('returns the split circle of fifths from this Note', () {
+        var (:sharps, :flats) = Note.c.splitCircleOfFifths();
         expect(
           sharps,
           [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
@@ -357,7 +357,7 @@ void main() {
           Note.g.flat,
         ]);
 
-        (:sharps, :flats) = Note.a.circleOfFifths(distance: 7);
+        (:sharps, :flats) = Note.a.splitCircleOfFifths(distance: 7);
         expect(
           sharps,
           [
@@ -385,9 +385,9 @@ void main() {
       });
     });
 
-    group('.flatCircleOfFifths()', () {
-      test('returns the flattened version of the circle of fifths', () {
-        expect(Note.c.flatCircleOfFifths(), [
+    group('.circleOfFifths()', () {
+      test('returns the continuous circle of fifths from this Note', () {
+        expect(Note.c.circleOfFifths(), [
           Note.g.flat,
           Note.d.flat,
           Note.a.flat,
@@ -402,7 +402,7 @@ void main() {
           Note.b,
           Note.f.sharp,
         ]);
-        expect(Note.a.flatCircleOfFifths(distance: 7), [
+        expect(Note.a.circleOfFifths(distance: 7), [
           Note.a.flat,
           Note.e.flat,
           Note.b.flat,
@@ -419,7 +419,7 @@ void main() {
           Note.d.sharp,
           Note.a.sharp,
         ]);
-        expect(Note.e.flat.flatCircleOfFifths(distance: 3), [
+        expect(Note.e.flat.circleOfFifths(distance: 3), [
           Note.g.flat,
           Note.d.flat,
           Note.a.flat,
@@ -429,7 +429,7 @@ void main() {
           Note.c,
         ]);
         expect(
-          Note.c.flatCircleOfFifths(distance: 3),
+          Note.c.circleOfFifths(distance: 3),
           ScalePattern.dorian
               .on(Note.c)
               .degrees
