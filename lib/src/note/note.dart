@@ -291,24 +291,25 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// The circle of fifths starting from this [Note] up to [distance].
+  /// The circle of fifths starting from this [Note] up to [distance],
+  /// split by `sharps` and `flats`.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.circleOfFifths(distance: 4) == (
+  /// Note.c.splitCircleOfFifths(distance: 4) == (
   ///   sharps: [Note.g, Note.d, Note.a, Note.e],
   ///   flats: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat],
   /// )
   ///
-  /// Note.a.circleOfFifths(distance: 4) == (
+  /// Note.a.splitCircleOfFifths(distance: 4) == (
   ///   sharps: [Note.e, Note.b, Note.f.sharp, Note.c.sharp],
   ///   flats: [Note.d, Note.g, Note.c, Note.f],
   /// )
   /// ```
   /// ---
   /// See also:
-  /// * [flatCircleOfFifths] for a flattened version of [circleOfFifths].
-  ({List<Note> sharps, List<Note> flats}) circleOfFifths({
+  /// * [circleOfFifths] for a continuous list version of [splitCircleOfFifths].
+  ({List<Note> sharps, List<Note> flats}) splitCircleOfFifths({
     int distance = chromaticDivisions ~/ 2,
   }) =>
       (
@@ -318,15 +319,15 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
             Interval.P5.circleFrom(this, distance: -distance).skip(1).toList(),
       );
 
-  /// The flattened version of [circleOfFifths] from this [Note] up to
-  /// [distance].
+  /// The continuous circle of fifths up to [distance] including this [Note],
+  /// from flats to sharps.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.flatCircleOfFifths(distance: 3)
+  /// Note.c.circleOfFifths(distance: 3)
   ///   == [Note.e.flat, Note.b.flat, Note.f, Note.c, Note.g, Note.d, Note.a]
   ///
-  /// Note.a.flatCircleOfFifths(distance: 3)
+  /// Note.a.circleOfFifths(distance: 3)
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   /// ```
   ///
@@ -334,16 +335,16 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// [compareByFifthsDistance] comparator:
   ///
   /// ```dart
-  /// Note.c.flatCircleOfFifths(distance: 3)
+  /// Note.c.circleOfFifths(distance: 3)
   ///   == ScalePattern.dorian.on(Note.c).degrees.skip(1)
   ///        .sorted(Note.compareByFifthsDistance)
   /// ```
   /// ---
   /// See also:
-  /// * [circleOfFifths] for a different representation of the same circle of
-  ///   fifths.
-  List<Note> flatCircleOfFifths({int distance = chromaticDivisions ~/ 2}) {
-    final (:flats, :sharps) = circleOfFifths(distance: distance);
+  /// * [splitCircleOfFifths] for a different representation of the same
+  ///   circle of fifths.
+  List<Note> circleOfFifths({int distance = chromaticDivisions ~/ 2}) {
+    final (:flats, :sharps) = splitCircleOfFifths(distance: distance);
 
     return [...flats.reversed, this, ...sharps];
   }

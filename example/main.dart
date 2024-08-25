@@ -124,9 +124,9 @@ void main() {
 
   Interval.P5.circleFrom(Note.c, distance: 12).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
-  Note.c.circleOfFifths();
+  Note.c.circleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
+  Note.c.splitCircleOfFifths();
   // (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
-  Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
 
   Note.d.circleOfFifthsDistance; // 2
   Note.a.flat.circleOfFifthsDistance; // -4
