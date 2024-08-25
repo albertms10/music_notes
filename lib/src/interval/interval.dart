@@ -335,8 +335,8 @@ final class Interval
   Interval respellBySize(Size size) =>
       Interval.fromSizeAndSemitones(size, semitones);
 
-  /// The iteration distance of this [Interval] between [scalable1] and
-  /// [scalable2], including all visited `notes`.
+  /// The distance between [from] and [to] in this [Interval],
+  /// including all visited `notes`.
   ///
   /// Example:
   /// ```dart
@@ -349,16 +349,18 @@ final class Interval
   /// Interval.P4.distanceBetween(Note.f, Note.a.flat)
   ///   == (3, notes: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat])
   /// ```
-  (int distance, {List<Scalable<T>> notes})
-      distanceBetween<T extends Scalable<T>>(T scalable1, T scalable2) {
+  (int distance, {List<T> notes}) distanceBetween<T extends Scalable<T>>(
+    T from,
+    T to,
+  ) {
     var distance = 0;
-    final ascendingNotes = [scalable1];
-    final descendingNotes = [scalable1];
+    final ascendingNotes = [from];
+    final descendingNotes = [from];
     while (true) {
-      if (ascendingNotes.last == scalable2) {
+      if (ascendingNotes.last == to) {
         return (distance, notes: ascendingNotes);
       }
-      if (descendingNotes.last == scalable2) {
+      if (descendingNotes.last == to) {
         return (-distance, notes: descendingNotes);
       }
       distance++;
