@@ -117,9 +117,9 @@ void main() {
   BaseNote.d.intervalSize(BaseNote.f); // 3
   BaseNote.a.intervalSize(BaseNote.e); // 5
 
-  Interval.P5.distanceBetween(Note.c, Note.d);
+  Interval.P5.circleDistance(from: Note.c, to: Note.d);
   // (2, notes: [Note.c, Note.g, Note.d])
-  Interval.P4.distanceBetween(Note.b.flat, Note.d);
+  Interval.P4.circleDistance(from: Note.b.flat, to: Note.d);
   // (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
 
   Interval.P5.circleFrom(Note.c, distance: 12).toList();
