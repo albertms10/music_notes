@@ -335,24 +335,24 @@ final class Interval
   Interval respellBySize(Size size) =>
       Interval.fromSizeAndSemitones(size, semitones);
 
-  /// The distance between [from] and [to] in this [Interval],
+  /// The circle distance between [from] and [to] in this [Interval],
   /// including all visited `notes`.
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.distanceBetween(Note.c, Note.d)
+  /// Interval.P5.distance(from: Note.c, to: Note.d)
   ///   == const (2, notes: [Note.c, Note.g, Note.d])
-  /// Interval.P5.distanceBetween(Note.a, Note.g)
+  /// Interval.P5.distance(from: Note.a, to: Note.g)
   ///   == const (-2, notes: [Note.a, Note.d, Note.g])
-  /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d)
+  /// (-Interval.P5).distance(from: Note.b.flat, to: Note.d)
   ///   == (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
-  /// Interval.P4.distanceBetween(Note.f, Note.a.flat)
+  /// Interval.P4.distance(from: Note.f, to: Note.a.flat)
   ///   == (3, notes: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat])
   /// ```
-  (int distance, {List<T> notes}) distanceBetween<T extends Scalable<T>>(
-    T from,
-    T to,
-  ) {
+  (int distance, {List<T> notes}) circleDistance<T extends Scalable<T>>({
+    required T from,
+    required T to,
+  }) {
     var distance = 0;
     final ascendingNotes = [from];
     final descendingNotes = [from];

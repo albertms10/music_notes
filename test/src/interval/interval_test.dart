@@ -414,10 +414,10 @@ void main() {
       });
     });
 
-    group('.distanceBetween()', () {
-      test('returns the distance between two Scalable instances', () {
+    group('.circleDistance()', () {
+      test('returns the circle distance between two Scalable instances', () {
         var (distance, notes: dynamic notes) =
-            Interval.P5.distanceBetween(Note.c, Note.b.flat.flat);
+            Interval.P5.circleDistance(from: Note.c, to: Note.b.flat.flat);
         expect(distance, -9);
         expect(notes, [
           Note.c,
@@ -432,12 +432,13 @@ void main() {
           Note.b.flat.flat,
         ]);
 
-        (distance, :notes) = Interval.P5.distanceBetween(Note.c, Note.b.flat);
+        (distance, :notes) =
+            Interval.P5.circleDistance(from: Note.c, to: Note.b.flat);
         expect(distance, -2);
         expect(notes, [Note.c, Note.f, Note.b.flat]);
 
-        (distance, :notes) =
-            Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp);
+        (distance, :notes) = Interval.P5
+            .circleDistance(from: PitchClass.d, to: PitchClass.gSharp);
         expect(distance, 6);
         expect(notes, const [
           PitchClass.d,
@@ -450,7 +451,7 @@ void main() {
         ]);
 
         (distance, :notes) =
-            Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp);
+            Interval.P5.circleDistance(from: Note.c, to: Note.f.sharp.sharp);
         expect(distance, 13);
         expect(notes, [
           Note.c,
@@ -469,8 +470,8 @@ void main() {
           Note.f.sharp.sharp,
         ]);
 
-        (distance, :notes) =
-            Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c);
+        (distance, :notes) = Interval.P4
+            .circleDistance(from: PitchClass.dSharp, to: PitchClass.c);
         expect(distance, -3);
         expect(
           notes,
@@ -482,16 +483,18 @@ void main() {
           ],
         );
 
-        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.c);
+        (distance, :notes) =
+            Interval.P4.circleDistance(from: Note.c, to: Note.c);
         expect(distance, 0);
         expect(notes, const [Note.c]);
 
-        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.f);
+        (distance, :notes) =
+            Interval.P4.circleDistance(from: Note.c, to: Note.f);
         expect(distance, 1);
         expect(notes, const [Note.c, Note.f]);
 
-        (distance, :notes) =
-            Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp);
+        (distance, :notes) = Interval.P4
+            .circleDistance(from: PitchClass.c, to: PitchClass.aSharp);
         expect(distance, 2);
         expect(notes, const [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });

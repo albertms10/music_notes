@@ -367,7 +367,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
   /// ```
   int fifthsDistanceWith(Note other) =>
-      Interval.P5.distanceBetween(this, other).$1;
+      Interval.P5.circleDistance(from: this, to: other).$1;
 
   /// The [Interval] between this [Note] and [other].
   ///
