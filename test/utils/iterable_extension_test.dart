@@ -37,5 +37,57 @@ void main() {
         );
       });
     });
+
+    group('.compact()', () {
+      test('returns this Iterable with ranges compacted', () {
+        expect(const <Note>[].compact(), const <List<Note>>[]);
+        expect(const [Note.c].compact(), const [(from: Note.c, to: Note.c)]);
+        expect(
+          const [Note.c, Note.d, Note.e, Note.g, Note.a, Note.b].compact(),
+          const [
+            (from: Note.c, to: Note.c),
+            (from: Note.d, to: Note.d),
+            (from: Note.e, to: Note.e),
+            (from: Note.g, to: Note.g),
+            (from: Note.a, to: Note.a),
+            (from: Note.b, to: Note.b),
+          ],
+        );
+        expect([Note.c, Note.c.sharp].compact(), [
+          (from: Note.c, to: Note.c.sharp),
+        ]);
+        expect([Note.c, Note.d.flat].compact(), [
+          (from: Note.c, to: Note.d.flat),
+        ]);
+        expect([Note.c, Note.d.flat].compact(inclusive: true), [
+          (from: Note.c, to: Note.d),
+        ]);
+        expect([Note.c, Note.d.flat, Note.d].compact(), [
+          (from: Note.c, to: Note.d),
+        ]);
+        expect([Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact(), [
+          (from: Note.c, to: Note.e.flat),
+          (from: Note.g, to: Note.g),
+        ]);
+        expect(
+            [
+              Note.c,
+              Note.d.flat,
+              Note.d,
+              Note.e.flat,
+              Note.f.sharp,
+              Note.a,
+              Note.b.flat,
+              Note.b,
+              Note.c,
+              Note.c.sharp,
+            ].compact(),
+            [
+              (from: Note.c, to: Note.e.flat),
+              (from: Note.f.sharp, to: Note.f.sharp),
+              (from: Note.a, to: Note.c.sharp),
+            ]);
+      });
+    });
   });
 }

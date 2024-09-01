@@ -71,9 +71,17 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
         Accidental.parse(source.length > 1 ? source.substring(1) : ''),
       );
 
+  /// Predicate to transpose this [Note] by ascending stepwise motion.
+  static Note stepwiseMotion(Note note) =>
+      note.transposeBy(Interval.m2).respelledSimple;
+
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
       a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
+
+  /// Enharmonic [Comparator] for [Note].
+  static int compareEnharmonically(Note a, Note b) =>
+      a.semitones.compareTo(b.semitones);
 
   /// [Comparator] for [Note]s by closest distance.
   static int compareByClosestDistance(Note a, Note b) => compareMultiple([
@@ -88,7 +96,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
       ]);
 
   static List<int Function()> _comparators(Note a, Note b) => [
-        () => a.semitones.compareTo(b.semitones),
+        () => compareEnharmonically(a, b),
         () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
       ];
 
