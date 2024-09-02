@@ -104,14 +104,14 @@ void main() {
         expect(
           skip:
               'TODO(albertms10): should stop when the loop gets out of range.',
-          (from: Note.c, to: Note.a)
+          () => (from: Note.c, to: Note.a)
               .explode(nextValue: (note) => note.transposeBy(Interval.P4)),
           const [Note.c, Note.f],
         );
         expect(
           skip:
               'TODO(albertms10): should stop when the loop gets out of range.',
-          (from: Note.c.inOctave(3), to: Note.b.flat.inOctave(3))
+          () => (from: Note.c.inOctave(3), to: Note.b.flat.inOctave(3))
               .explode(nextValue: (note) => note.transposeBy(Interval.P5)),
           [Note.c.inOctave(3), Note.g.inOctave(3)],
         );
