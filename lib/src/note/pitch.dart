@@ -402,13 +402,13 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   Interval interval(Pitch other) {
-    final deltaOrdinal = other.note.baseNote.ordinal - note.baseNote.ordinal;
-    final deltaSize = deltaOrdinal + 7 * (other.octave - octave);
+    final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
+    final sizeDelta = ordinalDelta + 7 * (other.octave - octave);
 
     return Interval.fromSizeAndSemitones(
-      Size(deltaSize.abs() + 1),
-      (other.semitones - semitones).abs(),
-    ).descending(deltaSize < 0);
+      Size(sizeDelta.abs() + 1),
+      difference(other).abs(),
+    ).descending(sizeDelta < 0);
   }
 
   /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
