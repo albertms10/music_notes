@@ -497,7 +497,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('returns this Pitch with the simplest Accidental spelling', () {
+      test('returns the simplest spelling for this Pitch', () {
         expect(Note.c.inOctave(4).respelledSimple, Note.c.inOctave(4));
         expect(Note.b.inOctave(5).respelledSimple, Note.b.inOctave(5));
         expect(

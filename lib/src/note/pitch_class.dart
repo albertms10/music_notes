@@ -212,6 +212,15 @@ final class PitchClass extends Scalable<PitchClass>
   @override
   int difference(PitchClass other) => super.difference(other);
 
+  @override
+  PitchClass get respelledUpwards => this;
+
+  @override
+  PitchClass get respelledDownwards => this;
+
+  @override
+  PitchClass get respelledSimple => this;
+
   /// A pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].
   ///

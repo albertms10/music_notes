@@ -409,7 +409,114 @@ void main() {
         expect((-Interval.d5).respellBySize(-Size.fourth), -Interval.A4);
         expect(
           (-Interval.P4).respellBySize(-Size.fifth),
-          const Interval.perfect(Size(-5), PerfectQuality.doublyDiminished),
+          Interval.perfect(-Size.fifth, PerfectQuality.doublyDiminished),
+        );
+      });
+    });
+
+    group('.respelledUpwards', () {
+      test('returns this Interval respelled upwards', () {
+        expect(Interval.A4.respelledUpwards, Interval.d5);
+        expect(
+          Interval.d5.respelledUpwards,
+          const Interval.imperfect(
+            Size.sixth,
+            ImperfectQuality.doublyDiminished,
+          ),
+        );
+        expect(Interval.M2.respelledUpwards, Interval.d3);
+        expect(Interval.M3.respelledUpwards, Interval.d4);
+        expect(Interval.P1.respelledUpwards, Interval.d2);
+        expect(
+          Interval.m2.respelledUpwards,
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyDiminished,
+          ),
+        );
+
+        expect((-Interval.M3).respelledUpwards, -Interval.d4);
+        expect(
+          (-Interval.d5).respelledUpwards,
+          Interval.imperfect(-Size.sixth, ImperfectQuality.doublyDiminished),
+        );
+        expect(
+          (-Interval.P4).respelledUpwards,
+          Interval.perfect(-Size.fifth, PerfectQuality.doublyDiminished),
+        );
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('throws an assertion error when the operation is invalid', () {
+        expect(
+          () => Interval.P1.respelledDownwards,
+          throwsA(isA<AssertionError>()),
+        );
+      });
+
+      test('returns this Interval respelled downwards', () {
+        expect(
+          Interval.A4.respelledDownwards,
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyAugmented,
+          ),
+        );
+        expect(Interval.d5.respelledDownwards, Interval.A4);
+        expect(
+          Interval.M2.respelledDownwards,
+          const Interval.perfect(
+            Size.unison,
+            PerfectQuality.doublyAugmented,
+          ),
+        );
+        expect(
+          Interval.M3.respelledDownwards,
+          const Interval.imperfect(
+            Size.second,
+            ImperfectQuality.doublyAugmented,
+          ),
+        );
+        expect(Interval.m2.respelledDownwards, Interval.A1);
+
+        expect(
+          (-Interval.M3).respelledDownwards,
+          Interval.imperfect(-Size.second, ImperfectQuality.doublyAugmented),
+        );
+        expect((-Interval.d5).respelledDownwards, -Interval.A4);
+        expect((-Interval.P4).respelledDownwards, -Interval.A3);
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('returns the simplest spelling for this Interval', () {
+        expect(Interval.M2.respelledSimple, Interval.M2);
+        expect(Interval.A4.respelledSimple, Interval.A4);
+        expect(Interval.d5.respelledSimple, Interval.A4);
+        expect(
+          const Interval.imperfect(Size.sixth, ImperfectQuality.triplyAugmented)
+              .respelledSimple,
+          Interval.P8,
+        );
+        expect(
+          const Interval.perfect(Size.fifth, PerfectQuality.triplyDiminished)
+              .respelledSimple,
+          Interval.M3,
+        );
+
+        expect((-Interval.P1).respelledSimple, Interval.P1);
+        expect((-Interval.A4).respelledSimple, -Interval.A4);
+        expect((-Interval.d5).respelledSimple, -Interval.A4);
+        expect(
+          Interval.imperfect(-Size.seventh, const ImperfectQuality(-4))
+              .respelledSimple,
+          -Interval.A4,
+        );
+        expect(
+          Interval.perfect(-Size.fourth, PerfectQuality.doublyAugmented)
+              .respelledSimple,
+          -Interval.P5,
         );
       });
     });

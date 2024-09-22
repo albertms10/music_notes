@@ -2,11 +2,12 @@ import 'enharmonic.dart';
 import 'interval/interval.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
+import 'respellable.dart';
 import 'transposable.dart';
 
 /// An interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>
-    with Enharmonic<PitchClass>
+    with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();

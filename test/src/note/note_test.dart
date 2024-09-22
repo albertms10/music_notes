@@ -309,7 +309,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('returns this Note with the simplest Accidental spelling', () {
+      test('returns the simplest spelling for this Note', () {
         expect(Note.c.respelledSimple, Note.c);
         expect(Note.b.respelledSimple, Note.b);
         expect(Note.d.flat.respelledSimple, Note.d.flat);
@@ -561,7 +561,7 @@ void main() {
         expect(Note.c.interval(Note.b), Interval.M7);
         expect(Note.b.interval(Note.a.sharp), Interval.M7);
 
-        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.M7);
+        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.A7);
       });
     });
 
