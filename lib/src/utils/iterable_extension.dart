@@ -31,11 +31,11 @@ extension IterableExtension<E> on Iterable<E> {
             : closest;
       });
 
-  Iterable<Range<E>> _compact({
+  List<Range<E>> _compact({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
   }) {
-    if (isEmpty) return const Iterable.empty();
+    if (isEmpty) return const [];
 
     var start = first;
     late E b;
@@ -59,8 +59,8 @@ extension IterableExtension<E> on Iterable<E> {
     return (ranges..add((from: start, to: nextValue(b)))).toList();
   }
 
-  /// Compacts this [Iterable] into a collection of [Range]s, based on
-  /// [nextValue] and [compare].
+  /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]
+  /// and [compare].
   ///
   /// Examples:
   /// ```dart
@@ -72,7 +72,7 @@ extension IterableExtension<E> on Iterable<E> {
   /// ---
   /// See also:
   /// * [RangeExtension.explode] for the inverse operation.
-  Iterable<Range<E>> compact({
+  List<Range<E>> compact({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
   }) =>
@@ -81,8 +81,8 @@ extension IterableExtension<E> on Iterable<E> {
 
 /// A Scalable Iterable extension.
 extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
-  /// Compacts this [Iterable] into a collection of [Range]s, based on
-  /// [nextValue] and [compare].
+  /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]
+  /// and [compare].
   ///
   /// Example:
   /// ```dart
@@ -94,7 +94,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// ---
   /// See also:
   /// * [RangeExtension.explode] for the inverse operation.
-  Iterable<Range<E>> compact({
+  List<Range<E>> compact({
     E Function(E current)? nextValue,
     int Function(E a, E b)? compare,
   }) =>
