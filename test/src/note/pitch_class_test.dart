@@ -301,6 +301,27 @@ void main() {
       });
     });
 
+    group('.respelledUpwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.c.respelledUpwards, PitchClass.c);
+        expect(PitchClass.fSharp.respelledUpwards, PitchClass.fSharp);
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.d.respelledDownwards, PitchClass.d);
+        expect(PitchClass.aSharp.respelledDownwards, PitchClass.aSharp);
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.e.respelledSimple, PitchClass.e);
+        expect(PitchClass.dSharp.respelledSimple, PitchClass.dSharp);
+      });
+    });
+
     group('.transposeBy()', () {
       test('transposes this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
