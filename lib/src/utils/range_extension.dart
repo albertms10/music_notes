@@ -33,24 +33,17 @@ extension RangeExtension<E> on Range<E> {
       _explode(nextValue: nextValue, compare: compare);
 }
 
-/// A Comparable range record extension.
-extension ComparableRangeExtension<E extends Comparable<E>> on Range<E> {
+/// A Scalable range record extension.
+extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// Fills this range of values between `from` and `to`.
   List<E> explode({
-    required E Function(E current) nextValue,
-    int Function(E a, E b) compare = Comparable.compare,
+    E Function(E current)? nextValue,
+    int Function(E a, E b)? compare,
   }) =>
-      _explode(nextValue: nextValue, compare: compare);
-}
-
-/// A Comparable range record extension.
-extension NoteRangeExtension on Range<Note> {
-  /// Fills this range of values between `from` and `to`.
-  List<Note> explode({
-    Note Function(Note current) nextValue = Note.chromaticMotion,
-    int Function(Note a, Note b) compare = Note.compareEnharmonically,
-  }) =>
-      _explode(nextValue: nextValue, compare: compare);
+      _explode(
+        nextValue: nextValue ?? Scalable.chromaticMotion,
+        compare: compare ?? Scalable.compareEnharmonically,
+      );
 }
 
 /// A compressed range extension.

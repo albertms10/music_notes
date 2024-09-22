@@ -1,4 +1,4 @@
-import '../note/note.dart';
+import '../scalable.dart';
 import 'range_extension.dart';
 
 /// An Iterable extension.
@@ -109,28 +109,20 @@ extension IterableExtension<E> on Iterable<E> {
       _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
 }
 
-/// A Comparable Iterable extension.
-extension ComparableIterableExtension<E extends Comparable<E>> on Iterable<E> {
+/// A Scalable Iterable extension.
+extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// Compacts this [Iterable] into a collection of [Range]s, based on
   /// [nextValue], [compare] and [inclusive].
   Iterable<Range<E>> compact({
-    required E Function(E current) nextValue,
-    int Function(E a, E b) compare = Comparable.compare,
+    E Function(E current)? nextValue,
+    int Function(E a, E b)? compare,
     bool inclusive = false,
   }) =>
-      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
-}
-
-/// A Note Iterable extension.
-extension NoteIterableExtension on Iterable<Note> {
-  /// Compacts this [Iterable] into a collection of [Range]s, based on
-  /// [nextValue], [compare] and [inclusive].
-  Iterable<Range<Note>> compact({
-    Note Function(Note current) nextValue = Note.chromaticMotion,
-    int Function(Note a, Note b) compare = Note.compareEnharmonically,
-    bool inclusive = false,
-  }) =>
-      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
+      _compact(
+        nextValue: nextValue ?? Scalable.chromaticMotion,
+        compare: compare ?? Scalable.compareEnharmonically,
+        inclusive: inclusive,
+      );
 }
 
 /// Compares multiple comparators.

@@ -103,6 +103,33 @@ void main() {
               (from: Note.f.sharp, to: Note.f.sharp),
               (from: Note.a, to: Note.c.sharp),
             ]);
+
+        expect([Note.c.inOctave(2)].compact(), [
+          (from: Note.c.inOctave(2), to: Note.c.inOctave(2)),
+        ]);
+        expect([Note.c.inOctave(4), Note.c.sharp.inOctave(4)].compact(), [
+          (from: Note.c.inOctave(4), to: Note.c.sharp.inOctave(4)),
+        ]);
+        expect(
+            [
+              Note.c.inOctave(4),
+              Note.d.flat.inOctave(4),
+              Note.d.inOctave(4),
+              Note.d.sharp.inOctave(4),
+              Note.e.inOctave(4),
+              Note.g.flat.inOctave(4),
+              Note.g.inOctave(4),
+              Note.g.sharp.inOctave(4),
+              Note.b.flat.inOctave(4),
+              Note.b.inOctave(4),
+              Note.b.sharp.inOctave(4),
+              Note.d.flat.inOctave(5),
+            ].compact(),
+            [
+              (from: Note.c.inOctave(4), to: Note.e.inOctave(4)),
+              (from: Note.g.flat.inOctave(4), to: Note.g.sharp.inOctave(4)),
+              (from: Note.b.flat.inOctave(4), to: Note.d.flat.inOctave(5)),
+            ]);
       });
     });
   });

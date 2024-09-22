@@ -12,6 +12,14 @@ abstract class Scalable<T extends Scalable<T>>
   /// Creates a new [Scalable].
   const Scalable();
 
+  /// Predicate to transpose this [Scalable] by ascending chromatic motion.
+  static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
+      scalable.transposeBy(Interval.m2).respelledSimple;
+
+  /// Enharmonic [Comparator] for [Scalable].
+  static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
+      a.semitones.compareTo(b.semitones);
+
   /// Creates a new [PitchClass] from [semitones].
   ///
   /// Example:
