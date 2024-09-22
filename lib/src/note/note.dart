@@ -91,7 +91,7 @@ final class Note extends Scalable<Note>
       ]);
 
   static List<int Function()> _comparators(Note a, Note b) => [
-        () => a.semitones.compareTo(b.semitones),
+        () => Scalable.compareEnharmonically(a, b),
         () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
       ];
 
