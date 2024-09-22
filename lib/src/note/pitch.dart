@@ -139,8 +139,8 @@ final class Pitch extends Scalable<Pitch>
   static int octaveFromSemitones(int semitones) =>
       (semitones / chromaticDivisions).floor();
 
-  /// Predicate to transpose this [Pitch] by ascending stepwise motion.
-  static Pitch stepwiseMotion(Pitch pitch) =>
+  /// Predicate to transpose this [Pitch] by ascending chromatic motion.
+  static Pitch chromaticMotion(Pitch pitch) =>
       pitch.transposeBy(Interval.m2).respelledSimple;
 
   /// The number of semitones of this [Pitch] from C0 (root).

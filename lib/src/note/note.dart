@@ -71,8 +71,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
         Accidental.parse(source.length > 1 ? source.substring(1) : ''),
       );
 
-  /// Predicate to transpose this [Note] by ascending stepwise motion.
-  static Note stepwiseMotion(Note note) =>
+  /// Predicate to transpose this [Note] by ascending chromatic motion.
+  static Note chromaticMotion(Note note) =>
       note.transposeBy(Interval.m2).respelledSimple;
 
   /// [Comparator] for [Note]s by fifths distance.

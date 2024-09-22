@@ -8,7 +8,7 @@ void main() {
       test('throws an assertion error when arguments are incorrect', () {
         expect(
           () => (from: Note.c.inOctave(4), to: Note.b.inOctave(3))
-              .explode(nextValue: Pitch.stepwiseMotion),
+              .explode(nextValue: Pitch.chromaticMotion),
           throwsA(isA<AssertionError>()),
         );
       });
@@ -71,7 +71,7 @@ void main() {
 
         expect(
           (from: Note.c.inOctave(3), to: Note.g.inOctave(5))
-              .explode(nextValue: Pitch.stepwiseMotion),
+              .explode(nextValue: Pitch.chromaticMotion),
           [
             Note.c.inOctave(3),
             Note.d.flat.inOctave(3),

@@ -126,7 +126,7 @@ extension NoteIterableExtension on Iterable<Note> {
   /// Compacts this [Iterable] into a collection of [Range]s, based on
   /// [nextValue], [compare] and [inclusive].
   Iterable<Range<Note>> compact({
-    Note Function(Note current) nextValue = Note.stepwiseMotion,
+    Note Function(Note current) nextValue = Note.chromaticMotion,
     int Function(Note a, Note b) compare = Note.compareEnharmonically,
     bool inclusive = false,
   }) =>

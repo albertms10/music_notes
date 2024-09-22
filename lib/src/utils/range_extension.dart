@@ -47,7 +47,7 @@ extension ComparableRangeExtension<E extends Comparable<E>> on Range<E> {
 extension NoteRangeExtension on Range<Note> {
   /// Fills this range of values between `from` and `to`.
   List<Note> explode({
-    Note Function(Note current) nextValue = Note.stepwiseMotion,
+    Note Function(Note current) nextValue = Note.chromaticMotion,
     int Function(Note a, Note b) compare = Note.compareEnharmonically,
   }) =>
       _explode(nextValue: nextValue, compare: compare);
