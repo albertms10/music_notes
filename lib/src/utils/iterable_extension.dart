@@ -106,11 +106,7 @@ extension IterableExtension<E> on Iterable<E> {
     required int Function(E a, E b) compare,
     bool inclusive = false,
   }) =>
-      _compact(
-        nextValue: nextValue,
-        compare: compare,
-        inclusive: inclusive,
-      );
+      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
 }
 
 /// A Comparable Iterable extension.
@@ -119,14 +115,10 @@ extension ComparableIterableExtension<E extends Comparable<E>> on Iterable<E> {
   /// [nextValue], [compare] and [inclusive].
   Iterable<Range<E>> compact({
     required E Function(E current) nextValue,
-    int Function(E a, E b)? compare,
+    int Function(E a, E b) compare = Comparable.compare,
     bool inclusive = false,
   }) =>
-      _compact(
-        nextValue: nextValue,
-        compare: compare ?? (a, b) => a.compareTo(b),
-        inclusive: inclusive,
-      );
+      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
 }
 
 /// A Note Iterable extension.
@@ -134,15 +126,11 @@ extension NoteIterableExtension on Iterable<Note> {
   /// Compacts this [Iterable] into a collection of [Range]s, based on
   /// [nextValue], [compare] and [inclusive].
   Iterable<Range<Note>> compact({
-    Note Function(Note current)? nextValue,
-    int Function(Note a, Note b)? compare,
+    Note Function(Note current) nextValue = Note.stepwiseMotion,
+    int Function(Note a, Note b) compare = Note.compareEnharmonically,
     bool inclusive = false,
   }) =>
-      _compact(
-        nextValue: nextValue ?? Note.stepwiseMotion,
-        compare: compare ?? Note.compareEnharmonically,
-        inclusive: inclusive,
-      );
+      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
 }
 
 /// Compares multiple comparators.

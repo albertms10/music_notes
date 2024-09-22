@@ -38,25 +38,19 @@ extension ComparableRangeExtension<E extends Comparable<E>> on Range<E> {
   /// Fills this range of values between `from` and `to`.
   List<E> explode({
     required E Function(E current) nextValue,
-    int Function(E a, E b)? compare,
+    int Function(E a, E b) compare = Comparable.compare,
   }) =>
-      _explode(
-        nextValue: nextValue,
-        compare: compare ?? (a, b) => a.compareTo(b),
-      );
+      _explode(nextValue: nextValue, compare: compare);
 }
 
 /// A Comparable range record extension.
 extension NoteRangeExtension on Range<Note> {
   /// Fills this range of values between `from` and `to`.
   List<Note> explode({
-    Note Function(Note current)? nextValue,
-    int Function(Note a, Note b)? compare,
+    Note Function(Note current) nextValue = Note.stepwiseMotion,
+    int Function(Note a, Note b) compare = Note.compareEnharmonically,
   }) =>
-      _explode(
-        nextValue: nextValue ?? Note.stepwiseMotion,
-        compare: compare ?? Note.compareEnharmonically,
-      );
+      _explode(nextValue: nextValue, compare: compare);
 }
 
 /// A compressed range extension.
