@@ -40,6 +40,22 @@ void main() {
 
     group('.compact()', () {
       test('returns this Iterable with ranges compacted', () {
+        expect(
+          const [1, 2, 3, 4, 5].compact(
+            nextValue: (current) => current + 1,
+            compare: Comparable.compare,
+          ),
+          const [(from: 1, to: 5)],
+        );
+        expect(
+          'abcdefxyz'.split('').compact(
+                nextValue: (current) =>
+                    String.fromCharCodes(current.codeUnits.map((a) => a + 1)),
+                compare: Comparable.compare,
+              ),
+          const [(from: 'a', to: 'f'), (from: 'x', to: 'z')],
+        );
+
         expect(const <Note>[].compact(), const <List<Note>>[]);
         expect(const [Note.c].compact(), const [(from: Note.c, to: Note.c)]);
         expect(
