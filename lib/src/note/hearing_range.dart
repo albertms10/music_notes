@@ -1,4 +1,6 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+
+import 'frequency.dart';
 
 /// A representation of a hearing range.
 ///
@@ -18,11 +20,10 @@ class HearingRange {
   static const human = HearingRange(min: Frequency(20), max: Frequency(20000));
 
   /// Whether [frequency] is audible in this [HearingRange].
-  bool isAudible(Frequency frequency) =>
-      frequency.hertz >= min.hertz && frequency.hertz <= max.hertz;
+  bool isAudibleAt(Frequency frequency) => frequency >= min && frequency <= max;
 
   @override
-  String toString() => '$min ≤ f ≤ $max';
+  String toString() => '${min.format()} ≤ f ≤ ${max.format()}';
 
   @override
   bool operator ==(Object other) =>

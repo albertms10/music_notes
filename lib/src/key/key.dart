@@ -1,4 +1,12 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../interval/interval.dart';
+import '../note/accidental.dart';
+import '../note/note.dart';
+import '../scale/scale.dart';
+import 'key_signature.dart';
+import 'mode.dart';
 
 /// A musical key or tonality.
 ///
@@ -20,8 +28,7 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
-  /// Returns the [TonalMode.major] or [TonalMode.minor] relative [Key]
-  /// of this [Key].
+  /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///
   /// Example:
   /// ```dart
@@ -30,13 +37,12 @@ final class Key implements Comparable<Key> {
   /// ```
   Key get relative => Key(
         note.transposeBy(
-          Interval.m3.descending(isDescending: mode == TonalMode.major),
+          Interval.m3.descending(mode == TonalMode.major),
         ),
-        mode.opposite,
+        mode.parallel,
       );
 
-  /// Returns the [TonalMode.major] or [TonalMode.minor] parallel [Key]
-  /// of this [Key].
+  /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///
   /// See [Parallel key](https://en.wikipedia.org/wiki/Parallel_key).
   ///
@@ -45,9 +51,9 @@ final class Key implements Comparable<Key> {
   /// Note.d.minor.parallel == Note.d.major
   /// Note.b.flat.major.parallel == Note.b.flat.minor
   /// ```
-  Key get parallel => Key(note, mode.opposite);
+  Key get parallel => Key(note, mode.parallel);
 
-  /// Returns the [KeySignature] of this [Key].
+  /// The [KeySignature] of this [Key].
   ///
   /// Example:
   /// ```dart
@@ -56,7 +62,7 @@ final class Key implements Comparable<Key> {
   /// Note.g.flat.major.signature == KeySignature.fromDistance(-6)
   /// ```
   KeySignature get signature => KeySignature.fromDistance(
-        KeySignature.empty.key(mode)!.note.fifthsDistanceWith(note),
+        KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
       );
 
   /// Whether this [Key] is theoretical, whose [signature] would have
@@ -72,7 +78,7 @@ final class Key implements Comparable<Key> {
   /// ```
   bool get isTheoretical => signature.distance!.abs() > 7;
 
-  /// Returns the scale notes of this [Key].
+  /// The scale notes of this [Key].
   ///
   /// Example:
   /// ```dart
@@ -84,6 +90,21 @@ final class Key implements Comparable<Key> {
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
+  /// The string representation of this [Key] based on [system].
+  ///
+  /// See [NoteNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.minor.toString() == 'C minor'
+  /// Note.e.flat.major.toString() == 'E♭ major'
+  ///
+  /// Note.c.major.toString(system: NoteNotation.romance) == 'Do maggiore'
+  /// Note.a.minor.toString(system: NoteNotation.romance) == 'La minore'
+  ///
+  /// Note.e.flat.major.toString(system: NoteNotation.german) == 'Es-dur'
+  /// Note.g.sharp.minor.toString(system: NoteNotation.german) == 'gis-moll'
+  /// ```
   @override
   String toString({NoteNotation system = NoteNotation.english}) =>
       system.key(this);

@@ -1,8 +1,32 @@
+import 'dart:collection' show UnmodifiableListView;
+
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Scale', () {
+    group('.degrees', () {
+      test('returns an unmodifiable collection', () {
+        expect(
+          ScalePattern.aeolian.on(Note.c).degrees,
+          isA<UnmodifiableListView<Note>>(),
+        );
+        expect(
+          ScalePattern.melodicMinor.on(Note.c).descendingDegrees,
+          isA<UnmodifiableListView<Note>>(),
+        );
+      });
+    });
+
+    group('.length', () {
+      test('returns the length of this Scale', () {
+        expect(ScalePattern.minorPentatonic.on(Note.f).length, 5);
+        expect(ScalePattern.major.on(Note.e).length, 7);
+        expect(ScalePattern.octatonic.on(Note.d.flat).length, 8);
+        expect(ScalePattern.chromatic.on(Note.c).length, 12);
+      });
+    });
+
     group('.pattern', () {
       test('returns the ScalePattern of this Scale', () {
         expect(ScalePattern.aeolian.on(Note.c).pattern, ScalePattern.aeolian);
@@ -194,6 +218,26 @@ void main() {
           Note.g.majorTriad,
         );
       });
+    });
+
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this Scale is enharmonically equivalent to other',
+        () {
+          expect(
+            const Scale([Note.c, Note.d, Note.f, Note.g]).isEnharmonicWith(
+              Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]),
+            ),
+            isTrue,
+          );
+          expect(
+            ScalePattern.chromatic.on(Note.d.flat).isEnharmonicWith(
+                  ScalePattern.chromatic.on(Note.b.sharp.sharp),
+                ),
+            isTrue,
+          );
+        },
+      );
     });
 
     group('.transposeBy()', () {

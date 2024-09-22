@@ -1,4 +1,10 @@
-part of '../../music_notes.dart';
+import 'package:collection/collection.dart'
+    show ListEquality, UnmodifiableListView;
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/quality.dart';
+import '../scale/scale.dart';
+import '../scale/scale_degree.dart';
 
 /// A harmonic function.
 ///
@@ -8,11 +14,13 @@ part of '../../music_notes.dart';
 /// * [ScaleDegree].
 @immutable
 class HarmonicFunction {
-  /// The scale degrees that define this [HarmonicFunction].
-  final List<ScaleDegree> scaleDegrees;
+  final List<ScaleDegree> _scaleDegrees;
 
-  /// Creates a new [HarmonicFunction] from [scaleDegrees].
-  const HarmonicFunction(this.scaleDegrees);
+  /// The scale degrees that define this [HarmonicFunction].
+  List<ScaleDegree> get scaleDegrees => UnmodifiableListView(_scaleDegrees);
+
+  /// Creates a new [HarmonicFunction] from [_scaleDegrees].
+  const HarmonicFunction(this._scaleDegrees);
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction([ScaleDegree.i]);
@@ -40,8 +48,23 @@ class HarmonicFunction {
   /// A VII degree [HarmonicFunction].
   static const vii = HarmonicFunction([ScaleDegree.vii]);
 
+  /// The string representation of this [HarmonicFunction] based on [system].
+  ///
+  /// See [ScaleDegreeNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// (HarmonicFunction.ii / HarmonicFunction.dominantV).toString() == 'II/V'
+  /// (HarmonicFunction.neapolitanSixth / HarmonicFunction.iv).toString()
+  ///   == '♭II6/IV'
+  /// ```
   @override
-  String toString() => scaleDegrees.join('/');
+  String toString({
+    ScaleDegreeNotation system = ScaleDegreeNotation.standard,
+  }) =>
+      _scaleDegrees
+          .map((scaleDegree) => scaleDegree.toString(system: system))
+          .join('/');
 
   /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
   /// [other].
@@ -56,14 +79,14 @@ class HarmonicFunction {
   ///      ])
   /// ```
   HarmonicFunction operator /(HarmonicFunction other) =>
-      HarmonicFunction([...scaleDegrees, ...other.scaleDegrees]);
+      HarmonicFunction([..._scaleDegrees, ...other._scaleDegrees]);
 
   @override
   bool operator ==(Object other) =>
       other is HarmonicFunction &&
       const ListEquality<ScaleDegree>()
-          .equals(scaleDegrees, other.scaleDegrees);
+          .equals(_scaleDegrees, other._scaleDegrees);
 
   @override
-  int get hashCode => Object.hashAll(scaleDegrees);
+  int get hashCode => Object.hashAll(_scaleDegrees);
 }

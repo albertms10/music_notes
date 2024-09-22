@@ -3,10 +3,22 @@ include: package:very_good_analysis/analysis_options.yaml
 linter:
   rules:
     - annotate_redeclares
+    - avoid_annotating_with_dynamic
     - avoid_classes_with_only_static_members
+    - avoid_implementing_value_types
     - avoid_types_on_closure_parameters
+    - do_not_use_environment
+    - document_ignores
+    - matching_super_parameters
+    - no_literal_bool_comparisons
+    - prefer_expression_function_bodies
+    - prefer_foreach
+    - prefer_mixin
     - type_literal_in_constant_pattern
+    - unintended_html_in_doc_comment
+    - unnecessary_library_name
     - unnecessary_null_aware_operator_on_extension_on_nullable
+    - unreachable_from_main
 
 analyzer:
   errors:

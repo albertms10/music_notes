@@ -1,17 +1,31 @@
-part of '../music_notes.dart';
+import 'enharmonic.dart';
+import 'interval/interval.dart';
+import 'music.dart';
+import 'note/pitch_class.dart';
+import 'transposable.dart';
 
-/// A interface for items that can form scales.
-abstract interface class Scalable<T extends Scalable<T>>
+/// An interface for items that can form scales.
+abstract class Scalable<T extends Scalable<T>>
+    with Enharmonic<PitchClass>
     implements Transposable<T> {
+  /// Creates a new [Scalable].
   const Scalable();
 
-  /// The number of semitones that define this [Scalable].
-  int get semitones;
+  /// Creates a new [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == PitchClass.c
+  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
+  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// ```
+  @override
+  PitchClass toClass() => PitchClass(semitones);
 
-  /// Returns the [Interval] between this [Scalable] and [other].
+  /// The [Interval] between this [Scalable] and [other].
   Interval interval(T other);
 
-  /// Returns the difference in semitones between this [Scalable] and [other].
+  /// The difference in semitones between this [Scalable] and [other].
   int difference(T other) {
     final diff = other.semitones - semitones;
 
@@ -23,14 +37,14 @@ abstract interface class Scalable<T extends Scalable<T>>
 
 /// A Scalable iterable.
 extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
-  /// Returns the [Interval]s between [T]s in this [Iterable].
+  /// The [Interval]s between [T]s in this [Iterable].
   Iterable<Interval> get intervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i).interval(elementAt(i + 1));
     }
   }
 
-  /// Returns the descending [Interval]s between [T]s this [Iterable].
+  /// The descending [Interval]s between [T]s this [Iterable].
   Iterable<Interval> get descendingIntervalSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       yield elementAt(i + 1).interval(elementAt(i));
@@ -41,14 +55,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 
-  /// Returns the inverse of this [ScalableIterable].
+  /// The inversion of this [ScalableIterable].
+  ///
+  /// See [Inversion](https://en.wikipedia.org/wiki/Inversion_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart
-  /// {Note.b, Note.a.sharp, Note.d}.inverse.toSet()
+  /// ({Note.b, Note.a.sharp, Note.d}).inversion.toSet()
   ///   == {Note.b, Note.c, Note.g.sharp}
   /// ```
-  Iterable<T> get inverse sync* {
+  Iterable<T> get inversion sync* {
     if (isEmpty) return;
     yield first;
     var last = first;
@@ -57,31 +75,41 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     }
   }
 
-  /// Returns the retrograde of this [ScalableIterable].
+  /// The retrograde of this [ScalableIterable].
+  ///
+  /// See [Retrograde](https://en.wikipedia.org/wiki/Retrograde_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
+  /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
   ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
   Iterable<T> get retrograde => toList().reversed;
 
-  /// Returns the numeric representation of this [ScalableIterable].
+  /// The numeric representation of this [ScalableIterable] from [reference].
+  /// The [first] element is used as the reference if none is provided.
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
-  ///   .numericRepresentation.toSet() == const {0, 11, 3}
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation().toSet() == const {0, 11, 3}
+  ///
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation(reference: PitchClass.g).toSet()
+  ///     == const {4, 3, 7}
   /// ```
-  Iterable<int> get numericRepresentation => map(
-        (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
+  Iterable<int> numericRepresentation({T? reference}) => map(
+        (scalable) =>
+            (reference ?? first).difference(scalable) % chromaticDivisions,
       );
 
-  /// Returns the delta numeric representation of this [ScalableIterable].
+  /// The delta numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
   ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
   /// ```
   Iterable<int> get deltaNumericRepresentation sync* {

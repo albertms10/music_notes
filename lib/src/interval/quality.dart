@@ -1,4 +1,7 @@
-part of '../../music_notes.dart';
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
 /// the same size but with different numbers of half steps.
@@ -22,11 +25,31 @@ sealed class Quality implements Comparable<Quality> {
   /// The symbol of this [Quality].
   String get symbol;
 
-  /// Returns the inverted version of this [Quality].
-  Quality get inverted;
+  /// The inversion of this [Quality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
+  Quality get inversion;
 
+  /// Whether this [Quality] is dissonant.
+  bool get isDissonant;
+
+  /// The string representation of this [Quality] based on [system].
+  ///
+  /// See [IntervalNotation] for all system implementations.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.diminished.toString() == 'd'
+  /// PerfectQuality.doublyAugmented.toString() == 'AA'
+  ///
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
+  /// ```
   @override
-  String toString() => '$symbol (${semitones.toDeltaString()})';
+  String toString({IntervalNotation system = IntervalNotation.standard}) =>
+      system.quality(this);
 
   @override
   bool operator ==(Object other) =>
@@ -38,13 +61,14 @@ sealed class Quality implements Comparable<Quality> {
   @override
   int compareTo(Quality other) => compareMultiple([
         () => semitones.compareTo(other.semitones),
+        // TODO(albertms10): rewrite without relying on `runtimeType`.
         // ignore: no_runtimetype_tostring
         () => '$runtimeType'.compareTo('${other.runtimeType}'),
       ]);
 }
 
 /// Quality corresponding to an [Interval.perfect].
-class PerfectQuality extends Quality {
+final class PerfectQuality extends Quality {
   /// Delta semitones from the [Interval], starting at 0 for the [perfect]
   /// quality.
   @override
@@ -104,6 +128,14 @@ class PerfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [PerfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.augmented.toString() == 'A'
+  /// PerfectQuality.doublyDiminished.toString() == 'dd'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
@@ -111,15 +143,28 @@ class PerfectQuality extends Quality {
         _ => Quality._augmentedSymbol * semitones,
       };
 
-  /// Returns the inverted version of this [PerfectQuality].
+  /// The inversion of this [PerfectQuality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.inverted == PerfectQuality.perfect
-  /// PerfectQuality.augmented.inverted == PerfectQuality.diminished
+  /// PerfectQuality.perfect.inversion == PerfectQuality.perfect
+  /// PerfectQuality.augmented.inversion == PerfectQuality.diminished
   /// ```
   @override
-  PerfectQuality get inverted => PerfectQuality(-semitones);
+  PerfectQuality get inversion => PerfectQuality(-semitones);
+
+  /// Whether this [PerfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.isDissonant == false
+  /// PerfectQuality.diminished.isDissonant == true
+  /// PerfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant => semitones != 0;
 
   @override
   // Overridden hashCode already present in the super class.
@@ -128,7 +173,7 @@ class PerfectQuality extends Quality {
 }
 
 /// Quality corresponding to an [Interval.imperfect].
-class ImperfectQuality extends Quality {
+final class ImperfectQuality extends Quality {
   /// Delta semitones from the [Interval], starting at 0 for the [minor]
   /// quality.
   @override
@@ -193,6 +238,15 @@ class ImperfectQuality extends Quality {
     };
   }
 
+  /// The symbol of this [ImperfectQuality].
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.diminished.toString() == 'd'
+  /// ImperfectQuality.triplyAugmented.toString() == 'AAA'
+  /// ```
   @override
   String get symbol => switch (semitones) {
         < 0 => Quality._diminishedSymbol * semitones.abs(),
@@ -201,15 +255,33 @@ class ImperfectQuality extends Quality {
         _ => Quality._augmentedSymbol * (semitones - 1),
       };
 
-  /// Returns the inverted version of this [ImperfectQuality].
+  /// The inversion of this [ImperfectQuality].
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.inverted == ImperfectQuality.major
-  /// ImperfectQuality.augmented.inverted == ImperfectQuality.diminished
+  /// ImperfectQuality.minor.inversion == ImperfectQuality.major
+  /// ImperfectQuality.augmented.inversion == ImperfectQuality.diminished
   /// ```
   @override
-  ImperfectQuality get inverted => ImperfectQuality(1 - semitones);
+  ImperfectQuality get inversion => ImperfectQuality(1 - semitones);
+
+  /// Whether this [ImperfectQuality] is dissonant.
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.major.isDissonant == false
+  /// ImperfectQuality.minor.isDissonant == false
+  /// ImperfectQuality.diminished.isDissonant == true
+  /// ImperfectQuality.augmented.isDissonant == true
+  /// ```
+  @override
+  bool get isDissonant {
+    if (this case major || minor) return false;
+
+    return true;
+  }
 
   @override
   // Overridden hashCode already present in the super class.

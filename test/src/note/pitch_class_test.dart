@@ -7,9 +7,9 @@ void main() {
   group('PitchClass', () {
     group('constructor', () {
       test('creates a new PitchClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(-2), PitchClass.aSharp);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(13), PitchClass.cSharp);
       });
     });
@@ -417,6 +417,16 @@ void main() {
           'e',
         );
       });
+
+      test(
+        'returns the string representation extending PitchClassNotation',
+        () {
+          expect(
+            () => PitchClass.aSharp.toString(system: _SubPitchClassNotation()),
+            throwsUnimplementedError,
+          );
+        },
+      );
     });
 
     group('.hashCode', () {
@@ -445,4 +455,9 @@ void main() {
       });
     });
   });
+}
+
+class _SubPitchClassNotation extends PitchClassNotation {
+  @override
+  String pitchClass(PitchClass pitchClass) => throw UnimplementedError();
 }

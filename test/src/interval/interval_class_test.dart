@@ -7,9 +7,9 @@ void main() {
   group('IntervalClass', () {
     group('constructor', () {
       test('creates a new IntervalClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const IntervalClass(8), IntervalClass.M3);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const IntervalClass(-2), IntervalClass.M2);
       });
     });
@@ -26,7 +26,10 @@ void main() {
         expect(IntervalClass.m2.spellings(distance: 1), {
           Interval.A1,
           Interval.m2,
-          const Interval.imperfect(3, ImperfectQuality.doublyDiminished),
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyDiminished,
+          ),
         });
 
         expect(IntervalClass.M2.spellings(), {Interval.M2, Interval.d3});
@@ -39,7 +42,10 @@ void main() {
         expect(IntervalClass.m3.spellings(distance: 1), {
           Interval.A2,
           Interval.m3,
-          const Interval.perfect(4, PerfectQuality.doublyDiminished),
+          const Interval.perfect(
+            Size.fourth,
+            PerfectQuality.doublyDiminished,
+          ),
         });
 
         expect(IntervalClass.M3.spellings(), {Interval.M3, Interval.d4});
@@ -52,7 +58,7 @@ void main() {
         expect(IntervalClass.P4.spellings(distance: 1), {
           Interval.A3,
           Interval.P4,
-          const Interval.perfect(5, PerfectQuality.doublyDiminished),
+          const Interval.perfect(Size.fifth, PerfectQuality.doublyDiminished),
         });
 
         expect(

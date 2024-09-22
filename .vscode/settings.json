@@ -4,13 +4,14 @@
     "barline",
     "chordable",
     "Chordable",
+    "codeql",
+    "coverallsapp",
     "Didymean",
     "dorian",
     "enharmonically",
     "helmholtz",
     "heptatonic",
     "ionian",
-    "italian",
     "locrian",
     "lydian",
     "maggiore",
@@ -19,9 +20,13 @@
     "mixolydian",
     "neapolitan",
     "octatonic",
+    "ossf",
     "phrygian",
+    "pubspec",
     "pythagorean",
+    "redeclares",
     "sublist",
+    "Versetzungszeichen",
     "Xenharmonic"
   ],
   "editor.unicodeHighlight.allowedCharacters": {
@@ -29,5 +34,6 @@
   },
   "files.associations": {
     "*.lock": "yaml"
-  }
+  },
+  "git.alwaysSignOff": true
 }

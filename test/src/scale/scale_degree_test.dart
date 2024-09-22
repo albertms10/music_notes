@@ -5,6 +5,21 @@ import 'package:test/test.dart';
 
 void main() {
   group('ScaleDegree', () {
+    group('constructor', () {
+      test('throws an assertion error when arguments are incorrect', () {
+        expect(() => ScaleDegree(-1), throwsA(isA<AssertionError>()));
+        expect(() => ScaleDegree(0), throwsA(isA<AssertionError>()));
+        expect(
+          () => ScaleDegree(1, inversion: -1),
+          throwsA(isA<AssertionError>()),
+        );
+        expect(
+          () => ScaleDegree(-2, inversion: -3),
+          throwsA(isA<AssertionError>()),
+        );
+      });
+    });
+
     group('.isRaised', () {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
@@ -46,6 +61,20 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('returns this ScaleDegree inverted', () {
+        expect(ScaleDegree.ii.inverted, const ScaleDegree(2, inversion: 1));
+        expect(
+          ScaleDegree.vi.lowered.lowered.inverted.inverted,
+          const ScaleDegree(6, semitonesDelta: -2, inversion: 2),
+        );
+        expect(
+          ScaleDegree.iii.inverted.inverted.inverted,
+          const ScaleDegree(3, inversion: 3),
+        );
+      });
+    });
+
     group('.major', () {
       test('returns this ScaleDegree as major', () {
         expect(
@@ -81,6 +110,23 @@ void main() {
       });
     });
 
+    group('.romanNumeral', () {
+      test('returns the roman numeral of this ScaleDegree', () {
+        expect(ScaleDegree.i.romanNumeral, 'I');
+        expect(ScaleDegree.ii.minor.romanNumeral, 'II');
+        expect(ScaleDegree.iii.minor.inverted.romanNumeral, 'III');
+        expect(ScaleDegree.iv.major.lowered.romanNumeral, 'IV');
+        expect(ScaleDegree.v.minor.raised.romanNumeral, 'V');
+        expect(ScaleDegree.vi.romanNumeral, 'VI');
+        expect(ScaleDegree.vii.romanNumeral, 'VII');
+      });
+
+      test('returns the ordinal number if higher than 7', () {
+        expect(const ScaleDegree(8).romanNumeral, '8');
+        expect(const ScaleDegree(20).romanNumeral, '20');
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ScaleDegree', () {
         expect(ScaleDegree.i.toString(), 'I');
@@ -97,18 +143,31 @@ void main() {
 
     group('.hashCode', () {
       test('returns the same hashCode for equal ScaleDegrees', () {
-        expect(ScaleDegree.i.hashCode, ScaleDegree.i.hashCode);
+        // ignore: prefer_const_constructors test
+        expect(ScaleDegree(1).hashCode, ScaleDegree(1).hashCode);
         expect(
-          ScaleDegree.neapolitanSixth.hashCode,
-          ScaleDegree.neapolitanSixth.hashCode,
+          // ignore: prefer_const_constructors test
+          ScaleDegree(
+            2,
+            quality: ImperfectQuality.major,
+            inversion: 1,
+            semitonesDelta: -1,
+          ).hashCode,
+          // ignore: prefer_const_constructors test
+          ScaleDegree(
+            2,
+            quality: ImperfectQuality.major,
+            inversion: 1,
+            semitonesDelta: -1,
+          ).hashCode,
         );
       });
 
       test('returns different hashCodes for different ScaleDegrees', () {
-        expect(ScaleDegree.i.hashCode, isNot(equals(ScaleDegree.ii.hashCode)));
+        expect(ScaleDegree.i.hashCode, isNot(ScaleDegree.ii.hashCode));
         expect(
           const ScaleDegree(6, inversion: 1).hashCode,
-          isNot(equals(ScaleDegree.vi.hashCode)),
+          isNot(ScaleDegree.vi.hashCode),
         );
       });
 

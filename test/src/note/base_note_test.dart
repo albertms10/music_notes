@@ -1,4 +1,4 @@
-import 'dart:collection';
+import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
@@ -10,7 +10,7 @@ void main() {
     });
 
     group('.parse()', () {
-      test('parses source as a BaseNote and return its value', () {
+      test('parses source as a BaseNote', () {
         expect(BaseNote.parse('a'), BaseNote.a);
         expect(BaseNote.parse('b'), BaseNote.b);
         expect(BaseNote.parse('c'), BaseNote.c);
@@ -79,26 +79,37 @@ void main() {
     });
 
     group('.transposeBySize()', () {
-      test('throws an assertion error when size is zero', () {
-        expect(
-          () => BaseNote.c.transposeBySize(0),
-          throwsA(isA<AssertionError>()),
-        );
-      });
-
       test('transposes this BaseNote by Interval size', () {
-        expect(BaseNote.f.transposeBySize(-8), BaseNote.f);
-        expect(BaseNote.g.transposeBySize(-3), BaseNote.e);
-        expect(BaseNote.c.transposeBySize(-2), BaseNote.b);
-        expect(BaseNote.d.transposeBySize(-1), BaseNote.d);
-        expect(BaseNote.c.transposeBySize(1), BaseNote.c);
-        expect(BaseNote.d.transposeBySize(2), BaseNote.e);
-        expect(BaseNote.e.transposeBySize(3), BaseNote.g);
-        expect(BaseNote.e.transposeBySize(4), BaseNote.a);
-        expect(BaseNote.f.transposeBySize(5), BaseNote.c);
-        expect(BaseNote.a.transposeBySize(6), BaseNote.f);
-        expect(BaseNote.b.transposeBySize(7), BaseNote.a);
-        expect(BaseNote.c.transposeBySize(8), BaseNote.c);
+        expect(BaseNote.f.transposeBySize(-Size.octave), BaseNote.f);
+        expect(BaseNote.g.transposeBySize(-Size.third), BaseNote.e);
+        expect(BaseNote.c.transposeBySize(-Size.second), BaseNote.b);
+        expect(BaseNote.d.transposeBySize(-Size.unison), BaseNote.d);
+        expect(BaseNote.c.transposeBySize(Size.unison), BaseNote.c);
+        expect(BaseNote.d.transposeBySize(Size.second), BaseNote.e);
+        expect(BaseNote.e.transposeBySize(Size.third), BaseNote.g);
+        expect(BaseNote.e.transposeBySize(Size.fourth), BaseNote.a);
+        expect(BaseNote.f.transposeBySize(Size.fifth), BaseNote.c);
+        expect(BaseNote.a.transposeBySize(Size.sixth), BaseNote.f);
+        expect(BaseNote.b.transposeBySize(Size.seventh), BaseNote.a);
+        expect(BaseNote.c.transposeBySize(Size.octave), BaseNote.c);
+      });
+    });
+
+    group('.next', () {
+      test('returns the next ordinal BaseNote', () {
+        expect(BaseNote.c.next, BaseNote.d);
+        expect(BaseNote.e.next, BaseNote.f);
+        expect(BaseNote.f.next, BaseNote.g);
+        expect(BaseNote.b.next, BaseNote.c);
+      });
+    });
+
+    group('.previous', () {
+      test('returns the previous ordinal BaseNote', () {
+        expect(BaseNote.b.previous, BaseNote.a);
+        expect(BaseNote.f.previous, BaseNote.e);
+        expect(BaseNote.d.previous, BaseNote.c);
+        expect(BaseNote.c.previous, BaseNote.b);
       });
     });
 

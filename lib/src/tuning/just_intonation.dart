@@ -1,4 +1,13 @@
-part of '../../music_notes.dart';
+import 'dart:math' as math;
+
+import 'package:meta/meta.dart' show immutable;
+
+import '../interval/interval.dart';
+import '../music.dart';
+import '../note/pitch.dart';
+import 'cent.dart';
+import 'tuning_fork.dart';
+import 'tuning_system.dart';
 
 /// A representation of a just tuning system.
 ///
@@ -9,52 +18,50 @@ part of '../../music_notes.dart';
 /// * [TuningSystem].
 @immutable
 sealed class JustIntonation extends TuningSystem {
-  /// Creates a new [JustIntonation] from [referencePitch].
-  const JustIntonation({
-    super.referencePitch = const Pitch(Note.c, octave: 4),
-  });
+  /// Creates a new [JustIntonation] from [fork].
+  const JustIntonation({super.fork = TuningFork.c256});
 
-  /// The [Ratio] of an ascending [Interval.P5].
-  static const ascendingFifthRatio = Ratio(3 / 2);
+  /// The ratio of an ascending [Interval.P5].
+  static const ascendingFifthRatio = 3 / 2;
 
-  /// The [Ratio] of an ascending [Interval.P4].
-  static const ascendingFourthRatio = Ratio(4 / 3);
+  /// The ratio of an ascending [Interval.P4].
+  static const ascendingFourthRatio = 4 / 3;
 
   /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma)
   /// (a.k.a. Didymean comma).
-  static const syntonicComma = Ratio((81 / 64) / (5 / 4));
+  static const syntonicComma = (81 / 64) / (5 / 4);
 
   @override
-  Cent get generator => ascendingFifthRatio.cents;
+  Cent get generator => Cent.fromRatio(ascendingFifthRatio);
 }
 
-/// A representation of the three-limit (a.k.a Pythagorean) tuning system.
+/// A representation of the three-limit (a.k.a. Pythagorean) tuning system.
 ///
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
 @immutable
 class PythagoreanTuning extends JustIntonation {
-  /// Creates a new [PythagoreanTuning] from [referencePitch].
-  const PythagoreanTuning({super.referencePitch});
+  /// Creates a new [PythagoreanTuning] from [fork].
+  const PythagoreanTuning({super.fork});
 
   @override
-  Ratio ratio(Pitch pitch) {
-    final distance = referencePitch.note.fifthsDistanceWith(pitch.note);
+  num ratio(Pitch pitch) {
+    final distance = fork.pitch.note.fifthsDistanceWith(pitch.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
       ratio *= distance.isNegative
-          ? JustIntonation.ascendingFourthRatio.value
-          : JustIntonation.ascendingFifthRatio.value;
-      // When ratio is larger than 2, so larger than an octave, divide by 2 to
-      // transpose it down by one octave.
+          ? JustIntonation.ascendingFourthRatio
+          : JustIntonation.ascendingFifthRatio;
+      // When ratio is greater than 2, so greater than [Size.octave],
+      // divide by 2 to transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
 
     final octaveDelta =
-        pitch.interval(referencePitch).semitones.abs() ~/ chromaticDivisions;
+        pitch.interval(fork.pitch).semitones.abs() ~/ chromaticDivisions;
 
-    return Ratio(ratio * math.pow(2, octaveDelta));
+    return ratio * math.pow(2, octaveDelta);
   }
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  Ratio get pythagoreanComma => ratio(referencePitch.transposeBy(-Interval.d2));
+  num get pythagoreanComma => ratio(fork.pitch.transposeBy(-Interval.d2));
 }

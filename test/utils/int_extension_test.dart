@@ -1,4 +1,4 @@
-import 'package:music_notes/utils/int_extension.dart';
+import 'package:music_notes/utils.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -25,14 +25,6 @@ void main() {
         expect(9.nonZeroMod(3), 3);
         expect(7.nonZeroMod(7), 7);
         expect(0.nonZeroMod(5), 5);
-      });
-    });
-
-    group('.nonZeroSign', () {
-      test('returns the non-zero sign of this int', () {
-        expect(5.nonZeroSign, 1);
-        expect(0.nonZeroSign, 1);
-        expect((-2).nonZeroSign, -1);
       });
     });
   });

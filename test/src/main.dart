@@ -4,6 +4,7 @@ import 'harmony/harmonic_function_test.dart' as harmonic_function_test;
 import 'interval/interval_class_test.dart' as interval_class_test;
 import 'interval/interval_test.dart' as interval_test;
 import 'interval/quality_test.dart' as quality_test;
+import 'interval/size_test.dart' as size_test;
 import 'key/key_signature_test.dart' as key_signature_test;
 import 'key/key_test.dart' as key_test;
 import 'key/mode_test.dart' as mode_test;
@@ -22,7 +23,7 @@ import 'scale/scale_test.dart' as scale_test;
 import 'tuning/cent_test.dart' as cent_test;
 import 'tuning/equal_temperament_test.dart' as equal_temperament_test;
 import 'tuning/just_intonation_test.dart' as just_intonation_test;
-import 'tuning/ratio_test.dart' as ratio_test;
+import 'tuning/tuning_fork_test.dart' as tuning_fork_test;
 
 void main() {
   chord_pattern_test.main();
@@ -31,6 +32,7 @@ void main() {
   interval_class_test.main();
   interval_test.main();
   quality_test.main();
+  size_test.main();
   accidental_test.main();
   base_note_test.main();
   closest_pitch_test.main();
@@ -49,5 +51,5 @@ void main() {
   cent_test.main();
   equal_temperament_test.main();
   just_intonation_test.main();
-  ratio_test.main();
+  tuning_fork_test.main();
 }
