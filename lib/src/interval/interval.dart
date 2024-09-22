@@ -7,6 +7,7 @@ import 'package:music_notes/utils.dart';
 import '../comparators.dart';
 import '../enharmonic.dart';
 import '../note/note.dart';
+import '../respellable.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
 import 'quality.dart';
@@ -20,7 +21,7 @@ import 'size.dart';
 /// * [IntervalClass].
 @immutable
 final class Interval
-    with Enharmonic<IntervalClass>, Comparators<Interval>
+    with Enharmonic<IntervalClass>, Comparators<Interval>, Respellable<Interval>
     implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
@@ -334,6 +335,39 @@ final class Interval
   /// ```
   Interval respellBySize(Size size) =>
       Interval.fromSizeAndSemitones(size, semitones);
+
+  /// This [Interval] respelled upwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.A4.respelledUpwards == Interval.d5
+  /// Interval.M3.respelledUpwards == Interval.d4
+  /// ```
+  @override
+  Interval get respelledUpwards => respellBySize(Size(size.incrementBy(1)));
+
+  /// This [Interval] respelled downwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.d5.respelledDownwards == Interval.A4
+  /// Interval.m3.respelledDownwards == Interval.A2
+  /// ```
+  @override
+  Interval get respelledDownwards => respellBySize(Size(size.incrementBy(-1)));
+
+  /// This [Interval] with the simplest spelling while keeping the same number
+  /// of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.d2.respelledDownwards == Interval.P1
+  /// Interval.A3.respelledDownwards == Interval.P4
+  /// ```
+  @override
+  Interval get respelledSimple => Interval.fromSemitones(semitones);
 
   /// The circle distance between [from] and [to] in this [Interval],
   /// including all visited `notes`.
