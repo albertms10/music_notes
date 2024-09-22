@@ -95,7 +95,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
   ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
-  Iterable<T> get retrograde => toList().reversed;
+  Iterable<T> get retrograde => toList(growable: false).reversed;
 
   /// The numeric representation of this [ScalableIterable] from [reference].
   /// The [first] element is used as the reference if none is provided.

@@ -56,7 +56,8 @@ extension IterableExtension<E> on Iterable<E> {
       b = first;
     }
 
-    return (ranges..add((from: start, to: nextValue(b)))).toList();
+    return (ranges..add((from: start, to: nextValue(b))))
+        .toList(growable: false);
   }
 
   /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]

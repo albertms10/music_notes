@@ -26,7 +26,7 @@ extension RangeExtension<E> on Range<E> {
       set.add(temp);
     }
 
-    return set.toList();
+    return set.toList(growable: false);
   }
 
   /// Fills this range of values between `from` and `to` (`to` not included).

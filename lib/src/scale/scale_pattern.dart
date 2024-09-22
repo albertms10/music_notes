@@ -362,7 +362,7 @@ final class ScalePattern {
               (scale, interval) => [...scale, scale.last.transposeBy(interval)],
             )
             .reversed
-            .toList(),
+            .toList(growable: false),
       );
 
   /// The mirrored scale version of this [ScalePattern].
