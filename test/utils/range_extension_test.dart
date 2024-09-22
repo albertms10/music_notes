@@ -15,6 +15,13 @@ void main() {
 
       test('returns the list of all items between from and to', () {
         expect(
+          const (from: 1, to: 10).explode(
+            nextValue: (current) => current + 1,
+            compare: (a, b) => a.compareTo(b),
+          ),
+          const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        );
+        expect(
           const (from: Note.c, to: Note.c).explode(),
           const [Note.c],
         );
@@ -141,7 +148,8 @@ void main() {
           ].format(
             rangeSeparator: ' to ',
             nonConsecutiveSeparator: '; ',
-            toString: (pitch) => pitch.toString(system: PitchNotation.helmholtz),
+            toString: (pitch) =>
+                pitch.toString(system: PitchNotation.helmholtz),
           ),
           'c to e♭; g′; a♭″ to d♯″',
         );
