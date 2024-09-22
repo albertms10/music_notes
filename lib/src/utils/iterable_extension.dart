@@ -49,7 +49,7 @@ extension IterableExtension<E> on Iterable<E> {
 
         final nextA = nextValue(a);
         if (compare(nextA, b) != 0) {
-          ranges.add((from: start, to: inclusive ? b : a));
+          ranges.add((from: start, to: inclusive ? nextA : a));
           start = b;
         }
       }
@@ -62,45 +62,18 @@ extension IterableExtension<E> on Iterable<E> {
   }
 
   /// Returns a list of consecutive values of this [Iterable]
-  /// compacted as tuples. Consecutive values are computed
-  /// based on [nextValue], which:
-  ///
-  /// * if [E] is of type [num], it defaults to an increment of 1.
-  /// * if [E] is of type [String], it defaults to an increment of 1
-  ///   of every [String.codeUnits].
-  ///
-  /// Throws an [ArgumentError] if no [nextValue] is specified for types other
-  /// than [num] or [String].
+  /// compacted as tuples. Consecutive values are obtained
+  /// based on [nextValue] and [compare].
   ///
   /// Examples:
   /// ```dart
-  /// const inputNum = [1, 2, 3, 4, 5.0, 7, 8, 9, 11];
-  /// const compactedNum = [[1, 5], [7, 9], [11, 11]];
-  /// inputNum.compact() == compactedNum
-  ///
-  /// final inputString = 'abcdfxy'.split('');
-  /// const compactedString = [['a', 'e'], ['f', 'g'], ['x', 'z']];
-  /// inputString.compact(inclusive: true) == compactedString
-  ///
-  /// final inputDateTime = [
-  ///   DateTime(2021, 8, 30, 9, 30),
-  ///   DateTime(2021, 8, 31),
-  ///   for (var i = 1; i < 10; i++) DateTime(2021, 9, i, 21, 30),
-  ///   DateTime(2021, 9, 30),
-  /// ];
-  ///
-  /// final compactedDateTime = [
-  ///   [DateTime(2021, 8, 30, 9, 30), DateTime(2021, 9, 10, 21, 30)],
-  ///   [DateTime(2021, 9, 30), DateTime(2021, 10)],
-  /// ];
-  ///
-  /// inputDateTime.compact(
-  ///       nextValue: (dateTime) => dateTime.add(const Duration(days: 1)),
-  ///       compare: (a, b) => b.compareTo(a),
-  ///       inclusive: true,
-  ///     ) ==
-  ///     compactedDateTime
+  /// const numbers = [1, 2, 3, 4, 5, 8];
+  /// numbers.compact() == [(from: 1, to: 5), (from: 8, to: 8)]
+  /// numbers.compact(inclusive: true) == [(from: 1, to: 6), (from: 8, to: 9)]
   /// ```
+  /// ---
+  /// See also:
+  /// * [RangeExtension.explode] for the inverse operation.
   Iterable<Range<E>> compact({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
@@ -113,6 +86,22 @@ extension IterableExtension<E> on Iterable<E> {
 extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// Compacts this [Iterable] into a collection of [Range]s, based on
   /// [nextValue], [compare] and [inclusive].
+  ///
+  /// Example:
+  /// ```dart
+  /// final notes = [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g];
+  /// notes.compact() == [
+  ///   (from: Note.c, to: Note.e.flat),
+  ///   (from: Note.g, to: Note.g),
+  /// ]
+  /// notes.compact(inclusive: true) == [
+  ///   (from: Note.c, to: Note.e),
+  ///   (from: Note.g, to: Note.a.flat),
+  /// ]
+  /// ```
+  /// ---
+  /// See also:
+  /// * [RangeExtension.explode] for the inverse operation.
   Iterable<Range<E>> compact({
     E Function(E current)? nextValue,
     int Function(E a, E b)? compare,

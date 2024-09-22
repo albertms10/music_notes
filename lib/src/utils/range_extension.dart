@@ -1,4 +1,6 @@
-import 'package:music_notes/music_notes.dart';
+import '../note/pitch.dart';
+import '../scalable.dart';
+import './iterable_extension.dart';
 
 /// A representation of a range between `from` and `to`.
 typedef Range<E> = ({E from, E to});
@@ -26,6 +28,17 @@ extension RangeExtension<E> on Range<E> {
   }
 
   /// Fills this range of values between `from` and `to`.
+  ///
+  /// Example:
+  /// ```dart
+  /// const (from: 1, to: 10).explode(
+  ///   nextValue: (current) => current + 1,
+  ///   compare: Comparable.compare,
+  /// ) == const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  /// ```
+  /// ---
+  /// See also:
+  /// * [IterableExtension.compact] for the inverse operation.
   List<E> explode({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
@@ -36,6 +49,15 @@ extension RangeExtension<E> on Range<E> {
 /// A Scalable range record extension.
 extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// Fills this range of values between `from` and `to`.
+  ///
+  /// Example:
+  /// ```dart
+  /// (from: Note.c, to: Note.e.flat).explode()
+  ///   == const [Note.c, Note.d.flat, Note.d, Note.e.flat]
+  /// ```
+  /// ---
+  /// See also:
+  /// * [IterableExtension.compact] for the inverse operation.
   List<E> explode({
     E Function(E current)? nextValue,
     int Function(E a, E b)? compare,

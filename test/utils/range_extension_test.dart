@@ -16,7 +16,7 @@ void main() {
         expect(
           const (from: 1, to: 10).explode(
             nextValue: (current) => current + 1,
-            compare: (a, b) => a.compareTo(b),
+            compare: Comparable.compare,
           ),
           const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         );

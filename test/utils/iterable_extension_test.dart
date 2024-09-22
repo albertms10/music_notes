@@ -41,11 +41,19 @@ void main() {
     group('.compact()', () {
       test('returns this Iterable with ranges compacted', () {
         expect(
-          const [1, 2, 3, 4, 5].compact(
+          const [1, 2, 3, 4, 5, 8].compact(
             nextValue: (current) => current + 1,
             compare: Comparable.compare,
           ),
-          const [(from: 1, to: 5)],
+          const [(from: 1, to: 5), (from: 8, to: 8)],
+        );
+        expect(
+          const [1, 2, 3, 4, 5, 8].compact(
+            nextValue: (current) => current + 1,
+            compare: Comparable.compare,
+            inclusive: true,
+          ),
+          const [(from: 1, to: 6), (from: 8, to: 9)],
         );
         expect(
           'abcdefxyz'.split('').compact(
@@ -85,6 +93,13 @@ void main() {
           (from: Note.c, to: Note.e.flat),
           (from: Note.g, to: Note.g),
         ]);
+        expect(
+            [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g]
+                .compact(inclusive: true),
+            [
+              (from: Note.c, to: Note.e),
+              (from: Note.g, to: Note.a.flat),
+            ]);
         expect(
             [
               Note.c,
