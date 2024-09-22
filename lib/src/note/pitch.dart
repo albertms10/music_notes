@@ -8,6 +8,7 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/size.dart';
 import '../music.dart';
+import '../respellable.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
@@ -31,7 +32,7 @@ import 'pitch_class.dart';
 /// * [ClosestPitch].
 @immutable
 final class Pitch extends Scalable<Pitch>
-    with Comparators<Pitch>
+    with Comparators<Pitch>, RespellableScalable<Pitch>
     implements Comparable<Pitch> {
   /// The note inside the octave.
   final Note note;
@@ -280,6 +281,7 @@ final class Pitch extends Scalable<Pitch>
   /// Note.g.inOctave(3).respellByBaseNote(BaseNote.a)
   ///   == Note.a.flat.flat.inOctave(3)
   /// ```
+  @override
   Pitch respellByBaseNote(BaseNote baseNote) {
     final respelledNote = note.respellByBaseNote(baseNote);
 
@@ -301,6 +303,7 @@ final class Pitch extends Scalable<Pitch>
   /// Note.e.sharp.inOctave(4).respellByOrdinalDistance(2)
   ///   == Note.g.flat.flat.inOctave(4)
   /// ```
+  @override
   Pitch respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
 
@@ -312,7 +315,8 @@ final class Pitch extends Scalable<Pitch>
   /// Note.g.sharp.inOctave(4).respelledUpwards == Note.a.flat.inOctave(4)
   /// Note.e.sharp.inOctave(4).respelledUpwards == Note.f.inOctave(4)
   /// ```
-  Pitch get respelledUpwards => respellByOrdinalDistance(1);
+  @override
+  Pitch get respelledUpwards => super.respelledUpwards;
 
   /// This [Pitch] respelled downwards while keeping the same number of
   /// [semitones].
@@ -322,7 +326,8 @@ final class Pitch extends Scalable<Pitch>
   /// Note.g.flat.inOctave(4).respelledDownwards == Note.f.sharp.inOctave(4)
   /// Note.c.inOctave(4).respelledDownwards == Note.b.sharp.inOctave(4)
   /// ```
-  Pitch get respelledDownwards => respellByOrdinalDistance(-1);
+  @override
+  Pitch get respelledDownwards => super.respelledDownwards;
 
   /// This [Pitch] respelled by [accidental] while keeping the same number of
   /// [semitones].
@@ -339,6 +344,7 @@ final class Pitch extends Scalable<Pitch>
   /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
   ///   == Note.f.sharp.sharp.inOctave(4)
   /// ```
+  @override
   Pitch respellByAccidental(Accidental accidental) {
     final respelledNote = note.respellByAccidental(accidental);
 
@@ -360,7 +366,8 @@ final class Pitch extends Scalable<Pitch>
   /// Note.f.sharp.sharp.sharp.inOctave(4).respelledSimple
   ///   == Note.g.sharp.inOctave(4)
   /// ```
-  Pitch get respelledSimple => respellByAccidental(Accidental.natural);
+  @override
+  Pitch get respelledSimple => super.respelledSimple;
 
   /// We don’t want to take the accidental into account when
   /// calculating the octave height, as it depends on the note name.

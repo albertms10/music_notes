@@ -9,6 +9,7 @@ import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
 import '../music.dart';
+import '../respellable.dart';
 import '../scalable.dart';
 import 'accidental.dart';
 import 'base_note.dart';
@@ -24,7 +25,9 @@ import 'pitch.dart';
 /// * [KeySignature].
 /// * [Key].
 @immutable
-final class Note extends Scalable<Note> implements Comparable<Note> {
+final class Note extends Scalable<Note>
+    with RespellableScalable<Note>
+    implements Comparable<Note> {
   /// The base note that defines this [Note].
   final BaseNote baseNote;
 
@@ -215,6 +218,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.f.respellByBaseNote(BaseNote.e) == Note.e.sharp
   /// Note.g.respellByBaseNote(BaseNote.a) == Note.a.flat.flat
   /// ```
+  @override
   Note respellByBaseNote(BaseNote baseNote) {
     final rawSemitones = semitones - baseNote.semitones;
     final deltaSemitones = rawSemitones +
@@ -233,6 +237,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.flat.respellByOrdinalDistance(-1) == Note.f.sharp
   /// Note.e.sharp.respellByOrdinalDistance(2) == Note.g.flat.flat
   /// ```
+  @override
   Note respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
 
@@ -244,7 +249,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.sharp.respelledUpwards == Note.a.flat
   /// Note.e.sharp.respelledUpwards == Note.f
   /// ```
-  Note get respelledUpwards => respellByOrdinalDistance(1);
+  @override
+  Note get respelledUpwards => super.respelledUpwards;
 
   /// This [Note] respelled downwards while keeping the same number of
   /// [semitones].
@@ -254,7 +260,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.flat.respelledDownwards == Note.f.sharp
   /// Note.c.respelledDownwards == Note.b.sharp
   /// ```
-  Note get respelledDownwards => respellByOrdinalDistance(-1);
+  @override
+  Note get respelledDownwards => super.respelledDownwards;
 
   /// This [Note] respelled by [accidental] while keeping the same number of
   /// [semitones].
@@ -268,6 +275,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.b.respellByAccidental(Accidental.flat) == Note.c.flat
   /// Note.g.respellByAccidental(Accidental.sharp) == Note.f.sharp.sharp
   /// ```
+  @override
   Note respellByAccidental(Accidental accidental) {
     final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
     if (baseNote != null) return Note(baseNote, accidental);
@@ -288,7 +296,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.flat.flat.respelledSimple == Note.c
   /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
   /// ```
-  Note get respelledSimple => respellByAccidental(Accidental.natural);
+  @override
+  Note get respelledSimple => super.respelledSimple;
 
   /// This [Note] positioned in the given [octave] as a [Pitch].
   ///

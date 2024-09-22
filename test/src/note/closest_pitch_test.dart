@@ -72,7 +72,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('respells this ClosestPitch to the simplest expression', () {
+      test('returns the simplest spelling for this ClosestPitch', () {
         expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
         expect(
           ClosestPitch.parse('C#2+16').respelledSimple.toString(),

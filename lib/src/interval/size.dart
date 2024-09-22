@@ -72,7 +72,7 @@ extension type const Size._(int size) implements int {
         : absSemitones % chromaticDivisions;
   }
 
-  /// Scale a given normalized Size (one of the entries in [_sizeToSemitones])
+  /// Scale a given normalized [Size] (one of the entries in [_sizeToSemitones])
   /// to the given [semitones].
   factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
     final absSemitones = semitones.abs();
