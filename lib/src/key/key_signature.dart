@@ -82,7 +82,7 @@ final class KeySignature implements Comparable<KeySignature> {
   /// ```
   KeySignature get clean => KeySignature(
         _notes
-            .where((note) => !note.accidental.isNatural)
+            .whereNot((note) => note.accidental.isNatural)
             .toList(growable: false),
       );
 
