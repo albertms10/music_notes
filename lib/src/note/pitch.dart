@@ -402,18 +402,17 @@ final class Pitch extends Scalable<Pitch>
   /// ```dart
   /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
   /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == Interval.A4
+  /// Note.c.inOctave(5).interval(Note.b.inOctave(4)) == -Interval.m2
   /// ```
   @override
   Interval interval(Pitch other) {
     final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
-    final intervalSize = ordinalDelta + ordinalDelta.nonZeroSign;
-    final octaveShift =
-        (7 + (intervalSize.isNegative ? 2 : 0)) * (other.octave - octave);
+    final sizeDelta = ordinalDelta + 7 * (other.octave - octave);
 
     return Interval.fromSizeAndSemitones(
-      Size(intervalSize + octaveShift),
-      difference(other),
-    );
+      Size(sizeDelta.abs() + 1),
+      difference(other).abs(),
+    ).descending(sizeDelta < 0);
   }
 
   /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
