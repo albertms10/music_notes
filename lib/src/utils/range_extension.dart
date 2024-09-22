@@ -9,7 +9,7 @@ typedef Range<E> = ({E from, E to});
 extension RangeExtension<E> on Range<E> {
   List<E> _explode({
     required E Function(E current) nextValue,
-    required int Function(E a, E b) compare,
+    required Comparator<E> compare,
   }) {
     if (from == to) return const [];
 
@@ -43,7 +43,7 @@ extension RangeExtension<E> on Range<E> {
   /// * [IterableExtension.compact] for the inverse operation.
   List<E> explode({
     required E Function(E current) nextValue,
-    required int Function(E a, E b) compare,
+    required Comparator<E> compare,
   }) =>
       _explode(nextValue: nextValue, compare: compare);
 }
@@ -60,10 +60,7 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// ---
   /// See also:
   /// * [IterableExtension.compact] for the inverse operation.
-  List<E> explode({
-    E Function(E current)? nextValue,
-    int Function(E a, E b)? compare,
-  }) =>
+  List<E> explode({E Function(E current)? nextValue, Comparator<E>? compare}) =>
       _explode(
         nextValue: nextValue ?? Scalable.chromaticMotion,
         compare: compare ?? Scalable.compareEnharmonically,

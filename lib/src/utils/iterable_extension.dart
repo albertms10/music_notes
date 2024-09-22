@@ -33,7 +33,7 @@ extension IterableExtension<E> on Iterable<E> {
 
   List<Range<E>> _compact({
     required E Function(E current) nextValue,
-    required int Function(E a, E b) compare,
+    required Comparator<E> compare,
   }) {
     if (isEmpty) return const [];
 
@@ -74,7 +74,7 @@ extension IterableExtension<E> on Iterable<E> {
   /// * [RangeExtension.explode] for the inverse operation.
   List<Range<E>> compact({
     required E Function(E current) nextValue,
-    required int Function(E a, E b) compare,
+    required Comparator<E> compare,
   }) =>
       _compact(nextValue: nextValue, compare: compare);
 }
@@ -96,7 +96,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// * [RangeExtension.explode] for the inverse operation.
   List<Range<E>> compact({
     E Function(E current)? nextValue,
-    int Function(E a, E b)? compare,
+    Comparator<E>? compare,
   }) =>
       _compact(
         nextValue: nextValue ?? Scalable.chromaticMotion,
