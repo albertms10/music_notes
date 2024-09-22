@@ -45,14 +45,6 @@ void main() {
             nextValue: (current) => current + 1,
             compare: Comparable.compare,
           ),
-          const [(from: 1, to: 5), (from: 8, to: 8)],
-        );
-        expect(
-          const [1, 2, 3, 4, 5, 8].compact(
-            nextValue: (current) => current + 1,
-            compare: Comparable.compare,
-            inclusive: true,
-          ),
           const [(from: 1, to: 6), (from: 8, to: 9)],
         );
         expect(
@@ -61,45 +53,35 @@ void main() {
                     String.fromCharCodes(current.codeUnits.map((a) => a + 1)),
                 compare: Comparable.compare,
               ),
-          const [(from: 'a', to: 'f'), (from: 'x', to: 'z')],
+          const [(from: 'a', to: 'g'), (from: 'x', to: '{')],
         );
 
         expect(const <Note>[].compact(), const <List<Note>>[]);
-        expect(const [Note.c].compact(), const [(from: Note.c, to: Note.c)]);
+        expect(const [Note.c].compact(), [(from: Note.c, to: Note.d.flat)]);
         expect(
           const [Note.c, Note.d, Note.e, Note.g, Note.a, Note.b].compact(),
-          const [
-            (from: Note.c, to: Note.c),
-            (from: Note.d, to: Note.d),
-            (from: Note.e, to: Note.e),
-            (from: Note.g, to: Note.g),
-            (from: Note.a, to: Note.a),
-            (from: Note.b, to: Note.b),
+          [
+            (from: Note.c, to: Note.d.flat),
+            (from: Note.d, to: Note.e.flat),
+            (from: Note.e, to: Note.f),
+            (from: Note.g, to: Note.a.flat),
+            (from: Note.a, to: Note.b.flat),
+            (from: Note.b, to: Note.c),
           ],
         );
         expect([Note.c, Note.c.sharp].compact(), [
-          (from: Note.c, to: Note.c.sharp),
+          (from: Note.c, to: Note.d),
         ]);
         expect([Note.c, Note.d.flat].compact(), [
-          (from: Note.c, to: Note.d.flat),
-        ]);
-        expect([Note.c, Note.d.flat].compact(inclusive: true), [
           (from: Note.c, to: Note.d),
         ]);
         expect([Note.c, Note.d.flat, Note.d].compact(), [
-          (from: Note.c, to: Note.d),
+          (from: Note.c, to: Note.e.flat),
         ]);
         expect([Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact(), [
-          (from: Note.c, to: Note.e.flat),
-          (from: Note.g, to: Note.g),
+          (from: Note.c, to: Note.e),
+          (from: Note.g, to: Note.a.flat),
         ]);
-        expect(
-            [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g]
-                .compact(inclusive: true),
-            [
-              (from: Note.c, to: Note.e),
-              (from: Note.g, to: Note.a.flat),
-            ]);
         expect(
             [
               Note.c,
@@ -114,16 +96,16 @@ void main() {
               Note.c.sharp,
             ].compact(),
             [
-              (from: Note.c, to: Note.e.flat),
-              (from: Note.f.sharp, to: Note.f.sharp),
-              (from: Note.a, to: Note.c.sharp),
+              (from: Note.c, to: Note.e),
+              (from: Note.f.sharp, to: Note.g),
+              (from: Note.a, to: Note.d),
             ]);
 
         expect([Note.c.inOctave(2)].compact(), [
-          (from: Note.c.inOctave(2), to: Note.c.inOctave(2)),
+          (from: Note.c.inOctave(2), to: Note.d.flat.inOctave(2)),
         ]);
         expect([Note.c.inOctave(4), Note.c.sharp.inOctave(4)].compact(), [
-          (from: Note.c.inOctave(4), to: Note.c.sharp.inOctave(4)),
+          (from: Note.c.inOctave(4), to: Note.d.inOctave(4)),
         ]);
         expect(
             [
@@ -141,9 +123,9 @@ void main() {
               Note.d.flat.inOctave(5),
             ].compact(),
             [
-              (from: Note.c.inOctave(4), to: Note.e.inOctave(4)),
-              (from: Note.g.flat.inOctave(4), to: Note.g.sharp.inOctave(4)),
-              (from: Note.b.flat.inOctave(4), to: Note.d.flat.inOctave(5)),
+              (from: Note.c.inOctave(4), to: Note.f.inOctave(4)),
+              (from: Note.g.flat.inOctave(4), to: Note.a.inOctave(4)),
+              (from: Note.b.flat.inOctave(4), to: Note.d.inOctave(5)),
             ]);
       });
     });

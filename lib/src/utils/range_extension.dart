@@ -11,6 +11,8 @@ extension RangeExtension<E> on Range<E> {
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
   }) {
+    if (from == to) return const [];
+
     assert(
       E != Pitch || compare(from, to) <= 0,
       'To must be greater than or equal to from.',
@@ -18,7 +20,7 @@ extension RangeExtension<E> on Range<E> {
 
     final set = {from};
     var temp = from;
-    while (compare(temp, to) != 0) {
+    while (compare(nextValue(temp), to) != 0) {
       temp = nextValue(temp);
       if (set.contains(temp)) break;
       set.add(temp);
@@ -27,14 +29,14 @@ extension RangeExtension<E> on Range<E> {
     return set.toList();
   }
 
-  /// Fills this range of values between `from` and `to`.
+  /// Fills this range of values between `from` and `to` (`to` not included).
   ///
   /// Example:
   /// ```dart
   /// const (from: 1, to: 10).explode(
   ///   nextValue: (current) => current + 1,
   ///   compare: Comparable.compare,
-  /// ) == const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  /// ) == const [1, 2, 3, 4, 5, 6, 7, 8, 9]
   /// ```
   /// ---
   /// See also:
@@ -48,7 +50,7 @@ extension RangeExtension<E> on Range<E> {
 
 /// A Scalable range record extension.
 extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
-  /// Fills this range of values between `from` and `to`.
+  /// Fills this range of values between `from` and `to` (`to` not included).
   ///
   /// Example:
   /// ```dart

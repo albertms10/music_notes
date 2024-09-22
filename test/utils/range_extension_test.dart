@@ -18,12 +18,10 @@ void main() {
             nextValue: (current) => current + 1,
             compare: Comparable.compare,
           ),
-          const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+          const [1, 2, 3, 4, 5, 6, 7, 8, 9],
         );
-        expect(
-          const (from: Note.c, to: Note.c).explode(),
-          const [Note.c],
-        );
+        expect(const (from: Note.c, to: Note.c).explode(), const <Note>[]);
+        expect((from: Note.c, to: Note.d.flat).explode(), const [Note.c]);
         expect(const (from: Note.c, to: Note.b).explode(), [
           Note.c,
           Note.d.flat,
@@ -36,7 +34,6 @@ void main() {
           Note.a.flat,
           Note.a,
           Note.b.flat,
-          Note.b,
         ]);
         expect(
             (from: Note.e, to: Note.e.flat).explode(
@@ -55,11 +52,10 @@ void main() {
               Note.c,
               Note.c.sharp,
               Note.d,
-              Note.d.sharp,
             ]);
         expect(
           (from: Note.b, to: Note.c.sharp).explode(),
-          [Note.b, Note.c, Note.d.flat],
+          const [Note.b, Note.c],
         );
         expect(
           const (from: Note.c, to: Note.b).explode(
@@ -102,7 +98,6 @@ void main() {
             Note.e.inOctave(5),
             Note.f.inOctave(5),
             Note.g.flat.inOctave(5),
-            Note.g.inOctave(5),
           ],
         );
 

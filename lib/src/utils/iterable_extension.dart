@@ -34,7 +34,6 @@ extension IterableExtension<E> on Iterable<E> {
   Iterable<Range<E>> _compact({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
-    bool inclusive = false,
   }) {
     if (isEmpty) return const Iterable.empty();
 
@@ -49,7 +48,7 @@ extension IterableExtension<E> on Iterable<E> {
 
         final nextA = nextValue(a);
         if (compare(nextA, b) != 0) {
-          ranges.add((from: start, to: inclusive ? nextA : a));
+          ranges.add((from: start, to: nextA));
           start = b;
         }
       }
@@ -57,8 +56,7 @@ extension IterableExtension<E> on Iterable<E> {
       b = first;
     }
 
-    return (ranges..add((from: start, to: inclusive ? nextValue(b) : b)))
-        .toList();
+    return (ranges..add((from: start, to: nextValue(b)))).toList();
   }
 
   /// Returns a list of consecutive values of this [Iterable]
@@ -67,9 +65,7 @@ extension IterableExtension<E> on Iterable<E> {
   ///
   /// Examples:
   /// ```dart
-  /// const numbers = [1, 2, 3, 4, 5, 8];
-  /// numbers.compact() == [(from: 1, to: 5), (from: 8, to: 8)]
-  /// numbers.compact(inclusive: true) == [(from: 1, to: 6), (from: 8, to: 9)]
+  /// [1, 2, 3, 4, 5, 8].compact() == [(from: 1, to: 6), (from: 8, to: 9)]
   /// ```
   /// ---
   /// See also:
@@ -77,24 +73,18 @@ extension IterableExtension<E> on Iterable<E> {
   Iterable<Range<E>> compact({
     required E Function(E current) nextValue,
     required int Function(E a, E b) compare,
-    bool inclusive = false,
   }) =>
-      _compact(nextValue: nextValue, compare: compare, inclusive: inclusive);
+      _compact(nextValue: nextValue, compare: compare);
 }
 
 /// A Scalable Iterable extension.
 extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// Compacts this [Iterable] into a collection of [Range]s, based on
-  /// [nextValue], [compare] and [inclusive].
+  /// [nextValue] and [compare].
   ///
   /// Example:
   /// ```dart
-  /// final notes = [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g];
-  /// notes.compact() == [
-  ///   (from: Note.c, to: Note.e.flat),
-  ///   (from: Note.g, to: Note.g),
-  /// ]
-  /// notes.compact(inclusive: true) == [
+  /// [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact() == [
   ///   (from: Note.c, to: Note.e),
   ///   (from: Note.g, to: Note.a.flat),
   /// ]
@@ -105,12 +95,10 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   Iterable<Range<E>> compact({
     E Function(E current)? nextValue,
     int Function(E a, E b)? compare,
-    bool inclusive = false,
   }) =>
       _compact(
         nextValue: nextValue ?? Scalable.chromaticMotion,
         compare: compare ?? Scalable.compareEnharmonically,
-        inclusive: inclusive,
       );
 }
 
