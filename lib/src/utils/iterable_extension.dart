@@ -59,13 +59,15 @@ extension IterableExtension<E> on Iterable<E> {
     return (ranges..add((from: start, to: nextValue(b)))).toList();
   }
 
-  /// Returns a list of consecutive values of this [Iterable]
-  /// compacted as tuples. Consecutive values are obtained
-  /// based on [nextValue] and [compare].
+  /// Compacts this [Iterable] into a collection of [Range]s, based on
+  /// [nextValue] and [compare].
   ///
   /// Examples:
   /// ```dart
-  /// [1, 2, 3, 4, 5, 8].compact() == [(from: 1, to: 6), (from: 8, to: 9)]
+  /// const [1, 2, 3, 4, 5, 8].compact(
+  ///   nextValue: (current) => current + 1,
+  ///   compare: Comparable.compare,
+  /// ) == const [(from: 1, to: 6), (from: 8, to: 9)]
   /// ```
   /// ---
   /// See also:
