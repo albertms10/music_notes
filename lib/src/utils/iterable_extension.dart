@@ -31,32 +31,25 @@ extension IterableExtension<E> on Iterable<E> {
             : closest;
       });
 
-  List<Range<E>> _compact({
+  Iterable<Range<E>> _compact({
     required E Function(E current) nextValue,
     required Comparator<E> compare,
-  }) {
-    if (isEmpty) return const [];
+  }) sync* {
+    if (isEmpty) return;
 
     var start = first;
-    late E b;
+    for (var i = 1; i < length; i++) {
+      final a = elementAt(i - 1);
+      final b = elementAt(i);
+      final nextA = nextValue(a);
 
-    final ranges = <Range<E>>{};
-    if (length > 1) {
-      for (var i = 0; i < length - 1; i++) {
-        final a = elementAt(i);
-        b = elementAt(i + 1);
-
-        final nextA = nextValue(a);
-        if (compare(nextA, b) != 0) {
-          ranges.add((from: start, to: nextA));
-          start = b;
-        }
+      if (compare(nextA, b) != 0) {
+        yield (from: start, to: nextA);
+        start = b;
       }
-    } else {
-      b = first;
     }
 
-    return (ranges..add((from: start, to: nextValue(b)))).toList();
+    yield (from: start, to: nextValue(last));
   }
 
   /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]
@@ -67,12 +60,12 @@ extension IterableExtension<E> on Iterable<E> {
   /// const [1, 2, 3, 4, 5, 8].compact(
   ///   nextValue: (current) => current + 1,
   ///   compare: Comparable.compare,
-  /// ) == const [(from: 1, to: 6), (from: 8, to: 9)]
+  /// ).toList() == const [(from: 1, to: 6), (from: 8, to: 9)]
   /// ```
   /// ---
   /// See also:
   /// * [RangeExtension.explode] for the inverse operation.
-  List<Range<E>> compact({
+  Iterable<Range<E>> compact({
     required E Function(E current) nextValue,
     required Comparator<E> compare,
   }) =>
@@ -86,7 +79,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact() == [
+  /// [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact().toList() == [
   ///   (from: Note.c, to: Note.e),
   ///   (from: Note.g, to: Note.a.flat),
   /// ]
@@ -94,7 +87,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   /// ---
   /// See also:
   /// * [RangeExtension.explode] for the inverse operation.
-  List<Range<E>> compact({
+  Iterable<Range<E>> compact({
     E Function(E current)? nextValue,
     Comparator<E>? compare,
   }) =>
