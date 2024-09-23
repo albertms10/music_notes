@@ -3,33 +3,21 @@ import 'range_extension.dart';
 
 /// An Iterable extension.
 extension IterableExtension<E> on Iterable<E> {
+  E _closestTo(E target, num Function(E a, E b) difference) => reduce(
+        (closest, element) => difference(element, target).abs() <
+                difference(closest, target).abs()
+            ? element
+            : closest,
+      );
+
   /// The closest element [E] to [target].
   ///
   /// Example:
   /// ```dart
   /// const [2, 5, 6, 8, 10].closestTo(7) == 6
-  ///
-  /// [Note.c, Note.e, Note.f.sharp, Note.a]
-  ///     .closestTo(Note.g, (a, b) => b.semitones - a.semitones)
-  ///   == Note.f.sharp
   /// ```
-  E closestTo(E target, [num Function(E a, E b)? difference]) =>
-      reduce((closest, element) {
-        if (difference == null && closest is! num) {
-          throw ArgumentError.value(
-            difference,
-            'difference',
-            'Provide difference when elements are not num',
-          );
-        }
-
-        difference ??= (a, b) => (b as num) - (a as num);
-
-        return difference!(element, target).abs() <
-                difference!(closest, target).abs()
-            ? element
-            : closest;
-      });
+  E closestTo(E target, num Function(E a, E b) difference) =>
+      _closestTo(target, difference);
 
   Iterable<Range<E>> _compact({
     required E Function(E current) nextValue,
@@ -72,8 +60,34 @@ extension IterableExtension<E> on Iterable<E> {
       _compact(nextValue: nextValue, compare: compare);
 }
 
+/// A num Iterable extension.
+extension NumIterableExtension<E extends num> on Iterable<E> {
+  static num _difference(num a, num b) => b - a;
+
+  /// The closest element [E] to [target].
+  ///
+  /// Example:
+  /// ```dart
+  /// const [2, 5, 6, 8, 10].closestTo(7) == 6
+  /// ```
+  E closestTo(E target, [num Function(E a, E b) difference = _difference]) =>
+      _closestTo(target, difference);
+}
+
 /// A Scalable Iterable extension.
 extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
+  static num _difference<E extends Scalable<E>>(E a, E b) =>
+      b.semitones - a.semitones;
+
+  /// The closest element [E] to [target].
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c, Note.e, Note.f.sharp, Note.a].closestTo(Note.g) == Note.f.sharp
+  /// ```
+  E closestTo(E target, [num Function(E a, E b)? difference]) =>
+      _closestTo(target, difference ?? _difference);
+
   /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]
   /// and [compare].
   ///
