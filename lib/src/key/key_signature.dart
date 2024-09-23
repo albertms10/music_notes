@@ -56,7 +56,7 @@ final class KeySignature implements Comparable<KeySignature> {
     return KeySignature(
       Interval.P5
           .circleFrom(firstNote, distance: distance.incrementBy(-1))
-          .toList(),
+          .toList(growable: false),
     );
   }
 
@@ -80,8 +80,11 @@ final class KeySignature implements Comparable<KeySignature> {
   /// (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3)).clean
   ///   == KeySignature([Note.f, Note.c, Note.g].sharp)
   /// ```
-  KeySignature get clean =>
-      KeySignature(_notes.where((note) => !note.accidental.isNatural).toList());
+  KeySignature get clean => KeySignature(
+        _notes
+            .whereNot((note) => note.accidental.isNatural)
+            .toList(growable: false),
+      );
 
   /// The fifths distance of this [KeySignature].
   ///

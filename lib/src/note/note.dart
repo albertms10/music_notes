@@ -322,10 +322,14 @@ final class Note extends Scalable<Note>
     int distance = chromaticDivisions ~/ 2,
   }) =>
       (
-        sharps:
-            Interval.P5.circleFrom(this, distance: distance).skip(1).toList(),
-        flats:
-            Interval.P5.circleFrom(this, distance: -distance).skip(1).toList(),
+        sharps: Interval.P5
+            .circleFrom(this, distance: distance)
+            .skip(1)
+            .toList(growable: false),
+        flats: Interval.P5
+            .circleFrom(this, distance: -distance)
+            .skip(1)
+            .toList(growable: false),
       );
 
   /// The continuous circle of fifths up to [distance] including this [Note],
