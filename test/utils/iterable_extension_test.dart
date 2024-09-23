@@ -9,15 +9,6 @@ void main() {
         expect(() => const <num>[].closestTo(1), throwsStateError);
       });
 
-      test('throws an ArgumentError when difference is required', () {
-        expect(
-          () => [DateTime(2025, 1, 2), DateTime(2023, 12, 15)]
-              .closestTo(DateTime.now()),
-          throwsArgumentError,
-        );
-        expect(() => const ['A', 'B'].closestTo('C'), throwsArgumentError);
-      });
-
       test('returns the closest element to target in this Iterable', () {
         expect(const [5].closestTo(1), 5);
         expect(const [5].closestTo(-1), 5);
@@ -31,8 +22,7 @@ void main() {
           DateTime(2023, 12, 15),
         );
         expect(
-          [Note.c, Note.e, Note.f.sharp, Note.a]
-              .closestTo(Note.g, (a, b) => b.semitones - a.semitones),
+          [Note.c, Note.e, Note.f.sharp, Note.a].closestTo(Note.g),
           Note.f.sharp,
         );
       });
