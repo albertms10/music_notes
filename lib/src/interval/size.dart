@@ -139,6 +139,7 @@ extension type const Size._(int size) implements int {
   }
 
   /// The absolute [Size] value taking octave shift into account.
+  @Deprecated('This getter is not reliable on large Intervals')
   int get absShift {
     final absSize = abs();
 
