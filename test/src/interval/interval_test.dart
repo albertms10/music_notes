@@ -1,3 +1,6 @@
+// To allow testing each constructor with different arguments.
+// ignore_for_file: use_named_constants
+
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
@@ -7,14 +10,212 @@ void main() {
   group('Interval', () {
     group('constructor', () {
       test('throws an assertion error when arguments are incorrect', () {
+        const major = ImperfectQuality.major;
+        final matcher = throwsA(isA<AssertionError>());
+
+        expect(() => Interval.imperfect(const Size(-43), major), matcher);
+        expect(() => Interval.perfect(const Size(-42)), matcher);
+        expect(() => Interval.perfect(const Size(-41)), matcher);
+        expect(() => Interval.imperfect(const Size(-40), major), matcher);
+        expect(() => Interval.imperfect(const Size(-39), major), matcher);
+        expect(() => Interval.perfect(const Size(-38)), matcher);
+        expect(() => Interval.perfect(const Size(-37)), matcher);
+
+        expect(() => Interval.imperfect(const Size(-36), major), matcher);
+        expect(() => Interval.perfect(const Size(-35)), matcher);
+        expect(() => Interval.perfect(const Size(-34)), matcher);
+        expect(() => Interval.imperfect(const Size(-33), major), matcher);
+        expect(() => Interval.imperfect(const Size(-32), major), matcher);
+        expect(() => Interval.perfect(const Size(-31)), matcher);
+        expect(() => Interval.perfect(const Size(-30)), matcher);
+
+        expect(() => Interval.imperfect(const Size(-29), major), matcher);
+        expect(() => Interval.perfect(const Size(-28)), matcher);
+        expect(() => Interval.perfect(const Size(-27)), matcher);
+        expect(() => Interval.imperfect(const Size(-26), major), matcher);
+        expect(() => Interval.imperfect(const Size(-25), major), matcher);
+        expect(() => Interval.perfect(const Size(-24)), matcher);
+        expect(() => Interval.perfect(const Size(-23)), matcher);
+
+        expect(() => Interval.imperfect(const Size(-22), major), matcher);
+        expect(() => Interval.perfect(const Size(-21)), matcher);
+        expect(() => Interval.perfect(const Size(-20)), matcher);
+        expect(() => Interval.imperfect(const Size(-19), major), matcher);
+        expect(() => Interval.imperfect(const Size(-18), major), matcher);
+        expect(() => Interval.perfect(const Size(-17)), matcher);
+        expect(() => Interval.perfect(const Size(-16)), matcher);
+
+        expect(() => Interval.imperfect(const Size(-15), major), matcher);
+        expect(() => Interval.perfect(const Size(-14)), matcher);
+        expect(() => Interval.perfect(-Size.thirteenth), matcher);
+        expect(() => Interval.imperfect(-Size.twelfth, major), matcher);
+        expect(() => Interval.imperfect(-Size.eleventh, major), matcher);
+        expect(() => Interval.perfect(-Size.tenth), matcher);
+        expect(() => Interval.perfect(-Size.ninth), matcher);
+
+        expect(() => Interval.imperfect(-Size.octave, major), matcher);
+        expect(() => Interval.perfect(-Size.seventh), matcher);
+        expect(() => Interval.perfect(-Size.sixth), matcher);
+        expect(() => Interval.imperfect(-Size.fifth, major), matcher);
+        expect(() => Interval.imperfect(-Size.fourth, major), matcher);
+        expect(() => Interval.perfect(-Size.third), matcher);
+        expect(() => Interval.perfect(-Size.second), matcher);
+        expect(() => Interval.imperfect(-Size.unison, major), matcher);
+
+        expect(() => Interval.imperfect(Size.unison, major), matcher);
+        expect(() => Interval.perfect(Size.second), matcher);
+        expect(() => Interval.perfect(Size.third), matcher);
+        expect(() => Interval.imperfect(Size.fourth, major), matcher);
+        expect(() => Interval.imperfect(Size.fifth, major), matcher);
+        expect(() => Interval.perfect(Size.sixth), matcher);
+        expect(() => Interval.perfect(Size.seventh), matcher);
+        expect(() => Interval.imperfect(Size.octave, major), matcher);
+
+        expect(() => Interval.perfect(Size.ninth), matcher);
+        expect(() => Interval.perfect(Size.tenth), matcher);
+        expect(() => Interval.imperfect(Size.eleventh, major), matcher);
+        expect(() => Interval.imperfect(Size.twelfth, major), matcher);
+        expect(() => Interval.perfect(Size.thirteenth), matcher);
+        expect(() => Interval.perfect(const Size(14)), matcher);
+        expect(() => Interval.imperfect(const Size(15), major), matcher);
+
+        expect(() => Interval.perfect(const Size(16)), matcher);
+        expect(() => Interval.perfect(const Size(17)), matcher);
+        expect(() => Interval.imperfect(const Size(18), major), matcher);
+        expect(() => Interval.imperfect(const Size(19), major), matcher);
+        expect(() => Interval.perfect(const Size(20)), matcher);
+        expect(() => Interval.perfect(const Size(21)), matcher);
+        expect(() => Interval.imperfect(const Size(22), major), matcher);
+
+        expect(() => Interval.perfect(const Size(23)), matcher);
+        expect(() => Interval.perfect(const Size(24)), matcher);
+        expect(() => Interval.imperfect(const Size(25), major), matcher);
+        expect(() => Interval.imperfect(const Size(26), major), matcher);
+        expect(() => Interval.perfect(const Size(27)), matcher);
+        expect(() => Interval.perfect(const Size(28)), matcher);
+        expect(() => Interval.imperfect(const Size(29), major), matcher);
+
+        expect(() => Interval.perfect(const Size(30)), matcher);
+        expect(() => Interval.perfect(const Size(31)), matcher);
+        expect(() => Interval.imperfect(const Size(32), major), matcher);
+        expect(() => Interval.imperfect(const Size(33), major), matcher);
+        expect(() => Interval.perfect(const Size(34)), matcher);
+        expect(() => Interval.perfect(const Size(35)), matcher);
+        expect(() => Interval.imperfect(const Size(36), major), matcher);
+
+        expect(() => Interval.perfect(const Size(37)), matcher);
+        expect(() => Interval.perfect(const Size(38)), matcher);
+        expect(() => Interval.imperfect(const Size(39), major), matcher);
+        expect(() => Interval.imperfect(const Size(40), major), matcher);
+        expect(() => Interval.perfect(const Size(41)), matcher);
+        expect(() => Interval.perfect(const Size(42)), matcher);
+        expect(() => Interval.imperfect(const Size(43), major), matcher);
+      });
+
+      test('creates a new Interval from size and quality', () {
+        const major = ImperfectQuality.major;
+        final matcher = isA<Interval>();
+
+        expect(const Interval.perfect(Size(-43)), matcher);
+        expect(const Interval.imperfect(Size(-42), major), matcher);
+        expect(const Interval.imperfect(Size(-41), major), matcher);
+        expect(const Interval.perfect(Size(-40)), matcher);
+        expect(const Interval.perfect(Size(-39)), matcher);
+        expect(const Interval.imperfect(Size(-38), major), matcher);
+        expect(const Interval.imperfect(Size(-37), major), matcher);
+
+        expect(const Interval.perfect(Size(-36)), matcher);
+        expect(const Interval.imperfect(Size(-35), major), matcher);
+        expect(const Interval.imperfect(Size(-34), major), matcher);
+        expect(const Interval.perfect(Size(-33)), matcher);
+        expect(const Interval.perfect(Size(-32)), matcher);
+        expect(const Interval.imperfect(Size(-31), major), matcher);
+        expect(const Interval.imperfect(Size(-30), major), matcher);
+
+        expect(const Interval.perfect(Size(-29)), matcher);
+        expect(const Interval.imperfect(Size(-28), major), matcher);
+        expect(const Interval.imperfect(Size(-27), major), matcher);
+        expect(const Interval.perfect(Size(-26)), matcher);
+        expect(const Interval.perfect(Size(-25)), matcher);
+        expect(const Interval.imperfect(Size(-24), major), matcher);
+        expect(const Interval.imperfect(Size(-23), major), matcher);
+
+        expect(const Interval.perfect(Size(-22)), matcher);
+        expect(const Interval.imperfect(Size(-21), major), matcher);
+        expect(const Interval.imperfect(Size(-20), major), matcher);
+        expect(const Interval.perfect(Size(-19)), matcher);
+        expect(const Interval.perfect(Size(-18)), matcher);
+        expect(const Interval.imperfect(Size(-17), major), matcher);
+        expect(const Interval.imperfect(Size(-16), major), matcher);
+
+        expect(const Interval.perfect(Size(-15)), matcher);
+        expect(const Interval.imperfect(Size(-14), major), matcher);
+        expect(Interval.imperfect(-Size.thirteenth, major), matcher);
+        expect(Interval.perfect(-Size.twelfth), matcher);
+        expect(Interval.perfect(-Size.eleventh), matcher);
+        expect(Interval.imperfect(-Size.tenth, major), matcher);
+        expect(Interval.imperfect(-Size.ninth, major), matcher);
+
+        expect(Interval.perfect(-Size.octave), matcher);
+        expect(Interval.imperfect(-Size.seventh, major), matcher);
+        expect(Interval.imperfect(-Size.sixth, major), matcher);
+        expect(Interval.perfect(-Size.fifth), matcher);
+        expect(Interval.perfect(-Size.fourth), matcher);
+        expect(Interval.imperfect(-Size.third, major), matcher);
+        expect(Interval.imperfect(-Size.second, major), matcher);
+        expect(Interval.perfect(-Size.unison), matcher);
+
+        expect(const Interval.perfect(Size.unison), matcher);
+        expect(const Interval.imperfect(Size.second, major), matcher);
+        expect(const Interval.imperfect(Size.third, major), matcher);
+        expect(const Interval.perfect(Size.fourth), matcher);
+        expect(const Interval.perfect(Size.fifth), matcher);
+        expect(const Interval.imperfect(Size.sixth, major), matcher);
+        expect(const Interval.imperfect(Size.seventh, major), matcher);
+        expect(const Interval.perfect(Size.octave), matcher);
+
+        expect(const Interval.imperfect(Size.ninth, major), matcher);
+        expect(const Interval.imperfect(Size.tenth, major), matcher);
+        expect(const Interval.perfect(Size.eleventh), matcher);
+        expect(const Interval.perfect(Size.twelfth), matcher);
         expect(
-          () => Interval.perfect(Size.second, PerfectQuality.diminished),
-          throwsA(isA<AssertionError>()),
+          const Interval.imperfect(Size.thirteenth, major),
+          matcher,
         );
-        expect(
-          () => Interval.imperfect(Size.fifth, ImperfectQuality.augmented),
-          throwsA(isA<AssertionError>()),
-        );
+        expect(const Interval.imperfect(Size(14), major), matcher);
+        expect(const Interval.perfect(Size(15)), matcher);
+
+        expect(const Interval.imperfect(Size(16), major), matcher);
+        expect(const Interval.imperfect(Size(17), major), matcher);
+        expect(const Interval.perfect(Size(18)), matcher);
+        expect(const Interval.perfect(Size(19)), matcher);
+        expect(const Interval.imperfect(Size(20), major), matcher);
+        expect(const Interval.imperfect(Size(21), major), matcher);
+        expect(const Interval.perfect(Size(22)), matcher);
+
+        expect(const Interval.imperfect(Size(23), major), matcher);
+        expect(const Interval.imperfect(Size(24), major), matcher);
+        expect(const Interval.perfect(Size(25)), matcher);
+        expect(const Interval.perfect(Size(26)), matcher);
+        expect(const Interval.imperfect(Size(27), major), matcher);
+        expect(const Interval.imperfect(Size(28), major), matcher);
+        expect(const Interval.perfect(Size(29)), matcher);
+
+        expect(const Interval.imperfect(Size(30), major), matcher);
+        expect(const Interval.imperfect(Size(31), major), matcher);
+        expect(const Interval.perfect(Size(32)), matcher);
+        expect(const Interval.perfect(Size(33)), matcher);
+        expect(const Interval.imperfect(Size(34), major), matcher);
+        expect(const Interval.imperfect(Size(35), major), matcher);
+        expect(const Interval.perfect(Size(36)), matcher);
+
+        expect(const Interval.imperfect(Size(37), major), matcher);
+        expect(const Interval.imperfect(Size(38), major), matcher);
+        expect(const Interval.perfect(Size(39)), matcher);
+        expect(const Interval.perfect(Size(40)), matcher);
+        expect(const Interval.imperfect(Size(41), major), matcher);
+        expect(const Interval.imperfect(Size(42), major), matcher);
+        expect(const Interval.perfect(Size(43)), matcher);
       });
     });
 

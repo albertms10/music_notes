@@ -87,6 +87,108 @@ void main() {
       );
     });
 
+    group('.isPerfect', () {
+      test('returns whether this Size is perfect', () {
+        expect(const Size(-43).isPerfect, isTrue);
+        expect(const Size(-42).isPerfect, isFalse);
+        expect(const Size(-41).isPerfect, isFalse);
+        expect(const Size(-40).isPerfect, isTrue);
+        expect(const Size(-39).isPerfect, isTrue);
+        expect(const Size(-38).isPerfect, isFalse);
+        expect(const Size(-37).isPerfect, isFalse);
+
+        expect(const Size(-36).isPerfect, isTrue);
+        expect(const Size(-35).isPerfect, isFalse);
+        expect(const Size(-34).isPerfect, isFalse);
+        expect(const Size(-33).isPerfect, isTrue);
+        expect(const Size(-32).isPerfect, isTrue);
+        expect(const Size(-31).isPerfect, isFalse);
+        expect(const Size(-30).isPerfect, isFalse);
+
+        expect(const Size(-29).isPerfect, isTrue);
+        expect(const Size(-28).isPerfect, isFalse);
+        expect(const Size(-27).isPerfect, isFalse);
+        expect(const Size(-26).isPerfect, isTrue);
+        expect(const Size(-25).isPerfect, isTrue);
+        expect(const Size(-24).isPerfect, isFalse);
+        expect(const Size(-23).isPerfect, isFalse);
+
+        expect(const Size(-22).isPerfect, isTrue);
+        expect(const Size(-21).isPerfect, isFalse);
+        expect(const Size(-20).isPerfect, isFalse);
+        expect(const Size(-19).isPerfect, isTrue);
+        expect(const Size(-18).isPerfect, isTrue);
+        expect(const Size(-17).isPerfect, isFalse);
+        expect(const Size(-16).isPerfect, isFalse);
+
+        expect(const Size(-15).isPerfect, isTrue);
+        expect(const Size(-14).isPerfect, isFalse);
+        expect((-Size.thirteenth).isPerfect, isFalse);
+        expect((-Size.twelfth).isPerfect, isTrue);
+        expect((-Size.eleventh).isPerfect, isTrue);
+        expect((-Size.tenth).isPerfect, isFalse);
+        expect((-Size.ninth).isPerfect, isFalse);
+
+        expect((-Size.octave).isPerfect, isTrue);
+        expect((-Size.seventh).isPerfect, isFalse);
+        expect((-Size.sixth).isPerfect, isFalse);
+        expect((-Size.fifth).isPerfect, isTrue);
+        expect((-Size.fourth).isPerfect, isTrue);
+        expect((-Size.third).isPerfect, isFalse);
+        expect((-Size.second).isPerfect, isFalse);
+        expect((-Size.unison).isPerfect, isTrue);
+
+        expect(Size.unison.isPerfect, isTrue);
+        expect(Size.second.isPerfect, isFalse);
+        expect(Size.third.isPerfect, isFalse);
+        expect(Size.fourth.isPerfect, isTrue);
+        expect(Size.fifth.isPerfect, isTrue);
+        expect(Size.sixth.isPerfect, isFalse);
+        expect(Size.seventh.isPerfect, isFalse);
+        expect(Size.octave.isPerfect, isTrue);
+
+        expect(Size.ninth.isPerfect, isFalse);
+        expect(Size.tenth.isPerfect, isFalse);
+        expect(Size.eleventh.isPerfect, isTrue);
+        expect(Size.twelfth.isPerfect, isTrue);
+        expect(Size.thirteenth.isPerfect, isFalse);
+        expect(const Size(14).isPerfect, isFalse);
+        expect(const Size(15).isPerfect, isTrue);
+
+        expect(const Size(16).isPerfect, isFalse);
+        expect(const Size(17).isPerfect, isFalse);
+        expect(const Size(18).isPerfect, isTrue);
+        expect(const Size(19).isPerfect, isTrue);
+        expect(const Size(20).isPerfect, isFalse);
+        expect(const Size(21).isPerfect, isFalse);
+        expect(const Size(22).isPerfect, isTrue);
+
+        expect(const Size(23).isPerfect, isFalse);
+        expect(const Size(24).isPerfect, isFalse);
+        expect(const Size(25).isPerfect, isTrue);
+        expect(const Size(26).isPerfect, isTrue);
+        expect(const Size(27).isPerfect, isFalse);
+        expect(const Size(28).isPerfect, isFalse);
+        expect(const Size(29).isPerfect, isTrue);
+
+        expect(const Size(30).isPerfect, isFalse);
+        expect(const Size(31).isPerfect, isFalse);
+        expect(const Size(32).isPerfect, isTrue);
+        expect(const Size(33).isPerfect, isTrue);
+        expect(const Size(34).isPerfect, isFalse);
+        expect(const Size(35).isPerfect, isFalse);
+        expect(const Size(36).isPerfect, isTrue);
+
+        expect(const Size(37).isPerfect, isFalse);
+        expect(const Size(38).isPerfect, isFalse);
+        expect(const Size(39).isPerfect, isTrue);
+        expect(const Size(40).isPerfect, isTrue);
+        expect(const Size(41).isPerfect, isFalse);
+        expect(const Size(42).isPerfect, isFalse);
+        expect(const Size(43).isPerfect, isTrue);
+      });
+    });
+
     group('.perfect', () {
       test('returns the perfect Interval from this Size', () {
         expect(Size.unison.perfect, Interval.P1);
@@ -139,6 +241,59 @@ void main() {
 
         expect(Size.twelfth.inversion.augmented, Interval.A4);
         expect(Size.twelfth.simple.augmented, Interval.A5);
+      });
+    });
+
+    group('.inversion', () {
+      test('returns the inversion of this Size', () {
+        expect(Size.unison.simple, Size.unison);
+        expect(Size.second.simple, Size.second);
+        expect(Size.third.simple, Size.third);
+        expect(Size.fourth.simple, Size.fourth);
+        expect(Size.fifth.simple, Size.fifth);
+        expect(Size.sixth.simple, Size.sixth);
+        expect(Size.seventh.simple, Size.seventh);
+        expect(Size.octave.simple, Size.octave);
+
+        expect(Size.ninth.simple, Size.second);
+        expect(Size.tenth.simple, Size.third);
+        expect(Size.eleventh.simple, Size.fourth);
+        expect(Size.twelfth.simple, Size.fifth);
+        expect(Size.thirteenth.simple, Size.sixth);
+        expect(const Size(14).simple, Size.seventh);
+        expect(const Size(15).simple, Size.octave);
+
+        expect(const Size(16).simple, Size.second);
+        expect(const Size(17).simple, Size.third);
+        expect(const Size(18).simple, Size.fourth);
+        expect(const Size(19).simple, Size.fifth);
+        expect(const Size(20).simple, Size.sixth);
+        expect(const Size(21).simple, Size.seventh);
+        expect(const Size(22).simple, Size.octave);
+
+        expect(skip: true, const Size(23).simple, Size.second);
+        expect(const Size(24).simple, Size.third);
+        expect(const Size(25).simple, Size.fourth);
+        expect(const Size(26).simple, Size.fifth);
+        expect(const Size(27).simple, Size.sixth);
+        expect(const Size(28).simple, Size.seventh);
+        expect(const Size(29).simple, Size.octave);
+
+        expect(skip: true, const Size(30).simple, Size.second);
+        expect(skip: true, const Size(31).simple, Size.third);
+        expect(const Size(32).simple, Size.fourth);
+        expect(const Size(33).simple, Size.fifth);
+        expect(const Size(34).simple, Size.sixth);
+        expect(const Size(35).simple, Size.seventh);
+        expect(const Size(36).simple, Size.octave);
+
+        expect(skip: true, const Size(37).simple, Size.second);
+        expect(skip: true, const Size(38).simple, Size.third);
+        expect(skip: true, const Size(39).simple, Size.fourth);
+        expect(const Size(40).simple, Size.fifth);
+        expect(const Size(41).simple, Size.sixth);
+        expect(const Size(42).simple, Size.seventh);
+        expect(const Size(43).simple, Size.octave);
       });
     });
   });
