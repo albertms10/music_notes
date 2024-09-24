@@ -220,7 +220,7 @@ extension type const Size._(int size) implements int {
   /// readable pattern:
   ///
   /// ```dart
-  /// abs() % 7 case Size.unison || Size.fourth || Size.fifth
+  /// (abs() % 7 case Size.unison || Size.fourth || Size.fifth)
   /// ```
   ///
   /// In the bitmask, each bit represents a [Size] within the octave cycle
