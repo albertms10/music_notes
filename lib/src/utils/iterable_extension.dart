@@ -43,7 +43,7 @@ extension IterableExtension<E> on Iterable<E> {
   /// Compacts this [Iterable] into a list of [Range]s based on [nextValue]
   /// and [compare].
   ///
-  /// Examples:
+  /// Example:
   /// ```dart
   /// const [1, 2, 3, 4, 5, 8].compact(
   ///   nextValue: (current) => current + 1,

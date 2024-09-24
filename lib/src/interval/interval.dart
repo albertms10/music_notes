@@ -168,9 +168,7 @@ final class Interval
   ])
   // Copied from [Size.isPerfect] to allow const.
   : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 <
-              2,
+          ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
           'Interval must be perfect.',
         );
 
@@ -178,9 +176,7 @@ final class Interval
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 >=
-              2,
+          ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
           'Interval must be imperfect.',
         );
 
