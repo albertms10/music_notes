@@ -15,18 +15,60 @@ void main() {
   });
 
   group('ScalableIterable', () {
+    group('.intervalSteps', () {
+      test('returns the Interval steps of this ScalableIterable', () {
+        expect(
+          [Note.c, Note.d, Note.e, Note.f.sharp].intervalSteps,
+          const [Interval.M2, Interval.M2, Interval.M2],
+        );
+
+        expect(
+          [Note.b, Note.a, Note.g, Note.f].intervalSteps,
+          const [Interval.m7, Interval.m7, Interval.m7],
+        );
+      });
+    });
+
+    group('.descendingIntervalSteps', () {
+      test(
+        'returns the descending Interval steps of this ScalableIterable',
+        () {
+          expect(
+            [Note.b, Note.a, Note.g, Note.f].descendingIntervalSteps,
+            const [Interval.M2, Interval.M2, Interval.M2],
+          );
+
+          expect(
+            [Note.c, Note.d, Note.e, Note.f.sharp].descendingIntervalSteps,
+            const [Interval.m7, Interval.m7, Interval.m7],
+          );
+        },
+      );
+    });
+
+    group('.closestSteps', () {
+      test('returns the closest Interval steps of this ScalableIterable', () {
+        expect(
+          [Note.c, Note.d, Note.e, Note.f.sharp].closestSteps,
+          const [Interval.M2, Interval.M2, Interval.M2],
+        );
+
+        expect(
+          [Note.b, Note.a, Note.g, Note.f].closestSteps,
+          const [Interval.M2, Interval.M2, Interval.M2],
+        );
+      });
+    });
+
     group('.isStepwise', () {
       test('returns whether this Iterable is entirely in stepwise motion', () {
         expect([Note.c, Note.d, Note.e, Note.f.sharp].isStepwise, isTrue);
         expect(
-          skip: 'Should descending Note intervals be accounted '
-              'as, e.g., Interval.M2 instead of Interval.m7?',
-          () => [Note.g, Note.a, Note.g, Note.f.sharp, Note.e.flat].isStepwise,
+          [Note.g, Note.a, Note.g, Note.f.sharp, Note.e.flat].isStepwise,
           isTrue,
         );
         expect(
-          skip: 'Descending Pitch intervals are still unsupported.',
-          () => [
+          [
             Note.c.inOctave(4),
             Note.d.inOctave(4),
             Note.c.inOctave(4),
