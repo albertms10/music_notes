@@ -10,4 +10,16 @@ extension NumExtension on num {
   /// (-5).toDeltaString() == '-5'
   /// ```
   String toDeltaString() => isNegative ? '$this' : '+$this';
+
+  /// The sign of this integer.
+  ///
+  /// Like [sign] except that it returns 1 for zero (considering it positive).
+  ///
+  /// Example:
+  /// ```dart
+  /// 5.nonZeroSign == 1
+  /// 0.nonZeroSign == 1
+  /// (-2).nonZeroSign == -1
+  /// ```
+  int get nonZeroSign => isNegative ? -1 : 1;
 }

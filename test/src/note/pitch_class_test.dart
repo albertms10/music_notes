@@ -7,9 +7,9 @@ void main() {
   group('PitchClass', () {
     group('constructor', () {
       test('creates a new PitchClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(-2), PitchClass.aSharp);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(13), PitchClass.cSharp);
       });
     });
@@ -298,6 +298,27 @@ void main() {
         expect(PitchClass.e.difference(PitchClass.gSharp), 4);
         expect(PitchClass.a.difference(PitchClass.d), 5);
         expect(PitchClass.a.difference(PitchClass.dSharp), 6);
+      });
+    });
+
+    group('.respelledUpwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.c.respelledUpwards, PitchClass.c);
+        expect(PitchClass.fSharp.respelledUpwards, PitchClass.fSharp);
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.d.respelledDownwards, PitchClass.d);
+        expect(PitchClass.aSharp.respelledDownwards, PitchClass.aSharp);
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.e.respelledSimple, PitchClass.e);
+        expect(PitchClass.dSharp.respelledSimple, PitchClass.dSharp);
       });
     });
 

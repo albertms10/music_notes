@@ -32,7 +32,7 @@ void main() {
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);
       });
 
-      test('parses source as a PerfectQuality and return its value', () {
+      test('parses source as a PerfectQuality', () {
         expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
         expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
         expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
@@ -40,7 +40,7 @@ void main() {
         expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
       });
 
-      test('parses source as an ImperfectQuality and return its value', () {
+      test('parses source as an ImperfectQuality', () {
         expect(
           ImperfectQuality.parse('AAA'),
           ImperfectQuality.triplyAugmented,
@@ -56,38 +56,59 @@ void main() {
       });
     });
 
-    group('.inverted', () {
-      test('returns the inverted of this Quality', () {
+    group('.inversion', () {
+      test('returns the inversion of this Quality', () {
         expect(
-          PerfectQuality.triplyDiminished.inverted,
+          PerfectQuality.triplyDiminished.inversion,
           PerfectQuality.triplyAugmented,
         );
-        expect(PerfectQuality.diminished.inverted, PerfectQuality.augmented);
-        expect(PerfectQuality.perfect.inverted, PerfectQuality.perfect);
-        expect(PerfectQuality.augmented.inverted, PerfectQuality.diminished);
+        expect(PerfectQuality.diminished.inversion, PerfectQuality.augmented);
+        expect(PerfectQuality.perfect.inversion, PerfectQuality.perfect);
+        expect(PerfectQuality.augmented.inversion, PerfectQuality.diminished);
         expect(
-          PerfectQuality.triplyAugmented.inverted,
+          PerfectQuality.triplyAugmented.inversion,
           PerfectQuality.triplyDiminished,
         );
 
         expect(
-          ImperfectQuality.doublyDiminished.inverted,
+          ImperfectQuality.doublyDiminished.inversion,
           ImperfectQuality.doublyAugmented,
         );
         expect(
-          ImperfectQuality.diminished.inverted,
+          ImperfectQuality.diminished.inversion,
           ImperfectQuality.augmented,
         );
-        expect(ImperfectQuality.minor.inverted, ImperfectQuality.major);
-        expect(ImperfectQuality.major.inverted, ImperfectQuality.minor);
+        expect(ImperfectQuality.minor.inversion, ImperfectQuality.major);
+        expect(ImperfectQuality.major.inversion, ImperfectQuality.minor);
         expect(
-          ImperfectQuality.augmented.inverted,
+          ImperfectQuality.augmented.inversion,
           ImperfectQuality.diminished,
         );
         expect(
-          ImperfectQuality.doublyAugmented.inverted,
+          ImperfectQuality.doublyAugmented.inversion,
           ImperfectQuality.doublyDiminished,
         );
+      });
+    });
+
+    group('.isDissonant', () {
+      test('returns whether this Quality is dissonant', () {
+        expect(PerfectQuality.triplyDiminished.isDissonant, isTrue);
+        expect(PerfectQuality.doublyDiminished.isDissonant, isTrue);
+        expect(PerfectQuality.diminished.isDissonant, isTrue);
+        expect(PerfectQuality.perfect.isDissonant, isFalse);
+        expect(PerfectQuality.augmented.isDissonant, isTrue);
+        expect(PerfectQuality.doublyAugmented.isDissonant, isTrue);
+        expect(PerfectQuality.triplyAugmented.isDissonant, isTrue);
+
+        expect(ImperfectQuality.triplyDiminished.isDissonant, isTrue);
+        expect(ImperfectQuality.doublyDiminished.isDissonant, isTrue);
+        expect(ImperfectQuality.diminished.isDissonant, isTrue);
+        expect(ImperfectQuality.minor.isDissonant, isFalse);
+        expect(ImperfectQuality.major.isDissonant, isFalse);
+        expect(ImperfectQuality.augmented.isDissonant, isTrue);
+        expect(ImperfectQuality.doublyAugmented.isDissonant, isTrue);
+        expect(ImperfectQuality.triplyAugmented.isDissonant, isTrue);
       });
     });
 

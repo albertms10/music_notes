@@ -39,12 +39,15 @@ void main() {
       });
     });
 
-    group('.inverse', () {
-      test('returns the inverse of this ScalableIterable', () {
-        expect(const <PitchClass>{}.inverse.toList(), const <PitchClass>[]);
-        expect({PitchClass.cSharp}.inverse.toList(), const [PitchClass.cSharp]);
+    group('.inversion', () {
+      test('returns the inversion of this ScalableIterable', () {
+        expect(const <PitchClass>{}.inversion.toList(), const <PitchClass>[]);
         expect(
-          {Note.d, Note.f.sharp, Note.e, Note.g}.inverse.toList(),
+          {PitchClass.cSharp}.inversion.toList(),
+          const [PitchClass.cSharp],
+        );
+        expect(
+          {Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(),
           [Note.d, Note.b.flat, Note.c, Note.a],
         );
         expect(
@@ -53,7 +56,7 @@ void main() {
             Note.d.sharp.inOctave(4),
             Note.b.inOctave(3),
             Note.g.inOctave(3),
-          }.inverse.toList(),
+          }.inversion.toList(),
           [
             Note.c.inOctave(4),
             Note.b.flat.flat.inOctave(3),
@@ -63,7 +66,7 @@ void main() {
         );
         expect(
           {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
-              .inverse
+              .inversion
               .toList(),
           [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
         );
@@ -104,13 +107,19 @@ void main() {
       });
     });
 
-    group('.numericRepresentation', () {
+    group('.numericRepresentation()', () {
       test('returns the numeric representation of this ScalableIterable', () {
         expect(
-          const <PitchClass>{}.numericRepresentation.toList(),
+          const <PitchClass>{}.numericRepresentation().toList(),
           const <int>[],
         );
-        expect({PitchClass.g}.numericRepresentation.toList(), const [0]);
+        expect({PitchClass.g}.numericRepresentation().toList(), const [0]);
+        expect(
+          {PitchClass.b, PitchClass.aSharp, PitchClass.g, PitchClass.d}
+              .numericRepresentation(reference: PitchClass.g)
+              .toList(),
+          const [4, 3, 0, 7],
+        );
         expect(
           {
             PitchClass.b,
@@ -125,7 +134,7 @@ void main() {
             PitchClass.c,
             PitchClass.cSharp,
             PitchClass.a,
-          }.numericRepresentation.toList(),
+          }.numericRepresentation().toList(),
           const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
         );
       });

@@ -165,7 +165,7 @@ final class PitchClass extends Scalable<PitchClass>
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
       return resolveSpelling(preferredAccidental);
-      // ignore: avoid_catching_errors
+      // ignore: avoid_catching_errors to catch `ArgumentError`.
     } on ArgumentError {
       return resolveSpelling();
     }
@@ -198,7 +198,7 @@ final class PitchClass extends Scalable<PitchClass>
 
     return IntervalClass(diff)
         .resolveClosestSpelling()
-        .descending(isDescending: diff.isNegative);
+        .descending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].
@@ -211,6 +211,15 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   @override
   int difference(PitchClass other) => super.difference(other);
+
+  @override
+  PitchClass get respelledUpwards => this;
+
+  @override
+  PitchClass get respelledDownwards => this;
+
+  @override
+  PitchClass get respelledSimple => this;
 
   /// A pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].

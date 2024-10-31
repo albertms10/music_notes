@@ -11,7 +11,7 @@ void main() {
         expect(() => Note.parse('x'), throwsFormatException);
       });
 
-      test('parses source as a Note and return its value', () {
+      test('parses source as a Note', () {
         expect(Note.parse('d'), Note.d);
         expect(Note.parse('g'), Note.g);
         expect(Note.parse('Bb'), Note.b.flat);
@@ -309,7 +309,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('returns this Note with the simplest Accidental spelling', () {
+      test('returns the simplest spelling for this Note', () {
         expect(Note.c.respelledSimple, Note.c);
         expect(Note.b.respelledSimple, Note.b);
         expect(Note.d.flat.respelledSimple, Note.d.flat);
@@ -341,9 +341,9 @@ void main() {
       );
     });
 
-    group('.circleOfFifths()', () {
-      test('returns the circle of fifths starting from this Note', () {
-        var (:sharps, :flats) = Note.c.circleOfFifths();
+    group('.splitCircleOfFifths()', () {
+      test('returns the split circle of fifths from this Note', () {
+        var (:sharps, :flats) = Note.c.splitCircleOfFifths();
         expect(
           sharps,
           [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
@@ -357,7 +357,7 @@ void main() {
           Note.g.flat,
         ]);
 
-        (:sharps, :flats) = Note.a.circleOfFifths(distance: 7);
+        (:sharps, :flats) = Note.a.splitCircleOfFifths(distance: 7);
         expect(
           sharps,
           [
@@ -385,9 +385,9 @@ void main() {
       });
     });
 
-    group('.flatCircleOfFifths()', () {
-      test('returns the flattened version of the circle of fifths', () {
-        expect(Note.c.flatCircleOfFifths(), [
+    group('.circleOfFifths()', () {
+      test('returns the continuous circle of fifths from this Note', () {
+        expect(Note.c.circleOfFifths(), [
           Note.g.flat,
           Note.d.flat,
           Note.a.flat,
@@ -402,7 +402,7 @@ void main() {
           Note.b,
           Note.f.sharp,
         ]);
-        expect(Note.a.flatCircleOfFifths(distance: 7), [
+        expect(Note.a.circleOfFifths(distance: 7), [
           Note.a.flat,
           Note.e.flat,
           Note.b.flat,
@@ -419,7 +419,7 @@ void main() {
           Note.d.sharp,
           Note.a.sharp,
         ]);
-        expect(Note.e.flat.flatCircleOfFifths(distance: 3), [
+        expect(Note.e.flat.circleOfFifths(distance: 3), [
           Note.g.flat,
           Note.d.flat,
           Note.a.flat,
@@ -429,7 +429,7 @@ void main() {
           Note.c,
         ]);
         expect(
-          Note.c.flatCircleOfFifths(distance: 3),
+          Note.c.circleOfFifths(distance: 3),
           ScalePattern.dorian
               .on(Note.c)
               .degrees
@@ -561,7 +561,7 @@ void main() {
         expect(Note.c.interval(Note.b), Interval.M7);
         expect(Note.b.interval(Note.a.sharp), Interval.M7);
 
-        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.M7);
+        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.A7);
       });
     });
 
@@ -648,13 +648,13 @@ void main() {
       });
     });
 
-    group('.toPitchClass()', () {
+    group('.toClass()', () {
       test('creates a new PitchClass from semitones', () {
-        expect(Note.c.toPitchClass(), PitchClass.c);
-        expect(Note.d.sharp.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.flat.toPitchClass(), PitchClass.dSharp);
-        expect(Note.e.sharp.toPitchClass(), PitchClass.f);
-        expect(Note.c.flat.flat.toPitchClass(), PitchClass.aSharp);
+        expect(Note.c.toClass(), PitchClass.c);
+        expect(Note.d.sharp.toClass(), PitchClass.dSharp);
+        expect(Note.e.flat.toClass(), PitchClass.dSharp);
+        expect(Note.e.sharp.toClass(), PitchClass.f);
+        expect(Note.c.flat.flat.toClass(), PitchClass.aSharp);
       });
     });
 
@@ -843,6 +843,38 @@ void main() {
           Note.g.sharp,
           Note.b.sharp,
         ]);
+      });
+    });
+  });
+
+  group('Notes', () {
+    group('.flat', () {
+      test('flattens all notes in this list', () {
+        expect(const <Note>[].flat, const <Note>[]);
+        expect(
+          [Note.a, Note.b.flat, Note.c.sharp, Note.d.sharp.sharp].flat,
+          [Note.a.flat, Note.b.flat.flat, Note.c, Note.d.sharp],
+        );
+      });
+    });
+
+    group('.sharp', () {
+      test('sharpens all notes in this list', () {
+        expect(const <Note>[].sharp, const <Note>[]);
+        expect(
+          [Note.g, Note.b.flat, Note.a.sharp, Note.b.flat.flat].sharp,
+          [Note.g.sharp, Note.b, Note.a.sharp.sharp, Note.b.flat],
+        );
+      });
+    });
+
+    group('.natural', () {
+      test('makes all notes in this list natural', () {
+        expect(const <Note>[].natural, const <Note>[]);
+        expect(
+          [Note.a, Note.b.flat, Note.c.sharp, Note.f.flat.flat].natural,
+          [Note.a, Note.b, Note.c, Note.f],
+        );
       });
     });
   });

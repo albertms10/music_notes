@@ -27,13 +27,5 @@ void main() {
         expect(0.nonZeroMod(5), 5);
       });
     });
-
-    group('.nonZeroSign', () {
-      test('returns the non-zero sign of this int', () {
-        expect(5.nonZeroSign, 1);
-        expect(0.nonZeroSign, 1);
-        expect((-2).nonZeroSign, -1);
-      });
-    });
   });
 }

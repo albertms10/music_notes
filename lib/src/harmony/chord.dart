@@ -56,7 +56,7 @@ class Chord<T extends Scalable<T>>
   /// ```dart
   /// Note.a.majorTriad.add7().add9().modifiers == const [Note.g, Note.b]
   /// ```
-  List<T> get modifiers => _items.skip(3).toList();
+  List<T> get modifiers => _items.skip(3).toList(growable: false);
 
   /// Returns a new [Chord] with an [ImperfectQuality.diminished] root triad.
   ///
@@ -120,7 +120,7 @@ class Chord<T extends Scalable<T>>
   /// ```
   @override
   Chord<T> transposeBy(Interval interval) =>
-      Chord(_items.transposeBy(interval).toList());
+      Chord(_items.transposeBy(interval).toList(growable: false));
 
   @override
   String toString() => '$root ${pattern.abbreviation} (${_items.join(' ')})';

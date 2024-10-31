@@ -114,7 +114,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
-  /// BaseNote.a.difference(BaseNote.d) == 5
+  /// BaseNote.a.difference(BaseNote.e) == -5
   /// ```
   int difference(BaseNote other) => Note(this).difference(Note(other));
 
@@ -127,7 +127,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.positiveDifference(BaseNote.c) == 0
   /// BaseNote.c.positiveDifference(BaseNote.e) == 4
-  /// BaseNote.a.positiveDifference(BaseNote.d) == 5
+  /// BaseNote.a.positiveDifference(BaseNote.e) == 7
   /// ```
   int positiveDifference(BaseNote other) {
     final diff = difference(other);
@@ -141,10 +141,30 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.g.transposeBySize(Size.unison) == BaseNote.g
   /// BaseNote.g.transposeBySize(Size.fifth) == BaseNote.d
-  /// BaseNote.a.transposeBySize(-3) == BaseNote.f
+  /// BaseNote.a.transposeBySize(-Size.third) == BaseNote.f
   /// ```
   BaseNote transposeBySize(Size size) =>
       BaseNote.fromOrdinal(ordinal + size.incrementBy(-1));
+
+  /// The next ordinal [BaseNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// BaseNote.c.next == BaseNote.d
+  /// BaseNote.f.next == BaseNote.a
+  /// BaseNote.b.next == BaseNote.c
+  /// ```
+  BaseNote get next => transposeBySize(Size.second);
+
+  /// The previous ordinal [BaseNote].
+  ///
+  /// Example:
+  /// ```dart
+  /// BaseNote.e.previous == BaseNote.d
+  /// BaseNote.g.previous == BaseNote.f
+  /// BaseNote.c.previous == BaseNote.b
+  /// ```
+  BaseNote get previous => transposeBySize(-Size.second);
 
   /// The string representation of this [BaseNote] based on [system].
   ///

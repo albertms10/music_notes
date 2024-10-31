@@ -1,16 +1,25 @@
-import 'class_mixin.dart';
+import 'enharmonic.dart';
 import 'interval/interval.dart';
 import 'interval/size.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
+import 'respellable.dart';
 import 'transposable.dart';
 
-/// A interface for items that can form scales.
+/// An interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>
-    with ClassMixin<PitchClass>
+    with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
+
+  /// Predicate to transpose this [Scalable] by ascending chromatic motion.
+  static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
+      scalable.transposeBy(Interval.m2).respelledSimple;
+
+  /// Enharmonic [Comparator] for [Scalable].
+  static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
+      a.semitones.compareTo(b.semitones);
 
   /// Creates a new [PitchClass] from [semitones].
   ///
@@ -68,14 +77,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   Iterable<T> transposeBy(Interval interval) =>
       map((item) => item.transposeBy(interval));
 
-  /// The inverse of this [ScalableIterable].
+  /// The inversion of this [ScalableIterable].
+  ///
+  /// See [Inversion](https://en.wikipedia.org/wiki/Inversion_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart
-  /// {Note.b, Note.a.sharp, Note.d}.inverse.toSet()
+  /// ({Note.b, Note.a.sharp, Note.d}).inversion.toSet()
   ///   == {Note.b, Note.c, Note.g.sharp}
   /// ```
-  Iterable<T> get inverse sync* {
+  Iterable<T> get inversion sync* {
     if (isEmpty) return;
     yield first;
     var last = first;
@@ -86,29 +99,39 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
 
   /// The retrograde of this [ScalableIterable].
   ///
-  /// Example:
-  /// ```dart
-  /// {PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}.retrograde.toSet()
-  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
-  /// ```
-  Iterable<T> get retrograde => toList().reversed;
-
-  /// The numeric representation of this [ScalableIterable].
+  /// See [Retrograde](https://en.wikipedia.org/wiki/Retrograde_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d}
-  ///   .numericRepresentation.toSet() == const {0, 11, 3}
+  /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
+  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
-  Iterable<int> get numericRepresentation => map(
-        (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
+  Iterable<T> get retrograde => toList(growable: false).reversed;
+
+  /// The numeric representation of this [ScalableIterable] from [reference].
+  /// The [first] element is used as the reference if none is provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation().toSet() == const {0, 11, 3}
+  ///
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation(reference: PitchClass.g).toSet()
+  ///     == const {4, 3, 7}
+  /// ```
+  Iterable<int> numericRepresentation({T? reference}) => map(
+        (scalable) =>
+            (reference ?? first).difference(scalable) % chromaticDivisions,
       );
 
   /// The delta numeric representation of this [ScalableIterable].
   ///
   /// Example:
   /// ```dart
-  /// {PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e}
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
   ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
   /// ```
   Iterable<int> get deltaNumericRepresentation sync* {

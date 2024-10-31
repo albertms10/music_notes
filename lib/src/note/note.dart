@@ -9,11 +9,11 @@ import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
 import '../music.dart';
+import '../respellable.dart';
 import '../scalable.dart';
 import 'accidental.dart';
 import 'base_note.dart';
 import 'pitch.dart';
-import 'pitch_class.dart';
 
 /// A musical note.
 ///
@@ -25,7 +25,9 @@ import 'pitch_class.dart';
 /// * [KeySignature].
 /// * [Key].
 @immutable
-final class Note extends Scalable<Note> implements Comparable<Note> {
+final class Note extends Scalable<Note>
+    with RespellableScalable<Note>
+    implements Comparable<Note> {
   /// The base note that defines this [Note].
   final BaseNote baseNote;
 
@@ -89,7 +91,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
       ]);
 
   static List<int Function()> _comparators(Note a, Note b) => [
-        () => a.semitones.compareTo(b.semitones),
+        () => Scalable.compareEnharmonically(a, b),
         () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
       ];
 
@@ -208,6 +210,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.f.respellByBaseNote(BaseNote.e) == Note.e.sharp
   /// Note.g.respellByBaseNote(BaseNote.a) == Note.a.flat.flat
   /// ```
+  @override
   Note respellByBaseNote(BaseNote baseNote) {
     final rawSemitones = semitones - baseNote.semitones;
     final deltaSemitones = rawSemitones +
@@ -226,6 +229,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.flat.respellByOrdinalDistance(-1) == Note.f.sharp
   /// Note.e.sharp.respellByOrdinalDistance(2) == Note.g.flat.flat
   /// ```
+  @override
   Note respellByOrdinalDistance(int distance) =>
       respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
 
@@ -237,7 +241,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.sharp.respelledUpwards == Note.a.flat
   /// Note.e.sharp.respelledUpwards == Note.f
   /// ```
-  Note get respelledUpwards => respellByOrdinalDistance(1);
+  @override
+  Note get respelledUpwards => super.respelledUpwards;
 
   /// This [Note] respelled downwards while keeping the same number of
   /// [semitones].
@@ -247,7 +252,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.g.flat.respelledDownwards == Note.f.sharp
   /// Note.c.respelledDownwards == Note.b.sharp
   /// ```
-  Note get respelledDownwards => respellByOrdinalDistance(-1);
+  @override
+  Note get respelledDownwards => super.respelledDownwards;
 
   /// This [Note] respelled by [accidental] while keeping the same number of
   /// [semitones].
@@ -261,6 +267,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.b.respellByAccidental(Accidental.flat) == Note.c.flat
   /// Note.g.respellByAccidental(Accidental.sharp) == Note.f.sharp.sharp
   /// ```
+  @override
   Note respellByAccidental(Accidental accidental) {
     final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
     if (baseNote != null) return Note(baseNote, accidental);
@@ -281,7 +288,8 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.flat.flat.respelledSimple == Note.c
   /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
   /// ```
-  Note get respelledSimple => respellByAccidental(Accidental.natural);
+  @override
+  Note get respelledSimple => super.respelledSimple;
 
   /// This [Note] positioned in the given [octave] as a [Pitch].
   ///
@@ -292,42 +300,47 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// The circle of fifths starting from this [Note] up to [distance].
+  /// The circle of fifths starting from this [Note] up to [distance],
+  /// split by `sharps` and `flats`.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.circleOfFifths(distance: 4) == (
+  /// Note.c.splitCircleOfFifths(distance: 4) == (
   ///   sharps: [Note.g, Note.d, Note.a, Note.e],
   ///   flats: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat],
   /// )
   ///
-  /// Note.a.circleOfFifths(distance: 4) == (
+  /// Note.a.splitCircleOfFifths(distance: 4) == (
   ///   sharps: [Note.e, Note.b, Note.f.sharp, Note.c.sharp],
   ///   flats: [Note.d, Note.g, Note.c, Note.f],
   /// )
   /// ```
   /// ---
   /// See also:
-  /// * [flatCircleOfFifths] for a flattened version of [circleOfFifths].
-  ({List<Note> sharps, List<Note> flats}) circleOfFifths({
+  /// * [circleOfFifths] for a continuous list version of [splitCircleOfFifths].
+  ({List<Note> sharps, List<Note> flats}) splitCircleOfFifths({
     int distance = chromaticDivisions ~/ 2,
   }) =>
       (
-        sharps:
-            Interval.P5.circleFrom(this, distance: distance).skip(1).toList(),
-        flats:
-            Interval.P5.circleFrom(this, distance: -distance).skip(1).toList(),
+        sharps: Interval.P5
+            .circleFrom(this, distance: distance)
+            .skip(1)
+            .toList(growable: false),
+        flats: Interval.P5
+            .circleFrom(this, distance: -distance)
+            .skip(1)
+            .toList(growable: false),
       );
 
-  /// The flattened version of [circleOfFifths] from this [Note] up to
-  /// [distance].
+  /// The continuous circle of fifths up to [distance] including this [Note],
+  /// from flats to sharps.
   ///
   /// Example:
   /// ```dart
-  /// Note.c.flatCircleOfFifths(distance: 3)
+  /// Note.c.circleOfFifths(distance: 3)
   ///   == [Note.e.flat, Note.b.flat, Note.f, Note.c, Note.g, Note.d, Note.a]
   ///
-  /// Note.a.flatCircleOfFifths(distance: 3)
+  /// Note.a.circleOfFifths(distance: 3)
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   /// ```
   ///
@@ -335,16 +348,16 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// [compareByFifthsDistance] comparator:
   ///
   /// ```dart
-  /// Note.c.flatCircleOfFifths(distance: 3)
+  /// Note.c.circleOfFifths(distance: 3)
   ///   == ScalePattern.dorian.on(Note.c).degrees.skip(1)
   ///        .sorted(Note.compareByFifthsDistance)
   /// ```
   /// ---
   /// See also:
-  /// * [circleOfFifths] for a different representation of the same circle of
-  ///   fifths.
-  List<Note> flatCircleOfFifths({int distance = chromaticDivisions ~/ 2}) {
-    final (:flats, :sharps) = circleOfFifths(distance: distance);
+  /// * [splitCircleOfFifths] for a different representation of the same
+  ///   circle of fifths.
+  List<Note> circleOfFifths({int distance = chromaticDivisions ~/ 2}) {
+    final (:flats, :sharps) = splitCircleOfFifths(distance: distance);
 
     return [...flats.reversed, this, ...sharps];
   }
@@ -368,7 +381,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
   /// ```
   int fifthsDistanceWith(Note other) =>
-      Interval.P5.distanceBetween(this, other).$1;
+      Interval.P5.circleDistance(from: this, to: other).$1;
 
   /// The [Interval] between this [Note] and [other].
   ///
@@ -378,7 +391,7 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
   /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
-  Interval interval(Note other) => Interval.fromSemitones(
+  Interval interval(Note other) => Interval.fromSizeAndSemitones(
         baseNote.intervalSize(other.baseNote),
         difference(other) % chromaticDivisions,
       );
@@ -407,16 +420,6 @@ final class Note extends Scalable<Note> implements Comparable<Note> {
       Accidental(semitonesOctaveMod * interval.size.sign),
     );
   }
-
-  /// Creates a new [PitchClass] from [semitones].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.toPitchClass() == PitchClass.c
-  /// Note.e.sharp.toPitchClass() == PitchClass.f
-  /// Note.c.flat.flat.toPitchClass() == PitchClass.aSharp
-  /// ```
-  PitchClass toPitchClass() => PitchClass(semitones);
 
   /// The string representation of this [Note] based on [system].
   ///
@@ -581,4 +584,16 @@ final class RomanceNoteNotation extends NoteNotation {
         TonalMode.major => 'maggiore',
         TonalMode.minor => 'minore',
       };
+}
+
+/// A list of notes extension.
+extension Notes on List<Note> {
+  /// Flattens all notes on this [List].
+  List<Note> get flat => map((note) => note.flat).toList();
+
+  /// Sharpens all notes on this [List].
+  List<Note> get sharp => map((note) => note.sharp).toList();
+
+  /// Makes all notes on this [List] natural.
+  List<Note> get natural => map((note) => note.natural).toList();
 }

@@ -7,9 +7,9 @@ void main() {
   group('IntervalClass', () {
     group('constructor', () {
       test('creates a new IntervalClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const IntervalClass(8), IntervalClass.M3);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const IntervalClass(-2), IntervalClass.M2);
       });
     });
