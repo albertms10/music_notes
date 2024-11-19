@@ -417,6 +417,27 @@ void main() {
       });
     });
 
+    group('.symbol', () {
+      test('should return the symbol of this ChordPattern', () {
+        expect(ChordPattern.augmentedTriad.symbol, '+');
+        expect(ChordPattern.majorTriad.symbol, '');
+        expect(ChordPattern.minorTriad.symbol, 'min');
+        expect(ChordPattern.diminishedTriad.symbol, 'dim');
+
+        expect(ChordPattern.majorTriad.add7().symbol, '7');
+        expect(
+          ChordPattern.majorTriad.add7(ImperfectQuality.major).symbol,
+          'maj7',
+        );
+        expect(ChordPattern.minorTriad.add7().symbol, 'min 7');
+        expect(
+          ChordPattern.minorTriad.add7(ImperfectQuality.major).symbol,
+          'min maj7',
+        );
+        expect(ChordPattern.diminishedTriad.add7().symbol, 'ø');
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ChordPattern', () {
         expect(ChordPattern.augmentedTriad.toString(), 'aug. (M3 A5)');
