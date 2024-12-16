@@ -76,7 +76,10 @@ enum BaseNote implements Comparable<BaseNote> {
   factory BaseNote.parse(String source) {
     try {
       return values.byName(source.toLowerCase());
-    } catch (e, stackTrace) {
+    }
+    // TODO(albertms10): find a better way to catch an invalid BaseNote.
+    // ignore: avoid_catching_errors
+    on ArgumentError catch (e, stackTrace) {
       Error.throwWithStackTrace(
         FormatException('Invalid BaseNote', source, 0),
         stackTrace,
