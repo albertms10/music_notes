@@ -216,39 +216,40 @@ extension type const Size._(int size) implements int {
 
   /// Whether this [Size] conforms a [PerfectQuality] interval.
   ///
-  /// This operation uses a bitmask implementation, equivalent to the more
-  /// readable pattern:
-  ///
-  /// ```dart
-  /// (abs() % 7 case Size.unison || Size.fourth || Size.fifth)
-  /// ```
-  ///
-  /// In the bitmask, each bit represents a [Size] within the octave cycle
-  /// (modulo 7). Perfect intervals occur at positions:
-  ///
-  /// - `1` for [Size.unison],
-  /// - `4` for [Size.fourth], and
-  /// - `5` for [Size.fifth].
-  ///
-  /// The number 50 (which is `0b0110010` in binary) has bits set at these
-  /// positions.
-  ///
-  /// - `abs() % 7` computes the [Size] modulo 7, mapping it to its position
-  ///   within the octave cycle.
-  /// - `1 <<` creates a bitmask with a single bit set at the position
-  ///   corresponding to the [Size].
-  /// - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this bit
-  ///   corresponds to a perfect interval size.
-  /// - The expression `!= 0` returns `true` if the result is non-zero
-  ///   (e.g., the [Size] is perfect) and `false` otherwise.
-  ///
   /// Example:
   /// ```dart
   /// Size.fifth.isPerfect == true
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => ((1 << (abs() % 7)) & 50) != 0;
+  bool get isPerfect =>
+      // This operation uses a bitmask implementation, equivalent to the more
+      // readable pattern:
+      //
+      // ```dart
+      // (abs() % 7 case Size.unison || Size.fourth || Size.fifth)
+      // ```
+      //
+      // In the bitmask, each bit represents a [Size] within the octave cycle
+      // (modulo 7). Perfect intervals occur at positions:
+      //
+      // - `1` for [Size.unison],
+      // - `4` for [Size.fourth], and
+      // - `5` for [Size.fifth].
+      //
+      // The number 50 (which is `0b0110010` in binary) has bits set at these
+      // positions.
+      //
+      // - `abs() % 7` computes the [Size] modulo 7, mapping it to its position
+      //   within the octave cycle.
+      // - `1 <<` creates a bitmask with a single bit set at the position
+      //   corresponding to the [Size].
+      // - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this bit
+      //   corresponds to a perfect interval size.
+      // - The expression `!= 0` returns `true` if the result is non-zero
+      //   (e.g., the [Size] is perfect) and `false` otherwise.
+      //
+      ((1 << (abs() % 7)) & 50) != 0;
 
   /// Whether this [Size] is greater than [Size.octave].
   ///
