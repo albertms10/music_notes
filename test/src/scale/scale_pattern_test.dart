@@ -571,7 +571,7 @@ void main() {
     group('.exclude()', () {
       test('returns a new ScalePattern excluding intervals', () {
         expect(
-          ScalePattern.major.exclude(const [Interval.m2]),
+          ScalePattern.major.exclude({Interval.m2}),
           ScalePattern.majorPentatonic,
         );
       });
