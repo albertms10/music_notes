@@ -425,6 +425,30 @@ final class ScalePattern {
   Interval _addNextStepTo(int ordinal) =>
       _stepFrom(ordinal) + _stepFrom(ordinal + 1);
 
+  /// Excludes [intervals] from this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.exclude(const [Interval.m2])
+  ///   == ScalePattern.majorPentatonic
+  /// ```
+  ScalePattern exclude(List<Interval> intervals) {
+    final steps = <Interval>[];
+    for (var i = 0; i < _intervalSteps.length; i++) {
+      final interval = _intervalSteps[i];
+      if (!intervals.contains(interval)) {
+        steps.add(interval);
+      } else if (i == _intervalSteps.length - 1) {
+        steps[steps.length - 1] = steps.last + interval;
+      } else {
+        steps.add(_intervalSteps[i + 1] + interval);
+        i++;
+      }
+    }
+
+    return ScalePattern(steps);
+  }
+
   /// Whether this [ScalePattern] is enharmonically equivalent to [other].
   ///
   /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
