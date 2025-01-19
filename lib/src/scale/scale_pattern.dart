@@ -429,10 +429,9 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.exclude(const [Interval.m2])
-  ///   == ScalePattern.majorPentatonic
+  /// ScalePattern.major.exclude({Interval.m2}) == ScalePattern.majorPentatonic
   /// ```
-  ScalePattern exclude(List<Interval> intervals) {
+  ScalePattern exclude(Set<Interval> intervals) {
     final steps = <Interval>[];
     for (var i = 0; i < _intervalSteps.length; i++) {
       final interval = _intervalSteps[i];
