@@ -355,14 +355,14 @@ void main() {
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 7),
-            Interval.P5.circleFrom(PitchClass.c, distance: 12),
+            Interval.P5.circleFrom(PitchClass.c).take(13),
           );
           expect(
             ScalePattern.chromatic
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 5),
-            Interval.P5.circleFrom(PitchClass.c, distance: -12),
+            (-Interval.P5).circleFrom(PitchClass.c).take(13),
           );
         },
       );

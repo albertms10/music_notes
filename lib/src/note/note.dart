@@ -323,11 +323,13 @@ final class Note extends Scalable<Note>
   }) =>
       (
         sharps: Interval.P5
-            .circleFrom(this, distance: distance)
+            .circleFrom(this)
+            .take(distance.abs() + 1)
             .skip(1)
             .toList(growable: false),
-        flats: Interval.P5
-            .circleFrom(this, distance: -distance)
+        flats: Interval.P4
+            .circleFrom(this)
+            .take(distance.abs() + 1)
             .skip(1)
             .toList(growable: false),
       );
