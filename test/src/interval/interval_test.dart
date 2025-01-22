@@ -810,13 +810,13 @@ void main() {
 
     group('.circleFrom()', () {
       test('returns the circle of this Interval', () {
-        expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
+        expect(Interval.P5.circleFrom(Note.c).take(1), const [Note.c]);
         expect(
-          Interval.P5.circleFrom(Note.c, distance: 1),
+          Interval.P5.circleFrom(Note.c).take(2),
           const [Note.c, Note.g],
         );
         expect(
-          Interval.P5.circleFrom(PitchClass.c, distance: 6),
+          Interval.P5.circleFrom(PitchClass.c).take(7),
           const [
             PitchClass.c,
             PitchClass.g,
@@ -828,7 +828,7 @@ void main() {
           ],
         );
         expect(
-          Interval.P5.circleFrom(Note.f.sharp, distance: 8),
+          Interval.P5.circleFrom(Note.f.sharp).take(9),
           [
             Note.f.sharp,
             Note.c.sharp,
@@ -842,7 +842,7 @@ void main() {
           ],
         );
         expect(
-          Interval.P4.circleFrom(Note.b.flat, distance: 9),
+          Interval.P4.circleFrom(Note.b.flat).take(10),
           [
             Note.b.flat,
             Note.e.flat,
@@ -858,8 +858,8 @@ void main() {
         );
 
         expect(
-          Interval.P4.circleFrom(Note.c, distance: -7),
-          Interval.P5.circleFrom(Note.c, distance: 7),
+          (-Interval.P4).circleFrom(Note.c),
+          Interval.P5.circleFrom(Note.c),
         );
       });
     });

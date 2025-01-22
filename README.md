@@ -236,7 +236,7 @@ And even explore the circle of fifths or any circle of intervals
 up to a distance:
 
 ```dart
-Interval.P5.circleFrom(Note.c, distance: 12).toList();
+Interval.P5.circleFrom(Note.c).take(13).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
 Note.c.splitCircleOfFifths();

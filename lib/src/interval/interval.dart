@@ -399,28 +399,24 @@ final class Interval
     }
   }
 
-  /// The circle of this [Interval] from [scalable] up to [distance].
+  /// The circle of this [Interval] from [scalable].
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.circleFrom(Note.c, distance: 6).toList()
+  /// Interval.P5.circleFrom(Note.c).take(7).toList()
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: 5).toList()
+  /// Interval.P4.circleFrom(Note.c).take(6).toList()
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: -3).toList()
-  ///   == Interval.P5.circleFrom(Note.c, distance: 3)
+  /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
   /// ```
-  Iterable<T> circleFrom<T extends Scalable<T>>(
-    T scalable, {
-    required int distance,
-  }) sync* {
-    final absDistance = distance.abs();
+  Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
     yield scalable;
     var last = scalable;
-    for (var i = 0; i < absDistance; i++) {
-      yield last = last.transposeBy(descending(distance.isNegative));
+    const maxCircleLoop = 48;
+    for (var i = 0; i < maxCircleLoop; i++) {
+      yield last = last.transposeBy(this);
     }
   }
 
