@@ -409,8 +409,7 @@ final class Interval
   /// Interval.P4.circleFrom(Note.c).take(6).toList()
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   ///
-  /// (-Interval.P4).circleFrom(Note.c).take(4)
-  ///   == Interval.P5.circleFrom(Note.c).take(4)
+  /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
   /// ```
   Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
     yield scalable;

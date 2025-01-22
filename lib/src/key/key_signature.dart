@@ -146,8 +146,7 @@ final class KeySignature implements Comparable<KeySignature> {
     final rootNote = Interval.P5
         .descending(distance.isNegative)
         .circleFrom(Note.c)
-        .take(distance.abs() + 1)
-        .last;
+        .elementAt(distance.abs());
     final major = rootNote.major;
 
     return UnmodifiableMapView({
