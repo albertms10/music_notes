@@ -233,12 +233,19 @@ extension type const Size._(int size) implements int {
       // In the bitmask, each bit represents a [Size] within the octave cycle
       // (modulo 7). Perfect intervals occur at positions:
       //
-      // - `1` for [Size.unison],
-      // - `4` for [Size.fourth], and
-      // - `5` for [Size.fifth].
+      // - 1 for [Size.unison],
+      // - 4 for [Size.fourth], and
+      // - 5 for [Size.fifth].
       //
       // The number 50 (which is `0b0110010` in binary) has bits set at these
-      // positions.
+      // positions:
+      //
+      // ```
+      //  2^ 6 5 4 3 2 1 0
+      //     -------------
+      //     0 1 1 0 0 1 0
+      //       ^ ^     ^
+      // ```
       //
       // - `abs() % 7` computes the [Size] modulo 7, mapping it to its position
       //   within the octave cycle.
