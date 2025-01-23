@@ -130,12 +130,9 @@ extension type const Size._(int size) implements int {
   /// ```
   int get semitones {
     final absSimple = simple.abs();
-    final octaveShift = chromaticDivisions * (absShift ~/ octave);
-    // We exclude perfect octaves (simplified as 8) from the lookup to consider
-    // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(absSimple == octave ? 1 : absSimple);
+    final octaves = (abs() - absSimple) ~/ 7;
 
-    return (_sizeToSemitones[size]! + octaveShift) * sign;
+    return (_sizeToSemitones[absSimple]! + octaves * 12) * sign;
   }
 
   /// The absolute [Size] value taking octave shift into account.

@@ -405,7 +405,33 @@ void main() {
 
         expect(const Interval.perfect(Size(15)).semitones, 24);
         expect(const Interval.perfect(Size(22)).semitones, 36);
+        expect(
+          const Interval.imperfect(Size(23), ImperfectQuality.minor).semitones,
+          37,
+        );
+        expect(
+          const Interval.imperfect(Size(23), ImperfectQuality.major).semitones,
+          38,
+        );
+        expect(
+          const Interval.imperfect(Size(-24), ImperfectQuality.minor).semitones,
+          -39,
+        );
+        expect(
+          const Interval.imperfect(Size(24), ImperfectQuality.major).semitones,
+          40,
+        );
+        expect(const Interval.perfect(Size(25)).semitones, 41);
+        expect(const Interval.perfect(Size(-26)).semitones, -43);
         expect(const Interval.perfect(Size(29)).semitones, 48);
+        expect(
+          const Interval.imperfect(Size(30), ImperfectQuality.minor).semitones,
+          49,
+        );
+        expect(
+          const Interval.imperfect(Size(-30), ImperfectQuality.major).semitones,
+          -50,
+        );
       });
     });
 
