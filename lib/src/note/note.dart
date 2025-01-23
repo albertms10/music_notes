@@ -300,38 +300,26 @@ final class Note extends Scalable<Note>
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// The circle of fifths starting from this [Note] up to [distance],
-  /// split by `sharps` and `flats`.
+  /// The circle of fifths starting from this [Note] split by sharps (`up`) and
+  /// flats (`down`).
   ///
   /// Example:
   /// ```dart
-  /// Note.c.splitCircleOfFifths(distance: 4) == (
-  ///   sharps: [Note.g, Note.d, Note.a, Note.e],
-  ///   flats: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat],
-  /// )
+  /// Note.c.splitCircleOfFifths.up.take(6).toList()
+  ///   == [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Note.a.splitCircleOfFifths(distance: 4) == (
-  ///   sharps: [Note.e, Note.b, Note.f.sharp, Note.c.sharp],
-  ///   flats: [Note.d, Note.g, Note.c, Note.f],
-  /// )
+  /// Note.c.splitCircleOfFifths.down.take(4).toList()
+  ///   == [Note.f, Note.b.flat, Note.e.flat, Note.a.flat]
+  ///
+  /// Note.a.splitCircleOfFifths.up.take(4).toList()
+  ///   == [Note.e, Note.b, Note.f.sharp, Note.c.sharp]
   /// ```
   /// ---
   /// See also:
   /// * [circleOfFifths] for a continuous list version of [splitCircleOfFifths].
-  ({List<Note> sharps, List<Note> flats}) splitCircleOfFifths({
-    int distance = chromaticDivisions ~/ 2,
-  }) =>
-      (
-        sharps: Interval.P5
-            .circleFrom(this)
-            .skip(1)
-            .take(distance.abs())
-            .toList(growable: false),
-        flats: Interval.P4
-            .circleFrom(this)
-            .skip(1)
-            .take(distance.abs())
-            .toList(growable: false),
+  ({Iterable<Note> up, Iterable<Note> down}) get splitCircleOfFifths => (
+        up: Interval.P5.circleFrom(this).skip(1),
+        down: Interval.P4.circleFrom(this).skip(1),
       );
 
   /// The continuous circle of fifths up to [distance] including this [Note],
@@ -359,9 +347,13 @@ final class Note extends Scalable<Note>
   /// * [splitCircleOfFifths] for a different representation of the same
   ///   circle of fifths.
   List<Note> circleOfFifths({int distance = chromaticDivisions ~/ 2}) {
-    final (:flats, :sharps) = splitCircleOfFifths(distance: distance);
+    final (:down, :up) = splitCircleOfFifths;
 
-    return [...flats.reversed, this, ...sharps];
+    return [
+      ...down.take(distance).toList().reversed,
+      this,
+      ...up.take(distance),
+    ];
   }
 
   /// The distance in relation to the circle of fifths.

@@ -341,14 +341,14 @@ void main() {
       );
     });
 
-    group('.splitCircleOfFifths()', () {
+    group('.splitCircleOfFifths', () {
       test('returns the split circle of fifths from this Note', () {
-        var (:sharps, :flats) = Note.c.splitCircleOfFifths();
+        var (:up, :down) = Note.c.splitCircleOfFifths;
         expect(
-          sharps,
+          up.take(6),
           [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
         );
-        expect(flats, [
+        expect(down.take(6), [
           Note.f,
           Note.b.flat,
           Note.e.flat,
@@ -357,9 +357,9 @@ void main() {
           Note.g.flat,
         ]);
 
-        (:sharps, :flats) = Note.a.splitCircleOfFifths(distance: 7);
+        (:up, :down) = Note.a.splitCircleOfFifths;
         expect(
-          sharps,
+          up.take(7),
           [
             Note.e,
             Note.b,
@@ -371,7 +371,7 @@ void main() {
           ],
         );
         expect(
-          flats,
+          down.take(7),
           [
             Note.d,
             Note.g,

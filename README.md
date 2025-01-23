@@ -239,8 +239,10 @@ up to a distance:
 Interval.P5.circleFrom(Note.c).take(13).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
-Note.c.splitCircleOfFifths();
-// (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
+Note.c.splitCircleOfFifths.down.take(6).toList();
+// [F, B♭, E♭, A♭, D♭, G♭]
+Note.c.splitCircleOfFifths.up.take(8).toList();
+// [G, D, A, E, B, F♯, C♯, G♯]
 
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
