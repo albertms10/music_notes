@@ -244,8 +244,8 @@ void main() {
       });
     });
 
-    group('.inversion', () {
-      test('returns the inversion of this Size', () {
+    group('.simple', () {
+      test('returns the simplified version of this Size', () {
         expect(Size.unison.simple, Size.unison);
         expect(Size.second.simple, Size.second);
         expect(Size.third.simple, Size.third);
@@ -271,7 +271,7 @@ void main() {
         expect(const Size(21).simple, Size.seventh);
         expect(const Size(22).simple, Size.octave);
 
-        expect(skip: true, const Size(23).simple, Size.second);
+        expect(const Size(23).simple, Size.second);
         expect(const Size(24).simple, Size.third);
         expect(const Size(25).simple, Size.fourth);
         expect(const Size(26).simple, Size.fifth);
@@ -279,17 +279,17 @@ void main() {
         expect(const Size(28).simple, Size.seventh);
         expect(const Size(29).simple, Size.octave);
 
-        expect(skip: true, const Size(30).simple, Size.second);
-        expect(skip: true, const Size(31).simple, Size.third);
+        expect(const Size(30).simple, Size.second);
+        expect(const Size(31).simple, Size.third);
         expect(const Size(32).simple, Size.fourth);
         expect(const Size(33).simple, Size.fifth);
         expect(const Size(34).simple, Size.sixth);
         expect(const Size(35).simple, Size.seventh);
         expect(const Size(36).simple, Size.octave);
 
-        expect(skip: true, const Size(37).simple, Size.second);
-        expect(skip: true, const Size(38).simple, Size.third);
-        expect(skip: true, const Size(39).simple, Size.fourth);
+        expect(const Size(37).simple, Size.second);
+        expect(const Size(38).simple, Size.third);
+        expect(const Size(39).simple, Size.fourth);
         expect(const Size(40).simple, Size.fifth);
         expect(const Size(41).simple, Size.sixth);
         expect(const Size(42).simple, Size.seventh);

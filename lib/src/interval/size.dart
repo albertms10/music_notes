@@ -201,7 +201,7 @@ extension type const Size._(int size) implements int {
   Size get inversion => Size(_inversion(this));
 
   static int _simple(Size size) =>
-      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
+      size.isCompound ? ((size.abs() - 1).nonZeroMod(7) + 1) * size.sign : size;
 
   /// The simplified version of this [Size].
   ///
