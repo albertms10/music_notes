@@ -306,7 +306,7 @@ extension type const PerfectSize._(int size) implements Size {
   const PerfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
+          ((1 << ((size < 0 ? -size : size) % 7)) & 50) != 0,
           'Interval must be perfect.',
         );
 
@@ -343,7 +343,7 @@ extension type const ImperfectSize._(int size) implements Size {
   const ImperfectSize(this.size)
       // Copied from [Size.isPerfect] to allow const.
       : assert(
-          ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
+          ((1 << ((size < 0 ? -size : size) % 7)) & 50) == 0,
           'Interval must be imperfect.',
         );
 
