@@ -1,22 +1,15 @@
-import 'dart:collection' show UnmodifiableListView, UnmodifiableMapView;
+import 'dart:collection' show UnmodifiableListView;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
-    group('constructor', () {
-      test('should create a new EqualTemperament from octave divisions', () {
-        expect(EqualTemperament.edo(12), const EqualTemperament.edo12());
-        expect(EqualTemperament.edo(19), const EqualTemperament.edo19());
-      });
-    });
-
     group('.steps', () {
       test('returns an unmodifiable collection', () {
         expect(
           const EqualTemperament.edo12().steps,
-          isA<UnmodifiableMapView<BaseNote, int>>(),
+          isA<UnmodifiableListView<int>>(),
         );
       });
     });
@@ -29,41 +22,29 @@ void main() {
     });
 
     group('.ratioFromSemitones()', () {
-      test('returns the Ratio from semitones for this EqualTemperament', () {
+      test('returns the ratio from semitones for this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().ratioFromSemitones(1),
-          const Ratio(1.0594630943592953),
+          1.0594630943592953,
         );
-        expect(
-          const EqualTemperament.edo12().ratioFromSemitones(12),
-          const Ratio(2),
-        );
+        expect(const EqualTemperament.edo12().ratioFromSemitones(12), 2);
 
         expect(
           const EqualTemperament.edo19().ratioFromSemitones(1),
-          const Ratio(1.0371550444461919),
+          1.0371550444461919,
         );
-        expect(
-          const EqualTemperament.edo19().ratioFromSemitones(19),
-          const Ratio(2),
-        );
+        expect(const EqualTemperament.edo19().ratioFromSemitones(19), 2);
       });
     });
 
     group('.ratio()', () {
-      test('returns the Ratio from a Pitch in this EqualTemperament', () {
+      test('returns the ratio from a Pitch in this EqualTemperament', () {
         const edo12 = EqualTemperament.edo12();
-        expect(
-          edo12.ratio(Note.g.inOctave(4)),
-          const Ratio(0.8908987181403393),
-        );
-        expect(edo12.ratio(Note.a.inOctave(4)), const Ratio(1));
-        expect(
-          edo12.ratio(Note.b.flat.inOctave(4)),
-          const Ratio(1.0594630943592953),
-        );
-        expect(edo12.ratio(Note.a.inOctave(5)), const Ratio(2));
-        expect(edo12.ratio(Note.a.inOctave(6)), const Ratio(4));
+        expect(edo12.ratio(Note.g.inOctave(4)), 0.8908987181403393);
+        expect(edo12.ratio(Note.a.inOctave(4)), 1);
+        expect(edo12.ratio(Note.b.flat.inOctave(4)), 1.0594630943592953);
+        expect(edo12.ratio(Note.a.inOctave(5)), 2);
+        expect(edo12.ratio(Note.a.inOctave(6)), 4);
       });
     });
 
@@ -83,7 +64,7 @@ void main() {
 
     group('operator ==()', () {
       test('compares this EqualTemperament to other', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors test
         expect(EqualTemperament.edo12(), EqualTemperament.edo12());
         expect(
           const EqualTemperament.edo12(),
@@ -96,11 +77,15 @@ void main() {
       test('returns the string representation of this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().toString(),
-          'EDO 12 (A:2 B:1 C:2 D:2 E:1 F:2 G:2)',
+          'EDO 12 (2 2 1 2 2 2 1) at A440',
         );
         expect(
           const EqualTemperament.edo19().toString(),
-          'EDO 19 (A:3 B:2 C:3 D:3 E:2 F:3 G:3)',
+          'EDO 19 (3 3 2 3 3 3 2) at A440',
+        );
+        expect(
+          const EqualTemperament.edo19(fork: TuningFork.c256).toString(),
+          'EDO 19 (3 3 2 3 3 3 2) at C256',
         );
       });
     });
@@ -108,10 +93,10 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
-          EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
+          EqualTemperament([1, 2]).hashCode,
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
+          EqualTemperament([1, 2]).hashCode,
         );
       });
 
@@ -121,10 +106,8 @@ void main() {
           isNot(const EqualTemperament.edo19().hashCode),
         );
         expect(
-          const EqualTemperament({BaseNote.c: 1, BaseNote.d: 2}).hashCode,
-          isNot(
-            const EqualTemperament({BaseNote.c: 2, BaseNote.d: 1}).hashCode,
-          ),
+          const EqualTemperament([1, 2]).hashCode,
+          isNot(const EqualTemperament([2, 1]).hashCode),
         );
       });
     });

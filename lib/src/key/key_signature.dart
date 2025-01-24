@@ -55,8 +55,10 @@ final class KeySignature implements Comparable<KeySignature> {
 
     return KeySignature(
       Interval.P5
-          .circleFrom(firstNote, distance: distance.incrementBy(-1))
-          .toList(),
+          .descending(distance.isNegative)
+          .circleFrom(firstNote)
+          .take(distance.abs())
+          .toList(growable: false),
     );
   }
 
@@ -78,10 +80,13 @@ final class KeySignature implements Comparable<KeySignature> {
   /// KeySignature([Note.f, Note.b.flat]).clean == KeySignature([Note.b.flat])
   ///
   /// (KeySignature.fromDistance(-2) + KeySignature.fromDistance(3)).clean
-  ///   == KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp])
+  ///   == KeySignature([Note.f, Note.c, Note.g].sharp)
   /// ```
-  KeySignature get clean =>
-      KeySignature(_notes.where((note) => !note.accidental.isNatural).toList());
+  KeySignature get clean => KeySignature(
+        _notes
+            .whereNot((note) => note.accidental.isNatural)
+            .toList(growable: false),
+      );
 
   /// The fifths distance of this [KeySignature].
   ///
@@ -99,10 +104,10 @@ final class KeySignature implements Comparable<KeySignature> {
     final apparentDistance = cleanNotes.length * accidental.semitones.sign;
     final apparentFirstNote =
         accidental.isFlat ? _firstCanonicalFlatNote : _firstCanonicalSharpNote;
-    final circle = Interval.P5.circleFrom(
-      apparentFirstNote,
-      distance: apparentDistance.incrementBy(-1),
-    );
+    final circle = Interval.P5
+        .descending(apparentDistance.isNegative)
+        .circleFrom(apparentFirstNote)
+        .take(apparentDistance.abs());
 
     // As `circle` is an Iterable, lazy evaluation takes place
     // for efficient comparison, returning early on mismatches.
@@ -138,7 +143,10 @@ final class KeySignature implements Comparable<KeySignature> {
     final distance = this.distance;
     if (distance == null) return const {};
 
-    final rootNote = Interval.P5.circleFrom(Note.c, distance: distance).last;
+    final rootNote = Interval.P5
+        .descending(distance.isNegative)
+        .circleFrom(Note.c)
+        .elementAt(distance.abs());
     final major = rootNote.major;
 
     return UnmodifiableMapView({

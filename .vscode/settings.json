@@ -2,8 +2,11 @@
   "cSpell.ignoreWords": ["music"],
   "cSpell.words": [
     "barline",
+    "bitmask",
     "chordable",
     "Chordable",
+    "codeql",
+    "coverallsapp",
     "Didymean",
     "dorian",
     "enharmonically",
@@ -18,8 +21,13 @@
     "mixolydian",
     "neapolitan",
     "octatonic",
+    "ossf",
     "phrygian",
+    "pubspec",
     "pythagorean",
+    "redeclares",
+    "respellable",
+    "Respellable",
     "sublist",
     "Versetzungszeichen",
     "Xenharmonic"
@@ -29,5 +37,6 @@
   },
   "files.associations": {
     "*.lock": "yaml"
-  }
+  },
+  "git.alwaysSignOff": true
 }

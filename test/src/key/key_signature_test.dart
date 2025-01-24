@@ -33,28 +33,18 @@ void main() {
         );
         expect(
           KeySignature.fromDistance(-6),
-          KeySignature([
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-            Note.c.flat,
-          ]),
+          KeySignature(
+            const [Note.b, Note.e, Note.a, Note.d, Note.g, Note.c].flat,
+          ),
         );
         expect(KeySignature.fromDistance(-1), KeySignature([Note.b.flat]));
         expect(KeySignature.fromDistance(0), KeySignature.empty);
         expect(KeySignature.fromDistance(1), KeySignature([Note.f.sharp]));
         expect(
           KeySignature.fromDistance(6),
-          KeySignature([
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-            Note.e.sharp,
-          ]),
+          KeySignature(
+            const [Note.f, Note.c, Note.g, Note.d, Note.a, Note.e].sharp,
+          ),
         );
         expect(
           KeySignature.fromDistance(10),
@@ -269,7 +259,7 @@ void main() {
     });
 
     group('.incrementBy()', () {
-      test('returns a new KeyGignature increasing the fifths distance', () {
+      test('returns a new KeySignature increasing the fifths distance', () {
         expect(KeySignature.empty.incrementBy(-1), KeySignature([Note.b.flat]));
         expect(KeySignature.empty.incrementBy(0), KeySignature.empty);
         expect(KeySignature.empty.incrementBy(1), KeySignature([Note.f.sharp]));

@@ -35,13 +35,13 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 0, which corresponds to [Note.c].
   static const c = PitchClass(0);
 
-  /// Pitch class 1, which corresponds to [Note.c.sharp] or [Note.d.flat].
+  /// Pitch class 1, which corresponds to `Note.c.sharp` or `Note.d.flat`.
   static const cSharp = PitchClass(1);
 
   /// Pitch class 2, which corresponds to [Note.d].
   static const d = PitchClass(2);
 
-  /// Pitch class 3, which corresponds to [Note.d.sharp] or [Note.e.flat].
+  /// Pitch class 3, which corresponds to `Note.d.sharp` or `Note.e.flat`.
   static const dSharp = PitchClass(3);
 
   /// Pitch class 4, which corresponds to [Note.e].
@@ -50,19 +50,19 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 5, which corresponds to [Note.f].
   static const f = PitchClass(5);
 
-  /// Pitch class 6, which corresponds to [Note.f.sharp] or [Note.g.flat].
+  /// Pitch class 6, which corresponds to `Note.f.sharp` or `Note.g.flat`.
   static const fSharp = PitchClass(6);
 
   /// Pitch class 7, which corresponds to [Note.g].
   static const g = PitchClass(7);
 
-  /// Pitch class 8, which corresponds to [Note.g.sharp] or [Note.g.flat].
+  /// Pitch class 8, which corresponds to `Note.g.sharp` or `Note.g.flat`.
   static const gSharp = PitchClass(8);
 
   /// Pitch class 9, which corresponds to [Note.a].
   static const a = PitchClass(9);
 
-  /// Pitch class 10, which corresponds to [Note.a.sharp] or [Note.b.flat].
+  /// Pitch class 10, which corresponds to `Note.a.sharp` or `Note.b.flat`.
   static const aSharp = PitchClass(10);
 
   /// Pitch class 11, which corresponds to [Note.b].
@@ -89,8 +89,8 @@ final class PitchClass extends Scalable<PitchClass>
         {
           note,
           for (var i = 1; i <= distance; i++) ...[
-            note.respellByBaseNoteDistance(distance),
-            note.respellByBaseNoteDistance(-distance),
+            note.respellByOrdinalDistance(distance),
+            note.respellByOrdinalDistance(-distance),
           ],
         },
         Note.compareByClosestDistance,
@@ -107,8 +107,8 @@ final class PitchClass extends Scalable<PitchClass>
         aboveNote,
         belowNote,
         for (var i = 1; i <= distance; i++) ...[
-          belowNote.respellByBaseNoteDistance(distance),
-          aboveNote.respellByBaseNoteDistance(-distance),
+          belowNote.respellByOrdinalDistance(distance),
+          aboveNote.respellByOrdinalDistance(-distance),
         ],
       },
       Note.compareByClosestDistance,
@@ -136,7 +136,7 @@ final class PitchClass extends Scalable<PitchClass>
       throw ArgumentError.value(
         '$withAccidental',
         'preferredAccidental',
-        'Impossible match for',
+        'Impossible match for $this',
       );
     }
 
@@ -165,7 +165,7 @@ final class PitchClass extends Scalable<PitchClass>
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
       return resolveSpelling(preferredAccidental);
-      // ignore: avoid_catching_errors
+      // ignore: avoid_catching_errors to catch `ArgumentError`.
     } on ArgumentError {
       return resolveSpelling();
     }
@@ -198,7 +198,7 @@ final class PitchClass extends Scalable<PitchClass>
 
     return IntervalClass(diff)
         .resolveClosestSpelling()
-        .descending(isDescending: diff.isNegative);
+        .descending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].
@@ -211,6 +211,15 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   @override
   int difference(PitchClass other) => super.difference(other);
+
+  @override
+  PitchClass get respelledUpwards => this;
+
+  @override
+  PitchClass get respelledDownwards => this;
+
+  @override
+  PitchClass get respelledSimple => this;
 
   /// A pitch-class multiplication modulo [chromaticDivisions] of this
   /// [PitchClass].

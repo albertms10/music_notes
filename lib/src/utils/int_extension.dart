@@ -1,3 +1,5 @@
+import 'num_extension.dart';
+
 /// An int extension.
 extension IntExtension on int {
   /// This [int] incremented by [step].
@@ -24,16 +26,4 @@ extension IntExtension on int {
 
     return mod == 0 ? n : mod;
   }
-
-  /// The sign of this integer.
-  ///
-  /// Like [sign] except that it returns 1 for zero (considering it positive).
-  ///
-  /// Example:
-  /// ```dart
-  /// 5.nonZeroSign == 1
-  /// 0.nonZeroSign == 1
-  /// (-2).nonZeroSign == -1
-  /// ```
-  int get nonZeroSign => isNegative ? -1 : 1;
 }

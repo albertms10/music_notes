@@ -1,5 +1,3 @@
-// ignore_for_file: use_named_constants
-
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
@@ -12,7 +10,7 @@ void main() {
         expect(() => Accidental.parse('invalid'), throwsFormatException);
       });
 
-      test('parses source as an Accidental and return its value', () {
+      test('parses source as an Accidental', () {
         expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
         expect(Accidental.parse('#xx'), const Accidental(5));
         expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
