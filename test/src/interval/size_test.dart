@@ -4,7 +4,19 @@ import 'package:test/test.dart';
 void main() {
   group('Size', () {
     group('constructor', () {
-      test('creates a different Size.unison ascending and descending', () {
+      test('asserts the size argument is correct', () {
+        expect(const Size(3), Size.third);
+        expect(const Size(-10), -Size.tenth);
+        expect(const PerfectSize(11), Size.eleventh);
+        expect(const ImperfectSize(14), const Size(14));
+
+        expect(() => PerfectSize(16), throwsA(isA<AssertionError>()));
+        expect(() => PerfectSize(51), throwsA(isA<AssertionError>()));
+        expect(() => ImperfectSize(22), throwsA(isA<AssertionError>()));
+        expect(() => ImperfectSize(47), throwsA(isA<AssertionError>()));
+      });
+
+      test('creates different ascending and descending Size.unison', () {
         expect(Size.unison, isNot(-Size.unison));
       });
     });
