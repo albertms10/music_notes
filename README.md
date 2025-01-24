@@ -499,6 +499,13 @@ Note.b.flat.inOctave(4).frequency(
     ); // 456.1401436878537
 ```
 
+Get the `Frequency` at a given temperature:
+
+```dart
+const Frequency(440).at(const Celsius(18)); // 438.4619866006409
+const Frequency(440).at(const Celsius(24)); // 443.07602679871826
+```
+
 Get the closest `Pitch` from a given `Frequency`:
 
 ```dart
