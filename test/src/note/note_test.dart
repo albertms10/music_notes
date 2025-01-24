@@ -645,6 +645,17 @@ void main() {
         expect(Note.c.transposeBy(const Interval.perfect(Size(15))), Note.c);
         expect(Note.c.transposeBy(const Interval.perfect(Size(22))), Note.c);
         expect(Note.c.transposeBy(const Interval.perfect(Size(29))), Note.c);
+        expect(Note.c.transposeBy(const ImperfectSize(30).minor), Note.d.flat);
+        expect(Note.c.transposeBy(const ImperfectSize(30).major), Note.d);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(32))), Note.f);
+        expect(
+          Note.c.transposeBy(const PerfectSize(32).augmented),
+          Note.f.sharp,
+        );
+        expect(
+          Note.c.transposeBy(const PerfectSize(33).diminished),
+          Note.g.flat,
+        );
       });
     });
 

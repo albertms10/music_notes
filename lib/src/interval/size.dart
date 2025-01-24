@@ -135,14 +135,6 @@ extension type const Size._(int size) implements int {
     return (_sizeToSemitones[absSimple]! + octaves * 12) * sign;
   }
 
-  /// The absolute [Size] value taking octave shift into account.
-  @Deprecated('This getter is not reliable on large Intervals')
-  int get absShift {
-    final absSize = abs();
-
-    return absSize + absSize ~/ octave;
-  }
-
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
   /// from this [Size].
   ///
