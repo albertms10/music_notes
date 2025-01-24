@@ -35,13 +35,13 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 0, which corresponds to [Note.c].
   static const c = PitchClass(0);
 
-  /// Pitch class 1, which corresponds to [Note.c.sharp] or [Note.d.flat].
+  /// Pitch class 1, which corresponds to `Note.c.sharp` or `Note.d.flat`.
   static const cSharp = PitchClass(1);
 
   /// Pitch class 2, which corresponds to [Note.d].
   static const d = PitchClass(2);
 
-  /// Pitch class 3, which corresponds to [Note.d.sharp] or [Note.e.flat].
+  /// Pitch class 3, which corresponds to `Note.d.sharp` or `Note.e.flat`.
   static const dSharp = PitchClass(3);
 
   /// Pitch class 4, which corresponds to [Note.e].
@@ -50,19 +50,19 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 5, which corresponds to [Note.f].
   static const f = PitchClass(5);
 
-  /// Pitch class 6, which corresponds to [Note.f.sharp] or [Note.g.flat].
+  /// Pitch class 6, which corresponds to `Note.f.sharp` or `Note.g.flat`.
   static const fSharp = PitchClass(6);
 
   /// Pitch class 7, which corresponds to [Note.g].
   static const g = PitchClass(7);
 
-  /// Pitch class 8, which corresponds to [Note.g.sharp] or [Note.g.flat].
+  /// Pitch class 8, which corresponds to `Note.g.sharp` or `Note.g.flat`.
   static const gSharp = PitchClass(8);
 
   /// Pitch class 9, which corresponds to [Note.a].
   static const a = PitchClass(9);
 
-  /// Pitch class 10, which corresponds to [Note.a.sharp] or [Note.b.flat].
+  /// Pitch class 10, which corresponds to `Note.a.sharp` or `Note.b.flat`.
   static const aSharp = PitchClass(10);
 
   /// Pitch class 11, which corresponds to [Note.b].
