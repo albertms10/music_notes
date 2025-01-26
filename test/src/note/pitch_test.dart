@@ -1143,7 +1143,7 @@ void main() {
     group('.harmonics()', () {
       test('returns the ClosestPitch set of harmonic series', () {
         expect(
-          Note.c.inOctave(1).harmonics(upToIndex: 15).toString(),
+          Note.c.inOctave(1).harmonics().take(16).toSet().toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
         );
@@ -1152,11 +1152,12 @@ void main() {
           Note.c
               .inOctave(1)
               .harmonics(
-                upToIndex: 15,
                 tuningSystem: const EqualTemperament.edo12(
                   fork: TuningFork(Pitch.reference, Frequency(438)),
                 ),
               )
+              .take(16)
+              .toSet()
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
@@ -1166,10 +1167,11 @@ void main() {
           Note.c
               .inOctave(1)
               .harmonics(
-                upToIndex: 15,
                 tuningSystem:
                     const EqualTemperament.edo12(fork: TuningFork.c256),
               )
+              .take(16)
+              .toSet()
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
@@ -1178,7 +1180,9 @@ void main() {
         expect(
           Note.c
               .inOctave(1)
-              .harmonics(upToIndex: 15, temperature: const Celsius(18))
+              .harmonics(temperature: const Celsius(18))
+              .take(16)
+              .toSet()
               .toString(),
           '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
           'E4-8, F♯4-43, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
