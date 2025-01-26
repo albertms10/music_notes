@@ -72,7 +72,7 @@ final class Pitch extends Scalable<Pitch>
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final _helmholtzNotationRegExp = RegExp(
     '(^(?:${[
-      for (final baseNote in BaseNote.values) baseNote.name,
+      for (final BaseNote(:name) in BaseNote.values) name,
     ].join('|')})[${Accidental.symbols.join()}]*)(${[
       ..._compoundPrimeSymbols,
       for (final symbol in _primeSymbols) '$symbol+',
@@ -116,9 +116,9 @@ final class Pitch extends Scalable<Pitch>
           : switch (primes?.first) {
               '' || null => middleOctave,
               _superPrime || _superPrimeAlt => middleOctave + primes!.length,
-              _superDoublePrime => middleOctave + primes!.length + 1,
-              _superTriplePrime => middleOctave + primes!.length + 2,
-              _superQuadruplePrime => middleOctave + primes!.length + 3,
+              _superDoublePrime => middleOctave + 2,
+              _superTriplePrime => middleOctave + 3,
+              _superQuadruplePrime => middleOctave + 4,
               _ =>
                 throw FormatException('Invalid Pitch', source, notePart.length),
             };
