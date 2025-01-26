@@ -306,13 +306,12 @@ final class ScalePattern {
   /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
-    final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, _setBit);
-    final cachedDescending = scale.descendingDegrees;
+    final Scale<PitchClass>(:degrees, :descendingDegrees) = on(PitchClass.c);
+    final sequence = degrees.fold(0, _setBit);
     final descendingSequence =
-        cachedDescending.reversed.isEnharmonicWith(scale.degrees)
+        descendingDegrees.reversed.isEnharmonicWith(degrees)
             ? null
-            : cachedDescending.fold(0, _setBit);
+            : descendingDegrees.fold(0, _setBit);
 
     return (sequence, descendingSequence);
   }

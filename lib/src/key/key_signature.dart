@@ -143,11 +143,10 @@ final class KeySignature implements Comparable<KeySignature> {
     final distance = this.distance;
     if (distance == null) return const {};
 
-    final rootNote = Interval.P5
+    final Note(:major) = Interval.P5
         .descending(distance.isNegative)
         .circleFrom(Note.c)
         .elementAt(distance.abs());
-    final major = rootNote.major;
 
     return UnmodifiableMapView({
       TonalMode.major: major,

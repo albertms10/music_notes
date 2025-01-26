@@ -109,12 +109,12 @@ extension type const Size._(int size) implements int {
   /// interval in [semitones].
   factory Size.nearestFromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
-    final closest = minBy(
+    final MapEntry<Size, int>(key: closest) = minBy(
       _sizeToSemitones.entries,
       (entry) => (normalizedSemitones - entry.value).abs(),
     )!;
 
-    return Size._scaleToSemitones(closest.key, semitones);
+    return Size._scaleToSemitones(closest, semitones);
   }
 
   /// The number of semitones of this [Size] as in [_sizeToSemitones].
