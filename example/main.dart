@@ -270,7 +270,7 @@ void main() {
   const Frequency(314).closestPitch(); // E♭4+16
   const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
 
-  Note.c.inOctave(1).harmonics(upToIndex: 15);
+  Note.c.inOctave(1).harmonics().take(16).toSet();
   // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
   // E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
 

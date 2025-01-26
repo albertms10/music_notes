@@ -465,17 +465,17 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   TuningFork at(Frequency frequency) => TuningFork(this, frequency);
 
-  /// The [ClosestPitch] set of harmonics series [upToIndex] from this [Pitch]
-  /// from [tuningSystem] and [temperature].
+  /// The [ClosestPitch] set of harmonics series from this [Pitch] from
+  /// [tuningSystem], [temperature], and whether [undertone].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(1).harmonics(upToIndex: 15).toString()
+  /// Note.c.inOctave(1).harmonics().take(16).toSet().toString()
   ///   == '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
   ///     'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}'
   /// ```
-  Set<ClosestPitch> harmonics({
-    required int upToIndex,
+  Iterable<ClosestPitch> harmonics({
+    bool undertone = false,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
     Celsius referenceTemperature = Celsius.reference,
@@ -484,9 +484,7 @@ final class Pitch extends Scalable<Pitch>
         tuningSystem: tuningSystem,
         // we deliberately omit the temperature here, as the subsequent call to
         // `Frequency.closestPitch` will already take it into account.
-      )
-          .harmonics(upToIndex: upToIndex)
-          .map(
+      ).harmonics(undertone: undertone).map(
             (frequency) => frequency
                 .closestPitch(
                   tuningSystem: tuningSystem,
@@ -494,8 +492,7 @@ final class Pitch extends Scalable<Pitch>
                   referenceTemperature: referenceTemperature,
                 )
                 .respelledSimple,
-          )
-          .toSet();
+          );
 
   /// The string representation of this [Pitch] based on [system].
   ///
