@@ -394,7 +394,8 @@ void main() {
     group('.add()', () {
       test('adds an Interval to this ChordPattern', () {
         expect(
-          ChordPattern.majorTriad.add(Interval.M2, replaceSizes: const {3}),
+          ChordPattern.majorTriad
+              .add(Interval.M2, replaceSizes: const {Size.third}),
           const ChordPattern([Interval.M2, Interval.P5]),
         );
         expect(
