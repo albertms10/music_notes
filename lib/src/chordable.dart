@@ -22,10 +22,10 @@ mixin Chordable<T> {
   T get augmented;
 
   /// Returns a new [T] with a suspended [Interval.M2].
-  T sus2() => add(Interval.M2, replaceSizes: const {3, 4});
+  T sus2() => add(Interval.M2, replaceSizes: const {Size.third, Size.fourth});
 
   /// Returns a new [T] with a suspended [Interval.P4].
-  T sus4() => add(Interval.P4, replaceSizes: const {2, 3});
+  T sus4() => add(Interval.P4, replaceSizes: const {Size.second, Size.third});
 
   /// Returns a new [T] adding a [quality] 6th.
   T add6([ImperfectQuality quality = ImperfectQuality.major]) =>
