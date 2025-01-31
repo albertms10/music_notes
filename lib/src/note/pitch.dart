@@ -129,6 +129,15 @@ final class Pitch extends Scalable<Pitch>
     throw FormatException('Invalid Pitch', source);
   }
 
+  /// Changes the octave of this [Pitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.inOctave(4).inOctave(2) == Note.a.inOctave(2);
+  /// Note.c.sharp.inOctave(6).inOctave(-1) == Note.c.sharp.inOctave(-1);
+  /// ```
+  Pitch inOctave(int octave) => Pitch(note, octave: octave);
+
   /// The [octave] that corresponds to the semitones from root height.
   ///
   /// Example:
@@ -608,4 +617,17 @@ final class HelmholtzPitchNotation extends PitchNotation {
       _ => '$note${_symbols(pitch.octave - 2)}',
     };
   }
+}
+
+/// A list of pitches extension.
+extension Pitches on List<Pitch> {
+  /// Changes the octave of each [Pitch] in this list.
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.a.inOctave(2), Note.c.inOctave(4)].inOctave(3)
+  ///   == [Note.a.inOctave(3), Note.c.inOctave(3)]
+  /// ```
+  List<Pitch> inOctave(int octave) =>
+      map((note) => note.inOctave(octave)).toList();
 }
