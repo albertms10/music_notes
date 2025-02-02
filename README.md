@@ -553,13 +553,14 @@ ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .add9(); // G min. (G B♭ D A)
 ```
 
-## Inspiration
+## Similar projects in other languages
 
-This library is inspired by a range of music theory projects.
-
-- [Teoria.js](https://github.com/saebekassebil/teoria)
-- [Tonal](https://github.com/tonaljs/tonal)
-- [Tonic](https://github.com/osteele/dart-tonic)
+- **Mingus** [Python](https://github.com/bspaans/python-mingus)
+- **Modest** [Lua](https://github.com/esbudylin/modest)
+- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
+- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
+- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
+- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 
