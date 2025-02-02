@@ -22,41 +22,29 @@ void main() {
     });
 
     group('.ratioFromSemitones()', () {
-      test('returns the Ratio from semitones for this EqualTemperament', () {
+      test('returns the ratio from semitones for this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().ratioFromSemitones(1),
-          const Ratio(1.0594630943592953),
+          1.0594630943592953,
         );
-        expect(
-          const EqualTemperament.edo12().ratioFromSemitones(12),
-          const Ratio(2),
-        );
+        expect(const EqualTemperament.edo12().ratioFromSemitones(12), 2);
 
         expect(
           const EqualTemperament.edo19().ratioFromSemitones(1),
-          const Ratio(1.0371550444461919),
+          1.0371550444461919,
         );
-        expect(
-          const EqualTemperament.edo19().ratioFromSemitones(19),
-          const Ratio(2),
-        );
+        expect(const EqualTemperament.edo19().ratioFromSemitones(19), 2);
       });
     });
 
     group('.ratio()', () {
-      test('returns the Ratio from a Pitch in this EqualTemperament', () {
+      test('returns the ratio from a Pitch in this EqualTemperament', () {
         const edo12 = EqualTemperament.edo12();
-        expect(
-          edo12.ratio(Note.g.inOctave(4)),
-          const Ratio(0.8908987181403393),
-        );
-        expect(edo12.ratio(Note.a.inOctave(4)), const Ratio(1));
-        expect(
-          edo12.ratio(Note.b.flat.inOctave(4)),
-          const Ratio(1.0594630943592953),
-        );
-        expect(edo12.ratio(Note.a.inOctave(5)), const Ratio(2));
-        expect(edo12.ratio(Note.a.inOctave(6)), const Ratio(4));
+        expect(edo12.ratio(Note.g.inOctave(4)), 0.8908987181403393);
+        expect(edo12.ratio(Note.a.inOctave(4)), 1);
+        expect(edo12.ratio(Note.b.flat.inOctave(4)), 1.0594630943592953);
+        expect(edo12.ratio(Note.a.inOctave(5)), 2);
+        expect(edo12.ratio(Note.a.inOctave(6)), 4);
       });
     });
 
@@ -76,7 +64,7 @@ void main() {
 
     group('operator ==()', () {
       test('compares this EqualTemperament to other', () {
-        // ignore: prefer_const_constructors
+        // ignore: prefer_const_constructors test
         expect(EqualTemperament.edo12(), EqualTemperament.edo12());
         expect(
           const EqualTemperament.edo12(),
@@ -105,9 +93,9 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal EqualTemperaments', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           EqualTemperament([1, 2]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           EqualTemperament([1, 2]).hashCode,
         );
       });

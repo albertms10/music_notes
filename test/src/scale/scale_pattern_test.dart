@@ -568,6 +568,15 @@ void main() {
       );
     });
 
+    group('.exclude()', () {
+      test('returns a new ScalePattern excluding intervals', () {
+        expect(
+          ScalePattern.major.exclude({Interval.m2}),
+          ScalePattern.majorPentatonic,
+        );
+      });
+    });
+
     group('.isEnharmonicWith()', () {
       test(
         'returns whether this ScalePattern is enharmonically equivalent to '
@@ -659,9 +668,9 @@ void main() {
           const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.naturalMinor,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.ionian,
           ScalePattern.mixolydian,
           ScalePattern.wholeTone,

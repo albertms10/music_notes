@@ -279,7 +279,7 @@ final class ScalePattern {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
     final degrees = [
-      for (int i = 0; i < chromaticDivisions; i++)
+      for (var i = 0; i < chromaticDivisions; i++)
         if (sequence.bitAt(i) != 0) PitchClass(i),
       PitchClass.c,
     ];
@@ -287,7 +287,7 @@ final class ScalePattern {
         ? null
         : [
             PitchClass.c,
-            for (int i = chromaticDivisions - 1; i >= 0; i--)
+            for (var i = chromaticDivisions - 1; i >= 0; i--)
               if (descendingSequence.bitAt(i) != 0) PitchClass(i),
           ];
 
@@ -306,16 +306,19 @@ final class ScalePattern {
   /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
-    final scale = on(PitchClass.c);
-    final sequence = scale.degrees.fold(0, BinarySequence.bitFrom);
-    final cachedDescending = scale.descendingDegrees;
+    final Scale<PitchClass>(:degrees, :descendingDegrees) = on(PitchClass.c);
+    final sequence = degrees.fold(0, _setBit);
     final descendingSequence =
-        cachedDescending.reversed.isEnharmonicWith(scale.degrees)
+        descendingDegrees.reversed.isEnharmonicWith(degrees)
             ? null
-            : cachedDescending.fold(0, BinarySequence.bitFrom);
+            : descendingDegrees.fold(0, _setBit);
 
     return (sequence, descendingSequence);
   }
+
+  /// Sets the bit from [sequence] at [scalable] semitones.
+  static int _setBit(int sequence, Scalable<PitchClass> scalable) =>
+      sequence.setBitAt(scalable.semitones);
 
   /// The length of this [ScalePattern].
   ///
@@ -358,7 +361,7 @@ final class ScalePattern {
               (scale, interval) => [...scale, scale.last.transposeBy(interval)],
             )
             .reversed
-            .toList(),
+            .toList(growable: false),
       );
 
   /// The mirrored scale version of this [ScalePattern].
@@ -420,6 +423,29 @@ final class ScalePattern {
 
   Interval _addNextStepTo(int ordinal) =>
       _stepFrom(ordinal) + _stepFrom(ordinal + 1);
+
+  /// Excludes [intervals] from this [ScalePattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.exclude({Interval.m2}) == ScalePattern.majorPentatonic
+  /// ```
+  ScalePattern exclude(Set<Interval> intervals) {
+    final steps = <Interval>[];
+    for (var i = 0; i < _intervalSteps.length; i++) {
+      final interval = _intervalSteps[i];
+      if (!intervals.contains(interval)) {
+        steps.add(interval);
+      } else if (i == _intervalSteps.length - 1) {
+        steps[steps.length - 1] = steps.last + interval;
+      } else {
+        steps.add(_intervalSteps[i + 1] + interval);
+        i++;
+      }
+    }
+
+    return ScalePattern(steps);
+  }
 
   /// Whether this [ScalePattern] is enharmonically equivalent to [other].
   ///
@@ -486,15 +512,43 @@ final class ScalePattern {
       );
 }
 
+extension _BinarySequence on int {
+  /// The value of the bit at the specified [index].
+  ///
+  /// This method checks whether the bit at the given [index]
+  /// is set (1) or not (0).
+  /// It uses a bitwise AND operation with a mask `1 << index`
+  /// to isolate the bit.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.bitAt(0) == 0000.b // 0
+  /// 1010.b.bitAt(1) == 0010.b // 2
+  /// 1010.b.bitAt(2) == 0000.b // 0
+  /// 1010.b.bitAt(3) == 1000.b // 8
+  /// ```
+  int bitAt(int index) => this & (1 << index);
+
+  /// Sets the bit at the specified [index] to 1 and returns the new integer.
+  ///
+  /// This method uses a bitwise OR operation with a mask `1 << index`
+  /// to set the specific bit at the given [index] to 1,
+  /// leaving all other bits unchanged.
+  ///
+  /// Given 10 is 1010 in binary:
+  ///
+  /// Example:
+  /// ```dart
+  /// 1010.b.setBit(0) == 1011.b // 11
+  /// 1010.b.setBit(2) == 1110.b // 14
+  /// ```
+  int setBitAt(int index) => this | (1 << index);
+}
+
 /// A binary sequence int extension.
 extension BinarySequence on int {
-  /// The bit at [index].
-  int bitAt(int index) => this & 1 << index;
-
-  /// The bit from [sequence] and [scalable] semitones.
-  static int bitFrom(int sequence, Scalable<PitchClass> scalable) =>
-      sequence | 1 << scalable.semitones;
-
   /// This [int] as a binary integer.
   int get b => int.parse(toString(), radix: 2);
 }

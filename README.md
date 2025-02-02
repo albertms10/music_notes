@@ -150,7 +150,7 @@ Note.d.flat
   ..toString(system: NoteNotation.german); // Des
 
 Note.b.flat.inOctave(-1).toString(); // B♭-1
-Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c′′′
+Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c‴
 
 PitchClass.c.toString(); // {C}
 PitchClass.dSharp.toString(); // {D♯|E♭}
@@ -183,6 +183,7 @@ Turn it descending:
 ```dart
 -Interval.m7; // m-7
 Interval.M3.descending(); // M-3
+(-Interval.P4).descending(false); // P4
 ```
 
 Perform common interval operations:
@@ -225,9 +226,9 @@ BaseNote.a.intervalSize(BaseNote.e); // 5
 Know the intervallic distance between two notes:
 
 ```dart
-Interval.P5.distanceBetween(Note.c, Note.d);
+Interval.P5.circleDistance(from: Note.c, to: Note.d);
 // (2, notes: [Note.c, Note.g, Note.d])
-Interval.P4.distanceBetween(Note.b.flat, Note.d);
+Interval.P4.circleDistance(from: Note.b.flat, to: Note.d);
 // (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
 ```
 
@@ -235,11 +236,13 @@ And even explore the circle of fifths or any circle of intervals
 up to a distance:
 
 ```dart
-Interval.P5.circleFrom(Note.c, distance: 12).toList();
+Interval.P5.circleFrom(Note.c).take(13).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
-Note.c.circleOfFifths();
-// (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
-Note.c.flatCircleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
+Note.c.circleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
+Note.c.splitCircleOfFifths.down.take(6).toList();
+// [F, B♭, E♭, A♭, D♭, G♭]
+Note.c.splitCircleOfFifths.up.take(8).toList();
+// [G, D, A, E, B, F♯, C♯, G♯]
 
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
@@ -438,7 +441,8 @@ Or know its numeric representation:
 
 ```dart
 ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-  ..numericRepresentation.toSet() // {0, 11, 3, 5}
+  ..numericRepresentation().toSet() // {0, 11, 3, 5}
+  ..numericRepresentation(reference: PitchClass.d).toSet() // {9, 8, 0, 2}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
 
@@ -495,6 +499,13 @@ Note.b.flat.inOctave(4).frequency(
     ); // 456.1401436878537
 ```
 
+Get the `Frequency` at a given temperature:
+
+```dart
+const Frequency(440).at(const Celsius(18)); // 438.4619866006409
+const Frequency(440).at(const Celsius(24)); // 443.07602679871826
+```
+
 Get the closest `Pitch` from a given `Frequency`:
 
 ```dart
@@ -523,7 +534,7 @@ Or parse a `ClosestPitch` from a string:
 
 ```dart
 ClosestPitch.parse('A4'); // A4
-ClosestPitch.parse('A4+12.4'); // A4+12.4
+ClosestPitch.parse('A4+12.6'); // A4+13
 ClosestPitch.parse('E♭3-28'); // E♭3-28
 ```
 
@@ -542,13 +553,14 @@ ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .add9(); // G min. (G B♭ D A)
 ```
 
-## Inspiration
+## Similar projects in other languages
 
-This library is inspired by a range of music theory projects.
-
-- [Teoria.js](https://github.com/saebekassebil/teoria)
-- [Tonal](https://github.com/tonaljs/tonal)
-- [Tonic](https://github.com/osteele/dart-tonic)
+- **Mingus** [Python](https://github.com/bspaans/python-mingus)
+- **Modest** [Lua](https://github.com/esbudylin/modest)
+- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
+- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
+- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
+- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 

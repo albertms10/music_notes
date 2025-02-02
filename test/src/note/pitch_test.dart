@@ -8,13 +8,17 @@ void main() {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
+        expect(() => Pitch.parse('aa'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
         expect(() => Pitch.parse('C,d'), throwsFormatException);
+        expect(() => Pitch.parse("d′'"), throwsFormatException);
+        expect(() => Pitch.parse('f″″'), throwsFormatException);
 
         expect(() => Pitch.parse('D5,'), throwsFormatException);
+        expect(() => Pitch.parse('ba'), throwsFormatException);
         expect(() => Pitch.parse("d7'"), throwsFormatException);
         expect(() => Pitch.parse("e'4"), throwsFormatException);
         expect(() => Pitch.parse("'E3"), throwsFormatException);
@@ -22,7 +26,7 @@ void main() {
         expect(() => Pitch.parse('3B,'), throwsFormatException);
       });
 
-      test('parses source as a Pitch and return its value', () {
+      test('parses source as a Pitch', () {
         expect(Pitch.parse('A4'), Note.a.inOctave(4));
         expect(Pitch.parse('d3'), Note.d.inOctave(3));
         expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
@@ -37,7 +41,8 @@ void main() {
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+        expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
+        expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
 
         var pitch = Note.b.flat.flat.inOctave(-2);
         expect(Pitch.parse(pitch.toString()), pitch);
@@ -492,7 +497,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('returns this Pitch with the simplest Accidental spelling', () {
+      test('returns the simplest spelling for this Pitch', () {
         expect(Note.c.inOctave(4).respelledSimple, Note.c.inOctave(4));
         expect(Note.b.inOctave(5).respelledSimple, Note.b.inOctave(5));
         expect(
@@ -534,6 +539,10 @@ void main() {
         );
 
         expect(
+          Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
+          -Interval.d2,
+        );
+        expect(
           Note.b.sharp.inOctave(3).interval(Note.c.inOctave(4)),
           Interval.d2,
         );
@@ -545,6 +554,7 @@ void main() {
           Note.f.flat.inOctave(4).interval(Note.g.flat.flat.inOctave(4)),
           Interval.m2,
         );
+        expect(Note.c.inOctave(5).interval(Note.b.inOctave(4)), -Interval.m2);
         expect(
           Note.c.inOctave(5).interval(Note.d.flat.inOctave(5)),
           Interval.m2,
@@ -636,6 +646,8 @@ void main() {
         );
 
         expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
+        expect(Note.c.inOctave(5).interval(Note.b.inOctave(3)), -Interval.m9);
+
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(5)),
           const Interval.perfect(Size(15)),
@@ -648,12 +660,6 @@ void main() {
 
         expect(
           Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-          const Interval.perfect(Size(29)),
-        );
-
-        expect(
-          skip: true,
-          () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
           const Interval.perfect(Size(29)),
         );
       });
@@ -1137,7 +1143,7 @@ void main() {
     group('.harmonics()', () {
       test('returns the ClosestPitch set of harmonic series', () {
         expect(
-          Note.c.inOctave(1).harmonics(upToIndex: 15).toString(),
+          Note.c.inOctave(1).harmonics().take(16).toSet().toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
         );
@@ -1146,11 +1152,12 @@ void main() {
           Note.c
               .inOctave(1)
               .harmonics(
-                upToIndex: 15,
                 tuningSystem: const EqualTemperament.edo12(
                   fork: TuningFork(Pitch.reference, Frequency(438)),
                 ),
               )
+              .take(16)
+              .toSet()
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
@@ -1160,10 +1167,11 @@ void main() {
           Note.c
               .inOctave(1)
               .harmonics(
-                upToIndex: 15,
                 tuningSystem:
                     const EqualTemperament.edo12(fork: TuningFork.c256),
               )
+              .take(16)
+              .toSet()
               .toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
@@ -1172,11 +1180,12 @@ void main() {
         expect(
           Note.c
               .inOctave(1)
-              .harmonics(upToIndex: 15, temperature: const Celsius(18))
+              .harmonics(temperature: const Celsius(18))
+              .take(16)
+              .toSet()
               .toString(),
           '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
-          // TODO(albertms10): should be `F♯4-43`.
-          'E4-8, F4+57, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
+          'E4-8, F♯4-43, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
         );
       });
     });
@@ -1230,11 +1239,15 @@ void main() {
         );
         expect(
           Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
-          'f♯′′',
+          'f♯″',
         );
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
-          'e′′′′',
+          'e⁗',
+        );
+        expect(
+          Note.b.flat.inOctave(8).toString(system: PitchNotation.helmholtz),
+          'b♭′′′′′',
         );
       });
 
@@ -1283,11 +1296,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.german),
-          'as′′',
+          'as″',
         );
         expect(
           Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
-          'e′′′′',
+          'e⁗',
         );
       });
 
@@ -1336,11 +1349,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.romance),
-          'la♭′′',
+          'la♭″',
         );
         expect(
-          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
-          'mi′′′′',
+          Note.e.inOctave(6).toString(system: HelmholtzPitchNotation.romance),
+          'mi‴',
         );
       });
 
@@ -1366,7 +1379,7 @@ void main() {
     });
 
     group('operator -()', () {
-      test('subtracts Cent to this Pitch', () {
+      test('subtracts Cents from this Pitch', () {
         expect(
           Note.a.inOctave(4) - const Cent(12),
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(-12)),
@@ -1382,6 +1395,7 @@ void main() {
       test('returns whether this Pitch is lower than other', () {
         expect(Note.a.inOctave(3) < Note.a.inOctave(4), isTrue);
         expect(Note.f.sharp.inOctave(4) < Note.a.inOctave(4), isTrue);
+        expect(Note.g.sharp.inOctave(4) < Note.a.flat.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) < Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(4) < Note.a.flat.inOctave(3), isFalse);
@@ -1394,6 +1408,7 @@ void main() {
         expect(Note.a.inOctave(3) <= Note.a.inOctave(4), isTrue);
         expect(Note.f.sharp.inOctave(4) <= Note.a.inOctave(4), isTrue);
         expect(Note.a.inOctave(4) <= Note.a.inOctave(4), isTrue);
+        expect(Note.g.sharp.inOctave(4) <= Note.a.flat.inOctave(4), isTrue);
 
         expect(Note.a.flat.inOctave(4) <= Note.a.flat.inOctave(3), isFalse);
         expect(Note.a.inOctave(4) <= Note.f.inOctave(4), isFalse);
@@ -1404,6 +1419,7 @@ void main() {
       test('returns whether this Pitch is higher than other', () {
         expect(Note.a.inOctave(4) > Note.a.inOctave(3), isTrue);
         expect(Note.a.inOctave(4) > Note.g.flat.inOctave(4), isTrue);
+        expect(Note.a.flat.inOctave(4) > Note.g.sharp.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) > Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(3) > Note.a.flat.inOctave(4), isFalse);
@@ -1416,6 +1432,7 @@ void main() {
         expect(Note.a.inOctave(4) >= Note.a.inOctave(3), isTrue);
         expect(Note.a.inOctave(4) >= Note.f.sharp.inOctave(4), isTrue);
         expect(Note.a.inOctave(4) >= Note.a.inOctave(4), isTrue);
+        expect(Note.a.flat.inOctave(4) >= Note.g.sharp.inOctave(3), isTrue);
 
         expect(Note.a.flat.inOctave(3) >= Note.a.flat.inOctave(4), isFalse);
         expect(Note.f.inOctave(4) >= Note.a.inOctave(4), isFalse);
@@ -1426,9 +1443,9 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
         );
       });

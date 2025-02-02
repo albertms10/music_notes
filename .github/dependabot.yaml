@@ -7,8 +7,14 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      minor-actions-dependencies:
+        update-types: [minor, patch]
 
   - package-ecosystem: "pub"
     directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      minor-actions-dependencies:
+        update-types: [minor, patch]

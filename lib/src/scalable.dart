@@ -2,14 +2,23 @@ import 'enharmonic.dart';
 import 'interval/interval.dart';
 import 'music.dart';
 import 'note/pitch_class.dart';
+import 'respellable.dart';
 import 'transposable.dart';
 
-/// A interface for items that can form scales.
+/// An interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>
-    with Enharmonic<PitchClass>
+    with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
+
+  /// Predicate to transpose this [Scalable] by ascending chromatic motion.
+  static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
+      scalable.transposeBy(Interval.m2).respelledSimple;
+
+  /// Enharmonic [Comparator] for [Scalable].
+  static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
+      a.semitones.compareTo(b.semitones);
 
   /// Creates a new [PitchClass] from [semitones].
   ///
@@ -86,17 +95,23 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
   ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
-  Iterable<T> get retrograde => toList().reversed;
+  Iterable<T> get retrograde => toList(growable: false).reversed;
 
-  /// The numeric representation of this [ScalableIterable].
+  /// The numeric representation of this [ScalableIterable] from [reference].
+  /// The [first] element is used as the reference if none is provided.
   ///
   /// Example:
   /// ```dart
   /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
-  ///   .numericRepresentation.toSet() == const {0, 11, 3}
+  ///   .numericRepresentation().toSet() == const {0, 11, 3}
+  ///
+  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
+  ///   .numericRepresentation(reference: PitchClass.g).toSet()
+  ///     == const {4, 3, 7}
   /// ```
-  Iterable<int> get numericRepresentation => map(
-        (pitchClass) => first.difference(pitchClass) % chromaticDivisions,
+  Iterable<int> numericRepresentation({T? reference}) => map(
+        (scalable) =>
+            (reference ?? first).difference(scalable) % chromaticDivisions,
       );
 
   /// The delta numeric representation of this [ScalableIterable].

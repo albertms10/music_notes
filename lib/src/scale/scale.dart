@@ -59,8 +59,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.c]) == ScalePattern.major
   /// ```
   ScalePattern get pattern => ScalePattern(
-        _degrees.intervalSteps.toList(),
-        _descendingDegrees?.descendingIntervalSteps.toList(),
+        _degrees.intervalSteps.toList(growable: false),
+        _descendingDegrees?.descendingIntervalSteps.toList(growable: false),
       );
 
   /// The reversed of this [Scale].
@@ -108,7 +108,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       Interval.perfect(
         Size.unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
-      ).descending(isDescending: scaleDegree.semitonesDelta.isNegative),
+      ).descending(scaleDegree.semitonesDelta.isNegative),
     );
   }
 
@@ -136,7 +136,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Chord<T> functionChord(HarmonicFunction harmonicFunction) =>
       harmonicFunction.scaleDegrees
           .skip(1)
-          .toList()
+          .toList(growable: false)
           .reversed
           .fold(
             this,
@@ -170,8 +170,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
-        _degrees.transposeBy(interval).toList(),
-        _descendingDegrees?.transposeBy(interval).toList(),
+        _degrees.transposeBy(interval).toList(growable: false),
+        _descendingDegrees?.transposeBy(interval).toList(growable: false),
       );
 
   @override

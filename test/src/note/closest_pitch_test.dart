@@ -11,7 +11,7 @@ void main() {
         expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
       });
 
-      test('parses source as a ClosestPitch and return its value', () {
+      test('parses source as a ClosestPitch', () {
         expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
         expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
         expect(ClosestPitch.parse('G-0-0.0'), ClosestPitch(Note.g.inOctave(0)));
@@ -72,7 +72,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('respells this ClosestPitch to the simplest expression', () {
+      test('returns the simplest spelling for this ClosestPitch', () {
         expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
         expect(
           ClosestPitch.parse('C#2+16').respelledSimple.toString(),
@@ -91,6 +91,12 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this ClosestPitch', () {
+        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A-3');
+        expect(
+          ClosestPitch(Note.f.sharp.inOctave(6), cents: const Cent(0.4))
+              .toString(),
+          'F♯6',
+        );
         expect(
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.456)).toString(),
           'A4+3',

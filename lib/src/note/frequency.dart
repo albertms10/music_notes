@@ -1,5 +1,5 @@
+import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
-import '../tuning/ratio.dart';
 import '../tuning/temperature.dart';
 import '../tuning/tuning_system.dart';
 import 'closest_pitch.dart';
@@ -31,7 +31,7 @@ extension type const Frequency._(num hertz) implements num {
   /// Note.a.inOctave(4).frequency().isHumanAudible == true
   /// Note.g.inOctave(12).frequency().isHumanAudible == false
   /// ```
-  bool get isHumanAudible => HearingRange.human.isAudible(this);
+  bool get isHumanAudible => HearingRange.human.isAudibleAt(this);
 
   /// The [ClosestPitch] to this [Frequency] from [tuningSystem] and
   /// [temperature].
@@ -60,9 +60,9 @@ extension type const Frequency._(num hertz) implements num {
     Celsius temperature = Celsius.reference,
     Celsius referenceTemperature = Celsius.reference,
   }) {
-    final cents = Ratio(
+    final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
-    ).cents;
+    );
     final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
     final closestPitch = PitchClass(semitones)
@@ -82,7 +82,7 @@ extension type const Frequency._(num hertz) implements num {
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
-      cents: Ratio(hertz / closestPitchFrequency).cents,
+      cents: Cent.fromRatio(hertz / closestPitchFrequency),
     );
   }
 
@@ -109,24 +109,27 @@ extension type const Frequency._(num hertz) implements num {
         index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
       );
 
-  /// The [Set] of [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
-  /// [upToIndex] from this [Frequency].
+  /// The set of [harmonic](https://en.wikipedia.org/wiki/Harmonic_series_(music))
+  /// or [undertone](https://en.wikipedia.org/wiki/Undertone_series) series
+  /// from this [Frequency].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(3).frequency().harmonics(upToIndex: 2)
+  /// const Frequency(220).harmonics().take(3).toSet()
   ///   == const {Frequency(220), Frequency(440), Frequency(660)}
   ///
-  /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
-  ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
+  /// Note.a.inOctave(5).frequency().harmonics(undertone: true).take(3).toSet()
+  ///   == const {Frequency(880), Frequency(440), Frequency(293.33)}
   /// ```
-  ///
   /// ---
   /// See also:
   /// * [Pitch.harmonics] for a [ClosestPitch] set of harmonic series.
-  Set<Frequency> harmonics({required int upToIndex}) => {
-        for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
-      };
+  Iterable<Frequency> harmonics({bool undertone = false}) sync* {
+    var i = 0;
+    while (true) {
+      yield harmonic(i++ * (undertone ? -1 : 1));
+    }
+  }
 
   /// This [Frequency] formatted as a string.
   ///

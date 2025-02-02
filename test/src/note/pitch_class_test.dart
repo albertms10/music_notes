@@ -7,9 +7,9 @@ void main() {
   group('PitchClass', () {
     group('constructor', () {
       test('creates a new PitchClass from semitones', () {
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(-2), PitchClass.aSharp);
-        // ignore: use_named_constants
+        // ignore: use_named_constants test
         expect(const PitchClass(13), PitchClass.cSharp);
       });
     });
@@ -301,6 +301,27 @@ void main() {
       });
     });
 
+    group('.respelledUpwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.c.respelledUpwards, PitchClass.c);
+        expect(PitchClass.fSharp.respelledUpwards, PitchClass.fSharp);
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.d.respelledDownwards, PitchClass.d);
+        expect(PitchClass.aSharp.respelledDownwards, PitchClass.aSharp);
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('no-op for PitchClass', () {
+        expect(PitchClass.e.respelledSimple, PitchClass.e);
+        expect(PitchClass.dSharp.respelledSimple, PitchClass.dSharp);
+      });
+    });
+
     group('.transposeBy()', () {
       test('transposes this PitchClass by Interval', () {
         expect(PitchClass.c.transposeBy(Interval.d1), PitchClass.b);
@@ -334,14 +355,14 @@ void main() {
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 7),
-            Interval.P5.circleFrom(PitchClass.c, distance: 12),
+            Interval.P5.circleFrom(PitchClass.c).take(13),
           );
           expect(
             ScalePattern.chromatic
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 5),
-            Interval.P5.circleFrom(PitchClass.c, distance: -12),
+            (-Interval.P5).circleFrom(PitchClass.c).take(13),
           );
         },
       );
