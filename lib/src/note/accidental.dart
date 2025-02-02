@@ -203,7 +203,7 @@ final class Accidental implements Comparable<Accidental> {
 
   String _symbol({bool useAscii = false}) {
     final symbols = useAscii ? Accidental._asciiSymbols : Accidental._symbols;
-    if (semitones == 0) return _naturalSymbol;
+    if (semitones == 0) return symbols.natural;
 
     final accidentalSymbol =
         semitones.isNegative ? symbols.flat : symbols.sharp;
