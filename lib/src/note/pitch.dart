@@ -50,12 +50,12 @@ final class Pitch extends Scalable<Pitch>
   static const referenceOctave = 4;
 
   static const _superPrime = '′';
+  static const _superPrimeAscii = "'";
   static const _superDoublePrime = '″';
   static const _superTriplePrime = '‴';
   static const _superQuadruplePrime = '⁗';
-  static const _superPrimeAlt = "'";
   static const _subPrime = '͵';
-  static const _subPrimeAlt = ',';
+  static const _subPrimeAscii = ',';
 
   static const _compoundPrimeSymbols = [
     _superDoublePrime,
@@ -64,9 +64,9 @@ final class Pitch extends Scalable<Pitch>
   ];
   static const _primeSymbols = [
     _superPrime,
-    _superPrimeAlt,
+    _superPrimeAscii,
     _subPrime,
-    _subPrimeAlt,
+    _subPrimeAscii,
   ];
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
@@ -109,13 +109,13 @@ final class Pitch extends Scalable<Pitch>
       final octave = notePart[0].isUpperCase
           ? switch (primes?.first) {
               '' || null => middleOctave - 1,
-              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
+              _subPrime || _subPrimeAscii => middleOctave - primes!.length - 1,
               _ =>
                 throw FormatException('Invalid Pitch', source, notePart.length),
             }
           : switch (primes?.first) {
               '' || null => middleOctave,
-              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+              _superPrime || _superPrimeAscii => middleOctave + primes!.length,
               _superDoublePrime => middleOctave + 2,
               _superTriplePrime => middleOctave + 3,
               _superQuadruplePrime => middleOctave + 4,
