@@ -82,21 +82,18 @@ void main() {
         expect(Size.nearestFromSemitones(48), const Size(29));
       });
 
-      test(
-        'returns the nearest Size when no Size'
-        ' corresponds exactly to the given semitones',
-        () {
-          expect(Size.nearestFromSemitones(-4), -Size.third);
-          expect(Size.nearestFromSemitones(-2), -Size.second);
-          expect(Size.nearestFromSemitones(2), Size.second);
-          expect(Size.nearestFromSemitones(4), Size.third);
-          expect(Size.nearestFromSemitones(6), Size.fourth);
-          expect(Size.nearestFromSemitones(9), Size.sixth);
-          expect(Size.nearestFromSemitones(11), Size.seventh);
-          expect(Size.nearestFromSemitones(14), Size.ninth);
-          expect(Size.nearestFromSemitones(-20), -Size.thirteenth);
-        },
-      );
+      test('returns the nearest Size when no Size'
+          ' corresponds exactly to the given semitones', () {
+        expect(Size.nearestFromSemitones(-4), -Size.third);
+        expect(Size.nearestFromSemitones(-2), -Size.second);
+        expect(Size.nearestFromSemitones(2), Size.second);
+        expect(Size.nearestFromSemitones(4), Size.third);
+        expect(Size.nearestFromSemitones(6), Size.fourth);
+        expect(Size.nearestFromSemitones(9), Size.sixth);
+        expect(Size.nearestFromSemitones(11), Size.seventh);
+        expect(Size.nearestFromSemitones(14), Size.ninth);
+        expect(Size.nearestFromSemitones(-20), -Size.thirteenth);
+      });
     });
 
     group('.isPerfect', () {

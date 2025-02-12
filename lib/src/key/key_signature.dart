@@ -49,9 +49,10 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final firstNote = distance.isNegative
-        ? _firstCanonicalFlatNote
-        : _firstCanonicalSharpNote;
+    final firstNote =
+        distance.isNegative
+            ? _firstCanonicalFlatNote
+            : _firstCanonicalSharpNote;
 
     return KeySignature(
       Interval.P5
@@ -83,10 +84,10 @@ final class KeySignature implements Comparable<KeySignature> {
   ///   == KeySignature([Note.f, Note.c, Note.g].sharp)
   /// ```
   KeySignature get clean => KeySignature(
-        _notes
-            .whereNot((note) => note.accidental.isNatural)
-            .toList(growable: false),
-      );
+    _notes
+        .whereNot((note) => note.accidental.isNatural)
+        .toList(growable: false),
+  );
 
   /// The fifths distance of this [KeySignature].
   ///
@@ -178,9 +179,8 @@ final class KeySignature implements Comparable<KeySignature> {
   }
 
   @override
-  String toString() => '$distance (${_notes.map(
-        (note) => note.toString(system: _noteNotation),
-      ).join(' ')})';
+  String toString() =>
+      '$distance (${_notes.map((note) => note.toString(system: _noteNotation)).join(' ')})';
 
   /// The consecutive union of two [KeySignature]s (as if divided by a barline),
   /// including cancellation [Accidental.natural]s when needed.
@@ -197,9 +197,10 @@ final class KeySignature implements Comparable<KeySignature> {
   KeySignature operator |(KeySignature other) {
     if (this == empty) return other;
 
-    final cancelledNotes = accidental == other.accidental
-        ? clean._notes.whereNot(other._notes.contains)
-        : clean._notes;
+    final cancelledNotes =
+        accidental == other.accidental
+            ? clean._notes.whereNot(other._notes.contains)
+            : clean._notes;
 
     return KeySignature([
       ...cancelledNotes.map((note) => note.natural).toSet(),
@@ -217,9 +218,9 @@ final class KeySignature implements Comparable<KeySignature> {
 
   @override
   int compareTo(KeySignature other) => compareMultiple([
-        () => accidental.compareTo(other.accidental),
-        () =>
-            _notes.length.compareTo(other._notes.length) *
-            accidental.semitones.nonZeroSign,
-      ]);
+    () => accidental.compareTo(other.accidental),
+    () =>
+        _notes.length.compareTo(other._notes.length) *
+        accidental.semitones.nonZeroSign,
+  ]);
 }

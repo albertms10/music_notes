@@ -47,10 +47,9 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
       ChordPattern(
-        intervalSteps.skip(1).fold(
-          [intervalSteps.first],
-          (steps, interval) => [...steps, interval + steps.last],
-        ),
+        intervalSteps.skip(1).fold([
+          intervalSteps.first,
+        ], (steps, interval) => [...steps, interval + steps.last]),
       );
 
   /// Creates a new [ChordPattern] from the given [quality].
@@ -79,12 +78,11 @@ class ChordPattern with Chordable<ChordPattern> {
   ///   == const Chord([Note.c, Note.e, Note.g])
   /// ```
   Chord<T> on<T extends Scalable<T>>(T scalable) => Chord(
-        _intervals.fold(
-          [scalable],
-          (chordItems, interval) =>
-              [...chordItems, scalable.transposeBy(interval)],
-        ),
-      );
+    _intervals.fold(
+      [scalable],
+      (chordItems, interval) => [...chordItems, scalable.transposeBy(interval)],
+    ),
+  );
 
   /// The root triad of this [ChordPattern].
   ///

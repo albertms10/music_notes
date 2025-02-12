@@ -121,39 +121,35 @@ void main() {
             const Frequency(32),
           },
         );
-        expect(
-          const Frequency(400).harmonics(undertone: true).take(2),
-          const {Frequency(400), Frequency(200)},
-        );
-        expect(
-          const Frequency(220).harmonics().take(1),
-          const {Frequency(220)},
-        );
-        expect(
-          const Frequency(110).harmonics().take(2),
-          const {Frequency(110), Frequency(220)},
-        );
-        expect(
-          const Frequency(32).harmonics().take(16),
-          const {
-            Frequency(32),
-            Frequency(64),
-            Frequency(96),
-            Frequency(128),
-            Frequency(160),
-            Frequency(192),
-            Frequency(224),
-            Frequency(256),
-            Frequency(288),
-            Frequency(320),
-            Frequency(352),
-            Frequency(384),
-            Frequency(416),
-            Frequency(448),
-            Frequency(480),
-            Frequency(512),
-          },
-        );
+        expect(const Frequency(400).harmonics(undertone: true).take(2), const {
+          Frequency(400),
+          Frequency(200),
+        });
+        expect(const Frequency(220).harmonics().take(1), const {
+          Frequency(220),
+        });
+        expect(const Frequency(110).harmonics().take(2), const {
+          Frequency(110),
+          Frequency(220),
+        });
+        expect(const Frequency(32).harmonics().take(16), const {
+          Frequency(32),
+          Frequency(64),
+          Frequency(96),
+          Frequency(128),
+          Frequency(160),
+          Frequency(192),
+          Frequency(224),
+          Frequency(256),
+          Frequency(288),
+          Frequency(320),
+          Frequency(352),
+          Frequency(384),
+          Frequency(416),
+          Frequency(448),
+          Frequency(480),
+          Frequency(512),
+        });
       });
     });
 

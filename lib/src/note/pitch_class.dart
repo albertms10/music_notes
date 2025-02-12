@@ -85,34 +85,32 @@ final class PitchClass extends Scalable<PitchClass>
     if (baseNote != null) {
       final note = Note(baseNote);
 
-      return SplayTreeSet<Note>.of(
-        {
-          note,
-          for (var i = 1; i <= distance; i++) ...[
-            note.respellByOrdinalDistance(distance),
-            note.respellByOrdinalDistance(-distance),
-          ],
-        },
-        Note.compareByClosestDistance,
-      );
+      return SplayTreeSet<Note>.of({
+        note,
+        for (var i = 1; i <= distance; i++) ...[
+          note.respellByOrdinalDistance(distance),
+          note.respellByOrdinalDistance(-distance),
+        ],
+      }, Note.compareByClosestDistance);
     }
 
-    final aboveNote =
-        Note(BaseNote.fromSemitones(semitones - 1)!, Accidental.sharp);
-    final belowNote =
-        Note(BaseNote.fromSemitones(semitones + 1)!, Accidental.flat);
-
-    return SplayTreeSet<Note>.of(
-      {
-        aboveNote,
-        belowNote,
-        for (var i = 1; i <= distance; i++) ...[
-          belowNote.respellByOrdinalDistance(distance),
-          aboveNote.respellByOrdinalDistance(-distance),
-        ],
-      },
-      Note.compareByClosestDistance,
+    final aboveNote = Note(
+      BaseNote.fromSemitones(semitones - 1)!,
+      Accidental.sharp,
     );
+    final belowNote = Note(
+      BaseNote.fromSemitones(semitones + 1)!,
+      Accidental.flat,
+    );
+
+    return SplayTreeSet<Note>.of({
+      aboveNote,
+      belowNote,
+      for (var i = 1; i <= distance; i++) ...[
+        belowNote.respellByOrdinalDistance(distance),
+        aboveNote.respellByOrdinalDistance(-distance),
+      ],
+    }, Note.compareByClosestDistance);
   }
 
   /// The [Note] that matches [withAccidental] from this [PitchClass].
@@ -127,9 +125,9 @@ final class PitchClass extends Scalable<PitchClass>
   /// PitchClass.cSharp.resolveSpelling(Accidental.natural) // throws
   /// ```
   Note resolveSpelling([Accidental? withAccidental]) {
-    final matchedNote = spellings(distance: 1).firstWhereOrNull(
-      (note) => note.accidental == withAccidental,
-    );
+    final matchedNote = spellings(
+      distance: 1,
+    ).firstWhereOrNull((note) => note.accidental == withAccidental);
     if (matchedNote != null) return matchedNote;
 
     if (withAccidental != null) {
@@ -143,9 +141,9 @@ final class PitchClass extends Scalable<PitchClass>
     return spellings()
         // TODO(albertms10): return the note with the closest accidental #50.
         .sorted(
-          (a, b) => a.accidental.semitones
-              .abs()
-              .compareTo(b.accidental.semitones.abs()),
+          (a, b) => a.accidental.semitones.abs().compareTo(
+            b.accidental.semitones.abs(),
+          ),
         )
         .first;
   }
@@ -196,9 +194,9 @@ final class PitchClass extends Scalable<PitchClass>
   Interval interval(PitchClass other) {
     final diff = difference(other);
 
-    return IntervalClass(diff)
-        .resolveClosestSpelling()
-        .descending(diff.isNegative);
+    return IntervalClass(
+      diff,
+    ).resolveClosestSpelling().descending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].
@@ -281,8 +279,7 @@ final class PitchClass extends Scalable<PitchClass>
   @override
   String toString({
     PitchClassNotation system = PitchClassNotation.enharmonicSpellings,
-  }) =>
-      system.pitchClass(this);
+  }) => system.pitchClass(this);
 
   @override
   bool operator ==(Object other) =>
@@ -332,8 +329,8 @@ final class IntegerPitchClassNotation extends PitchClassNotation {
 
   @override
   String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {
-        10 => 't',
-        11 => 'e',
-        final semitones => '$semitones',
-      };
+    10 => 't',
+    11 => 'e',
+    final semitones => '$semitones',
+  };
 }
