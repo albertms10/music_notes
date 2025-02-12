@@ -65,9 +65,9 @@ extension type const Frequency._(num hertz) implements num {
     );
     final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
-    final closestPitch = PitchClass(semitones)
-        .resolveClosestSpelling()
-        .inOctave(Pitch.octaveFromSemitones(semitones));
+    final closestPitch = PitchClass(
+      semitones,
+    ).resolveClosestSpelling().inOctave(Pitch.octaveFromSemitones(semitones));
 
     final closestPitchFrequency = closestPitch.frequency(
       tuningSystem: tuningSystem,
@@ -106,8 +106,8 @@ extension type const Frequency._(num hertz) implements num {
   ///   == Note.e.inOctave(3) - const Cent(14)
   /// ```
   Frequency harmonic(int index) => Frequency(
-        index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
-      );
+    index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
+  );
 
   /// The set of [harmonic](https://en.wikipedia.org/wiki/Harmonic_series_(music))
   /// or [undertone](https://en.wikipedia.org/wiki/Undertone_series) series

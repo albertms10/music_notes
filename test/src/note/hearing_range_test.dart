@@ -7,8 +7,10 @@ void main() {
       test('returns the string representation of this HearingRange', () {
         expect(HearingRange.human.toString(), '20 Hz ≤ f ≤ 20000 Hz');
         expect(
-          const HearingRange(min: Frequency(28.901), max: Frequency(34500.3))
-              .toString(),
+          const HearingRange(
+            min: Frequency(28.901),
+            max: Frequency(34500.3),
+          ).toString(),
           '28.901 Hz ≤ f ≤ 34500.3 Hz',
         );
       });

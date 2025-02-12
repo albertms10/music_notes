@@ -139,10 +139,7 @@ void main() {
 
       test('returns the German string representation of this Key', () {
         expect(Note.c.major.toString(system: NoteNotation.german), 'C-dur');
-        expect(
-          Note.d.minor.toString(system: NoteNotation.german),
-          'd-moll',
-        );
+        expect(Note.d.minor.toString(system: NoteNotation.german), 'd-moll');
         expect(
           Note.a.flat.major.toString(system: NoteNotation.german),
           'As-dur',

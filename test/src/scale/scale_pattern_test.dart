@@ -62,10 +62,10 @@ void main() {
       test('returns the binary representation of this ScalePattern', () {
         expect(ScalePattern.major.toBinary(), (101010110101.b, null));
         expect(ScalePattern.naturalMinor.toBinary(), (10110101101.b, null));
-        expect(
-          ScalePattern.melodicMinor.toBinary(),
-          (101010101101.b, 10110101101.b),
-        );
+        expect(ScalePattern.melodicMinor.toBinary(), (
+          101010101101.b,
+          10110101101.b,
+        ));
         expect(ScalePattern.chromatic.toBinary(), (111111111111.b, null));
         expect(ScalePattern.majorPentatonic.toBinary(), (1010010101.b, null));
       });
@@ -578,19 +578,19 @@ void main() {
     });
 
     group('.isEnharmonicWith()', () {
-      test(
-        'returns whether this ScalePattern is enharmonically equivalent to '
-        'other',
-        () {
-          expect(
-            const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
-                .isEnharmonicWith(
-              const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
-            ),
-            isTrue,
-          );
-        },
-      );
+      test('returns whether this ScalePattern is enharmonically equivalent to '
+          'other', () {
+        expect(
+          const ScalePattern([
+            Interval.m2,
+            Interval.m3,
+            Interval.M2,
+          ]).isEnharmonicWith(
+            const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
+          ),
+          isTrue,
+        );
+      });
     });
 
     group('.name', () {

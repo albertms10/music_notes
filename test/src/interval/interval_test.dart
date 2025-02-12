@@ -178,10 +178,7 @@ void main() {
         expect(const Interval.imperfect(Size.tenth, major), isInterval);
         expect(const Interval.perfect(Size.eleventh), isInterval);
         expect(const Interval.perfect(Size.twelfth), isInterval);
-        expect(
-          const Interval.imperfect(Size.thirteenth, major),
-          isInterval,
-        );
+        expect(const Interval.imperfect(Size.thirteenth, major), isInterval);
         expect(const Interval.imperfect(Size(14), major), isInterval);
         expect(const Interval.perfect(Size(15)), isInterval);
 
@@ -442,8 +439,10 @@ void main() {
         expect(Interval.d1.isDescending, isFalse);
         expect(Interval.M9.isDescending, isFalse);
         expect(
-          const Interval.perfect(Size(-4), PerfectQuality.doublyAugmented)
-              .isDescending,
+          const Interval.perfect(
+            Size(-4),
+            PerfectQuality.doublyAugmented,
+          ).isDescending,
           isTrue,
         );
       });
@@ -693,10 +692,7 @@ void main() {
         expect(Interval.d5.respelledDownwards, Interval.A4);
         expect(
           Interval.M2.respelledDownwards,
-          const Interval.perfect(
-            Size.unison,
-            PerfectQuality.doublyAugmented,
-          ),
+          const Interval.perfect(Size.unison, PerfectQuality.doublyAugmented),
         );
         expect(
           Interval.M3.respelledDownwards,
@@ -722,13 +718,17 @@ void main() {
         expect(Interval.A4.respelledSimple, Interval.A4);
         expect(Interval.d5.respelledSimple, Interval.A4);
         expect(
-          const Interval.imperfect(Size.sixth, ImperfectQuality.triplyAugmented)
-              .respelledSimple,
+          const Interval.imperfect(
+            Size.sixth,
+            ImperfectQuality.triplyAugmented,
+          ).respelledSimple,
           Interval.P8,
         );
         expect(
-          const Interval.perfect(Size.fifth, PerfectQuality.triplyDiminished)
-              .respelledSimple,
+          const Interval.perfect(
+            Size.fifth,
+            PerfectQuality.triplyDiminished,
+          ).respelledSimple,
           Interval.M3,
         );
 
@@ -736,13 +736,17 @@ void main() {
         expect((-Interval.A4).respelledSimple, -Interval.A4);
         expect((-Interval.d5).respelledSimple, -Interval.A4);
         expect(
-          Interval.imperfect(-Size.seventh, const ImperfectQuality(-4))
-              .respelledSimple,
+          Interval.imperfect(
+            -Size.seventh,
+            const ImperfectQuality(-4),
+          ).respelledSimple,
           -Interval.A4,
         );
         expect(
-          Interval.perfect(-Size.fourth, PerfectQuality.doublyAugmented)
-              .respelledSimple,
+          Interval.perfect(
+            -Size.fourth,
+            PerfectQuality.doublyAugmented,
+          ).respelledSimple,
           -Interval.P5,
         );
       });
@@ -750,8 +754,10 @@ void main() {
 
     group('.circleDistance()', () {
       test('returns the circle distance between two Scalable instances', () {
-        var (distance, notes: dynamic notes) =
-            Interval.P5.circleDistance(from: Note.c, to: Note.b.flat.flat);
+        var (distance, notes: dynamic notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.b.flat.flat,
+        );
         expect(distance, -9);
         expect(notes, [
           Note.c,
@@ -766,13 +772,17 @@ void main() {
           Note.b.flat.flat,
         ]);
 
-        (distance, :notes) =
-            Interval.P5.circleDistance(from: Note.c, to: Note.b.flat);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.b.flat,
+        );
         expect(distance, -2);
         expect(notes, [Note.c, Note.f, Note.b.flat]);
 
-        (distance, :notes) = Interval.P5
-            .circleDistance(from: PitchClass.d, to: PitchClass.gSharp);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: PitchClass.d,
+          to: PitchClass.gSharp,
+        );
         expect(distance, 6);
         expect(notes, const [
           PitchClass.d,
@@ -784,8 +794,10 @@ void main() {
           PitchClass.gSharp,
         ]);
 
-        (distance, :notes) =
-            Interval.P5.circleDistance(from: Note.c, to: Note.f.sharp.sharp);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.f.sharp.sharp,
+        );
         expect(distance, 13);
         expect(notes, [
           Note.c,
@@ -804,31 +816,36 @@ void main() {
           Note.f.sharp.sharp,
         ]);
 
-        (distance, :notes) = Interval.P4
-            .circleDistance(from: PitchClass.dSharp, to: PitchClass.c);
-        expect(distance, -3);
-        expect(
-          notes,
-          const [
-            PitchClass.dSharp,
-            PitchClass.aSharp,
-            PitchClass.f,
-            PitchClass.c,
-          ],
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: PitchClass.dSharp,
+          to: PitchClass.c,
         );
+        expect(distance, -3);
+        expect(notes, const [
+          PitchClass.dSharp,
+          PitchClass.aSharp,
+          PitchClass.f,
+          PitchClass.c,
+        ]);
 
-        (distance, :notes) =
-            Interval.P4.circleDistance(from: Note.c, to: Note.c);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: Note.c,
+          to: Note.c,
+        );
         expect(distance, 0);
         expect(notes, const [Note.c]);
 
-        (distance, :notes) =
-            Interval.P4.circleDistance(from: Note.c, to: Note.f);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: Note.c,
+          to: Note.f,
+        );
         expect(distance, 1);
         expect(notes, const [Note.c, Note.f]);
 
-        (distance, :notes) = Interval.P4
-            .circleDistance(from: PitchClass.c, to: PitchClass.aSharp);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: PitchClass.c,
+          to: PitchClass.aSharp,
+        );
         expect(distance, 2);
         expect(notes, const [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });
@@ -837,51 +854,39 @@ void main() {
     group('.circleFrom()', () {
       test('returns the circle of this Interval', () {
         expect(Interval.P5.circleFrom(Note.c).take(1), const [Note.c]);
-        expect(
-          Interval.P5.circleFrom(Note.c).take(2),
-          const [Note.c, Note.g],
-        );
-        expect(
-          Interval.P5.circleFrom(PitchClass.c).take(7),
-          const [
-            PitchClass.c,
-            PitchClass.g,
-            PitchClass.d,
-            PitchClass.a,
-            PitchClass.e,
-            PitchClass.b,
-            PitchClass.fSharp,
-          ],
-        );
-        expect(
-          Interval.P5.circleFrom(Note.f.sharp).take(9),
-          [
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-            Note.e.sharp,
-            Note.b.sharp,
-            Note.f.sharp.sharp,
-            Note.c.sharp.sharp,
-          ],
-        );
-        expect(
-          Interval.P4.circleFrom(Note.b.flat).take(10),
-          [
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-            Note.c.flat,
-            Note.f.flat,
-            Note.b.flat.flat,
-            Note.e.flat.flat,
-            Note.a.flat.flat,
-          ],
-        );
+        expect(Interval.P5.circleFrom(Note.c).take(2), const [Note.c, Note.g]);
+        expect(Interval.P5.circleFrom(PitchClass.c).take(7), const [
+          PitchClass.c,
+          PitchClass.g,
+          PitchClass.d,
+          PitchClass.a,
+          PitchClass.e,
+          PitchClass.b,
+          PitchClass.fSharp,
+        ]);
+        expect(Interval.P5.circleFrom(Note.f.sharp).take(9), [
+          Note.f.sharp,
+          Note.c.sharp,
+          Note.g.sharp,
+          Note.d.sharp,
+          Note.a.sharp,
+          Note.e.sharp,
+          Note.b.sharp,
+          Note.f.sharp.sharp,
+          Note.c.sharp.sharp,
+        ]);
+        expect(Interval.P4.circleFrom(Note.b.flat).take(10), [
+          Note.b.flat,
+          Note.e.flat,
+          Note.a.flat,
+          Note.d.flat,
+          Note.g.flat,
+          Note.c.flat,
+          Note.f.flat,
+          Note.b.flat.flat,
+          Note.e.flat.flat,
+          Note.a.flat.flat,
+        ]);
 
         expect(
           (-Interval.P4).circleFrom(Note.c),
@@ -1022,10 +1027,11 @@ void main() {
       test('ignores equal Interval instances in a Set', () {
         final collection = {Interval.M2, Interval.d3, Interval.P4};
         collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [Interval.M2, Interval.d3, Interval.P4],
-        );
+        expect(collection.toList(), const [
+          Interval.M2,
+          Interval.d3,
+          Interval.P4,
+        ]);
       });
     });
 

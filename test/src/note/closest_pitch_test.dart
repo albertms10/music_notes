@@ -93,8 +93,10 @@ void main() {
       test('returns the string representation of this ClosestPitch', () {
         expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A-3');
         expect(
-          ClosestPitch(Note.f.sharp.inOctave(6), cents: const Cent(0.4))
-              .toString(),
+          ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.4),
+          ).toString(),
           'F♯6',
         );
         expect(
@@ -102,8 +104,10 @@ void main() {
           'A4+3',
         );
         expect(
-          ClosestPitch(Note.d.flat.inOctave(3), cents: const Cent(-28.6))
-              .toString(),
+          ClosestPitch(
+            Note.d.flat.inOctave(3),
+            cents: const Cent(-28.6),
+          ).toString(),
           'D♭3-29',
         );
       });
@@ -156,10 +160,14 @@ void main() {
           ClosestPitch(Note.a.inOctave(4)).hashCode,
         );
         expect(
-          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123))
-              .hashCode,
-          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123))
-              .hashCode,
+          ClosestPitch(
+            Note.c.sharp.inOctave(3),
+            cents: const Cent(-2.123),
+          ).hashCode,
+          ClosestPitch(
+            Note.c.sharp.inOctave(3),
+            cents: const Cent(-2.123),
+          ).hashCode,
         );
       });
 
@@ -169,11 +177,15 @@ void main() {
           isNot(ClosestPitch(Note.g.inOctave(4)).hashCode),
         );
         expect(
-          ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-2.123))
-              .hashCode,
+          ClosestPitch(
+            Note.c.sharp.inOctave(3),
+            cents: const Cent(-2.123),
+          ).hashCode,
           isNot(
-            ClosestPitch(Note.c.sharp.inOctave(3), cents: const Cent(-0.345))
-                .hashCode,
+            ClosestPitch(
+              Note.c.sharp.inOctave(3),
+              cents: const Cent(-0.345),
+            ).hashCode,
           ),
         );
       });

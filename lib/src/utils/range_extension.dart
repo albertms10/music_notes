@@ -44,8 +44,7 @@ extension RangeExtension<E> on Range<E> {
   List<E> explode({
     required E Function(E current) nextValue,
     required Comparator<E> compare,
-  }) =>
-      _explode(nextValue: nextValue, compare: compare);
+  }) => _explode(nextValue: nextValue, compare: compare);
 }
 
 /// A Scalable range record extension.
@@ -74,10 +73,9 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
     String rangeSeparator = '–',
     String nonConsecutiveSeparator = ', ',
     String Function(E)? toString,
-  }) =>
-      map(
-        (range) => [range.from, if (range.from != range.to) range.to]
-            .map((item) => toString?.call(item) ?? item.toString())
-            .join(rangeSeparator),
-      ).join(nonConsecutiveSeparator);
+  }) => map(
+    (range) => [range.from, if (range.from != range.to) range.to]
+        .map((item) => toString?.call(item) ?? item.toString())
+        .join(rangeSeparator),
+  ).join(nonConsecutiveSeparator);
 }

@@ -49,17 +49,14 @@ void main() {
     });
 
     group('.generator', () {
-      test(
-        'returns the number of cents for the generator at Interval.P5 in '
-        'this EqualTemperament',
-        () {
-          expect(const EqualTemperament.edo12().generator, const Cent(700));
-          expect(
-            const EqualTemperament.edo19().generator,
-            const Cent(694.7368421052632),
-          );
-        },
-      );
+      test('returns the number of cents for the generator at Interval.P5 in '
+          'this EqualTemperament', () {
+        expect(const EqualTemperament.edo12().generator, const Cent(700));
+        expect(
+          const EqualTemperament.edo19().generator,
+          const Cent(694.7368421052632),
+        );
+      });
     });
 
     group('operator ==()', () {

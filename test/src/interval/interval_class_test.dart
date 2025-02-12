@@ -17,10 +17,10 @@ void main() {
     group('.spellings()', () {
       test('returns the correct Interval spellings for this IntervalClass', () {
         expect(IntervalClass.P1.spellings(), {Interval.P1});
-        expect(
-          IntervalClass.P1.spellings(distance: 1),
-          {Interval.P1, Interval.d2},
-        );
+        expect(IntervalClass.P1.spellings(distance: 1), {
+          Interval.P1,
+          Interval.d2,
+        });
 
         expect(IntervalClass.m2.spellings(), {Interval.m2});
         expect(IntervalClass.m2.spellings(distance: 1), {
@@ -33,26 +33,23 @@ void main() {
         });
 
         expect(IntervalClass.M2.spellings(), {Interval.M2, Interval.d3});
-        expect(
-          IntervalClass.M2.spellings(distance: 1),
-          {Interval.M2, Interval.d3},
-        );
+        expect(IntervalClass.M2.spellings(distance: 1), {
+          Interval.M2,
+          Interval.d3,
+        });
 
         expect(IntervalClass.m3.spellings(), {Interval.m3});
         expect(IntervalClass.m3.spellings(distance: 1), {
           Interval.A2,
           Interval.m3,
-          const Interval.perfect(
-            Size.fourth,
-            PerfectQuality.doublyDiminished,
-          ),
+          const Interval.perfect(Size.fourth, PerfectQuality.doublyDiminished),
         });
 
         expect(IntervalClass.M3.spellings(), {Interval.M3, Interval.d4});
-        expect(
-          IntervalClass.M3.spellings(distance: 1),
-          {Interval.M3, Interval.d4},
-        );
+        expect(IntervalClass.M3.spellings(distance: 1), {
+          Interval.M3,
+          Interval.d4,
+        });
 
         expect(IntervalClass.P4.spellings(), {Interval.P4});
         expect(IntervalClass.P4.spellings(distance: 1), {
@@ -61,14 +58,11 @@ void main() {
           const Interval.perfect(Size.fifth, PerfectQuality.doublyDiminished),
         });
 
-        expect(
-          IntervalClass.tritone.spellings(),
-          {Interval.A4, Interval.d5},
-        );
-        expect(
-          IntervalClass.tritone.spellings(distance: 1),
-          {Interval.A4, Interval.d5},
-        );
+        expect(IntervalClass.tritone.spellings(), {Interval.A4, Interval.d5});
+        expect(IntervalClass.tritone.spellings(distance: 1), {
+          Interval.A4,
+          Interval.d5,
+        });
       });
     });
 
@@ -82,13 +76,15 @@ void main() {
         expect(IntervalClass.m3.resolveClosestSpelling(), Interval.m3);
         expect(IntervalClass.tritone.resolveClosestSpelling(), Interval.A4);
         expect(
-          IntervalClass.tritone
-              .resolveClosestSpelling(PerfectQuality.augmented),
+          IntervalClass.tritone.resolveClosestSpelling(
+            PerfectQuality.augmented,
+          ),
           Interval.A4,
         );
         expect(
-          IntervalClass.tritone
-              .resolveClosestSpelling(PerfectQuality.diminished),
+          IntervalClass.tritone.resolveClosestSpelling(
+            PerfectQuality.diminished,
+          ),
           Interval.d5,
         );
       });
@@ -137,10 +133,7 @@ void main() {
       test('ignores equal IntervalClass instances in a Set', () {
         final collection = {IntervalClass.P1, IntervalClass.M3};
         collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [IntervalClass.P1, IntervalClass.M3],
-        );
+        expect(collection.toList(), const [IntervalClass.P1, IntervalClass.M3]);
       });
     });
 

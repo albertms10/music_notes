@@ -36,27 +36,27 @@ void main() {
           Note.b.flat,
         ]);
         expect(
-            (from: Note.e, to: Note.e.flat).explode(
-              nextValue: (note) =>
-                  note.transposeBy(Interval.A1).respelledSimple,
-            ),
-            [
-              Note.e,
-              Note.f,
-              Note.f.sharp,
-              Note.g,
-              Note.g.sharp,
-              Note.a,
-              Note.a.sharp,
-              Note.b,
-              Note.c,
-              Note.c.sharp,
-              Note.d,
-            ]);
-        expect(
-          (from: Note.b, to: Note.c.sharp).explode(),
-          const [Note.b, Note.c],
+          (from: Note.e, to: Note.e.flat).explode(
+            nextValue: (note) => note.transposeBy(Interval.A1).respelledSimple,
+          ),
+          [
+            Note.e,
+            Note.f,
+            Note.f.sharp,
+            Note.g,
+            Note.g.sharp,
+            Note.a,
+            Note.a.sharp,
+            Note.b,
+            Note.c,
+            Note.c.sharp,
+            Note.d,
+          ],
         );
+        expect((from: Note.b, to: Note.c.sharp).explode(), const [
+          Note.b,
+          Note.c,
+        ]);
         expect(
           const (from: Note.c, to: Note.b).explode(
             nextValue: (note) => note.transposeBy(Interval.M2).respelledSimple,
@@ -64,55 +64,56 @@ void main() {
           [Note.c, Note.d, Note.e, Note.f.sharp, Note.g.sharp, Note.a.sharp],
         );
 
-        expect(
-          (from: Note.c.inOctave(3), to: Note.g.inOctave(5)).explode(),
-          [
-            Note.c.inOctave(3),
-            Note.d.flat.inOctave(3),
-            Note.d.inOctave(3),
-            Note.e.flat.inOctave(3),
-            Note.e.inOctave(3),
-            Note.f.inOctave(3),
-            Note.g.flat.inOctave(3),
-            Note.g.inOctave(3),
-            Note.a.flat.inOctave(3),
-            Note.a.inOctave(3),
-            Note.b.flat.inOctave(3),
-            Note.b.inOctave(3),
-            Note.c.inOctave(4),
-            Note.d.flat.inOctave(4),
-            Note.d.inOctave(4),
-            Note.e.flat.inOctave(4),
-            Note.e.inOctave(4),
-            Note.f.inOctave(4),
-            Note.g.flat.inOctave(4),
-            Note.g.inOctave(4),
-            Note.a.flat.inOctave(4),
-            Note.a.inOctave(4),
-            Note.b.flat.inOctave(4),
-            Note.b.inOctave(4),
-            Note.c.inOctave(5),
-            Note.d.flat.inOctave(5),
-            Note.d.inOctave(5),
-            Note.e.flat.inOctave(5),
-            Note.e.inOctave(5),
-            Note.f.inOctave(5),
-            Note.g.flat.inOctave(5),
-          ],
-        );
+        expect((from: Note.c.inOctave(3), to: Note.g.inOctave(5)).explode(), [
+          Note.c.inOctave(3),
+          Note.d.flat.inOctave(3),
+          Note.d.inOctave(3),
+          Note.e.flat.inOctave(3),
+          Note.e.inOctave(3),
+          Note.f.inOctave(3),
+          Note.g.flat.inOctave(3),
+          Note.g.inOctave(3),
+          Note.a.flat.inOctave(3),
+          Note.a.inOctave(3),
+          Note.b.flat.inOctave(3),
+          Note.b.inOctave(3),
+          Note.c.inOctave(4),
+          Note.d.flat.inOctave(4),
+          Note.d.inOctave(4),
+          Note.e.flat.inOctave(4),
+          Note.e.inOctave(4),
+          Note.f.inOctave(4),
+          Note.g.flat.inOctave(4),
+          Note.g.inOctave(4),
+          Note.a.flat.inOctave(4),
+          Note.a.inOctave(4),
+          Note.b.flat.inOctave(4),
+          Note.b.inOctave(4),
+          Note.c.inOctave(5),
+          Note.d.flat.inOctave(5),
+          Note.d.inOctave(5),
+          Note.e.flat.inOctave(5),
+          Note.e.inOctave(5),
+          Note.f.inOctave(5),
+          Note.g.flat.inOctave(5),
+        ]);
 
         expect(
           skip:
               'TODO(albertms10): should stop when the loop gets out of range.',
-          () => (from: Note.c, to: Note.a)
-              .explode(nextValue: (note) => note.transposeBy(Interval.P4)),
+          () => (
+            from: Note.c,
+            to: Note.a,
+          ).explode(nextValue: (note) => note.transposeBy(Interval.P4)),
           const [Note.c, Note.f],
         );
         expect(
           skip:
               'TODO(albertms10): should stop when the loop gets out of range.',
-          () => (from: Note.c.inOctave(3), to: Note.b.flat.inOctave(3))
-              .explode(nextValue: (note) => note.transposeBy(Interval.P5)),
+          () => (
+            from: Note.c.inOctave(3),
+            to: Note.b.flat.inOctave(3),
+          ).explode(nextValue: (note) => note.transposeBy(Interval.P5)),
           [Note.c.inOctave(3), Note.g.inOctave(3)],
         );
       });
@@ -141,8 +142,8 @@ void main() {
           ].format(
             rangeSeparator: ' to ',
             nonConsecutiveSeparator: '; ',
-            toString: (pitch) =>
-                pitch.toString(system: PitchNotation.helmholtz),
+            toString:
+                (pitch) => pitch.toString(system: PitchNotation.helmholtz),
           ),
           'c to e♭; g′; a♭″ to d♯″',
         );

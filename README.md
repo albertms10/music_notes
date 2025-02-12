@@ -441,8 +441,10 @@ Or know its numeric representation:
 
 ```dart
 ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-  ..numericRepresentation().toSet() // {0, 11, 3, 5}
-  ..numericRepresentation(reference: PitchClass.d).toSet() // {9, 8, 0, 2}
+  ..numericRepresentation()
+      .toSet() // {0, 11, 3, 5}
+  ..numericRepresentation(reference: PitchClass.d)
+      .toSet() // {9, 8, 0, 2}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
 
@@ -494,7 +496,9 @@ TuningFork.c256; // C256
 And use it in a `TuningSystem`:
 
 ```dart
-Note.b.flat.inOctave(4).frequency(
+Note.b.flat
+    .inOctave(4)
+    .frequency(
       tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
     ); // 456.1401436878537
 ```
@@ -541,7 +545,8 @@ ClosestPitch.parse('E♭3-28'); // E♭3-28
 ### In a nutshell
 
 ```dart
-ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
+ScalePattern
+    .lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .on(Note.parse('a')) // A Lydian (A B C♯ D♯ E F♯ G♯ A)
     .transposeBy(Interval.M2) // B Lydian (B C♯ D♯ E♯ F♯ G♯ A♯ B)
     .degree(ScaleDegree.iii) // D♯

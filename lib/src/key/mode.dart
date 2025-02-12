@@ -29,9 +29,9 @@ sealed class Mode implements Enum, Comparable<Mode> {
 
   /// [Comparator] for [Mode]s.
   static int compare(Mode a, Mode b) => compareMultiple([
-        () => a.brightness.compareTo(b.brightness),
-        () => a.name.compareTo(b.name),
-      ]);
+    () => a.brightness.compareTo(b.brightness),
+    () => a.name.compareTo(b.name),
+  ]);
 }
 
 /// Modes of a tonal system.
@@ -58,9 +58,9 @@ enum TonalMode implements Mode {
   /// TonalMode.minor.parallel == TonalMode.major
   /// ```
   TonalMode get parallel => switch (this) {
-        TonalMode.major => TonalMode.minor,
-        TonalMode.minor => TonalMode.major,
-      };
+    TonalMode.major => TonalMode.minor,
+    TonalMode.minor => TonalMode.major,
+  };
 
   /// The string representation of this [TonalMode] based on [system].
   ///

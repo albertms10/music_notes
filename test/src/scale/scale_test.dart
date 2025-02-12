@@ -38,10 +38,7 @@ void main() {
           ScalePattern.melodicMinor.on(Note.a.flat).pattern,
           ScalePattern.melodicMinor,
         );
-        expect(
-          ScalePattern.major.on(PitchClass.d).pattern,
-          ScalePattern.major,
-        );
+        expect(ScalePattern.major.on(PitchClass.d).pattern, ScalePattern.major);
         expect(
           ScalePattern.minorPentatonic.on(PitchClass.gSharp).pattern,
           ScalePattern.minorPentatonic,
@@ -170,13 +167,15 @@ void main() {
           Note.a.majorTriad,
         );
         expect(
-          Note.f.major.scale
-              .functionChord(HarmonicFunction.iv / HarmonicFunction.vi),
+          Note.f.major.scale.functionChord(
+            HarmonicFunction.iv / HarmonicFunction.vi,
+          ),
           Note.g.minorTriad,
         );
         expect(
-          Note.b.flat.major.scale
-              .functionChord(HarmonicFunction.vi / HarmonicFunction.iv),
+          Note.b.flat.major.scale.functionChord(
+            HarmonicFunction.vi / HarmonicFunction.iv,
+          ),
           Note.c.minorTriad,
         );
         expect(
@@ -231,7 +230,9 @@ void main() {
             isTrue,
           );
           expect(
-            ScalePattern.chromatic.on(Note.d.flat).isEnharmonicWith(
+            ScalePattern.chromatic
+                .on(Note.d.flat)
+                .isEnharmonicWith(
                   ScalePattern.chromatic.on(Note.b.sharp.sharp),
                 ),
             isTrue,
@@ -242,10 +243,7 @@ void main() {
 
     group('.transposeBy()', () {
       test('transposes this Scale by Interval', () {
-        expect(
-          Note.c.major.scale.transposeBy(Interval.M3),
-          Note.e.major.scale,
-        );
+        expect(Note.c.major.scale.transposeBy(Interval.M3), Note.e.major.scale);
         expect(
           Note.d.flat.minor.scale.transposeBy(-Interval.m3),
           Note.b.flat.minor.scale,

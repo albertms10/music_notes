@@ -38,9 +38,13 @@ void main() {
           const [(from: 1, to: 6), (from: 8, to: 9)],
         );
         expect(
-          'abcdefxyz'.split('').compact(
-                nextValue: (current) =>
-                    String.fromCharCodes(current.codeUnits.map((a) => a + 1)),
+          'abcdefxyz'
+              .split('')
+              .compact(
+                nextValue:
+                    (current) => String.fromCharCodes(
+                      current.codeUnits.map((a) => a + 1),
+                    ),
                 compare: Comparable.compare,
               ),
           const [(from: 'a', to: 'g'), (from: 'x', to: '{')],
@@ -59,12 +63,8 @@ void main() {
             (from: Note.b, to: Note.c),
           ],
         );
-        expect([Note.c, Note.c.sharp].compact(), [
-          (from: Note.c, to: Note.d),
-        ]);
-        expect([Note.c, Note.d.flat].compact(), [
-          (from: Note.c, to: Note.d),
-        ]);
+        expect([Note.c, Note.c.sharp].compact(), [(from: Note.c, to: Note.d)]);
+        expect([Note.c, Note.d.flat].compact(), [(from: Note.c, to: Note.d)]);
         expect([Note.c, Note.d.flat, Note.d].compact(), [
           (from: Note.c, to: Note.e.flat),
         ]);
@@ -73,23 +73,24 @@ void main() {
           (from: Note.g, to: Note.a.flat),
         ]);
         expect(
-            [
-              Note.c,
-              Note.d.flat,
-              Note.d,
-              Note.e.flat,
-              Note.f.sharp,
-              Note.a,
-              Note.b.flat,
-              Note.b,
-              Note.c,
-              Note.c.sharp,
-            ].compact(),
-            [
-              (from: Note.c, to: Note.e),
-              (from: Note.f.sharp, to: Note.g),
-              (from: Note.a, to: Note.d),
-            ]);
+          [
+            Note.c,
+            Note.d.flat,
+            Note.d,
+            Note.e.flat,
+            Note.f.sharp,
+            Note.a,
+            Note.b.flat,
+            Note.b,
+            Note.c,
+            Note.c.sharp,
+          ].compact(),
+          [
+            (from: Note.c, to: Note.e),
+            (from: Note.f.sharp, to: Note.g),
+            (from: Note.a, to: Note.d),
+          ],
+        );
 
         expect([Note.c.inOctave(2)].compact(), [
           (from: Note.c.inOctave(2), to: Note.d.flat.inOctave(2)),
@@ -98,25 +99,26 @@ void main() {
           (from: Note.c.inOctave(4), to: Note.d.inOctave(4)),
         ]);
         expect(
-            [
-              Note.c.inOctave(4),
-              Note.d.flat.inOctave(4),
-              Note.d.inOctave(4),
-              Note.d.sharp.inOctave(4),
-              Note.e.inOctave(4),
-              Note.g.flat.inOctave(4),
-              Note.g.inOctave(4),
-              Note.g.sharp.inOctave(4),
-              Note.b.flat.inOctave(4),
-              Note.b.inOctave(4),
-              Note.b.sharp.inOctave(4),
-              Note.d.flat.inOctave(5),
-            ].compact(),
-            [
-              (from: Note.c.inOctave(4), to: Note.f.inOctave(4)),
-              (from: Note.g.flat.inOctave(4), to: Note.a.inOctave(4)),
-              (from: Note.b.flat.inOctave(4), to: Note.d.inOctave(5)),
-            ]);
+          [
+            Note.c.inOctave(4),
+            Note.d.flat.inOctave(4),
+            Note.d.inOctave(4),
+            Note.d.sharp.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.flat.inOctave(4),
+            Note.g.inOctave(4),
+            Note.g.sharp.inOctave(4),
+            Note.b.flat.inOctave(4),
+            Note.b.inOctave(4),
+            Note.b.sharp.inOctave(4),
+            Note.d.flat.inOctave(5),
+          ].compact(),
+          [
+            (from: Note.c.inOctave(4), to: Note.f.inOctave(4)),
+            (from: Note.g.flat.inOctave(4), to: Note.a.inOctave(4)),
+            (from: Note.b.flat.inOctave(4), to: Note.d.inOctave(5)),
+          ],
+        );
       });
     });
   });

@@ -4,11 +4,11 @@ import 'range_extension.dart';
 /// An Iterable extension.
 extension IterableExtension<E> on Iterable<E> {
   E _closestTo(E target, num Function(E a, E b) difference) => reduce(
-        (closest, element) => difference(element, target).abs() <
-                difference(closest, target).abs()
+    (closest, element) =>
+        difference(element, target).abs() < difference(closest, target).abs()
             ? element
             : closest,
-      );
+  );
 
   /// The closest element [E] to [target].
   ///
@@ -56,8 +56,7 @@ extension IterableExtension<E> on Iterable<E> {
   Iterable<Range<E>> compact({
     required E Function(E current) nextValue,
     required Comparator<E> compare,
-  }) =>
-      _compact(nextValue: nextValue, compare: compare);
+  }) => _compact(nextValue: nextValue, compare: compare);
 }
 
 /// A num Iterable extension.
@@ -104,11 +103,10 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   Iterable<Range<E>> compact({
     E Function(E current)? nextValue,
     Comparator<E>? compare,
-  }) =>
-      _compact(
-        nextValue: nextValue ?? Scalable.chromaticMotion,
-        compare: compare ?? Scalable.compareEnharmonically,
-      );
+  }) => _compact(
+    nextValue: nextValue ?? Scalable.chromaticMotion,
+    compare: compare ?? Scalable.compareEnharmonically,
+  );
 }
 
 /// Compares multiple comparators.
