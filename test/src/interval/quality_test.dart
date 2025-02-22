@@ -41,10 +41,7 @@ void main() {
       });
 
       test('parses source as an ImperfectQuality', () {
-        expect(
-          ImperfectQuality.parse('AAA'),
-          ImperfectQuality.triplyAugmented,
-        );
+        expect(ImperfectQuality.parse('AAA'), ImperfectQuality.triplyAugmented);
         expect(ImperfectQuality.parse('A'), ImperfectQuality.augmented);
         expect(ImperfectQuality.parse('M'), ImperfectQuality.major);
         expect(ImperfectQuality.parse('m'), ImperfectQuality.minor);

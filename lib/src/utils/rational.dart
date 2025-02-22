@@ -13,7 +13,7 @@ final class Rational implements Comparable<Rational> {
 
   /// Creates a new [Rational] from [_numerator] and [_denominator].
   const Rational(this._numerator, [this._denominator = 1])
-      : assert(_denominator != 0, 'The denominator cannot be zero.');
+    : assert(_denominator != 0, 'The denominator cannot be zero.');
 
   /// A [Rational] of value zero.
   static const zero = Rational(0);
@@ -24,11 +24,12 @@ final class Rational implements Comparable<Rational> {
     int wholePart, [
     int numerator = 0,
     this._denominator = 1,
-  ])  : assert(numerator >= 0, 'The numerator cannot be negative.'),
-        assert(_denominator != 0, 'The denominator cannot be zero.'),
-        _numerator = ((wholePart < 0 ? -wholePart : wholePart) * _denominator +
-                numerator) *
-            (wholePart < 0 ? -1 : 1);
+  ]) : assert(numerator >= 0, 'The numerator cannot be negative.'),
+       assert(_denominator != 0, 'The denominator cannot be zero.'),
+       _numerator =
+           ((wholePart < 0 ? -wholePart : wholePart) * _denominator +
+               numerator) *
+           (wholePart < 0 ? -1 : 1);
 
   static final _regExp = RegExp(r'^(-?\d+)\s*(?:(\d+)/(\d+))?$');
 
@@ -108,8 +109,8 @@ final class Rational implements Comparable<Rational> {
         (remainder == 0
             ? '$wholePart'
             : wholePart == 0
-                ? '$remainder/$_denominator'
-                : '$wholePart $remainder/$_denominator');
+            ? '$remainder/$_denominator'
+            : '$wholePart $remainder/$_denominator');
   }
 
   /// Adds this [Rational] to [other].
@@ -119,9 +120,9 @@ final class Rational implements Comparable<Rational> {
   /// const Rational(4, 5) + const Rational(-2, 3) == const Rational(2, 15)
   /// ```
   Rational operator +(Rational other) => Rational(
-        _numerator * other._denominator + _denominator * other._numerator,
-        _denominator * other._denominator,
-      );
+    _numerator * other._denominator + _denominator * other._numerator,
+    _denominator * other._denominator,
+  );
 
   /// Subtracts [other] from this [Rational].
   ///
@@ -130,9 +131,9 @@ final class Rational implements Comparable<Rational> {
   /// const Rational(4, 5) - const Rational(-2, 3) == const Rational(22, 15)
   /// ```
   Rational operator -(Rational other) => Rational(
-        _numerator * other._denominator - _denominator * other._numerator,
-        _denominator * other._denominator,
-      );
+    _numerator * other._denominator - _denominator * other._numerator,
+    _denominator * other._denominator,
+  );
 
   /// Multiplies this [Rational] with [other].
   ///
@@ -141,9 +142,9 @@ final class Rational implements Comparable<Rational> {
   /// const Rational(4, 5) * const Rational(-2, 3) == const Rational(-8, 15)
   /// ```
   Rational operator *(Rational other) => Rational(
-        _numerator * other._numerator,
-        _denominator * other._denominator,
-      );
+    _numerator * other._numerator,
+    _denominator * other._denominator,
+  );
 
   /// Divides this [Rational] with [other].
   ///
@@ -152,9 +153,9 @@ final class Rational implements Comparable<Rational> {
   /// const Rational(4, 5) / const Rational(-2, 3) == const Rational(-6, 5)
   /// ```
   Rational operator /(Rational other) => Rational(
-        _numerator * other._denominator,
-        _denominator * other._numerator,
-      );
+    _numerator * other._denominator,
+    _denominator * other._numerator,
+  );
 
   /// Negates this [Rational].
   ///

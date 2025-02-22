@@ -29,8 +29,9 @@ class HarmonicFunction {
   static const ii = HarmonicFunction([ScaleDegree.ii]);
 
   /// A neapolitan sixth [HarmonicFunction].
-  static const neapolitanSixth =
-      HarmonicFunction([ScaleDegree.neapolitanSixth]);
+  static const neapolitanSixth = HarmonicFunction([
+    ScaleDegree.neapolitanSixth,
+  ]);
 
   /// A III degree [HarmonicFunction].
   static const iii = HarmonicFunction([ScaleDegree.iii]);
@@ -39,8 +40,9 @@ class HarmonicFunction {
   static const iv = HarmonicFunction([ScaleDegree.iv]);
 
   /// A dominant V degree [HarmonicFunction].
-  static const dominantV =
-      HarmonicFunction([ScaleDegree(5, quality: ImperfectQuality.major)]);
+  static const dominantV = HarmonicFunction([
+    ScaleDegree(5, quality: ImperfectQuality.major),
+  ]);
 
   /// A VI degree [HarmonicFunction].
   static const vi = HarmonicFunction([ScaleDegree.vi]);
@@ -61,10 +63,9 @@ class HarmonicFunction {
   @override
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,
-  }) =>
-      _scaleDegrees
-          .map((scaleDegree) => scaleDegree.toString(system: system))
-          .join('/');
+  }) => _scaleDegrees
+      .map((scaleDegree) => scaleDegree.toString(system: system))
+      .join('/');
 
   /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
   /// [other].
@@ -84,8 +85,10 @@ class HarmonicFunction {
   @override
   bool operator ==(Object other) =>
       other is HarmonicFunction &&
-      const ListEquality<ScaleDegree>()
-          .equals(_scaleDegrees, other._scaleDegrees);
+      const ListEquality<ScaleDegree>().equals(
+        _scaleDegrees,
+        other._scaleDegrees,
+      );
 
   @override
   int get hashCode => Object.hashAll(_scaleDegrees);

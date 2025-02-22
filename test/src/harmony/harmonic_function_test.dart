@@ -30,9 +30,11 @@ void main() {
         );
         expect(
           HarmonicFunction.i / HarmonicFunction.ii / HarmonicFunction.iii,
-          const HarmonicFunction(
-            [ScaleDegree.i, ScaleDegree.ii, ScaleDegree.iii],
-          ),
+          const HarmonicFunction([
+            ScaleDegree.i,
+            ScaleDegree.ii,
+            ScaleDegree.iii,
+          ]),
         );
       });
     });
