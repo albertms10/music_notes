@@ -28,3 +28,6 @@ analyzer:
     # Style decisions
     always_use_package_imports: ignore
     sort_constructors_first: ignore
+
+    # temporarily disabled
+    require_trailing_commas: ignore

@@ -71,7 +71,12 @@ final class Pitch extends Scalable<Pitch>
 
   static final _scientificNotationRegExp = RegExp(r'^(.+?)([-]?\d+)$');
   static final _helmholtzNotationRegExp = RegExp(
-    '(^(?:${[for (final BaseNote(:name) in BaseNote.values) name].join('|')})[${Accidental.symbols.join()}]*)(${[..._compoundPrimeSymbols, for (final symbol in _primeSymbols) '$symbol+'].join('|')})?\$',
+    '(^(?:${[for (final BaseNote(:name) in BaseNote.values) name].join('|')})'
+    '[${Accidental.symbols.join()}]*)'
+    // New formatter rules
+    // ignore: lines_longer_than_80_chars
+    '(${[..._compoundPrimeSymbols, for (final symbol in _primeSymbols) '$symbol+'].join('|')})'
+    r'?$',
     caseSensitive: false,
   );
 
