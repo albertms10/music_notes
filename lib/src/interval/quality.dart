@@ -61,9 +61,15 @@ sealed class Quality implements Comparable<Quality> {
   @override
   int compareTo(Quality other) => compareMultiple([
     () => semitones.compareTo(other.semitones),
-    // TODO(albertms10): rewrite without relying on `runtimeType`.
-    // ignore: no_runtimetype_tostring
-    () => '$runtimeType'.compareTo('${other.runtimeType}'),
+    () {
+      if (this is PerfectQuality && other is ImperfectQuality) {
+        return 1;
+      }
+      if (this is ImperfectQuality && other is PerfectQuality) {
+        return -1;
+      }
+      return 0;
+    },
   ]);
 }
 
