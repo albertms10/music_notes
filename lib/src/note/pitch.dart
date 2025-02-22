@@ -456,7 +456,7 @@ final class Pitch extends Scalable<Pitch>
       Frequency(tuningSystem.fork.frequency * tuningSystem.ratio(this))
           .at(temperature, referenceTemperature);
 
-  /// Creates a new [TuningFork] from this [Pitch] at a given [frequency].
+  /// Returns the [TuningFork] from this [Pitch] at a given [frequency].
   ///
   /// Example:
   /// ```dart
@@ -512,7 +512,7 @@ final class Pitch extends Scalable<Pitch>
   String toString({PitchNotation system = PitchNotation.scientific}) =>
       system.pitch(this);
 
-  /// Adds [cents] to this [Pitch], creating a new [ClosestPitch].
+  /// Returns the [ClosestPitch] with [cents] added to this [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -521,7 +521,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
 
-  /// Subtracts [cents] from this [Pitch], creating a new [ClosestPitch].
+  /// Returns the [ClosestPitch] with [cents] subtracted from this [Pitch].
   ///
   /// Example:
   /// ```dart
