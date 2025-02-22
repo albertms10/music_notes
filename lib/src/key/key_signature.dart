@@ -74,7 +74,7 @@ final class KeySignature implements Comparable<KeySignature> {
   Accidental get accidental =>
       clean._notes.firstOrNull?.accidental ?? Accidental.natural;
 
-  /// Returns a new [KeySignature] without cancellation [Accidental.natural]s.
+  /// This [KeySignature] without cancellation [Accidental.natural]s.
   ///
   /// Example:
   /// ```dart
@@ -157,7 +157,7 @@ final class KeySignature implements Comparable<KeySignature> {
 
   static const _noteNotation = EnglishNoteNotation(showNatural: true);
 
-  /// Returns a new [KeySignature] incrementing its fifths [distance].
+  /// Returns this [KeySignature] incrementing its fifths [distance].
   ///
   /// Example:
   /// ```dart

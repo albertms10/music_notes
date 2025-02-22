@@ -20,7 +20,7 @@ abstract class Scalable<T extends Scalable<T>>
   static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
       a.semitones.compareTo(b.semitones);
 
-  /// Creates a new [PitchClass] from [semitones].
+  /// Returns the [PitchClass] from [semitones].
   ///
   /// Example:
   /// ```dart

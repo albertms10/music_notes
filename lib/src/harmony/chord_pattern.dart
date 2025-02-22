@@ -113,8 +113,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   List<Interval> get modifiers => _intervals.skip(2).toList(growable: false);
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.diminished] root
-  /// triad.
+  /// This [ChordPattern] with an [ImperfectQuality.diminished] root triad.
   ///
   /// Example:
   /// ```dart
@@ -125,7 +124,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ChordPattern get diminished =>
       ChordPattern([...diminishedTriad._intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.minor] root
+  /// This [ChordPattern] with an [ImperfectQuality.minor] root
   /// triad.
   ///
   /// Example:
@@ -137,8 +136,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ChordPattern get minor =>
       ChordPattern([...minorTriad._intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.major] root
-  /// triad.
+  /// This [ChordPattern] with an [ImperfectQuality.major] root triad.
   ///
   /// Example:
   /// ```dart
@@ -149,8 +147,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ChordPattern get major =>
       ChordPattern([...majorTriad._intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] with an [ImperfectQuality.augmented] root
-  /// triad.
+  /// This [ChordPattern] with an [ImperfectQuality.augmented] root triad.
   ///
   /// Example:
   /// ```dart
@@ -161,7 +158,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ChordPattern get augmented =>
       ChordPattern([...augmentedTriad._intervals, ...modifiers]);
 
-  /// Returns a new [ChordPattern] adding [interval].
+  /// Returns this [ChordPattern] adding [interval].
   @override
   ChordPattern add(Interval interval, {Set<int>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
