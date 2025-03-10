@@ -103,6 +103,8 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.d.intervalSize(BaseNote.f) == Size.third
   /// BaseNote.a.intervalSize(BaseNote.e) == Size.fifth
+  /// BaseNote.d.intervalSize(BaseNote.c) == Size.seventh
+  /// BaseNote.c.intervalSize(BaseNote.a) == Size.sixth
   /// ```
   Size intervalSize(BaseNote other) => Size(
     other.ordinal - ordinal + (ordinal > other.ordinal ? values.length : 0) + 1,
@@ -114,6 +116,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.difference(BaseNote.c) == 0
   /// BaseNote.c.difference(BaseNote.e) == 4
+  /// BaseNote.f.difference(BaseNote.e) == -1
   /// BaseNote.a.difference(BaseNote.e) == -5
   /// ```
   int difference(BaseNote other) => Note(this).difference(Note(other));
@@ -127,6 +130,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```dart
   /// BaseNote.c.positiveDifference(BaseNote.c) == 0
   /// BaseNote.c.positiveDifference(BaseNote.e) == 4
+  /// BaseNote.f.positiveDifference(BaseNote.e) == 11
   /// BaseNote.a.positiveDifference(BaseNote.e) == 7
   /// ```
   int positiveDifference(BaseNote other) {
