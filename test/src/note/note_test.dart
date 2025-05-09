@@ -761,6 +761,65 @@ void main() {
         );
       });
 
+      test('returns the Shearer string representation of this Note', () {
+        expect(Note.c.flat.flat.toString(system: NoteNotation.shearer), 'daw');
+        expect(Note.c.flat.toString(system: NoteNotation.shearer), 'de');
+        expect(Note.c.toString(system: NoteNotation.shearer), 'do');
+        expect(Note.c.sharp.toString(system: NoteNotation.shearer), 'di');
+        expect(
+          Note.c.sharp.sharp.toString(system: NoteNotation.shearer),
+          'dai',
+        );
+
+        expect(Note.d.flat.flat.toString(system: NoteNotation.shearer), 'raw');
+        expect(Note.d.flat.toString(system: NoteNotation.shearer), 'ra');
+        expect(Note.d.toString(system: NoteNotation.shearer), 're');
+        expect(Note.d.sharp.toString(system: NoteNotation.shearer), 'ri');
+        expect(
+          Note.d.sharp.sharp.toString(system: NoteNotation.shearer),
+          'rai',
+        );
+
+        expect(Note.e.flat.flat.toString(system: NoteNotation.shearer), 'maw');
+        expect(Note.e.flat.toString(system: NoteNotation.shearer), 'me');
+        expect(Note.e.toString(system: NoteNotation.shearer), 'mi');
+        expect(Note.e.sharp.toString(system: NoteNotation.shearer), 'mai');
+        expect(Note.e.sharp.sharp.toString(system: NoteNotation.shearer), '');
+
+        expect(Note.f.flat.flat.toString(system: NoteNotation.shearer), 'faw');
+        expect(Note.f.flat.toString(system: NoteNotation.shearer), 'fe');
+        expect(Note.f.toString(system: NoteNotation.shearer), 'fa');
+        expect(Note.f.sharp.toString(system: NoteNotation.shearer), 'fi');
+        expect(
+          Note.f.sharp.sharp.toString(system: NoteNotation.shearer),
+          'fai',
+        );
+
+        expect(Note.g.flat.flat.toString(system: NoteNotation.shearer), 'saw');
+        expect(Note.g.flat.toString(system: NoteNotation.shearer), 'se');
+        expect(Note.g.toString(system: NoteNotation.shearer), 'so');
+        expect(Note.g.sharp.toString(system: NoteNotation.shearer), 'si');
+        expect(
+          Note.g.sharp.sharp.toString(system: NoteNotation.shearer),
+          'sai',
+        );
+
+        expect(Note.a.flat.flat.toString(system: NoteNotation.shearer), 'law');
+        expect(Note.a.flat.toString(system: NoteNotation.shearer), 'le');
+        expect(Note.a.toString(system: NoteNotation.shearer), 'la');
+        expect(Note.a.sharp.toString(system: NoteNotation.shearer), 'li');
+        expect(
+          Note.a.sharp.sharp.toString(system: NoteNotation.shearer),
+          'lai',
+        );
+
+        expect(Note.b.flat.flat.toString(system: NoteNotation.shearer), 'taw');
+        expect(Note.b.flat.toString(system: NoteNotation.shearer), 'te');
+        expect(Note.b..toString(system: NoteNotation.shearer), 'ti');
+        expect(Note.b.sharp.toString(system: NoteNotation.shearer), 'tai');
+        expect(Note.b.sharp.sharp.toString(system: NoteNotation.shearer), '');
+      });
+
       test('returns the string representation extending NoteNotation', () {
         expect(
           () => Note.a.sharp.toString(system: _SubNoteNotation()),
@@ -868,9 +927,6 @@ void main() {
 final class _SubNoteNotation extends NoteNotation {
   @override
   String baseNote(BaseNote baseNote) => throw UnimplementedError();
-
-  @override
-  String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
 
   @override
   String accidental(Accidental accidental) => throw UnimplementedError();
