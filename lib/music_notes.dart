@@ -3,6 +3,7 @@
 library;
 
 export 'src/chordable.dart';
+export 'src/formatter.dart';
 export 'src/harmony/chord.dart';
 export 'src/harmony/chord_pattern.dart';
 export 'src/harmony/harmonic_function.dart';

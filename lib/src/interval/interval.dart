@@ -6,6 +6,7 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
+import '../formatter.dart';
 import '../note/note.dart';
 import '../respellable.dart';
 import '../scalable.dart';
@@ -173,8 +174,6 @@ final class Interval
     ImperfectQuality.augmented,
   );
 
-  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
-
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(
     this.size, [
@@ -228,16 +227,10 @@ final class Interval
   /// Interval.parse('P-5') == -Interval.P5
   /// Interval.parse('z') // throws a FormatException
   /// ```
-  factory Interval.parse(String source) {
-    final match = _regExp.firstMatch(source);
-    if (match == null) throw FormatException('Invalid Interval', source);
-
-    final size = Size(int.parse(match[2]!));
-    final parseFactory =
-        size.isPerfect ? PerfectQuality.parse : ImperfectQuality.parse;
-
-    return Interval._(size, parseFactory(match[1]!));
-  }
+  factory Interval.parse(
+    String source, {
+    IntervalFormatter system = const IntervalFormatter(),
+  }) => system.parse(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -447,8 +440,6 @@ final class Interval
 
   /// The string representation of this [Interval] based on [system].
   ///
-  /// See [IntervalNotation] for all system implementations.
-  ///
   /// Example:
   /// ```dart
   /// Interval.M3.toString() == 'M3'
@@ -456,8 +447,8 @@ final class Interval
   /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({IntervalNotation system = IntervalNotation.standard}) =>
-      system.interval(this);
+  String toString({IntervalFormatter system = const IntervalFormatter()}) =>
+      system.format(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -497,42 +488,53 @@ final class Interval
   ]);
 }
 
-/// The abstraction for [Interval] notation systems.
-@immutable
-abstract class IntervalNotation {
-  /// Creates a new [IntervalNotation].
-  const IntervalNotation();
+/// An [Interval] formatter.
+class IntervalFormatter extends Formatter<Interval> {
+  /// The [SizeFormatter].
+  final SizeFormatter sizeFormatter;
 
-  /// The standard [IntervalNotation] system.
-  static const standard = StandardIntervalNotation();
+  /// The [PerfectQualityFormatter].
+  final PerfectQualityFormatter perfectQualityFormatter;
 
-  /// The string notation for [interval].
-  String interval(Interval interval);
+  /// The [ImperfectQualityFormatter].
+  final ImperfectQualityFormatter imperfectQualityFormatter;
 
-  /// The string notation for [size].
-  String size(Size size);
-
-  /// The string notation for [quality].
-  String quality(Quality quality);
-}
-
-/// The standard [Interval] notation system.
-final class StandardIntervalNotation extends IntervalNotation {
-  /// Creates a new [StandardIntervalNotation].
-  const StandardIntervalNotation();
+  /// Creates a new [IntervalFormatter].
+  const IntervalFormatter({
+    this.sizeFormatter = const SizeFormatter(),
+    this.perfectQualityFormatter = const PerfectQualityFormatter(),
+    this.imperfectQualityFormatter = const ImperfectQualityFormatter(),
+  });
 
   @override
-  String interval(Interval interval) {
-    final quality = interval.quality.toString(system: this);
-    final naming = '$quality${interval.size.format(system: this)}';
+  String format(Interval interval) {
+    final quality = switch (interval.quality) {
+      final PerfectQuality quality => quality.toString(
+        system: perfectQualityFormatter,
+      ),
+      final ImperfectQuality quality => quality.toString(
+        system: imperfectQualityFormatter,
+      ),
+    };
+    final naming = '$quality${interval.size.format(system: sizeFormatter)}';
     if (!interval.isCompound) return naming;
 
-    return '$naming ($quality${interval.simple.size.format(system: this)})';
+    return '$naming '
+        '($quality${interval.simple.size.format(system: sizeFormatter)})';
   }
 
-  @override
-  String size(Size size) => '$size';
+  static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
 
   @override
-  String quality(Quality quality) => quality.symbol;
+  Interval parse(String source) {
+    final match = _intervalRegExp.firstMatch(source);
+    if (match == null) throw FormatException('Invalid Interval', source);
+
+    final size = sizeFormatter.parse(match[2]!);
+    // ignore: omit_local_variable_types False positive (?)
+    final Formatter<Quality> formatter =
+        size.isPerfect ? perfectQualityFormatter : imperfectQualityFormatter;
+
+    return Interval._(size, formatter.parse(match[1]!));
+  }
 }
