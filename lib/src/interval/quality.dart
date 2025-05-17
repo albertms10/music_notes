@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../formatter.dart';
 import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
@@ -26,24 +27,6 @@ sealed class Quality implements Comparable<Quality> {
 
   /// Whether this [Quality] is dissonant.
   bool get isDissonant;
-
-  /// The string representation of this [Quality] based on [system].
-  ///
-  /// See [IntervalNotation] for all system implementations.
-  ///
-  /// Example:
-  /// ```dart
-  /// PerfectQuality.perfect.toString() == 'P'
-  /// PerfectQuality.diminished.toString() == 'd'
-  /// PerfectQuality.doublyAugmented.toString() == 'AA'
-  ///
-  /// ImperfectQuality.minor.toString() == 'm'
-  /// ImperfectQuality.major.toString() == 'M'
-  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
-  /// ```
-  @override
-  String toString({IntervalNotation system = IntervalNotation.standard}) =>
-      system.quality(this);
 
   @override
   bool operator ==(Object other) =>
@@ -111,8 +94,8 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    IntervalNotation system = IntervalNotation.standard,
-  }) => system.parsePerfectQuality(source);
+    PerfectQualityFormatter system = const PerfectQualityFormatter(),
+  }) => system.parse(source);
 
   /// The inversion of this [PerfectQuality].
   ///
@@ -136,6 +119,19 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   bool get isDissonant => semitones != 0;
+
+  /// The string representation of this [PerfectQuality] based on [system].
+  ///
+  /// Example:
+  /// ```dart
+  /// PerfectQuality.perfect.toString() == 'P'
+  /// PerfectQuality.diminished.toString() == 'd'
+  /// PerfectQuality.doublyAugmented.toString() == 'AA'
+  /// ```
+  @override
+  String toString({
+    PerfectQualityFormatter system = const PerfectQualityFormatter(),
+  }) => system.format(this);
 
   @override
   // Overridden hashCode already present in the super class.
@@ -190,8 +186,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    IntervalNotation system = IntervalNotation.standard,
-  }) => system.parseImperfectQuality(source);
+    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
+  }) => system.parse(source);
 
   /// The inversion of this [ImperfectQuality].
   ///
@@ -221,8 +217,104 @@ final class ImperfectQuality extends Quality {
     return true;
   }
 
+  /// The string representation of this [ImperfectQuality] based on [system].
+  ///
+  /// Example:
+  /// ```dart
+  /// ImperfectQuality.minor.toString() == 'm'
+  /// ImperfectQuality.major.toString() == 'M'
+  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
+  /// ```
+  @override
+  String toString({
+    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
+  }) => system.format(this);
+
   @override
   // Overridden hashCode already present in the super class.
   // ignore: hash_and_equals
   bool operator ==(Object other) => super == other && other is ImperfectQuality;
+}
+
+/// A [PerfectQuality] formatter.
+class PerfectQualityFormatter extends Formatter<PerfectQuality> {
+  /// Creates a new [PerfectQualityFormatter].
+  const PerfectQualityFormatter();
+
+  /// The symbol for a diminished [Quality].
+  static const _diminishedSymbol = 'd';
+
+  /// The symbol for a [PerfectQuality].
+  static const _perfectSymbol = 'P';
+
+  /// The symbol for an augmented [Quality].
+  static const _augmentedSymbol = 'A';
+
+  static final _regExp = RegExp(
+    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
+  );
+
+  @override
+  String format(PerfectQuality quality) => switch (quality.semitones) {
+    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    0 => _perfectSymbol,
+    _ => _augmentedSymbol * quality.semitones,
+  };
+
+  @override
+  PerfectQuality parse(String source) {
+    if (!_regExp.hasMatch(source)) {
+      throw FormatException('Invalid PerfectQuality', source);
+    }
+
+    return switch (source[0]) {
+      _diminishedSymbol => PerfectQuality(-source.length),
+      _perfectSymbol => PerfectQuality.perfect,
+      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
+    };
+  }
+}
+
+/// An [ImperfectQuality] formatter.
+class ImperfectQualityFormatter extends Formatter<ImperfectQuality> {
+  /// Creates a new [ImperfectQualityFormatter].
+  const ImperfectQualityFormatter();
+
+  /// The symbol for a diminished [ImperfectQuality].
+  static const _diminishedSymbol = 'd';
+
+  /// The symbol for an augmented [ImperfectQuality].
+  static const _augmentedSymbol = 'A';
+
+  /// The symbol for a minor [ImperfectQuality].
+  static const _minorSymbol = 'm';
+
+  /// The symbol for a major [ImperfectQuality].
+  static const _majorSymbol = 'M';
+
+  static final _regExp = RegExp(
+    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
+  );
+
+  @override
+  String format(ImperfectQuality quality) => switch (quality.semitones) {
+    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    0 => _minorSymbol,
+    1 => _majorSymbol,
+    _ => _augmentedSymbol * (quality.semitones - 1),
+  };
+
+  @override
+  ImperfectQuality parse(String source) {
+    if (!_regExp.hasMatch(source)) {
+      throw FormatException('Invalid ImperfectQuality', source);
+    }
+
+    return switch (source[0]) {
+      _diminishedSymbol => ImperfectQuality(-source.length),
+      _minorSymbol => ImperfectQuality.minor,
+      _majorSymbol => ImperfectQuality.major,
+      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
+    };
+  }
 }

@@ -6,6 +6,7 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
+import '../formatter.dart';
 import '../note/note.dart';
 import '../respellable.dart';
 import '../scalable.dart';
@@ -228,8 +229,8 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    IntervalNotation system = IntervalNotation.standard,
-  }) => system.parseInterval(source);
+    IntervalFormatter system = const IntervalFormatter(),
+  }) => system.parse(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -439,8 +440,6 @@ final class Interval
 
   /// The string representation of this [Interval] based on [system].
   ///
-  /// See [IntervalNotation] for all system implementations.
-  ///
   /// Example:
   /// ```dart
   /// Interval.M3.toString() == 'M3'
@@ -448,8 +447,8 @@ final class Interval
   /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({IntervalNotation system = IntervalNotation.standard}) =>
-      system.interval(this);
+  String toString({IntervalFormatter system = const IntervalFormatter()}) =>
+      system.format(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -489,133 +488,52 @@ final class Interval
   ]);
 }
 
-/// The abstraction for [Interval] notation systems.
-@immutable
-abstract class IntervalNotation {
-  /// Creates a new [IntervalNotation].
-  const IntervalNotation();
+/// An [Interval] formatter.
+class IntervalFormatter extends Formatter<Interval> {
+  /// The [SizeFormatter].
+  final SizeFormatter sizeFormatter;
 
-  /// The standard [IntervalNotation] system.
-  static const standard = StandardIntervalNotation();
+  /// The [PerfectQualityFormatter].
+  final PerfectQualityFormatter perfectQualityFormatter;
 
-  /// The string notation for [interval].
-  String interval(Interval interval);
+  /// The [ImperfectQualityFormatter].
+  final ImperfectQualityFormatter imperfectQualityFormatter;
 
-  /// Parse [source] as an [Interval].
-  Interval parseInterval(String source);
+  /// Creates a new [IntervalFormatter].
+  const IntervalFormatter({
+    this.sizeFormatter = const SizeFormatter(),
+    this.perfectQualityFormatter = const PerfectQualityFormatter(),
+    this.imperfectQualityFormatter = const ImperfectQualityFormatter(),
+  });
 
-  /// The string notation for [size].
-  String size(Size size);
+  @override
+  String format(Interval interval) {
+    final quality = switch (interval.quality) {
+      final PerfectQuality quality => quality.toString(
+        system: perfectQualityFormatter,
+      ),
+      final ImperfectQuality quality => quality.toString(
+        system: imperfectQualityFormatter,
+      ),
+    };
+    final naming = '$quality${interval.size.format()}';
+    if (!interval.isCompound) return naming;
 
-  /// Parse [source] as a [Size].
-  Size parseSize(String source);
-
-  /// The string notation for [quality].
-  String quality(Quality quality);
-
-  /// Parse [source] as a [PerfectQuality].
-  PerfectQuality parsePerfectQuality(String source);
-
-  /// Parse [source] as an [ImperfectQuality].
-  ImperfectQuality parseImperfectQuality(String source);
-}
-
-/// The standard [Interval] notation system.
-final class StandardIntervalNotation extends IntervalNotation {
-  /// Creates a new [StandardIntervalNotation].
-  const StandardIntervalNotation();
+    return '$naming ($quality${interval.simple.size.format()})';
+  }
 
   static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
 
-  /// The symbol for a diminished [Quality].
-  static const _diminishedSymbol = 'd';
-
-  /// The symbol for a [PerfectQuality].
-  static const _perfectSymbol = 'P';
-
-  /// The symbol for an augmented [Quality].
-  static const _augmentedSymbol = 'A';
-
-  /// The symbol for a minor [ImperfectQuality].
-  static const _minorSymbol = 'm';
-
-  /// The symbol for a major [ImperfectQuality].
-  static const _majorSymbol = 'M';
-
-  static final _perfectQualityRegExp = RegExp(
-    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
-  );
-
-  static final _imperfectQualityRegExp = RegExp(
-    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
-  );
-
   @override
-  String interval(Interval interval) {
-    final quality = interval.quality.toString(system: this);
-    final naming = '$quality${interval.size.format(system: this)}';
-    if (!interval.isCompound) return naming;
-
-    return '$naming ($quality${interval.simple.size.format(system: this)})';
-  }
-
-  @override
-  Interval parseInterval(String source) {
+  Interval parse(String source) {
     final match = _intervalRegExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
-    final size = parseSize(match[2]!);
-    final parseFactory =
-        size.isPerfect ? parsePerfectQuality : parseImperfectQuality;
+    final size = sizeFormatter.parse(match[2]!);
+    // ignore: omit_local_variable_types False positive (?)
+    final Formatter<Quality> formatter =
+        size.isPerfect ? perfectQualityFormatter : imperfectQualityFormatter;
 
-    return Interval._(size, parseFactory(match[1]!));
-  }
-
-  @override
-  String size(Size size) => '$size';
-
-  @override
-  Size parseSize(String source) => Size(int.parse(source));
-
-  @override
-  String quality(Quality quality) => switch (quality) {
-    PerfectQuality() => switch (quality.semitones) {
-      < 0 => _diminishedSymbol * quality.semitones.abs(),
-      0 => _perfectSymbol,
-      _ => _augmentedSymbol * quality.semitones,
-    },
-    ImperfectQuality() => switch (quality.semitones) {
-      < 0 => _diminishedSymbol * quality.semitones.abs(),
-      0 => _minorSymbol,
-      1 => _majorSymbol,
-      _ => _augmentedSymbol * (quality.semitones - 1),
-    },
-  };
-
-  @override
-  PerfectQuality parsePerfectQuality(String source) {
-    if (!_perfectQualityRegExp.hasMatch(source)) {
-      throw FormatException('Invalid PerfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      _diminishedSymbol => PerfectQuality(-source.length),
-      _perfectSymbol => PerfectQuality.perfect,
-      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
-    };
-  }
-
-  @override
-  ImperfectQuality parseImperfectQuality(String source) {
-    if (!_imperfectQualityRegExp.hasMatch(source)) {
-      throw FormatException('Invalid ImperfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      _diminishedSymbol => ImperfectQuality(-source.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
-      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
-    };
+    return Interval._(size, formatter.parse(match[1]!));
   }
 }
