@@ -59,19 +59,17 @@ void main() {
       test('changes the octave of each Pitch in this list', () {
         expect(const <Pitch>[].inOctave(2), const <Pitch>[]);
 
-        expect(
-          [Note.f.sharp.inOctave(1)].inOctave(5),
-          [Note.f.sharp.inOctave(5)],
-        );
+        expect([Note.f.sharp.inOctave(1)].inOctave(5), [
+          Note.f.sharp.inOctave(5),
+        ]);
 
         expect(
-          [Note.c.inOctave(3), Note.e.inOctave(-1), Note.g.flat.inOctave(6)]
-              .inOctave(4),
           [
-            Note.c.inOctave(4),
-            Note.e.inOctave(4),
-            Note.g.flat.inOctave(4),
-          ],
+            Note.c.inOctave(3),
+            Note.e.inOctave(-1),
+            Note.g.flat.inOctave(6),
+          ].inOctave(4),
+          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.flat.inOctave(4)],
         );
       });
     });

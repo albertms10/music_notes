@@ -17,15 +17,17 @@ void main() {
   group('ScalableIterable', () {
     group('.intervalSteps', () {
       test('returns the Interval steps of this ScalableIterable', () {
-        expect(
-          [Note.c, Note.d, Note.e, Note.f.sharp].intervalSteps,
-          const [Interval.M2, Interval.M2, Interval.M2],
-        );
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].intervalSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
 
-        expect(
-          [Note.b, Note.a, Note.g, Note.f].intervalSteps,
-          const [Interval.m7, Interval.m7, Interval.m7],
-        );
+        expect([Note.b, Note.a, Note.g, Note.f].intervalSteps, const [
+          Interval.m7,
+          Interval.m7,
+          Interval.m7,
+        ]);
       });
     });
 
@@ -48,15 +50,17 @@ void main() {
 
     group('.closestSteps', () {
       test('returns the closest Interval steps of this ScalableIterable', () {
-        expect(
-          [Note.c, Note.d, Note.e, Note.f.sharp].closestSteps,
-          const [Interval.M2, Interval.M2, Interval.M2],
-        );
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
 
-        expect(
-          [Note.b, Note.a, Note.g, Note.f].closestSteps,
-          const [Interval.M2, Interval.M2, Interval.M2],
-        );
+        expect([Note.b, Note.a, Note.g, Note.f].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
       });
     });
 
@@ -77,6 +81,15 @@ void main() {
           isTrue,
         );
 
+        expect(
+          [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(2),
+          ].isStepwise,
+          isFalse,
+        );
         expect(const [Note.c, Note.e, Note.g, Note.a].isStepwise, isFalse);
       });
     });
