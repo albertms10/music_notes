@@ -15,6 +15,85 @@ void main() {
   });
 
   group('ScalableIterable', () {
+    group('.intervalSteps', () {
+      test('returns the Interval steps of this ScalableIterable', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].intervalSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+
+        expect([Note.b, Note.a, Note.g, Note.f].intervalSteps, const [
+          Interval.m7,
+          Interval.m7,
+          Interval.m7,
+        ]);
+      });
+    });
+
+    group('.descendingIntervalSteps', () {
+      test(
+        'returns the descending Interval steps of this ScalableIterable',
+        () {
+          expect(
+            [Note.b, Note.a, Note.g, Note.f].descendingIntervalSteps,
+            const [Interval.M2, Interval.M2, Interval.M2],
+          );
+
+          expect(
+            [Note.c, Note.d, Note.e, Note.f.sharp].descendingIntervalSteps,
+            const [Interval.m7, Interval.m7, Interval.m7],
+          );
+        },
+      );
+    });
+
+    group('.closestSteps', () {
+      test('returns the closest Interval steps of this ScalableIterable', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+
+        expect([Note.b, Note.a, Note.g, Note.f].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+      });
+    });
+
+    group('.isStepwise', () {
+      test('returns whether this Iterable is entirely in stepwise motion', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].isStepwise, isTrue);
+        expect(
+          [Note.g, Note.a, Note.g, Note.f.sharp, Note.e.flat].isStepwise,
+          isTrue,
+        );
+        expect(
+          [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(3),
+          ].isStepwise,
+          isTrue,
+        );
+
+        expect(
+          [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(2),
+          ].isStepwise,
+          isFalse,
+        );
+        expect(const [Note.c, Note.e, Note.g, Note.a].isStepwise, isFalse);
+      });
+    });
+
     group('.inversion', () {
       test('returns the inversion of this ScalableIterable', () {
         expect(const <PitchClass>{}.inversion.toList(), const <PitchClass>[]);

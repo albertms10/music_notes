@@ -1,6 +1,8 @@
 import 'enharmonic.dart';
 import 'interval/interval.dart';
+import 'interval/size.dart';
 import 'music.dart';
+import 'note/note.dart';
 import 'note/pitch_class.dart';
 import 'respellable.dart';
 import 'transposable.dart';
@@ -44,6 +46,29 @@ abstract class Scalable<T extends Scalable<T>>
   }
 }
 
+/// A Note iterable.
+extension NoteIterable on Iterable<Note> {
+  /// The closest [Interval]s between [Note]s in this [Iterable].
+  Iterable<Interval> get closestSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      final interval = elementAt(i).interval(elementAt(i + 1));
+      yield interval >= Interval.P5 ? interval + -Interval.m6 : interval;
+    }
+  }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c, Note.d, Note.e, Note.f.sharp].isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      closestSteps.every((interval) => interval.size.abs() <= Size.second);
+}
+
 /// A Scalable iterable.
 extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// The [Interval]s between [T]s in this [Iterable].
@@ -59,6 +84,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.d, Note.e, Note.e.flat, Note.d].inOctave(4).isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].inOctave(3).isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      intervalSteps.every((interval) => interval.size.abs() <= Size.second);
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>

@@ -869,32 +869,23 @@ void main() {
 
         expect([Note.f.sharp].inOctave(5), [Note.f.sharp.inOctave(5)]);
 
-        expect(
-          const [Note.c, Note.e, Note.g].inOctave(4),
-          [
-            Note.c.inOctave(4),
-            Note.e.inOctave(4),
-            Note.g.inOctave(4),
-          ],
-        );
+        expect(const [Note.c, Note.e, Note.g].inOctave(4), [
+          Note.c.inOctave(4),
+          Note.e.inOctave(4),
+          Note.g.inOctave(4),
+        ]);
 
-        expect(
-          [Note.d.flat, Note.f.sharp, Note.b].inOctave(2),
-          [
-            Note.d.flat.inOctave(2),
-            Note.f.sharp.inOctave(2),
-            Note.b.inOctave(2),
-          ],
-        );
+        expect([Note.d.flat, Note.f.sharp, Note.b].inOctave(2), [
+          Note.d.flat.inOctave(2),
+          Note.f.sharp.inOctave(2),
+          Note.b.inOctave(2),
+        ]);
 
-        expect(
-          [Note.a.sharp, Note.c.sharp, Note.e.flat].inOctave(-1),
-          [
-            Note.a.sharp.inOctave(-1),
-            Note.c.sharp.inOctave(-1),
-            Note.e.flat.inOctave(-1),
-          ],
-        );
+        expect([Note.a.sharp, Note.c.sharp, Note.e.flat].inOctave(-1), [
+          Note.a.sharp.inOctave(-1),
+          Note.c.sharp.inOctave(-1),
+          Note.e.flat.inOctave(-1),
+        ]);
       });
     });
   });
