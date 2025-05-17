@@ -595,4 +595,14 @@ extension Notes on List<Note> {
 
   /// Makes all notes on this [List] natural.
   List<Note> get natural => map((note) => note.natural).toList();
+
+  /// Creates a [Pitch] at [octave] for each [Note] in this list.
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.a, Note.c, Note.e].inOctave(4)
+  ///   == [Note.a.inOctave(4), Note.c.inOctave(4), Note.e.inOctave(4)]
+  /// ```
+  List<Pitch> inOctave(int octave) =>
+      map((note) => note.inOctave(octave)).toList();
 }
