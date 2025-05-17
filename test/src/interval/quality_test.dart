@@ -156,6 +156,7 @@ void main() {
           const PerfectQuality(5),
           const ImperfectQuality(5),
           ImperfectQuality.major,
+          ImperfectQuality.minor,
           PerfectQuality.perfect,
           PerfectQuality.diminished,
           ImperfectQuality.diminished,
@@ -164,6 +165,7 @@ void main() {
         expect(orderedSet.toList(), const [
           ImperfectQuality.diminished,
           PerfectQuality.diminished,
+          ImperfectQuality.minor,
           PerfectQuality.perfect,
           ImperfectQuality.major,
           ImperfectQuality.augmented,
