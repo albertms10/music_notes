@@ -4,7 +4,6 @@ import 'package:music_notes/utils.dart';
 import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
-import '../interval/size.dart';
 import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
@@ -70,9 +69,9 @@ final class Note extends Scalable<Note>
   /// Note.parse('z') // throws a FormatException
   /// ```
   factory Note.parse(String source) => Note(
-        BaseNote.parse(source[0]),
-        Accidental.parse(source.length > 1 ? source.substring(1) : ''),
-      );
+    BaseNote.parse(source[0]),
+    Accidental.parse(source.length > 1 ? source.substring(1) : ''),
+  );
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
@@ -80,20 +79,20 @@ final class Note extends Scalable<Note>
 
   /// [Comparator] for [Note]s by closest distance.
   static int compareByClosestDistance(Note a, Note b) => compareMultiple([
-        () {
-          final distance = (a.semitones - b.semitones).abs();
+    () {
+      final distance = (a.semitones - b.semitones).abs();
 
-          return (distance <= chromaticDivisions - distance)
-              ? a.semitones.compareTo(b.semitones)
-              : b.semitones.compareTo(a.semitones);
-        },
-        ..._comparators(a, b),
-      ]);
+      return (distance <= chromaticDivisions - distance)
+          ? a.semitones.compareTo(b.semitones)
+          : b.semitones.compareTo(a.semitones);
+    },
+    ..._comparators(a, b),
+  ]);
 
   static List<int Function()> _comparators(Note a, Note b) => [
-        () => Scalable.compareEnharmonically(a, b),
-        () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
-      ];
+    () => Scalable.compareEnharmonically(a, b),
+    () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
+  ];
 
   /// The semitones distance of this [Note] relative to [Note.c].
   ///
@@ -213,7 +212,8 @@ final class Note extends Scalable<Note>
   @override
   Note respellByBaseNote(BaseNote baseNote) {
     final rawSemitones = semitones - baseNote.semitones;
-    final deltaSemitones = rawSemitones +
+    final deltaSemitones =
+        rawSemitones +
         (rawSemitones.abs() > (chromaticDivisions * 0.5)
             ? chromaticDivisions * -rawSemitones.sign
             : 0);
@@ -300,37 +300,27 @@ final class Note extends Scalable<Note>
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// The circle of fifths starting from this [Note] up to [distance],
-  /// split by `sharps` and `flats`.
+  /// The circle of fifths starting from this [Note] split by sharps (`up`) and
+  /// flats (`down`).
   ///
   /// Example:
   /// ```dart
-  /// Note.c.splitCircleOfFifths(distance: 4) == (
-  ///   sharps: [Note.g, Note.d, Note.a, Note.e],
-  ///   flats: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat],
-  /// )
+  /// Note.c.splitCircleOfFifths.up.take(6).toList()
+  ///   == [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Note.a.splitCircleOfFifths(distance: 4) == (
-  ///   sharps: [Note.e, Note.b, Note.f.sharp, Note.c.sharp],
-  ///   flats: [Note.d, Note.g, Note.c, Note.f],
-  /// )
+  /// Note.c.splitCircleOfFifths.down.take(4).toList()
+  ///   == [Note.f, Note.b.flat, Note.e.flat, Note.a.flat]
+  ///
+  /// Note.a.splitCircleOfFifths.up.take(4).toList()
+  ///   == [Note.e, Note.b, Note.f.sharp, Note.c.sharp]
   /// ```
   /// ---
   /// See also:
   /// * [circleOfFifths] for a continuous list version of [splitCircleOfFifths].
-  ({List<Note> sharps, List<Note> flats}) splitCircleOfFifths({
-    int distance = chromaticDivisions ~/ 2,
-  }) =>
-      (
-        sharps: Interval.P5
-            .circleFrom(this, distance: distance)
-            .skip(1)
-            .toList(growable: false),
-        flats: Interval.P5
-            .circleFrom(this, distance: -distance)
-            .skip(1)
-            .toList(growable: false),
-      );
+  ({Iterable<Note> up, Iterable<Note> down}) get splitCircleOfFifths => (
+    up: Interval.P5.circleFrom(this).skip(1),
+    down: Interval.P4.circleFrom(this).skip(1),
+  );
 
   /// The continuous circle of fifths up to [distance] including this [Note],
   /// from flats to sharps.
@@ -357,9 +347,13 @@ final class Note extends Scalable<Note>
   /// * [splitCircleOfFifths] for a different representation of the same
   ///   circle of fifths.
   List<Note> circleOfFifths({int distance = chromaticDivisions ~/ 2}) {
-    final (:flats, :sharps) = splitCircleOfFifths(distance: distance);
+    final (:down, :up) = splitCircleOfFifths;
 
-    return [...flats.reversed, this, ...sharps];
+    return [
+      ...down.take(distance).toList().reversed,
+      this,
+      ...up.take(distance),
+    ];
   }
 
   /// The distance in relation to the circle of fifths.
@@ -392,9 +386,9 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   Interval interval(Note other) => Interval.fromSizeAndSemitones(
-        baseNote.intervalSize(other.baseNote),
-        difference(other) % chromaticDivisions,
-      );
+    baseNote.intervalSize(other.baseNote),
+    difference(other) % chromaticDivisions,
+  );
 
   /// Transposes this [Note] by [interval].
   ///
@@ -406,14 +400,17 @@ final class Note extends Scalable<Note>
   @override
   Note transposeBy(Interval interval) {
     final transposedBaseNote = baseNote.transposeBySize(interval.size);
-    final positiveDifference = interval.isDescending
-        ? transposedBaseNote.positiveDifference(baseNote)
-        : baseNote.positiveDifference(transposedBaseNote);
+    final positiveDifference =
+        interval.isDescending
+            ? transposedBaseNote.positiveDifference(baseNote)
+            : baseNote.positiveDifference(transposedBaseNote);
 
-    final accidentalSemitones = (accidental.semitones * interval.size.sign) +
+    final accidentalSemitones =
+        (accidental.semitones * interval.size.sign) +
         ((interval.semitones * interval.size.sign) - positiveDifference);
-    final semitonesOctaveMod = accidentalSemitones -
-        chromaticDivisions * (interval.size.absShift ~/ Size.octave);
+    final semitonesOctaveMod =
+        accidentalSemitones -
+        chromaticDivisions * ((interval.size.abs() - 1) ~/ 7);
 
     return Note(
       transposedBaseNote,
@@ -515,22 +512,24 @@ final class GermanNoteNotation extends NoteNotation {
 
   @override
   String note(Note note) => switch (note) {
-        Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
-        // Flattened notes.
-        final note when note.accidental.isFlat => switch (note.baseNote) {
-            BaseNote.a || BaseNote.e => note.baseNote.toString(system: this) +
-                note.accidental.toString(system: this).substring(1),
-            _ => super.note(note),
-          },
-        // Sharpened and natural notes.
-        final note => super.note(note),
-      };
+    Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
+    // Flattened notes.
+    Note(:final baseNote, :final accidental) when accidental.isFlat =>
+      switch (baseNote) {
+        BaseNote.a || BaseNote.e =>
+          baseNote.toString(system: this) +
+              accidental.toString(system: this).substring(1),
+        _ => super.note(note),
+      },
+    // Sharpened and natural notes.
+    final note => super.note(note),
+  };
 
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
-        BaseNote.b => 'H',
-        final baseNote => baseNote.name.toUpperCase(),
-      };
+    BaseNote.b => 'H',
+    BaseNote(:final name) => name.toUpperCase(),
+  };
 
   @override
   String accidental(Accidental accidental) =>
@@ -538,9 +537,9 @@ final class GermanNoteNotation extends NoteNotation {
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-        TonalMode.major => 'Dur',
-        TonalMode.minor => 'Moll',
-      };
+    TonalMode.major => 'Dur',
+    TonalMode.minor => 'Moll',
+  };
 
   @override
   String key(Key key) {
@@ -566,14 +565,14 @@ final class RomanceNoteNotation extends NoteNotation {
 
   @override
   String baseNote(BaseNote baseNote) => switch (baseNote) {
-        BaseNote.c => 'Do',
-        BaseNote.d => 'Re',
-        BaseNote.e => 'Mi',
-        BaseNote.f => 'Fa',
-        BaseNote.g => 'Sol',
-        BaseNote.a => 'La',
-        BaseNote.b => 'Si',
-      };
+    BaseNote.c => 'Do',
+    BaseNote.d => 'Re',
+    BaseNote.e => 'Mi',
+    BaseNote.f => 'Fa',
+    BaseNote.g => 'Sol',
+    BaseNote.a => 'La',
+    BaseNote.b => 'Si',
+  };
 
   @override
   String accidental(Accidental accidental) =>
@@ -581,9 +580,9 @@ final class RomanceNoteNotation extends NoteNotation {
 
   @override
   String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-        TonalMode.major => 'maggiore',
-        TonalMode.minor => 'minore',
-      };
+    TonalMode.major => 'maggiore',
+    TonalMode.minor => 'minore',
+  };
 }
 
 /// A list of notes extension.
@@ -596,4 +595,14 @@ extension Notes on List<Note> {
 
   /// Makes all notes on this [List] natural.
   List<Note> get natural => map((note) => note.natural).toList();
+
+  /// Creates a [Pitch] at [octave] for each [Note] in this list.
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.a, Note.c, Note.e].inOctave(4)
+  ///   == [Note.a.inOctave(4), Note.c.inOctave(4), Note.e.inOctave(4)]
+  /// ```
+  List<Pitch> inOctave(int octave) =>
+      map((note) => note.inOctave(octave)).toList();
 }

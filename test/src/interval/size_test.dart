@@ -4,7 +4,19 @@ import 'package:test/test.dart';
 void main() {
   group('Size', () {
     group('constructor', () {
-      test('creates a different Size.unison ascending and descending', () {
+      test('asserts the size argument is correct', () {
+        expect(const Size(3), Size.third);
+        expect(const Size(-10), -Size.tenth);
+        expect(const PerfectSize(11), Size.eleventh);
+        expect(const ImperfectSize(14), const Size(14));
+
+        expect(() => PerfectSize(16), throwsA(isA<AssertionError>()));
+        expect(() => PerfectSize(51), throwsA(isA<AssertionError>()));
+        expect(() => ImperfectSize(22), throwsA(isA<AssertionError>()));
+        expect(() => ImperfectSize(47), throwsA(isA<AssertionError>()));
+      });
+
+      test('creates different ascending and descending Size.unison', () {
         expect(Size.unison, isNot(-Size.unison));
       });
     });
@@ -70,21 +82,18 @@ void main() {
         expect(Size.nearestFromSemitones(48), const Size(29));
       });
 
-      test(
-        'returns the nearest Size when no Size'
-        ' corresponds exactly to the given semitones',
-        () {
-          expect(Size.nearestFromSemitones(-4), -Size.third);
-          expect(Size.nearestFromSemitones(-2), -Size.second);
-          expect(Size.nearestFromSemitones(2), Size.second);
-          expect(Size.nearestFromSemitones(4), Size.third);
-          expect(Size.nearestFromSemitones(6), Size.fourth);
-          expect(Size.nearestFromSemitones(9), Size.sixth);
-          expect(Size.nearestFromSemitones(11), Size.seventh);
-          expect(Size.nearestFromSemitones(14), Size.ninth);
-          expect(Size.nearestFromSemitones(-20), -Size.thirteenth);
-        },
-      );
+      test('returns the nearest Size when no Size'
+          ' corresponds exactly to the given semitones', () {
+        expect(Size.nearestFromSemitones(-4), -Size.third);
+        expect(Size.nearestFromSemitones(-2), -Size.second);
+        expect(Size.nearestFromSemitones(2), Size.second);
+        expect(Size.nearestFromSemitones(4), Size.third);
+        expect(Size.nearestFromSemitones(6), Size.fourth);
+        expect(Size.nearestFromSemitones(9), Size.sixth);
+        expect(Size.nearestFromSemitones(11), Size.seventh);
+        expect(Size.nearestFromSemitones(14), Size.ninth);
+        expect(Size.nearestFromSemitones(-20), -Size.thirteenth);
+      });
     });
 
     group('.isPerfect', () {
@@ -244,8 +253,8 @@ void main() {
       });
     });
 
-    group('.inversion', () {
-      test('returns the inversion of this Size', () {
+    group('.simple', () {
+      test('returns the simplified version of this Size', () {
         expect(Size.unison.simple, Size.unison);
         expect(Size.second.simple, Size.second);
         expect(Size.third.simple, Size.third);
@@ -271,7 +280,7 @@ void main() {
         expect(const Size(21).simple, Size.seventh);
         expect(const Size(22).simple, Size.octave);
 
-        expect(skip: true, const Size(23).simple, Size.second);
+        expect(const Size(23).simple, Size.second);
         expect(const Size(24).simple, Size.third);
         expect(const Size(25).simple, Size.fourth);
         expect(const Size(26).simple, Size.fifth);
@@ -279,17 +288,17 @@ void main() {
         expect(const Size(28).simple, Size.seventh);
         expect(const Size(29).simple, Size.octave);
 
-        expect(skip: true, const Size(30).simple, Size.second);
-        expect(skip: true, const Size(31).simple, Size.third);
+        expect(const Size(30).simple, Size.second);
+        expect(const Size(31).simple, Size.third);
         expect(const Size(32).simple, Size.fourth);
         expect(const Size(33).simple, Size.fifth);
         expect(const Size(34).simple, Size.sixth);
         expect(const Size(35).simple, Size.seventh);
         expect(const Size(36).simple, Size.octave);
 
-        expect(skip: true, const Size(37).simple, Size.second);
-        expect(skip: true, const Size(38).simple, Size.third);
-        expect(skip: true, const Size(39).simple, Size.fourth);
+        expect(const Size(37).simple, Size.second);
+        expect(const Size(38).simple, Size.third);
+        expect(const Size(39).simple, Size.fourth);
         expect(const Size(40).simple, Size.fifth);
         expect(const Size(41).simple, Size.sixth);
         expect(const Size(42).simple, Size.seventh);

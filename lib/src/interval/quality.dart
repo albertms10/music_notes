@@ -60,11 +60,17 @@ sealed class Quality implements Comparable<Quality> {
 
   @override
   int compareTo(Quality other) => compareMultiple([
-        () => semitones.compareTo(other.semitones),
-        // TODO(albertms10): rewrite without relying on `runtimeType`.
-        // ignore: no_runtimetype_tostring
-        () => '$runtimeType'.compareTo('${other.runtimeType}'),
-      ]);
+    () => semitones.compareTo(other.semitones),
+    () {
+      if (this is PerfectQuality && other is ImperfectQuality) {
+        return 1;
+      }
+      if (this is ImperfectQuality && other is PerfectQuality) {
+        return -1;
+      }
+      return 0;
+    },
+  ]);
 }
 
 /// Quality corresponding to an [Interval.perfect].
@@ -138,10 +144,10 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   String get symbol => switch (semitones) {
-        < 0 => Quality._diminishedSymbol * semitones.abs(),
-        0 => _perfectSymbol,
-        _ => Quality._augmentedSymbol * semitones,
-      };
+    < 0 => Quality._diminishedSymbol * semitones.abs(),
+    0 => _perfectSymbol,
+    _ => Quality._augmentedSymbol * semitones,
+  };
 
   /// The inversion of this [PerfectQuality].
   ///
@@ -249,11 +255,11 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   String get symbol => switch (semitones) {
-        < 0 => Quality._diminishedSymbol * semitones.abs(),
-        0 => _minorSymbol,
-        1 => _majorSymbol,
-        _ => Quality._augmentedSymbol * (semitones - 1),
-      };
+    < 0 => Quality._diminishedSymbol * semitones.abs(),
+    0 => _minorSymbol,
+    1 => _majorSymbol,
+    _ => Quality._augmentedSymbol * (semitones - 1),
+  };
 
   /// The inversion of this [ImperfectQuality].
   ///

@@ -95,10 +95,7 @@ void main() {
         expect(Note.a.flat, const Note(BaseNote.a, Accidental.flat));
         expect(Note.d.flat, const Note(BaseNote.d, Accidental.flat));
         expect(Note.g.flat.sharp, Note.g);
-        expect(
-          Note.e.flat.flat,
-          const Note(BaseNote.e, Accidental.doubleFlat),
-        );
+        expect(Note.e.flat.flat, const Note(BaseNote.e, Accidental.doubleFlat));
         expect(
           Note.c.flat.flat.flat,
           const Note(BaseNote.c, Accidental.tripleFlat),
@@ -154,10 +151,7 @@ void main() {
           Note.e.flat.majorTriad,
           Chord([Note.e.flat, Note.g, Note.b.flat]),
         );
-        expect(
-          Note.b.majorTriad,
-          Chord([Note.b, Note.d.sharp, Note.f.sharp]),
-        );
+        expect(Note.b.majorTriad, Chord([Note.b, Note.d.sharp, Note.f.sharp]));
       });
     });
 
@@ -341,14 +335,18 @@ void main() {
       );
     });
 
-    group('.splitCircleOfFifths()', () {
+    group('.splitCircleOfFifths', () {
       test('returns the split circle of fifths from this Note', () {
-        var (:sharps, :flats) = Note.c.splitCircleOfFifths();
-        expect(
-          sharps,
-          [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp],
-        );
-        expect(flats, [
+        var (:up, :down) = Note.c.splitCircleOfFifths;
+        expect(up.take(6), [
+          Note.g,
+          Note.d,
+          Note.a,
+          Note.e,
+          Note.b,
+          Note.f.sharp,
+        ]);
+        expect(down.take(6), [
           Note.f,
           Note.b.flat,
           Note.e.flat,
@@ -357,31 +355,25 @@ void main() {
           Note.g.flat,
         ]);
 
-        (:sharps, :flats) = Note.a.splitCircleOfFifths(distance: 7);
-        expect(
-          sharps,
-          [
-            Note.e,
-            Note.b,
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-          ],
-        );
-        expect(
-          flats,
-          [
-            Note.d,
-            Note.g,
-            Note.c,
-            Note.f,
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-          ],
-        );
+        (:up, :down) = Note.a.splitCircleOfFifths;
+        expect(up.take(7), [
+          Note.e,
+          Note.b,
+          Note.f.sharp,
+          Note.c.sharp,
+          Note.g.sharp,
+          Note.d.sharp,
+          Note.a.sharp,
+        ]);
+        expect(down.take(7), [
+          Note.d,
+          Note.g,
+          Note.c,
+          Note.f,
+          Note.b.flat,
+          Note.e.flat,
+          Note.a.flat,
+        ]);
       });
     });
 
@@ -645,6 +637,17 @@ void main() {
         expect(Note.c.transposeBy(const Interval.perfect(Size(15))), Note.c);
         expect(Note.c.transposeBy(const Interval.perfect(Size(22))), Note.c);
         expect(Note.c.transposeBy(const Interval.perfect(Size(29))), Note.c);
+        expect(Note.c.transposeBy(const ImperfectSize(30).minor), Note.d.flat);
+        expect(Note.c.transposeBy(const ImperfectSize(30).major), Note.d);
+        expect(Note.c.transposeBy(const Interval.perfect(Size(32))), Note.f);
+        expect(
+          Note.c.transposeBy(const PerfectSize(32).augmented),
+          Note.f.sharp,
+        );
+        expect(
+          Note.c.transposeBy(const PerfectSize(33).diminished),
+          Note.g.flat,
+        );
       });
     });
 
@@ -676,10 +679,7 @@ void main() {
       });
 
       test('returns the German string representation of this Note', () {
-        expect(
-          Note.c.flat.flat.toString(system: NoteNotation.german),
-          'Ceses',
-        );
+        expect(Note.c.flat.flat.toString(system: NoteNotation.german), 'Ceses');
         expect(Note.c.flat.toString(system: NoteNotation.german), 'Ces');
         expect(Note.c.toString(system: NoteNotation.german), 'C');
         expect(Note.c.sharp.toString(system: NoteNotation.german), 'Cis');
@@ -688,10 +688,7 @@ void main() {
           'Cisis',
         );
 
-        expect(
-          Note.d.flat.flat.toString(system: NoteNotation.german),
-          'Deses',
-        );
+        expect(Note.d.flat.flat.toString(system: NoteNotation.german), 'Deses');
         expect(Note.d.flat.toString(system: NoteNotation.german), 'Des');
         expect(Note.d.toString(system: NoteNotation.german), 'D');
         expect(Note.d.sharp.toString(system: NoteNotation.german), 'Dis');
@@ -700,10 +697,7 @@ void main() {
           'Disis',
         );
 
-        expect(
-          Note.e.flat.flat.toString(system: NoteNotation.german),
-          'Eses',
-        );
+        expect(Note.e.flat.flat.toString(system: NoteNotation.german), 'Eses');
         expect(Note.e.flat.toString(system: NoteNotation.german), 'Es');
         expect(Note.e.toString(system: NoteNotation.german), 'E');
         expect(Note.e.sharp.toString(system: NoteNotation.german), 'Eis');
@@ -712,10 +706,7 @@ void main() {
           'Eisis',
         );
 
-        expect(
-          Note.f.flat.flat.toString(system: NoteNotation.german),
-          'Feses',
-        );
+        expect(Note.f.flat.flat.toString(system: NoteNotation.german), 'Feses');
         expect(Note.f.flat.toString(system: NoteNotation.german), 'Fes');
         expect(Note.f.toString(system: NoteNotation.german), 'F');
         expect(Note.f.sharp.toString(system: NoteNotation.german), 'Fis');
@@ -724,10 +715,7 @@ void main() {
           'Fisis',
         );
 
-        expect(
-          Note.g.flat.flat.toString(system: NoteNotation.german),
-          'Geses',
-        );
+        expect(Note.g.flat.flat.toString(system: NoteNotation.german), 'Geses');
         expect(Note.g.flat.toString(system: NoteNotation.german), 'Ges');
         expect(Note.g.toString(system: NoteNotation.german), 'G');
         expect(Note.g.sharp.toString(system: NoteNotation.german), 'Gis');
@@ -736,10 +724,7 @@ void main() {
           'Gisis',
         );
 
-        expect(
-          Note.a.flat.flat.toString(system: NoteNotation.german),
-          'Ases',
-        );
+        expect(Note.a.flat.flat.toString(system: NoteNotation.german), 'Ases');
         expect(Note.a.flat.toString(system: NoteNotation.german), 'As');
         expect(Note.a.toString(system: NoteNotation.german), 'A');
         expect(Note.a.sharp.toString(system: NoteNotation.german), 'Ais');
@@ -748,10 +733,7 @@ void main() {
           'Aisis',
         );
 
-        expect(
-          Note.b.flat.flat.toString(system: NoteNotation.german),
-          'Heses',
-        );
+        expect(Note.b.flat.flat.toString(system: NoteNotation.german), 'Heses');
         expect(Note.b.flat.toString(system: NoteNotation.german), 'B');
         expect(Note.b.toString(system: NoteNotation.german), 'H');
         expect(Note.b.sharp.toString(system: NoteNotation.german), 'His');
@@ -824,17 +806,14 @@ void main() {
       });
 
       test('sorts Notes in a collection by fifths distance', () {
-        final orderedSet = SplayTreeSet<Note>.of(
-          {
-            Note.d,
-            Note.a.flat,
-            Note.c,
-            Note.b.flat,
-            Note.g.sharp,
-            Note.b.sharp,
-          },
-          Note.compareByFifthsDistance,
-        );
+        final orderedSet = SplayTreeSet<Note>.of({
+          Note.d,
+          Note.a.flat,
+          Note.c,
+          Note.b.flat,
+          Note.g.sharp,
+          Note.b.sharp,
+        }, Note.compareByFifthsDistance);
         expect(orderedSet.toList(), [
           Note.a.flat,
           Note.b.flat,
@@ -851,29 +830,70 @@ void main() {
     group('.flat', () {
       test('flattens all notes in this list', () {
         expect(const <Note>[].flat, const <Note>[]);
-        expect(
-          [Note.a, Note.b.flat, Note.c.sharp, Note.d.sharp.sharp].flat,
-          [Note.a.flat, Note.b.flat.flat, Note.c, Note.d.sharp],
-        );
+        expect([Note.a, Note.b.flat, Note.c.sharp, Note.d.sharp.sharp].flat, [
+          Note.a.flat,
+          Note.b.flat.flat,
+          Note.c,
+          Note.d.sharp,
+        ]);
       });
     });
 
     group('.sharp', () {
       test('sharpens all notes in this list', () {
         expect(const <Note>[].sharp, const <Note>[]);
-        expect(
-          [Note.g, Note.b.flat, Note.a.sharp, Note.b.flat.flat].sharp,
-          [Note.g.sharp, Note.b, Note.a.sharp.sharp, Note.b.flat],
-        );
+        expect([Note.g, Note.b.flat, Note.a.sharp, Note.b.flat.flat].sharp, [
+          Note.g.sharp,
+          Note.b,
+          Note.a.sharp.sharp,
+          Note.b.flat,
+        ]);
       });
     });
 
     group('.natural', () {
       test('makes all notes in this list natural', () {
         expect(const <Note>[].natural, const <Note>[]);
+        expect([Note.a, Note.b.flat, Note.c.sharp, Note.f.flat.flat].natural, [
+          Note.a,
+          Note.b,
+          Note.c,
+          Note.f,
+        ]);
+      });
+    });
+
+    group('.inOctave()', () {
+      test('creates a Pitch at octave for each Note in this list', () {
+        expect(const <Note>[].inOctave(2), const <Note>[]);
+
+        expect([Note.f.sharp].inOctave(5), [Note.f.sharp.inOctave(5)]);
+
         expect(
-          [Note.a, Note.b.flat, Note.c.sharp, Note.f.flat.flat].natural,
-          [Note.a, Note.b, Note.c, Note.f],
+          const [Note.c, Note.e, Note.g].inOctave(4),
+          [
+            Note.c.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.inOctave(4),
+          ],
+        );
+
+        expect(
+          [Note.d.flat, Note.f.sharp, Note.b].inOctave(2),
+          [
+            Note.d.flat.inOctave(2),
+            Note.f.sharp.inOctave(2),
+            Note.b.inOctave(2),
+          ],
+        );
+
+        expect(
+          [Note.a.sharp, Note.c.sharp, Note.e.flat].inOctave(-1),
+          [
+            Note.a.sharp.inOctave(-1),
+            Note.c.sharp.inOctave(-1),
+            Note.e.flat.inOctave(-1),
+          ],
         );
       });
     });

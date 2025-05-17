@@ -236,11 +236,13 @@ And even explore the circle of fifths or any circle of intervals
 up to a distance:
 
 ```dart
-Interval.P5.circleFrom(Note.c, distance: 12).toList();
+Interval.P5.circleFrom(Note.c).take(13).toList();
 // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
 Note.c.circleOfFifths(distance: 3); // [E♭, B♭, F, C, G, D, A]
-Note.c.splitCircleOfFifths();
-// (flats: [F, B♭, E♭, A♭, D♭, G♭], sharps: [G, D, A, E, B, F♯])
+Note.c.splitCircleOfFifths.down.take(6).toList();
+// [F, B♭, E♭, A♭, D♭, G♭]
+Note.c.splitCircleOfFifths.up.take(8).toList();
+// [G, D, A, E, B, F♯, C♯, G♯]
 
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
@@ -439,8 +441,10 @@ Or know its numeric representation:
 
 ```dart
 ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-  ..numericRepresentation().toSet() // {0, 11, 3, 5}
-  ..numericRepresentation(reference: PitchClass.d).toSet() // {9, 8, 0, 2}
+  ..numericRepresentation()
+      .toSet() // {0, 11, 3, 5}
+  ..numericRepresentation(reference: PitchClass.d)
+      .toSet() // {9, 8, 0, 2}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
 
@@ -492,9 +496,18 @@ TuningFork.c256; // C256
 And use it in a `TuningSystem`:
 
 ```dart
-Note.b.flat.inOctave(4).frequency(
+Note.b.flat
+    .inOctave(4)
+    .frequency(
       tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
     ); // 456.1401436878537
+```
+
+Get the `Frequency` at a given temperature:
+
+```dart
+const Frequency(440).at(const Celsius(18)); // 438.4619866006409
+const Frequency(440).at(const Celsius(24)); // 443.07602679871826
 ```
 
 Get the closest `Pitch` from a given `Frequency`:
@@ -532,7 +545,8 @@ ClosestPitch.parse('E♭3-28'); // E♭3-28
 ### In a nutshell
 
 ```dart
-ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
+ScalePattern
+    .lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .on(Note.parse('a')) // A Lydian (A B C♯ D♯ E F♯ G♯ A)
     .transposeBy(Interval.M2) // B Lydian (B C♯ D♯ E♯ F♯ G♯ A♯ B)
     .degree(ScaleDegree.iii) // D♯
@@ -544,13 +558,14 @@ ScalePattern.lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .add9(); // G min. (G B♭ D A)
 ```
 
-## Inspiration
+## Similar projects in other languages
 
-This library is inspired by a range of music theory projects.
-
-- [Teoria.js](https://github.com/saebekassebil/teoria)
-- [Tonal](https://github.com/tonaljs/tonal)
-- [Tonic](https://github.com/osteele/dart-tonic)
+- **Mingus** [Python](https://github.com/bspaans/python-mingus)
+- **Modest** [Lua](https://github.com/esbudylin/modest)
+- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
+- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
+- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
+- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 

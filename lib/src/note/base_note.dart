@@ -48,8 +48,8 @@ enum BaseNote implements Comparable<BaseNote> {
   /// BaseNote.fromSemitones(10) == null
   /// ```
   static BaseNote? fromSemitones(int semitones) => values.firstWhereOrNull(
-        (note) => semitones % chromaticDivisions == note.semitones,
-      );
+    (note) => semitones % chromaticDivisions == note.semitones,
+  );
 
   /// Returns a [BaseNote] that matches with [ordinal].
   ///
@@ -76,7 +76,10 @@ enum BaseNote implements Comparable<BaseNote> {
   factory BaseNote.parse(String source) {
     try {
       return values.byName(source.toLowerCase());
-    } catch (e, stackTrace) {
+    }
+    // TODO(albertms10): find a better way to catch an invalid BaseNote.
+    // ignore: avoid_catching_errors
+    on ArgumentError catch (e, stackTrace) {
       Error.throwWithStackTrace(
         FormatException('Invalid BaseNote', source, 0),
         stackTrace,
@@ -104,11 +107,8 @@ enum BaseNote implements Comparable<BaseNote> {
   /// BaseNote.c.intervalSize(BaseNote.a) == Size.sixth
   /// ```
   Size intervalSize(BaseNote other) => Size(
-        other.ordinal -
-            ordinal +
-            (ordinal > other.ordinal ? values.length : 0) +
-            1,
-      );
+    other.ordinal - ordinal + (ordinal > other.ordinal ? values.length : 0) + 1,
+  );
 
   /// The difference in semitones between this [BaseNote] and [other].
   ///

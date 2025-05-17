@@ -81,10 +81,7 @@ void main() {
           const Rational.fromMixed(0, 16667, 50000),
         );
         expect(Rational.fromDouble(1.375), const Rational.fromMixed(1, 3, 8));
-        expect(
-          Rational.fromDouble(2.25),
-          const Rational.fromMixed(2, 1, 4),
-        );
+        expect(Rational.fromDouble(2.25), const Rational.fromMixed(2, 1, 4));
       });
 
       test('throws an assertion error when arguments are incorrect', () {

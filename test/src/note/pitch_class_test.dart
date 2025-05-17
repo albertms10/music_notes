@@ -17,101 +17,93 @@ void main() {
     group('.spellings()', () {
       test('returns the correct Note spellings for this PitchClass', () {
         expect(PitchClass.c.spellings(), {Note.c});
-        expect(
-          PitchClass.c.spellings(distance: 1),
-          {Note.b.sharp, Note.c, Note.d.flat.flat},
-        );
+        expect(PitchClass.c.spellings(distance: 1), {
+          Note.b.sharp,
+          Note.c,
+          Note.d.flat.flat,
+        });
 
         expect(PitchClass.cSharp.spellings(), {Note.c.sharp, Note.d.flat});
-        expect(
-          PitchClass.cSharp.spellings(distance: 1),
-          {
-            Note.b.sharp.sharp,
-            Note.c.sharp,
-            Note.d.flat,
-            Note.e.flat.flat.flat,
-          },
-        );
+        expect(PitchClass.cSharp.spellings(distance: 1), {
+          Note.b.sharp.sharp,
+          Note.c.sharp,
+          Note.d.flat,
+          Note.e.flat.flat.flat,
+        });
 
         expect(PitchClass.d.spellings(), {Note.d});
-        expect(
-          PitchClass.d.spellings(distance: 1),
-          {Note.c.sharp.sharp, Note.d, Note.e.flat.flat},
-        );
+        expect(PitchClass.d.spellings(distance: 1), {
+          Note.c.sharp.sharp,
+          Note.d,
+          Note.e.flat.flat,
+        });
 
         expect(PitchClass.dSharp.spellings(), {Note.d.sharp, Note.e.flat});
-        expect(
-          PitchClass.dSharp.spellings(distance: 1),
-          {
-            Note.c.sharp.sharp.sharp,
-            Note.d.sharp,
-            Note.e.flat,
-            Note.f.flat.flat,
-          },
-        );
+        expect(PitchClass.dSharp.spellings(distance: 1), {
+          Note.c.sharp.sharp.sharp,
+          Note.d.sharp,
+          Note.e.flat,
+          Note.f.flat.flat,
+        });
 
         expect(PitchClass.e.spellings(), {Note.e});
-        expect(
-          PitchClass.e.spellings(distance: 1),
-          {Note.d.sharp.sharp, Note.e, Note.f.flat},
-        );
+        expect(PitchClass.e.spellings(distance: 1), {
+          Note.d.sharp.sharp,
+          Note.e,
+          Note.f.flat,
+        });
 
         expect(PitchClass.f.spellings(), {Note.f});
-        expect(
-          PitchClass.f.spellings(distance: 1),
-          {Note.e.sharp, Note.f, Note.g.flat.flat},
-        );
+        expect(PitchClass.f.spellings(distance: 1), {
+          Note.e.sharp,
+          Note.f,
+          Note.g.flat.flat,
+        });
 
         expect(PitchClass.fSharp.spellings(), {Note.f.sharp, Note.g.flat});
-        expect(
-          PitchClass.fSharp.spellings(distance: 1),
-          {
-            Note.e.sharp.sharp,
-            Note.f.sharp,
-            Note.g.flat,
-            Note.a.flat.flat.flat,
-          },
-        );
+        expect(PitchClass.fSharp.spellings(distance: 1), {
+          Note.e.sharp.sharp,
+          Note.f.sharp,
+          Note.g.flat,
+          Note.a.flat.flat.flat,
+        });
 
         expect(PitchClass.g.spellings(), {Note.g});
-        expect(
-          PitchClass.g.spellings(distance: 1),
-          {Note.f.sharp.sharp, Note.g, Note.a.flat.flat},
-        );
+        expect(PitchClass.g.spellings(distance: 1), {
+          Note.f.sharp.sharp,
+          Note.g,
+          Note.a.flat.flat,
+        });
 
         expect(PitchClass.gSharp.spellings(), {Note.g.sharp, Note.a.flat});
-        expect(
-          PitchClass.gSharp.spellings(distance: 1),
-          {
-            Note.f.sharp.sharp.sharp,
-            Note.g.sharp,
-            Note.a.flat,
-            Note.b.flat.flat.flat,
-          },
-        );
+        expect(PitchClass.gSharp.spellings(distance: 1), {
+          Note.f.sharp.sharp.sharp,
+          Note.g.sharp,
+          Note.a.flat,
+          Note.b.flat.flat.flat,
+        });
 
         expect(PitchClass.a.spellings(), {Note.a});
-        expect(
-          PitchClass.a.spellings(distance: 1),
-          {Note.g.sharp.sharp, Note.a, Note.b.flat.flat},
-        );
+        expect(PitchClass.a.spellings(distance: 1), {
+          Note.g.sharp.sharp,
+          Note.a,
+          Note.b.flat.flat,
+        });
 
         expect(PitchClass.aSharp.spellings(), {Note.a.sharp, Note.b.flat});
-        expect(
-          PitchClass.aSharp.spellings(distance: 1),
-          {
-            Note.g.sharp.sharp.sharp,
-            Note.a.sharp,
-            Note.b.flat,
-            Note.c.flat.flat,
-          },
-        );
+        expect(PitchClass.aSharp.spellings(distance: 1), {
+          Note.g.sharp.sharp.sharp,
+          Note.a.sharp,
+          Note.b.flat,
+          Note.c.flat.flat,
+        });
 
         expect(PitchClass.b.spellings(), {Note.b});
-        expect(
-          PitchClass.b.spellings(distance: 1),
-          {Note.a.sharp.sharp, Note.b, Note.c.flat},
-        );
+        expect(PitchClass.b.spellings(distance: 1), {
+          Note.a.sharp.sharp,
+          Note.b,
+          Note.c.flat,
+        });
       });
     });
 
@@ -191,28 +183,25 @@ void main() {
         expect(PitchClass.b.resolveSpelling(Accidental.flat), Note.c.flat);
       });
 
-      test(
-        'throws an ArgumentError when withAccidental does not match with '
-        'any Note',
-        () {
-          expect(
-            () => PitchClass.cSharp.resolveSpelling(Accidental.natural),
-            throwsArgumentError,
-          );
-          expect(
-            () => PitchClass.c.resolveSpelling(Accidental.flat),
-            throwsArgumentError,
-          );
-          expect(
-            () => PitchClass.d.resolveSpelling(Accidental.sharp),
-            throwsArgumentError,
-          );
-          expect(
-            () => PitchClass.a.resolveSpelling(Accidental.tripleFlat),
-            throwsArgumentError,
-          );
-        },
-      );
+      test('throws an ArgumentError when withAccidental does not match with '
+          'any Note', () {
+        expect(
+          () => PitchClass.cSharp.resolveSpelling(Accidental.natural),
+          throwsArgumentError,
+        );
+        expect(
+          () => PitchClass.c.resolveSpelling(Accidental.flat),
+          throwsArgumentError,
+        );
+        expect(
+          () => PitchClass.d.resolveSpelling(Accidental.sharp),
+          throwsArgumentError,
+        );
+        expect(
+          () => PitchClass.a.resolveSpelling(Accidental.tripleFlat),
+          throwsArgumentError,
+        );
+      });
     });
 
     group('.resolveClosestSpelling()', () {
@@ -355,88 +344,64 @@ void main() {
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 7),
-            Interval.P5.circleFrom(PitchClass.c, distance: 12),
+            Interval.P5.circleFrom(PitchClass.c).take(13),
           );
           expect(
             ScalePattern.chromatic
                 .on(PitchClass.c)
                 .degrees
                 .map((note) => note * 5),
-            Interval.P5.circleFrom(PitchClass.c, distance: -12),
+            (-Interval.P5).circleFrom(PitchClass.c).take(13),
           );
         },
       );
     });
 
     group('.toString()', () {
-      test(
-        'returns the enharmonic spellings string representation of '
-        'this PitchClass',
-        () {
-          expect(PitchClass.c.toString(), '{C}');
-          expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
-          expect(PitchClass.d.toString(), '{D}');
-          expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
-          expect(PitchClass.e.toString(), '{E}');
-          expect(PitchClass.f.toString(), '{F}');
-          expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
-          expect(PitchClass.g.toString(), '{G}');
-          expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
-          expect(PitchClass.a.toString(), '{A}');
-          expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
-          expect(PitchClass.b.toString(), '{B}');
-        },
-      );
+      test('returns the enharmonic spellings string representation of '
+          'this PitchClass', () {
+        expect(PitchClass.c.toString(), '{C}');
+        expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
+        expect(PitchClass.d.toString(), '{D}');
+        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+        expect(PitchClass.e.toString(), '{E}');
+        expect(PitchClass.f.toString(), '{F}');
+        expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
+        expect(PitchClass.g.toString(), '{G}');
+        expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
+        expect(PitchClass.a.toString(), '{A}');
+        expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
+        expect(PitchClass.b.toString(), '{B}');
+      });
 
       test('returns the integer string representation of this PitchClass', () {
-        expect(
-          PitchClass.c.toString(system: PitchClassNotation.integer),
-          '0',
-        );
+        expect(PitchClass.c.toString(system: PitchClassNotation.integer), '0');
         expect(
           PitchClass.cSharp.toString(system: PitchClassNotation.integer),
           '1',
         );
-        expect(
-          PitchClass.d.toString(system: PitchClassNotation.integer),
-          '2',
-        );
+        expect(PitchClass.d.toString(system: PitchClassNotation.integer), '2');
         expect(
           PitchClass.dSharp.toString(system: PitchClassNotation.integer),
           '3',
         );
-        expect(
-          PitchClass.e.toString(system: PitchClassNotation.integer),
-          '4',
-        );
-        expect(
-          PitchClass.f.toString(system: PitchClassNotation.integer),
-          '5',
-        );
+        expect(PitchClass.e.toString(system: PitchClassNotation.integer), '4');
+        expect(PitchClass.f.toString(system: PitchClassNotation.integer), '5');
         expect(
           PitchClass.fSharp.toString(system: PitchClassNotation.integer),
           '6',
         );
-        expect(
-          PitchClass.g.toString(system: PitchClassNotation.integer),
-          '7',
-        );
+        expect(PitchClass.g.toString(system: PitchClassNotation.integer), '7');
         expect(
           PitchClass.gSharp.toString(system: PitchClassNotation.integer),
           '8',
         );
-        expect(
-          PitchClass.a.toString(system: PitchClassNotation.integer),
-          '9',
-        );
+        expect(PitchClass.a.toString(system: PitchClassNotation.integer), '9');
         expect(
           PitchClass.aSharp.toString(system: PitchClassNotation.integer),
           't',
         );
-        expect(
-          PitchClass.b.toString(system: PitchClassNotation.integer),
-          'e',
-        );
+        expect(PitchClass.b.toString(system: PitchClassNotation.integer), 'e');
       });
 
       test(
@@ -454,10 +419,7 @@ void main() {
       test('ignores equal PitchClass instances in a Set', () {
         final collection = {PitchClass.f, PitchClass.aSharp};
         collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [PitchClass.f, PitchClass.aSharp],
-        );
+        expect(collection.toList(), const [PitchClass.f, PitchClass.aSharp]);
       });
     });
 

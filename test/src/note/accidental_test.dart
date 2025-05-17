@@ -158,10 +158,10 @@ void main() {
       test('ignores equal Accidental instances in a Set', () {
         final collection = {Accidental.natural, Accidental.flat};
         collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [Accidental.natural, Accidental.flat],
-        );
+        expect(collection.toList(), const [
+          Accidental.natural,
+          Accidental.flat,
+        ]);
       });
     });
 

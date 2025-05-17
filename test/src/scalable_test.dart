@@ -84,14 +84,15 @@ void main() {
     group('.inversion', () {
       test('returns the inversion of this ScalableIterable', () {
         expect(const <PitchClass>{}.inversion.toList(), const <PitchClass>[]);
-        expect(
-          {PitchClass.cSharp}.inversion.toList(),
-          const [PitchClass.cSharp],
-        );
-        expect(
-          {Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(),
-          [Note.d, Note.b.flat, Note.c, Note.a],
-        );
+        expect({PitchClass.cSharp}.inversion.toList(), const [
+          PitchClass.cSharp,
+        ]);
+        expect({Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(), [
+          Note.d,
+          Note.b.flat,
+          Note.c,
+          Note.a,
+        ]);
         expect(
           {
             Note.c.inOctave(4),
@@ -107,9 +108,12 @@ void main() {
           ],
         );
         expect(
-          {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
-              .inversion
-              .toList(),
+          {
+            PitchClass.c,
+            PitchClass.dSharp,
+            PitchClass.b,
+            PitchClass.g,
+          }.inversion.toList(),
           [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
         );
       });
@@ -118,14 +122,15 @@ void main() {
     group('.retrograde', () {
       test('returns the retrograde of this ScalableIterable', () {
         expect(const <PitchClass>{}.retrograde.toList(), const <PitchClass>[]);
-        expect(
-          {PitchClass.fSharp}.retrograde.toList(),
-          const [PitchClass.fSharp],
-        );
-        expect(
-          {Note.c, Note.d.sharp, Note.d, Note.g}.retrograde.toList(),
-          [Note.g, Note.d, Note.d.sharp, Note.c],
-        );
+        expect({PitchClass.fSharp}.retrograde.toList(), const [
+          PitchClass.fSharp,
+        ]);
+        expect({Note.c, Note.d.sharp, Note.d, Note.g}.retrograde.toList(), [
+          Note.g,
+          Note.d,
+          Note.d.sharp,
+          Note.c,
+        ]);
         expect(
           {
             Note.c.inOctave(4),
@@ -141,9 +146,12 @@ void main() {
           ],
         );
         expect(
-          {PitchClass.c, PitchClass.dSharp, PitchClass.d, PitchClass.g}
-              .retrograde
-              .toList(),
+          {
+            PitchClass.c,
+            PitchClass.dSharp,
+            PitchClass.d,
+            PitchClass.g,
+          }.retrograde.toList(),
           const [PitchClass.g, PitchClass.d, PitchClass.dSharp, PitchClass.c],
         );
       });
@@ -157,9 +165,12 @@ void main() {
         );
         expect({PitchClass.g}.numericRepresentation().toList(), const [0]);
         expect(
-          {PitchClass.b, PitchClass.aSharp, PitchClass.g, PitchClass.d}
-              .numericRepresentation(reference: PitchClass.g)
-              .toList(),
+          {
+            PitchClass.b,
+            PitchClass.aSharp,
+            PitchClass.g,
+            PitchClass.d,
+          }.numericRepresentation(reference: PitchClass.g).toList(),
           const [4, 3, 0, 7],
         );
         expect(

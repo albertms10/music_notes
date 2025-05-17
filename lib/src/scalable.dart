@@ -22,7 +22,7 @@ abstract class Scalable<T extends Scalable<T>>
   static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
       a.semitones.compareTo(b.semitones);
 
-  /// Creates a new [PitchClass] from [semitones].
+  /// Returns the [PitchClass] from [semitones].
   ///
   /// Example:
   /// ```dart
@@ -147,9 +147,9 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///     == const {4, 3, 7}
   /// ```
   Iterable<int> numericRepresentation({T? reference}) => map(
-        (scalable) =>
-            (reference ?? first).difference(scalable) % chromaticDivisions,
-      );
+    (scalable) =>
+        (reference ?? first).difference(scalable) % chromaticDivisions,
+  );
 
   /// The delta numeric representation of this [ScalableIterable].
   ///

@@ -21,15 +21,19 @@ void main() {
           ChordPattern.minorTriad,
         );
         expect(
-          ChordPattern.fromIntervalSteps(
-            const [Interval.M3, Interval.M3, Interval.m3],
-          ),
+          ChordPattern.fromIntervalSteps(const [
+            Interval.M3,
+            Interval.M3,
+            Interval.m3,
+          ]),
           ChordPattern.augmentedTriad.add7(ImperfectQuality.major),
         );
         expect(
-          ChordPattern.fromIntervalSteps(
-            const [Interval.M3, Interval.m3, Interval.P5],
-          ),
+          ChordPattern.fromIntervalSteps(const [
+            Interval.M3,
+            Interval.m3,
+            Interval.P5,
+          ]),
           ChordPattern.majorTriad.add9(),
         );
       });
@@ -149,10 +153,10 @@ void main() {
     group('.modifiers', () {
       test('returns the list of modifier Intervals from the root note', () {
         expect(ChordPattern.majorTriad.modifiers, const <Interval>[]);
-        expect(
-          ChordPattern.minorTriad.add6().add9().modifiers,
-          const [Interval.M6, Interval.M9],
-        );
+        expect(ChordPattern.minorTriad.add6().add9().modifiers, const [
+          Interval.M6,
+          Interval.M9,
+        ]);
         expect(
           ChordPattern.augmentedTriad.sus2().add7().add13().modifiers,
           const [Interval.m7, Interval.M13],
@@ -162,15 +166,15 @@ void main() {
 
     group('.augmented', () {
       test('returns a new ChordPattern with an augmented root triad', () {
-        expect(
-          ChordPattern.minorTriad.augmented,
-          ChordPattern.augmentedTriad,
-        );
+        expect(ChordPattern.minorTriad.augmented, ChordPattern.augmentedTriad);
         expect(
           ChordPattern.majorTriad.add7().add9().augmented,
-          const ChordPattern(
-            [Interval.M3, Interval.A5, Interval.m7, Interval.M9],
-          ),
+          const ChordPattern([
+            Interval.M3,
+            Interval.A5,
+            Interval.m7,
+            Interval.M9,
+          ]),
         );
       });
     });
@@ -180,9 +184,12 @@ void main() {
         expect(ChordPattern.minorTriad.major, ChordPattern.majorTriad);
         expect(
           ChordPattern.minorTriad.add7().add9().major,
-          const ChordPattern(
-            [Interval.M3, Interval.P5, Interval.m7, Interval.M9],
-          ),
+          const ChordPattern([
+            Interval.M3,
+            Interval.P5,
+            Interval.m7,
+            Interval.M9,
+          ]),
         );
       });
     });
@@ -192,9 +199,12 @@ void main() {
         expect(ChordPattern.augmentedTriad.minor, ChordPattern.minorTriad);
         expect(
           ChordPattern.majorTriad.add7().add9().minor,
-          const ChordPattern(
-            [Interval.m3, Interval.P5, Interval.m7, Interval.M9],
-          ),
+          const ChordPattern([
+            Interval.m3,
+            Interval.P5,
+            Interval.m7,
+            Interval.M9,
+          ]),
         );
       });
     });
@@ -207,9 +217,12 @@ void main() {
         );
         expect(
           ChordPattern.augmentedTriad.add7().add9().diminished,
-          const ChordPattern(
-            [Interval.m3, Interval.d5, Interval.m7, Interval.M9],
-          ),
+          const ChordPattern([
+            Interval.m3,
+            Interval.d5,
+            Interval.m7,
+            Interval.M9,
+          ]),
         );
       });
     });
@@ -272,9 +285,12 @@ void main() {
         );
         expect(
           ChordPattern.minorTriad.add6(ImperfectQuality.minor).add9(),
-          const ChordPattern(
-            [Interval.m3, Interval.P5, Interval.m6, Interval.M9],
-          ),
+          const ChordPattern([
+            Interval.m3,
+            Interval.P5,
+            Interval.m6,
+            Interval.M9,
+          ]),
         );
       });
     });
@@ -342,9 +358,12 @@ void main() {
               .sus2()
               .add9(ImperfectQuality.minor)
               .add11(PerfectQuality.diminished),
-          const ChordPattern(
-            [Interval.M2, Interval.P5, Interval.m9, Interval.d11],
-          ),
+          const ChordPattern([
+            Interval.M2,
+            Interval.P5,
+            Interval.m9,
+            Interval.d11,
+          ]),
         );
         expect(
           ChordPattern.minorTriad.add11(PerfectQuality.augmented),
@@ -394,7 +413,10 @@ void main() {
     group('.add()', () {
       test('adds an Interval to this ChordPattern', () {
         expect(
-          ChordPattern.majorTriad.add(Interval.M2, replaceSizes: const {3}),
+          ChordPattern.majorTriad.add(
+            Interval.M2,
+            replaceSizes: const {Size.third},
+          ),
           const ChordPattern([Interval.M2, Interval.P5]),
         );
         expect(
@@ -405,13 +427,19 @@ void main() {
 
       test('ignores any previous Interval size in this ChordPattern', () {
         expect(
-          const ChordPattern([Interval.m3, Interval.P5, Interval.M7])
-              .add(Interval.M7),
+          const ChordPattern([
+            Interval.m3,
+            Interval.P5,
+            Interval.M7,
+          ]).add(Interval.M7),
           const ChordPattern([Interval.m3, Interval.P5, Interval.M7]),
         );
         expect(
-          const ChordPattern([Interval.m3, Interval.P5, Interval.M7])
-              .add(Interval.m7),
+          const ChordPattern([
+            Interval.m3,
+            Interval.P5,
+            Interval.M7,
+          ]).add(Interval.m7),
           const ChordPattern([Interval.m3, Interval.P5, Interval.m7]),
         );
       });
