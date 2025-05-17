@@ -516,10 +516,11 @@ class IntervalFormatter extends Formatter<Interval> {
         system: imperfectQualityFormatter,
       ),
     };
-    final naming = '$quality${interval.size.format()}';
+    final naming = '$quality${interval.size.format(system: sizeFormatter)}';
     if (!interval.isCompound) return naming;
 
-    return '$naming ($quality${interval.simple.size.format()})';
+    return '$naming '
+        '($quality${interval.simple.size.format(system: sizeFormatter)})';
   }
 
   static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
