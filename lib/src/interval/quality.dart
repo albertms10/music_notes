@@ -241,13 +241,13 @@ class PerfectQualityFormatter extends Formatter<PerfectQuality> {
   /// Creates a new [PerfectQualityFormatter].
   const PerfectQualityFormatter();
 
-  /// The symbol for a diminished [Quality].
+  /// The symbol for a diminished [PerfectQuality].
   static const _diminishedSymbol = 'd';
 
   /// The symbol for a [PerfectQuality].
   static const _perfectSymbol = 'P';
 
-  /// The symbol for an augmented [Quality].
+  /// The symbol for an augmented [PerfectQuality].
   static const _augmentedSymbol = 'A';
 
   static final _regExp = RegExp(
