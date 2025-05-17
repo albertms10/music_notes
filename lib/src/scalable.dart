@@ -91,8 +91,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c, Note.d, Note.e, Note.f.sharp].isStepwise == true
-  /// const [Note.c, Note.e, Note.g, Note.a].isStepwise == false
+  /// [Note.d, Note.e, Note.e.flat, Note.d].inOctave(4).isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].inOctave(3).isStepwise == false
   /// ```
   bool get isStepwise =>
       intervalSteps.every((interval) => interval.size.abs() <= Size.second);
