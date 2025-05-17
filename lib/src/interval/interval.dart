@@ -528,26 +528,26 @@ final class StandardIntervalNotation extends IntervalNotation {
   static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
 
   /// The symbol for a diminished [Quality].
-  static const diminishedSymbol = 'd';
+  static const _diminishedSymbol = 'd';
 
   /// The symbol for a [PerfectQuality].
-  static const perfectSymbol = 'P';
+  static const _perfectSymbol = 'P';
 
   /// The symbol for an augmented [Quality].
-  static const augmentedSymbol = 'A';
+  static const _augmentedSymbol = 'A';
 
   /// The symbol for a minor [ImperfectQuality].
-  static const minorSymbol = 'm';
+  static const _minorSymbol = 'm';
 
   /// The symbol for a major [ImperfectQuality].
-  static const majorSymbol = 'M';
+  static const _majorSymbol = 'M';
 
   static final _perfectQualityRegExp = RegExp(
-    '^($diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)\$',
+    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
   );
 
   static final _imperfectQualityRegExp = RegExp(
-    '^($diminishedSymbol+|$minorSymbol|$majorSymbol|$augmentedSymbol+)\$',
+    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
   );
 
   @override
@@ -580,15 +580,15 @@ final class StandardIntervalNotation extends IntervalNotation {
   @override
   String quality(Quality quality) => switch (quality) {
     PerfectQuality() => switch (quality.semitones) {
-      < 0 => diminishedSymbol * quality.semitones.abs(),
-      0 => perfectSymbol,
-      _ => augmentedSymbol * quality.semitones,
+      < 0 => _diminishedSymbol * quality.semitones.abs(),
+      0 => _perfectSymbol,
+      _ => _augmentedSymbol * quality.semitones,
     },
     ImperfectQuality() => switch (quality.semitones) {
-      < 0 => diminishedSymbol * quality.semitones.abs(),
-      0 => minorSymbol,
-      1 => majorSymbol,
-      _ => augmentedSymbol * (quality.semitones - 1),
+      < 0 => _diminishedSymbol * quality.semitones.abs(),
+      0 => _minorSymbol,
+      1 => _majorSymbol,
+      _ => _augmentedSymbol * (quality.semitones - 1),
     },
   };
 
@@ -599,23 +599,23 @@ final class StandardIntervalNotation extends IntervalNotation {
     }
 
     return switch (source[0]) {
-      diminishedSymbol => PerfectQuality(-source.length),
-      perfectSymbol => PerfectQuality.perfect,
-      _ /* augmentedSymbol */ => PerfectQuality(source.length),
+      _diminishedSymbol => PerfectQuality(-source.length),
+      _perfectSymbol => PerfectQuality.perfect,
+      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
     };
   }
 
   @override
   ImperfectQuality parseImperfectQuality(String source) {
     if (!_imperfectQualityRegExp.hasMatch(source)) {
-      throw FormatException('Invalid PerfectQuality', source);
+      throw FormatException('Invalid ImperfectQuality', source);
     }
 
     return switch (source[0]) {
-      diminishedSymbol => ImperfectQuality(-source.length),
-      minorSymbol => ImperfectQuality.minor,
-      majorSymbol => ImperfectQuality.major,
-      _ /* augmentedSymbol */ => ImperfectQuality(source.length + 1),
+      _diminishedSymbol => ImperfectQuality(-source.length),
+      _minorSymbol => ImperfectQuality.minor,
+      _majorSymbol => ImperfectQuality.major,
+      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
     };
   }
 }
