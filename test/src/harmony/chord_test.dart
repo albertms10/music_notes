@@ -18,8 +18,11 @@ void main() {
       test('returns the root of this Chord', () {
         expect(ChordPattern.majorTriad.on(Note.f).root, Note.f);
         expect(
-          Chord([Note.d.inOctave(3), Note.f.inOctave(3), Note.a.inOctave(3)])
-              .root,
+          Chord([
+            Note.d.inOctave(3),
+            Note.f.inOctave(3),
+            Note.a.inOctave(3),
+          ]).root,
           Note.d.inOctave(3),
         );
       });
@@ -54,14 +57,14 @@ void main() {
     group('.modifiers', () {
       test('returns the list of modifiers from the root note', () {
         expect(Note.c.majorTriad.modifiers, const <Interval>[]);
-        expect(
-          Note.d.majorTriad.add6().add9().modifiers,
-          const [Note.b, Note.e],
-        );
-        expect(
-          Note.e.flat.diminishedTriad.sus2().add7().add13().modifiers,
-          [Note.d.flat, Note.c],
-        );
+        expect(Note.d.majorTriad.add6().add9().modifiers, const [
+          Note.b,
+          Note.e,
+        ]);
+        expect(Note.e.flat.diminishedTriad.sus2().add7().add13().modifiers, [
+          Note.d.flat,
+          Note.c,
+        ]);
       });
     });
 
@@ -273,7 +276,7 @@ void main() {
     group('.add()', () {
       test('adds an Interval to this Chord', () {
         expect(
-          Note.c.majorTriad.add(Interval.P4, replaceSizes: const {3}),
+          Note.c.majorTriad.add(Interval.P4, replaceSizes: const {Size.third}),
           const Chord([Note.c, Note.f, Note.g]),
         );
         expect(

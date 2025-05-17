@@ -1,3 +1,4 @@
+// To allow major (M) and minor (m) static constant names.
 // ignore_for_file: constant_identifier_names
 
 import 'dart:collection' show SplayTreeSet;
@@ -6,6 +7,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../comparators.dart';
 import '../music.dart';
 import '../note/pitch_class.dart';
 import 'interval.dart';
@@ -15,7 +17,7 @@ import 'size.dart';
 /// The shortest distance in pitch class space between two unordered
 /// [PitchClass]es.
 ///
-/// The largest [IntervalClass] is [IntervalClass.tritone] (6) since any greater
+/// The largest [IntervalClass] is the [tritone] (6 semitones) since any greater
 /// interval `n` may be reduced to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
@@ -24,15 +26,18 @@ import 'size.dart';
 /// See also:
 /// * [Interval].
 @immutable
-final class IntervalClass implements Comparable<IntervalClass> {
+final class IntervalClass
+    with Comparators<IntervalClass>
+    implements Comparable<IntervalClass> {
   /// The distance in semitones that defines this [IntervalClass].
   final int semitones;
 
   /// Creates an [IntervalClass] from [semitones].
   const IntervalClass(int semitones)
-      : semitones = (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
-            ? chromaticDivisions - (semitones % chromaticDivisions)
-            : semitones % chromaticDivisions;
+    : semitones =
+          (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
+              ? chromaticDivisions - (semitones % chromaticDivisions)
+              : semitones % chromaticDivisions;
 
   /// A distance of 0 semitones [IntervalClass], which corresponds to
   /// [Interval.P1] or [Interval.P8].
@@ -81,11 +86,14 @@ final class IntervalClass implements Comparable<IntervalClass> {
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        Interval.fromSemitones(size, semitones),
+        Interval.fromSizeAndSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSemitones(Size(size.incrementBy(-i)), semitones),
-          Interval.fromSemitones(Size(size.incrementBy(i)), semitones),
+            Interval.fromSizeAndSemitones(
+              Size(size.incrementBy(-i)),
+              semitones,
+            ),
+          Interval.fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -94,11 +102,11 @@ final class IntervalClass implements Comparable<IntervalClass> {
 
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
-        Interval.fromSemitones(
+        Interval.fromSizeAndSemitones(
           Size.fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
@@ -118,9 +126,9 @@ final class IntervalClass implements Comparable<IntervalClass> {
   /// ```
   Interval resolveClosestSpelling([Quality? preferredQuality]) {
     if (preferredQuality != null) {
-      final interval = spellings(distance: 1).firstWhereOrNull(
-        (interval) => interval.quality == preferredQuality,
-      );
+      final interval = spellings(
+        distance: 1,
+      ).firstWhereOrNull((interval) => interval.quality == preferredQuality);
       if (interval != null) return interval;
     }
 

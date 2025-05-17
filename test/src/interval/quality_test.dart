@@ -32,7 +32,7 @@ void main() {
         expect(() => ImperfectQuality.parse('def'), throwsFormatException);
       });
 
-      test('parses source as a PerfectQuality and return its value', () {
+      test('parses source as a PerfectQuality', () {
         expect(PerfectQuality.parse('AAA'), PerfectQuality.triplyAugmented);
         expect(PerfectQuality.parse('A'), PerfectQuality.augmented);
         expect(PerfectQuality.parse('P'), PerfectQuality.perfect);
@@ -40,11 +40,8 @@ void main() {
         expect(PerfectQuality.parse('ddd'), PerfectQuality.triplyDiminished);
       });
 
-      test('parses source as an ImperfectQuality and return its value', () {
-        expect(
-          ImperfectQuality.parse('AAA'),
-          ImperfectQuality.triplyAugmented,
-        );
+      test('parses source as an ImperfectQuality', () {
+        expect(ImperfectQuality.parse('AAA'), ImperfectQuality.triplyAugmented);
         expect(ImperfectQuality.parse('A'), ImperfectQuality.augmented);
         expect(ImperfectQuality.parse('M'), ImperfectQuality.major);
         expect(ImperfectQuality.parse('m'), ImperfectQuality.minor);
@@ -56,36 +53,36 @@ void main() {
       });
     });
 
-    group('.inverted', () {
-      test('returns the inverted of this Quality', () {
+    group('.inversion', () {
+      test('returns the inversion of this Quality', () {
         expect(
-          PerfectQuality.triplyDiminished.inverted,
+          PerfectQuality.triplyDiminished.inversion,
           PerfectQuality.triplyAugmented,
         );
-        expect(PerfectQuality.diminished.inverted, PerfectQuality.augmented);
-        expect(PerfectQuality.perfect.inverted, PerfectQuality.perfect);
-        expect(PerfectQuality.augmented.inverted, PerfectQuality.diminished);
+        expect(PerfectQuality.diminished.inversion, PerfectQuality.augmented);
+        expect(PerfectQuality.perfect.inversion, PerfectQuality.perfect);
+        expect(PerfectQuality.augmented.inversion, PerfectQuality.diminished);
         expect(
-          PerfectQuality.triplyAugmented.inverted,
+          PerfectQuality.triplyAugmented.inversion,
           PerfectQuality.triplyDiminished,
         );
 
         expect(
-          ImperfectQuality.doublyDiminished.inverted,
+          ImperfectQuality.doublyDiminished.inversion,
           ImperfectQuality.doublyAugmented,
         );
         expect(
-          ImperfectQuality.diminished.inverted,
+          ImperfectQuality.diminished.inversion,
           ImperfectQuality.augmented,
         );
-        expect(ImperfectQuality.minor.inverted, ImperfectQuality.major);
-        expect(ImperfectQuality.major.inverted, ImperfectQuality.minor);
+        expect(ImperfectQuality.minor.inversion, ImperfectQuality.major);
+        expect(ImperfectQuality.major.inversion, ImperfectQuality.minor);
         expect(
-          ImperfectQuality.augmented.inverted,
+          ImperfectQuality.augmented.inversion,
           ImperfectQuality.diminished,
         );
         expect(
-          ImperfectQuality.doublyAugmented.inverted,
+          ImperfectQuality.doublyAugmented.inversion,
           ImperfectQuality.doublyDiminished,
         );
       });
@@ -159,6 +156,7 @@ void main() {
           const PerfectQuality(5),
           const ImperfectQuality(5),
           ImperfectQuality.major,
+          ImperfectQuality.minor,
           PerfectQuality.perfect,
           PerfectQuality.diminished,
           ImperfectQuality.diminished,
@@ -167,6 +165,7 @@ void main() {
         expect(orderedSet.toList(), const [
           ImperfectQuality.diminished,
           PerfectQuality.diminished,
+          ImperfectQuality.minor,
           PerfectQuality.perfect,
           ImperfectQuality.major,
           ImperfectQuality.augmented,

@@ -62,10 +62,10 @@ void main() {
       test('returns the binary representation of this ScalePattern', () {
         expect(ScalePattern.major.toBinary(), (101010110101.b, null));
         expect(ScalePattern.naturalMinor.toBinary(), (10110101101.b, null));
-        expect(
-          ScalePattern.melodicMinor.toBinary(),
-          (101010101101.b, 10110101101.b),
-        );
+        expect(ScalePattern.melodicMinor.toBinary(), (
+          101010101101.b,
+          10110101101.b,
+        ));
         expect(ScalePattern.chromatic.toBinary(), (111111111111.b, null));
         expect(ScalePattern.majorPentatonic.toBinary(), (1010010101.b, null));
       });
@@ -382,6 +382,35 @@ void main() {
           Scale([Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g]),
         );
       });
+
+      test('returns the double harmonic major Scale on Note', () {
+        expect(
+          ScalePattern.doubleHarmonicMajor.on(Note.c),
+          Scale([
+            Note.c,
+            Note.d.flat,
+            Note.e,
+            Note.f,
+            Note.g,
+            Note.a.flat,
+            Note.b,
+            Note.c,
+          ]),
+        );
+        expect(
+          ScalePattern.doubleHarmonicMajor.on(Note.f.sharp),
+          Scale([
+            Note.f.sharp,
+            Note.g,
+            Note.a.sharp,
+            Note.b,
+            Note.c.sharp,
+            Note.d,
+            Note.e.sharp,
+            Note.f.sharp,
+          ]),
+        );
+      });
     });
 
     group('.mirrored', () {
@@ -539,20 +568,29 @@ void main() {
       );
     });
 
+    group('.exclude()', () {
+      test('returns a new ScalePattern excluding intervals', () {
+        expect(
+          ScalePattern.major.exclude({Interval.m2}),
+          ScalePattern.majorPentatonic,
+        );
+      });
+    });
+
     group('.isEnharmonicWith()', () {
-      test(
-        'returns whether this ScalePattern is enharmonically equivalent to '
-        'other',
-        () {
-          expect(
-            const ScalePattern([Interval.m2, Interval.m3, Interval.M2])
-                .isEnharmonicWith(
-              const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
-            ),
-            isTrue,
-          );
-        },
-      );
+      test('returns whether this ScalePattern is enharmonically equivalent to '
+          'other', () {
+        expect(
+          const ScalePattern([
+            Interval.m2,
+            Interval.m3,
+            Interval.M2,
+          ]).isEnharmonicWith(
+            const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
+          ),
+          isTrue,
+        );
+      });
     });
 
     group('.name', () {
@@ -573,6 +611,7 @@ void main() {
         expect(ScalePattern.majorPentatonic.name, 'Major pentatonic');
         expect(ScalePattern.minorPentatonic.name, 'Minor pentatonic');
         expect(ScalePattern.octatonic.name, 'Octatonic');
+        expect(ScalePattern.doubleHarmonicMajor.name, 'Double harmonic major');
       });
     });
 
@@ -606,6 +645,10 @@ void main() {
           ScalePattern.octatonic.toString(),
           'Octatonic (M2 m2 M2 m2 M2 m2 M2 m2)',
         );
+        expect(
+          ScalePattern.doubleHarmonicMajor.toString(),
+          'Double harmonic major (m2 A2 m2 M2 m2 A2 m2)',
+        );
       });
     });
 
@@ -625,9 +668,9 @@ void main() {
           const ScalePattern([Interval.d5]),
           ScalePattern.major,
           ScalePattern.aeolian,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.naturalMinor,
-          // ignore: equal_elements_in_set
+          // ignore: equal_elements_in_set test
           ScalePattern.ionian,
           ScalePattern.mixolydian,
           ScalePattern.wholeTone,
@@ -665,9 +708,4 @@ void main() {
       });
     });
   });
-}
-
-extension on int {
-  /// Parse this [String] as a binary integer.
-  int get b => int.parse(toString(), radix: 2);
 }

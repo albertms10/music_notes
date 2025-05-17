@@ -1,10 +1,13 @@
+// To allow major (M) and minor (m) static constant names.
 // ignore_for_file: constant_identifier_names
 
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../class_mixin.dart';
+import '../comparators.dart';
+import '../enharmonic.dart';
 import '../note/note.dart';
+import '../respellable.dart';
 import '../scalable.dart';
 import 'interval_class.dart';
 import 'quality.dart';
@@ -18,7 +21,7 @@ import 'size.dart';
 /// * [IntervalClass].
 @immutable
 final class Interval
-    with ClassMixin<IntervalClass>
+    with Enharmonic<IntervalClass>, Comparators<Interval>, Respellable<Interval>
     implements Comparable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
@@ -42,8 +45,10 @@ final class Interval
   static const A1 = Interval.perfect(Size.unison, PerfectQuality.augmented);
 
   /// A diminished second [Interval].
-  static const d2 =
-      Interval.imperfect(Size.second, ImperfectQuality.diminished);
+  static const d2 = Interval.imperfect(
+    Size.second,
+    ImperfectQuality.diminished,
+  );
 
   /// A minor second [Interval].
   static const m2 = Interval.imperfect(Size.second, ImperfectQuality.minor);
@@ -97,8 +102,10 @@ final class Interval
   static const A6 = Interval.imperfect(Size.sixth, ImperfectQuality.augmented);
 
   /// A diminished seventh [Interval].
-  static const d7 =
-      Interval.imperfect(Size.seventh, ImperfectQuality.diminished);
+  static const d7 = Interval.imperfect(
+    Size.seventh,
+    ImperfectQuality.diminished,
+  );
 
   /// A minor seventh [Interval].
   static const m7 = Interval.imperfect(Size.seventh, ImperfectQuality.minor);
@@ -107,8 +114,10 @@ final class Interval
   static const M7 = Interval.imperfect(Size.seventh, ImperfectQuality.major);
 
   /// An augmented seventh [Interval].
-  static const A7 =
-      Interval.imperfect(Size.seventh, ImperfectQuality.augmented);
+  static const A7 = Interval.imperfect(
+    Size.seventh,
+    ImperfectQuality.augmented,
+  );
 
   /// A diminished octave [Interval].
   static const d8 = Interval.perfect(Size.octave, PerfectQuality.diminished);
@@ -141,46 +150,50 @@ final class Interval
   static const A11 = Interval.perfect(Size.eleventh, PerfectQuality.augmented);
 
   /// A diminished thirteenth [Interval].
-  static const d13 =
-      Interval.imperfect(Size.thirteenth, ImperfectQuality.diminished);
+  static const d13 = Interval.imperfect(
+    Size.thirteenth,
+    ImperfectQuality.diminished,
+  );
 
   /// A minor thirteenth [Interval].
-  static const m13 =
-      Interval.imperfect(Size.thirteenth, ImperfectQuality.minor);
+  static const m13 = Interval.imperfect(
+    Size.thirteenth,
+    ImperfectQuality.minor,
+  );
 
   /// A major thirteenth [Interval].
-  static const M13 =
-      Interval.imperfect(Size.thirteenth, ImperfectQuality.major);
+  static const M13 = Interval.imperfect(
+    Size.thirteenth,
+    ImperfectQuality.major,
+  );
 
   /// An augmented thirteenth [Interval].
-  static const A13 =
-      Interval.imperfect(Size.thirteenth, ImperfectQuality.augmented);
+  static const A13 = Interval.imperfect(
+    Size.thirteenth,
+    ImperfectQuality.augmented,
+  );
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(
     this.size, [
     PerfectQuality this.quality = PerfectQuality.perfect,
   ])
-  // Copied from [Size.isPerfect] to allow const.
-  : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 <
-              2,
-          'Interval must be perfect.',
-        );
+    // Copied from [Size.isPerfect] to allow const.
+    : assert(
+         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
+         'Interval must be perfect.',
+       );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
-      // Copied from [Size.isPerfect] to allow const.
-      : assert(
-          ((size < 0 ? 0 - size : size) + (size < 0 ? 0 - size : size) ~/ 8) %
-                  4 >=
-              2,
-          'Interval must be imperfect.',
-        );
+    // Copied from [Size.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
+        'Interval must be imperfect.',
+      );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
-  factory Interval.fromQualitySemitones(Size size, int semitones) {
+  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) {
     final qualityConstructor =
         size.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
 
@@ -188,10 +201,18 @@ final class Interval
   }
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
-  factory Interval.fromSemitones(Size size, int semitones) =>
-      Interval.fromQualitySemitones(
+  factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
+      Interval.fromSizeAndQualitySemitones(
         size,
         semitones * size.sign - size.semitones.abs(),
+      );
+
+  /// Creates a new [Interval] from the given distance in [semitones].
+  /// The size is inferred.
+  factory Interval.fromSemitones(int semitones) =>
+      Interval.fromSizeAndSemitones(
+        Size.nearestFromSemitones(semitones),
+        semitones,
       );
 
   /// Parse [source] as an [Interval] and return its value.
@@ -208,8 +229,7 @@ final class Interval
   factory Interval.parse(
     String source, {
     IntervalNotation system = IntervalNotation.standard,
-  }) =>
-      system.parseInterval(source);
+  }) => system.parseInterval(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -238,24 +258,27 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.m2.descending() == -Interval.m2
-  /// Interval.M3.descending(isDescending: false) == Interval.M3
+  /// Interval.M3.descending(false) == Interval.M3
   /// (-Interval.P5).descending() == -Interval.P5
-  /// (-Interval.M7).descending(isDescending: false) == Interval.M7
+  /// (-Interval.M7).descending(false) == Interval.M7
   /// ```
-  Interval descending({bool isDescending = true}) => Interval._(
-        Size(size * (this.isDescending == isDescending ? 1 : -1)),
-        quality,
-      );
+  // ignore: avoid_positional_boolean_parameters
+  Interval descending([bool isDescending = true]) => Interval._(
+    Size(size * (this.isDescending == isDescending ? 1 : -1)),
+    quality,
+  );
 
-  /// The inverted of this [Interval], regardless of its direction (ascending or
-  /// descending).
+  /// The inversion of this [Interval], regardless of its direction (ascending
+  /// or descending).
+  ///
+  /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
   /// Example:
   /// ```dart
-  /// Interval.m3.inverted == Interval.M6
-  /// Interval.A4.inverted == Interval.d5
-  /// Interval.M7.inverted == Interval.m2
-  /// (-Interval.P1).inverted == -Interval.P8
+  /// Interval.m3.inversion == Interval.M6
+  /// Interval.A4.inversion == Interval.d5
+  /// Interval.M7.inversion == Interval.m2
+  /// (-Interval.P1).inversion == -Interval.P8
   /// ```
   ///
   /// If this [Interval.size] is greater than [Size.octave], the simplified
@@ -263,10 +286,10 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.m9.inverted == Interval.M7
-  /// Interval.P11.inverted == Interval.P5
+  /// Interval.m9.inversion == Interval.M7
+  /// Interval.P11.inversion == Interval.P5
   /// ```
-  Interval get inverted => Interval._(size.inverted, quality.inverted);
+  Interval get inversion => Interval._(size.inversion, quality.inversion);
 
   /// The simplified version of this [Interval].
   ///
@@ -312,63 +335,94 @@ final class Interval
   /// Interval.A4.respellBySize(Size.fifth) == Interval.d5
   /// Interval.d3.respellBySize(Size.second) == Interval.M2
   /// ```
-  Interval respellBySize(Size size) => Interval.fromSemitones(size, semitones);
+  Interval respellBySize(Size size) =>
+      Interval.fromSizeAndSemitones(size, semitones);
 
-  /// The iteration distance of this [Interval] between [scalable1] and
-  /// [scalable2], including all visited `notes`.
+  /// This [Interval] respelled upwards while keeping the same number of
+  /// [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.distanceBetween(Note.c, Note.d)
-  ///   == (2, notes: const [Note.c, Note.g, Note.d])
-  /// Interval.P5.distanceBetween(Note.a, Note.g)
-  ///   == (-2, notes: const [Note.a, Note.d, Note.g])
-  /// (-Interval.P5).distanceBetween(Note.b.flat, Note.d)
+  /// Interval.A4.respelledUpwards == Interval.d5
+  /// Interval.M3.respelledUpwards == Interval.d4
+  /// ```
+  @override
+  Interval get respelledUpwards => respellBySize(Size(size.incrementBy(1)));
+
+  /// This [Interval] respelled downwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.d5.respelledDownwards == Interval.A4
+  /// Interval.m3.respelledDownwards == Interval.A2
+  /// ```
+  @override
+  Interval get respelledDownwards => respellBySize(Size(size.incrementBy(-1)));
+
+  /// This [Interval] with the simplest spelling while keeping the same number
+  /// of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.d2.respelledDownwards == Interval.P1
+  /// Interval.A3.respelledDownwards == Interval.P4
+  /// ```
+  @override
+  Interval get respelledSimple => Interval.fromSemitones(semitones);
+
+  /// The circle distance between [from] and [to] in this [Interval],
+  /// including all visited `notes`.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.distance(from: Note.c, to: Note.d)
+  ///   == const (2, notes: [Note.c, Note.g, Note.d])
+  /// Interval.P5.distance(from: Note.a, to: Note.g)
+  ///   == const (-2, notes: [Note.a, Note.d, Note.g])
+  /// (-Interval.P5).distance(from: Note.b.flat, to: Note.d)
   ///   == (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
-  /// Interval.P4.distanceBetween(Note.f, Note.a.flat)
+  /// Interval.P4.distance(from: Note.f, to: Note.a.flat)
   ///   == (3, notes: [Note.f, Note.b.flat, Note.e.flat, Note.a.flat])
   /// ```
-  (int distance, {List<Scalable<T>> notes})
-      distanceBetween<T extends Scalable<T>>(T scalable1, T scalable2) {
+  (int distance, {List<T> notes}) circleDistance<T extends Scalable<T>>({
+    required T from,
+    required T to,
+  }) {
     var distance = 0;
-    final ascendingNotes = [scalable1];
-    final descendingNotes = [scalable1];
+    final ascendingNotes = [from];
+    final descendingNotes = [from];
     while (true) {
-      if (ascendingNotes.last == scalable2) {
+      if (ascendingNotes.last == to) {
         return (distance, notes: ascendingNotes);
       }
-      if (descendingNotes.last == scalable2) {
+      if (descendingNotes.last == to) {
         return (-distance, notes: descendingNotes);
       }
       distance++;
       ascendingNotes.add(ascendingNotes.last.transposeBy(this));
-      descendingNotes.add(descendingNotes.last.transposeBy(inverted));
+      descendingNotes.add(descendingNotes.last.transposeBy(inversion));
     }
   }
 
-  /// The circle of this [Interval] from [scalable] up to [distance].
+  /// The circle of this [Interval] from [scalable].
   ///
   /// Example:
   /// ```dart
-  /// Interval.P5.circleFrom(Note.c, distance: 6).toList()
+  /// Interval.P5.circleFrom(Note.c).take(7).toList()
   ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: 5).toList()
+  /// Interval.P4.circleFrom(Note.c).take(6).toList()
   ///   == [Note.c, Note.f, Note.b.flat, Note.e.flat, Note.a.flat, Note.d.flat]
   ///
-  /// Interval.P4.circleFrom(Note.c, distance: -3).toList()
-  ///   == Interval.P5.circleFrom(Note.c, distance: 3)
+  /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
   /// ```
-  Iterable<T> circleFrom<T extends Scalable<T>>(
-    T scalable, {
-    required int distance,
-  }) sync* {
-    final distanceAbs = distance.abs();
+  Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
     yield scalable;
     var last = scalable;
-    for (var i = 0; i < distanceAbs; i++) {
-      yield last =
-          last.transposeBy(descending(isDescending: distance.isNegative));
+    const maxCircleLoop = 48;
+    for (var i = 0; i < maxCircleLoop; i++) {
+      yield last = last.transposeBy(this);
     }
   }
 
@@ -421,54 +475,6 @@ final class Interval
   /// ```
   Interval operator -() => Interval._(-size, quality);
 
-  /// Whether this [Interval] is smaller than [other], regardless of their
-  /// direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.m3 < Interval.P5 == true
-  /// Interval.m7 < Interval.P5 == false
-  /// Interval.d4 < Interval.d4 == false
-  /// Interval.M3 < -Interval.P4 == true
-  /// ```
-  bool operator <(Interval other) => semitones.abs() < other.semitones.abs();
-
-  /// Whether this [Interval] is smaller than or equal to [other], regardless of
-  /// their direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.m3 <= Interval.P5 == true
-  /// Interval.m7 <= Interval.P5 == false
-  /// Interval.d4 <= Interval.d4 == true
-  /// Interval.P4 <= -Interval.P4 == true
-  /// ```
-  bool operator <=(Interval other) => semitones.abs() <= other.semitones.abs();
-
-  /// Whether this [Interval] is larger than [other], regardless of their
-  /// direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5 > Interval.m3 == true
-  /// Interval.P5 > Interval.m7 == false
-  /// Interval.d4 > Interval.d4 == false
-  /// -Interval.P4 > Interval.M3 == true
-  /// ```
-  bool operator >(Interval other) => semitones.abs() > other.semitones.abs();
-
-  /// Whether this [Interval] is larger than or equal to [other], regardless of
-  /// their direction (ascending or descending).
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5 >= Interval.m3 == true
-  /// Interval.P5 >= Interval.m7 == false
-  /// Interval.d4 >= Interval.d4 == true
-  /// -Interval.P4 >= Interval.P4 == true
-  /// ```
-  bool operator >=(Interval other) => semitones.abs() >= other.semitones.abs();
-
   @override
   bool operator ==(Object other) =>
       other is Interval && size == other.size && quality == other.quality;
@@ -478,9 +484,9 @@ final class Interval
 
   @override
   int compareTo(Interval other) => compareMultiple([
-        () => size.compareTo(other.size),
-        () => semitones.compareTo(other.semitones),
-      ]);
+    () => size.compareTo(other.size),
+    () => quality.compareTo(other.quality),
+  ]);
 }
 
 /// The abstraction for [Interval] notation systems.
@@ -536,8 +542,9 @@ final class StandardIntervalNotation extends IntervalNotation {
   /// The symbol for a major [ImperfectQuality].
   static const majorSymbol = 'M';
 
-  static final _perfectQualityRegExp =
-      RegExp('^($diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)\$');
+  static final _perfectQualityRegExp = RegExp(
+    '^($diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)\$',
+  );
 
   static final _imperfectQualityRegExp = RegExp(
     '^($diminishedSymbol+|$minorSymbol|$majorSymbol|$augmentedSymbol+)\$',
@@ -572,18 +579,18 @@ final class StandardIntervalNotation extends IntervalNotation {
 
   @override
   String quality(Quality quality) => switch (quality) {
-        PerfectQuality() => switch (quality.semitones) {
-            < 0 => diminishedSymbol * quality.semitones.abs(),
-            0 => perfectSymbol,
-            _ => augmentedSymbol * quality.semitones,
-          },
-        ImperfectQuality() => switch (quality.semitones) {
-            < 0 => diminishedSymbol * quality.semitones.abs(),
-            0 => minorSymbol,
-            1 => majorSymbol,
-            _ => augmentedSymbol * (quality.semitones - 1),
-          },
-      };
+    PerfectQuality() => switch (quality.semitones) {
+      < 0 => diminishedSymbol * quality.semitones.abs(),
+      0 => perfectSymbol,
+      _ => augmentedSymbol * quality.semitones,
+    },
+    ImperfectQuality() => switch (quality.semitones) {
+      < 0 => diminishedSymbol * quality.semitones.abs(),
+      0 => minorSymbol,
+      1 => majorSymbol,
+      _ => augmentedSymbol * (quality.semitones - 1),
+    },
+  };
 
   @override
   PerfectQuality parsePerfectQuality(String source) {

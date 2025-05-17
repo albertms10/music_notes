@@ -30,9 +30,11 @@ void main() {
         );
         expect(
           HarmonicFunction.i / HarmonicFunction.ii / HarmonicFunction.iii,
-          const HarmonicFunction(
-            [ScaleDegree.i, ScaleDegree.ii, ScaleDegree.iii],
-          ),
+          const HarmonicFunction([
+            ScaleDegree.i,
+            ScaleDegree.ii,
+            ScaleDegree.iii,
+          ]),
         );
       });
     });
@@ -58,15 +60,15 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal HarmonicFunctions', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([ScaleDegree.i]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([ScaleDegree.i]).hashCode,
         );
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
-            // ignore: prefer_const_constructors
+            // ignore: prefer_const_constructors test
             ScaleDegree(
               2,
               quality: ImperfectQuality.major,
@@ -74,9 +76,9 @@ void main() {
               semitonesDelta: -1,
             ),
           ]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
+          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
-            // ignore: prefer_const_constructors
+            // ignore: prefer_const_constructors test
             ScaleDegree(
               2,
               quality: ImperfectQuality.major,

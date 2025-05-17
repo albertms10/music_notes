@@ -39,33 +39,52 @@ void main() {
         );
 
         expect(
-          const Frequency(440)
-              .closestPitch(referenceFrequency: const Frequency(415)),
+          const Frequency(440).closestPitch(
+            tuningSystem: const EqualTemperament.edo12(fork: TuningFork.a415),
+          ),
           Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
         expect(
           const Frequency(512).closestPitch(
-            referenceFrequency: const Frequency(512),
-            tuningSystem:
-                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
+            tuningSystem: EqualTemperament.edo12(
+              fork: Note.c.inOctave(5).at(const Frequency(512)),
+            ),
           ),
           Note.c.inOctave(5) + const Cent(0),
         );
         expect(
           const Frequency(440).closestPitch(
-            referenceFrequency: const Frequency(512),
-            tuningSystem:
-                EqualTemperament.edo12(referencePitch: Note.c.inOctave(5)),
+            tuningSystem: EqualTemperament.edo12(
+              fork: Note.c.inOctave(5).at(const Frequency(512)),
+            ),
           ),
           Note.a.inOctave(4) + const Cent(37.63165622959145),
+        );
+
+        expect(
+          const Frequency(440).closestPitch(temperature: const Celsius(24)),
+          Note.a.inOctave(4) - const Cent(12.060895566170192),
+        );
+        expect(
+          const Frequency(440).closestPitch(temperature: const Celsius(18)),
+          Note.a.inOctave(4) + const Cent(6.062103827228064),
+        );
+        expect(
+          const Frequency(256).closestPitch(temperature: const Celsius(18)),
+          Note.c.inOctave(4) - const Cent(31.569552402363644),
         );
       });
 
       test('returns the same Frequency after Pitch.frequency()', () {
         final pitch = Note.a.inOctave(5);
-        final closestPitch = pitch.frequency().closestPitch();
-        expect(closestPitch.pitch, pitch);
-        expect(closestPitch.cents, const Cent(0));
+        var closestPitch = pitch.frequency().closestPitch();
+        expect(closestPitch, pitch + const Cent(0));
+
+        const temperature = Celsius(18);
+        closestPitch = pitch
+            .frequency(temperature: temperature)
+            .closestPitch(temperature: temperature);
+        expect(closestPitch, pitch + const Cent(0));
       });
     });
 
@@ -80,72 +99,65 @@ void main() {
     });
 
     group('.harmonics()', () {
-      test(
-        'returns a Set of the harmonic series up to index from this Frequency',
-        () {
-          expect(
-            const Frequency(512).harmonics(upToIndex: -15),
-            {
-              const Frequency(512),
-              const Frequency(256),
-              const Frequency(170.66666666666666),
-              const Frequency(128),
-              const Frequency(102.4),
-              const Frequency(85.33333333333333),
-              const Frequency(73.14285714285714),
-              const Frequency(64),
-              const Frequency(56.888888888888886),
-              const Frequency(51.2),
-              const Frequency(46.54545454545455),
-              const Frequency(42.666666666666664),
-              const Frequency(39.38461538461539),
-              const Frequency(36.57142857142857),
-              const Frequency(34.13333333333333),
-              const Frequency(32),
-            },
-          );
-          expect(
-            const Frequency(400).harmonics(upToIndex: -1),
-            {const Frequency(400), const Frequency(200)},
-          );
-          expect(
-            const Frequency(220).harmonics(upToIndex: 0),
-            {const Frequency(220)},
-          );
-          expect(
-            const Frequency(110).harmonics(upToIndex: 1),
-            {const Frequency(110), const Frequency(220)},
-          );
-          expect(
-            const Frequency(32).harmonics(upToIndex: 15),
-            {
-              const Frequency(32),
-              const Frequency(64),
-              const Frequency(96),
-              const Frequency(128),
-              const Frequency(160),
-              const Frequency(192),
-              const Frequency(224),
-              const Frequency(256),
-              const Frequency(288),
-              const Frequency(320),
-              const Frequency(352),
-              const Frequency(384),
-              const Frequency(416),
-              const Frequency(448),
-              const Frequency(480),
-              const Frequency(512),
-            },
-          );
-        },
-      );
+      test('returns a Set of the harmonic series from this Frequency', () {
+        expect(
+          const Frequency(512).harmonics(undertone: true).take(16).toSet(),
+          {
+            const Frequency(512),
+            const Frequency(256),
+            const Frequency(170.66666666666666),
+            const Frequency(128),
+            const Frequency(102.4),
+            const Frequency(85.33333333333333),
+            const Frequency(73.14285714285714),
+            const Frequency(64),
+            const Frequency(56.888888888888886),
+            const Frequency(51.2),
+            const Frequency(46.54545454545455),
+            const Frequency(42.666666666666664),
+            const Frequency(39.38461538461539),
+            const Frequency(36.57142857142857),
+            const Frequency(34.13333333333333),
+            const Frequency(32),
+          },
+        );
+        expect(const Frequency(400).harmonics(undertone: true).take(2), const {
+          Frequency(400),
+          Frequency(200),
+        });
+        expect(const Frequency(220).harmonics().take(1), const {
+          Frequency(220),
+        });
+        expect(const Frequency(110).harmonics().take(2), const {
+          Frequency(110),
+          Frequency(220),
+        });
+        expect(const Frequency(32).harmonics().take(16), const {
+          Frequency(32),
+          Frequency(64),
+          Frequency(96),
+          Frequency(128),
+          Frequency(160),
+          Frequency(192),
+          Frequency(224),
+          Frequency(256),
+          Frequency(288),
+          Frequency(320),
+          Frequency(352),
+          Frequency(384),
+          Frequency(416),
+          Frequency(448),
+          Frequency(480),
+          Frequency(512),
+        });
+      });
     });
 
     group('.format()', () {
       test('returns this Frequency formatted as a string', () {
         expect(const Frequency(440).format(), '440 Hz');
         expect(const Frequency(415.62).format(), '415.62 Hz');
-        expect(const Frequency(2200.2968).format(), '2200.2968 Hz');
+        expect(const Frequency(2200.296).format(), '2200.296 Hz');
       });
     });
   });

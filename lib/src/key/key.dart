@@ -36,11 +36,9 @@ final class Key implements Comparable<Key> {
   /// Note.b.flat.major.relative == Note.g.minor
   /// ```
   Key get relative => Key(
-        note.transposeBy(
-          Interval.m3.descending(isDescending: mode == TonalMode.major),
-        ),
-        mode.parallel,
-      );
+    note.transposeBy(Interval.m3.descending(mode == TonalMode.major)),
+    mode.parallel,
+  );
 
   /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///
@@ -62,8 +60,8 @@ final class Key implements Comparable<Key> {
   /// Note.g.flat.major.signature == KeySignature.fromDistance(-6)
   /// ```
   KeySignature get signature => KeySignature.fromDistance(
-        KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
-      );
+    KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
+  );
 
   /// Whether this [Key] is theoretical, whose [signature] would have
   /// at least one [Accidental.doubleFlat] or [Accidental.doubleSharp].
@@ -118,7 +116,7 @@ final class Key implements Comparable<Key> {
 
   @override
   int compareTo(Key other) => compareMultiple([
-        () => note.compareTo(other.note),
-        () => mode.name.compareTo(other.mode.name),
-      ]);
+    () => note.compareTo(other.note),
+    () => mode.name.compareTo(other.mode.name),
+  ]);
 }

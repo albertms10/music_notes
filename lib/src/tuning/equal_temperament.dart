@@ -6,10 +6,9 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../note/base_note.dart';
-import '../note/note.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
-import 'ratio.dart';
+import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// A representation of an equal temperament tuning system.
@@ -26,21 +25,16 @@ class EqualTemperament extends TuningSystem {
   /// The equal divisions between each [BaseNote] and the next one.
   List<int> get steps => UnmodifiableListView(_steps);
 
-  /// Creates a new [EqualTemperament] from [_steps] and [referencePitch].
-  const EqualTemperament(
-    this._steps, {
-    super.referencePitch = _defaultReferencePitch,
-  });
+  /// Creates a new [EqualTemperament] from [_steps] and [fork].
+  const EqualTemperament(this._steps, {super.fork = TuningFork.a440});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.referencePitch = _defaultReferencePitch})
-      : _steps = const [2, 2, 1, 2, 2, 2, 1];
+  const EqualTemperament.edo12({super.fork = TuningFork.a440})
+    : _steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.referencePitch = _defaultReferencePitch})
-      : _steps = const [3, 3, 2, 3, 3, 3, 2];
-
-  static const _defaultReferencePitch = Pitch(Note.a, octave: 4);
+  const EqualTemperament.edo19({super.fork = TuningFork.a440})
+    : _steps = const [3, 3, 2, 3, 3, 3, 2];
 
   /// The equal divisions of the octave of this [EqualTemperament].
   ///
@@ -59,25 +53,23 @@ class EqualTemperament extends TuningSystem {
     yield const Cent(0);
     final edo = this.edo;
     for (var i = 1; i < edo; i++) {
-      yield ratioFromSemitones(i).cents;
+      yield Cent.fromRatio(ratioFromSemitones(i));
     }
   }
 
-  /// The [Ratio] from [semitones] for this [EqualTemperament].
+  /// The ratio from [semitones] for this [EqualTemperament].
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///
   /// Example:
   /// ```dart
-  /// const EqualTemperament.edo12().ratioFromSemitones(1) == Ratio(1.059463)
-  /// const EqualTemperament.edo19().ratioFromSemitones(1) == Ratio(1.037155)
+  /// const EqualTemperament.edo12().ratioFromSemitones(1) == 1.059463
+  /// const EqualTemperament.edo19().ratioFromSemitones(1) == 1.037155
   /// ```
-  Ratio ratioFromSemitones(int semitones) =>
-      Ratio(math.pow(2, semitones / edo));
+  num ratioFromSemitones(int semitones) => math.pow(2, semitones / edo);
 
   @override
-  Ratio ratio(Pitch pitch) =>
-      ratioFromSemitones(referencePitch.difference(pitch));
+  num ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
 
   /// The reference generator cents.
   static const referenceGeneratorCents = Cent(700);
@@ -86,14 +78,14 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() => 'EDO $edo (${_steps.join(' ')})';
+  String toString() => 'EDO $edo (${_steps.join(' ')}) at $fork';
 
   @override
   bool operator ==(Object other) =>
       other is EqualTemperament &&
       const ListEquality<int>().equals(_steps, other._steps) &&
-      referencePitch == other.referencePitch;
+      fork == other.fork;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(_steps), referencePitch);
+  int get hashCode => Object.hash(Object.hashAll(_steps), fork);
 }

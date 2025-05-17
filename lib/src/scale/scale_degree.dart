@@ -31,8 +31,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     this.quality,
     this.inversion = 0,
     this.semitonesDelta = 0,
-  })  : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
-        assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
+  }) : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
+       assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
 
   /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);
@@ -137,15 +137,14 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     ImperfectQuality? quality,
     int? inversion,
     int? semitonesDelta,
-  }) =>
-      ScaleDegree(
-        ordinal ?? this.ordinal,
-        quality: quality ?? this.quality,
-        inversion: inversion ?? this.inversion,
-        semitonesDelta: semitonesDelta ?? this.semitonesDelta,
-      );
+  }) => ScaleDegree(
+    ordinal ?? this.ordinal,
+    quality: quality ?? this.quality,
+    inversion: inversion ?? this.inversion,
+    semitonesDelta: semitonesDelta ?? this.semitonesDelta,
+  );
 
-  /// Returns the roman numeral of this [ScaleDegree] based on [ordinal].
+  /// The roman numeral of this [ScaleDegree] based on [ordinal].
   ///
   /// Example:
   /// ```dart
@@ -154,15 +153,15 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
   /// ```
   String get romanNumeral => switch (ordinal) {
-        1 => 'I',
-        2 => 'II',
-        3 => 'III',
-        4 => 'IV',
-        5 => 'V',
-        6 => 'VI',
-        7 => 'VII',
-        _ => '$ordinal',
-      };
+    1 => 'I',
+    2 => 'II',
+    3 => 'III',
+    4 => 'IV',
+    5 => 'V',
+    6 => 'VI',
+    7 => 'VII',
+    _ => '$ordinal',
+  };
 
   /// The string representation of this [ScaleDegree] based on [system].
   ///
@@ -177,8 +176,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   @override
   String toString({
     ScaleDegreeNotation system = ScaleDegreeNotation.standard,
-  }) =>
-      system.scaleDegree(this);
+  }) => system.scaleDegree(this);
 
   @override
   bool operator ==(Object other) =>
@@ -193,19 +191,19 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 
   @override
   int compareTo(ScaleDegree other) => compareMultiple([
-        () => ordinal.compareTo(other.ordinal),
-        () => semitonesDelta.compareTo(other.semitonesDelta),
-        () => inversion.compareTo(other.inversion),
-        () {
-          if (quality != null && other.quality != null) {
-            return quality!.compareTo(other.quality!);
-          }
-          if (quality != null) return -1;
-          if (other.quality != null) return 1;
+    () => ordinal.compareTo(other.ordinal),
+    () => semitonesDelta.compareTo(other.semitonesDelta),
+    () => inversion.compareTo(other.inversion),
+    () {
+      if (quality != null && other.quality != null) {
+        return quality!.compareTo(other.quality!);
+      }
+      if (quality != null) return -1;
+      if (other.quality != null) return 1;
 
-          return 0;
-        },
-      ]);
+      return 0;
+    },
+  ]);
 }
 
 /// The abstraction for [ScaleDegree] notation systems.
@@ -228,16 +226,21 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
 
   @override
   String scaleDegree(ScaleDegree scaleDegree) {
-    final buffer = StringBuffer()
-      ..writeAll([
-        if (scaleDegree.semitonesDelta != 0)
-          Accidental(scaleDegree.semitonesDelta).symbol,
-        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
-          scaleDegree.romanNumeral.toLowerCase()
-        else
-          scaleDegree.romanNumeral,
-        switch (scaleDegree.inversion) { 1 => '6', 2 => '64', _ => '' },
-      ]);
+    final buffer =
+        StringBuffer()..writeAll([
+          if (scaleDegree.semitonesDelta != 0)
+            Accidental(scaleDegree.semitonesDelta).symbol,
+          if (scaleDegree.quality != null &&
+              scaleDegree.quality!.semitones <= 0)
+            scaleDegree.romanNumeral.toLowerCase()
+          else
+            scaleDegree.romanNumeral,
+          switch (scaleDegree.inversion) {
+            1 => '6',
+            2 => '64',
+            _ => '',
+          },
+        ]);
 
     return buffer.toString();
   }

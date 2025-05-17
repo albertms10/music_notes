@@ -8,13 +8,17 @@ void main() {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
+        expect(() => Pitch.parse('aa'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
         expect(() => Pitch.parse('C,d'), throwsFormatException);
+        expect(() => Pitch.parse("d′'"), throwsFormatException);
+        expect(() => Pitch.parse('f″″'), throwsFormatException);
 
         expect(() => Pitch.parse('D5,'), throwsFormatException);
+        expect(() => Pitch.parse('ba'), throwsFormatException);
         expect(() => Pitch.parse("d7'"), throwsFormatException);
         expect(() => Pitch.parse("e'4"), throwsFormatException);
         expect(() => Pitch.parse("'E3"), throwsFormatException);
@@ -22,7 +26,7 @@ void main() {
         expect(() => Pitch.parse('3B,'), throwsFormatException);
       });
 
-      test('parses source as a Pitch and return its value', () {
+      test('parses source as a Pitch', () {
         expect(Pitch.parse('A4'), Note.a.inOctave(4));
         expect(Pitch.parse('d3'), Note.d.inOctave(3));
         expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
@@ -37,7 +41,8 @@ void main() {
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(Pitch.parse('gx′′′'), Note.g.sharp.sharp.inOctave(6));
+        expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
+        expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
 
         var pitch = Note.b.flat.flat.inOctave(-2);
         expect(Pitch.parse(pitch.toString()), pitch);
@@ -46,6 +51,25 @@ void main() {
         expect(
           Pitch.parse(pitch.toString(system: PitchNotation.helmholtz)),
           pitch,
+        );
+      });
+    });
+
+    group('.inOctave()', () {
+      test('changes the octave of each Pitch in this list', () {
+        expect(const <Pitch>[].inOctave(2), const <Pitch>[]);
+
+        expect([Note.f.sharp.inOctave(1)].inOctave(5), [
+          Note.f.sharp.inOctave(5),
+        ]);
+
+        expect(
+          [
+            Note.c.inOctave(3),
+            Note.e.inOctave(-1),
+            Note.g.flat.inOctave(6),
+          ].inOctave(4),
+          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.flat.inOctave(4)],
         );
       });
     });
@@ -127,19 +151,13 @@ void main() {
         expect(Note.e.inOctave(4).difference(Note.a.flat.inOctave(4)), 4);
         expect(Note.a.inOctave(4).difference(Note.d.inOctave(5)), 5);
         expect(Note.d.inOctave(4).difference(Note.a.flat.inOctave(4)), 6);
-        expect(
-          Note.e.flat.inOctave(4).difference(Note.b.flat.inOctave(4)),
-          7,
-        );
+        expect(Note.e.flat.inOctave(4).difference(Note.b.flat.inOctave(4)), 7);
         expect(
           Note.d.sharp.inOctave(4).difference(Note.a.sharp.inOctave(4)),
           7,
         );
         expect(Note.d.inOctave(4).difference(Note.a.sharp.inOctave(4)), 8);
-        expect(
-          Note.c.sharp.inOctave(4).difference(Note.b.flat.inOctave(4)),
-          9,
-        );
+        expect(Note.c.sharp.inOctave(4).difference(Note.b.flat.inOctave(4)), 9);
         expect(Note.c.sharp.inOctave(4).difference(Note.b.inOctave(4)), 10);
         expect(Note.d.flat.inOctave(4).difference(Note.b.inOctave(4)), 10);
         expect(Note.c.inOctave(4).difference(Note.b.inOctave(4)), 11);
@@ -179,11 +197,7 @@ void main() {
       test('returns the major triad on this Pitch', () {
         expect(
           Note.c.inOctave(4).majorTriad,
-          Chord([
-            Note.c.inOctave(4),
-            Note.e.inOctave(4),
-            Note.g.inOctave(4),
-          ]),
+          Chord([Note.c.inOctave(4), Note.e.inOctave(4), Note.g.inOctave(4)]),
         );
         expect(
           Note.e.flat.inOctave(3).majorTriad,
@@ -224,11 +238,7 @@ void main() {
         );
         expect(
           Note.a.inOctave(3).minorTriad,
-          Chord([
-            Note.a.inOctave(3),
-            Note.c.inOctave(4),
-            Note.e.inOctave(4),
-          ]),
+          Chord([Note.a.inOctave(3), Note.c.inOctave(4), Note.e.inOctave(4)]),
         );
       });
     });
@@ -253,11 +263,7 @@ void main() {
         );
         expect(
           Note.b.inOctave(5).diminishedTriad,
-          Chord([
-            Note.b.inOctave(5),
-            Note.d.inOctave(6),
-            Note.f.inOctave(6),
-          ]),
+          Chord([Note.b.inOctave(5), Note.d.inOctave(6), Note.f.inOctave(6)]),
         );
       });
     });
@@ -492,7 +498,7 @@ void main() {
     });
 
     group('.respelledSimple', () {
-      test('returns this Pitch with the simplest Accidental spelling', () {
+      test('returns the simplest spelling for this Pitch', () {
         expect(Note.c.inOctave(4).respelledSimple, Note.c.inOctave(4));
         expect(Note.b.inOctave(5).respelledSimple, Note.b.inOctave(5));
         expect(
@@ -534,6 +540,10 @@ void main() {
         );
 
         expect(
+          Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
+          -Interval.d2,
+        );
+        expect(
           Note.b.sharp.inOctave(3).interval(Note.c.inOctave(4)),
           Interval.d2,
         );
@@ -545,6 +555,7 @@ void main() {
           Note.f.flat.inOctave(4).interval(Note.g.flat.flat.inOctave(4)),
           Interval.m2,
         );
+        expect(Note.c.inOctave(5).interval(Note.b.inOctave(4)), -Interval.m2);
         expect(
           Note.c.inOctave(5).interval(Note.d.flat.inOctave(5)),
           Interval.m2,
@@ -636,6 +647,8 @@ void main() {
         );
 
         expect(Note.c.inOctave(3).interval(Note.c.inOctave(4)), Interval.P8);
+        expect(Note.c.inOctave(5).interval(Note.b.inOctave(3)), -Interval.m9);
+
         expect(
           Note.c.inOctave(3).interval(Note.c.inOctave(5)),
           const Interval.perfect(Size(15)),
@@ -648,12 +661,6 @@ void main() {
 
         expect(
           Note.c.inOctave(2).interval(Note.c.inOctave(6)),
-          const Interval.perfect(Size(29)),
-        );
-
-        expect(
-          skip: true,
-          () => Note.c.inOctave(4).interval(Note.b.sharp.inOctave(3)),
           const Interval.perfect(Size(29)),
         );
       });
@@ -928,6 +935,43 @@ void main() {
       });
     });
 
+    group('.toClass()', () {
+      test('creates a new PitchClass from semitones', () {
+        expect(Note.a.inOctave(4).toClass(), PitchClass.a);
+        expect(Note.a.sharp.inOctave(2).toClass(), PitchClass.aSharp);
+        expect(Note.e.flat.inOctave(-1).toClass(), PitchClass.dSharp);
+        expect(Note.b.sharp.sharp.inOctave(7).toClass(), PitchClass.cSharp);
+      });
+    });
+
+    group('.isEnharmonicWith()', () {
+      test(
+        'returns whether this Pitch is enharmonically equivalent to other',
+        () {
+          expect(
+            Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)),
+            isTrue,
+          );
+          expect(
+            Note.a.sharp.inOctave(4).isEnharmonicWith(Note.b.flat.inOctave(4)),
+            isTrue,
+          );
+          expect(
+            Note.a.inOctave(2).isEnharmonicWith(Note.b.flat.inOctave(4)),
+            isFalse,
+          );
+          expect(
+            Note.e.flat.inOctave(-1).isEnharmonicWith(Note.e.flat.inOctave(3)),
+            isFalse,
+          );
+          expect(
+            Note.b.sharp.inOctave(3).isEnharmonicWith(Note.c.inOctave(4)),
+            isTrue,
+          );
+        },
+      );
+    });
+
     group('.frequency()', () {
       test('returns the Frequency of this Pitch at 440 Hz', () {
         expect(
@@ -995,98 +1039,103 @@ void main() {
           Note.b.inOctave(4).frequency(),
           const Frequency(493.8833012561241),
         );
+
+        expect(
+          Note.a.inOctave(4).frequency(temperature: const Celsius(18)),
+          const Frequency(438.4619866006409),
+        );
+        expect(
+          Note.a.inOctave(4).frequency(temperature: const Celsius(24)),
+          const Frequency(443.07602679871826),
+        );
+        expect(
+          Note.c.inOctave(4).frequency(temperature: const Celsius(18)),
+          const Frequency(260.71105706185494),
+        );
       });
 
       test('returns the Frequency of this Pitch at 438 Hz', () {
-        const frequency = Frequency(438);
+        const tuningSystem = EqualTemperament.edo12(
+          fork: TuningFork(Pitch.reference, Frequency(438)),
+        );
         expect(
-          Note.c.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(260.4363581855959),
         );
         expect(
-          Note.c.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.c.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(275.92270992697723),
         );
         expect(
-          Note.d.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(275.92270992697723),
         );
         expect(
-          Note.d.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(292.3299280632375),
         );
         expect(
-          Note.d.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.d.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(309.7127701597078),
         );
         expect(
-          Note.e.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.e.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(309.7127701597078),
         );
         expect(
-          Note.e.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.e.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(328.1292498359933),
         );
         expect(
-          Note.f.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.f.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(347.6408303810357),
         );
         expect(
-          Note.f.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.f.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(368.31262988112695),
         );
         expect(
-          Note.g.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(368.31262988112695),
         );
         expect(
-          Note.g.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(390.2136385454686),
         );
         expect(
-          Note.g.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.g.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(413.41694895458176),
         );
         expect(
-          Note.a.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(413.41694895458176),
         );
         expect(
-          Note.a.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(438),
         );
         expect(
-          Note.a.sharp.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.a.sharp.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(464.0448353293713),
         );
         expect(
-          Note.b.flat.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.b.flat.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(464.0448353293713),
         );
         expect(
-          Note.b.inOctave(4).frequency(referenceFrequency: frequency),
+          Note.b.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(491.63837715950535),
         );
       });
 
       test('returns the Frequency of this Pitch from 256 Hz (C4)', () {
-        const frequency = Frequency(256);
+        const tuningSystem = EqualTemperament.edo12(fork: TuningFork.c256);
         expect(
-          Note.c.inOctave(4).frequency(
-                referenceFrequency: frequency,
-                tuningSystem: EqualTemperament.edo12(
-                  referencePitch: Note.c.inOctave(4),
-                ),
-              ),
+          Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(256),
         );
         expect(
-          Note.a.inOctave(4).frequency(
-                referenceFrequency: frequency,
-                tuningSystem: EqualTemperament.edo12(
-                  referencePitch: Note.c.inOctave(4),
-                ),
-              ),
+          Note.a.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(430.5389646099018),
         );
       });
@@ -1095,9 +1144,50 @@ void main() {
     group('.harmonics()', () {
       test('returns the ClosestPitch set of harmonic series', () {
         expect(
-          Note.c.inOctave(1).harmonics(upToIndex: 15).toString(),
+          Note.c.inOctave(1).harmonics().take(16).toSet().toString(),
           '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
           'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(
+                tuningSystem: const EqualTemperament.edo12(
+                  fork: TuningFork(Pitch.reference, Frequency(438)),
+                ),
+              )
+              .take(16)
+              .toSet()
+              .toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(
+                tuningSystem: const EqualTemperament.edo12(
+                  fork: TuningFork.c256,
+                ),
+              )
+              .take(16)
+              .toSet()
+              .toString(),
+          '{C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4, '
+          'E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}',
+        );
+
+        expect(
+          Note.c
+              .inOctave(1)
+              .harmonics(temperature: const Celsius(18))
+              .take(16)
+              .toSet()
+              .toString(),
+          '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
+          'E4-8, F♯4-43, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
         );
       });
     });
@@ -1151,11 +1241,15 @@ void main() {
         );
         expect(
           Note.f.sharp.inOctave(5).toString(system: PitchNotation.helmholtz),
-          'f♯′′',
+          'f♯″',
         );
         expect(
           Note.e.inOctave(7).toString(system: PitchNotation.helmholtz),
-          'e′′′′',
+          'e⁗',
+        );
+        expect(
+          Note.b.flat.inOctave(8).toString(system: PitchNotation.helmholtz),
+          'b♭′′′′′',
         );
       });
 
@@ -1204,11 +1298,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.german),
-          'as′′',
+          'as″',
         );
         expect(
           Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.german),
-          'e′′′′',
+          'e⁗',
         );
       });
 
@@ -1257,11 +1351,11 @@ void main() {
           Note.a.flat
               .inOctave(5)
               .toString(system: HelmholtzPitchNotation.romance),
-          'la♭′′',
+          'la♭″',
         );
         expect(
-          Note.e.inOctave(7).toString(system: HelmholtzPitchNotation.romance),
-          'mi′′′′',
+          Note.e.inOctave(6).toString(system: HelmholtzPitchNotation.romance),
+          'mi‴',
         );
       });
 
@@ -1287,7 +1381,7 @@ void main() {
     });
 
     group('operator -()', () {
-      test('subtracts Cent to this Pitch', () {
+      test('subtracts Cents from this Pitch', () {
         expect(
           Note.a.inOctave(4) - const Cent(12),
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(-12)),
@@ -1303,6 +1397,7 @@ void main() {
       test('returns whether this Pitch is lower than other', () {
         expect(Note.a.inOctave(3) < Note.a.inOctave(4), isTrue);
         expect(Note.f.sharp.inOctave(4) < Note.a.inOctave(4), isTrue);
+        expect(Note.g.sharp.inOctave(4) < Note.a.flat.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) < Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(4) < Note.a.flat.inOctave(3), isFalse);
@@ -1315,6 +1410,7 @@ void main() {
         expect(Note.a.inOctave(3) <= Note.a.inOctave(4), isTrue);
         expect(Note.f.sharp.inOctave(4) <= Note.a.inOctave(4), isTrue);
         expect(Note.a.inOctave(4) <= Note.a.inOctave(4), isTrue);
+        expect(Note.g.sharp.inOctave(4) <= Note.a.flat.inOctave(4), isTrue);
 
         expect(Note.a.flat.inOctave(4) <= Note.a.flat.inOctave(3), isFalse);
         expect(Note.a.inOctave(4) <= Note.f.inOctave(4), isFalse);
@@ -1325,6 +1421,7 @@ void main() {
       test('returns whether this Pitch is higher than other', () {
         expect(Note.a.inOctave(4) > Note.a.inOctave(3), isTrue);
         expect(Note.a.inOctave(4) > Note.g.flat.inOctave(4), isTrue);
+        expect(Note.a.flat.inOctave(4) > Note.g.sharp.inOctave(4), isTrue);
 
         expect(Note.a.inOctave(4) > Note.a.inOctave(4), isFalse);
         expect(Note.a.flat.inOctave(3) > Note.a.flat.inOctave(4), isFalse);
@@ -1337,6 +1434,7 @@ void main() {
         expect(Note.a.inOctave(4) >= Note.a.inOctave(3), isTrue);
         expect(Note.a.inOctave(4) >= Note.f.sharp.inOctave(4), isTrue);
         expect(Note.a.inOctave(4) >= Note.a.inOctave(4), isTrue);
+        expect(Note.a.flat.inOctave(4) >= Note.g.sharp.inOctave(3), isTrue);
 
         expect(Note.a.flat.inOctave(3) >= Note.a.flat.inOctave(4), isFalse);
         expect(Note.f.inOctave(4) >= Note.a.inOctave(4), isFalse);
@@ -1347,26 +1445,20 @@ void main() {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
         expect(
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
-          // ignore: prefer_const_constructors
+          // ignore: prefer_const_constructors test
           Pitch(Note.a, octave: 3).hashCode,
         );
       });
 
       test('returns different hashCodes for different Pitches', () {
-        expect(
-          Note.c.inOctave(4).hashCode,
-          isNot(Note.c.inOctave(5).hashCode),
-        );
+        expect(Note.c.inOctave(4).hashCode, isNot(Note.c.inOctave(5).hashCode));
         expect(
           const Pitch(Note.a, octave: 3).hashCode,
           isNot(const Pitch(Note.b, octave: 3).hashCode),
         );
-        expect(
-          Note.d.inOctave(6).hashCode,
-          isNot(Note.c.inOctave(5).hashCode),
-        );
+        expect(Note.d.inOctave(6).hashCode, isNot(Note.c.inOctave(5).hashCode));
       });
 
       test('ignores equal Pitch instances in a Set', () {
