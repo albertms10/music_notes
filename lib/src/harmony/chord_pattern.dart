@@ -242,7 +242,7 @@ class ChordPatternFormatter extends Formatter<ChordPattern> {
     } else if (chordPattern.isMajor) {
       buffer.write('');
     } else if (chordPattern.isMinor) {
-      buffer.write('min');
+      buffer.write('-');
     }
 
     if (chordPattern.isDiminished) {
@@ -254,7 +254,7 @@ class ChordPatternFormatter extends Formatter<ChordPattern> {
           _ => '',
         });
       } else {
-        buffer.write('dim');
+        buffer.write(' dim');
       }
     }
 
@@ -268,12 +268,12 @@ class ChordPatternFormatter extends Formatter<ChordPattern> {
         Interval(size: 9 || 13, quality: ImperfectQuality.augmented) => ' #',
         Interval(size: 11, quality: ImperfectQuality.augmented) => ' #',
         Interval(size: 11, quality: ImperfectQuality.diminished) => ' b',
-        _ => ' ',
+        _ => '',
       });
       if (!chordPattern.isDiminished) buffer.write(interval.size);
     }
 
-    return buffer.toString().trim();
+    return buffer.toString();
   }
 
   @override
@@ -289,9 +289,9 @@ class ChordPatternFormatter extends Formatter<ChordPattern> {
     } else if (s.startsWith('+')) {
       triad = ChordPattern.augmentedTriad;
       s = s.substring(1);
-    } else if (s.startsWith('min')) {
+    } else if (s.startsWith('-')) {
       triad = ChordPattern.minorTriad;
-      s = s.substring(3);
+      s = s.substring(1);
     } else {
       triad = ChordPattern.majorTriad;
     }

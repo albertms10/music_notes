@@ -68,7 +68,7 @@ void main() {
       test('parses source as a ChordPattern', () {
         expect(ChordPattern.parse('+'), ChordPattern.augmentedTriad);
         expect(ChordPattern.parse(''), ChordPattern.majorTriad);
-        expect(ChordPattern.parse('min'), ChordPattern.minorTriad);
+        expect(ChordPattern.parse('-'), ChordPattern.minorTriad);
         expect(ChordPattern.parse('dim'), ChordPattern.diminishedTriad);
 
         expect(ChordPattern.parse('7'), ChordPattern.majorTriad.add7());
@@ -76,9 +76,9 @@ void main() {
           ChordPattern.parse('maj7'),
           ChordPattern.majorTriad.add7(ImperfectQuality.major),
         );
-        expect(ChordPattern.parse('min 7'), ChordPattern.minorTriad.add7());
+        expect(ChordPattern.parse('-7'), ChordPattern.minorTriad.add7());
         expect(
-          ChordPattern.parse('min maj7'),
+          ChordPattern.parse('- maj7'),
           ChordPattern.minorTriad.add7(ImperfectQuality.major),
         );
         expect(ChordPattern.parse('ø'), ChordPattern.diminishedTriad.add7());
@@ -474,18 +474,18 @@ void main() {
       test('returns the string representation of this ChordPattern', () {
         expect(ChordPattern.augmentedTriad.toString(), '+');
         expect(ChordPattern.majorTriad.toString(), '');
-        expect(ChordPattern.minorTriad.toString(), 'min');
-        expect(ChordPattern.diminishedTriad.toString(), 'dim');
+        expect(ChordPattern.minorTriad.toString(), '-');
+        expect(ChordPattern.diminishedTriad.toString(), ' dim');
 
         expect(ChordPattern.majorTriad.add7().toString(), '7');
         expect(
           ChordPattern.majorTriad.add7(ImperfectQuality.major).toString(),
-          'maj7',
+          ' maj7',
         );
-        expect(ChordPattern.minorTriad.add7().toString(), 'min 7');
+        expect(ChordPattern.minorTriad.add7().toString(), '-7');
         expect(
           ChordPattern.minorTriad.add7(ImperfectQuality.major).toString(),
-          'min maj7',
+          '- maj7',
         );
         expect(ChordPattern.diminishedTriad.add7().toString(), 'ø');
       });

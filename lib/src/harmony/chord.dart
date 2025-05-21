@@ -120,7 +120,7 @@ class Chord<T extends Scalable<T>>
       Chord(_items.transposeBy(interval).toList(growable: false));
 
   @override
-  String toString() => '$root ${pattern.abbreviation} (${_items.join(' ')})';
+  String toString() => '$root$pattern';
 
   @override
   bool operator ==(Object other) =>
