@@ -498,8 +498,8 @@ final class Pitch extends Scalable<Pitch>
   }) =>
       frequency(
             tuningSystem: tuningSystem,
-            // we deliberately omit the temperature here, as the subsequent call to
-            // `Frequency.closestPitch` will already take it into account.
+            // we deliberately omit the temperature here, as the subsequent call
+            // to `Frequency.closestPitch` will already take it into account.
           )
           .harmonics(undertone: undertone)
           .map(
