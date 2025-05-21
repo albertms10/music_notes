@@ -195,8 +195,9 @@ final class Interval
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
   factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) {
-    final qualityConstructor =
-        size.isPerfect ? PerfectQuality.new : ImperfectQuality.new;
+    final qualityConstructor = size.isPerfect
+        ? PerfectQuality.new
+        : ImperfectQuality.new;
 
     return Interval._(size, qualityConstructor(semitones));
   }
@@ -532,8 +533,9 @@ class IntervalFormatter extends Formatter<Interval> {
 
     final size = sizeFormatter.parse(match[2]!);
     // ignore: omit_local_variable_types False positive (?)
-    final Formatter<Quality> formatter =
-        size.isPerfect ? perfectQualityFormatter : imperfectQualityFormatter;
+    final Formatter<Quality> formatter = size.isPerfect
+        ? perfectQualityFormatter
+        : imperfectQualityFormatter;
 
     return Interval._(size, formatter.parse(match[1]!));
   }

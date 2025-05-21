@@ -40,12 +40,12 @@ class Chord<T extends Scalable<T>>
   ///   == ChordPattern.majorTriad.add7().add9()
   /// ```
   ChordPattern get pattern =>
-  // The pattern is calculated based on the intervals between the notes
-  // rather than from the root note. This approach helps differentiate
-  // compound intervals (e.g., [Interval.M9]) from simple intervals
-  // (e.g., [Interval.M2]) in chords where distance is not explicit
-  // (so, [Note] based chords rather than [Pitch] based).
-  ChordPattern.fromIntervalSteps(_items.intervalSteps);
+      // The pattern is calculated based on the intervals between the notes
+      // rather than from the root note. This approach helps differentiate
+      // compound intervals (e.g., [Interval.M9]) from simple intervals
+      // (e.g., [Interval.M2]) in chords where distance is not explicit
+      // (so, [Note] based chords rather than [Pitch] based).
+      ChordPattern.fromIntervalSteps(_items.intervalSteps);
 
   /// The modifier [T]s from the root note.
   ///

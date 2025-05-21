@@ -283,14 +283,13 @@ final class ScalePattern {
         if (sequence.bitAt(i) != 0) PitchClass(i),
       PitchClass.c,
     ];
-    final descendingDegrees =
-        descendingSequence == null
-            ? null
-            : [
-              PitchClass.c,
-              for (var i = chromaticDivisions - 1; i >= 0; i--)
-                if (descendingSequence.bitAt(i) != 0) PitchClass(i),
-            ];
+    final descendingDegrees = descendingSequence == null
+        ? null
+        : [
+            PitchClass.c,
+            for (var i = chromaticDivisions - 1; i >= 0; i--)
+              if (descendingSequence.bitAt(i) != 0) PitchClass(i),
+          ];
 
     return Scale(degrees, descendingDegrees).pattern;
   }
@@ -311,8 +310,8 @@ final class ScalePattern {
     final sequence = degrees.fold(0, _setBit);
     final descendingSequence =
         descendingDegrees.reversed.isEnharmonicWith(degrees)
-            ? null
-            : descendingDegrees.fold(0, _setBit);
+        ? null
+        : descendingDegrees.fold(0, _setBit);
 
     return (sequence, descendingSequence);
   }
@@ -491,10 +490,9 @@ final class ScalePattern {
 
   @override
   String toString() {
-    final descendingSteps =
-        _descendingIntervalSteps != null
-            ? ', ${_descendingIntervalSteps.join(' ')}'
-            : '';
+    final descendingSteps = _descendingIntervalSteps != null
+        ? ', ${_descendingIntervalSteps.join(' ')}'
+        : '';
 
     return '$name (${_intervalSteps.join(' ')}$descendingSteps)';
   }

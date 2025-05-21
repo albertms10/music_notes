@@ -168,8 +168,9 @@ final class Accidental implements Comparable<Accidental> {
     if (semitones == 0) return _naturalSymbol;
 
     final accidentalSymbol = semitones.isNegative ? _flatSymbol : _sharpSymbol;
-    final doubleAccidentalSymbol =
-        semitones.isNegative ? _doubleFlatSymbol : _doubleSharpSymbol;
+    final doubleAccidentalSymbol = semitones.isNegative
+        ? _doubleFlatSymbol
+        : _doubleSharpSymbol;
 
     final absSemitones = semitones.abs();
     final singleAccidentals = accidentalSymbol * (absSemitones % 2);
