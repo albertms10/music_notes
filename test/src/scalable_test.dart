@@ -15,17 +15,97 @@ void main() {
   });
 
   group('ScalableIterable', () {
+    group('.intervalSteps', () {
+      test('returns the Interval steps of this ScalableIterable', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].intervalSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+
+        expect([Note.b, Note.a, Note.g, Note.f].intervalSteps, const [
+          Interval.m7,
+          Interval.m7,
+          Interval.m7,
+        ]);
+      });
+    });
+
+    group('.descendingIntervalSteps', () {
+      test(
+        'returns the descending Interval steps of this ScalableIterable',
+        () {
+          expect(
+            [Note.b, Note.a, Note.g, Note.f].descendingIntervalSteps,
+            const [Interval.M2, Interval.M2, Interval.M2],
+          );
+
+          expect(
+            [Note.c, Note.d, Note.e, Note.f.sharp].descendingIntervalSteps,
+            const [Interval.m7, Interval.m7, Interval.m7],
+          );
+        },
+      );
+    });
+
+    group('.closestSteps', () {
+      test('returns the closest Interval steps of this ScalableIterable', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+
+        expect([Note.b, Note.a, Note.g, Note.f].closestSteps, const [
+          Interval.M2,
+          Interval.M2,
+          Interval.M2,
+        ]);
+      });
+    });
+
+    group('.isStepwise', () {
+      test('returns whether this Iterable is entirely in stepwise motion', () {
+        expect([Note.c, Note.d, Note.e, Note.f.sharp].isStepwise, isTrue);
+        expect(
+          [Note.g, Note.a, Note.g, Note.f.sharp, Note.e.flat].isStepwise,
+          isTrue,
+        );
+        expect(
+          [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(3),
+          ].isStepwise,
+          isTrue,
+        );
+
+        expect(
+          [
+            Note.c.inOctave(4),
+            Note.d.inOctave(4),
+            Note.c.inOctave(4),
+            Note.b.flat.inOctave(2),
+          ].isStepwise,
+          isFalse,
+        );
+        expect(const [Note.c, Note.e, Note.g, Note.a].isStepwise, isFalse);
+      });
+    });
+
     group('.inversion', () {
       test('returns the inversion of this ScalableIterable', () {
         expect(const <PitchClass>{}.inversion.toList(), const <PitchClass>[]);
-        expect(
-          {PitchClass.cSharp}.inversion.toList(),
-          const [PitchClass.cSharp],
-        );
-        expect(
-          {Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(),
-          [Note.d, Note.b.flat, Note.c, Note.a],
-        );
+        expect({PitchClass.cSharp}.inversion.toList(), const [
+          PitchClass.cSharp,
+        ]);
+        expect({Note.d, Note.f.sharp, Note.e, Note.g}.inversion.toList(), [
+          Note.d,
+          Note.b.flat,
+          Note.c,
+          Note.a,
+        ]);
         expect(
           {
             Note.c.inOctave(4),
@@ -41,9 +121,12 @@ void main() {
           ],
         );
         expect(
-          {PitchClass.c, PitchClass.dSharp, PitchClass.b, PitchClass.g}
-              .inversion
-              .toList(),
+          {
+            PitchClass.c,
+            PitchClass.dSharp,
+            PitchClass.b,
+            PitchClass.g,
+          }.inversion.toList(),
           [PitchClass.c, PitchClass.a, PitchClass.cSharp, PitchClass.f],
         );
       });
@@ -52,14 +135,15 @@ void main() {
     group('.retrograde', () {
       test('returns the retrograde of this ScalableIterable', () {
         expect(const <PitchClass>{}.retrograde.toList(), const <PitchClass>[]);
-        expect(
-          {PitchClass.fSharp}.retrograde.toList(),
-          const [PitchClass.fSharp],
-        );
-        expect(
-          {Note.c, Note.d.sharp, Note.d, Note.g}.retrograde.toList(),
-          [Note.g, Note.d, Note.d.sharp, Note.c],
-        );
+        expect({PitchClass.fSharp}.retrograde.toList(), const [
+          PitchClass.fSharp,
+        ]);
+        expect({Note.c, Note.d.sharp, Note.d, Note.g}.retrograde.toList(), [
+          Note.g,
+          Note.d,
+          Note.d.sharp,
+          Note.c,
+        ]);
         expect(
           {
             Note.c.inOctave(4),
@@ -75,9 +159,12 @@ void main() {
           ],
         );
         expect(
-          {PitchClass.c, PitchClass.dSharp, PitchClass.d, PitchClass.g}
-              .retrograde
-              .toList(),
+          {
+            PitchClass.c,
+            PitchClass.dSharp,
+            PitchClass.d,
+            PitchClass.g,
+          }.retrograde.toList(),
           const [PitchClass.g, PitchClass.d, PitchClass.dSharp, PitchClass.c],
         );
       });
@@ -91,9 +178,12 @@ void main() {
         );
         expect({PitchClass.g}.numericRepresentation().toList(), const [0]);
         expect(
-          {PitchClass.b, PitchClass.aSharp, PitchClass.g, PitchClass.d}
-              .numericRepresentation(reference: PitchClass.g)
-              .toList(),
+          {
+            PitchClass.b,
+            PitchClass.aSharp,
+            PitchClass.g,
+            PitchClass.d,
+          }.numericRepresentation(reference: PitchClass.g).toList(),
           const [4, 3, 0, 7],
         );
         expect(

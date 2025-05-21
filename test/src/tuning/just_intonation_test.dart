@@ -4,20 +4,17 @@ import 'package:test/test.dart';
 void main() {
   group('JustIntonation', () {
     group('.generator', () {
-      test(
-        'returns the number of cents for the generator at Interval.P5 in '
-        'this JustIntonation',
-        () {
-          const generator = Cent(701.9550008653874);
-          expect(const PythagoreanTuning().generator, generator);
-          expect(
-            PythagoreanTuning(
-              fork: Note.a.flat.inOctave(3).at(Frequency.reference),
-            ).generator,
-            generator,
-          );
-        },
-      );
+      test('returns the number of cents for the generator at Interval.P5 in '
+          'this JustIntonation', () {
+        const generator = Cent(701.9550008653874);
+        expect(const PythagoreanTuning().generator, generator);
+        expect(
+          PythagoreanTuning(
+            fork: Note.a.flat.inOctave(3).at(Frequency.reference),
+          ).generator,
+          generator,
+        );
+      });
     });
   });
 
@@ -42,10 +39,7 @@ void main() {
           const PythagoreanTuning().ratio(Note.e.flat.inOctave(4)),
           32 / 27,
         );
-        expect(
-          const PythagoreanTuning().ratio(Note.e.inOctave(4)),
-          81 / 64,
-        );
+        expect(const PythagoreanTuning().ratio(Note.e.inOctave(4)), 81 / 64);
         expect(const PythagoreanTuning().ratio(Note.f.inOctave(4)), 4 / 3);
         expect(
           const PythagoreanTuning().ratio(Note.f.sharp.inOctave(4)),
@@ -64,18 +58,12 @@ void main() {
           const PythagoreanTuning().ratio(Note.a.flat.inOctave(4)),
           128 / 81,
         );
-        expect(
-          const PythagoreanTuning().ratio(Note.a.inOctave(4)),
-          27 / 16,
-        );
+        expect(const PythagoreanTuning().ratio(Note.a.inOctave(4)), 27 / 16);
         expect(
           const PythagoreanTuning().ratio(Note.a.sharp.inOctave(4)),
           59049 / 32768,
         );
-        expect(
-          const PythagoreanTuning().ratio(Note.b.inOctave(4)),
-          243 / 128,
-        );
+        expect(const PythagoreanTuning().ratio(Note.b.inOctave(4)), 243 / 128);
         expect(const PythagoreanTuning().ratio(Note.c.inOctave(5)), 2);
         expect(const PythagoreanTuning().ratio(Note.f.inOctave(5)), 8 / 3);
       });

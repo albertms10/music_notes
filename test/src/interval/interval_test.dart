@@ -1,3 +1,6 @@
+// To allow testing each constructor with different arguments.
+// ignore_for_file: use_named_constants
+
 import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
@@ -7,14 +10,209 @@ void main() {
   group('Interval', () {
     group('constructor', () {
       test('throws an assertion error when arguments are incorrect', () {
-        expect(
-          () => Interval.perfect(Size.second, PerfectQuality.diminished),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => Interval.imperfect(Size.fifth, ImperfectQuality.augmented),
-          throwsA(isA<AssertionError>()),
-        );
+        const major = ImperfectQuality.major;
+        final throws = throwsA(isA<AssertionError>());
+
+        expect(() => Interval.imperfect(const Size(-43), major), throws);
+        expect(() => Interval.perfect(const Size(-42)), throws);
+        expect(() => Interval.perfect(const Size(-41)), throws);
+        expect(() => Interval.imperfect(const Size(-40), major), throws);
+        expect(() => Interval.imperfect(const Size(-39), major), throws);
+        expect(() => Interval.perfect(const Size(-38)), throws);
+        expect(() => Interval.perfect(const Size(-37)), throws);
+
+        expect(() => Interval.imperfect(const Size(-36), major), throws);
+        expect(() => Interval.perfect(const Size(-35)), throws);
+        expect(() => Interval.perfect(const Size(-34)), throws);
+        expect(() => Interval.imperfect(const Size(-33), major), throws);
+        expect(() => Interval.imperfect(const Size(-32), major), throws);
+        expect(() => Interval.perfect(const Size(-31)), throws);
+        expect(() => Interval.perfect(const Size(-30)), throws);
+
+        expect(() => Interval.imperfect(const Size(-29), major), throws);
+        expect(() => Interval.perfect(const Size(-28)), throws);
+        expect(() => Interval.perfect(const Size(-27)), throws);
+        expect(() => Interval.imperfect(const Size(-26), major), throws);
+        expect(() => Interval.imperfect(const Size(-25), major), throws);
+        expect(() => Interval.perfect(const Size(-24)), throws);
+        expect(() => Interval.perfect(const Size(-23)), throws);
+
+        expect(() => Interval.imperfect(const Size(-22), major), throws);
+        expect(() => Interval.perfect(const Size(-21)), throws);
+        expect(() => Interval.perfect(const Size(-20)), throws);
+        expect(() => Interval.imperfect(const Size(-19), major), throws);
+        expect(() => Interval.imperfect(const Size(-18), major), throws);
+        expect(() => Interval.perfect(const Size(-17)), throws);
+        expect(() => Interval.perfect(const Size(-16)), throws);
+
+        expect(() => Interval.imperfect(const Size(-15), major), throws);
+        expect(() => Interval.perfect(const Size(-14)), throws);
+        expect(() => Interval.perfect(-Size.thirteenth), throws);
+        expect(() => Interval.imperfect(-Size.twelfth, major), throws);
+        expect(() => Interval.imperfect(-Size.eleventh, major), throws);
+        expect(() => Interval.perfect(-Size.tenth), throws);
+        expect(() => Interval.perfect(-Size.ninth), throws);
+
+        expect(() => Interval.imperfect(-Size.octave, major), throws);
+        expect(() => Interval.perfect(-Size.seventh), throws);
+        expect(() => Interval.perfect(-Size.sixth), throws);
+        expect(() => Interval.imperfect(-Size.fifth, major), throws);
+        expect(() => Interval.imperfect(-Size.fourth, major), throws);
+        expect(() => Interval.perfect(-Size.third), throws);
+        expect(() => Interval.perfect(-Size.second), throws);
+        expect(() => Interval.imperfect(-Size.unison, major), throws);
+
+        expect(() => Interval.imperfect(Size.unison, major), throws);
+        expect(() => Interval.perfect(Size.second), throws);
+        expect(() => Interval.perfect(Size.third), throws);
+        expect(() => Interval.imperfect(Size.fourth, major), throws);
+        expect(() => Interval.imperfect(Size.fifth, major), throws);
+        expect(() => Interval.perfect(Size.sixth), throws);
+        expect(() => Interval.perfect(Size.seventh), throws);
+        expect(() => Interval.imperfect(Size.octave, major), throws);
+
+        expect(() => Interval.perfect(Size.ninth), throws);
+        expect(() => Interval.perfect(Size.tenth), throws);
+        expect(() => Interval.imperfect(Size.eleventh, major), throws);
+        expect(() => Interval.imperfect(Size.twelfth, major), throws);
+        expect(() => Interval.perfect(Size.thirteenth), throws);
+        expect(() => Interval.perfect(const Size(14)), throws);
+        expect(() => Interval.imperfect(const Size(15), major), throws);
+
+        expect(() => Interval.perfect(const Size(16)), throws);
+        expect(() => Interval.perfect(const Size(17)), throws);
+        expect(() => Interval.imperfect(const Size(18), major), throws);
+        expect(() => Interval.imperfect(const Size(19), major), throws);
+        expect(() => Interval.perfect(const Size(20)), throws);
+        expect(() => Interval.perfect(const Size(21)), throws);
+        expect(() => Interval.imperfect(const Size(22), major), throws);
+
+        expect(() => Interval.perfect(const Size(23)), throws);
+        expect(() => Interval.perfect(const Size(24)), throws);
+        expect(() => Interval.imperfect(const Size(25), major), throws);
+        expect(() => Interval.imperfect(const Size(26), major), throws);
+        expect(() => Interval.perfect(const Size(27)), throws);
+        expect(() => Interval.perfect(const Size(28)), throws);
+        expect(() => Interval.imperfect(const Size(29), major), throws);
+
+        expect(() => Interval.perfect(const Size(30)), throws);
+        expect(() => Interval.perfect(const Size(31)), throws);
+        expect(() => Interval.imperfect(const Size(32), major), throws);
+        expect(() => Interval.imperfect(const Size(33), major), throws);
+        expect(() => Interval.perfect(const Size(34)), throws);
+        expect(() => Interval.perfect(const Size(35)), throws);
+        expect(() => Interval.imperfect(const Size(36), major), throws);
+
+        expect(() => Interval.perfect(const Size(37)), throws);
+        expect(() => Interval.perfect(const Size(38)), throws);
+        expect(() => Interval.imperfect(const Size(39), major), throws);
+        expect(() => Interval.imperfect(const Size(40), major), throws);
+        expect(() => Interval.perfect(const Size(41)), throws);
+        expect(() => Interval.perfect(const Size(42)), throws);
+        expect(() => Interval.imperfect(const Size(43), major), throws);
+      });
+
+      test('creates a new Interval from size and quality', () {
+        const major = ImperfectQuality.major;
+        final isInterval = isA<Interval>();
+
+        expect(const Interval.perfect(Size(-43)), isInterval);
+        expect(const Interval.imperfect(Size(-42), major), isInterval);
+        expect(const Interval.imperfect(Size(-41), major), isInterval);
+        expect(const Interval.perfect(Size(-40)), isInterval);
+        expect(const Interval.perfect(Size(-39)), isInterval);
+        expect(const Interval.imperfect(Size(-38), major), isInterval);
+        expect(const Interval.imperfect(Size(-37), major), isInterval);
+
+        expect(const Interval.perfect(Size(-36)), isInterval);
+        expect(const Interval.imperfect(Size(-35), major), isInterval);
+        expect(const Interval.imperfect(Size(-34), major), isInterval);
+        expect(const Interval.perfect(Size(-33)), isInterval);
+        expect(const Interval.perfect(Size(-32)), isInterval);
+        expect(const Interval.imperfect(Size(-31), major), isInterval);
+        expect(const Interval.imperfect(Size(-30), major), isInterval);
+
+        expect(const Interval.perfect(Size(-29)), isInterval);
+        expect(const Interval.imperfect(Size(-28), major), isInterval);
+        expect(const Interval.imperfect(Size(-27), major), isInterval);
+        expect(const Interval.perfect(Size(-26)), isInterval);
+        expect(const Interval.perfect(Size(-25)), isInterval);
+        expect(const Interval.imperfect(Size(-24), major), isInterval);
+        expect(const Interval.imperfect(Size(-23), major), isInterval);
+
+        expect(const Interval.perfect(Size(-22)), isInterval);
+        expect(const Interval.imperfect(Size(-21), major), isInterval);
+        expect(const Interval.imperfect(Size(-20), major), isInterval);
+        expect(const Interval.perfect(Size(-19)), isInterval);
+        expect(const Interval.perfect(Size(-18)), isInterval);
+        expect(const Interval.imperfect(Size(-17), major), isInterval);
+        expect(const Interval.imperfect(Size(-16), major), isInterval);
+
+        expect(const Interval.perfect(Size(-15)), isInterval);
+        expect(const Interval.imperfect(Size(-14), major), isInterval);
+        expect(Interval.imperfect(-Size.thirteenth, major), isInterval);
+        expect(Interval.perfect(-Size.twelfth), isInterval);
+        expect(Interval.perfect(-Size.eleventh), isInterval);
+        expect(Interval.imperfect(-Size.tenth, major), isInterval);
+        expect(Interval.imperfect(-Size.ninth, major), isInterval);
+
+        expect(Interval.perfect(-Size.octave), isInterval);
+        expect(Interval.imperfect(-Size.seventh, major), isInterval);
+        expect(Interval.imperfect(-Size.sixth, major), isInterval);
+        expect(Interval.perfect(-Size.fifth), isInterval);
+        expect(Interval.perfect(-Size.fourth), isInterval);
+        expect(Interval.imperfect(-Size.third, major), isInterval);
+        expect(Interval.imperfect(-Size.second, major), isInterval);
+        expect(Interval.perfect(-Size.unison), isInterval);
+
+        expect(const Interval.perfect(Size.unison), isInterval);
+        expect(const Interval.imperfect(Size.second, major), isInterval);
+        expect(const Interval.imperfect(Size.third, major), isInterval);
+        expect(const Interval.perfect(Size.fourth), isInterval);
+        expect(const Interval.perfect(Size.fifth), isInterval);
+        expect(const Interval.imperfect(Size.sixth, major), isInterval);
+        expect(const Interval.imperfect(Size.seventh, major), isInterval);
+        expect(const Interval.perfect(Size.octave), isInterval);
+
+        expect(const Interval.imperfect(Size.ninth, major), isInterval);
+        expect(const Interval.imperfect(Size.tenth, major), isInterval);
+        expect(const Interval.perfect(Size.eleventh), isInterval);
+        expect(const Interval.perfect(Size.twelfth), isInterval);
+        expect(const Interval.imperfect(Size.thirteenth, major), isInterval);
+        expect(const Interval.imperfect(Size(14), major), isInterval);
+        expect(const Interval.perfect(Size(15)), isInterval);
+
+        expect(const Interval.imperfect(Size(16), major), isInterval);
+        expect(const Interval.imperfect(Size(17), major), isInterval);
+        expect(const Interval.perfect(Size(18)), isInterval);
+        expect(const Interval.perfect(Size(19)), isInterval);
+        expect(const Interval.imperfect(Size(20), major), isInterval);
+        expect(const Interval.imperfect(Size(21), major), isInterval);
+        expect(const Interval.perfect(Size(22)), isInterval);
+
+        expect(const Interval.imperfect(Size(23), major), isInterval);
+        expect(const Interval.imperfect(Size(24), major), isInterval);
+        expect(const Interval.perfect(Size(25)), isInterval);
+        expect(const Interval.perfect(Size(26)), isInterval);
+        expect(const Interval.imperfect(Size(27), major), isInterval);
+        expect(const Interval.imperfect(Size(28), major), isInterval);
+        expect(const Interval.perfect(Size(29)), isInterval);
+
+        expect(const Interval.imperfect(Size(30), major), isInterval);
+        expect(const Interval.imperfect(Size(31), major), isInterval);
+        expect(const Interval.perfect(Size(32)), isInterval);
+        expect(const Interval.perfect(Size(33)), isInterval);
+        expect(const Interval.imperfect(Size(34), major), isInterval);
+        expect(const Interval.imperfect(Size(35), major), isInterval);
+        expect(const Interval.perfect(Size(36)), isInterval);
+
+        expect(const Interval.imperfect(Size(37), major), isInterval);
+        expect(const Interval.imperfect(Size(38), major), isInterval);
+        expect(const Interval.perfect(Size(39)), isInterval);
+        expect(const Interval.perfect(Size(40)), isInterval);
+        expect(const Interval.imperfect(Size(41), major), isInterval);
+        expect(const Interval.imperfect(Size(42), major), isInterval);
+        expect(const Interval.perfect(Size(43)), isInterval);
       });
     });
 
@@ -204,7 +402,33 @@ void main() {
 
         expect(const Interval.perfect(Size(15)).semitones, 24);
         expect(const Interval.perfect(Size(22)).semitones, 36);
+        expect(
+          const Interval.imperfect(Size(23), ImperfectQuality.minor).semitones,
+          37,
+        );
+        expect(
+          const Interval.imperfect(Size(23), ImperfectQuality.major).semitones,
+          38,
+        );
+        expect(
+          const Interval.imperfect(Size(-24), ImperfectQuality.minor).semitones,
+          -39,
+        );
+        expect(
+          const Interval.imperfect(Size(24), ImperfectQuality.major).semitones,
+          40,
+        );
+        expect(const Interval.perfect(Size(25)).semitones, 41);
+        expect(const Interval.perfect(Size(-26)).semitones, -43);
         expect(const Interval.perfect(Size(29)).semitones, 48);
+        expect(
+          const Interval.imperfect(Size(30), ImperfectQuality.minor).semitones,
+          49,
+        );
+        expect(
+          const Interval.imperfect(Size(-30), ImperfectQuality.major).semitones,
+          -50,
+        );
       });
     });
 
@@ -215,8 +439,10 @@ void main() {
         expect(Interval.d1.isDescending, isFalse);
         expect(Interval.M9.isDescending, isFalse);
         expect(
-          const Interval.perfect(Size(-4), PerfectQuality.doublyAugmented)
-              .isDescending,
+          const Interval.perfect(
+            Size(-4),
+            PerfectQuality.doublyAugmented,
+          ).isDescending,
           isTrue,
         );
       });
@@ -409,15 +635,129 @@ void main() {
         expect((-Interval.d5).respellBySize(-Size.fourth), -Interval.A4);
         expect(
           (-Interval.P4).respellBySize(-Size.fifth),
-          const Interval.perfect(Size(-5), PerfectQuality.doublyDiminished),
+          Interval.perfect(-Size.fifth, PerfectQuality.doublyDiminished),
         );
       });
     });
 
-    group('.distanceBetween()', () {
-      test('returns the distance between two Scalable instances', () {
-        var (distance, notes: dynamic notes) =
-            Interval.P5.distanceBetween(Note.c, Note.b.flat.flat);
+    group('.respelledUpwards', () {
+      test('returns this Interval respelled upwards', () {
+        expect(Interval.A4.respelledUpwards, Interval.d5);
+        expect(
+          Interval.d5.respelledUpwards,
+          const Interval.imperfect(
+            Size.sixth,
+            ImperfectQuality.doublyDiminished,
+          ),
+        );
+        expect(Interval.M2.respelledUpwards, Interval.d3);
+        expect(Interval.M3.respelledUpwards, Interval.d4);
+        expect(Interval.P1.respelledUpwards, Interval.d2);
+        expect(
+          Interval.m2.respelledUpwards,
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyDiminished,
+          ),
+        );
+
+        expect((-Interval.M3).respelledUpwards, -Interval.d4);
+        expect(
+          (-Interval.d5).respelledUpwards,
+          Interval.imperfect(-Size.sixth, ImperfectQuality.doublyDiminished),
+        );
+        expect(
+          (-Interval.P4).respelledUpwards,
+          Interval.perfect(-Size.fifth, PerfectQuality.doublyDiminished),
+        );
+      });
+    });
+
+    group('.respelledDownwards', () {
+      test('throws an assertion error when the operation is invalid', () {
+        expect(
+          () => Interval.P1.respelledDownwards,
+          throwsA(isA<AssertionError>()),
+        );
+      });
+
+      test('returns this Interval respelled downwards', () {
+        expect(
+          Interval.A4.respelledDownwards,
+          const Interval.imperfect(
+            Size.third,
+            ImperfectQuality.doublyAugmented,
+          ),
+        );
+        expect(Interval.d5.respelledDownwards, Interval.A4);
+        expect(
+          Interval.M2.respelledDownwards,
+          const Interval.perfect(Size.unison, PerfectQuality.doublyAugmented),
+        );
+        expect(
+          Interval.M3.respelledDownwards,
+          const Interval.imperfect(
+            Size.second,
+            ImperfectQuality.doublyAugmented,
+          ),
+        );
+        expect(Interval.m2.respelledDownwards, Interval.A1);
+
+        expect(
+          (-Interval.M3).respelledDownwards,
+          Interval.imperfect(-Size.second, ImperfectQuality.doublyAugmented),
+        );
+        expect((-Interval.d5).respelledDownwards, -Interval.A4);
+        expect((-Interval.P4).respelledDownwards, -Interval.A3);
+      });
+    });
+
+    group('.respelledSimple', () {
+      test('returns the simplest spelling for this Interval', () {
+        expect(Interval.M2.respelledSimple, Interval.M2);
+        expect(Interval.A4.respelledSimple, Interval.A4);
+        expect(Interval.d5.respelledSimple, Interval.A4);
+        expect(
+          const Interval.imperfect(
+            Size.sixth,
+            ImperfectQuality.triplyAugmented,
+          ).respelledSimple,
+          Interval.P8,
+        );
+        expect(
+          const Interval.perfect(
+            Size.fifth,
+            PerfectQuality.triplyDiminished,
+          ).respelledSimple,
+          Interval.M3,
+        );
+
+        expect((-Interval.P1).respelledSimple, Interval.P1);
+        expect((-Interval.A4).respelledSimple, -Interval.A4);
+        expect((-Interval.d5).respelledSimple, -Interval.A4);
+        expect(
+          Interval.imperfect(
+            -Size.seventh,
+            const ImperfectQuality(-4),
+          ).respelledSimple,
+          -Interval.A4,
+        );
+        expect(
+          Interval.perfect(
+            -Size.fourth,
+            PerfectQuality.doublyAugmented,
+          ).respelledSimple,
+          -Interval.P5,
+        );
+      });
+    });
+
+    group('.circleDistance()', () {
+      test('returns the circle distance between two Scalable instances', () {
+        var (distance, notes: dynamic notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.b.flat.flat,
+        );
         expect(distance, -9);
         expect(notes, [
           Note.c,
@@ -432,12 +772,17 @@ void main() {
           Note.b.flat.flat,
         ]);
 
-        (distance, :notes) = Interval.P5.distanceBetween(Note.c, Note.b.flat);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.b.flat,
+        );
         expect(distance, -2);
         expect(notes, [Note.c, Note.f, Note.b.flat]);
 
-        (distance, :notes) =
-            Interval.P5.distanceBetween(PitchClass.d, PitchClass.gSharp);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: PitchClass.d,
+          to: PitchClass.gSharp,
+        );
         expect(distance, 6);
         expect(notes, const [
           PitchClass.d,
@@ -449,8 +794,10 @@ void main() {
           PitchClass.gSharp,
         ]);
 
-        (distance, :notes) =
-            Interval.P5.distanceBetween(Note.c, Note.f.sharp.sharp);
+        (distance, :notes) = Interval.P5.circleDistance(
+          from: Note.c,
+          to: Note.f.sharp.sharp,
+        );
         expect(distance, 13);
         expect(notes, [
           Note.c,
@@ -469,29 +816,36 @@ void main() {
           Note.f.sharp.sharp,
         ]);
 
-        (distance, :notes) =
-            Interval.P4.distanceBetween(PitchClass.dSharp, PitchClass.c);
-        expect(distance, -3);
-        expect(
-          notes,
-          const [
-            PitchClass.dSharp,
-            PitchClass.aSharp,
-            PitchClass.f,
-            PitchClass.c,
-          ],
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: PitchClass.dSharp,
+          to: PitchClass.c,
         );
+        expect(distance, -3);
+        expect(notes, const [
+          PitchClass.dSharp,
+          PitchClass.aSharp,
+          PitchClass.f,
+          PitchClass.c,
+        ]);
 
-        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.c);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: Note.c,
+          to: Note.c,
+        );
         expect(distance, 0);
         expect(notes, const [Note.c]);
 
-        (distance, :notes) = Interval.P4.distanceBetween(Note.c, Note.f);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: Note.c,
+          to: Note.f,
+        );
         expect(distance, 1);
         expect(notes, const [Note.c, Note.f]);
 
-        (distance, :notes) =
-            Interval.P4.distanceBetween(PitchClass.c, PitchClass.aSharp);
+        (distance, :notes) = Interval.P4.circleDistance(
+          from: PitchClass.c,
+          to: PitchClass.aSharp,
+        );
         expect(distance, 2);
         expect(notes, const [PitchClass.c, PitchClass.f, PitchClass.aSharp]);
       });
@@ -499,56 +853,44 @@ void main() {
 
     group('.circleFrom()', () {
       test('returns the circle of this Interval', () {
-        expect(Interval.P5.circleFrom(Note.c, distance: 0), const [Note.c]);
-        expect(
-          Interval.P5.circleFrom(Note.c, distance: 1),
-          const [Note.c, Note.g],
-        );
-        expect(
-          Interval.P5.circleFrom(PitchClass.c, distance: 6),
-          const [
-            PitchClass.c,
-            PitchClass.g,
-            PitchClass.d,
-            PitchClass.a,
-            PitchClass.e,
-            PitchClass.b,
-            PitchClass.fSharp,
-          ],
-        );
-        expect(
-          Interval.P5.circleFrom(Note.f.sharp, distance: 8),
-          [
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-            Note.e.sharp,
-            Note.b.sharp,
-            Note.f.sharp.sharp,
-            Note.c.sharp.sharp,
-          ],
-        );
-        expect(
-          Interval.P4.circleFrom(Note.b.flat, distance: 9),
-          [
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-            Note.c.flat,
-            Note.f.flat,
-            Note.b.flat.flat,
-            Note.e.flat.flat,
-            Note.a.flat.flat,
-          ],
-        );
+        expect(Interval.P5.circleFrom(Note.c).take(1), const [Note.c]);
+        expect(Interval.P5.circleFrom(Note.c).take(2), const [Note.c, Note.g]);
+        expect(Interval.P5.circleFrom(PitchClass.c).take(7), const [
+          PitchClass.c,
+          PitchClass.g,
+          PitchClass.d,
+          PitchClass.a,
+          PitchClass.e,
+          PitchClass.b,
+          PitchClass.fSharp,
+        ]);
+        expect(Interval.P5.circleFrom(Note.f.sharp).take(9), [
+          Note.f.sharp,
+          Note.c.sharp,
+          Note.g.sharp,
+          Note.d.sharp,
+          Note.a.sharp,
+          Note.e.sharp,
+          Note.b.sharp,
+          Note.f.sharp.sharp,
+          Note.c.sharp.sharp,
+        ]);
+        expect(Interval.P4.circleFrom(Note.b.flat).take(10), [
+          Note.b.flat,
+          Note.e.flat,
+          Note.a.flat,
+          Note.d.flat,
+          Note.g.flat,
+          Note.c.flat,
+          Note.f.flat,
+          Note.b.flat.flat,
+          Note.e.flat.flat,
+          Note.a.flat.flat,
+        ]);
 
         expect(
-          Interval.P4.circleFrom(Note.c, distance: -7),
-          Interval.P5.circleFrom(Note.c, distance: 7),
+          (-Interval.P4).circleFrom(Note.c),
+          Interval.P5.circleFrom(Note.c),
         );
       });
     });
@@ -685,10 +1027,11 @@ void main() {
       test('ignores equal Interval instances in a Set', () {
         final collection = {Interval.M2, Interval.d3, Interval.P4};
         collection.addAll(collection);
-        expect(
-          collection.toList(),
-          const [Interval.M2, Interval.d3, Interval.P4],
-        );
+        expect(collection.toList(), const [
+          Interval.M2,
+          Interval.d3,
+          Interval.P4,
+        ]);
       });
     });
 

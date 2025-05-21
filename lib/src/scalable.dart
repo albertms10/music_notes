@@ -1,17 +1,28 @@
 import 'enharmonic.dart';
 import 'interval/interval.dart';
+import 'interval/size.dart';
 import 'music.dart';
+import 'note/note.dart';
 import 'note/pitch_class.dart';
+import 'respellable.dart';
 import 'transposable.dart';
 
 /// An interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>
-    with Enharmonic<PitchClass>
+    with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T> {
   /// Creates a new [Scalable].
   const Scalable();
 
-  /// Creates a new [PitchClass] from [semitones].
+  /// Predicate to transpose this [Scalable] by ascending chromatic motion.
+  static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
+      scalable.transposeBy(Interval.m2).respelledSimple;
+
+  /// Enharmonic [Comparator] for [Scalable].
+  static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
+      a.semitones.compareTo(b.semitones);
+
+  /// Returns the [PitchClass] from [semitones].
   ///
   /// Example:
   /// ```dart
@@ -35,6 +46,29 @@ abstract class Scalable<T extends Scalable<T>>
   }
 }
 
+/// A Note iterable.
+extension NoteIterable on Iterable<Note> {
+  /// The closest [Interval]s between [Note]s in this [Iterable].
+  Iterable<Interval> get closestSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      final interval = elementAt(i).interval(elementAt(i + 1));
+      yield interval >= Interval.P5 ? interval + -Interval.m6 : interval;
+    }
+  }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c, Note.d, Note.e, Note.f.sharp].isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      closestSteps.every((interval) => interval.size.abs() <= Size.second);
+}
+
 /// A Scalable iterable.
 extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// The [Interval]s between [T]s in this [Iterable].
@@ -50,6 +84,18 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
       yield elementAt(i + 1).interval(elementAt(i));
     }
   }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.d, Note.e, Note.e.flat, Note.d].inOctave(4).isStepwise == true
+  /// const [Note.c, Note.e, Note.g, Note.a].inOctave(3).isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      intervalSteps.every((interval) => interval.size.abs() <= Size.second);
 
   /// Transposes this [Iterable] by [interval].
   Iterable<T> transposeBy(Interval interval) =>
@@ -86,7 +132,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
   ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
   /// ```
-  Iterable<T> get retrograde => toList().reversed;
+  Iterable<T> get retrograde => toList(growable: false).reversed;
 
   /// The numeric representation of this [ScalableIterable] from [reference].
   /// The [first] element is used as the reference if none is provided.
@@ -101,9 +147,9 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///     == const {4, 3, 7}
   /// ```
   Iterable<int> numericRepresentation({T? reference}) => map(
-        (scalable) =>
-            (reference ?? first).difference(scalable) % chromaticDivisions,
-      );
+    (scalable) =>
+        (reference ?? first).difference(scalable) % chromaticDivisions,
+  );
 
   /// The delta numeric representation of this [ScalableIterable].
   ///

@@ -27,9 +27,8 @@ Steps to reproduce the behavior:
 
 ### System information
 
-- Device or platform: [e.g. MacBook Pro]
-- OS: [e.g. macOS Sonoma 14.3.1]
-- Dart SDK version: [e.g. 3.3.2]
+- `music_notes` version: [e.g. 0.19.1]
+- Dart SDK version: [e.g. 3.5.0]
 
 ### Additional context
 

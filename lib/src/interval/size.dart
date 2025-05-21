@@ -2,6 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension, minBy;
 import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
+import '../formatter.dart';
 import '../music.dart';
 import 'interval.dart';
 import 'quality.dart';
@@ -72,7 +73,7 @@ extension type const Size._(int size) implements int {
         : absSemitones % chromaticDivisions;
   }
 
-  /// Scale a given normalized Size (one of the entries in [_sizeToSemitones])
+  /// Scale a given normalized [Size] (one of the entries in [_sizeToSemitones])
   /// to the given [semitones].
   factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
     final absSemitones = semitones.abs();
@@ -97,9 +98,10 @@ extension type const Size._(int size) implements int {
   /// ```
   static Size? fromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
-    final matchingSize = _sizeToSemitones.entries
-        .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
-        ?.key;
+    final matchingSize =
+        _sizeToSemitones.entries
+            .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
+            ?.key;
     if (matchingSize == null) return null;
 
     return Size._scaleToSemitones(matchingSize, semitones);
@@ -109,12 +111,13 @@ extension type const Size._(int size) implements int {
   /// interval in [semitones].
   factory Size.nearestFromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
-    final closest = minBy(
-      _sizeToSemitones.entries,
-      (entry) => (normalizedSemitones - entry.value).abs(),
-    )!;
+    final MapEntry<Size, int>(key: closest) =
+        minBy(
+          _sizeToSemitones.entries,
+          (entry) => (normalizedSemitones - entry.value).abs(),
+        )!;
 
-    return Size._scaleToSemitones(closest.key, semitones);
+    return Size._scaleToSemitones(closest, semitones);
   }
 
   /// The number of semitones of this [Size] as in [_sizeToSemitones].
@@ -130,19 +133,9 @@ extension type const Size._(int size) implements int {
   /// ```
   int get semitones {
     final absSimple = simple.abs();
-    final octaveShift = chromaticDivisions * (absShift ~/ octave);
-    // We exclude perfect octaves (simplified as 8) from the lookup to consider
-    // them 0 (as if they were modulo `Size.octave`).
-    final size = Size(absSimple == octave ? 1 : absSimple);
+    final octaves = (abs() - absSimple) ~/ 7;
 
-    return (_sizeToSemitones[size]! + octaveShift) * sign;
-  }
-
-  /// The absolute [Size] value taking octave shift into account.
-  int get absShift {
-    final absSize = abs();
-
-    return absSize + absSize ~/ octave;
+    return (_sizeToSemitones[absSimple]! + octaves * 12) * sign;
   }
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
@@ -154,9 +147,10 @@ extension type const Size._(int size) implements int {
   /// Size.fifth.diminished == Interval.d5
   /// (-Size.seventh).diminished == -Interval.d7
   /// ```
-  Interval get diminished => isPerfect
-      ? Interval.perfect(this, PerfectQuality.diminished)
-      : Interval.imperfect(this, ImperfectQuality.diminished);
+  Interval get diminished =>
+      isPerfect
+          ? Interval.perfect(this, PerfectQuality.diminished)
+          : Interval.imperfect(this, ImperfectQuality.diminished);
 
   /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
   /// from this [Size].
@@ -167,9 +161,10 @@ extension type const Size._(int size) implements int {
   /// Size.fourth.augmented == Interval.A4
   /// (-Size.sixth).augmented == -Interval.A6
   /// ```
-  Interval get augmented => isPerfect
-      ? Interval.perfect(this, PerfectQuality.augmented)
-      : Interval.imperfect(this, ImperfectQuality.augmented);
+  Interval get augmented =>
+      isPerfect
+          ? Interval.perfect(this, PerfectQuality.augmented)
+          : Interval.imperfect(this, ImperfectQuality.augmented);
 
   static int _inversion(Size size) {
     final diff = 9 - size.simple.size.abs();
@@ -200,7 +195,7 @@ extension type const Size._(int size) implements int {
   Size get inversion => Size(_inversion(this));
 
   static int _simple(Size size) =>
-      size.isCompound ? size.absShift.nonZeroMod(octave) * size.sign : size;
+      size.isCompound ? ((size.abs() - 1).nonZeroMod(7) + 1) * size.sign : size;
 
   /// The simplified version of this [Size].
   ///
@@ -213,7 +208,7 @@ extension type const Size._(int size) implements int {
   /// ```
   Size get simple => Size(_simple(this));
 
-  /// Whether this [Size] conforms a perfect interval.
+  /// Whether this [Size] conforms a [PerfectQuality] interval.
   ///
   /// Example:
   /// ```dart
@@ -221,7 +216,41 @@ extension type const Size._(int size) implements int {
   /// Size.sixth.isPerfect == false
   /// (-Size.eleventh).isPerfect == true
   /// ```
-  bool get isPerfect => absShift % (octave / 2) < 2;
+  bool get isPerfect =>
+      // This operation uses a bitmask implementation, equivalent to the more
+      // readable pattern:
+      //
+      // ```dart
+      // (abs() % 7 case Size.unison || Size.fourth || Size.fifth)
+      // ```
+      //
+      // In the bitmask, each bit represents a [Size] within the octave cycle
+      // (modulo 7). Perfect intervals occur at positions:
+      //
+      // - 1 for [Size.unison],
+      // - 4 for [Size.fourth], and
+      // - 5 for [Size.fifth].
+      //
+      // The number 50 (which is `0b0110010` in binary) has bits set at these
+      // positions:
+      //
+      // ```
+      //  2^ 6 5 4 3 2 1 0
+      //     -------------
+      //     0 1 1 0 0 1 0
+      //       ^ ^     ^
+      // ```
+      //
+      // - `abs() % 7` computes the [Size] modulo 7, mapping it to its position
+      //   within the octave cycle.
+      // - `1 <<` creates a bitmask with a single bit set at the position
+      //   corresponding to the [Size].
+      // - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this bit
+      //   corresponds to a perfect interval size.
+      // - The expression `!= 0` returns `true` if the result is non-zero
+      //   (e.g., the [Size] is perfect) and `false` otherwise.
+      //
+      ((1 << (abs() % 7)) & 50) != 0;
 
   /// Whether this [Size] is greater than [Size.octave].
   ///
@@ -252,10 +281,8 @@ extension type const Size._(int size) implements int {
   }
 
   /// This [Size] formatted as a string.
-  ///
-  /// See [IntervalNotation] for all system implementations.
-  String format({IntervalNotation system = IntervalNotation.standard}) =>
-      system.size(this);
+  String format({SizeFormatter system = const SizeFormatter()}) =>
+      system.format(this);
 
   /// The negation of this [Size].
   ///
@@ -272,11 +299,11 @@ extension type const Size._(int size) implements int {
 extension type const PerfectSize._(int size) implements Size {
   /// Creates a new [PerfectSize] from [size].
   const PerfectSize(this.size)
-      // Copied from [Size.isPerfect] to allow const.
-      : assert(
-          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 < 2,
-          'Interval must be perfect.',
-        );
+    // Copied from [Size.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? -size : size) % 7)) & 50) != 0,
+        'Interval must be perfect.',
+      );
 
   /// The [PerfectQuality.perfect] interval from this [PerfectSize].
   ///
@@ -309,11 +336,11 @@ extension type const PerfectSize._(int size) implements Size {
 extension type const ImperfectSize._(int size) implements Size {
   /// Creates a new [ImperfectSize] from [size].
   const ImperfectSize(this.size)
-      // Copied from [Size.isPerfect] to allow const.
-      : assert(
-          ((size < 0 ? -size : size) + (size < 0 ? -size : size) ~/ 8) % 4 >= 2,
-          'Interval must be imperfect.',
-        );
+    // Copied from [Size.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? -size : size) % 7)) & 50) == 0,
+        'Interval must be imperfect.',
+      );
 
   /// The [ImperfectQuality.major] interval from this [ImperfectSize].
   ///
@@ -350,4 +377,16 @@ extension type const ImperfectSize._(int size) implements Size {
   /// ```
   @redeclare
   ImperfectSize operator -() => ImperfectSize(-size);
+}
+
+/// A [Size] formatter.
+class SizeFormatter extends Formatter<Size> {
+  /// Creates a new [SizeFormatter].
+  const SizeFormatter();
+
+  @override
+  String format(Size size) => '$size';
+
+  @override
+  Size parse(String source) => Size(int.parse(source));
 }

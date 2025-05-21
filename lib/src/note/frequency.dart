@@ -65,9 +65,9 @@ extension type const Frequency._(num hertz) implements num {
     );
     final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
 
-    final closestPitch = PitchClass(semitones)
-        .resolveClosestSpelling()
-        .inOctave(Pitch.octaveFromSemitones(semitones));
+    final closestPitch = PitchClass(
+      semitones,
+    ).resolveClosestSpelling().inOctave(Pitch.octaveFromSemitones(semitones));
 
     final closestPitchFrequency = closestPitch.frequency(
       tuningSystem: tuningSystem,
@@ -106,27 +106,30 @@ extension type const Frequency._(num hertz) implements num {
   ///   == Note.e.inOctave(3) - const Cent(14)
   /// ```
   Frequency harmonic(int index) => Frequency(
-        index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
-      );
+    index.isNegative ? hertz / (index.abs() + 1) : hertz * (index + 1),
+  );
 
-  /// The [Set] of [harmonics series](https://en.wikipedia.org/wiki/Harmonic_series_(music))
-  /// [upToIndex] from this [Frequency].
+  /// The set of [harmonic](https://en.wikipedia.org/wiki/Harmonic_series_(music))
+  /// or [undertone](https://en.wikipedia.org/wiki/Undertone_series) series
+  /// from this [Frequency].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.inOctave(3).frequency().harmonics(upToIndex: 2)
+  /// const Frequency(220).harmonics().take(3).toSet()
   ///   == const {Frequency(220), Frequency(440), Frequency(660)}
   ///
-  /// Note.a.inOctave(5).frequency().harmonics(upToIndex: -2)
-  ///   == {const Frequency(880), const Frequency(440), const Frequency(293.33)}
+  /// Note.a.inOctave(5).frequency().harmonics(undertone: true).take(3).toSet()
+  ///   == const {Frequency(880), Frequency(440), Frequency(293.33)}
   /// ```
-  ///
   /// ---
   /// See also:
   /// * [Pitch.harmonics] for a [ClosestPitch] set of harmonic series.
-  Set<Frequency> harmonics({required int upToIndex}) => {
-        for (var i = 0; i <= upToIndex.abs(); i++) harmonic(i * upToIndex.sign),
-      };
+  Iterable<Frequency> harmonics({bool undertone = false}) sync* {
+    var i = 0;
+    while (true) {
+      yield harmonic(i++ * (undertone ? -1 : 1));
+    }
+  }
 
   /// This [Frequency] formatted as a string.
   ///

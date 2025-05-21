@@ -63,13 +63,13 @@ final class Accidental implements Comparable<Accidental> {
   ];
 
   static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
-        _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
-        _sharpSymbol || _sharpSymbolAlt => 1,
-        _naturalSymbol || '' => 0,
-        _flatSymbol || _flatSymbolAlt => -1,
-        _doubleFlatSymbol => -2,
-        _ => null,
-      };
+    _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
+    _sharpSymbol || _sharpSymbolAlt => 1,
+    _naturalSymbol || '' => 0,
+    _flatSymbol || _flatSymbolAlt => -1,
+    _doubleFlatSymbol => -2,
+    _ => null,
+  };
 
   /// Parse [source] as an [Accidental] and return its value.
   ///
@@ -137,16 +137,16 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.natural.name == 'Natural'
   /// ```
   String get name => switch (semitones) {
-        > 3 => '×$semitones sharp',
-        3 => 'Triple sharp',
-        2 => 'Double sharp',
-        1 => 'Sharp',
-        0 => 'Natural',
-        -1 => 'Flat',
-        -2 => 'Double flat',
-        -3 => 'Triple flat',
-        _ => '×${semitones.abs()} flat',
-      };
+    > 3 => '×$semitones sharp',
+    3 => 'Triple sharp',
+    2 => 'Double sharp',
+    1 => 'Sharp',
+    0 => 'Natural',
+    -1 => 'Flat',
+    -2 => 'Double flat',
+    -3 => 'Triple flat',
+    _ => '×${semitones.abs()} flat',
+  };
 
   /// The symbol of this [Accidental].
   ///
@@ -195,8 +195,7 @@ final class Accidental implements Comparable<Accidental> {
   @override
   String toString({
     NoteNotation system = const EnglishNoteNotation(showNatural: true),
-  }) =>
-      system.accidental(this);
+  }) => system.accidental(this);
 
   @override
   bool operator ==(Object other) =>

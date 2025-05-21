@@ -22,13 +22,13 @@ extension type const Cent(num value) implements num {
   /// The number of cents in an [Interval.P8].
   static const octave = Cent(chromaticDivisions * divisionsPerSemitone);
 
-  /// Returns a [Cent] value from [ratio].
+  /// The [Cent] value from [ratio].
   ///
   /// Example:
   /// ```dart
   /// const pt = PythagoreanTuning();
   /// Cent.fromRatio(pt.ratio(Note.f.inOctave(4))) == const Cent(498.04)
-  /// Cent.fromRatiopt.ratio(Note.g.inOctave(4))) == const Cent(701.96)
+  /// Cent.fromRatio(pt.ratio(Note.g.inOctave(4))) == const Cent(701.96)
   ///
   /// const edo12 = EqualTemperament.edo12();
   /// Cent.fromRatio(edo12.ratioFromSemitones(1)) == const Cent(100)

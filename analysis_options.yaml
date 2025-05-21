@@ -14,14 +14,20 @@ linter:
     - prefer_expression_function_bodies
     - prefer_foreach
     - prefer_mixin
+    - strict_top_level_inference
     - type_literal_in_constant_pattern
     - unintended_html_in_doc_comment
     - unnecessary_library_name
     - unnecessary_null_aware_operator_on_extension_on_nullable
+    - unnecessary_underscores
     - unreachable_from_main
+    - unsafe_variance
 
 analyzer:
   errors:
     # Style decisions
     always_use_package_imports: ignore
     sort_constructors_first: ignore
+
+    # temporarily disabled
+    require_trailing_commas: ignore

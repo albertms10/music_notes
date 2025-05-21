@@ -1,3 +1,59 @@
+## 0.21.0
+
+- docs(size): 📖 move implementation comments from method documentation [#571](https://github.com/albertms10/music_notes/pull/571)
+- feat(scale_pattern): ✨ add `exclude` Intervals method [#570](https://github.com/albertms10/music_notes/pull/570)
+- refactor(scale_pattern): ♻️ use proper `Set` argument for `exclude` [#572](https://github.com/albertms10/music_notes/pull/572)
+- refactor(interval): 💥 simplify `circleFrom` method dropping the `distance` argument [#573](https://github.com/albertms10/music_notes/pull/573)
+- refactor(note): 💥 rewrite `splitCircleOfFifths` method to return `Iterable`s [#574](https://github.com/albertms10/music_notes/pull/574)
+- fix(size): 🐛 rewrite `simple` getter without imprecise `absShift` calc [#575](https://github.com/albertms10/music_notes/pull/575)
+- docs(size): 📖 add clearer binary documentation about `isPerfect` implementation [#576](https://github.com/albertms10/music_notes/pull/576)
+- fix(size): 🐛 rewrite `semitones` getter without relying on deprecated `absShift` [#577](https://github.com/albertms10/music_notes/pull/577)
+- fix(size): 🐛 use correct `isPerfect` assert condition in constructor [#578](https://github.com/albertms10/music_notes/pull/578)
+- ci(analysis): 💚 bump Dart SDK 3.6 [#580](https://github.com/albertms10/music_notes/pull/580)
+- refactor(note): ♻️ rewrite `transposeBy` method without `absShift` [#579](https://github.com/albertms10/music_notes/pull/579)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#568](https://github.com/albertms10/music_notes/pull/568)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#569](https://github.com/albertms10/music_notes/pull/569)
+
+**Full Changelog**: [`v0.20.0...v0.21.0`](https://github.com/albertms10/music_notes/compare/v0.20.0...v0.21.0)
+
+## 0.20.0
+
+- refactor(scale_pattern): ♻️ rename `BinarySequence` extension methods [#529](https://github.com/albertms10/music_notes/pull/529)
+- feat(note): ✨ add `flat`, `sharp`, and `natural` extension methods of `List<Note>` [#528](https://github.com/albertms10/music_notes/pull/528)
+- refactor(interval): ♻️ rename `distanceBetween` parameters and simplify return signature [#531](https://github.com/albertms10/music_notes/pull/531)
+- refactor!(interval): 💥 rename `distanceBetween` → `circleDistance` [#532](https://github.com/albertms10/music_notes/pull/532)
+- refactor!(note): 💥 rename `flatCircleOfFifths` → `circleOfFifths` method [#533](https://github.com/albertms10/music_notes/pull/533)
+- fix(pitch): 🐛 address descending intervals in `interval` method [#285](https://github.com/albertms10/music_notes/pull/285)
+- feat(interval): ✨ make the class `Respellable` [#539](https://github.com/albertms10/music_notes/pull/539)
+- feat(iterable_extension): ✨ add `compact`, `explode` and `format` extension methods [#535](https://github.com/albertms10/music_notes/pull/535)
+- refactor(iterable_extension): ♻️ simplify `compact` method [#541](https://github.com/albertms10/music_notes/pull/541)
+- perf(iterable_extension): ⚡️ rewrite `closestTo` with extension methods [#542](https://github.com/albertms10/music_notes/pull/542)
+- perf: ⚡️ mark `toList` calls as non-`growable` [#540](https://github.com/albertms10/music_notes/pull/540)
+- fix(size): 🐛 address longstanding issue with `isPerfect` in large interval sizes [#544](https://github.com/albertms10/music_notes/pull/544)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump actions/upload-artifact from 4.3.5 to 4.3.6 [#526](https://github.com/albertms10/music_notes/pull/526)
+- chore(deps): ⬆️ bump github/codeql-action from 3.25.15 to 3.26.0 [#527](https://github.com/albertms10/music_notes/pull/527)
+- chore(deps): ⬆️ bump github/codeql-action from 3.26.0 to 3.26.5 [#534](https://github.com/albertms10/music_notes/pull/534)
+- chore(deps): ⬆️ bump actions/upload-artifact from 4.3.6 to 4.4.0 [#536](https://github.com/albertms10/music_notes/pull/536)
+- chore(deps): ⬆️ bump github/codeql-action from 3.26.5 to 3.26.7 [#538](https://github.com/albertms10/music_notes/pull/538)
+- chore(deps): ⬆️ bump actions/checkout from 4.1.7 to 4.2.0 [#546](https://github.com/albertms10/music_notes/pull/546)
+- chore(deps): ⬆️ bump github/codeql-action from 3.26.7 to 3.26.9 [#547](https://github.com/albertms10/music_notes/pull/547)
+- chore(deps): ⬆️ bump github/codeql-action from 3.26.9 to 3.27.0 [#558](https://github.com/albertms10/music_notes/pull/558)
+- chore(deps): ⬆️ bump coverallsapp/github-action from 2.3.0 to 2.3.4 [#559](https://github.com/albertms10/music_notes/pull/559)
+- chore(deps): ⬆️ bump actions/cache from 4.0.2 to 4.1.2 [#557](https://github.com/albertms10/music_notes/pull/557)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group across 1 directory with 2 updates [#561](https://github.com/albertms10/music_notes/pull/561)
+- chore(deps): ⬆️ bump github/codeql-action from 3.27.0 to 3.27.1 in the minor-actions-dependencies group [#562](https://github.com/albertms10/music_notes/pull/562)
+- chore(deps): ⬆️ bump github/codeql-action from 3.27.1 to 3.27.4 in the minor-actions-dependencies group [#563](https://github.com/albertms10/music_notes/pull/563)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group across 1 directory with 2 updates [#565](https://github.com/albertms10/music_notes/pull/565)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group across 1 directory with 2 updates [#567](https://github.com/albertms10/music_notes/pull/567)
+
+**Full Changelog**: `v0.19.1...v0.20.0`](https://github.com/albertms10/music_notes/compare/v0.19.1...v0.20.0)
+
 ## 0.19.1
 
 - refactor(interval): 📖 remove ignored `prefer_const_constructors` lint [#524](https://github.com/albertms10/music_notes/pull/524)

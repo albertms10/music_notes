@@ -75,9 +75,13 @@ void main() {
           KeySignature([Note.b.flat]),
         );
         expect(
-          KeySignature(
-            [Note.b, Note.e, Note.f.sharp, Note.c.sharp, Note.g.sharp],
-          ).clean,
+          KeySignature([
+            Note.b,
+            Note.e,
+            Note.f.sharp,
+            Note.c.sharp,
+            Note.g.sharp,
+          ]).clean,
           KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
         );
       });
@@ -130,123 +134,90 @@ void main() {
       });
 
       test('returns the TonalMode to Keys Map for this KeySignature', () {
-        expect(
-          KeySignature.fromDistance(-10).keys,
-          {
-            TonalMode.major: Note.e.flat.flat.major,
-            TonalMode.minor: Note.c.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-9).keys,
-          {
-            TonalMode.major: Note.b.flat.flat.major,
-            TonalMode.minor: Note.g.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-8).keys,
-          {
-            TonalMode.major: Note.f.flat.major,
-            TonalMode.minor: Note.d.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-7).keys,
-          {
-            TonalMode.major: Note.c.flat.major,
-            TonalMode.minor: Note.a.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-6).keys,
-          {
-            TonalMode.major: Note.g.flat.major,
-            TonalMode.minor: Note.e.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-5).keys,
-          {
-            TonalMode.major: Note.d.flat.major,
-            TonalMode.minor: Note.b.flat.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(-4).keys,
-          {TonalMode.major: Note.a.flat.major, TonalMode.minor: Note.f.minor},
-        );
-        expect(
-          KeySignature.fromDistance(-3).keys,
-          {TonalMode.major: Note.e.flat.major, TonalMode.minor: Note.c.minor},
-        );
-        expect(
-          KeySignature.fromDistance(-2).keys,
-          {TonalMode.major: Note.b.flat.major, TonalMode.minor: Note.g.minor},
-        );
-        expect(
-          KeySignature.fromDistance(-1).keys,
-          {TonalMode.major: Note.f.major, TonalMode.minor: Note.d.minor},
-        );
-        expect(
-          KeySignature.empty.keys,
-          {TonalMode.major: Note.c.major, TonalMode.minor: Note.a.minor},
-        );
-        expect(
-          KeySignature.fromDistance(1).keys,
-          {TonalMode.major: Note.g.major, TonalMode.minor: Note.e.minor},
-        );
-        expect(
-          KeySignature.fromDistance(2).keys,
-          {TonalMode.major: Note.d.major, TonalMode.minor: Note.b.minor},
-        );
-        expect(
-          KeySignature.fromDistance(3).keys,
-          {TonalMode.major: Note.a.major, TonalMode.minor: Note.f.sharp.minor},
-        );
-        expect(
-          KeySignature.fromDistance(4).keys,
-          {TonalMode.major: Note.e.major, TonalMode.minor: Note.c.sharp.minor},
-        );
-        expect(
-          KeySignature.fromDistance(5).keys,
-          {TonalMode.major: Note.b.major, TonalMode.minor: Note.g.sharp.minor},
-        );
-        expect(
-          KeySignature.fromDistance(6).keys,
-          {
-            TonalMode.major: Note.f.sharp.major,
-            TonalMode.minor: Note.d.sharp.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(7).keys,
-          {
-            TonalMode.major: Note.c.sharp.major,
-            TonalMode.minor: Note.a.sharp.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(8).keys,
-          {
-            TonalMode.major: Note.g.sharp.major,
-            TonalMode.minor: Note.e.sharp.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(9).keys,
-          {
-            TonalMode.major: Note.d.sharp.major,
-            TonalMode.minor: Note.b.sharp.minor,
-          },
-        );
-        expect(
-          KeySignature.fromDistance(10).keys,
-          {
-            TonalMode.major: Note.a.sharp.major,
-            TonalMode.minor: Note.f.sharp.sharp.minor,
-          },
-        );
+        expect(KeySignature.fromDistance(-10).keys, {
+          TonalMode.major: Note.e.flat.flat.major,
+          TonalMode.minor: Note.c.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-9).keys, {
+          TonalMode.major: Note.b.flat.flat.major,
+          TonalMode.minor: Note.g.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-8).keys, {
+          TonalMode.major: Note.f.flat.major,
+          TonalMode.minor: Note.d.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-7).keys, {
+          TonalMode.major: Note.c.flat.major,
+          TonalMode.minor: Note.a.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-6).keys, {
+          TonalMode.major: Note.g.flat.major,
+          TonalMode.minor: Note.e.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-5).keys, {
+          TonalMode.major: Note.d.flat.major,
+          TonalMode.minor: Note.b.flat.minor,
+        });
+        expect(KeySignature.fromDistance(-4).keys, {
+          TonalMode.major: Note.a.flat.major,
+          TonalMode.minor: Note.f.minor,
+        });
+        expect(KeySignature.fromDistance(-3).keys, {
+          TonalMode.major: Note.e.flat.major,
+          TonalMode.minor: Note.c.minor,
+        });
+        expect(KeySignature.fromDistance(-2).keys, {
+          TonalMode.major: Note.b.flat.major,
+          TonalMode.minor: Note.g.minor,
+        });
+        expect(KeySignature.fromDistance(-1).keys, {
+          TonalMode.major: Note.f.major,
+          TonalMode.minor: Note.d.minor,
+        });
+        expect(KeySignature.empty.keys, {
+          TonalMode.major: Note.c.major,
+          TonalMode.minor: Note.a.minor,
+        });
+        expect(KeySignature.fromDistance(1).keys, {
+          TonalMode.major: Note.g.major,
+          TonalMode.minor: Note.e.minor,
+        });
+        expect(KeySignature.fromDistance(2).keys, {
+          TonalMode.major: Note.d.major,
+          TonalMode.minor: Note.b.minor,
+        });
+        expect(KeySignature.fromDistance(3).keys, {
+          TonalMode.major: Note.a.major,
+          TonalMode.minor: Note.f.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(4).keys, {
+          TonalMode.major: Note.e.major,
+          TonalMode.minor: Note.c.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(5).keys, {
+          TonalMode.major: Note.b.major,
+          TonalMode.minor: Note.g.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(6).keys, {
+          TonalMode.major: Note.f.sharp.major,
+          TonalMode.minor: Note.d.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(7).keys, {
+          TonalMode.major: Note.c.sharp.major,
+          TonalMode.minor: Note.a.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(8).keys, {
+          TonalMode.major: Note.g.sharp.major,
+          TonalMode.minor: Note.e.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(9).keys, {
+          TonalMode.major: Note.d.sharp.major,
+          TonalMode.minor: Note.b.sharp.minor,
+        });
+        expect(KeySignature.fromDistance(10).keys, {
+          TonalMode.major: Note.a.sharp.major,
+          TonalMode.minor: Note.f.sharp.sharp.minor,
+        });
       });
 
       test('returns an empty Map when this KeySignature is not canonical', () {
@@ -297,10 +268,7 @@ void main() {
           KeySignature.fromDistance(-6).toString(),
           '-6 (B♭ E♭ A♭ D♭ G♭ C♭)',
         );
-        expect(
-          KeySignature.fromDistance(-5).toString(),
-          '-5 (B♭ E♭ A♭ D♭ G♭)',
-        );
+        expect(KeySignature.fromDistance(-5).toString(), '-5 (B♭ E♭ A♭ D♭ G♭)');
         expect(KeySignature.fromDistance(-4).toString(), '-4 (B♭ E♭ A♭ D♭)');
         expect(KeySignature.fromDistance(-3).toString(), '-3 (B♭ E♭ A♭)');
         expect(KeySignature.fromDistance(-2).toString(), '-2 (B♭ E♭)');
@@ -331,8 +299,13 @@ void main() {
         expect(const KeySignature([Note.b]).toString(), '0 (B♮)');
         expect(const KeySignature([Note.f, Note.c]).toString(), '0 (F♮ C♮)');
         expect(
-          KeySignature([Note.f, Note.c, Note.g, Note.b.flat, Note.e.flat])
-              .toString(),
+          KeySignature([
+            Note.f,
+            Note.c,
+            Note.g,
+            Note.b.flat,
+            Note.e.flat,
+          ]).toString(),
           '-2 (F♮ C♮ G♮ B♭ E♭)',
         );
       });
@@ -352,22 +325,19 @@ void main() {
         );
       });
 
-      test(
-        'keeps the other KeySignature when it has more Accidentals of '
-        'the same kind',
-        () {
-          expect(
-            KeySignature([Note.b.flat]) |
-                KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-            KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-          );
-          expect(
-            KeySignature([Note.f.sharp]) |
-                KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-            KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-          );
-        },
-      );
+      test('keeps the other KeySignature when it has more Accidentals of '
+          'the same kind', () {
+        expect(
+          KeySignature([Note.b.flat]) |
+              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+        );
+        expect(
+          KeySignature([Note.f.sharp]) |
+              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+        );
+      });
 
       test('ignores any previously cancelled Accidentals', () {
         expect(

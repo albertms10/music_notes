@@ -5,7 +5,7 @@ mixin Enharmonic<C> {
   /// The number of semitones that define this [C].
   int get semitones;
 
-  /// Creates a new [C] from [semitones].
+  /// Returns the [C] from [semitones].
   C toClass();
 
   /// Whether [C] is enharmonically equivalent to [other].
