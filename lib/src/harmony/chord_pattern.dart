@@ -186,22 +186,6 @@ class ChordPattern with Chordable<ChordPattern> {
     return ChordPattern([...filteredIntervals, interval]..sort());
   }
 
-  /// The abbreviated [Quality] representing this [ChordPattern].
-  ///
-  /// Example:
-  /// ```dart
-  /// ChordPattern.majorTriad.abbreviation == 'maj.'
-  /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
-  /// ```
-  String get abbreviation {
-    if (isDiminished) return 'dim.';
-    if (isMinor) return 'min.';
-    if (isMajor) return 'maj.';
-    if (isAugmented) return 'aug.';
-
-    return '?';
-  }
-
   /// Returns the [Interval] from [intervals] at the given [size], if any.
   ///
   /// Example:
@@ -299,12 +283,6 @@ class ChordPatternFormatter extends Formatter<ChordPattern> {
     if (s.startsWith('maj7')) {
       return triad.add7(ImperfectQuality.major);
     } else if (s.startsWith('7')) {
-      return triad.add7();
-    }
-
-    if (triad == ChordPattern.minorTriad && s.startsWith('maj7')) {
-      return triad.add7(ImperfectQuality.major);
-    } else if (triad == ChordPattern.minorTriad && s.startsWith('7')) {
       return triad.add7();
     }
 

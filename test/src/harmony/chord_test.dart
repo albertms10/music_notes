@@ -375,17 +375,11 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this Chord', () {
-        expect(
-          ChordPattern.majorTriad.on(Note.d).toString(),
-          'D maj. (D F♯ A)',
-        );
-        expect(
-          Chord([Note.g.sharp, Note.b, Note.d.sharp]).toString(),
-          'G♯ min. (G♯ B D♯)',
-        );
+        expect(ChordPattern.majorTriad.on(Note.d).toString(), 'D');
+        expect(Chord([Note.g.sharp, Note.b, Note.d.sharp]).toString(), 'G♯-');
         expect(
           ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).toString(),
-          'C3 aug. (C3 E3 G♯3 B♭3)',
+          'C3+7',
         );
       });
     });

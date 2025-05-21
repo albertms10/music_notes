@@ -61,10 +61,6 @@ void main() {
     });
 
     group('.parse()', () {
-      test('throws a FormatException when source is invalid', () {
-        expect(() => Accidental.parse('invalid'), throwsFormatException);
-      });
-
       test('parses source as a ChordPattern', () {
         expect(ChordPattern.parse('+'), ChordPattern.augmentedTriad);
         expect(ChordPattern.parse(''), ChordPattern.majorTriad);
@@ -81,7 +77,27 @@ void main() {
           ChordPattern.parse('- maj7'),
           ChordPattern.minorTriad.add7(ImperfectQuality.major),
         );
+        expect(
+          ChordPattern.parse('-maj7'),
+          ChordPattern.minorTriad.add7(ImperfectQuality.major),
+        );
         expect(ChordPattern.parse('ø'), ChordPattern.diminishedTriad.add7());
+        expect(
+          ChordPattern.parse('sus2'),
+          const ChordPattern([Interval.M2, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse('sus4'),
+          const ChordPattern([Interval.P4, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse(' SuS2 '),
+          const ChordPattern([Interval.M2, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse(' sus4 '),
+          const ChordPattern([Interval.P4, Interval.P5]),
+        );
       });
     });
 
@@ -483,6 +499,9 @@ void main() {
           ' maj7',
         );
         expect(ChordPattern.minorTriad.add7().toString(), '-7');
+        expect(ChordPattern.minorTriad.add9().toString(), '-9');
+        expect(ChordPattern.minorTriad.add11().toString(), '-11');
+        expect(ChordPattern.minorTriad.add13().toString(), '-13');
         expect(
           ChordPattern.minorTriad.add7(ImperfectQuality.major).toString(),
           '- maj7',
