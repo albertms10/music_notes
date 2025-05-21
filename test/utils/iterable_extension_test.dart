@@ -41,10 +41,8 @@ void main() {
           'abcdefxyz'
               .split('')
               .compact(
-                nextValue:
-                    (current) => String.fromCharCodes(
-                      current.codeUnits.map((a) => a + 1),
-                    ),
+                nextValue: (current) =>
+                    String.fromCharCodes(current.codeUnits.map((a) => a + 1)),
                 compare: Comparable.compare,
               ),
           const [(from: 'a', to: 'g'), (from: 'x', to: '{')],

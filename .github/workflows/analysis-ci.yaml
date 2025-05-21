@@ -9,7 +9,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  DART_SDK_VERSION: "3.7"
+  DART_SDK_VERSION: "3.8"
 
 permissions:
   contents: read

@@ -107,31 +107,28 @@ final class Pitch extends Scalable<Pitch>
       const middleOctave = 3;
       final notePart = helmholtzNotationMatch[1]!;
       final primes = helmholtzNotationMatch[2]?.split('');
-      final octave =
-          notePart[0].isUpperCase
-              ? switch (primes?.first) {
-                '' || null => middleOctave - 1,
-                _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
-                _ =>
-                  throw FormatException(
-                    'Invalid Pitch',
-                    source,
-                    notePart.length,
-                  ),
-              }
-              : switch (primes?.first) {
-                '' || null => middleOctave,
-                _superPrime || _superPrimeAlt => middleOctave + primes!.length,
-                _superDoublePrime => middleOctave + 2,
-                _superTriplePrime => middleOctave + 3,
-                _superQuadruplePrime => middleOctave + 4,
-                _ =>
-                  throw FormatException(
-                    'Invalid Pitch',
-                    source,
-                    notePart.length,
-                  ),
-              };
+      final octave = notePart[0].isUpperCase
+          ? switch (primes?.first) {
+              '' || null => middleOctave - 1,
+              _subPrime || _subPrimeAlt => middleOctave - primes!.length - 1,
+              _ => throw FormatException(
+                'Invalid Pitch',
+                source,
+                notePart.length,
+              ),
+            }
+          : switch (primes?.first) {
+              '' || null => middleOctave,
+              _superPrime || _superPrimeAlt => middleOctave + primes!.length,
+              _superDoublePrime => middleOctave + 2,
+              _superTriplePrime => middleOctave + 3,
+              _superQuadruplePrime => middleOctave + 4,
+              _ => throw FormatException(
+                'Invalid Pitch',
+                source,
+                notePart.length,
+              ),
+            };
 
       return Pitch(Note.parse(notePart), octave: octave);
     }
@@ -498,22 +495,22 @@ final class Pitch extends Scalable<Pitch>
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Celsius temperature = Celsius.reference,
     Celsius referenceTemperature = Celsius.reference,
-  }) => frequency(
-        tuningSystem: tuningSystem,
-        // we deliberately omit the temperature here, as the subsequent call to
-        // `Frequency.closestPitch` will already take it into account.
-      )
-      .harmonics(undertone: undertone)
-      .map(
-        (frequency) =>
-            frequency
+  }) =>
+      frequency(
+            tuningSystem: tuningSystem,
+            // we deliberately omit the temperature here, as the subsequent call to
+            // `Frequency.closestPitch` will already take it into account.
+          )
+          .harmonics(undertone: undertone)
+          .map(
+            (frequency) => frequency
                 .closestPitch(
                   tuningSystem: tuningSystem,
                   temperature: temperature,
                   referenceTemperature: referenceTemperature,
                 )
                 .respelledSimple,
-      );
+          );
 
   /// The string representation of this [Pitch] based on [system].
   ///

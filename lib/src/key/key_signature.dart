@@ -49,10 +49,9 @@ final class KeySignature implements Comparable<KeySignature> {
   factory KeySignature.fromDistance(int distance) {
     if (distance == 0) return empty;
 
-    final firstNote =
-        distance.isNegative
-            ? _firstCanonicalFlatNote
-            : _firstCanonicalSharpNote;
+    final firstNote = distance.isNegative
+        ? _firstCanonicalFlatNote
+        : _firstCanonicalSharpNote;
 
     return KeySignature(
       Interval.P5
@@ -103,8 +102,9 @@ final class KeySignature implements Comparable<KeySignature> {
 
     final cleanNotes = clean._notes;
     final apparentDistance = cleanNotes.length * accidental.semitones.sign;
-    final apparentFirstNote =
-        accidental.isFlat ? _firstCanonicalFlatNote : _firstCanonicalSharpNote;
+    final apparentFirstNote = accidental.isFlat
+        ? _firstCanonicalFlatNote
+        : _firstCanonicalSharpNote;
     final circle = Interval.P5
         .descending(apparentDistance.isNegative)
         .circleFrom(apparentFirstNote)
@@ -199,10 +199,9 @@ final class KeySignature implements Comparable<KeySignature> {
   KeySignature operator |(KeySignature other) {
     if (this == empty) return other;
 
-    final cancelledNotes =
-        accidental == other.accidental
-            ? clean._notes.whereNot(other._notes.contains)
-            : clean._notes;
+    final cancelledNotes = accidental == other.accidental
+        ? clean._notes.whereNot(other._notes.contains)
+        : clean._notes;
 
     return KeySignature([
       ...cancelledNotes.map((note) => note.natural).toSet(),

@@ -400,10 +400,9 @@ final class Note extends Scalable<Note>
   @override
   Note transposeBy(Interval interval) {
     final transposedBaseNote = baseNote.transposeBySize(interval.size);
-    final positiveDifference =
-        interval.isDescending
-            ? transposedBaseNote.positiveDifference(baseNote)
-            : baseNote.positiveDifference(transposedBaseNote);
+    final positiveDifference = interval.isDescending
+        ? transposedBaseNote.positiveDifference(baseNote)
+        : baseNote.positiveDifference(transposedBaseNote);
 
     final accidentalSemitones =
         (accidental.semitones * interval.size.sign) +

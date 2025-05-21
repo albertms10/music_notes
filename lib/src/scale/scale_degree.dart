@@ -226,21 +226,20 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
 
   @override
   String scaleDegree(ScaleDegree scaleDegree) {
-    final buffer =
-        StringBuffer()..writeAll([
-          if (scaleDegree.semitonesDelta != 0)
-            Accidental(scaleDegree.semitonesDelta).symbol,
-          if (scaleDegree.quality != null &&
-              scaleDegree.quality!.semitones <= 0)
-            scaleDegree.romanNumeral.toLowerCase()
-          else
-            scaleDegree.romanNumeral,
-          switch (scaleDegree.inversion) {
-            1 => '6',
-            2 => '64',
-            _ => '',
-          },
-        ]);
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          Accidental(scaleDegree.semitonesDelta).symbol,
+        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        switch (scaleDegree.inversion) {
+          1 => '6',
+          2 => '64',
+          _ => '',
+        },
+      ]);
 
     return buffer.toString();
   }

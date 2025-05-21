@@ -98,10 +98,9 @@ extension type const Size._(int size) implements int {
   /// ```
   static Size? fromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
-    final matchingSize =
-        _sizeToSemitones.entries
-            .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
-            ?.key;
+    final matchingSize = _sizeToSemitones.entries
+        .firstWhereOrNull((entry) => entry.value == normalizedSemitones)
+        ?.key;
     if (matchingSize == null) return null;
 
     return Size._scaleToSemitones(matchingSize, semitones);
@@ -111,11 +110,10 @@ extension type const Size._(int size) implements int {
   /// interval in [semitones].
   factory Size.nearestFromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
-    final MapEntry<Size, int>(key: closest) =
-        minBy(
-          _sizeToSemitones.entries,
-          (entry) => (normalizedSemitones - entry.value).abs(),
-        )!;
+    final MapEntry<Size, int>(key: closest) = minBy(
+      _sizeToSemitones.entries,
+      (entry) => (normalizedSemitones - entry.value).abs(),
+    )!;
 
     return Size._scaleToSemitones(closest, semitones);
   }
@@ -147,10 +145,9 @@ extension type const Size._(int size) implements int {
   /// Size.fifth.diminished == Interval.d5
   /// (-Size.seventh).diminished == -Interval.d7
   /// ```
-  Interval get diminished =>
-      isPerfect
-          ? Interval.perfect(this, PerfectQuality.diminished)
-          : Interval.imperfect(this, ImperfectQuality.diminished);
+  Interval get diminished => isPerfect
+      ? Interval.perfect(this, PerfectQuality.diminished)
+      : Interval.imperfect(this, ImperfectQuality.diminished);
 
   /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
   /// from this [Size].
@@ -161,10 +158,9 @@ extension type const Size._(int size) implements int {
   /// Size.fourth.augmented == Interval.A4
   /// (-Size.sixth).augmented == -Interval.A6
   /// ```
-  Interval get augmented =>
-      isPerfect
-          ? Interval.perfect(this, PerfectQuality.augmented)
-          : Interval.imperfect(this, ImperfectQuality.augmented);
+  Interval get augmented => isPerfect
+      ? Interval.perfect(this, PerfectQuality.augmented)
+      : Interval.imperfect(this, ImperfectQuality.augmented);
 
   static int _inversion(Size size) {
     final diff = 9 - size.simple.size.abs();

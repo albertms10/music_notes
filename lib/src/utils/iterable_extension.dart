@@ -6,8 +6,8 @@ extension IterableExtension<E> on Iterable<E> {
   E _closestTo(E target, num Function(E a, E b) difference) => reduce(
     (closest, element) =>
         difference(element, target).abs() < difference(closest, target).abs()
-            ? element
-            : closest,
+        ? element
+        : closest,
   );
 
   /// The closest element [E] to [target].
