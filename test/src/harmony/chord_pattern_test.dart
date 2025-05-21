@@ -60,6 +60,47 @@ void main() {
       });
     });
 
+    group('.parse()', () {
+      test('parses source as a ChordPattern', () {
+        expect(ChordPattern.parse('+'), ChordPattern.augmentedTriad);
+        expect(ChordPattern.parse(''), ChordPattern.majorTriad);
+        expect(ChordPattern.parse('-'), ChordPattern.minorTriad);
+        expect(ChordPattern.parse('dim'), ChordPattern.diminishedTriad);
+
+        expect(ChordPattern.parse('7'), ChordPattern.majorTriad.add7());
+        expect(
+          ChordPattern.parse('maj7'),
+          ChordPattern.majorTriad.add7(ImperfectQuality.major),
+        );
+        expect(ChordPattern.parse('-7'), ChordPattern.minorTriad.add7());
+        expect(
+          ChordPattern.parse('- maj7'),
+          ChordPattern.minorTriad.add7(ImperfectQuality.major),
+        );
+        expect(
+          ChordPattern.parse('-maj7'),
+          ChordPattern.minorTriad.add7(ImperfectQuality.major),
+        );
+        expect(ChordPattern.parse('ø'), ChordPattern.diminishedTriad.add7());
+        expect(
+          ChordPattern.parse('sus2'),
+          const ChordPattern([Interval.M2, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse('sus4'),
+          const ChordPattern([Interval.P4, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse(' SuS2 '),
+          const ChordPattern([Interval.M2, Interval.P5]),
+        );
+        expect(
+          ChordPattern.parse(' sus4 '),
+          const ChordPattern([Interval.P4, Interval.P5]),
+        );
+      });
+    });
+
     group('.on()', () {
       test('returns the Chord from this ChordPattern', () {
         expect(
@@ -447,21 +488,25 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this ChordPattern', () {
-        expect(ChordPattern.augmentedTriad.toString(), 'aug. (M3 A5)');
-        expect(ChordPattern.majorTriad.toString(), 'maj. (M3 P5)');
-        expect(ChordPattern.minorTriad.toString(), 'min. (m3 P5)');
-        expect(ChordPattern.diminishedTriad.toString(), 'dim. (m3 d5)');
+        expect(ChordPattern.augmentedTriad.toString(), '+');
+        expect(ChordPattern.majorTriad.toString(), '');
+        expect(ChordPattern.minorTriad.toString(), '-');
+        expect(ChordPattern.diminishedTriad.toString(), ' dim');
 
+        expect(ChordPattern.majorTriad.add7().toString(), '7');
         expect(
-          ChordPattern.augmentedTriad.add7().toString(),
-          'aug. (M3 A5 m7)',
+          ChordPattern.majorTriad.add7(ImperfectQuality.major).toString(),
+          ' maj7',
         );
-        expect(ChordPattern.majorTriad.add7().toString(), 'maj. (M3 P5 m7)');
-        expect(ChordPattern.minorTriad.add7().toString(), 'min. (m3 P5 m7)');
+        expect(ChordPattern.minorTriad.add7().toString(), '-7');
+        expect(ChordPattern.minorTriad.add9().toString(), '-9');
+        expect(ChordPattern.minorTriad.add11().toString(), '-11');
+        expect(ChordPattern.minorTriad.add13().toString(), '-13');
         expect(
-          ChordPattern.diminishedTriad.add7().toString(),
-          'dim. (m3 d5 m7)',
+          ChordPattern.minorTriad.add7(ImperfectQuality.major).toString(),
+          '- maj7',
         );
+        expect(ChordPattern.diminishedTriad.add7().toString(), 'ø');
       });
     });
 

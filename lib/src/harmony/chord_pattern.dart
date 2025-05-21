@@ -3,6 +3,7 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 
 import '../chordable.dart';
+import '../formatter.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../scalable.dart';
@@ -69,6 +70,22 @@ class ChordPattern with Chordable<ChordPattern> {
         ImperfectQuality.augmented => augmentedTriad,
         _ => majorTriad,
       };
+
+  /// Parse [source] as a [ChordPattern] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ChordPattern], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.parse('maj7')
+  ///   == ChordPattern.majorTriad.add7(ImperfectQuality.major)
+  /// ChordPattern.parse('z') // throws a FormatException
+  /// ```
+  factory ChordPattern.parse(
+    String source, {
+    ChordPatternFormatter system = const ChordPatternFormatter(),
+  }) => system.parse(source);
 
   /// The [Chord] built on top of [scalable].
   ///
@@ -169,24 +186,22 @@ class ChordPattern with Chordable<ChordPattern> {
     return ChordPattern([...filteredIntervals, interval]..sort());
   }
 
-  /// The abbreviated [Quality] representing this [ChordPattern].
+  /// Returns the [Interval] from [intervals] at the given [size], if any.
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.abbreviation == 'maj.'
-  /// ChordPattern.diminishedTriad.abbreviation == 'dim.'
+  /// ChordPattern.majorTriad.size(3) == Interval.M3
+  /// ChordPattern.diminishedTriad.size(5) == Interval.d5
+  /// ChordPattern.minorTriad.add7().size(7) == Interval.m7
+  /// ChordPattern.augmentedTriad.size(9) == null
   /// ```
-  String get abbreviation {
-    if (isDiminished) return 'dim.';
-    if (isMinor) return 'min.';
-    if (isMajor) return 'maj.';
-    if (isAugmented) return 'aug.';
-
-    return '?';
-  }
+  Interval? at(int size) =>
+      intervals.firstWhereOrNull((interval) => interval.size == size);
 
   @override
-  String toString() => '$abbreviation (${_intervals.join(' ')})';
+  String toString({
+    ChordPatternFormatter system = const ChordPatternFormatter(),
+  }) => system.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -195,4 +210,90 @@ class ChordPattern with Chordable<ChordPattern> {
 
   @override
   int get hashCode => Object.hashAll(_intervals);
+}
+
+/// A [ChordPatternFormatter] formatter.
+class ChordPatternFormatter extends Formatter<ChordPattern> {
+  /// Creates a new [ChordPatternFormatter].
+  const ChordPatternFormatter();
+
+  @override
+  String format(ChordPattern chordPattern) {
+    final buffer = StringBuffer();
+
+    if (chordPattern.isAugmented) {
+      buffer.write('+');
+    } else if (chordPattern.isMajor) {
+      buffer.write('');
+    } else if (chordPattern.isMinor) {
+      buffer.write('-');
+    }
+
+    if (chordPattern.isDiminished) {
+      final seventh = chordPattern.at(7);
+      if (seventh != null) {
+        buffer.write(switch (seventh.quality) {
+          ImperfectQuality.diminished => 'º',
+          ImperfectQuality.minor => 'ø',
+          _ => '',
+        });
+      } else {
+        buffer.write(' dim');
+      }
+    }
+
+    if (chordPattern.intervals.first.size == 2) buffer.write('sus2');
+    if (chordPattern.intervals.first.size == 4) buffer.write('sus4');
+
+    for (final interval in chordPattern.modifiers) {
+      buffer.write(switch (interval) {
+        Interval(size: 7, quality: ImperfectQuality.major) => ' maj',
+        Interval(size: 9 || 13, quality: ImperfectQuality.minor) => ' b',
+        Interval(size: 9 || 13, quality: ImperfectQuality.augmented) => ' #',
+        Interval(size: 11, quality: ImperfectQuality.augmented) => ' #',
+        Interval(size: 11, quality: ImperfectQuality.diminished) => ' b',
+        _ => '',
+      });
+      if (!chordPattern.isDiminished) buffer.write(interval.size);
+    }
+
+    return buffer.toString();
+  }
+
+  @override
+  ChordPattern parse(String source) {
+    var s = source.replaceAll(' ', '').toLowerCase();
+
+    if (s == 'ø') return ChordPattern.diminishedTriad.add7();
+
+    ChordPattern triad;
+    if (s.startsWith('dim')) {
+      triad = ChordPattern.diminishedTriad;
+      s = s.substring(3);
+    } else if (s.startsWith('+')) {
+      triad = ChordPattern.augmentedTriad;
+      s = s.substring(1);
+    } else if (s.startsWith('-')) {
+      triad = ChordPattern.minorTriad;
+      s = s.substring(1);
+    } else {
+      triad = ChordPattern.majorTriad;
+    }
+
+    if (s.startsWith('maj7')) {
+      return triad.add7(ImperfectQuality.major);
+    } else if (s.startsWith('7')) {
+      return triad.add7();
+    }
+
+    if (s.contains('sus2')) {
+      triad = const ChordPattern([Interval.M2, Interval.P5]);
+      s = s.replaceAll('sus2', '');
+    } else if (s.contains('sus4')) {
+      triad = const ChordPattern([Interval.P4, Interval.P5]);
+      s = s.replaceAll('sus4', '');
+    }
+
+    return triad;
+  }
 }
