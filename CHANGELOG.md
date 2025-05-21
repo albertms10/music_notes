@@ -1,3 +1,33 @@
+## 0.22.0
+
+- docs(README): 📖 add examples for `Frequency.at` temperature method [#581](https://github.com/albertms10/music_notes/pull/581)
+- refactor(map_extension): 🔥 remove unused `recordEntries` utility method [#582](https://github.com/albertms10/music_notes/pull/582)
+- refactor(note): 💥 rewrite `harmonics` methods to return an `Iterable` [#584](https://github.com/albertms10/music_notes/pull/584)
+- refactor: ♻️ use `Size` constants where appropriate [#583](https://github.com/albertms10/music_notes/pull/583)
+- refactor: ♻️ use patterns to succinctly destructure objects [#585](https://github.com/albertms10/music_notes/pull/585)
+- docs(README): 📖 add more similar projects in other languages [#588](https://github.com/albertms10/music_notes/pull/588)
+- docs: 📖 use consistent wording for documentation comments [#593](https://github.com/albertms10/music_notes/pull/593)
+- build(pubspec): 🚚 bump Dart SDK 3.7 [#591](https://github.com/albertms10/music_notes/pull/591)
+- refactor(quality): ♻️ rewrite `compareTo` without relying on `runtimeType` [#594](https://github.com/albertms10/music_notes/pull/594)
+- test(quality): 🧪 add missing test case for `compareTo` method [#600](https://github.com/albertms10/music_notes/pull/600)
+- feat(note): ✨ add `inOctave` extension methods for `Note` and `Pitch` lists [#586](https://github.com/albertms10/music_notes/pull/586)
+- feat(scalable): ✨ add `isStepwise` getter [#446](https://github.com/albertms10/music_notes/pull/446)
+- refactor(interval): ♻️ rewrite notation systems using `Formatter` [#416](https://github.com/albertms10/music_notes/pull/416)
+- feat(chord_pattern): ✨ implement the `ChordPatternFormatter` [#256](https://github.com/albertms10/music_notes/pull/256)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#587](https://github.com/albertms10/music_notes/pull/587)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.5 to 3.28.8 in the minor-actions-dependencies group [#589](https://github.com/albertms10/music_notes/pull/589)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.8 to 3.28.9 in the minor-actions-dependencies group [#590](https://github.com/albertms10/music_notes/pull/590)
+- chore(deps): ⬆️ bump dart-lang/setup-dart from 1.7.0 to 1.7.1 in the minor-actions-dependencies group [#592](https://github.com/albertms10/music_notes/pull/592)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 4 updates [#595](https://github.com/albertms10/music_notes/pull/595)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group across 1 directory with 3 updates [#598](https://github.com/albertms10/music_notes/pull/598)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.12 to 3.28.17 in the minor-actions-dependencies group [#599](https://github.com/albertms10/music_notes/pull/599)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.17 to 3.28.18 in the minor-actions-dependencies group [#601](https://github.com/albertms10/music_notes/pull/601)
+
+**Full Changelog**: [`v0.21.0...v0.22.0`](https://github.com/albertms10/music_notes/compare/v0.21.0...v0.22.0)
+
 ## 0.21.0
 
 - docs(size): 📖 move implementation comments from method documentation [#571](https://github.com/albertms10/music_notes/pull/571)
