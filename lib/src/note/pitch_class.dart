@@ -261,9 +261,9 @@ final class PitchClass extends Scalable<PitchClass>
   /// See [Pitch-class multiplication modulo 12](https://en.wikipedia.org/wiki/Multiplication_(music)#Pitch-class_multiplication_modulo_12).
   PitchClass operator *(int factor) => PitchClass(semitones * factor);
 
-  /// The string representation of this [PitchClass] based on [system].
+  /// The string representation of this [PitchClass] based on [formatter].
   ///
-  /// See [PitchClassNotation] for all system implementations.
+  /// See [PitchClassNotation] for all formatter implementations.
   ///
   /// Example:
   /// ```dart
@@ -271,15 +271,15 @@ final class PitchClass extends Scalable<PitchClass>
   /// PitchClass.g.toString() == '{G}'
   /// PitchClass.dSharp.toString() == '{D♯|E♭}'
   ///
-  /// PitchClass.c.toString(system: PitchClassNotation.integer) == '0'
-  /// PitchClass.f.toString(system: PitchClassNotation.integer) == '5'
-  /// PitchClass.aSharp.toString(system: PitchClassNotation.integer) == 't'
-  /// PitchClass.b.toString(system: PitchClassNotation.integer) == 'e'
+  /// PitchClass.c.toString(formatter: PitchClassNotation.integer) == '0'
+  /// PitchClass.f.toString(formatter: PitchClassNotation.integer) == '5'
+  /// PitchClass.aSharp.toString(formatter: PitchClassNotation.integer) == 't'
+  /// PitchClass.b.toString(formatter: PitchClassNotation.integer) == 'e'
   /// ```
   @override
   String toString({
-    PitchClassNotation system = PitchClassNotation.enharmonicSpellings,
-  }) => system.pitchClass(this);
+    PitchClassNotation formatter = PitchClassNotation.enharmonicSpellings,
+  }) => formatter.pitchClass(this);
 
   @override
   bool operator ==(Object other) =>
@@ -298,17 +298,17 @@ abstract class PitchClassNotation {
   /// Creates a new [PitchClassNotation].
   const PitchClassNotation();
 
-  /// The enharmonic spellings [PitchClassNotation] system.
+  /// The enharmonic spellings [PitchClassNotation] formatter.
   static const enharmonicSpellings = EnharmonicSpellingsPitchClassNotation();
 
-  /// The integer [PitchClassNotation] system.
+  /// The integer [PitchClassNotation] formatter.
   static const integer = IntegerPitchClassNotation();
 
   /// The string notation for [pitchClass].
   String pitchClass(PitchClass pitchClass);
 }
 
-/// The enharmonic spellings [PitchClass] notation system.
+/// The enharmonic spellings [PitchClass] notation formatter.
 ///
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
 final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
@@ -320,7 +320,7 @@ final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
       '{${pitchClass.spellings().join('|')}}';
 }
 
-/// The integer [PitchClass] notation system.
+/// The integer [PitchClass] notation formatter.
 ///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
 final class IntegerPitchClassNotation extends PitchClassNotation {

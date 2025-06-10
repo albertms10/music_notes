@@ -84,8 +84,8 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    ChordPatternNotation system = const ChordPatternNotation(),
-  }) => system.parse(source);
+    Formatter<ChordPattern> formatter = const ChordPatternNotation(),
+  }) => formatter.parse(source);
 
   /// The [Chord] built on top of [scalable].
   ///
@@ -200,8 +200,8 @@ class ChordPattern with Chordable<ChordPattern> {
 
   @override
   String toString({
-    ChordPatternNotation system = const ChordPatternNotation(),
-  }) => system.format(this);
+    Formatter<ChordPattern> formatter = const ChordPatternNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>

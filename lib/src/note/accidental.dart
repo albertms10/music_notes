@@ -190,13 +190,13 @@ final class Accidental implements Comparable<Accidental> {
   Accidental incrementBy(int semitones) =>
       Accidental(this.semitones.incrementBy(semitones));
 
-  /// The string representation of this [Accidental] based on [system].
+  /// The string representation of this [Accidental] based on [formatter].
   ///
-  /// See [NoteNotation] for all system implementations.
+  /// See [NoteNotation] for all formatter implementations.
   @override
   String toString({
-    NoteNotation system = const EnglishNoteNotation(showNatural: true),
-  }) => system.accidental(this);
+    NoteNotation formatter = const EnglishNoteNotation(showNatural: true),
+  }) => formatter.accidental(this);
 
   @override
   bool operator ==(Object other) =>

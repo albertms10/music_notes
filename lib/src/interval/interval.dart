@@ -230,8 +230,8 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    IntervalNotation system = const IntervalNotation(),
-  }) => system.parse(source);
+    Formatter<Interval> formatter = const IntervalNotation(),
+  }) => formatter.parse(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -439,7 +439,7 @@ final class Interval
   @override
   IntervalClass toClass() => IntervalClass(semitones);
 
-  /// The string representation of this [Interval] based on [system].
+  /// The string representation of this [Interval] based on [formatter].
   ///
   /// Example:
   /// ```dart
@@ -448,8 +448,8 @@ final class Interval
   /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({IntervalNotation system = const IntervalNotation()}) =>
-      system.format(this);
+  String toString({Formatter<Interval> formatter = const IntervalNotation()}) =>
+      formatter.format(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -511,17 +511,17 @@ class IntervalNotation extends Formatter<Interval> {
   String format(Interval interval) {
     final quality = switch (interval.quality) {
       final PerfectQuality quality => quality.toString(
-        system: perfectQualityNotation,
+        formatter: perfectQualityNotation,
       ),
       final ImperfectQuality quality => quality.toString(
-        system: imperfectQualityNotation,
+        formatter: imperfectQualityNotation,
       ),
     };
-    final naming = '$quality${interval.size.format(system: sizeNotation)}';
+    final naming = '$quality${interval.size.format(formatter: sizeNotation)}';
     if (!interval.isCompound) return naming;
 
     return '$naming '
-        '($quality${interval.simple.size.format(system: sizeNotation)})';
+        '($quality${interval.simple.size.format(formatter: sizeNotation)})';
   }
 
   static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
@@ -533,10 +533,10 @@ class IntervalNotation extends Formatter<Interval> {
 
     final size = sizeNotation.parse(match[2]!);
     // ignore: omit_local_variable_types False positive (?)
-    final Formatter<Quality> system = size.isPerfect
+    final Formatter<Quality> formatter = size.isPerfect
         ? perfectQualityNotation
         : imperfectQualityNotation;
 
-    return Interval._(size, system.parse(match[1]!));
+    return Interval._(size, formatter.parse(match[1]!));
   }
 }

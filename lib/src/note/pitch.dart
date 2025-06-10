@@ -513,9 +513,9 @@ final class Pitch extends Scalable<Pitch>
                 .respelledSimple,
           );
 
-  /// The string representation of this [Pitch] based on [system].
+  /// The string representation of this [Pitch] based on [formatter].
   ///
-  /// See [PitchNotation] for all system implementations.
+  /// See [PitchNotation] for all formatter implementations.
   ///
   /// Example:
   /// ```dart
@@ -523,13 +523,14 @@ final class Pitch extends Scalable<Pitch>
   /// Note.a.inOctave(3).toString() == 'A3'
   /// Note.b.flat.inOctave(1).toString() == 'B♭1'
   ///
-  /// Note.c.inOctave(4).toString(system: PitchNotation.helmholtz) == 'c′'
-  /// Note.a.inOctave(3).toString(system: PitchNotation.helmholtz) == 'a'
-  /// Note.b.flat.inOctave(1).toString(system: PitchNotation.helmholtz) == 'B♭͵'
+  /// Note.c.inOctave(4).toString(formatter: PitchNotation.helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(formatter: PitchNotation.helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(formatter: PitchNotation.helmholtz)
+  ///   == 'B♭͵'
   /// ```
   @override
-  String toString({PitchNotation system = PitchNotation.scientific}) =>
-      system.pitch(this);
+  String toString({PitchNotation formatter = PitchNotation.scientific}) =>
+      formatter.pitch(this);
 
   /// Returns the [ClosestPitch] with [cents] added to this [Pitch].
   ///
@@ -569,17 +570,17 @@ abstract class PitchNotation {
   /// Creates a new [PitchNotation].
   const PitchNotation();
 
-  /// The scientific [PitchNotation] system.
+  /// The scientific [PitchNotation] formatter.
   static const scientific = ScientificPitchNotation();
 
-  /// The Helmholtz [PitchNotation] system.
+  /// The Helmholtz [PitchNotation] formatter.
   static const helmholtz = HelmholtzPitchNotation.english;
 
   /// The string representation for [pitch].
   String pitch(Pitch pitch);
 }
 
-/// The scientific [Pitch] notation system.
+/// The scientific [Pitch] notation formatter.
 ///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
 final class ScientificPitchNotation extends PitchNotation {
@@ -590,7 +591,7 @@ final class ScientificPitchNotation extends PitchNotation {
   String pitch(Pitch pitch) => '${pitch.note}${pitch.octave}';
 }
 
-/// The Helmholtz [Pitch] notation system.
+/// The Helmholtz [Pitch] notation formatter.
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
@@ -621,7 +622,7 @@ final class HelmholtzPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) {
-    final note = pitch.note.toString(system: noteSystem);
+    final note = pitch.note.toString(formatter: noteSystem);
 
     return switch (pitch.octave) {
       >= 3 => '${note.toLowerCase()}${_symbols(pitch.octave - 3)}',

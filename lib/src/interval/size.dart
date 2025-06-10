@@ -277,8 +277,8 @@ extension type const Size._(int size) implements int {
   }
 
   /// This [Size] formatted as a string.
-  String format({SizeNotation system = const SizeNotation()}) =>
-      system.format(this);
+  String format({Formatter<Size> formatter = const SizeNotation()}) =>
+      formatter.format(this);
 
   /// The negation of this [Size].
   ///
