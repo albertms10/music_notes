@@ -230,7 +230,7 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    IntervalFormatter system = const IntervalFormatter(),
+    IntervalNotation system = const IntervalNotation(),
   }) => system.parse(source);
 
   /// The number of semitones of this [Interval].
@@ -448,7 +448,7 @@ final class Interval
   /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({IntervalFormatter system = const IntervalFormatter()}) =>
+  String toString({IntervalNotation system = const IntervalNotation()}) =>
       system.format(this);
 
   /// Adds [other] to this [Interval].
@@ -489,39 +489,39 @@ final class Interval
   ]);
 }
 
-/// An [Interval] formatter.
-class IntervalFormatter extends Formatter<Interval> {
-  /// The [SizeFormatter].
-  final SizeFormatter sizeFormatter;
+/// A formatter for [Interval] notation.
+class IntervalNotation extends Formatter<Interval> {
+  /// The [SizeNotation].
+  final SizeNotation sizeNotation;
 
-  /// The [PerfectQualityFormatter].
-  final PerfectQualityFormatter perfectQualityFormatter;
+  /// The [PerfectQualityNotation].
+  final PerfectQualityNotation perfectQualityNotation;
 
-  /// The [ImperfectQualityFormatter].
-  final ImperfectQualityFormatter imperfectQualityFormatter;
+  /// The [ImperfectQualityNotation].
+  final ImperfectQualityNotation imperfectQualityNotation;
 
-  /// Creates a new [IntervalFormatter].
-  const IntervalFormatter({
-    this.sizeFormatter = const SizeFormatter(),
-    this.perfectQualityFormatter = const PerfectQualityFormatter(),
-    this.imperfectQualityFormatter = const ImperfectQualityFormatter(),
+  /// Creates a new [IntervalNotation].
+  const IntervalNotation({
+    this.sizeNotation = const SizeNotation(),
+    this.perfectQualityNotation = const PerfectQualityNotation(),
+    this.imperfectQualityNotation = const ImperfectQualityNotation(),
   });
 
   @override
   String format(Interval interval) {
     final quality = switch (interval.quality) {
       final PerfectQuality quality => quality.toString(
-        system: perfectQualityFormatter,
+        system: perfectQualityNotation,
       ),
       final ImperfectQuality quality => quality.toString(
-        system: imperfectQualityFormatter,
+        system: imperfectQualityNotation,
       ),
     };
-    final naming = '$quality${interval.size.format(system: sizeFormatter)}';
+    final naming = '$quality${interval.size.format(system: sizeNotation)}';
     if (!interval.isCompound) return naming;
 
     return '$naming '
-        '($quality${interval.simple.size.format(system: sizeFormatter)})';
+        '($quality${interval.simple.size.format(system: sizeNotation)})';
   }
 
   static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
@@ -531,12 +531,12 @@ class IntervalFormatter extends Formatter<Interval> {
     final match = _intervalRegExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
-    final size = sizeFormatter.parse(match[2]!);
+    final size = sizeNotation.parse(match[2]!);
     // ignore: omit_local_variable_types False positive (?)
-    final Formatter<Quality> formatter = size.isPerfect
-        ? perfectQualityFormatter
-        : imperfectQualityFormatter;
+    final Formatter<Quality> system = size.isPerfect
+        ? perfectQualityNotation
+        : imperfectQualityNotation;
 
-    return Interval._(size, formatter.parse(match[1]!));
+    return Interval._(size, system.parse(match[1]!));
   }
 }

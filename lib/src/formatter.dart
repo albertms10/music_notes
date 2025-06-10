@@ -1,6 +1,6 @@
-/// An abstract representation of a formatter for [T].
+/// An abstract representation of a formatter for [T] notation.
 ///
-/// The [format] and [parse] methods are designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
+/// The [format] and [parse] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
 /// of each other:
 /// the output of [format] should be a valid argument for [parse], and
 /// `parse(format(value))` should return a value equal to the original value.

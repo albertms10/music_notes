@@ -84,7 +84,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    ChordPatternFormatter system = const ChordPatternFormatter(),
+    ChordPatternNotation system = const ChordPatternNotation(),
   }) => system.parse(source);
 
   /// The [Chord] built on top of [scalable].
@@ -200,7 +200,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
   @override
   String toString({
-    ChordPatternFormatter system = const ChordPatternFormatter(),
+    ChordPatternNotation system = const ChordPatternNotation(),
   }) => system.format(this);
 
   @override
@@ -212,10 +212,10 @@ class ChordPattern with Chordable<ChordPattern> {
   int get hashCode => Object.hashAll(_intervals);
 }
 
-/// A [ChordPatternFormatter] formatter.
-class ChordPatternFormatter extends Formatter<ChordPattern> {
-  /// Creates a new [ChordPatternFormatter].
-  const ChordPatternFormatter();
+/// A formatter for [ChordPatternNotation] notation.
+class ChordPatternNotation extends Formatter<ChordPattern> {
+  /// Creates a new [ChordPatternNotation].
+  const ChordPatternNotation();
 
   @override
   String format(ChordPattern chordPattern) {

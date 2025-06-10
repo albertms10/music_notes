@@ -94,7 +94,7 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    PerfectQualityFormatter system = const PerfectQualityFormatter(),
+    PerfectQualityNotation system = const PerfectQualityNotation(),
   }) => system.parse(source);
 
   /// The inversion of this [PerfectQuality].
@@ -130,7 +130,7 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    PerfectQualityFormatter system = const PerfectQualityFormatter(),
+    PerfectQualityNotation system = const PerfectQualityNotation(),
   }) => system.format(this);
 
   @override
@@ -186,7 +186,7 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
+    ImperfectQualityNotation system = const ImperfectQualityNotation(),
   }) => system.parse(source);
 
   /// The inversion of this [ImperfectQuality].
@@ -227,7 +227,7 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
+    ImperfectQualityNotation system = const ImperfectQualityNotation(),
   }) => system.format(this);
 
   @override
@@ -236,10 +236,10 @@ final class ImperfectQuality extends Quality {
   bool operator ==(Object other) => super == other && other is ImperfectQuality;
 }
 
-/// A [PerfectQuality] formatter.
-class PerfectQualityFormatter extends Formatter<PerfectQuality> {
-  /// Creates a new [PerfectQualityFormatter].
-  const PerfectQualityFormatter();
+/// A formatter for [PerfectQuality] notation.
+class PerfectQualityNotation extends Formatter<PerfectQuality> {
+  /// Creates a new [PerfectQualityNotation].
+  const PerfectQualityNotation();
 
   /// The symbol for a diminished [PerfectQuality].
   static const _diminishedSymbol = 'd';
@@ -275,10 +275,10 @@ class PerfectQualityFormatter extends Formatter<PerfectQuality> {
   }
 }
 
-/// An [ImperfectQuality] formatter.
-class ImperfectQualityFormatter extends Formatter<ImperfectQuality> {
-  /// Creates a new [ImperfectQualityFormatter].
-  const ImperfectQualityFormatter();
+/// A formatter for [ImperfectQuality] notation.
+class ImperfectQualityNotation extends Formatter<ImperfectQuality> {
+  /// Creates a new [ImperfectQualityNotation].
+  const ImperfectQualityNotation();
 
   /// The symbol for a diminished [ImperfectQuality].
   static const _diminishedSymbol = 'd';
