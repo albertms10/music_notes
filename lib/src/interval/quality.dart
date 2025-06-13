@@ -94,8 +94,8 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    PerfectQualityFormatter system = const PerfectQualityFormatter(),
-  }) => system.parse(source);
+    Formatter<PerfectQuality> formatter = const PerfectQualityNotation(),
+  }) => formatter.parse(source);
 
   /// The inversion of this [PerfectQuality].
   ///
@@ -120,7 +120,7 @@ final class PerfectQuality extends Quality {
   @override
   bool get isDissonant => semitones != 0;
 
-  /// The string representation of this [PerfectQuality] based on [system].
+  /// The string representation of this [PerfectQuality] based on [formatter].
   ///
   /// Example:
   /// ```dart
@@ -130,8 +130,8 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    PerfectQualityFormatter system = const PerfectQualityFormatter(),
-  }) => system.format(this);
+    Formatter<PerfectQuality> formatter = const PerfectQualityNotation(),
+  }) => formatter.format(this);
 
   @override
   // Overridden hashCode already present in the super class.
@@ -186,8 +186,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
-  }) => system.parse(source);
+    Formatter<ImperfectQuality> formatter = const ImperfectQualityNotation(),
+  }) => formatter.parse(source);
 
   /// The inversion of this [ImperfectQuality].
   ///
@@ -217,7 +217,7 @@ final class ImperfectQuality extends Quality {
     return true;
   }
 
-  /// The string representation of this [ImperfectQuality] based on [system].
+  /// The string representation of this [ImperfectQuality] based on [formatter].
   ///
   /// Example:
   /// ```dart
@@ -227,8 +227,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    ImperfectQualityFormatter system = const ImperfectQualityFormatter(),
-  }) => system.format(this);
+    Formatter<ImperfectQuality> formatter = const ImperfectQualityNotation(),
+  }) => formatter.format(this);
 
   @override
   // Overridden hashCode already present in the super class.
@@ -236,10 +236,10 @@ final class ImperfectQuality extends Quality {
   bool operator ==(Object other) => super == other && other is ImperfectQuality;
 }
 
-/// A [PerfectQuality] formatter.
-class PerfectQualityFormatter extends Formatter<PerfectQuality> {
-  /// Creates a new [PerfectQualityFormatter].
-  const PerfectQualityFormatter();
+/// A formatter for [PerfectQuality] notation.
+class PerfectQualityNotation extends Formatter<PerfectQuality> {
+  /// Creates a new [PerfectQualityNotation].
+  const PerfectQualityNotation();
 
   /// The symbol for a diminished [PerfectQuality].
   static const _diminishedSymbol = 'd';
@@ -275,10 +275,10 @@ class PerfectQualityFormatter extends Formatter<PerfectQuality> {
   }
 }
 
-/// An [ImperfectQuality] formatter.
-class ImperfectQualityFormatter extends Formatter<ImperfectQuality> {
-  /// Creates a new [ImperfectQualityFormatter].
-  const ImperfectQualityFormatter();
+/// A formatter for [ImperfectQuality] notation.
+class ImperfectQualityNotation extends Formatter<ImperfectQuality> {
+  /// Creates a new [ImperfectQualityNotation].
+  const ImperfectQualityNotation();
 
   /// The symbol for a diminished [ImperfectQuality].
   static const _diminishedSymbol = 'd';

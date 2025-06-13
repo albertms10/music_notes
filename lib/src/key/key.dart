@@ -88,24 +88,24 @@ final class Key implements Comparable<Key> {
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
-  /// The string representation of this [Key] based on [system].
+  /// The string representation of this [Key] based on [formatter].
   ///
-  /// See [NoteNotation] for all system implementations.
+  /// See [NoteNotation] for all formatter implementations.
   ///
   /// Example:
   /// ```dart
   /// Note.c.minor.toString() == 'C minor'
   /// Note.e.flat.major.toString() == 'E♭ major'
   ///
-  /// Note.c.major.toString(system: NoteNotation.romance) == 'Do maggiore'
-  /// Note.a.minor.toString(system: NoteNotation.romance) == 'La minore'
+  /// Note.c.major.toString(formatter: NoteNotation.romance) == 'Do maggiore'
+  /// Note.a.minor.toString(formatter: NoteNotation.romance) == 'La minore'
   ///
-  /// Note.e.flat.major.toString(system: NoteNotation.german) == 'Es-dur'
-  /// Note.g.sharp.minor.toString(system: NoteNotation.german) == 'gis-moll'
+  /// Note.e.flat.major.toString(formatter: NoteNotation.german) == 'Es-dur'
+  /// Note.g.sharp.minor.toString(formatter: NoteNotation.german) == 'gis-moll'
   /// ```
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.key(this);
+  String toString({NoteNotation formatter = NoteNotation.english}) =>
+      formatter.key(this);
 
   @override
   bool operator ==(Object other) =>

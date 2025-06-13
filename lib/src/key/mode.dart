@@ -34,7 +34,7 @@ sealed class Mode implements Enum, Comparable<Mode> {
   ]);
 }
 
-/// Modes of a tonal system.
+/// Modes of a tonal formatter.
 enum TonalMode implements Mode {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
   major(ScalePattern.major, brightness: 2),
@@ -62,18 +62,18 @@ enum TonalMode implements Mode {
     TonalMode.minor => TonalMode.major,
   };
 
-  /// The string representation of this [TonalMode] based on [system].
+  /// The string representation of this [TonalMode] based on [formatter].
   ///
-  /// See [NoteNotation] for all system implementations.
+  /// See [NoteNotation] for all formatter implementations.
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.tonalMode(this);
+  String toString({NoteNotation formatter = NoteNotation.english}) =>
+      formatter.tonalMode(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);
 }
 
-/// Modes of a modal system.
+/// Modes of a modal formatter.
 enum ModalMode implements Mode {
   /// See [Lydian mode](https://en.wikipedia.org/wiki/Lydian_mode).
   lydian(ScalePattern.lydian, brightness: 3),

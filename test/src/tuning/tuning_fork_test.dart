@@ -24,32 +24,32 @@ void main() {
         );
 
         const compactSystem = CompactTuningForkNotation(referenceOctave: 3);
-        expect(TuningFork.a440.toString(system: compactSystem), 'A4 440');
-        expect(TuningFork.c256.toString(system: compactSystem), 'C4 256');
+        expect(TuningFork.a440.toString(formatter: compactSystem), 'A4 440');
+        expect(TuningFork.c256.toString(formatter: compactSystem), 'C4 256');
         expect(
           Note.d
               .inOctave(3)
               .at(const Frequency(314))
-              .toString(system: compactSystem),
+              .toString(formatter: compactSystem),
           'D314',
         );
 
         expect(
-          TuningFork.a440.toString(system: TuningForkNotation.scientific),
+          TuningFork.a440.toString(formatter: TuningForkNotation.scientific),
           'A4 = 440 Hz',
         );
         expect(
           TuningFork(
             Note.f.sharp.inOctave(4),
             const Frequency(402.3),
-          ).toString(system: TuningForkNotation.scientific),
+          ).toString(formatter: TuningForkNotation.scientific),
           'F♯4 = 402.3 Hz',
         );
         expect(
           TuningFork(
             Note.a.flat.inOctave(3),
             const Frequency(437.15),
-          ).toString(system: TuningForkNotation.scientific),
+          ).toString(formatter: TuningForkNotation.scientific),
           'A♭3 = 437.15 Hz',
         );
       });

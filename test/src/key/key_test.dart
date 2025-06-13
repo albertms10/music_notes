@@ -138,49 +138,49 @@ void main() {
       });
 
       test('returns the German string representation of this Key', () {
-        expect(Note.c.major.toString(system: NoteNotation.german), 'C-dur');
-        expect(Note.d.minor.toString(system: NoteNotation.german), 'd-moll');
+        expect(Note.c.major.toString(formatter: NoteNotation.german), 'C-dur');
+        expect(Note.d.minor.toString(formatter: NoteNotation.german), 'd-moll');
         expect(
-          Note.a.flat.major.toString(system: NoteNotation.german),
+          Note.a.flat.major.toString(formatter: NoteNotation.german),
           'As-dur',
         );
         expect(
-          Note.f.sharp.minor.toString(system: NoteNotation.german),
+          Note.f.sharp.minor.toString(formatter: NoteNotation.german),
           'fis-moll',
         );
         expect(
-          Note.g.sharp.sharp.major.toString(system: NoteNotation.german),
+          Note.g.sharp.sharp.major.toString(formatter: NoteNotation.german),
           'Gisis-dur',
         );
         expect(
-          Note.e.flat.flat.minor.toString(system: NoteNotation.german),
+          Note.e.flat.flat.minor.toString(formatter: NoteNotation.german),
           'eses-moll',
         );
       });
 
       test('returns the Romance string representation of this Key', () {
         expect(
-          Note.c.major.toString(system: NoteNotation.romance),
+          Note.c.major.toString(formatter: NoteNotation.romance),
           'Do maggiore',
         );
         expect(
-          Note.d.minor.toString(system: NoteNotation.romance),
+          Note.d.minor.toString(formatter: NoteNotation.romance),
           'Re minore',
         );
         expect(
-          Note.a.flat.major.toString(system: NoteNotation.romance),
+          Note.a.flat.major.toString(formatter: NoteNotation.romance),
           'La♭ maggiore',
         );
         expect(
-          Note.f.sharp.minor.toString(system: NoteNotation.romance),
+          Note.f.sharp.minor.toString(formatter: NoteNotation.romance),
           'Fa♯ minore',
         );
         expect(
-          Note.g.sharp.sharp.major.toString(system: NoteNotation.romance),
+          Note.g.sharp.sharp.major.toString(formatter: NoteNotation.romance),
           'Sol𝄪 maggiore',
         );
         expect(
-          Note.e.flat.flat.minor.toString(system: NoteNotation.romance),
+          Note.e.flat.flat.minor.toString(formatter: NoteNotation.romance),
           'Mi𝄫 minore',
         );
       });
