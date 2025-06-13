@@ -39,11 +39,14 @@ jobs:
         with:
           sdk: ${{ env.DART_SDK_VERSION }}
 
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
-
+      # This has to be run before formatting, as the formatter needs
+      # to know the language version of each file it formats.
+      # See https://github.com/dart-lang/sdk/issues/60163#issuecomment-2680372038
       - name: Install dependencies
         run: dart pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze project source
         run: dart analyze --fatal-infos
