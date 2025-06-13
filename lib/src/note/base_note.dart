@@ -3,6 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../interval/size.dart';
 import '../music.dart';
+import '../notation_system.dart';
 import 'note.dart';
 
 /// The base note names of the diatonic scale.
@@ -171,12 +172,64 @@ enum BaseNote implements Comparable<BaseNote> {
   BaseNote get previous => transposeBySize(-Size.second);
 
   /// The string representation of this [BaseNote] based on [formatter].
-  ///
-  /// See [NoteNotation] for all formatter implementations.
   @override
-  String toString({NoteNotation formatter = NoteNotation.english}) =>
-      formatter.baseNote(this);
+  String toString({
+    Formatter<BaseNote> formatter = const EnglishBaseNoteNotation(),
+  }) => formatter.format(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
+}
+
+/// The English notation system for [BaseNote
+final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [EnglishBaseNoteNotation].
+  const EnglishBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => baseNote.name.toUpperCase();
+
+  @override
+  BaseNote parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The German notation system for [BaseNote
+final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [GermanBaseNoteNotation].
+  const GermanBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => switch (baseNote) {
+    BaseNote.b => 'H',
+    BaseNote(:final name) => name.toUpperCase(),
+  };
+
+  @override
+  BaseNote parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The Romance notation system for [BaseNote
+final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [RomanceBaseNoteNotation].
+  const RomanceBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => switch (baseNote) {
+    BaseNote.c => 'Do',
+    BaseNote.d => 'Re',
+    BaseNote.e => 'Mi',
+    BaseNote.f => 'Fa',
+    BaseNote.g => 'Sol',
+    BaseNote.a => 'La',
+    BaseNote.b => 'Si',
+  };
+
+  @override
+  BaseNote parse(String source) {
+    throw UnimplementedError();
+  }
 }

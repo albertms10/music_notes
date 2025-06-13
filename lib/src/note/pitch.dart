@@ -8,6 +8,7 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/size.dart';
 import '../music.dart';
+import '../notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
@@ -595,21 +596,25 @@ final class ScientificPitchNotation extends PitchNotation {
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends PitchNotation {
-  /// The [NoteNotation] system for the [Pitch.note] part.
-  final NoteNotation noteSystem;
+  /// The [Note] formatter for [Pitch.note].
+  final Formatter<Note> noteNotation;
 
   /// Creates a new [HelmholtzPitchNotation].
-  const HelmholtzPitchNotation({this.noteSystem = NoteNotation.english});
+  const HelmholtzPitchNotation({
+    this.noteNotation = const EnglishNoteNotation(),
+  });
 
-  /// The [NoteNotation.english] variant of this [HelmholtzPitchNotation].
+  /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
 
-  /// The [NoteNotation.german] variant of this [HelmholtzPitchNotation].
-  static const german = HelmholtzPitchNotation(noteSystem: NoteNotation.german);
+  /// The [GermanNoteNotation] variant of this [HelmholtzPitchNotation].
+  static const german = HelmholtzPitchNotation(
+    noteNotation: GermanNoteNotation(),
+  );
 
-  /// The [NoteNotation.romance] variant of this [HelmholtzPitchNotation].
+  /// The [RomanceNoteNotation] variant of this [HelmholtzPitchNotation].
   static const romance = HelmholtzPitchNotation(
-    noteSystem: NoteNotation.romance,
+    noteNotation: RomanceNoteNotation(),
   );
 
   static String _symbols(int n) => switch (n) {
@@ -622,7 +627,7 @@ final class HelmholtzPitchNotation extends PitchNotation {
 
   @override
   String pitch(Pitch pitch) {
-    final note = pitch.note.toString(formatter: noteSystem);
+    final note = pitch.note.toString(formatter: noteNotation);
 
     return switch (pitch.octave) {
       >= 3 => '${note.toLowerCase()}${_symbols(pitch.octave - 3)}',

@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../notation_system.dart';
 import 'note.dart';
 
 /// An accidental.
@@ -191,12 +192,12 @@ final class Accidental implements Comparable<Accidental> {
       Accidental(this.semitones.incrementBy(semitones));
 
   /// The string representation of this [Accidental] based on [formatter].
-  ///
-  /// See [NoteNotation] for all formatter implementations.
   @override
   String toString({
-    NoteNotation formatter = const EnglishNoteNotation(showNatural: true),
-  }) => formatter.accidental(this);
+    Formatter<Accidental> formatter = const EnglishAccidentalNotation(
+      showNatural: true,
+    ),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -229,4 +230,57 @@ final class Accidental implements Comparable<Accidental> {
 
   @override
   int compareTo(Accidental other) => semitones.compareTo(other.semitones);
+}
+
+/// The English notation system for [Accidental
+final class EnglishAccidentalNotation extends NotationSystem<Accidental> {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
+  /// Creates a new [EnglishAccidentalNotation].
+  const EnglishAccidentalNotation({this.showNatural = false});
+
+  @override
+  String format(Accidental accidental) =>
+      !showNatural && accidental.isNatural ? '' : accidental.symbol;
+
+  @override
+  Accidental parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The German notation system for [Accidental
+final class GermanAccidentalNotation extends NotationSystem<Accidental> {
+  /// Creates a new [GermanAccidentalNotation].
+  const GermanAccidentalNotation();
+
+  @override
+  String format(Accidental accidental) =>
+      (accidental.isFlat ? 'es' : 'is') * accidental.semitones.abs();
+
+  @override
+  Accidental parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The Romance notation system for [Accidental
+final class RomanceAccidentalNotation extends NotationSystem<Accidental> {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
+  /// Creates a new [RomanceAccidentalNotation].
+  const RomanceAccidentalNotation({this.showNatural = false});
+
+  @override
+  String format(Accidental accidental) =>
+      !showNatural && accidental.isNatural ? '' : accidental.symbol;
+
+  @override
+  Accidental parse(String source) {
+    throw UnimplementedError();
+  }
 }

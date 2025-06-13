@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../note/note.dart';
+import '../notation_system.dart';
 import '../scale/scale_pattern.dart';
 import 'key.dart';
 
@@ -34,7 +34,7 @@ sealed class Mode implements Enum, Comparable<Mode> {
   ]);
 }
 
-/// Modes of a tonal formatter.
+/// Modes of a tonal system.
 enum TonalMode implements Mode {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
   major(ScalePattern.major, brightness: 2),
@@ -50,6 +50,12 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
+  /// Parse [source] as a [TonalMode] and return its value.
+  factory TonalMode.parse(
+    String source, {
+    Parser<TonalMode> parser = const EnglishTonalModeNotation(),
+  }) => parser.parse(source);
+
   /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
@@ -63,17 +69,79 @@ enum TonalMode implements Mode {
   };
 
   /// The string representation of this [TonalMode] based on [formatter].
-  ///
-  /// See [NoteNotation] for all formatter implementations.
   @override
-  String toString({NoteNotation formatter = NoteNotation.english}) =>
-      formatter.tonalMode(this);
+  String toString({
+    Formatter<TonalMode> formatter = const EnglishTonalModeNotation(),
+  }) => formatter.format(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);
 }
 
-/// Modes of a modal formatter.
+/// The English notation system for [TonalMode].
+final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [EnglishTonalModeNotation].
+  const EnglishTonalModeNotation();
+
+  @override
+  String format(TonalMode tonalMode) => tonalMode.name;
+
+  @override
+  TonalMode parse(String source) {
+    try {
+      return TonalMode.values.byName(source.toLowerCase());
+      // ignore: avoid_catching_errors - succinctness
+    } on ArgumentError {
+      throw FormatException('Invalid TonalMode', source);
+    }
+  }
+}
+
+/// The German notation system for [TonalMode
+final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [GermanTonalModeNotation].
+  const GermanTonalModeNotation();
+
+  static const _major = 'Dur';
+  static const _minor = 'Moll';
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  };
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
+}
+
+/// The Romance notation system for [TonalMode
+final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [RomanceTonalModeNotation].
+  const RomanceTonalModeNotation();
+
+  static const _major = 'maggiore';
+  static const _minor = 'minore';
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  };
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
+}
+
+/// Modes of a modal system.
 enum ModalMode implements Mode {
   /// See [Lydian mode](https://en.wikipedia.org/wiki/Lydian_mode).
   lydian(ScalePattern.lydian, brightness: 3),

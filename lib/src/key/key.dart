@@ -2,6 +2,7 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
+import '../notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
 import '../scale/scale.dart';
@@ -90,22 +91,25 @@ final class Key implements Comparable<Key> {
 
   /// The string representation of this [Key] based on [formatter].
   ///
-  /// See [NoteNotation] for all formatter implementations.
-  ///
   /// Example:
   /// ```dart
   /// Note.c.minor.toString() == 'C minor'
   /// Note.e.flat.major.toString() == 'E♭ major'
   ///
-  /// Note.c.major.toString(formatter: NoteNotation.romance) == 'Do maggiore'
-  /// Note.a.minor.toString(formatter: NoteNotation.romance) == 'La minore'
+  /// Note.c.major.toString(formatter: const RomanceKeyNotation())
+  ///   == 'Do maggiore'
+  /// Note.a.minor.toString(formatter: const RomanceKeyNotation())
+  ///   == 'La minore'
   ///
-  /// Note.e.flat.major.toString(formatter: NoteNotation.german) == 'Es-dur'
-  /// Note.g.sharp.minor.toString(formatter: NoteNotation.german) == 'gis-moll'
+  /// Note.e.flat.major.toString(formatter: const GermanKeyNotation())
+  ///   == 'Es-dur'
+  /// Note.g.sharp.minor.toString(formatter: const GermanKeyNotation())
+  ///   == 'gis-moll'
   /// ```
   @override
-  String toString({NoteNotation formatter = NoteNotation.english}) =>
-      formatter.key(this);
+  String toString({
+    Formatter<Key> formatter = const EnglishKeyNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -119,4 +123,92 @@ final class Key implements Comparable<Key> {
     () => note.compareTo(other.note),
     () => mode.name.compareTo(other.mode.name),
   ]);
+}
+
+/// The English notation system for [Key].
+final class EnglishKeyNotation extends NotationSystem<Key> {
+  /// The [EnglishNoteNotation] used to format the [Key.note].
+  final EnglishNoteNotation noteNotation;
+
+  /// The [EnglishTonalModeNotation] used to format the [Key.mode].
+  final EnglishTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [EnglishKeyNotation].
+  const EnglishKeyNotation({
+    this.noteNotation = const EnglishNoteNotation(),
+    this.tonalModeNotation = const EnglishTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation);
+
+    return '$note $mode';
+  }
+
+  @override
+  Key parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The German notation system for [Key].
+final class GermanKeyNotation extends NotationSystem<Key> {
+  /// The [GermanNoteNotation] used to format the [Key.note].
+  final GermanNoteNotation noteNotation;
+
+  /// The [GermanTonalModeNotation] used to format the [Key.mode].
+  final GermanTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [GermanKeyNotation].
+  const GermanKeyNotation({
+    this.noteNotation = const GermanNoteNotation(),
+    this.tonalModeNotation = const GermanTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation).toLowerCase();
+    final casedNote = switch (key.mode) {
+      TonalMode.major => note,
+      TonalMode.minor => note.toLowerCase(),
+    };
+
+    return '$casedNote-$mode';
+  }
+
+  @override
+  Key parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The Romance notation system for [Key].
+final class RomanceKeyNotation extends NotationSystem<Key> {
+  /// The [RomanceNoteNotation] used to format the [Key.note].
+  final RomanceNoteNotation noteNotation;
+
+  /// The [RomanceTonalModeNotation] used to format the [Key.mode].
+  final RomanceTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [RomanceKeyNotation].
+  const RomanceKeyNotation({
+    this.noteNotation = const RomanceNoteNotation(),
+    this.tonalModeNotation = const RomanceTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation);
+
+    return '$note $mode';
+  }
+
+  @override
+  Key parse(String source) {
+    throw UnimplementedError();
+  }
 }

@@ -3,9 +3,9 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 
 import '../chordable.dart';
-import '../formatter.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../notation_system.dart';
 import '../scalable.dart';
 import 'chord.dart';
 
@@ -84,8 +84,8 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    Formatter<ChordPattern> formatter = const ChordPatternNotation(),
-  }) => formatter.parse(source);
+    Parser<ChordPattern> parser = const ChordPatternNotation(),
+  }) => parser.parse(source);
 
   /// The [Chord] built on top of [scalable].
   ///
@@ -212,8 +212,8 @@ class ChordPattern with Chordable<ChordPattern> {
   int get hashCode => Object.hashAll(_intervals);
 }
 
-/// A formatter for [ChordPatternNotation] notation.
-class ChordPatternNotation extends Formatter<ChordPattern> {
+/// A notation system for [ChordPattern].
+final class ChordPatternNotation extends NotationSystem<ChordPattern> {
   /// Creates a new [ChordPatternNotation].
   const ChordPatternNotation();
 

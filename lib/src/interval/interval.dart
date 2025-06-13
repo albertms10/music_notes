@@ -6,7 +6,7 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
-import '../formatter.dart';
+import '../notation_system.dart';
 import '../note/note.dart';
 import '../respellable.dart';
 import '../scalable.dart';
@@ -230,8 +230,8 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    Formatter<Interval> formatter = const IntervalNotation(),
-  }) => formatter.parse(source);
+    Parser<Interval> parser = const IntervalNotation(),
+  }) => parser.parse(source);
 
   /// The number of semitones of this [Interval].
   ///
@@ -448,8 +448,9 @@ final class Interval
   /// Size.twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({Formatter<Interval> formatter = const IntervalNotation()}) =>
-      formatter.format(this);
+  String toString({
+    Formatter<Interval> formatter = const IntervalNotation(),
+  }) => formatter.format(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -489,8 +490,8 @@ final class Interval
   ]);
 }
 
-/// A formatter for [Interval] notation.
-class IntervalNotation extends Formatter<Interval> {
+/// A notation system for [Interval].
+final class IntervalNotation extends NotationSystem<Interval> {
   /// The [SizeNotation].
   final SizeNotation sizeNotation;
 
@@ -533,10 +534,10 @@ class IntervalNotation extends Formatter<Interval> {
 
     final size = sizeNotation.parse(match[2]!);
     // ignore: omit_local_variable_types False positive (?)
-    final Formatter<Quality> formatter = size.isPerfect
+    final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation
         : imperfectQualityNotation;
 
-    return Interval._(size, formatter.parse(match[1]!));
+    return Interval._(size, parser.parse(match[1]!));
   }
 }

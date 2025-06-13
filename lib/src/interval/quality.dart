@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../formatter.dart';
+import '../notation_system.dart';
 import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
@@ -94,8 +94,8 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    Formatter<PerfectQuality> formatter = const PerfectQualityNotation(),
-  }) => formatter.parse(source);
+    Parser<PerfectQuality> parser = const PerfectQualityNotation(),
+  }) => parser.parse(source);
 
   /// The inversion of this [PerfectQuality].
   ///
@@ -186,8 +186,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    Formatter<ImperfectQuality> formatter = const ImperfectQualityNotation(),
-  }) => formatter.parse(source);
+    Parser<ImperfectQuality> parser = const ImperfectQualityNotation(),
+  }) => parser.parse(source);
 
   /// The inversion of this [ImperfectQuality].
   ///
@@ -236,8 +236,8 @@ final class ImperfectQuality extends Quality {
   bool operator ==(Object other) => super == other && other is ImperfectQuality;
 }
 
-/// A formatter for [PerfectQuality] notation.
-class PerfectQualityNotation extends Formatter<PerfectQuality> {
+/// A notation system for [PerfectQuality].
+final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
   /// Creates a new [PerfectQualityNotation].
   const PerfectQualityNotation();
 
@@ -275,8 +275,8 @@ class PerfectQualityNotation extends Formatter<PerfectQuality> {
   }
 }
 
-/// A formatter for [ImperfectQuality] notation.
-class ImperfectQualityNotation extends Formatter<ImperfectQuality> {
+/// A notation system for [ImperfectQuality].
+final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   /// Creates a new [ImperfectQualityNotation].
   const ImperfectQualityNotation();
 

@@ -8,6 +8,7 @@ import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
 import '../music.dart';
+import '../notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import 'accidental.dart';
@@ -419,17 +420,16 @@ final class Note extends Scalable<Note>
 
   /// The string representation of this [Note] based on [formatter].
   ///
-  /// See [NoteNotation] for all formatter implementations.
-  ///
   /// Example:
   /// ```dart
   /// Note.d.flat.toString() == 'D♭'
-  /// Note.d.flat.toString(formatter: NoteNotation.romance) == 'Re♭'
-  /// Note.d.flat.toString(formatter: NoteNotation.german) == 'Des'
+  /// Note.d.flat.toString(formatter: const RomanceNoteNotation()) == 'Re♭'
+  /// Note.d.flat.toString(formatter: const GermanNoteNotation()) == 'Des'
   /// ```
   @override
-  String toString({NoteNotation formatter = NoteNotation.english}) =>
-      formatter.note(this);
+  String toString({
+    Formatter<Note> formatter = const EnglishNoteNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -444,144 +444,102 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The abstraction for [Note] notation systems.
-@immutable
-abstract class NoteNotation {
-  /// Creates a new [NoteNotation].
-  const NoteNotation();
+/// The English notation system for [Note
+final class EnglishNoteNotation extends NotationSystem<Note> {
+  /// The [EnglishBaseNoteNotation] used to format the [Note.baseNote].
+  final EnglishBaseNoteNotation baseNoteNotation;
 
-  /// The English alphabetic [NoteNotation] formatter.
-  static const english = EnglishNoteNotation();
+  /// The [EnglishAccidentalNotation] used to format the [Note.accidental].
+  final EnglishAccidentalNotation accidentalNotation;
 
-  /// The German alphabetic [NoteNotation] formatter.
-  static const german = GermanNoteNotation();
-
-  /// The Romance solmization [NoteNotation] formatter.
-  static const romance = RomanceNoteNotation();
-
-  /// The string notation for [note].
-  String note(Note note) =>
-      note.baseNote.toString(formatter: this) +
-      note.accidental.toString(formatter: this);
-
-  /// The string notation for [baseNote].
-  String baseNote(BaseNote baseNote);
-
-  /// The string notation for [accidental].
-  String accidental(Accidental accidental);
-
-  /// The string notation for [tonalMode].
-  String tonalMode(TonalMode tonalMode);
-
-  /// The string notation for [key].
-  String key(Key key) {
-    final note = key.note.toString(formatter: this);
-    final mode = key.mode.toString(formatter: this);
-
-    return '$note $mode';
-  }
-}
-
-/// The English alphabetic [Note] notation formatter.
-final class EnglishNoteNotation extends NoteNotation {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
-  final bool showNatural;
+  /// The [EnglishNoteNotation] format variant that shows the
+  /// [Accidental.natural] accidental.
+  static const showNatural = EnglishNoteNotation(
+    accidentalNotation: EnglishAccidentalNotation(showNatural: true),
+  );
 
   /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({this.showNatural = false});
+  const EnglishNoteNotation({
+    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+    this.accidentalNotation = const EnglishAccidentalNotation(),
+  });
 
   @override
-  String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
+  String format(Note note) =>
+      note.baseNote.toString(formatter: baseNoteNotation) +
+      note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
-
-  @override
-  String tonalMode(TonalMode tonalMode) => tonalMode.name;
-}
-
-/// The German alphabetic [Note] notation formatter.
-///
-/// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
-final class GermanNoteNotation extends NoteNotation {
-  /// Creates a new [GermanNoteNotation].
-  const GermanNoteNotation();
-
-  @override
-  String note(Note note) => switch (note) {
-    Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
-    // Flattened notes.
-    Note(:final baseNote, :final accidental) when accidental.isFlat =>
-      switch (baseNote) {
-        BaseNote.a || BaseNote.e =>
-          baseNote.toString(formatter: this) +
-              accidental.toString(formatter: this).substring(1),
-        _ => super.note(note),
-      },
-    // Sharpened and natural notes.
-    final note => super.note(note),
-  };
-
-  @override
-  String baseNote(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.b => 'H',
-    BaseNote(:final name) => name.toUpperCase(),
-  };
-
-  @override
-  String accidental(Accidental accidental) =>
-      (accidental.isFlat ? 'es' : 'is') * accidental.semitones.abs();
-
-  @override
-  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => 'Dur',
-    TonalMode.minor => 'Moll',
-  };
-
-  @override
-  String key(Key key) {
-    final note = key.note.toString(formatter: this);
-    final mode = key.mode.toString(formatter: this).toLowerCase();
-    final casedNote = switch (key.mode) {
-      TonalMode.major => note,
-      TonalMode.minor => note.toLowerCase(),
-    };
-
-    return '$casedNote-$mode';
+  Note parse(String source) {
+    throw UnimplementedError();
   }
 }
 
-/// The Romance alphabetic [Note] notation formatter.
-final class RomanceNoteNotation extends NoteNotation {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
-  final bool showNatural;
+/// The German alphabetic notation system for [Note].
+///
+/// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
+final class GermanNoteNotation extends NotationSystem<Note> {
+  /// The [GermanBaseNoteNotation] used to format the [Note.baseNote].
+  final GermanBaseNoteNotation baseNoteNotation;
+
+  /// The [GermanAccidentalNotation] used to format the [Note.accidental].
+  final GermanAccidentalNotation accidentalNotation;
+
+  /// Creates a new [GermanNoteNotation].
+  const GermanNoteNotation({
+    this.baseNoteNotation = const GermanBaseNoteNotation(),
+    this.accidentalNotation = const GermanAccidentalNotation(),
+  });
+
+  @override
+  String format(Note note) => switch (note) {
+    Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
+
+    Note(baseNote: BaseNote.a || BaseNote.e, :final accidental)
+        when accidental.isFlat =>
+      note.baseNote.toString(formatter: baseNoteNotation) +
+          accidental.toString(formatter: accidentalNotation).substring(1),
+
+    Note(:final baseNote, :final accidental) =>
+      baseNote.toString(formatter: baseNoteNotation) +
+          accidental.toString(formatter: accidentalNotation),
+  };
+
+  @override
+  Note parse(String source) {
+    throw UnimplementedError();
+  }
+}
+
+/// The Romance alphabetic notation system for [Note].
+final class RomanceNoteNotation extends NotationSystem<Note> {
+  /// The [RomanceBaseNoteNotation] used to format the [Note.baseNote].
+  final RomanceBaseNoteNotation baseNoteNotation;
+
+  /// The [RomanceAccidentalNotation] used to format the [Note.accidental].
+  final RomanceAccidentalNotation accidentalNotation;
+
+  /// The [RomanceNoteNotation] format variant that shows the
+  /// [Accidental.natural] accidental.
+  static const showNatural = RomanceNoteNotation(
+    accidentalNotation: RomanceAccidentalNotation(showNatural: true),
+  );
 
   /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({this.showNatural = false});
+  const RomanceNoteNotation({
+    this.baseNoteNotation = const RomanceBaseNoteNotation(),
+    this.accidentalNotation = const RomanceAccidentalNotation(),
+  });
 
   @override
-  String baseNote(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.c => 'Do',
-    BaseNote.d => 'Re',
-    BaseNote.e => 'Mi',
-    BaseNote.f => 'Fa',
-    BaseNote.g => 'Sol',
-    BaseNote.a => 'La',
-    BaseNote.b => 'Si',
-  };
+  String format(Note note) =>
+      note.baseNote.toString(formatter: baseNoteNotation) +
+      note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
-
-  @override
-  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => 'maggiore',
-    TonalMode.minor => 'minore',
-  };
+  Note parse(String source) {
+    throw UnimplementedError();
+  }
 }
 
 /// A list of notes extension.

@@ -66,8 +66,8 @@ void main() {
 
   Note.d.flat
     ..toString() // D♭
-    ..toString(formatter: NoteNotation.romance) // Re♭
-    ..toString(formatter: NoteNotation.german); // Des
+    ..toString(formatter: const RomanceNoteNotation()) // Re♭
+    ..toString(formatter: const GermanNoteNotation()); // Des
 
   Note.b.flat.inOctave(-1).toString(); // B♭-1
   Note.c.inOctave(6).toString(formatter: PitchNotation.helmholtz); // c‴
@@ -183,8 +183,8 @@ void main() {
   Note.c.sharp.major.parallel; // C♯ minor
 
   Note.d.flat.major.toString(); // D♭ major
-  Note.c.major.toString(formatter: NoteNotation.romance); // Do maggiore
-  Note.e.flat.minor.toString(formatter: NoteNotation.german); // es-moll
+  Note.c.major.toString(formatter: const RomanceKeyNotation()); // Do maggiore
+  Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
 
   // Key signatures
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
