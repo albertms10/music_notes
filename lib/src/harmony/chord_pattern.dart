@@ -84,8 +84,8 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    Parser<ChordPattern> parser = const ChordPatternNotation(),
-  }) => parser.parse(source);
+    List<Parser<ChordPattern>> chain = const [ChordPatternNotation()],
+  }) => chain.parse(source);
 
   /// The [Chord] built on top of [scalable].
   ///

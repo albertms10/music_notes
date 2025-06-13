@@ -18,6 +18,9 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
   @override
   String format(T value);
 
+  @override
+  bool matches(String source) => true;
+
   /// Parses [source] as [T].
   ///
   /// The input [source] should typically be produced by [format], ensuring
@@ -37,6 +40,20 @@ abstract class Formatter<T> {
 
 /// An abstract representation of a parser for [T].
 abstract class Parser<T> {
+  /// Whether [source] can be parsed with [parse].
+  bool matches(String source) => true;
+
   /// Parses [source] as [T].
   T parse(String source);
+}
+
+/// A [Parser] chain.
+extension ParserChain<T> on List<Parser<T>> {
+  /// Parses [source] from this chain of [Parser]s.
+  T parse(String source) {
+    for (final parser in this) {
+      if (parser.matches(source)) return parser.parse(source);
+    }
+    throw FormatException('Invalid $T', source);
+  }
 }

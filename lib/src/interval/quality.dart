@@ -94,8 +94,8 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    Parser<PerfectQuality> parser = const PerfectQualityNotation(),
-  }) => parser.parse(source);
+    List<Parser<PerfectQuality>> chain = const [PerfectQualityNotation()],
+  }) => chain.parse(source);
 
   /// The inversion of this [PerfectQuality].
   ///
@@ -186,8 +186,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    Parser<ImperfectQuality> parser = const ImperfectQualityNotation(),
-  }) => parser.parse(source);
+    List<Parser<ImperfectQuality>> chain = const [ImperfectQualityNotation()],
+  }) => chain.parse(source);
 
   /// The inversion of this [ImperfectQuality].
   ///

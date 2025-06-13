@@ -53,8 +53,8 @@ enum TonalMode implements Mode {
   /// Parse [source] as a [TonalMode] and return its value.
   factory TonalMode.parse(
     String source, {
-    Parser<TonalMode> parser = const EnglishTonalModeNotation(),
-  }) => parser.parse(source);
+    List<Parser<TonalMode>> chain = const [EnglishTonalModeNotation()],
+  }) => chain.parse(source);
 
   /// The parallel (opposite) of this [TonalMode].
   ///
