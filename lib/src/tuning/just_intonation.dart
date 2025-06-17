@@ -9,7 +9,7 @@ import 'cent.dart';
 import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
-/// A representation of a just tuning system.
+/// A representation of a just tuning formatter.
 ///
 /// See [Just intonation](https://en.wikipedia.org/wiki/Just_intonation).
 ///
@@ -35,7 +35,7 @@ sealed class JustIntonation extends TuningSystem {
   Cent get generator => Cent.fromRatio(ascendingFifthRatio);
 }
 
-/// A representation of the three-limit (a.k.a. Pythagorean) tuning system.
+/// A representation of the three-limit (a.k.a. Pythagorean) tuning formatter.
 ///
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
 @immutable

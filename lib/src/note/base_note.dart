@@ -170,12 +170,12 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   BaseNote get previous => transposeBySize(-Size.second);
 
-  /// The string representation of this [BaseNote] based on [system].
+  /// The string representation of this [BaseNote] based on [formatter].
   ///
-  /// See [NoteNotation] for all system implementations.
+  /// See [NoteNotation] for all formatter implementations.
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.baseNote(this);
+  String toString({NoteNotation formatter = NoteNotation.english}) =>
+      formatter.baseNote(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);

@@ -11,7 +11,7 @@ import 'cent.dart';
 import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
-/// A representation of an equal temperament tuning system.
+/// A representation of an equal temperament tuning formatter.
 ///
 /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
 ///
