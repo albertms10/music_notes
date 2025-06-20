@@ -229,7 +229,7 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
     final buffer = StringBuffer()
       ..writeAll([
         if (scaleDegree.semitonesDelta != 0)
-          Accidental(scaleDegree.semitonesDelta).symbol,
+          Accidental(scaleDegree.semitonesDelta),
         if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
           scaleDegree.romanNumeral.toLowerCase()
         else

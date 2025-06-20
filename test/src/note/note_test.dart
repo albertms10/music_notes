@@ -671,11 +671,11 @@ void main() {
         expect(Note.a.sharp.sharp.toString(), 'A𝄪');
         expect(Note.g.flat.flat.toString(), 'G𝄫');
 
-        const formatter = EnglishNoteNotation.showNatural;
-        expect(Note.c.toString(formatter: formatter), 'C♮');
-        expect(Note.a.toString(formatter: formatter), 'A♮');
-        expect(Note.e.sharp.toString(formatter: formatter), 'E♯');
-        expect(Note.b.flat.flat.toString(formatter: formatter), 'B𝄫');
+        const showNatural = EnglishNoteNotation.showNatural;
+        expect(Note.c.toString(formatter: showNatural), 'C♮');
+        expect(Note.a.toString(formatter: showNatural), 'A♮');
+        expect(Note.e.sharp.toString(formatter: showNatural), 'E♯');
+        expect(Note.b.flat.flat.toString(formatter: showNatural), 'B𝄫');
       });
 
       test('returns the German string representation of this Note', () {

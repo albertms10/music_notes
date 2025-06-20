@@ -449,19 +449,21 @@ final class EnglishNoteNotation extends NotationSystem<Note> {
   /// The [EnglishBaseNoteNotation] used to format the [Note.baseNote].
   final EnglishBaseNoteNotation baseNoteNotation;
 
-  /// The [EnglishAccidentalNotation] used to format the [Note.accidental].
-  final EnglishAccidentalNotation accidentalNotation;
+  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
+  final SymbolAccidentalNotation accidentalNotation;
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = EnglishNoteNotation(
-    accidentalNotation: EnglishAccidentalNotation(showNatural: true),
+    accidentalNotation: SymbolAccidentalNotation(),
   );
 
   /// Creates a new [EnglishNoteNotation].
   const EnglishNoteNotation({
     this.baseNoteNotation = const EnglishBaseNoteNotation(),
-    this.accidentalNotation = const EnglishAccidentalNotation(),
+    this.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
   });
 
   @override
@@ -516,19 +518,21 @@ final class RomanceNoteNotation extends NotationSystem<Note> {
   /// The [RomanceBaseNoteNotation] used to format the [Note.baseNote].
   final RomanceBaseNoteNotation baseNoteNotation;
 
-  /// The [RomanceAccidentalNotation] used to format the [Note.accidental].
-  final RomanceAccidentalNotation accidentalNotation;
+  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
+  final SymbolAccidentalNotation accidentalNotation;
 
   /// The [RomanceNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = RomanceNoteNotation(
-    accidentalNotation: RomanceAccidentalNotation(showNatural: true),
+    accidentalNotation: SymbolAccidentalNotation(),
   );
 
   /// Creates a new [RomanceNoteNotation].
   const RomanceNoteNotation({
     this.baseNoteNotation = const RomanceBaseNoteNotation(),
-    this.accidentalNotation = const RomanceAccidentalNotation(),
+    this.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
   });
 
   @override

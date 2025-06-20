@@ -176,14 +176,12 @@ final class KeySignature implements Comparable<KeySignature> {
     return KeySignature.fromDistance(cachedDistance.incrementBy(distance));
   }
 
-  static const _noteNotation = EnglishNoteNotation.showNatural;
-
   @override
   String toString() =>
       '$distance ('
-      '${_notes.map(
-        (note) => note.toString(formatter: _noteNotation),
-      ).join(' ')}'
+      '${_notes.map((note) => note.toString(
+        formatter: EnglishNoteNotation.showNatural,
+      )).join(' ')}'
       ')';
 
   /// The consecutive union of two [KeySignature]s (as if divided by a barline),
