@@ -474,6 +474,7 @@ final class ScalePattern {
     dorian => 'Dorian',
     phrygian => 'Phrygian',
     lydian => 'Lydian',
+    lydianAugmented => 'Lydian augmented',
     mixolydian => 'Mixolydian',
     aeolian => 'Natural minor (aeolian)',
     locrian => 'Locrian',
