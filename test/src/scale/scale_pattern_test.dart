@@ -599,6 +599,7 @@ void main() {
         expect(ScalePattern.dorian.name, 'Dorian');
         expect(ScalePattern.phrygian.name, 'Phrygian');
         expect(ScalePattern.lydian.name, 'Lydian');
+        expect(ScalePattern.lydianAugmented.name, 'Lydian augmented');
         expect(ScalePattern.mixolydian.name, 'Mixolydian');
         expect(ScalePattern.aeolian.name, 'Natural minor (aeolian)');
         expect(ScalePattern.locrian.name, 'Locrian');
