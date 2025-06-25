@@ -512,15 +512,12 @@ final class GermanNoteNotation extends NoteNotation {
   @override
   String note(Note note) => switch (note) {
     Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
-    // Flattened notes.
-    Note(:final baseNote, :final accidental) when accidental.isFlat =>
-      switch (baseNote) {
-        BaseNote.a || BaseNote.e =>
-          baseNote.toString(system: this) +
-              accidental.toString(system: this).substring(1),
-        _ => super.note(note),
-      },
-    // Sharpened and natural notes.
+
+    Note(baseNote: BaseNote.a || BaseNote.e, :final accidental)
+        when accidental.isFlat =>
+      note.baseNote.toString(system: this) +
+          accidental.toString(system: this).substring(1),
+
     final note => super.note(note),
   };
 
