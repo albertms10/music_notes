@@ -671,99 +671,174 @@ void main() {
         expect(Note.a.sharp.sharp.toString(), 'A𝄪');
         expect(Note.g.flat.flat.toString(), 'G𝄫');
 
-        const showNatural = EnglishNoteNotation(showNatural: true);
-        expect(Note.c.toString(system: showNatural), 'C♮');
-        expect(Note.a.toString(system: showNatural), 'A♮');
-        expect(Note.e.sharp.toString(system: showNatural), 'E♯');
-        expect(Note.b.flat.flat.toString(system: showNatural), 'B𝄫');
+        const showNatural = EnglishNoteNotation.showNatural;
+        expect(Note.c.toString(formatter: showNatural), 'C♮');
+        expect(Note.a.toString(formatter: showNatural), 'A♮');
+        expect(Note.e.sharp.toString(formatter: showNatural), 'E♯');
+        expect(Note.b.flat.flat.toString(formatter: showNatural), 'B𝄫');
       });
 
       test('returns the German string representation of this Note', () {
-        expect(Note.c.flat.flat.toString(system: NoteNotation.german), 'Ceses');
-        expect(Note.c.flat.toString(system: NoteNotation.german), 'Ces');
-        expect(Note.c.toString(system: NoteNotation.german), 'C');
-        expect(Note.c.sharp.toString(system: NoteNotation.german), 'Cis');
         expect(
-          Note.c.sharp.sharp.toString(system: NoteNotation.german),
+          Note.c.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Ceses',
+        );
+        expect(
+          Note.c.flat.toString(formatter: const GermanNoteNotation()),
+          'Ces',
+        );
+        expect(Note.c.toString(formatter: const GermanNoteNotation()), 'C');
+        expect(
+          Note.c.sharp.toString(formatter: const GermanNoteNotation()),
+          'Cis',
+        );
+        expect(
+          Note.c.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Cisis',
         );
 
-        expect(Note.d.flat.flat.toString(system: NoteNotation.german), 'Deses');
-        expect(Note.d.flat.toString(system: NoteNotation.german), 'Des');
-        expect(Note.d.toString(system: NoteNotation.german), 'D');
-        expect(Note.d.sharp.toString(system: NoteNotation.german), 'Dis');
         expect(
-          Note.d.sharp.sharp.toString(system: NoteNotation.german),
+          Note.d.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Deses',
+        );
+        expect(
+          Note.d.flat.toString(formatter: const GermanNoteNotation()),
+          'Des',
+        );
+        expect(Note.d.toString(formatter: const GermanNoteNotation()), 'D');
+        expect(
+          Note.d.sharp.toString(formatter: const GermanNoteNotation()),
+          'Dis',
+        );
+        expect(
+          Note.d.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Disis',
         );
 
-        expect(Note.e.flat.flat.toString(system: NoteNotation.german), 'Eses');
-        expect(Note.e.flat.toString(system: NoteNotation.german), 'Es');
-        expect(Note.e.toString(system: NoteNotation.german), 'E');
-        expect(Note.e.sharp.toString(system: NoteNotation.german), 'Eis');
         expect(
-          Note.e.sharp.sharp.toString(system: NoteNotation.german),
+          Note.e.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Eses',
+        );
+        expect(
+          Note.e.flat.toString(formatter: const GermanNoteNotation()),
+          'Es',
+        );
+        expect(Note.e.toString(formatter: const GermanNoteNotation()), 'E');
+        expect(
+          Note.e.sharp.toString(formatter: const GermanNoteNotation()),
+          'Eis',
+        );
+        expect(
+          Note.e.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Eisis',
         );
 
-        expect(Note.f.flat.flat.toString(system: NoteNotation.german), 'Feses');
-        expect(Note.f.flat.toString(system: NoteNotation.german), 'Fes');
-        expect(Note.f.toString(system: NoteNotation.german), 'F');
-        expect(Note.f.sharp.toString(system: NoteNotation.german), 'Fis');
         expect(
-          Note.f.sharp.sharp.toString(system: NoteNotation.german),
+          Note.f.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Feses',
+        );
+        expect(
+          Note.f.flat.toString(formatter: const GermanNoteNotation()),
+          'Fes',
+        );
+        expect(Note.f.toString(formatter: const GermanNoteNotation()), 'F');
+        expect(
+          Note.f.sharp.toString(formatter: const GermanNoteNotation()),
+          'Fis',
+        );
+        expect(
+          Note.f.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Fisis',
         );
 
-        expect(Note.g.flat.flat.toString(system: NoteNotation.german), 'Geses');
-        expect(Note.g.flat.toString(system: NoteNotation.german), 'Ges');
-        expect(Note.g.toString(system: NoteNotation.german), 'G');
-        expect(Note.g.sharp.toString(system: NoteNotation.german), 'Gis');
         expect(
-          Note.g.sharp.sharp.toString(system: NoteNotation.german),
+          Note.g.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Geses',
+        );
+        expect(
+          Note.g.flat.toString(formatter: const GermanNoteNotation()),
+          'Ges',
+        );
+        expect(Note.g.toString(formatter: const GermanNoteNotation()), 'G');
+        expect(
+          Note.g.sharp.toString(formatter: const GermanNoteNotation()),
+          'Gis',
+        );
+        expect(
+          Note.g.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Gisis',
         );
 
-        expect(Note.a.flat.flat.toString(system: NoteNotation.german), 'Ases');
-        expect(Note.a.flat.toString(system: NoteNotation.german), 'As');
-        expect(Note.a.toString(system: NoteNotation.german), 'A');
-        expect(Note.a.sharp.toString(system: NoteNotation.german), 'Ais');
         expect(
-          Note.a.sharp.sharp.toString(system: NoteNotation.german),
+          Note.a.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Ases',
+        );
+        expect(
+          Note.a.flat.toString(formatter: const GermanNoteNotation()),
+          'As',
+        );
+        expect(Note.a.toString(formatter: const GermanNoteNotation()), 'A');
+        expect(
+          Note.a.sharp.toString(formatter: const GermanNoteNotation()),
+          'Ais',
+        );
+        expect(
+          Note.a.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Aisis',
         );
 
-        expect(Note.b.flat.flat.toString(system: NoteNotation.german), 'Heses');
-        expect(Note.b.flat.toString(system: NoteNotation.german), 'B');
-        expect(Note.b.toString(system: NoteNotation.german), 'H');
-        expect(Note.b.sharp.toString(system: NoteNotation.german), 'His');
         expect(
-          Note.b.sharp.sharp.toString(system: NoteNotation.german),
+          Note.b.flat.flat.toString(formatter: const GermanNoteNotation()),
+          'Heses',
+        );
+        expect(
+          Note.b.flat.toString(formatter: const GermanNoteNotation()),
+          'B',
+        );
+        expect(Note.b.toString(formatter: const GermanNoteNotation()), 'H');
+        expect(
+          Note.b.sharp.toString(formatter: const GermanNoteNotation()),
+          'His',
+        );
+        expect(
+          Note.b.sharp.sharp.toString(formatter: const GermanNoteNotation()),
           'Hisis',
         );
       });
 
       test('returns the Romance string representation of this Note', () {
-        expect(Note.c.toString(system: NoteNotation.romance), 'Do');
-        expect(Note.c.sharp.toString(system: NoteNotation.romance), 'Do♯');
-        expect(Note.d.toString(system: NoteNotation.romance), 'Re');
-        expect(Note.d.flat.toString(system: NoteNotation.romance), 'Re♭');
-        expect(Note.e.toString(system: NoteNotation.romance), 'Mi');
-        expect(Note.b.flat.toString(system: NoteNotation.romance), 'Si♭');
-        expect(Note.f.sharp.toString(system: NoteNotation.romance), 'Fa♯');
+        expect(Note.c.toString(formatter: const RomanceNoteNotation()), 'Do');
         expect(
-          Note.a.sharp.sharp.toString(system: NoteNotation.romance),
+          Note.c.sharp.toString(formatter: const RomanceNoteNotation()),
+          'Do♯',
+        );
+        expect(Note.d.toString(formatter: const RomanceNoteNotation()), 'Re');
+        expect(
+          Note.d.flat.toString(formatter: const RomanceNoteNotation()),
+          'Re♭',
+        );
+        expect(Note.e.toString(formatter: const RomanceNoteNotation()), 'Mi');
+        expect(
+          Note.b.flat.toString(formatter: const RomanceNoteNotation()),
+          'Si♭',
+        );
+        expect(
+          Note.f.sharp.toString(formatter: const RomanceNoteNotation()),
+          'Fa♯',
+        );
+        expect(
+          Note.a.sharp.sharp.toString(formatter: const RomanceNoteNotation()),
           'La𝄪',
         );
         expect(
-          Note.g.flat.flat.toString(system: NoteNotation.romance),
+          Note.g.flat.flat.toString(formatter: const RomanceNoteNotation()),
           'Sol𝄫',
         );
       });
 
       test('returns the string representation extending NoteNotation', () {
         expect(
-          () => Note.a.sharp.toString(system: _SubNoteNotation()),
+          () => Note.a.sharp.toString(formatter: _TestNoteNotation()),
           throwsUnimplementedError,
         );
       });
@@ -891,13 +966,10 @@ void main() {
   });
 }
 
-final class _SubNoteNotation extends NoteNotation {
+final class _TestNoteNotation extends NotationSystem<Note> {
   @override
-  String baseNote(BaseNote baseNote) => throw UnimplementedError();
+  String format(Note value) => throw UnimplementedError();
 
   @override
-  String tonalMode(TonalMode tonalMode) => throw UnimplementedError();
-
-  @override
-  String accidental(Accidental accidental) => throw UnimplementedError();
+  Note parse(String source) => throw UnimplementedError();
 }

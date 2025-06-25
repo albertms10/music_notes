@@ -29,17 +29,18 @@ class TuningFork {
   /// The C256 tuning fork.
   static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
 
-  /// The string representation of this [TuningFork] based on [system].
+  /// The string representation of this [TuningFork] based on [formatter].
   ///
   /// Example:
   /// ```dart
   /// TuningFork.a440.toString() == 'A440'
-  /// TuningFork.a432.toString(system: TuningForkNotation.scientific)
+  /// TuningFork.a432.toString(formatter: TuningForkNotation.scientific)
   ///   == 'A4 = 432 Hz'
   /// ```
   @override
-  String toString({TuningForkNotation system = TuningForkNotation.compact}) =>
-      system.tuningFork(this);
+  String toString({
+    TuningForkNotation formatter = TuningForkNotation.compact,
+  }) => formatter.tuningFork(this);
 
   @override
   bool operator ==(Object other) =>
@@ -57,17 +58,17 @@ abstract class TuningForkNotation {
   /// Creates a new [TuningForkNotation].
   const TuningForkNotation();
 
-  /// The compact [TuningForkNotation] system.
+  /// The compact [TuningForkNotation] formatter.
   static const compact = CompactTuningForkNotation();
 
-  /// The scientific [TuningForkNotation] system.
+  /// The scientific [TuningForkNotation] formatter.
   static const scientific = ScientificTuningForkNotation();
 
   /// The string representation for [tuningFork].
   String tuningFork(TuningFork tuningFork);
 }
 
-/// The compact [TuningFork] notation system.
+/// The compact [TuningFork] notation formatter.
 final class CompactTuningForkNotation extends TuningForkNotation {
   /// The reference octave.
   final int referenceOctave;
@@ -87,7 +88,7 @@ final class CompactTuningForkNotation extends TuningForkNotation {
   }
 }
 
-/// The scientific [TuningFork] notation system.
+/// The scientific [TuningFork] notation formatter.
 final class ScientificTuningForkNotation extends TuningForkNotation {
   /// Creates a new [ScientificTuningForkNotation].
   const ScientificTuningForkNotation();

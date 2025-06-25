@@ -8,6 +8,7 @@ import '../key/key.dart';
 import '../key/key_signature.dart';
 import '../key/mode.dart';
 import '../music.dart';
+import '../notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import 'accidental.dart';
@@ -417,19 +418,18 @@ final class Note extends Scalable<Note>
     );
   }
 
-  /// The string representation of this [Note] based on [system].
-  ///
-  /// See [NoteNotation] for all system implementations.
+  /// The string representation of this [Note] based on [formatter].
   ///
   /// Example:
   /// ```dart
   /// Note.d.flat.toString() == 'D♭'
-  /// Note.d.flat.toString(system: NoteNotation.romance) == 'Re♭'
-  /// Note.d.flat.toString(system: NoteNotation.german) == 'Des'
+  /// Note.d.flat.toString(formatter: const RomanceNoteNotation()) == 'Re♭'
+  /// Note.d.flat.toString(formatter: const GermanNoteNotation()) == 'Des'
   /// ```
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.note(this);
+  String toString({
+    Formatter<Note> formatter = const EnglishNoteNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -444,141 +444,106 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The abstraction for [Note] notation systems.
-@immutable
-abstract class NoteNotation {
-  /// Creates a new [NoteNotation].
-  const NoteNotation();
+/// The English notation system for [Note
+final class EnglishNoteNotation extends NotationSystem<Note> {
+  /// The [EnglishBaseNoteNotation] used to format the [Note.baseNote].
+  final EnglishBaseNoteNotation baseNoteNotation;
 
-  /// The English alphabetic [NoteNotation] system.
-  static const english = EnglishNoteNotation();
+  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
+  final SymbolAccidentalNotation accidentalNotation;
 
-  /// The German alphabetic [NoteNotation] system.
-  static const german = GermanNoteNotation();
+  /// The [EnglishNoteNotation] format variant that shows the
+  /// [Accidental.natural] accidental.
+  static const showNatural = EnglishNoteNotation(
+    accidentalNotation: SymbolAccidentalNotation(),
+  );
 
-  /// The Romance solmization [NoteNotation] system.
-  static const romance = RomanceNoteNotation();
+  /// Creates a new [EnglishNoteNotation].
+  const EnglishNoteNotation({
+    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+    this.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
+  });
 
-  /// The string notation for [note].
-  String note(Note note) =>
-      note.baseNote.toString(system: this) +
-      note.accidental.toString(system: this);
+  @override
+  String format(Note note) =>
+      note.baseNote.toString(formatter: baseNoteNotation) +
+      note.accidental.toString(formatter: accidentalNotation);
 
-  /// The string notation for [baseNote].
-  String baseNote(BaseNote baseNote);
-
-  /// The string notation for [accidental].
-  String accidental(Accidental accidental);
-
-  /// The string notation for [tonalMode].
-  String tonalMode(TonalMode tonalMode);
-
-  /// The string notation for [key].
-  String key(Key key) {
-    final note = key.note.toString(system: this);
-    final mode = key.mode.toString(system: this);
-
-    return '$note $mode';
+  @override
+  Note parse(String source) {
+    throw UnimplementedError();
   }
 }
 
-/// The English alphabetic [Note] notation system.
-final class EnglishNoteNotation extends NoteNotation {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
-  final bool showNatural;
-
-  /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({this.showNatural = false});
-
-  @override
-  String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
-
-  @override
-  String baseNote(BaseNote baseNote) => baseNote.name.toUpperCase();
-
-  @override
-  String tonalMode(TonalMode tonalMode) => tonalMode.name;
-}
-
-/// The German alphabetic [Note] notation system.
+/// The German alphabetic notation system for [Note].
 ///
 /// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
-final class GermanNoteNotation extends NoteNotation {
+final class GermanNoteNotation extends NotationSystem<Note> {
+  /// The [GermanBaseNoteNotation] used to format the [Note.baseNote].
+  final GermanBaseNoteNotation baseNoteNotation;
+
+  /// The [GermanAccidentalNotation] used to format the [Note.accidental].
+  final GermanAccidentalNotation accidentalNotation;
+
   /// Creates a new [GermanNoteNotation].
-  const GermanNoteNotation();
+  const GermanNoteNotation({
+    this.baseNoteNotation = const GermanBaseNoteNotation(),
+    this.accidentalNotation = const GermanAccidentalNotation(),
+  });
 
   @override
-  String note(Note note) => switch (note) {
+  String format(Note note) => switch (note) {
     Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
 
     Note(baseNote: BaseNote.a || BaseNote.e, :final accidental)
         when accidental.isFlat =>
-      note.baseNote.toString(system: this) +
-          accidental.toString(system: this).substring(1),
+      note.baseNote.toString(formatter: baseNoteNotation) +
+          accidental.toString(formatter: accidentalNotation).substring(1),
 
-    final note => super.note(note),
+    Note(:final baseNote, :final accidental) =>
+      baseNote.toString(formatter: baseNoteNotation) +
+          accidental.toString(formatter: accidentalNotation),
   };
 
   @override
-  String baseNote(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.b => 'H',
-    BaseNote(:final name) => name.toUpperCase(),
-  };
-
-  @override
-  String accidental(Accidental accidental) =>
-      (accidental.isFlat ? 'es' : 'is') * accidental.semitones.abs();
-
-  @override
-  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => 'Dur',
-    TonalMode.minor => 'Moll',
-  };
-
-  @override
-  String key(Key key) {
-    final note = key.note.toString(system: this);
-    final mode = key.mode.toString(system: this).toLowerCase();
-    final casedNote = switch (key.mode) {
-      TonalMode.major => note,
-      TonalMode.minor => note.toLowerCase(),
-    };
-
-    return '$casedNote-$mode';
+  Note parse(String source) {
+    throw UnimplementedError();
   }
 }
 
-/// The Romance alphabetic [Note] notation system.
-final class RomanceNoteNotation extends NoteNotation {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
-  final bool showNatural;
+/// The Romance alphabetic notation system for [Note].
+final class RomanceNoteNotation extends NotationSystem<Note> {
+  /// The [RomanceBaseNoteNotation] used to format the [Note.baseNote].
+  final RomanceBaseNoteNotation baseNoteNotation;
+
+  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
+  final SymbolAccidentalNotation accidentalNotation;
+
+  /// The [RomanceNoteNotation] format variant that shows the
+  /// [Accidental.natural] accidental.
+  static const showNatural = RomanceNoteNotation(
+    accidentalNotation: SymbolAccidentalNotation(),
+  );
 
   /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({this.showNatural = false});
+  const RomanceNoteNotation({
+    this.baseNoteNotation = const RomanceBaseNoteNotation(),
+    this.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
+  });
 
   @override
-  String baseNote(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.c => 'Do',
-    BaseNote.d => 'Re',
-    BaseNote.e => 'Mi',
-    BaseNote.f => 'Fa',
-    BaseNote.g => 'Sol',
-    BaseNote.a => 'La',
-    BaseNote.b => 'Si',
-  };
+  String format(Note note) =>
+      note.baseNote.toString(formatter: baseNoteNotation) +
+      note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  String accidental(Accidental accidental) =>
-      !showNatural && accidental.isNatural ? '' : accidental.symbol;
-
-  @override
-  String tonalMode(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => 'maggiore',
-    TonalMode.minor => 'minore',
-  };
+  Note parse(String source) {
+    throw UnimplementedError();
+  }
 }
 
 /// A list of notes extension.

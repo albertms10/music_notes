@@ -163,9 +163,9 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     _ => '$ordinal',
   };
 
-  /// The string representation of this [ScaleDegree] based on [system].
+  /// The string representation of this [ScaleDegree] based on [formatter].
   ///
-  /// See [ScaleDegreeNotation] for all system implementations.
+  /// See [ScaleDegreeNotation] for all formatter implementations.
   ///
   /// Example:
   /// ```dart
@@ -175,8 +175,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   @override
   String toString({
-    ScaleDegreeNotation system = ScaleDegreeNotation.standard,
-  }) => system.scaleDegree(this);
+    ScaleDegreeNotation formatter = ScaleDegreeNotation.standard,
+  }) => formatter.scaleDegree(this);
 
   @override
   bool operator ==(Object other) =>
@@ -212,14 +212,14 @@ abstract class ScaleDegreeNotation {
   /// Creates a new [ScaleDegreeNotation].
   const ScaleDegreeNotation();
 
-  /// The standard [ScaleDegreeNotation] system.
+  /// The standard [ScaleDegreeNotation] formatter.
   static const standard = StandardScaleDegreeNotation();
 
   /// The string notation for [scaleDegree].
   String scaleDegree(ScaleDegree scaleDegree);
 }
 
-/// The standard [ScaleDegree] notation system.
+/// The standard [ScaleDegree] notation formatter.
 final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
   /// Creates a new [StandardScaleDegreeNotation].
   const StandardScaleDegreeNotation();
@@ -229,7 +229,7 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
     final buffer = StringBuffer()
       ..writeAll([
         if (scaleDegree.semitonesDelta != 0)
-          Accidental(scaleDegree.semitonesDelta).symbol,
+          Accidental(scaleDegree.semitonesDelta),
         if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
           scaleDegree.romanNumeral.toLowerCase()
         else
