@@ -3,7 +3,6 @@
 library;
 
 export 'src/chordable.dart';
-export 'src/formatter.dart';
 export 'src/harmony/chord.dart';
 export 'src/harmony/chord_pattern.dart';
 export 'src/harmony/harmonic_function.dart';
@@ -15,6 +14,7 @@ export 'src/key/key.dart';
 export 'src/key/key_signature.dart';
 export 'src/key/mode.dart';
 export 'src/music.dart';
+export 'src/notation_system.dart';
 export 'src/note/accidental.dart';
 export 'src/note/base_note.dart';
 export 'src/note/closest_pitch.dart';

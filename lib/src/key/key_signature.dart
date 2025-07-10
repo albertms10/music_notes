@@ -155,8 +155,6 @@ final class KeySignature implements Comparable<KeySignature> {
     });
   }
 
-  static const _noteNotation = EnglishNoteNotation(showNatural: true);
-
   /// Returns this [KeySignature] incrementing its fifths [distance].
   ///
   /// Example:
@@ -181,7 +179,9 @@ final class KeySignature implements Comparable<KeySignature> {
   @override
   String toString() =>
       '$distance ('
-      '${_notes.map((note) => note.toString(system: _noteNotation)).join(' ')}'
+      '${_notes.map((note) => note.toString(
+        formatter: EnglishNoteNotation.showNatural,
+      )).join(' ')}'
       ')';
 
   /// The consecutive union of two [KeySignature]s (as if divided by a barline),

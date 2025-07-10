@@ -141,22 +141,22 @@ PitchClass.d * 5; // {A♯|B♭}
 // observe one semitone upwards results in ascending fourths F -> B-flat.
 ```
 
-Represent them using any notation system:
+Represent them using any notation formatter:
 
 ```dart
 Note.d.flat
   ..toString() // D♭
-  ..toString(system: NoteNotation.romance) // Re♭
-  ..toString(system: NoteNotation.german); // Des
+  ..toString(formatter: NoteNotation.romance) // Re♭
+  ..toString(formatter: NoteNotation.german); // Des
 
 Note.b.flat.inOctave(-1).toString(); // B♭-1
-Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c‴
+Note.c.inOctave(6).toString(formatter: PitchNotation.helmholtz); // c‴
 
 PitchClass.c.toString(); // {C}
 PitchClass.dSharp.toString(); // {D♯|E♭}
 
-PitchClass.f.toString(system: PitchClassNotation.integer); // 5
-PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
+PitchClass.f.toString(formatter: PitchClassNotation.integer); // 5
+PitchClass.aSharp.toString(formatter: PitchClassNotation.integer); // t
 ```
 
 ### Intervals
@@ -334,12 +334,12 @@ Note.f.minor.parallel; // F major
 Note.c.sharp.major.parallel; // C♯ minor
 ```
 
-Represent it using any notation system:
+Represent it using any notation formatter:
 
 ```dart
 Note.d.flat.major.toString(); // D♭ major
-Note.c.major.toString(system: NoteNotation.romance); // Do maggiore
-Note.e.flat.minor.toString(system: NoteNotation.german); // es-moll
+Note.c.major.toString(formatter: NoteNotation.romance); // Do maggiore
+Note.e.flat.minor.toString(formatter: NoteNotation.german); // es-moll
 ```
 
 ### Key signatures
