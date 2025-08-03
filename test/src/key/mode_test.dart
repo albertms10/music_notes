@@ -28,17 +28,90 @@ void main() {
   });
 
   group('TonalMode', () {
-    group('.parse()', () {
-      test('throws FormatException for invalid input', () {
-        expect(() => TonalMode.parse('invalid'), throwsFormatException);
-        expect(() => TonalMode.parse(''), throwsFormatException);
+    group('EnglishTonalModeNotation', () {
+      group('.parse()', () {
+        test('throws FormatException for invalid input', () {
+          expect(() => TonalMode.parse('invalid'), throwsFormatException);
+          expect(() => TonalMode.parse(''), throwsFormatException);
+        });
+
+        test('parses a TonalMode from source', () {
+          expect(TonalMode.parse('major'), TonalMode.major);
+          expect(TonalMode.parse('minor'), TonalMode.minor);
+          expect(TonalMode.parse('Major'), TonalMode.major);
+          expect(TonalMode.parse('MINOR'), TonalMode.minor);
+        });
       });
 
-      test('parses a TonalMode from source', () {
-        expect(TonalMode.parse('major'), TonalMode.major);
-        expect(TonalMode.parse('minor'), TonalMode.minor);
-        expect(TonalMode.parse('Major'), TonalMode.major);
-        expect(TonalMode.parse('MINOR'), TonalMode.minor);
+      group('.toString()', () {
+        test('returns the string representation of this TonalMode', () {
+          expect(TonalMode.major.toString(), 'major');
+          expect(TonalMode.minor.toString(), 'minor');
+        });
+      });
+    });
+
+    group('GermanTonalModeNotation', () {
+      const formatter = GermanTonalModeNotation();
+      const chain = [formatter];
+
+      group('.parse()', () {
+        test('throws FormatException for invalid input', () {
+          expect(
+            () => TonalMode.parse('invalid', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => TonalMode.parse('', chain: chain),
+            throwsFormatException,
+          );
+        });
+
+        test('parses a TonalMode from source', () {
+          expect(TonalMode.parse('dur', chain: chain), TonalMode.major);
+          expect(TonalMode.parse('moll', chain: chain), TonalMode.minor);
+          expect(TonalMode.parse('Dur', chain: chain), TonalMode.major);
+          expect(TonalMode.parse('Moll', chain: chain), TonalMode.minor);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this TonalMode', () {
+          expect(TonalMode.major.toString(formatter: formatter), 'Dur');
+          expect(TonalMode.minor.toString(formatter: formatter), 'Moll');
+        });
+      });
+    });
+
+    group('RomanceTonalModeNotation', () {
+      const formatter = RomanceTonalModeNotation();
+      const chain = [formatter];
+
+      group('.parse()', () {
+        test('throws FormatException for invalid input', () {
+          expect(
+            () => TonalMode.parse('invalid', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => TonalMode.parse('', chain: chain),
+            throwsFormatException,
+          );
+        });
+
+        test('parses a TonalMode from source', () {
+          expect(TonalMode.parse('maggiore', chain: chain), TonalMode.major);
+          expect(TonalMode.parse('minore', chain: chain), TonalMode.minor);
+          expect(TonalMode.parse('Maggiore', chain: chain), TonalMode.major);
+          expect(TonalMode.parse('Minore', chain: chain), TonalMode.minor);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this TonalMode', () {
+          expect(TonalMode.major.toString(formatter: formatter), 'maggiore');
+          expect(TonalMode.minor.toString(formatter: formatter), 'minore');
+        });
       });
     });
 
@@ -46,31 +119,6 @@ void main() {
       test('returns the correct parallel TonalMode', () {
         expect(TonalMode.major.parallel, TonalMode.minor);
         expect(TonalMode.minor.parallel, TonalMode.major);
-      });
-    });
-
-    group('.toString()', () {
-      test('returns the string representation of this TonalMode', () {
-        expect(TonalMode.major.toString(), 'major');
-        expect(TonalMode.minor.toString(), 'minor');
-
-        expect(
-          TonalMode.major.toString(formatter: const GermanTonalModeNotation()),
-          'Dur',
-        );
-        expect(
-          TonalMode.minor.toString(formatter: const GermanTonalModeNotation()),
-          'Moll',
-        );
-
-        expect(
-          TonalMode.major.toString(formatter: const RomanceTonalModeNotation()),
-          'maggiore',
-        );
-        expect(
-          TonalMode.minor.toString(formatter: const RomanceTonalModeNotation()),
-          'minore',
-        );
       });
     });
   });

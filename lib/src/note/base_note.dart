@@ -74,19 +74,14 @@ enum BaseNote implements Comparable<BaseNote> {
   /// BaseNote.parse('a') == BaseNote.a
   /// BaseNote.parse('z') // throws a FormatException
   /// ```
-  factory BaseNote.parse(String source) {
-    try {
-      return values.byName(source.toLowerCase());
-    }
-    // TODO(albertms10): find a better way to catch an invalid BaseNote.
-    // ignore: avoid_catching_errors
-    on ArgumentError catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        FormatException('Invalid BaseNote', source, 0),
-        stackTrace,
-      );
-    }
-  }
+  factory BaseNote.parse(
+    String source, {
+    List<Parser<BaseNote>> chain = const [
+      EnglishBaseNoteNotation(),
+      GermanBaseNoteNotation(),
+      RomanceBaseNoteNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// The ordinal number of this [BaseNote].
   ///
@@ -191,7 +186,19 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
 
   @override
   BaseNote parse(String source) {
-    throw UnimplementedError();
+    if (source.length != 1) {
+      throw FormatException('Invalid BaseNote', source);
+    }
+
+    try {
+      return BaseNote.values.byName(source.toLowerCase());
+      // ignore: avoid_catching_errors for succinctness
+    } on ArgumentError catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        FormatException('Invalid BaseNote', source, 0),
+        stackTrace,
+      );
+    }
   }
 }
 
@@ -208,7 +215,21 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
 
   @override
   BaseNote parse(String source) {
-    throw UnimplementedError();
+    if (source.length != 1) {
+      throw FormatException('Invalid BaseNote', source);
+    }
+
+    return switch (source.toUpperCase()) {
+      'C' => BaseNote.c,
+      'D' => BaseNote.d,
+      'E' => BaseNote.e,
+      'F' => BaseNote.f,
+      'G' => BaseNote.g,
+      'A' => BaseNote.a,
+      'H' => BaseNote.b,
+      'B' => BaseNote.b,
+      _ => throw FormatException('Invalid BaseNote', source),
+    };
   }
 }
 
@@ -229,7 +250,14 @@ final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
   };
 
   @override
-  BaseNote parse(String source) {
-    throw UnimplementedError();
-  }
+  BaseNote parse(String source) => switch (source.toLowerCase()) {
+    'do' => BaseNote.c,
+    're' => BaseNote.d,
+    'mi' => BaseNote.e,
+    'fa' => BaseNote.f,
+    'sol' => BaseNote.g,
+    'la' => BaseNote.a,
+    'si' => BaseNote.b,
+    _ => throw FormatException('Invalid BaseNote', source),
+  };
 }

@@ -5,27 +5,136 @@ import 'package:test/test.dart';
 
 void main() {
   group('BaseNote', () {
-    test('throws a FormatException when source is invalid', () {
-      expect(() => BaseNote.parse('x'), throwsFormatException);
+    group('EnglishBaseNoteNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => BaseNote.parse('x'), throwsFormatException);
+          expect(() => BaseNote.parse('H'), throwsFormatException);
+          expect(() => BaseNote.parse('X'), throwsFormatException);
+          expect(() => BaseNote.parse(''), throwsFormatException);
+          expect(() => BaseNote.parse('AB'), throwsFormatException);
+        });
+
+        test('parses source as a BaseNote', () {
+          expect(BaseNote.parse('a'), BaseNote.a);
+          expect(BaseNote.parse('b'), BaseNote.b);
+          expect(BaseNote.parse('c'), BaseNote.c);
+          expect(BaseNote.parse('d'), BaseNote.d);
+          expect(BaseNote.parse('e'), BaseNote.e);
+          expect(BaseNote.parse('f'), BaseNote.f);
+          expect(BaseNote.parse('g'), BaseNote.g);
+
+          expect(BaseNote.parse('A'), BaseNote.a);
+          expect(BaseNote.parse('B'), BaseNote.b);
+          expect(BaseNote.parse('C'), BaseNote.c);
+          expect(BaseNote.parse('D'), BaseNote.d);
+          expect(BaseNote.parse('E'), BaseNote.e);
+          expect(BaseNote.parse('F'), BaseNote.f);
+          expect(BaseNote.parse('G'), BaseNote.g);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          for (final baseNote in BaseNote.values) {
+            expect(baseNote, BaseNote.parse(baseNote.toString()));
+          }
+        });
+      });
     });
 
-    group('.parse()', () {
-      test('parses source as a BaseNote', () {
-        expect(BaseNote.parse('a'), BaseNote.a);
-        expect(BaseNote.parse('b'), BaseNote.b);
-        expect(BaseNote.parse('c'), BaseNote.c);
-        expect(BaseNote.parse('d'), BaseNote.d);
-        expect(BaseNote.parse('e'), BaseNote.e);
-        expect(BaseNote.parse('f'), BaseNote.f);
-        expect(BaseNote.parse('g'), BaseNote.g);
+    group('GermanBaseNoteNotation', () {
+      group('.parse()', () {
+        const chain = [GermanBaseNoteNotation()];
 
-        expect(BaseNote.parse('A'), BaseNote.a);
-        expect(BaseNote.parse('B'), BaseNote.b);
-        expect(BaseNote.parse('C'), BaseNote.c);
-        expect(BaseNote.parse('D'), BaseNote.d);
-        expect(BaseNote.parse('E'), BaseNote.e);
-        expect(BaseNote.parse('F'), BaseNote.f);
-        expect(BaseNote.parse('G'), BaseNote.g);
+        test('throws a FormatException when source is invalid', () {
+          expect(
+            () => BaseNote.parse('X', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => BaseNote.parse('', chain: chain), throwsFormatException);
+          expect(
+            () => BaseNote.parse('AH', chain: chain),
+            throwsFormatException,
+          );
+        });
+
+        test('parses source as a BaseNote', () {
+          expect(BaseNote.parse('A', chain: chain), BaseNote.a);
+          expect(BaseNote.parse('B', chain: chain), BaseNote.b);
+          expect(BaseNote.parse('C', chain: chain), BaseNote.c);
+          expect(BaseNote.parse('D', chain: chain), BaseNote.d);
+          expect(BaseNote.parse('E', chain: chain), BaseNote.e);
+          expect(BaseNote.parse('F', chain: chain), BaseNote.f);
+          expect(BaseNote.parse('G', chain: chain), BaseNote.g);
+          expect(BaseNote.parse('H', chain: chain), BaseNote.b);
+
+          expect(BaseNote.parse('h', chain: chain), BaseNote.b);
+          expect(BaseNote.parse('a', chain: chain), BaseNote.a);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          for (final baseNote in BaseNote.values) {
+            expect(
+              baseNote,
+              BaseNote.parse(
+                baseNote.toString(formatter: const GermanBaseNoteNotation()),
+                chain: chain,
+              ),
+            );
+          }
+        });
+      });
+    });
+
+    group('RomanceBaseNoteNotation', () {
+      group('.parse()', () {
+        const chain = [RomanceBaseNoteNotation()];
+
+        test('throws a FormatException when source is invalid', () {
+          expect(
+            () => BaseNote.parse('X', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => BaseNote.parse('', chain: chain), throwsFormatException);
+          expect(
+            () => BaseNote.parse('A', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => BaseNote.parse('DoRe', chain: chain),
+            throwsFormatException,
+          );
+        });
+
+        test('parses source as a BaseNote', () {
+          expect(BaseNote.parse('Do', chain: chain), BaseNote.c);
+          expect(BaseNote.parse('Re', chain: chain), BaseNote.d);
+          expect(BaseNote.parse('Mi', chain: chain), BaseNote.e);
+          expect(BaseNote.parse('Fa', chain: chain), BaseNote.f);
+          expect(BaseNote.parse('Sol', chain: chain), BaseNote.g);
+          expect(BaseNote.parse('La', chain: chain), BaseNote.a);
+          expect(BaseNote.parse('Si', chain: chain), BaseNote.b);
+
+          expect(BaseNote.parse('do', chain: chain), BaseNote.c);
+          expect(BaseNote.parse('DO', chain: chain), BaseNote.c);
+          expect(BaseNote.parse('re', chain: chain), BaseNote.d);
+          expect(BaseNote.parse('mi', chain: chain), BaseNote.e);
+          expect(BaseNote.parse('fa', chain: chain), BaseNote.f);
+          expect(BaseNote.parse('sol', chain: chain), BaseNote.g);
+          expect(BaseNote.parse('la', chain: chain), BaseNote.a);
+          expect(BaseNote.parse('si', chain: chain), BaseNote.b);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          for (final baseNote in BaseNote.values) {
+            expect(
+              baseNote,
+              BaseNote.parse(
+                baseNote.toString(formatter: const RomanceBaseNoteNotation()),
+                chain: chain,
+              ),
+            );
+          }
+        });
       });
     });
 

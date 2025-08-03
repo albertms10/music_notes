@@ -6,22 +6,75 @@ import 'package:test/test.dart';
 
 void main() {
   group('Note', () {
-    group('.parse()', () {
-      test('throws a FormatException when source is invalid', () {
-        expect(() => Note.parse('x'), throwsFormatException);
-      });
+    group('EnglishNoteNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Note.parse(''), throwsFormatException);
+          expect(() => Note.parse('x'), throwsFormatException);
+          expect(() => Note.parse('H'), throwsFormatException);
+        });
 
-      test('parses source as a Note', () {
-        expect(Note.parse('d'), Note.d);
-        expect(Note.parse('g'), Note.g);
-        expect(Note.parse('Bb'), Note.b.flat);
-        expect(Note.parse('bb'), Note.b.flat);
-        expect(Note.parse('f♯'), Note.f.sharp);
-        expect(Note.parse('d#'), Note.d.sharp);
-        expect(Note.parse('A♭'), Note.a.flat);
-        expect(Note.parse('abb'), Note.a.flat.flat);
-        expect(Note.parse('cx'), Note.c.sharp.sharp);
-        expect(Note.parse('e#x'), Note.e.sharp.sharp.sharp);
+        test('parses source as a Note', () {
+          expect(Note.parse('d'), Note.d);
+          expect(Note.parse('g'), Note.g);
+          expect(Note.parse('Bb'), Note.b.flat);
+          expect(Note.parse('bb'), Note.b.flat);
+          expect(Note.parse('f♯'), Note.f.sharp);
+          expect(Note.parse('d#'), Note.d.sharp);
+          expect(Note.parse('A♭'), Note.a.flat);
+          expect(Note.parse('abb'), Note.a.flat.flat);
+          expect(Note.parse('cx'), Note.c.sharp.sharp);
+          expect(Note.parse('e#x'), Note.e.sharp.sharp.sharp);
+        });
+      });
+    });
+
+    group('GermanNoteNotation', () {
+      group('.parse()', () {
+        const chain = [GermanNoteNotation()];
+
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Note.parse('', chain: chain), throwsFormatException);
+          expect(() => Note.parse('X', chain: chain), throwsFormatException);
+        });
+
+        test('parses source as a Note', () {
+          expect(Note.parse('B', chain: chain), Note.b.flat);
+          expect(Note.parse('Cis', chain: chain), Note.c.sharp);
+          expect(Note.parse('Des', chain: chain), Note.d.flat);
+          expect(Note.parse('Geses', chain: chain), Note.g.flat.flat);
+          expect(Note.parse('H', chain: chain), Note.b);
+          expect(Note.parse('His', chain: chain), Note.b.sharp);
+          expect(Note.parse('As', chain: chain), Note.a.flat);
+          expect(Note.parse('Es', chain: chain), Note.e.flat);
+        });
+      });
+    });
+
+    group('RomanceNoteNotation', () {
+      group('.parse()', () {
+        const chain = [RomanceNoteNotation()];
+
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Note.parse('', chain: chain), throwsFormatException);
+          expect(() => Note.parse('X', chain: chain), throwsFormatException);
+          expect(() => Note.parse('C', chain: chain), throwsFormatException);
+        });
+
+        test('parses source as a Note', () {
+          expect(Note.parse('Do', chain: chain), Note.c);
+          expect(Note.parse('Re', chain: chain), Note.d);
+          expect(Note.parse('Mi', chain: chain), Note.e);
+          expect(Note.parse('Fa', chain: chain), Note.f);
+          expect(Note.parse('Sol', chain: chain), Note.g);
+          expect(Note.parse('La', chain: chain), Note.a);
+          expect(Note.parse('Si', chain: chain), Note.b);
+          expect(Note.parse('Do♯', chain: chain), Note.c.sharp);
+          expect(Note.parse('Re♭', chain: chain), Note.d.flat);
+          expect(Note.parse('Solx', chain: chain), Note.g.sharp.sharp);
+          expect(Note.parse('dobb', chain: chain), Note.c.flat.flat);
+          expect(Note.parse('la♯', chain: chain), Note.a.sharp);
+        });
       });
     });
 

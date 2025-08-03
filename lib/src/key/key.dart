@@ -29,6 +29,26 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
+  /// Parse [source] as a [Key] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Key], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Key.parse('C major') == Note.c.major
+  /// Key.parse('f# minor') == Note.f.sharp.minor
+  /// Key.parse('z') // throws a FormatException
+  /// ```
+  factory Key.parse(
+    String source, {
+    List<Parser<Key>> chain = const [
+      EnglishKeyNotation(),
+      GermanKeyNotation(),
+      RomanceKeyNotation(),
+    ],
+  }) => chain.parse(source);
+
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///
   /// Example:
@@ -149,7 +169,15 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
 
   @override
   Key parse(String source) {
-    throw UnimplementedError();
+    final parts = source.trim().split(' ');
+    if (parts.length != 2) {
+      throw FormatException('Invalid Key', source);
+    }
+
+    final note = noteNotation.parse(parts[0]);
+    final mode = tonalModeNotation.parse(parts[1]);
+
+    return Key(note, mode);
   }
 }
 
@@ -181,7 +209,12 @@ final class GermanKeyNotation extends NotationSystem<Key> {
 
   @override
   Key parse(String source) {
-    throw UnimplementedError();
+    final parts = source.trim().split('-');
+    if (parts.length != 2) throw FormatException('Invalid Key', source);
+
+    final [note, mode] = parts;
+
+    return Key(noteNotation.parse(note), tonalModeNotation.parse(mode));
   }
 }
 
@@ -209,6 +242,14 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
 
   @override
   Key parse(String source) {
-    throw UnimplementedError();
+    final parts = source.trim().split(' ');
+    if (parts.length != 2) {
+      throw FormatException('Invalid Key', source);
+    }
+
+    final note = noteNotation.parse(parts[0]);
+    final mode = tonalModeNotation.parse(parts[1]);
+
+    return Key(note, mode);
   }
 }

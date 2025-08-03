@@ -53,7 +53,11 @@ enum TonalMode implements Mode {
   /// Parse [source] as a [TonalMode] and return its value.
   factory TonalMode.parse(
     String source, {
-    List<Parser<TonalMode>> chain = const [EnglishTonalModeNotation()],
+    List<Parser<TonalMode>> chain = const [
+      EnglishTonalModeNotation(),
+      GermanTonalModeNotation(),
+      RomanceTonalModeNotation(),
+    ],
   }) => chain.parse(source);
 
   /// The parallel (opposite) of this [TonalMode].
@@ -113,8 +117,8 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
 
   @override
   TonalMode parse(String source) => switch (source.toLowerCase()) {
-    _major => TonalMode.major,
-    _minor => TonalMode.minor,
+    'dur' => TonalMode.major,
+    'moll' => TonalMode.minor,
     _ => throw FormatException('Invalid TonalMode', source),
   };
 }

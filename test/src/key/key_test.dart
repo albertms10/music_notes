@@ -5,6 +5,183 @@ import 'package:test/test.dart';
 
 void main() {
   group('Key', () {
+    group('EnglishKeyNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Key.parse('C'), throwsFormatException);
+          expect(() => Key.parse('major'), throwsFormatException);
+          expect(() => Key.parse('C major minor'), throwsFormatException);
+          expect(() => Key.parse(''), throwsFormatException);
+        });
+
+        test('parses source as a Key', () {
+          expect(Key.parse('C major'), Note.c.major);
+          expect(Key.parse('D major'), Note.d.major);
+          expect(Key.parse('F♯ major'), Note.f.sharp.major);
+          expect(Key.parse('A minor'), Note.a.minor);
+          expect(Key.parse('D minor'), Note.d.minor);
+          expect(Key.parse('C♯ minor'), Note.c.sharp.minor);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          final testKeys = [
+            Note.c.major,
+            Note.a.minor,
+            Note.f.sharp.major,
+            Note.b.flat.minor,
+          ];
+
+          for (final key in testKeys) {
+            expect(key, Key.parse(key.toString()));
+          }
+        });
+      });
+
+      group('.toString() ', () {
+        test('returns the string representation of this Key', () {
+          expect(Note.c.major.toString(), 'C major');
+          expect(Note.d.minor.toString(), 'D minor');
+          expect(Note.a.flat.major.toString(), 'A♭ major');
+          expect(Note.f.sharp.minor.toString(), 'F♯ minor');
+          expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
+          expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
+        });
+      });
+    });
+
+    group('GermanKeyNotation', () {
+      const formatter = GermanKeyNotation();
+      const chain = [formatter];
+
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Key.parse('C', chain: chain), throwsFormatException);
+          expect(() => Key.parse('dur', chain: chain), throwsFormatException);
+          expect(
+            () => Key.parse('C-dur-moll', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Key.parse('', chain: chain), throwsFormatException);
+        });
+
+        test('parses source as a Key', () {
+          expect(Key.parse('C-dur', chain: chain), Note.c.major);
+          expect(Key.parse('B-dur', chain: chain), Note.b.flat.major);
+          expect(Key.parse('b-dur', chain: chain), Note.b.flat.major);
+          expect(Key.parse('H-moll', chain: chain), Note.b.minor);
+          expect(Key.parse('D-dur', chain: chain), Note.d.major);
+          expect(
+            Key.parse('Gisis-dur', chain: chain),
+            Note.g.sharp.sharp.major,
+          );
+          expect(Key.parse('a-moll', chain: chain), Note.a.minor);
+          expect(Key.parse('as-moll', chain: chain), Note.a.flat.minor);
+          expect(Key.parse('d-moll', chain: chain), Note.d.minor);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          final testKeys = [
+            Note.c.major,
+            Note.a.minor,
+            Note.f.sharp.major,
+            Note.b.flat.minor,
+          ];
+
+          for (final key in testKeys) {
+            expect(
+              key,
+              Key.parse(key.toString(formatter: formatter), chain: chain),
+            );
+          }
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this Key', () {
+          expect(Note.c.major.toString(formatter: formatter), 'C-dur');
+          expect(Note.d.minor.toString(formatter: formatter), 'd-moll');
+          expect(Note.a.flat.major.toString(formatter: formatter), 'As-dur');
+          expect(Note.f.sharp.minor.toString(formatter: formatter), 'fis-moll');
+          expect(
+            Note.g.sharp.sharp.major.toString(formatter: formatter),
+            'Gisis-dur',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(formatter: formatter),
+            'eses-moll',
+          );
+        });
+      });
+    });
+
+    group('RomanceKeyNotation', () {
+      const formatter = RomanceKeyNotation();
+      const chain = [formatter];
+
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Key.parse('Do', chain: chain), throwsFormatException);
+          expect(
+            () => Key.parse('maggiore', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => Key.parse('Do maggiore minore', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Key.parse('', chain: chain), throwsFormatException);
+        });
+
+        test('parses source as a Key', () {
+          expect(Key.parse('Do maggiore', chain: chain), Note.c.major);
+          expect(Key.parse('Sol# maggiore', chain: chain), Note.g.sharp.major);
+          expect(Key.parse('Re maggiore', chain: chain), Note.d.major);
+          expect(Key.parse('Lab minore', chain: chain), Note.a.flat.minor);
+          expect(Key.parse('La minore', chain: chain), Note.a.minor);
+          expect(Key.parse('Re minore', chain: chain), Note.d.minor);
+        });
+
+        test('.toString() and .parse() are inverses', () {
+          final testKeys = [
+            Note.c.major,
+            Note.a.minor,
+            Note.f.sharp.major,
+            Note.b.flat.minor,
+          ];
+
+          for (final key in testKeys) {
+            expect(
+              key,
+              Key.parse(key.toString(formatter: formatter), chain: chain),
+            );
+          }
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this Key', () {
+          expect(Note.c.major.toString(formatter: formatter), 'Do maggiore');
+          expect(Note.d.minor.toString(formatter: formatter), 'Re minore');
+          expect(
+            Note.a.flat.major.toString(formatter: formatter),
+            'La♭ maggiore',
+          );
+          expect(
+            Note.f.sharp.minor.toString(formatter: formatter),
+            'Fa♯ minore',
+          );
+          expect(
+            Note.g.sharp.sharp.major.toString(formatter: formatter),
+            'Sol𝄪 maggiore',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(formatter: formatter),
+            'Mi𝄫 minore',
+          );
+        });
+      });
+    });
+
     group('.relative', () {
       test('returns the relative of this Key', () {
         expect(Note.c.major.relative, Note.a.minor);
@@ -123,79 +300,6 @@ void main() {
             Note.b.flat,
             Note.c,
           ]),
-        );
-      });
-    });
-
-    group('.toString()', () {
-      test('returns the English string representation of this Key', () {
-        expect(Note.c.major.toString(), 'C major');
-        expect(Note.d.minor.toString(), 'D minor');
-        expect(Note.a.flat.major.toString(), 'A♭ major');
-        expect(Note.f.sharp.minor.toString(), 'F♯ minor');
-        expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
-        expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
-      });
-
-      test('returns the German string representation of this Key', () {
-        expect(
-          Note.c.major.toString(formatter: const GermanKeyNotation()),
-          'C-dur',
-        );
-        expect(
-          Note.d.minor.toString(formatter: const GermanKeyNotation()),
-          'd-moll',
-        );
-        expect(
-          Note.a.flat.major.toString(formatter: const GermanKeyNotation()),
-          'As-dur',
-        );
-        expect(
-          Note.f.sharp.minor.toString(formatter: const GermanKeyNotation()),
-          'fis-moll',
-        );
-        expect(
-          Note.g.sharp.sharp.major.toString(
-            formatter: const GermanKeyNotation(),
-          ),
-          'Gisis-dur',
-        );
-        expect(
-          Note.e.flat.flat.minor.toString(
-            formatter: const GermanKeyNotation(),
-          ),
-          'eses-moll',
-        );
-      });
-
-      test('returns the Romance string representation of this Key', () {
-        expect(
-          Note.c.major.toString(formatter: const RomanceKeyNotation()),
-          'Do maggiore',
-        );
-        expect(
-          Note.d.minor.toString(formatter: const RomanceKeyNotation()),
-          'Re minore',
-        );
-        expect(
-          Note.a.flat.major.toString(formatter: const RomanceKeyNotation()),
-          'La♭ maggiore',
-        );
-        expect(
-          Note.f.sharp.minor.toString(formatter: const RomanceKeyNotation()),
-          'Fa♯ minore',
-        );
-        expect(
-          Note.g.sharp.sharp.major.toString(
-            formatter: const RomanceKeyNotation(),
-          ),
-          'Sol𝄪 maggiore',
-        );
-        expect(
-          Note.e.flat.flat.minor.toString(
-            formatter: const RomanceKeyNotation(),
-          ),
-          'Mi𝄫 minore',
         );
       });
     });

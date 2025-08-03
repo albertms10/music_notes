@@ -69,10 +69,14 @@ final class Note extends Scalable<Note>
   /// Note.parse('c') == Note.c
   /// Note.parse('z') // throws a FormatException
   /// ```
-  factory Note.parse(String source) => Note(
-    BaseNote.parse(source[0]),
-    Accidental.parse(source.length > 1 ? source.substring(1) : ''),
-  );
+  factory Note.parse(
+    String source, {
+    List<Parser<Note>> chain = const [
+      EnglishNoteNotation(),
+      GermanNoteNotation(),
+      RomanceNoteNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
@@ -473,7 +477,16 @@ final class EnglishNoteNotation extends NotationSystem<Note> {
 
   @override
   Note parse(String source) {
-    throw UnimplementedError();
+    if (source.isEmpty) throw FormatException('Invalid Note', source);
+
+    // First character is the base note
+    final baseNote = baseNoteNotation.parse(source[0]);
+
+    // Remaining characters are the accidental (if any)
+    final accidentalSource = source.length > 1 ? source.substring(1) : '';
+    final accidental = accidentalNotation.parse(accidentalSource);
+
+    return Note(baseNote, accidental);
   }
 }
 
@@ -509,7 +522,32 @@ final class GermanNoteNotation extends NotationSystem<Note> {
 
   @override
   Note parse(String source) {
-    throw UnimplementedError();
+    if (source.isEmpty) throw FormatException('Invalid Note', source);
+    if (source.toLowerCase() == 'b') {
+      return const Note(BaseNote.b, Accidental.flat);
+    }
+
+    // For A and E with flats, the 'es' suffix is shortened to 's'
+    if (source.length > 1) {
+      final firstChar = source[0];
+      if ((firstChar == 'A' ||
+              firstChar == 'a' ||
+              firstChar == 'E' ||
+              firstChar == 'e') &&
+          source.substring(1).startsWith('s') &&
+          !source.substring(1).startsWith('es')) {
+        final baseNote = baseNoteNotation.parse(firstChar);
+        final accidental = accidentalNotation.parse('e${source.substring(1)}');
+        return Note(baseNote, accidental);
+      }
+    }
+
+    // Standard parsing: first character is base note, rest is accidental
+    final baseNote = baseNoteNotation.parse(source[0]);
+    final accidentalSource = source.length > 1 ? source.substring(1) : '';
+    final accidental = accidentalNotation.parse(accidentalSource);
+
+    return Note(baseNote, accidental);
   }
 }
 
@@ -542,7 +580,29 @@ final class RomanceNoteNotation extends NotationSystem<Note> {
 
   @override
   Note parse(String source) {
-    throw UnimplementedError();
+    if (source.isEmpty) throw FormatException('Invalid Note', source);
+
+    // Find where the base note ends and accidental begins
+    // Romance base notes can be 2-3 characters
+    var baseNoteStr = '';
+    var accidentalStr = '';
+
+    const baseNotes = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'];
+
+    for (final baseNoteOption in baseNotes) {
+      if (source.toLowerCase().startsWith(baseNoteOption.toLowerCase())) {
+        baseNoteStr = source.substring(0, baseNoteOption.length);
+        accidentalStr = source.substring(baseNoteOption.length);
+        break;
+      }
+    }
+
+    if (baseNoteStr.isEmpty) throw FormatException('Invalid Note', source);
+
+    final baseNote = baseNoteNotation.parse(baseNoteStr);
+    final accidental = accidentalNotation.parse(accidentalStr);
+
+    return Note(baseNote, accidental);
   }
 }
 
