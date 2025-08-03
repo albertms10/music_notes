@@ -33,13 +33,13 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
 }
 
 /// An abstract representation of a formatter for [T].
-abstract class Formatter<T> {
+abstract interface class Formatter<T> {
   /// Formats this [T].
   String format(T value);
 }
 
 /// An abstract representation of a parser for [T].
-abstract class Parser<T> {
+abstract interface class Parser<T> {
   /// Whether [source] can be parsed with [parse].
   bool matches(String source) => true;
 
@@ -54,6 +54,6 @@ extension ParserChain<T> on List<Parser<T>> {
     for (final parser in this) {
       if (parser.matches(source)) return parser.parse(source);
     }
-    throw FormatException('Invalid $T', source);
+    throw FormatException('End of parser chain: invalid $T', source);
   }
 }
