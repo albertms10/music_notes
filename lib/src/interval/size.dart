@@ -2,8 +2,8 @@ import 'package:collection/collection.dart' show IterableExtension, minBy;
 import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
-import '../music.dart';
 import '../notation_system.dart';
+import '../tuning/equal_temperament.dart';
 import 'interval.dart';
 import 'quality.dart';
 

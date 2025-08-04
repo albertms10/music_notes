@@ -7,7 +7,6 @@ import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/size.dart';
-import '../music.dart';
 import '../notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';

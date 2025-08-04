@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:meta/meta.dart' show immutable;
 
 import '../interval/interval.dart';
-import '../music.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
+import 'equal_temperament.dart';
 import 'tuning_fork.dart';
 import 'tuning_system.dart';
 

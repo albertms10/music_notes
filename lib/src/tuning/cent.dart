@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:meta/meta.dart' show redeclare;
 
 import '../interval/interval.dart';
-import '../music.dart';
+import 'equal_temperament.dart';
 import 'tuning_system.dart';
 
 /// See [Cent (Wikipedia)](https://en.wikipedia.org/wiki/Cent_(music)) and
