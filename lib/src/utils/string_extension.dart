@@ -10,13 +10,17 @@ extension StringExtension on String {
   /// ```
   bool get isUpperCase => toUpperCase() == this;
 
-  /// Whether this [String] is lower-cased.
+  /// Converts the first letter of the string to uppercase and the rest to
+  /// lowercase.
   ///
   /// Example:
   /// ```dart
-  /// 'xyz'.isLowerCase == true
-  /// 'ABC'.isLowerCase == false
-  /// 'John'.isLowerCase == false
+  /// 'hello world'.toUpperFirst() == 'Hello world'
+  /// 'HELLO WORLD'.toUpperFirst() == 'Hello world'
   /// ```
-  bool get isLowerCase => toLowerCase() == this;
+  String toUpperFirst() {
+    if (isEmpty) return this;
+
+    return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
+  }
 }

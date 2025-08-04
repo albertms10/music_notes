@@ -106,19 +106,19 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
   /// Creates a new [GermanTonalModeNotation].
   const GermanTonalModeNotation();
 
-  static const _major = 'Dur';
-  static const _minor = 'Moll';
+  static const _major = 'dur';
+  static const _minor = 'moll';
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
     TonalMode.major => _major,
     TonalMode.minor => _minor,
-  };
+  }.toUpperFirst();
 
   @override
   TonalMode parse(String source) => switch (source.toLowerCase()) {
-    'dur' => TonalMode.major,
-    'moll' => TonalMode.minor,
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
     _ => throw FormatException('Invalid TonalMode', source),
   };
 }

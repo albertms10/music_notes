@@ -243,9 +243,7 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   @override
   Key parse(String source) {
     final parts = source.trim().split(' ');
-    if (parts.length != 2) {
-      throw FormatException('Invalid Key', source);
-    }
+    if (parts.length != 2) throw FormatException('Invalid Key', source);
 
     final note = noteNotation.parse(parts[0]);
     final mode = tonalModeNotation.parse(parts[1]);
