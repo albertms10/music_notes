@@ -3,7 +3,7 @@ import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
 import '../formatter.dart';
-import '../music.dart';
+import '../tuning/equal_temperament.dart';
 import 'interval.dart';
 import 'quality.dart';
 

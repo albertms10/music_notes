@@ -14,7 +14,6 @@ export 'src/interval/size.dart';
 export 'src/key/key.dart';
 export 'src/key/key_signature.dart';
 export 'src/key/mode.dart';
-export 'src/music.dart';
 export 'src/note/accidental.dart';
 export 'src/note/base_note.dart';
 export 'src/note/closest_pitch.dart';
