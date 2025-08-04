@@ -5,8 +5,8 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../interval/interval.dart';
 import '../interval/interval_class.dart';
-import '../music.dart';
 import '../scalable.dart';
+import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
 import 'base_note.dart';
 import 'note.dart';

@@ -8,8 +8,8 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
-import '../music.dart';
 import '../note/pitch_class.dart';
+import '../tuning/equal_temperament.dart';
 import 'interval.dart';
 import 'quality.dart';
 import 'size.dart';

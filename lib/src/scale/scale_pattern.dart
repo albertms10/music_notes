@@ -4,9 +4,9 @@ import 'package:meta/meta.dart' show immutable;
 import '../enharmonic.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
-import '../music.dart';
 import '../note/pitch_class.dart';
 import '../scalable.dart';
+import '../tuning/equal_temperament.dart';
 import 'scale.dart';
 import 'scale_degree.dart';
 
