@@ -87,18 +87,28 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
   /// Creates a new [EnglishTonalModeNotation].
   const EnglishTonalModeNotation();
 
-  @override
-  String format(TonalMode tonalMode) => tonalMode.name;
+  static const _major = 'major';
+  static const _minor = 'minor';
 
   @override
-  TonalMode parse(String source) {
-    try {
-      return TonalMode.values.byName(source.toLowerCase());
-      // ignore: avoid_catching_errors - succinctness
-    } on ArgumentError {
-      throw FormatException('Invalid TonalMode', source);
-    }
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
   }
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  };
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
 }
 
 /// The German notation system for [TonalMode
@@ -108,6 +118,13 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
 
   static const _major = 'dur';
   static const _minor = 'moll';
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
+  }
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
@@ -130,6 +147,13 @@ final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
 
   static const _major = 'maggiore';
   static const _minor = 'minore';
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
+  }
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
