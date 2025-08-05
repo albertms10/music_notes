@@ -185,21 +185,17 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   String format(BaseNote baseNote) => baseNote.name.toUpperCase();
 
   @override
-  BaseNote parse(String source) {
-    if (source.length != 1) {
-      throw FormatException('Invalid BaseNote', source);
+  bool matches(String source) {
+    if (source.toLowerCase()
+        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'b') {
+      return true;
     }
 
-    try {
-      return BaseNote.values.byName(source.toLowerCase());
-      // ignore: avoid_catching_errors for succinctness
-    } on ArgumentError catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        FormatException('Invalid BaseNote', source, 0),
-        stackTrace,
-      );
-    }
+    return false;
   }
+
+  @override
+  BaseNote parse(String source) => BaseNote.values.byName(source.toLowerCase());
 }
 
 /// The German notation system for [BaseNote
@@ -214,23 +210,27 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   };
 
   @override
-  BaseNote parse(String source) {
-    if (source.length != 1) {
-      throw FormatException('Invalid BaseNote', source);
+  bool matches(String source) {
+    if (source.toLowerCase()
+        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'h') {
+      return true;
     }
 
-    return switch (source.toUpperCase()) {
-      'C' => BaseNote.c,
-      'D' => BaseNote.d,
-      'E' => BaseNote.e,
-      'F' => BaseNote.f,
-      'G' => BaseNote.g,
-      'A' => BaseNote.a,
-      'H' => BaseNote.b,
-      'B' => BaseNote.b,
-      _ => throw FormatException('Invalid BaseNote', source),
-    };
+    return false;
   }
+
+  @override
+  BaseNote parse(String source) => switch (source.toLowerCase()) {
+    'c' => BaseNote.c,
+    'd' => BaseNote.d,
+    'e' => BaseNote.e,
+    'f' => BaseNote.f,
+    'g' => BaseNote.g,
+    'a' => BaseNote.a,
+    'h' => BaseNote.b,
+    'b' => BaseNote.b,
+    _ => throw FormatException('Invalid BaseNote', source),
+  };
 }
 
 /// The Romance notation system for [BaseNote
@@ -248,6 +248,16 @@ final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
     BaseNote.a => 'La',
     BaseNote.b => 'Si',
   };
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase()
+        case 'do' || 're' || 'mi' || 'fa' || 'sol' || 'la' || 'si') {
+      return true;
+    }
+
+    return false;
+  }
 
   @override
   BaseNote parse(String source) => switch (source.toLowerCase()) {

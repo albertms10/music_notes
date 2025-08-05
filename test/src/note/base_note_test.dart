@@ -9,7 +9,10 @@ void main() {
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
           expect(() => BaseNote.parse('x'), throwsFormatException);
-          expect(() => BaseNote.parse('H'), throwsFormatException);
+          expect(
+            () => BaseNote.parse('H', chain: [const EnglishBaseNoteNotation()]),
+            throwsFormatException,
+          );
           expect(() => BaseNote.parse('X'), throwsFormatException);
           expect(() => BaseNote.parse(''), throwsFormatException);
           expect(() => BaseNote.parse('AB'), throwsFormatException);
@@ -52,6 +55,10 @@ void main() {
           );
           expect(() => BaseNote.parse('', chain: chain), throwsFormatException);
           expect(
+            () => BaseNote.parse('B', chain: chain),
+            throwsFormatException,
+          );
+          expect(
             () => BaseNote.parse('AH', chain: chain),
             throwsFormatException,
           );
@@ -59,7 +66,6 @@ void main() {
 
         test('parses source as a BaseNote', () {
           expect(BaseNote.parse('A', chain: chain), BaseNote.a);
-          expect(BaseNote.parse('B', chain: chain), BaseNote.b);
           expect(BaseNote.parse('C', chain: chain), BaseNote.c);
           expect(BaseNote.parse('D', chain: chain), BaseNote.d);
           expect(BaseNote.parse('E', chain: chain), BaseNote.e);

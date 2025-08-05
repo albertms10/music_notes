@@ -448,7 +448,7 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The English notation system for [Note
+/// The English notation system for [Note].
 final class EnglishNoteNotation extends NotationSystem<Note> {
   /// The [EnglishBaseNoteNotation] used to format the [Note.baseNote].
   final EnglishBaseNoteNotation baseNoteNotation;
@@ -481,6 +481,9 @@ final class EnglishNoteNotation extends NotationSystem<Note> {
   @override
   Note parse(String source) {
     // First character is the base note
+    if (!baseNoteNotation.matches(source[0])) {
+      throw FormatException('Invalid BaseNote', source[0], 0);
+    }
     final baseNote = baseNoteNotation.parse(source[0]);
 
     // Remaining characters are the accidental (if any)
