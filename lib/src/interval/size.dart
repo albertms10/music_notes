@@ -2,7 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension, minBy;
 import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
-import '../formatter.dart';
+import '../notation_system.dart';
 import '../tuning/equal_temperament.dart';
 import 'interval.dart';
 import 'quality.dart';
@@ -277,8 +277,8 @@ extension type const Size._(int size) implements int {
   }
 
   /// This [Size] formatted as a string.
-  String format({SizeFormatter system = const SizeFormatter()}) =>
-      system.format(this);
+  String format({Formatter<Size> formatter = const SizeNotation()}) =>
+      formatter.format(this);
 
   /// The negation of this [Size].
   ///
@@ -375,10 +375,10 @@ extension type const ImperfectSize._(int size) implements Size {
   ImperfectSize operator -() => ImperfectSize(-size);
 }
 
-/// A [Size] formatter.
-class SizeFormatter extends Formatter<Size> {
-  /// Creates a new [SizeFormatter].
-  const SizeFormatter();
+/// A notation system for [Size].
+final class SizeNotation extends NotationSystem<Size> {
+  /// Creates a new [SizeNotation].
+  const SizeNotation();
 
   @override
   String format(Size size) => '$size';

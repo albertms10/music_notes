@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../notation_system.dart';
 import 'note.dart';
 
 /// An accidental.
@@ -41,36 +42,6 @@ final class Accidental implements Comparable<Accidental> {
   /// A triple flat (♭𝄫) [Accidental].
   static const tripleFlat = Accidental(-3);
 
-  static const _doubleSharpSymbol = '𝄪';
-  static const _doubleSharpSymbolAlt = 'x';
-  static const _sharpSymbol = '♯';
-  static const _sharpSymbolAlt = '#';
-  static const _naturalSymbol = '♮';
-  static const _flatSymbol = '♭';
-  static const _flatSymbolAlt = 'b';
-  static const _doubleFlatSymbol = '𝄫';
-
-  /// The list of valid symbols for an [Accidental].
-  static const symbols = [
-    _doubleSharpSymbol,
-    _doubleSharpSymbolAlt,
-    _sharpSymbol,
-    _sharpSymbolAlt,
-    _naturalSymbol,
-    _flatSymbol,
-    _flatSymbolAlt,
-    _doubleFlatSymbol,
-  ];
-
-  static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
-    _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
-    _sharpSymbol || _sharpSymbolAlt => 1,
-    _naturalSymbol || '' => 0,
-    _flatSymbol || _flatSymbolAlt => -1,
-    _doubleFlatSymbol => -2,
-    _ => null,
-  };
-
   /// Parse [source] as an [Accidental] and return its value.
   ///
   /// If the [source] string does not contain a valid [Accidental], a
@@ -82,19 +53,13 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.parse('x') == Accidental.doubleSharp
   /// Accidental.parse('z') // throws a FormatException
   /// ```
-  factory Accidental.parse(String source) {
-    // Safely split UTF-16 code units using `runes`.
-    final semitones = source.runes.fold(0, (acc, rune) {
-      final symbolSemitones = _semitonesFromSymbol(String.fromCharCode(rune));
-      if (symbolSemitones == null) {
-        throw FormatException('Invalid Accidental', source);
-      }
-
-      return acc + symbolSemitones;
-    });
-
-    return Accidental(semitones);
-  }
+  factory Accidental.parse(
+    String source, {
+    List<Parser<Accidental>> chain = const [
+      SymbolAccidentalNotation(),
+      GermanAccidentalNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
   ///
@@ -148,37 +113,6 @@ final class Accidental implements Comparable<Accidental> {
     _ => '×${semitones.abs()} flat',
   };
 
-  /// The symbol of this [Accidental].
-  ///
-  /// If the [Accidental] represents a natural note (0 semitones), returns the
-  /// natural symbol (♮).
-  ///
-  /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
-  /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
-  /// above or below the natural note.
-  ///
-  /// Example:
-  /// ```dart
-  /// Accidental.flat.symbol == '♭'
-  /// Accidental.natural.symbol == '♮'
-  /// Accidental.doubleFlat.symbol == '𝄫'
-  /// Accidental.tripleSharp.symbol == '♯𝄪'
-  /// ```
-  String get symbol {
-    if (semitones == 0) return _naturalSymbol;
-
-    final accidentalSymbol = semitones.isNegative ? _flatSymbol : _sharpSymbol;
-    final doubleAccidentalSymbol = semitones.isNegative
-        ? _doubleFlatSymbol
-        : _doubleSharpSymbol;
-
-    final absSemitones = semitones.abs();
-    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
-    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
-
-    return singleAccidentals + doubleAccidentals;
-  }
-
   /// This [Accidental] incremented by [semitones].
   ///
   /// Example:
@@ -190,13 +124,11 @@ final class Accidental implements Comparable<Accidental> {
   Accidental incrementBy(int semitones) =>
       Accidental(this.semitones.incrementBy(semitones));
 
-  /// The string representation of this [Accidental] based on [system].
-  ///
-  /// See [NoteNotation] for all system implementations.
+  /// The string representation of this [Accidental] based on [formatter].
   @override
   String toString({
-    NoteNotation system = const EnglishNoteNotation(showNatural: true),
-  }) => system.accidental(this);
+    Formatter<Accidental> formatter = const SymbolAccidentalNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -229,4 +161,127 @@ final class Accidental implements Comparable<Accidental> {
 
   @override
   int compareTo(Accidental other) => semitones.compareTo(other.semitones);
+}
+
+/// The symbol notation system for [Accidental].
+///
+/// If the [Accidental] represents a natural note (0 semitones), returns the
+/// natural symbol (♮) if [showNatural] is true, an empty string otherwise.
+///
+/// For other accidentals, returns a combination of sharp (♯), flat (♭), or
+/// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
+/// above or below the natural note.
+final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
+  /// Whether a natural [Note] should be represented with the
+  /// [Accidental.natural] symbol.
+  final bool showNatural;
+
+  /// Creates a new [SymbolAccidentalNotation].
+  const SymbolAccidentalNotation({this.showNatural = true});
+
+  static const _doubleSharpSymbol = '𝄪';
+  static const _doubleSharpSymbolAlt = 'x';
+  static const _sharpSymbol = '♯';
+  static const _sharpSymbolAlt = '#';
+  static const _naturalSymbol = '♮';
+  static const _flatSymbol = '♭';
+  static const _flatSymbolAlt = 'b';
+  static const _doubleFlatSymbol = '𝄫';
+
+  /// The list of valid symbols for an [Accidental].
+  static const symbols = [
+    _doubleSharpSymbol,
+    _doubleSharpSymbolAlt,
+    _sharpSymbol,
+    _sharpSymbolAlt,
+    _naturalSymbol,
+    _flatSymbol,
+    _flatSymbolAlt,
+    _doubleFlatSymbol,
+  ];
+
+  static final _regExp = RegExp('^(?:${symbols.join('|')})*\$');
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  String format(Accidental accidental) {
+    if (!showNatural && accidental.isNatural) return '';
+    if (accidental.semitones == 0) return _naturalSymbol;
+
+    final accidentalSymbol = accidental.semitones.isNegative
+        ? _flatSymbol
+        : _sharpSymbol;
+    final doubleAccidentalSymbol = accidental.semitones.isNegative
+        ? _doubleFlatSymbol
+        : _doubleSharpSymbol;
+
+    final absSemitones = accidental.semitones.abs();
+    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
+    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
+
+    return singleAccidentals + doubleAccidentals;
+  }
+
+  static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
+    _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
+    _sharpSymbol || _sharpSymbolAlt => 1,
+    _naturalSymbol || '' => 0,
+    _flatSymbol || _flatSymbolAlt => -1,
+    _doubleFlatSymbol => -2,
+    _ => null,
+  };
+
+  @override
+  Accidental parse(String source) {
+    // Safely split UTF-16 code units using `runes`.
+    final semitones = source.runes.fold(0, (acc, rune) {
+      final symbolSemitones = _semitonesFromSymbol(String.fromCharCode(rune));
+      if (symbolSemitones == null) {
+        throw FormatException('Invalid Accidental', source);
+      }
+
+      return acc + symbolSemitones;
+    });
+
+    return Accidental(semitones);
+  }
+}
+
+/// The German notation system for [Accidental].
+final class GermanAccidentalNotation extends NotationSystem<Accidental> {
+  /// Creates a new [GermanAccidentalNotation].
+  const GermanAccidentalNotation();
+
+  static const _flat = 'es';
+  static const _sharp = 'is';
+
+  static final _regExp = RegExp('^(?:($_flat)*|($_sharp))*\$');
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  String format(Accidental accidental) =>
+      (accidental.isFlat ? _flat : _sharp) * accidental.semitones.abs();
+
+  @override
+  Accidental parse(String source) {
+    if (source.isEmpty) return Accidental.natural;
+
+    final flatCount = source.split(_flat).length - 1;
+    final sharpCount = source.split(_sharp).length - 1;
+
+    if (flatCount > 0 && sharpCount > 0) {
+      throw FormatException(
+        'Invalid Accidental: cannot mix flats and sharps',
+        source,
+      );
+    }
+    if (flatCount > 0) return Accidental(-flatCount);
+    if (sharpCount > 0) return Accidental(sharpCount);
+
+    throw FormatException('Invalid Accidental', source);
+  }
 }

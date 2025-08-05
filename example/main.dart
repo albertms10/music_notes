@@ -66,17 +66,17 @@ void main() {
 
   Note.d.flat
     ..toString() // D♭
-    ..toString(system: NoteNotation.romance) // Re♭
-    ..toString(system: NoteNotation.german); // Des
+    ..toString(formatter: const RomanceNoteNotation()) // Re♭
+    ..toString(formatter: const GermanNoteNotation()); // Des
 
   Note.b.flat.inOctave(-1).toString(); // B♭-1
-  Note.c.inOctave(6).toString(system: PitchNotation.helmholtz); // c‴
+  Note.c.inOctave(6).toString(formatter: PitchNotation.helmholtz); // c‴
 
   PitchClass.c.toString(); // {C}
   PitchClass.dSharp.toString(); // {D♯|E♭}
 
-  PitchClass.f.toString(system: PitchClassNotation.integer); // 5
-  PitchClass.aSharp.toString(system: PitchClassNotation.integer); // t
+  PitchClass.f.toString(formatter: PitchClassNotation.integer); // 5
+  PitchClass.aSharp.toString(formatter: PitchClassNotation.integer); // t
 
   // Intervals
   const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
@@ -183,8 +183,8 @@ void main() {
   Note.c.sharp.major.parallel; // C♯ minor
 
   Note.d.flat.major.toString(); // D♭ major
-  Note.c.major.toString(system: NoteNotation.romance); // Do maggiore
-  Note.e.flat.minor.toString(system: NoteNotation.german); // es-moll
+  Note.c.major.toString(formatter: const RomanceKeyNotation()); // Do maggiore
+  Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
 
   // Key signatures
   KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)

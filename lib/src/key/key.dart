@@ -2,6 +2,7 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
+import '../notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
 import '../scale/scale.dart';
@@ -27,6 +28,26 @@ final class Key implements Comparable<Key> {
 
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
+
+  /// Parse [source] as a [Key] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Key], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Key.parse('C major') == Note.c.major
+  /// Key.parse('f# minor') == Note.f.sharp.minor
+  /// Key.parse('z') // throws a FormatException
+  /// ```
+  factory Key.parse(
+    String source, {
+    List<Parser<Key>> chain = const [
+      EnglishKeyNotation(),
+      GermanKeyNotation(),
+      RomanceKeyNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///
@@ -88,24 +109,27 @@ final class Key implements Comparable<Key> {
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
-  /// The string representation of this [Key] based on [system].
-  ///
-  /// See [NoteNotation] for all system implementations.
+  /// The string representation of this [Key] based on [formatter].
   ///
   /// Example:
   /// ```dart
   /// Note.c.minor.toString() == 'C minor'
   /// Note.e.flat.major.toString() == 'E♭ major'
   ///
-  /// Note.c.major.toString(system: NoteNotation.romance) == 'Do maggiore'
-  /// Note.a.minor.toString(system: NoteNotation.romance) == 'La minore'
+  /// Note.c.major.toString(formatter: const RomanceKeyNotation())
+  ///   == 'Do maggiore'
+  /// Note.a.minor.toString(formatter: const RomanceKeyNotation())
+  ///   == 'La minore'
   ///
-  /// Note.e.flat.major.toString(system: NoteNotation.german) == 'Es-dur'
-  /// Note.g.sharp.minor.toString(system: NoteNotation.german) == 'gis-moll'
+  /// Note.e.flat.major.toString(formatter: const GermanKeyNotation())
+  ///   == 'Es-dur'
+  /// Note.g.sharp.minor.toString(formatter: const GermanKeyNotation())
+  ///   == 'gis-moll'
   /// ```
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.key(this);
+  String toString({
+    Formatter<Key> formatter = const EnglishKeyNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -119,4 +143,111 @@ final class Key implements Comparable<Key> {
     () => note.compareTo(other.note),
     () => mode.name.compareTo(other.mode.name),
   ]);
+}
+
+/// The English notation system for [Key].
+final class EnglishKeyNotation extends NotationSystem<Key> {
+  /// The [EnglishNoteNotation] used to format the [Key.note].
+  final EnglishNoteNotation noteNotation;
+
+  /// The [EnglishTonalModeNotation] used to format the [Key.mode].
+  final EnglishTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [EnglishKeyNotation].
+  const EnglishKeyNotation({
+    this.noteNotation = const EnglishNoteNotation(),
+    this.tonalModeNotation = const EnglishTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation);
+
+    return '$note $mode';
+  }
+
+  @override
+  Key parse(String source) {
+    final parts = source.trim().split(' ');
+    if (parts.length != 2) {
+      throw FormatException('Invalid Key', source);
+    }
+
+    final note = noteNotation.parse(parts[0]);
+    final mode = tonalModeNotation.parse(parts[1]);
+
+    return Key(note, mode);
+  }
+}
+
+/// The German notation system for [Key].
+final class GermanKeyNotation extends NotationSystem<Key> {
+  /// The [GermanNoteNotation] used to format the [Key.note].
+  final GermanNoteNotation noteNotation;
+
+  /// The [GermanTonalModeNotation] used to format the [Key.mode].
+  final GermanTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [GermanKeyNotation].
+  const GermanKeyNotation({
+    this.noteNotation = const GermanNoteNotation(),
+    this.tonalModeNotation = const GermanTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation).toLowerCase();
+    final casedNote = switch (key.mode) {
+      TonalMode.major => note,
+      TonalMode.minor => note.toLowerCase(),
+    };
+
+    return '$casedNote-$mode';
+  }
+
+  @override
+  Key parse(String source) {
+    final parts = source.trim().split('-');
+    if (parts.length != 2) throw FormatException('Invalid Key', source);
+
+    final [note, mode] = parts;
+
+    return Key(noteNotation.parse(note), tonalModeNotation.parse(mode));
+  }
+}
+
+/// The Romance notation system for [Key].
+final class RomanceKeyNotation extends NotationSystem<Key> {
+  /// The [RomanceNoteNotation] used to format the [Key.note].
+  final RomanceNoteNotation noteNotation;
+
+  /// The [RomanceTonalModeNotation] used to format the [Key.mode].
+  final RomanceTonalModeNotation tonalModeNotation;
+
+  /// Creates a new [RomanceKeyNotation].
+  const RomanceKeyNotation({
+    this.noteNotation = const RomanceNoteNotation(),
+    this.tonalModeNotation = const RomanceTonalModeNotation(),
+  });
+
+  @override
+  String format(Key key) {
+    final note = key.note.toString(formatter: noteNotation);
+    final mode = key.mode.toString(formatter: tonalModeNotation);
+
+    return '$note $mode';
+  }
+
+  @override
+  Key parse(String source) {
+    final parts = source.trim().split(' ');
+    if (parts.length != 2) throw FormatException('Invalid Key', source);
+
+    final note = noteNotation.parse(parts[0]);
+    final mode = tonalModeNotation.parse(parts[1]);
+
+    return Key(note, mode);
+  }
 }

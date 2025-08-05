@@ -14,7 +14,7 @@ import 'tuning_system.dart';
 /// Number of chromatic octave divisions in [EqualTemperament.edo12].
 const int chromaticDivisions = 12;
 
-/// A representation of an equal temperament tuning system.
+/// A representation of an equal temperament tuning formatter.
 ///
 /// See [Equal temperament](https://en.wikipedia.org/wiki/Equal_temperament).
 ///

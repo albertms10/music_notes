@@ -2,6 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:music_notes/utils.dart';
 
 import '../interval/size.dart';
+import '../notation_system.dart';
 import '../tuning/equal_temperament.dart';
 import 'note.dart';
 
@@ -73,19 +74,14 @@ enum BaseNote implements Comparable<BaseNote> {
   /// BaseNote.parse('a') == BaseNote.a
   /// BaseNote.parse('z') // throws a FormatException
   /// ```
-  factory BaseNote.parse(String source) {
-    try {
-      return values.byName(source.toLowerCase());
-    }
-    // TODO(albertms10): find a better way to catch an invalid BaseNote.
-    // ignore: avoid_catching_errors
-    on ArgumentError catch (e, stackTrace) {
-      Error.throwWithStackTrace(
-        FormatException('Invalid BaseNote', source, 0),
-        stackTrace,
-      );
-    }
-  }
+  factory BaseNote.parse(
+    String source, {
+    List<Parser<BaseNote>> chain = const [
+      EnglishBaseNoteNotation(),
+      GermanBaseNoteNotation(),
+      RomanceBaseNoteNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// The ordinal number of this [BaseNote].
   ///
@@ -170,13 +166,98 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   BaseNote get previous => transposeBySize(-Size.second);
 
-  /// The string representation of this [BaseNote] based on [system].
-  ///
-  /// See [NoteNotation] for all system implementations.
+  /// The string representation of this [BaseNote] based on [formatter].
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.baseNote(this);
+  String toString({
+    Formatter<BaseNote> formatter = const EnglishBaseNoteNotation(),
+  }) => formatter.format(this);
 
   @override
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
+}
+
+/// The English notation system for [BaseNote
+final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [EnglishBaseNoteNotation].
+  const EnglishBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => baseNote.name.toUpperCase();
+
+  @override
+  BaseNote parse(String source) {
+    if (source.length != 1) {
+      throw FormatException('Invalid BaseNote', source);
+    }
+
+    try {
+      return BaseNote.values.byName(source.toLowerCase());
+      // ignore: avoid_catching_errors for succinctness
+    } on ArgumentError catch (e, stackTrace) {
+      Error.throwWithStackTrace(
+        FormatException('Invalid BaseNote', source, 0),
+        stackTrace,
+      );
+    }
+  }
+}
+
+/// The German notation system for [BaseNote
+final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [GermanBaseNoteNotation].
+  const GermanBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => switch (baseNote) {
+    BaseNote.b => 'H',
+    BaseNote(:final name) => name.toUpperCase(),
+  };
+
+  @override
+  BaseNote parse(String source) {
+    if (source.length != 1) {
+      throw FormatException('Invalid BaseNote', source);
+    }
+
+    return switch (source.toUpperCase()) {
+      'C' => BaseNote.c,
+      'D' => BaseNote.d,
+      'E' => BaseNote.e,
+      'F' => BaseNote.f,
+      'G' => BaseNote.g,
+      'A' => BaseNote.a,
+      'H' => BaseNote.b,
+      'B' => BaseNote.b,
+      _ => throw FormatException('Invalid BaseNote', source),
+    };
+  }
+}
+
+/// The Romance notation system for [BaseNote
+final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
+  /// Creates a new [RomanceBaseNoteNotation].
+  const RomanceBaseNoteNotation();
+
+  @override
+  String format(BaseNote baseNote) => switch (baseNote) {
+    BaseNote.c => 'Do',
+    BaseNote.d => 'Re',
+    BaseNote.e => 'Mi',
+    BaseNote.f => 'Fa',
+    BaseNote.g => 'Sol',
+    BaseNote.a => 'La',
+    BaseNote.b => 'Si',
+  };
+
+  @override
+  BaseNote parse(String source) => switch (source.toLowerCase()) {
+    'do' => BaseNote.c,
+    're' => BaseNote.d,
+    'mi' => BaseNote.e,
+    'fa' => BaseNote.f,
+    'sol' => BaseNote.g,
+    'la' => BaseNote.a,
+    'si' => BaseNote.b,
+    _ => throw FormatException('Invalid BaseNote', source),
+  };
 }

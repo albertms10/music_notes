@@ -13,13 +13,14 @@ void main() {
       });
     });
 
-    group('.isLowerCase', () {
-      test('returns whether this String is lower-cased', () {
-        expect('A'.isLowerCase, isFalse);
-        expect('ABC'.isLowerCase, isFalse);
-        expect('a'.isLowerCase, isTrue);
-        expect('abc'.isLowerCase, isTrue);
-        expect('Abc'.isLowerCase, isFalse);
+    group('.toUpperFirst()', () {
+      test('converts the first letter of the string to uppercase', () {
+        expect(''.toUpperFirst(), '');
+        expect('a'.toUpperFirst(), 'A');
+        expect('?'.toUpperFirst(), '?');
+        expect('hello world'.toUpperFirst(), 'Hello world');
+        expect('HELLO WORLD'.toUpperFirst(), 'Hello world');
+        expect('hELLO wORLD'.toUpperFirst(), 'Hello world');
       });
     });
   });

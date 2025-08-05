@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../note/note.dart';
+import '../notation_system.dart';
 import '../scale/scale_pattern.dart';
 import 'key.dart';
 
@@ -50,6 +50,16 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
+  /// Parse [source] as a [TonalMode] and return its value.
+  factory TonalMode.parse(
+    String source, {
+    List<Parser<TonalMode>> chain = const [
+      EnglishTonalModeNotation(),
+      GermanTonalModeNotation(),
+      RomanceTonalModeNotation(),
+    ],
+  }) => chain.parse(source);
+
   /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
@@ -62,15 +72,101 @@ enum TonalMode implements Mode {
     TonalMode.minor => TonalMode.major,
   };
 
-  /// The string representation of this [TonalMode] based on [system].
-  ///
-  /// See [NoteNotation] for all system implementations.
+  /// The string representation of this [TonalMode] based on [formatter].
   @override
-  String toString({NoteNotation system = NoteNotation.english}) =>
-      system.tonalMode(this);
+  String toString({
+    Formatter<TonalMode> formatter = const EnglishTonalModeNotation(),
+  }) => formatter.format(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);
+}
+
+/// The English notation system for [TonalMode].
+final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [EnglishTonalModeNotation].
+  const EnglishTonalModeNotation();
+
+  static const _major = 'major';
+  static const _minor = 'minor';
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
+  }
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  };
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
+}
+
+/// The German notation system for [TonalMode
+final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [GermanTonalModeNotation].
+  const GermanTonalModeNotation();
+
+  static const _major = 'dur';
+  static const _minor = 'moll';
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
+  }
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  }.toUpperFirst();
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
+}
+
+/// The Romance notation system for [TonalMode
+final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
+  /// Creates a new [RomanceTonalModeNotation].
+  const RomanceTonalModeNotation();
+
+  static const _major = 'maggiore';
+  static const _minor = 'minore';
+
+  @override
+  bool matches(String source) {
+    if (source.toLowerCase() case _major || _minor) return true;
+
+    return false;
+  }
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    TonalMode.major => _major,
+    TonalMode.minor => _minor,
+  };
+
+  @override
+  TonalMode parse(String source) => switch (source.toLowerCase()) {
+    _major => TonalMode.major,
+    _minor => TonalMode.minor,
+    _ => throw FormatException('Invalid TonalMode', source),
+  };
 }
 
 /// Modes of a modal system.
