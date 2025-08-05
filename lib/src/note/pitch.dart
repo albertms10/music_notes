@@ -63,7 +63,9 @@ final class Pitch extends Scalable<Pitch>
   factory Pitch.parse(
     String source, {
     List<Parser<Pitch>> chain = const [
-      ScientificPitchNotation(),
+      ScientificPitchNotation.english,
+      ScientificPitchNotation.german,
+      ScientificPitchNotation.romance,
       HelmholtzPitchNotation.english,
       HelmholtzPitchNotation.german,
       HelmholtzPitchNotation.romance,
@@ -461,7 +463,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   String toString({
-    Formatter<Pitch> formatter = const ScientificPitchNotation(),
+    Formatter<Pitch> formatter = ScientificPitchNotation.english,
   }) => formatter.format(this);
 
   /// Returns the [ClosestPitch] with [cents] added to this [Pitch].
@@ -532,6 +534,10 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
+
+    if (!noteNotation.matches(match[1]!)) {
+      throw FormatException('Invalid Note', match[1]);
+    }
 
     return Pitch(noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
   }
