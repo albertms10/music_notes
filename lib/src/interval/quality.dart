@@ -255,6 +255,9 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
   );
 
   @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
     < 0 => _diminishedSymbol * quality.semitones.abs(),
     0 => _perfectSymbol,
@@ -262,17 +265,11 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
   };
 
   @override
-  PerfectQuality parse(String source) {
-    if (!_regExp.hasMatch(source)) {
-      throw FormatException('Invalid PerfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      _diminishedSymbol => PerfectQuality(-source.length),
-      _perfectSymbol => PerfectQuality.perfect,
-      _ /* _augmentedSymbol */ => PerfectQuality(source.length),
-    };
-  }
+  PerfectQuality parse(String source) => switch (source[0]) {
+    _diminishedSymbol => PerfectQuality(-source.length),
+    _perfectSymbol => PerfectQuality.perfect,
+    _ /* _augmentedSymbol */ => PerfectQuality(source.length),
+  };
 }
 
 /// A notation system for [ImperfectQuality].
@@ -297,6 +294,9 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   );
 
   @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
     < 0 => _diminishedSymbol * quality.semitones.abs(),
     0 => _minorSymbol,
@@ -305,16 +305,10 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   };
 
   @override
-  ImperfectQuality parse(String source) {
-    if (!_regExp.hasMatch(source)) {
-      throw FormatException('Invalid ImperfectQuality', source);
-    }
-
-    return switch (source[0]) {
-      _diminishedSymbol => ImperfectQuality(-source.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
-      _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
-    };
-  }
+  ImperfectQuality parse(String source) => switch (source[0]) {
+    _diminishedSymbol => ImperfectQuality(-source.length),
+    _minorSymbol => ImperfectQuality.minor,
+    _majorSymbol => ImperfectQuality.major,
+    _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
+  };
 }

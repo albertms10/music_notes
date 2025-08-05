@@ -476,9 +476,10 @@ final class EnglishNoteNotation extends NotationSystem<Note> {
       note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  Note parse(String source) {
-    if (source.isEmpty) throw FormatException('Invalid Note', source);
+  bool matches(String source) => source.isNotEmpty;
 
+  @override
+  Note parse(String source) {
     // First character is the base note
     final baseNote = baseNoteNotation.parse(source[0]);
 

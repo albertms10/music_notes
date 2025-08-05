@@ -525,11 +525,14 @@ final class IntervalNotation extends NotationSystem<Interval> {
         '($quality${interval.simple.size.format(formatter: sizeNotation)})';
   }
 
-  static final _intervalRegExp = RegExp(r'(\w+?)(-?\d+)');
+  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
 
   @override
   Interval parse(String source) {
-    final match = _intervalRegExp.firstMatch(source);
+    final match = _regExp.firstMatch(source);
     if (match == null) throw FormatException('Invalid Interval', source);
 
     final size = sizeNotation.parse(match[2]!);
@@ -537,6 +540,10 @@ final class IntervalNotation extends NotationSystem<Interval> {
     final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation
         : imperfectQualityNotation;
+
+    if (!parser.matches(match[1]!)) {
+      throw FormatException('Invalid Quality', match[1], 0);
+    }
 
     return Interval._(size, parser.parse(match[1]!));
   }
