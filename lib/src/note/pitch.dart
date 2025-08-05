@@ -500,12 +500,28 @@ final class Pitch extends Scalable<Pitch>
 ///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
 final class ScientificPitchNotation extends NotationSystem<Pitch> {
+  /// The [NotationSystem] used to format the [Pitch.note].
+  final NotationSystem<Note> noteNotation;
+
   /// Creates a new [ScientificPitchNotation].
-  const ScientificPitchNotation();
+  const ScientificPitchNotation({
+    this.noteNotation = const EnglishNoteNotation(),
+  });
+
+  /// The [EnglishNoteNotation] variant of this [ScientificPitchNotation].
+  static const english = ScientificPitchNotation();
+
+  /// The [GermanNoteNotation] variant of this [ScientificPitchNotation].
+  static const german = ScientificPitchNotation(
+    noteNotation: GermanNoteNotation(),
+  );
+
+  /// The [RomanceNoteNotation] variant of this [ScientificPitchNotation].
+  static const romance = ScientificPitchNotation(
+    noteNotation: RomanceNoteNotation(),
+  );
 
   static final _regExp = RegExp(r'^(.+?)([-]?\d+)$');
-
-  static const _noteNotation = EnglishNoteNotation();
 
   @override
   String format(Pitch pitch) => '${pitch.note}${pitch.octave}';
@@ -517,7 +533,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
 
-    return Pitch(_noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
+    return Pitch(noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
   }
 }
 
