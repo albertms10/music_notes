@@ -548,7 +548,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
-  final NotationSystem<Note> noteNotation;
+  final NoteNotation noteNotation;
 
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
@@ -576,17 +576,6 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   ];
 
   static const _middleOctave = 3;
-
-  static final _regExp = RegExp(
-    '(^(?:${[for (final BaseNote(:name) in BaseNote.values) name].join('|')})'
-    '[${SymbolAccidentalNotation.symbols.join()}]*)'
-    '(${[
-      ..._compoundPrimeSymbols,
-      for (final symbol in _primeSymbols) '$symbol+',
-    ].join('|')})'
-    r'?$',
-    caseSensitive: false,
-  );
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -617,6 +606,24 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
       >= _middleOctave => '${note.toLowerCase()}${_symbols(pitch.octave - 3)}',
       _ => '$note${_symbols(pitch.octave - 2)}',
     };
+  }
+
+  RegExp get _regExp {
+    final baseNotes = [
+      for (final baseNote in BaseNote.values)
+        baseNote.toString(formatter: noteNotation.baseNoteNotation),
+    ].join('|');
+
+    return RegExp(
+      '(^(?:$baseNotes)'
+      '[${SymbolAccidentalNotation.symbols.join()}]*)'
+      '(${[
+        ..._compoundPrimeSymbols,
+        for (final symbol in _primeSymbols) '$symbol+',
+      ].join('|')})'
+      r'?$',
+      caseSensitive: false,
+    );
   }
 
   @override

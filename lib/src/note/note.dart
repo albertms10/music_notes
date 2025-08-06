@@ -448,27 +448,36 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The English notation system for [Note].
-final class EnglishNoteNotation extends NotationSystem<Note> {
-  /// The [EnglishBaseNoteNotation] used to format the [Note.baseNote].
-  final EnglishBaseNoteNotation baseNoteNotation;
+/// The [NotationSystem] interface for [Note].
+abstract interface class NoteNotation extends NotationSystem<Note> {
+  /// The [BaseNote] notation system used to format the [Note.baseNote].
+  final NotationSystem<BaseNote> baseNoteNotation;
 
-  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
-  final SymbolAccidentalNotation accidentalNotation;
+  /// The [Accidental] notation system used to format the [Note.accidental].
+  final NotationSystem<Accidental> accidentalNotation;
+
+  /// Creates a new [NoteNotation].
+  const NoteNotation({
+    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+    this.accidentalNotation = const SymbolAccidentalNotation(),
+  });
+}
+
+/// The English notation system for [Note].
+final class EnglishNoteNotation extends NoteNotation {
+  /// Creates a new [EnglishNoteNotation].
+  const EnglishNoteNotation({
+    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+    super.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
+  });
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = EnglishNoteNotation(
     accidentalNotation: SymbolAccidentalNotation(),
   );
-
-  /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({
-    this.baseNoteNotation = const EnglishBaseNoteNotation(),
-    this.accidentalNotation = const SymbolAccidentalNotation(
-      showNatural: false,
-    ),
-  });
 
   @override
   String format(Note note) =>
@@ -497,17 +506,11 @@ final class EnglishNoteNotation extends NotationSystem<Note> {
 /// The German alphabetic notation system for [Note].
 ///
 /// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
-final class GermanNoteNotation extends NotationSystem<Note> {
-  /// The [GermanBaseNoteNotation] used to format the [Note.baseNote].
-  final GermanBaseNoteNotation baseNoteNotation;
-
-  /// The [GermanAccidentalNotation] used to format the [Note.accidental].
-  final GermanAccidentalNotation accidentalNotation;
-
+final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation({
-    this.baseNoteNotation = const GermanBaseNoteNotation(),
-    this.accidentalNotation = const GermanAccidentalNotation(),
+    super.baseNoteNotation = const GermanBaseNoteNotation(),
+    super.accidentalNotation = const GermanAccidentalNotation(),
   });
 
   @override
@@ -556,26 +559,20 @@ final class GermanNoteNotation extends NotationSystem<Note> {
 }
 
 /// The Romance alphabetic notation system for [Note].
-final class RomanceNoteNotation extends NotationSystem<Note> {
-  /// The [RomanceBaseNoteNotation] used to format the [Note.baseNote].
-  final RomanceBaseNoteNotation baseNoteNotation;
-
-  /// The [SymbolAccidentalNotation] used to format the [Note.accidental].
-  final SymbolAccidentalNotation accidentalNotation;
+final class RomanceNoteNotation extends NoteNotation {
+  /// Creates a new [RomanceNoteNotation].
+  const RomanceNoteNotation({
+    super.baseNoteNotation = const RomanceBaseNoteNotation(),
+    super.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
+  });
 
   /// The [RomanceNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = RomanceNoteNotation(
     accidentalNotation: SymbolAccidentalNotation(),
   );
-
-  /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({
-    this.baseNoteNotation = const RomanceBaseNoteNotation(),
-    this.accidentalNotation = const SymbolAccidentalNotation(
-      showNatural: false,
-    ),
-  });
 
   @override
   String format(Note note) =>

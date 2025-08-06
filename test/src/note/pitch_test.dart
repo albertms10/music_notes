@@ -9,7 +9,10 @@ void main() {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
         expect(() => Pitch.parse('aa'), throwsFormatException);
+        expect(() => Pitch.parse('re,'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
+        expect(() => Pitch.parse("A'"), throwsFormatException);
+        expect(() => Pitch.parse("Sol'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
@@ -34,12 +37,18 @@ void main() {
         expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
         expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
 
+        expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
         expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
         expect(Pitch.parse('C,,'), Note.c.inOctave(0));
         expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
         expect(Pitch.parse('A'), Note.a.inOctave(2));
+        expect(Pitch.parse('H'), Note.b.inOctave(2));
+        expect(Pitch.parse('Si'), Note.b.inOctave(2));
+        expect(Pitch.parse('h'), Note.b.inOctave(3));
+        expect(Pitch.parse('sol'), Note.g.inOctave(3));
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
+        expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
         expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
         expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
