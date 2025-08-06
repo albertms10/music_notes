@@ -273,15 +273,8 @@ final class GermanAccidentalNotation extends NotationSystem<Accidental> {
     final flatCount = source.split(_flat).length - 1;
     final sharpCount = source.split(_sharp).length - 1;
 
-    if (flatCount > 0 && sharpCount > 0) {
-      throw FormatException(
-        'Invalid Accidental: cannot mix flats and sharps',
-        source,
-      );
-    }
     if (flatCount > 0) return Accidental(-flatCount);
-    if (sharpCount > 0) return Accidental(sharpCount);
 
-    throw FormatException('Invalid Accidental', source);
+    return Accidental(sharpCount);
   }
 }

@@ -9,7 +9,10 @@ void main() {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x'), throwsFormatException);
         expect(() => Pitch.parse('aa'), throwsFormatException);
+        expect(() => Pitch.parse('re,'), throwsFormatException);
         expect(() => Pitch.parse("A,'"), throwsFormatException);
+        expect(() => Pitch.parse("A'"), throwsFormatException);
+        expect(() => Pitch.parse("Sol'"), throwsFormatException);
         expect(() => Pitch.parse('bb,'), throwsFormatException);
         expect(() => Pitch.parse("F#'"), throwsFormatException);
         expect(() => Pitch.parse("g''h"), throwsFormatException);
@@ -34,12 +37,18 @@ void main() {
         expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
         expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
 
+        expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
         expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
         expect(Pitch.parse('C,,'), Note.c.inOctave(0));
         expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
         expect(Pitch.parse('A'), Note.a.inOctave(2));
+        expect(Pitch.parse('H'), Note.b.inOctave(2));
+        expect(Pitch.parse('Si'), Note.b.inOctave(2));
+        expect(Pitch.parse('h'), Note.b.inOctave(3));
+        expect(Pitch.parse('sol'), Note.g.inOctave(3));
         expect(Pitch.parse('f'), Note.f.inOctave(3));
         expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
+        expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
         expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
         expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
         expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
@@ -49,7 +58,9 @@ void main() {
 
         pitch = Note.a.sharp.inOctave(7);
         expect(
-          Pitch.parse(pitch.toString(formatter: PitchNotation.helmholtz)),
+          Pitch.parse(
+            pitch.toString(formatter: HelmholtzPitchNotation.english),
+          ),
           pitch,
         );
       });
@@ -1210,47 +1221,67 @@ void main() {
         expect(
           Note.g.sharp
               .inOctave(-1)
-              .toString(formatter: PitchNotation.helmholtz),
+              .toString(formatter: HelmholtzPitchNotation.english),
           'G♯͵͵͵',
         );
         expect(
-          Note.d.inOctave(0).toString(formatter: PitchNotation.helmholtz),
+          Note.d
+              .inOctave(0)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'D͵͵',
         );
         expect(
-          Note.b.flat.inOctave(1).toString(formatter: PitchNotation.helmholtz),
+          Note.b.flat
+              .inOctave(1)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'B♭͵',
         );
         expect(
-          Note.g.inOctave(2).toString(formatter: PitchNotation.helmholtz),
+          Note.g
+              .inOctave(2)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'G',
         );
         expect(
-          Note.a.inOctave(3).toString(formatter: PitchNotation.helmholtz),
+          Note.a
+              .inOctave(3)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'a',
         );
         expect(
-          Note.c.inOctave(4).toString(formatter: PitchNotation.helmholtz),
+          Note.c
+              .inOctave(4)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'c′',
         );
         expect(
-          Note.c.sharp.inOctave(4).toString(formatter: PitchNotation.helmholtz),
+          Note.c.sharp
+              .inOctave(4)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'c♯′',
         );
         expect(
-          Note.a.inOctave(4).toString(formatter: PitchNotation.helmholtz),
+          Note.a
+              .inOctave(4)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'a′',
         );
         expect(
-          Note.f.sharp.inOctave(5).toString(formatter: PitchNotation.helmholtz),
+          Note.f.sharp
+              .inOctave(5)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'f♯″',
         );
         expect(
-          Note.e.inOctave(7).toString(formatter: PitchNotation.helmholtz),
+          Note.e
+              .inOctave(7)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'e⁗',
         );
         expect(
-          Note.b.flat.inOctave(8).toString(formatter: PitchNotation.helmholtz),
+          Note.b.flat
+              .inOctave(8)
+              .toString(formatter: HelmholtzPitchNotation.english),
           'b♭′′′′′',
         );
       });
@@ -1517,7 +1548,10 @@ void main() {
   });
 }
 
-final class _SubPitchNotation extends PitchNotation {
+final class _SubPitchNotation extends NotationSystem<Pitch> {
   @override
-  String pitch(Pitch pitch) => throw UnimplementedError();
+  String format(Pitch pitch) => throw UnimplementedError();
+
+  @override
+  Pitch parse(String input) => throw UnimplementedError();
 }

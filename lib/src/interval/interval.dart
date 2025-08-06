@@ -533,9 +533,7 @@ final class IntervalNotation extends NotationSystem<Interval> {
   @override
   Interval parse(String source) {
     final match = _regExp.firstMatch(source);
-    if (match == null) throw FormatException('Invalid Interval', source);
-
-    final size = sizeNotation.parse(match[2]!);
+    final size = sizeNotation.parse(match![2]!);
     // ignore: omit_local_variable_types False positive (?)
     final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation

@@ -41,7 +41,7 @@ abstract interface class Formatter<T> {
 /// An abstract representation of a parser for [T].
 abstract interface class Parser<T> {
   /// Whether [source] can be parsed with [parse].
-  bool matches(String source) => true;
+  bool matches(String source);
 
   /// Parses [source] as [T].
   T parse(String source);
