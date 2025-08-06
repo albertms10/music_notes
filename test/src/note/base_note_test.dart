@@ -55,10 +55,6 @@ void main() {
           );
           expect(() => BaseNote.parse('', chain: chain), throwsFormatException);
           expect(
-            () => BaseNote.parse('B', chain: chain),
-            throwsFormatException,
-          );
-          expect(
             () => BaseNote.parse('AH', chain: chain),
             throwsFormatException,
           );
@@ -66,6 +62,7 @@ void main() {
 
         test('parses source as a BaseNote', () {
           expect(BaseNote.parse('A', chain: chain), BaseNote.a);
+          expect(BaseNote.parse('B', chain: chain), BaseNote.b);
           expect(BaseNote.parse('C', chain: chain), BaseNote.c);
           expect(BaseNote.parse('D', chain: chain), BaseNote.d);
           expect(BaseNote.parse('E', chain: chain), BaseNote.e);
@@ -107,6 +104,10 @@ void main() {
           );
           expect(
             () => BaseNote.parse('DoRe', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => const RomanceBaseNoteNotation().parse('x'),
             throwsFormatException,
           );
         });

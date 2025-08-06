@@ -535,10 +535,6 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
 
-    if (!noteNotation.matches(match[1]!)) {
-      throw FormatException('Invalid Note', match[1]);
-    }
-
     return Pitch(noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
   }
 }

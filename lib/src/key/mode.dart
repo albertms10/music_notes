@@ -106,8 +106,7 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parse(String source) => switch (source.toLowerCase()) {
     _major => TonalMode.major,
-    _minor => TonalMode.minor,
-    _ => throw FormatException('Invalid TonalMode', source),
+    _ /* _minor */ => TonalMode.minor,
   };
 }
 
@@ -135,8 +134,7 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parse(String source) => switch (source.toLowerCase()) {
     _major => TonalMode.major,
-    _minor => TonalMode.minor,
-    _ => throw FormatException('Invalid TonalMode', source),
+    _ /* _minor */ => TonalMode.minor,
   };
 }
 
@@ -164,8 +162,7 @@ final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parse(String source) => switch (source.toLowerCase()) {
     _major => TonalMode.major,
-    _minor => TonalMode.minor,
-    _ => throw FormatException('Invalid TonalMode', source),
+    _ /* _minor */ => TonalMode.minor,
   };
 }
 

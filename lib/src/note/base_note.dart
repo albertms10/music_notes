@@ -212,7 +212,7 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   @override
   bool matches(String source) {
     if (source.toLowerCase()
-        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'h') {
+        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'b' || 'h') {
       return true;
     }
 
