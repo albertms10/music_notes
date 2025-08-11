@@ -493,11 +493,11 @@ final class EnglishNoteNotation extends NoteNotation {
     if (!baseNoteNotation.matches(source[0])) {
       throw FormatException('Invalid BaseNote', source[0], 0);
     }
-    final baseNote = baseNoteNotation.parse(source[0]);
+    final baseNote = baseNoteNotation.safeParse(source[0]);
 
     // Remaining characters are the accidental (if any)
     final accidentalSource = source.length > 1 ? source.substring(1) : '';
-    final accidental = accidentalNotation.parse(accidentalSource);
+    final accidental = accidentalNotation.safeParse(accidentalSource);
 
     return Note(baseNote, accidental);
   }
@@ -543,16 +543,18 @@ final class GermanNoteNotation extends NoteNotation {
               firstChar == 'e') &&
           source.substring(1).startsWith('s') &&
           !source.substring(1).startsWith('es')) {
-        final baseNote = baseNoteNotation.parse(firstChar);
-        final accidental = accidentalNotation.parse('e${source.substring(1)}');
+        final baseNote = baseNoteNotation.safeParse(firstChar);
+        final accidental = accidentalNotation.safeParse(
+          'e${source.substring(1)}',
+        );
         return Note(baseNote, accidental);
       }
     }
 
     // Standard parsing: first character is base note, rest is accidental
-    final baseNote = baseNoteNotation.parse(source[0]);
+    final baseNote = baseNoteNotation.safeParse(source[0]);
     final accidentalSource = source.length > 1 ? source.substring(1) : '';
-    final accidental = accidentalNotation.parse(accidentalSource);
+    final accidental = accidentalNotation.safeParse(accidentalSource);
 
     return Note(baseNote, accidental);
   }
@@ -600,8 +602,8 @@ final class RomanceNoteNotation extends NoteNotation {
 
     if (baseNoteStr.isEmpty) throw FormatException('Invalid Note', source);
 
-    final baseNote = baseNoteNotation.parse(baseNoteStr);
-    final accidental = accidentalNotation.parse(accidentalStr);
+    final baseNote = baseNoteNotation.safeParse(baseNoteStr);
+    final accidental = accidentalNotation.safeParse(accidentalStr);
 
     return Note(baseNote, accidental);
   }

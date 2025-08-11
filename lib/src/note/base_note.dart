@@ -39,8 +39,8 @@ enum BaseNote implements Comparable<BaseNote> {
   /// Creates a new [BaseNote] from [semitones].
   const BaseNote(this.semitones);
 
-  /// Returns a [BaseNote] that matches with [semitones] as in [BaseNote],
-  /// otherwise returns `null`.
+  /// Returns a [BaseNote] that matches with [semitones] as in [BaseNote].
+  /// Otherwise, returns `null`.
   ///
   /// Example:
   /// ```dart
@@ -176,7 +176,7 @@ enum BaseNote implements Comparable<BaseNote> {
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
 }
 
-/// The English notation system for [BaseNote
+/// The English notation system for [BaseNote].
 final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [EnglishBaseNoteNotation].
   const EnglishBaseNoteNotation();
@@ -195,10 +195,11 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   }
 
   @override
-  BaseNote parse(String source) => BaseNote.values.byName(source.toLowerCase());
+  BaseNote? parse(String source) =>
+      BaseNote.values.byName(source.toLowerCase());
 }
 
-/// The German notation system for [BaseNote
+/// The German notation system for [BaseNote].
 final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [GermanBaseNoteNotation].
   const GermanBaseNoteNotation();
@@ -233,7 +234,7 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   };
 }
 
-/// The Romance notation system for [BaseNote
+/// The Romance notation system for [BaseNote].
 final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [RomanceBaseNoteNotation].
   const RomanceBaseNoteNotation();

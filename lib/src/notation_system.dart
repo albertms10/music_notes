@@ -25,11 +25,25 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
   ///
   /// The input [source] should typically be produced by [format], ensuring
   /// that `parse(format(value)) == value`.
+  @override
+  T? parse(String source);
+
+  /// Parses [source] as [T].
   ///
   /// If the [source] string does not contain a valid [T], a [FormatException]
   /// should be thrown.
   @override
-  T parse(String source);
+  T safeParse(String source) {
+    if (!matches(source)) {
+      throw FormatException(
+        'Source does not match the expected format',
+        source,
+      );
+    }
+
+    return parse(source) ??
+        (throw FormatException('Failed to parse $T from source', source));
+  }
 }
 
 /// An abstract representation of a formatter for [T].
@@ -44,7 +58,10 @@ abstract interface class Parser<T> {
   bool matches(String source);
 
   /// Parses [source] as [T].
-  T parse(String source);
+  T? parse(String source);
+
+  /// Parses [source] as [T].
+  T safeParse(String source);
 }
 
 /// A [Parser] chain.
@@ -52,7 +69,11 @@ extension ParserChain<T> on List<Parser<T>> {
   /// Parses [source] from this chain of [Parser]s.
   T parse(String source) {
     for (final parser in this) {
-      if (parser.matches(source)) return parser.parse(source);
+      if (parser.matches(source)) {
+        final parsed = parser.parse(source);
+        if (parsed == null) continue;
+        return parsed;
+      }
     }
     throw FormatException('End of parser chain: invalid $T', source);
   }

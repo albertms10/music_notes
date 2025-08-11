@@ -535,7 +535,10 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
 
-    return Pitch(noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
+    return Pitch(
+      noteNotation.safeParse(match[1]!),
+      octave: int.parse(match[2]!),
+    );
   }
 }
 
@@ -653,7 +656,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
             ),
           };
 
-    return Pitch(noteNotation.parse(notePart), octave: octave);
+    return Pitch(noteNotation.safeParse(notePart), octave: octave);
   }
 }
 
