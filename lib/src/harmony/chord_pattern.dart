@@ -101,6 +101,37 @@ class ChordPattern with Chordable<ChordPattern> {
     ),
   );
 
+  /// The mirrored [Chord] built under [scalable].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.under(Note.c)
+  ///   == const Chord([Note.f, Note.a.flat, Note.c])
+  /// ```
+  Chord<T> under<T extends Scalable<T>>(T scalable) => Chord(
+    _intervals
+        .fold(
+          [scalable],
+          (chordItems, interval) => [
+            ...chordItems,
+            scalable.transposeBy(-interval),
+          ],
+        )
+        .reversed
+        .toList(growable: false),
+  );
+
+  /// The mirrored version of this [ChordPattern].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.mirrored == ChordPattern.minorTriad
+  /// ChordPattern.minorTriad.mirrored == ChordPattern.majorTriad
+  /// ```
+  ChordPattern get mirrored => ChordPattern.fromIntervalSteps(
+    _intervals.intervalSteps.toList(growable: false).reversed,
+  );
+
   /// The root triad of this [ChordPattern].
   ///
   /// Example:

@@ -100,6 +100,15 @@ class Chord<T extends Scalable<T>>
   Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
+  /// The mirrored version of this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.mirrored
+  ///   == Chord([Note.f, Note.a.flat, Note.c])
+  /// ```
+  Chord<T> get mirrored => pattern.under(root);
+
   /// Transposes this [Chord] by [interval].
   ///
   /// Example:

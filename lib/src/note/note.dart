@@ -355,7 +355,7 @@ final class Note extends Scalable<Note>
     final (:down, :up) = splitCircleOfFifths;
 
     return [
-      ...down.take(distance).toList().reversed,
+      ...down.take(distance).toList(growable: false).reversed,
       this,
       ...up.take(distance),
     ];
