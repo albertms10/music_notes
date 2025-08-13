@@ -159,7 +159,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.majorTriad.add7().add9().modifiers
   ///   == const [Interval.m7, Interval.M9]
   /// ```
-  List<Interval> get modifiers => _intervals.skip(2).toList(growable: false);
+  List<Interval> get modifiers => _intervals.sublist(2);
 
   /// This [ChordPattern] with an [ImperfectQuality.diminished] root triad.
   ///
