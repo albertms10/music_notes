@@ -516,8 +516,8 @@ void main() {
 
         expect(ChordPattern.majorTriad.sus2().toString(), 'sus2');
         expect(ChordPattern.majorTriad.sus4().toString(), 'sus4');
-        expect(ChordPattern.minorTriad.sus2().add7().toString(), 'sus2 7');
-        expect(ChordPattern.minorTriad.sus4().add7().toString(), 'sus4 7');
+        expect(ChordPattern.minorTriad.sus2().add7().toString(), 'sus27');
+        expect(ChordPattern.minorTriad.sus4().add7().toString(), 'sus47');
         expect(ChordPattern.majorTriad.add6().toString(), '6');
         expect(ChordPattern.minorTriad.add6().toString(), '-6');
         expect(ChordPattern.majorTriad.add7().add9().toString(), '7 9');

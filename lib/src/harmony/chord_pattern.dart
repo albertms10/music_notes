@@ -264,7 +264,7 @@ final class ChordPatternNotation extends NotationSystem<ChordPattern> {
 
     if (chordPattern.intervals.first.size
         case (Size.second || Size.fourth) && final size) {
-      buffer.write('$_sus$size ');
+      buffer.write('$_sus$size');
     }
 
     final intervals = chordPattern.modifiers.map((interval) {
@@ -283,12 +283,12 @@ final class ChordPatternNotation extends NotationSystem<ChordPattern> {
         ).toString(formatter: accidentalNotation),
         _ => '',
       };
-      return '$part${!chordPattern.isDiminished ? interval.size : ''}';
+      return '$part${chordPattern.isDiminished ? '' : interval.size}';
     });
 
     buffer.writeAll(intervals, ' ');
 
-    return buffer.toString().trimRight();
+    return buffer.toString();
   }
 
   @override
