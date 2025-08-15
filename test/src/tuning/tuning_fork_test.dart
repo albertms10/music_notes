@@ -3,55 +3,128 @@ import 'package:test/test.dart';
 
 void main() {
   group('TuningFork', () {
-    group('.toString()', () {
-      test('returns the string representation of this TuningFork', () {
-        expect(TuningFork.a440.toString(), 'A440');
-        expect(TuningFork.a415.toString(), 'A415');
-        expect(TuningFork.c256.toString(), 'C256');
-        expect(
-          TuningFork(
-            Note.f.sharp.inOctave(4),
-            const Frequency(402.3),
-          ).toString(),
-          'F♯402.3',
-        );
-        expect(
-          TuningFork(
-            Note.a.flat.inOctave(3),
-            const Frequency(437.15),
-          ).toString(),
-          'A♭3 437.15',
-        );
+    group('CompactTuningForkNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => TuningFork.parse(''), throwsFormatException);
+          expect(() => TuningFork.parse('X'), throwsFormatException);
+          expect(() => TuningFork.parse('440'), throwsFormatException);
+          expect(() => TuningFork.parse('Z440'), throwsFormatException);
+          expect(() => TuningFork.parse('A+440'), throwsFormatException);
+        });
 
-        const compactSystem = CompactTuningForkNotation(referenceOctave: 3);
-        expect(TuningFork.a440.toString(formatter: compactSystem), 'A4 440');
-        expect(TuningFork.c256.toString(formatter: compactSystem), 'C4 256');
-        expect(
-          Note.d
-              .inOctave(3)
-              .at(const Frequency(314))
-              .toString(formatter: compactSystem),
-          'D314',
-        );
+        test('parses source as a TuningFork', () {
+          expect(TuningFork.parse('A440'), TuningFork.a440);
+          expect(TuningFork.parse('a4 440'), TuningFork.a440);
+          expect(TuningFork.parse('C256 Hz'), TuningFork.c256);
+          expect(
+            TuningFork.parse('db5  256.14'),
+            TuningFork(Note.d.flat.inOctave(5), const Frequency(256.14)),
+          );
+          expect(
+            TuningFork.parse('fx-2 314.1 hz'),
+            TuningFork(Note.f.sharp.sharp.inOctave(-2), const Frequency(314.1)),
+          );
 
-        expect(
-          TuningFork.a440.toString(formatter: TuningForkNotation.scientific),
-          'A4 = 440 Hz',
-        );
-        expect(
-          TuningFork(
-            Note.f.sharp.inOctave(4),
-            const Frequency(402.3),
-          ).toString(formatter: TuningForkNotation.scientific),
-          'F♯4 = 402.3 Hz',
-        );
-        expect(
-          TuningFork(
-            Note.a.flat.inOctave(3),
-            const Frequency(437.15),
-          ).toString(formatter: TuningForkNotation.scientific),
-          'A♭3 = 437.15 Hz',
-        );
+          const formatter = CompactTuningForkNotation(referenceOctave: 3);
+          expect(
+            TuningFork.parse('C# 256.44', chain: const [formatter]),
+            TuningFork(Note.c.sharp.inOctave(3), const Frequency(256.44)),
+          );
+          expect(
+            TuningFork.parse('A4 440hz', chain: const [formatter]),
+            TuningFork.a440,
+          );
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this TuningFork', () {
+          expect(TuningFork.a440.toString(), 'A440');
+          expect(TuningFork.a415.toString(), 'A415');
+          expect(TuningFork.c256.toString(), 'C256');
+          expect(
+            TuningFork(
+              Note.f.sharp.inOctave(4),
+              const Frequency(402.3),
+            ).toString(),
+            'F♯402.3',
+          );
+          expect(
+            TuningFork(
+              Note.a.flat.inOctave(3),
+              const Frequency(437.15),
+            ).toString(),
+            'A♭3 437.15',
+          );
+
+          const formatter = CompactTuningForkNotation(referenceOctave: 3);
+          expect(TuningFork.a440.toString(formatter: formatter), 'A4 440');
+          expect(TuningFork.c256.toString(formatter: formatter), 'C4 256');
+          expect(
+            Note.d
+                .inOctave(3)
+                .at(const Frequency(314))
+                .toString(formatter: formatter),
+            'D314',
+          );
+        });
+      });
+    });
+
+    group('ScientificTuningForkNotation', () {
+      const formatter = ScientificTuningForkNotation();
+      const chain = [formatter];
+
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(
+            () => TuningFork.parse('', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => TuningFork.parse('X', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => TuningFork.parse('A=440', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => TuningFork.parse('A=440Hz', chain: chain),
+            throwsFormatException,
+          );
+        });
+
+        test('parses source as a TuningFork', () {
+          expect(TuningFork.parse('A4 = 440 Hz'), TuningFork.a440);
+          expect(TuningFork.parse('A4=415hz'), TuningFork.a415);
+          expect(
+            TuningFork.parse('C2 =  256.9'),
+            TuningFork(Note.c.inOctave(2), const Frequency(256.9)),
+          );
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this TuningFork', () {
+          const formatter = ScientificTuningForkNotation();
+          expect(TuningFork.a440.toString(formatter: formatter), 'A4 = 440 Hz');
+          expect(
+            TuningFork(
+              Note.f.sharp.inOctave(4),
+              const Frequency(402.3),
+            ).toString(formatter: formatter),
+            'F♯4 = 402.3 Hz',
+          );
+          expect(
+            TuningFork(
+              Note.a.flat.inOctave(3),
+              const Frequency(437.15),
+            ).toString(formatter: formatter),
+            'A♭3 = 437.15 Hz',
+          );
+        });
       });
     });
   });
