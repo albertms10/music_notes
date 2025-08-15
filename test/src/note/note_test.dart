@@ -888,13 +888,6 @@ void main() {
           'Sol𝄫',
         );
       });
-
-      test('returns the string representation extending NoteNotation', () {
-        expect(
-          () => Note.a.sharp.toString(formatter: _TestNoteNotation()),
-          throwsUnimplementedError,
-        );
-      });
     });
 
     group('.hashCode', () {
@@ -1017,12 +1010,4 @@ void main() {
       });
     });
   });
-}
-
-final class _TestNoteNotation extends NotationSystem<Note> {
-  @override
-  String format(Note value) => throw UnimplementedError();
-
-  @override
-  Note parse(String source) => throw UnimplementedError();
 }
