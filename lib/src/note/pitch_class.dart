@@ -5,6 +5,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../interval/interval.dart';
 import '../interval/interval_class.dart';
+import '../notation_system.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
@@ -67,6 +68,26 @@ final class PitchClass extends Scalable<PitchClass>
 
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
+
+  /// Parse [source] as a [PitchClass] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [PitchClass], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// PitchClass.parse('{C#|Db}') == PitchClass.cSharp
+  /// PitchClass.parse('5') == PitchClass.f
+  /// PitchClass.parse('t') == PitchClass.aSharp
+  /// PitchClass.parse('z') // throws a FormatException
+  /// ```
+  factory PitchClass.parse(
+    String source, {
+    List<Parser<PitchClass>> chain = const [
+      EnharmonicSpellingsPitchClassNotation(),
+      IntegerPitchClassNotation(),
+    ],
+  }) => chain.parse(source);
 
   /// The different spellings at [distance] sharing the same number of
   /// [semitones].
@@ -263,23 +284,23 @@ final class PitchClass extends Scalable<PitchClass>
 
   /// The string representation of this [PitchClass] based on [formatter].
   ///
-  /// See [PitchClassNotation] for all formatter implementations.
-  ///
   /// Example:
   /// ```dart
   /// PitchClass.c.toString() == '{C}'
   /// PitchClass.g.toString() == '{G}'
   /// PitchClass.dSharp.toString() == '{D♯|E♭}'
   ///
-  /// PitchClass.c.toString(formatter: PitchClassNotation.integer) == '0'
-  /// PitchClass.f.toString(formatter: PitchClassNotation.integer) == '5'
-  /// PitchClass.aSharp.toString(formatter: PitchClassNotation.integer) == 't'
-  /// PitchClass.b.toString(formatter: PitchClassNotation.integer) == 'e'
+  /// const integerNotation = IntegerPitchClassNotation();
+  /// PitchClass.c.toString(formatter: integerNotation) == '0'
+  /// PitchClass.f.toString(formatter: integerNotation) == '5'
+  /// PitchClass.aSharp.toString(formatter: integerNotation) == 't'
+  /// PitchClass.b.toString(formatter: integerNotation) == 'e'
   /// ```
   @override
   String toString({
-    PitchClassNotation formatter = PitchClassNotation.enharmonicSpellings,
-  }) => formatter.pitchClass(this);
+    Formatter<PitchClass> formatter =
+        const EnharmonicSpellingsPitchClassNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -292,45 +313,55 @@ final class PitchClass extends Scalable<PitchClass>
   int compareTo(PitchClass other) => semitones.compareTo(other.semitones);
 }
 
-/// The abstraction for [PitchClass] notation systems.
-@immutable
-abstract class PitchClassNotation {
-  /// Creates a new [PitchClassNotation].
-  const PitchClassNotation();
-
-  /// The enharmonic spellings [PitchClassNotation] formatter.
-  static const enharmonicSpellings = EnharmonicSpellingsPitchClassNotation();
-
-  /// The integer [PitchClassNotation] formatter.
-  static const integer = IntegerPitchClassNotation();
-
-  /// The string notation for [pitchClass].
-  String pitchClass(PitchClass pitchClass);
-}
-
-/// The enharmonic spellings [PitchClass] notation formatter.
+/// The [NotationSystem] for enharmonic spellings [PitchClass].
 ///
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
-final class EnharmonicSpellingsPitchClassNotation extends PitchClassNotation {
+final class EnharmonicSpellingsPitchClassNotation
+    extends NotationSystem<PitchClass> {
   /// Creates a new [EnharmonicSpellingsPitchClassNotation].
   const EnharmonicSpellingsPitchClassNotation();
 
   @override
-  String pitchClass(PitchClass pitchClass) =>
+  String format(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
+
+  static final _regExp = RegExp(r'^\{?([^}0-9et]+)\}?$');
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  PitchClass parse(String source) {
+    final match = _regExp.firstMatch(source.trim())!;
+    final [spelling, ...] = match.group(1)!.split('|');
+    final Note(:semitones) = Note.parse(spelling.trim());
+    return PitchClass(semitones);
+  }
 }
 
-/// The integer [PitchClass] notation formatter.
+/// The [NotationSystem] for integer [PitchClass].
 ///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-final class IntegerPitchClassNotation extends PitchClassNotation {
+final class IntegerPitchClassNotation extends NotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
   const IntegerPitchClassNotation();
 
   @override
-  String pitchClass(PitchClass pitchClass) => switch (pitchClass.semitones) {
+  String format(PitchClass pitchClass) => switch (pitchClass.semitones) {
     10 => 't',
     11 => 'e',
     final semitones => '$semitones',
   };
+
+  static final _regExp = RegExp(r'^(t|e|[0-9])$');
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  PitchClass parse(String source) => PitchClass(switch (source) {
+    't' => 10,
+    'e' => 11,
+    final semitones => int.parse(semitones),
+  });
 }

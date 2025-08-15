@@ -155,8 +155,8 @@ Note.c.inOctave(6).toString(formatter: HelmholtzPitchNotation.english); // c‴
 PitchClass.c.toString(); // {C}
 PitchClass.dSharp.toString(); // {D♯|E♭}
 
-PitchClass.f.toString(formatter: PitchClassNotation.integer); // 5
-PitchClass.aSharp.toString(formatter: PitchClassNotation.integer); // t
+PitchClass.f.toString(formatter: const IntegerPitchClassNotation()); // 5
+PitchClass.aSharp.toString(formatter: const IntegerPitchClassNotation()); // t
 ```
 
 ### Intervals

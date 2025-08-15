@@ -1401,13 +1401,6 @@ void main() {
           'mi‴',
         );
       });
-
-      test('returns the string representation extending PitchNotation', () {
-        expect(
-          () => Note.a.inOctave(4).toString(formatter: _SubPitchNotation()),
-          throwsUnimplementedError,
-        );
-      });
     });
 
     group('operator +()', () {
@@ -1546,12 +1539,4 @@ void main() {
       });
     });
   });
-}
-
-final class _SubPitchNotation extends NotationSystem<Pitch> {
-  @override
-  String format(Pitch pitch) => throw UnimplementedError();
-
-  @override
-  Pitch parse(String input) => throw UnimplementedError();
 }
