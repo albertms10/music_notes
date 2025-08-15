@@ -937,6 +937,61 @@ void main() {
     });
 
     group('operator -()', () {
+      test('subtracts other from this Interval', () {
+        expect(Interval.M2 - Interval.P1, Interval.M2);
+        expect(Interval.M2 - Interval.m2, Interval.A1);
+        expect(Interval.M2 - Interval.A1, Interval.m2);
+        expect(Interval.M3 - Interval.m2, Interval.A2);
+        expect(Interval.M3 - Interval.A1, Interval.m3);
+        expect(Interval.M3 - Interval.M2, Interval.M2);
+        expect(Interval.M3 - Interval.A2, Interval.m2);
+        expect(Interval.d4 - Interval.M3, Interval.d2);
+
+        expect(Interval.P5 - Interval.P4, Interval.M2);
+        expect(Interval.P5 - Interval.M3, Interval.m3);
+        expect(Interval.P5 - Interval.m3, Interval.M3);
+        expect(Interval.P5 - Interval.M2, Interval.P4);
+        expect(Interval.P5 - Interval.P5, Interval.P1);
+
+        expect(Interval.A4 - Interval.P4, Interval.A1);
+        expect(Interval.A4 - Interval.A1, Interval.P4);
+        expect(Interval.A4 - Interval.d5, -Interval.d2);
+
+        expect(Interval.M6 - Interval.M3, Interval.P4);
+        expect(Interval.M6 - Interval.P4, Interval.M3);
+        expect(Interval.M6 - Interval.M2, Interval.P5);
+
+        expect(Interval.P8 - Interval.P5, Interval.P4);
+        expect(Interval.P8 - Interval.P4, Interval.P5);
+        expect(Interval.P8 - Interval.P8, Interval.P1);
+
+        expect(Interval.M9 - Interval.P8, Interval.M2);
+        expect(Interval.M9 - Interval.M2, Interval.P8);
+        expect(Interval.M9 - Interval.M9, Interval.P1);
+
+        expect(Interval.P5 - Interval.M2, Interval.P4);
+        expect(Interval.M6 - Interval.P4, Interval.M3);
+        expect(Interval.P8 - Interval.M6, Interval.m3);
+        expect(Interval.M9 - Interval.M3, Interval.m7);
+        expect(Interval.A4 - Interval.M2, Interval.M3);
+        expect(Interval.M3 - Interval.m2, Interval.A2);
+        expect(Interval.P8 - Interval.M2, Interval.m7);
+        expect(Interval.M13 - Interval.P8, Interval.M6);
+        expect(Interval.P11 - Interval.P5, Interval.m7);
+        expect(Interval.M9 - Interval.P5, Interval.P5);
+
+        expect(Interval.M2 - Interval.P5, -Interval.P4);
+        expect(Interval.P4 - Interval.P8, -Interval.P5);
+        expect(Interval.M3 - Interval.M6, -Interval.P4);
+        expect(Interval.P5 - Interval.P11, -Interval.m7);
+        expect(Interval.M6 - Interval.M13, -Interval.P8);
+        expect(Interval.P8 - Interval.M13, -Interval.M6);
+        expect(Interval.P8 - Interval.P11, -Interval.P4);
+        expect(Interval.M9 - Interval.M13, -Interval.P5);
+        expect(Interval.M9 - Interval.P11, -Interval.m3);
+        expect(Interval.P4 - Interval.M9, -Interval.M6);
+      });
+
       test('returns the negation of this Interval', () {
         expect(-Interval.M2, -Size.second.major);
         expect(-const ImperfectSize(-6).minor, Interval.m6);

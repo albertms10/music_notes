@@ -114,8 +114,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   /// ```
   Iterable<T> get inversion sync* {
     if (isEmpty) return;
-    yield first;
-    var last = first;
+    T last;
+    yield last = first;
     for (var i = 1; i < length; i++) {
       yield last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
     }
