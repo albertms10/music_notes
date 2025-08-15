@@ -103,7 +103,7 @@ class ChordPattern with Chordable<ChordPattern> {
     ),
   );
 
-  /// The mirrored [Chord] built under [scalable].
+  /// The [Chord] built under [scalable].
   ///
   /// Example:
   /// ```dart
