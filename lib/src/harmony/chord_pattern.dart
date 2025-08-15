@@ -103,6 +103,26 @@ class ChordPattern with Chordable<ChordPattern> {
     ),
   );
 
+  /// The [Chord] built under [scalable].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.under(Note.c)
+  ///   == const Chord([Note.f, Note.a.flat, Note.c])
+  /// ```
+  Chord<T> under<T extends Scalable<T>>(T scalable) => Chord(
+    _intervals
+        .fold(
+          [scalable],
+          (chordItems, interval) => [
+            ...chordItems,
+            scalable.transposeBy(-interval),
+          ],
+        )
+        .reversed
+        .toList(growable: false),
+  );
+
   /// The root triad of this [ChordPattern].
   ///
   /// Example:
@@ -130,7 +150,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ChordPattern.majorTriad.add7().add9().modifiers
   ///   == const [Interval.m7, Interval.M9]
   /// ```
-  List<Interval> get modifiers => _intervals.skip(2).toList(growable: false);
+  List<Interval> get modifiers => _intervals.sublist(2);
 
   /// This [ChordPattern] with an [ImperfectQuality.diminished] root triad.
   ///

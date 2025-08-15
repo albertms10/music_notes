@@ -102,7 +102,7 @@ void main() {
     });
 
     group('.on()', () {
-      test('returns the Chord from this ChordPattern', () {
+      test('returns the Chord built on Scalable', () {
         expect(
           ChordPattern.majorTriad.on(Note.e),
           Chord([Note.e, Note.g.sharp, Note.b]),
@@ -124,6 +124,34 @@ void main() {
             Note.d.flat.inOctave(5),
             Note.f.flat.inOctave(5),
             Note.a.flat.flat.inOctave(5),
+          ]),
+        );
+      });
+    });
+
+    group('.under()', () {
+      test('returns the Chord built under Scalable', () {
+        expect(
+          ChordPattern.majorTriad.under(Note.e),
+          const Chord([Note.a, Note.c, Note.e]),
+        );
+        expect(
+          ChordPattern.minorTriad.add7().under(Note.f),
+          Chord([Note.g, Note.b.flat, Note.d, Note.f]),
+        );
+        expect(
+          ChordPattern.majorTriad.add7().add9().under(Note.d),
+          Chord([Note.c, Note.e, Note.g, Note.b.flat, Note.d]),
+        );
+        expect(
+          ChordPattern.diminishedTriad
+              .add7(ImperfectQuality.diminished)
+              .under(Note.b.flat.inOctave(4)),
+          Chord([
+            Note.c.sharp.inOctave(4),
+            Note.e.inOctave(4),
+            Note.g.inOctave(4),
+            Note.b.flat.inOctave(4),
           ]),
         );
       });
