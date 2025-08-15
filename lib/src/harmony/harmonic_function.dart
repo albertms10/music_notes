@@ -50,9 +50,7 @@ class HarmonicFunction {
   /// A VII degree [HarmonicFunction].
   static const vii = HarmonicFunction([ScaleDegree.vii]);
 
-  /// The string representation of this [HarmonicFunction] based on [formatter].
-  ///
-  /// See [ScaleDegreeNotation] for all formatter implementations.
+  /// The string representation of this [HarmonicFunction].
   ///
   /// Example:
   /// ```dart
@@ -61,11 +59,7 @@ class HarmonicFunction {
   ///   == '♭II6/IV'
   /// ```
   @override
-  String toString({
-    ScaleDegreeNotation formatter = ScaleDegreeNotation.standard,
-  }) => _scaleDegrees
-      .map((scaleDegree) => scaleDegree.toString(formatter: formatter))
-      .join('/');
+  String toString() => _scaleDegrees.join('/');
 
   /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
   /// [other].

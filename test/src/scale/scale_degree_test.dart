@@ -20,6 +20,36 @@ void main() {
       });
     });
 
+    group('StandardScaleDegreeNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => ScaleDegree.parse(''), throwsFormatException);
+          expect(() => ScaleDegree.parse('x'), throwsFormatException);
+          expect(() => ScaleDegree.parse('H'), throwsFormatException);
+        });
+
+        test('parses source as a ScaleDegree', () {
+          expect(ScaleDegree.parse('I'), ScaleDegree.i.major);
+          expect(ScaleDegree.parse('bII6'), ScaleDegree.neapolitanSixth);
+          expect(ScaleDegree.parse('vi'), ScaleDegree.vi.minor);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this ScaleDegree', () {
+          expect(ScaleDegree.i.toString(), 'I');
+          expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
+          expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
+          expect(
+            const ScaleDegree(4, quality: ImperfectQuality.minor).toString(),
+            'iv',
+          );
+          expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
+          expect(ScaleDegree.vii.toString(), 'VII');
+        });
+      });
+    });
+
     group('.isRaised', () {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
@@ -124,20 +154,6 @@ void main() {
       test('returns the ordinal number if higher than 7', () {
         expect(const ScaleDegree(8).romanNumeral, '8');
         expect(const ScaleDegree(20).romanNumeral, '20');
-      });
-    });
-
-    group('.toString()', () {
-      test('returns the string representation of this ScaleDegree', () {
-        expect(ScaleDegree.i.toString(), 'I');
-        expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
-        expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
-        expect(
-          const ScaleDegree(4, quality: ImperfectQuality.minor).toString(),
-          'iv',
-        );
-        expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
-        expect(ScaleDegree.vii.toString(), 'VII');
       });
     });
 
