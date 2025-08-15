@@ -350,9 +350,11 @@ void main() {
     group('.semitones', () {
       test('returns the number of semitones of this Interval', () {
         expect(Interval.d1.semitones, -1);
+        expect((-Interval.d1).semitones, 1);
         expect(Interval.P1.semitones, 0);
         expect((-Interval.P1).semitones, 0);
         expect(Interval.A1.semitones, 1);
+        expect((-Interval.A1).semitones, -1);
 
         expect(Interval.d2.semitones, 0);
         expect(Interval.m2.semitones, 1);
@@ -935,6 +937,61 @@ void main() {
     });
 
     group('operator -()', () {
+      test('subtracts other from this Interval', () {
+        expect(Interval.M2 - Interval.P1, Interval.M2);
+        expect(Interval.M2 - Interval.m2, Interval.A1);
+        expect(Interval.M2 - Interval.A1, Interval.m2);
+        expect(Interval.M3 - Interval.m2, Interval.A2);
+        expect(Interval.M3 - Interval.A1, Interval.m3);
+        expect(Interval.M3 - Interval.M2, Interval.M2);
+        expect(Interval.M3 - Interval.A2, Interval.m2);
+        expect(Interval.d4 - Interval.M3, Interval.d2);
+
+        expect(Interval.P5 - Interval.P4, Interval.M2);
+        expect(Interval.P5 - Interval.M3, Interval.m3);
+        expect(Interval.P5 - Interval.m3, Interval.M3);
+        expect(Interval.P5 - Interval.M2, Interval.P4);
+        expect(Interval.P5 - Interval.P5, Interval.P1);
+
+        expect(Interval.A4 - Interval.P4, Interval.A1);
+        expect(Interval.A4 - Interval.A1, Interval.P4);
+        expect(Interval.A4 - Interval.d5, -Interval.d2);
+
+        expect(Interval.M6 - Interval.M3, Interval.P4);
+        expect(Interval.M6 - Interval.P4, Interval.M3);
+        expect(Interval.M6 - Interval.M2, Interval.P5);
+
+        expect(Interval.P8 - Interval.P5, Interval.P4);
+        expect(Interval.P8 - Interval.P4, Interval.P5);
+        expect(Interval.P8 - Interval.P8, Interval.P1);
+
+        expect(Interval.M9 - Interval.P8, Interval.M2);
+        expect(Interval.M9 - Interval.M2, Interval.P8);
+        expect(Interval.M9 - Interval.M9, Interval.P1);
+
+        expect(Interval.P5 - Interval.M2, Interval.P4);
+        expect(Interval.M6 - Interval.P4, Interval.M3);
+        expect(Interval.P8 - Interval.M6, Interval.m3);
+        expect(Interval.M9 - Interval.M3, Interval.m7);
+        expect(Interval.A4 - Interval.M2, Interval.M3);
+        expect(Interval.M3 - Interval.m2, Interval.A2);
+        expect(Interval.P8 - Interval.M2, Interval.m7);
+        expect(Interval.M13 - Interval.P8, Interval.M6);
+        expect(Interval.P11 - Interval.P5, Interval.m7);
+        expect(Interval.M9 - Interval.P5, Interval.P5);
+
+        expect(Interval.M2 - Interval.P5, -Interval.P4);
+        expect(Interval.P4 - Interval.P8, -Interval.P5);
+        expect(Interval.M3 - Interval.M6, -Interval.P4);
+        expect(Interval.P5 - Interval.P11, -Interval.m7);
+        expect(Interval.M6 - Interval.M13, -Interval.P8);
+        expect(Interval.P8 - Interval.M13, -Interval.M6);
+        expect(Interval.P8 - Interval.P11, -Interval.P4);
+        expect(Interval.M9 - Interval.M13, -Interval.P5);
+        expect(Interval.M9 - Interval.P11, -Interval.m3);
+        expect(Interval.P4 - Interval.M9, -Interval.M6);
+      });
+
       test('returns the negation of this Interval', () {
         expect(-Interval.M2, -Size.second.major);
         expect(-const ImperfectSize(-6).minor, Interval.m6);
@@ -1051,6 +1108,52 @@ void main() {
           Interval.d3,
           Interval.P8,
         ]);
+      });
+    });
+  });
+
+  group('IntervalIterable', () {
+    group('.intervalSteps', () {
+      test('returns the interval steps between consecutive Intervals', () {
+        expect(
+          const [Interval.m2, Interval.M3, Interval.P4].intervalSteps.toList(),
+          const [Interval.m2, Interval.A2, Interval.m2],
+        );
+        expect(
+          const [
+            Interval.P1,
+            Interval.m2,
+            Interval.M2,
+            Interval.P4,
+          ].intervalSteps.toList(),
+          const [Interval.P1, Interval.m2, Interval.A1, Interval.m3],
+        );
+        expect(const <Interval>[].intervalSteps.toList(), const <Interval>[]);
+        expect(const [Interval.P1].intervalSteps.toList(), const [Interval.P1]);
+        expect(
+          const [Interval.m2, Interval.m3].intervalSteps.toList(),
+          const [Interval.m2, Interval.M2],
+        );
+
+        expect(
+          [-Interval.m2, -Interval.M3, -Interval.P4].intervalSteps.toList(),
+          [-Interval.m2, -Interval.A2, -Interval.m2],
+        );
+        expect(
+          skip: 'A1 instead of A-1',
+          [
+            Interval.P1,
+            -Interval.m2,
+            -Interval.M2,
+            -Interval.P4,
+          ].intervalSteps.toList(),
+          [
+            Interval.P1,
+            -Interval.m2,
+            -Interval.A1,
+            -Interval.m3,
+          ],
+        );
       });
     });
   });

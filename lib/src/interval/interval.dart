@@ -420,8 +420,8 @@ final class Interval
   /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
   /// ```
   Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
-    yield scalable;
-    var last = scalable;
+    T last;
+    yield last = scalable;
     const maxCircleLoop = 48;
     for (var i = 0; i < maxCircleLoop; i++) {
       yield last = last.transposeBy(this);
@@ -467,6 +467,21 @@ final class Interval
     return initialPitch.interval(finalPitch);
   }
 
+  /// Subtracts [other] from this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.M3 - Interval.m2 == Interval.A2
+  /// Interval.M2 - Interval.A1 == Interval.m2
+  /// Interval.P5 - Interval.P4 == Interval.M2
+  /// ```
+  Interval operator -(Interval other) {
+    final initialPitch = Note.c.inOctave(4);
+    final finalPitch = initialPitch.transposeBy(this).transposeBy(-other);
+
+    return initialPitch.interval(finalPitch);
+  }
+
   /// The negation of this [Interval].
   ///
   /// Example:
@@ -488,6 +503,24 @@ final class Interval
     () => size.compareTo(other.size),
     () => quality.compareTo(other.quality),
   ]);
+}
+
+/// An [Interval] iterable extension.
+extension IntervalIterable on Iterable<Interval> {
+  /// The [Interval] steps between consecutive intervals.
+  ///
+  /// Example:
+  /// ```dart
+  /// const [Interval.m2, Interval.M3, Interval.P4].intervalSteps.toList()
+  ///   == const [Interval.m2, Interval.A2, Interval.m2]
+  /// ```
+  Iterable<Interval> get intervalSteps sync* {
+    var previous = Interval.P1;
+    for (final interval in this) {
+      yield interval - previous;
+      previous = interval;
+    }
+  }
 }
 
 /// A notation system for [Interval].
