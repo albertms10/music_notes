@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
 
+import '../notation_system.dart';
 import '../note/frequency.dart';
 import '../note/note.dart';
 import '../note/pitch.dart';
@@ -29,6 +30,25 @@ class TuningFork {
   /// The C256 tuning fork.
   static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
 
+  /// Parse [source] as a [TuningFork] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [TuningFork], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// TuningFork.parse('A440') == TuningFork.a440
+  /// TuningFork.parse('C = 256') == TuningFork.c256
+  /// TuningFork.parse('z') // throws a FormatException
+  /// ```
+  factory TuningFork.parse(
+    String source, {
+    List<Parser<TuningFork>> chain = const [
+      CompactTuningForkNotation(),
+      ScientificTuningForkNotation(),
+    ],
+  }) => chain.parse(source);
+
   /// The string representation of this [TuningFork] based on [formatter].
   ///
   /// Example:
@@ -39,8 +59,8 @@ class TuningFork {
   /// ```
   @override
   String toString({
-    TuningForkNotation formatter = TuningForkNotation.compact,
-  }) => formatter.tuningFork(this);
+    Formatter<TuningFork> formatter = const CompactTuningForkNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -52,24 +72,8 @@ class TuningFork {
   int get hashCode => Object.hash(pitch, frequency);
 }
 
-/// The abstraction for [TuningFork] notation systems.
-@immutable
-abstract class TuningForkNotation {
-  /// Creates a new [TuningForkNotation].
-  const TuningForkNotation();
-
-  /// The compact [TuningForkNotation] formatter.
-  static const compact = CompactTuningForkNotation();
-
-  /// The scientific [TuningForkNotation] formatter.
-  static const scientific = ScientificTuningForkNotation();
-
-  /// The string representation for [tuningFork].
-  String tuningFork(TuningFork tuningFork);
-}
-
-/// The compact [TuningFork] notation formatter.
-final class CompactTuningForkNotation extends TuningForkNotation {
+/// The [NotationSystem] for compact [TuningFork].
+final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
   /// The reference octave.
   final int referenceOctave;
 
@@ -79,21 +83,67 @@ final class CompactTuningForkNotation extends TuningForkNotation {
   });
 
   @override
-  String tuningFork(TuningFork tuningFork) {
+  String format(TuningFork tuningFork) {
     final pitch = tuningFork.pitch.octave == referenceOctave
         ? '${tuningFork.pitch.note}'
         : '${tuningFork.pitch} ';
 
     return '$pitch${tuningFork.frequency}';
   }
+
+  static final _regExp = RegExp(
+    r'^(?!.*=)(?<pitch>.*?)(?<octave>\d\s+)?\s*(?<frequency>\d+(\.\d+)?)'
+    '(\\s*${Frequency.hertzUnitSymbol})?\$',
+    caseSensitive: false,
+  );
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  TuningFork parse(String source) {
+    final match = _regExp.firstMatch(source)!;
+    final octave = match.namedGroup('octave')?.trim() ?? referenceOctave;
+    final pitch = Pitch.parse('${match.namedGroup('pitch')!}$octave');
+    final frequency = Frequency(double.parse(match.namedGroup('frequency')!));
+
+    return TuningFork(pitch, frequency);
+  }
 }
 
 /// The scientific [TuningFork] notation formatter.
-final class ScientificTuningForkNotation extends TuningForkNotation {
+final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
+  /// The [NotationSystem] for [Pitch].
+  final NotationSystem<Pitch> pitchNotation;
+
   /// Creates a new [ScientificTuningForkNotation].
-  const ScientificTuningForkNotation();
+  const ScientificTuningForkNotation({
+    this.pitchNotation = ScientificPitchNotation.english,
+  });
 
   @override
-  String tuningFork(TuningFork tuningFork) =>
-      '${tuningFork.pitch} = ${tuningFork.frequency.format()}';
+  String format(TuningFork tuningFork) =>
+      '${tuningFork.pitch.toString(formatter: pitchNotation)}'
+      ' = ${tuningFork.frequency.format()}';
+
+  static final _regExp = RegExp(
+    r'^(?<pitch>.*?\d)\s*=\s*(?<frequency>\d+(\.\d+)?)'
+    '(?:\\s*${Frequency.hertzUnitSymbol})?\$',
+    caseSensitive: false,
+  );
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  TuningFork parse(String source) {
+    final match = _regExp.firstMatch(source)!;
+    final pitch = Pitch.parse(
+      match.namedGroup('pitch')!,
+      chain: [pitchNotation],
+    );
+    final frequency = Frequency(double.parse(match.namedGroup('frequency')!));
+
+    return TuningFork(pitch, frequency);
+  }
 }
