@@ -123,17 +123,6 @@ class ChordPattern with Chordable<ChordPattern> {
         .toList(growable: false),
   );
 
-  /// The mirrored version of this [ChordPattern].
-  ///
-  /// Example:
-  /// ```dart
-  /// ChordPattern.majorTriad.mirrored == ChordPattern.minorTriad
-  /// ChordPattern.minorTriad.mirrored == ChordPattern.majorTriad
-  /// ```
-  ChordPattern get mirrored => ChordPattern.fromIntervalSteps(
-    _intervals.intervalSteps.toList(growable: false).reversed,
-  );
-
   /// The root triad of this [ChordPattern].
   ///
   /// Example:
