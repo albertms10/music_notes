@@ -5,7 +5,9 @@ import 'package:meta/meta.dart' show immutable;
 import '../chordable.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../interval/size.dart';
 import '../notation_system.dart';
+import '../note/accidental.dart';
 import '../scalable.dart';
 import 'chord.dart';
 
@@ -190,12 +192,12 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.size(3) == Interval.M3
-  /// ChordPattern.diminishedTriad.size(5) == Interval.d5
-  /// ChordPattern.minorTriad.add7().size(7) == Interval.m7
-  /// ChordPattern.augmentedTriad.size(9) == null
+  /// ChordPattern.majorTriad.size(Size.third) == Interval.M3
+  /// ChordPattern.diminishedTriad.size(Size.fifth) == Interval.d5
+  /// ChordPattern.minorTriad.add7().size(Size.seventh) == Interval.m7
+  /// ChordPattern.augmentedTriad.size(Size.ninth) == null
   /// ```
-  Interval? at(int size) =>
+  Interval? at(Size size) =>
       intervals.firstWhereOrNull((interval) => interval.size == size);
 
   @override
@@ -214,84 +216,113 @@ class ChordPattern with Chordable<ChordPattern> {
 
 /// A notation system for [ChordPattern].
 final class ChordPatternNotation extends NotationSystem<ChordPattern> {
+  /// The [NotationSystem] for [Accidental].
+  final Formatter<Accidental> accidentalNotation;
+
   /// Creates a new [ChordPatternNotation].
-  const ChordPatternNotation();
+  const ChordPatternNotation({
+    this.accidentalNotation = const SymbolAccidentalNotation(
+      showNatural: false,
+    ),
+  });
+
+  static const _augmentedTriad = '+';
+  static const _majorTriad = '';
+  static const _minorTriad = '-';
+  static const _diminishedTriad = 'dim';
+
+  static const _majorSeventh = 'maj';
+  static const _diminishedSeventh = 'º';
+  static const _halfDiminished = 'ø';
+
+  static const _sus = 'sus';
 
   @override
   String format(ChordPattern chordPattern) {
     final buffer = StringBuffer();
 
     if (chordPattern.isAugmented) {
-      buffer.write('+');
+      buffer.write(_augmentedTriad);
     } else if (chordPattern.isMajor) {
-      buffer.write('');
+      buffer.write(_majorTriad);
     } else if (chordPattern.isMinor) {
-      buffer.write('-');
+      buffer.write(_minorTriad);
     }
 
     if (chordPattern.isDiminished) {
-      final seventh = chordPattern.at(7);
+      final seventh = chordPattern.at(Size.seventh);
       if (seventh != null) {
         buffer.write(switch (seventh.quality) {
-          ImperfectQuality.diminished => 'º',
-          ImperfectQuality.minor => 'ø',
+          ImperfectQuality.diminished => _diminishedSeventh,
+          ImperfectQuality.minor => _halfDiminished,
           _ => '',
         });
       } else {
-        buffer.write(' dim');
+        buffer.write(_diminishedTriad);
       }
     }
 
-    if (chordPattern.intervals.first.size == 2) buffer.write('sus2');
-    if (chordPattern.intervals.first.size == 4) buffer.write('sus4');
-
-    for (final interval in chordPattern.modifiers) {
-      buffer.write(switch (interval) {
-        Interval(size: 7, quality: ImperfectQuality.major) => ' maj',
-        Interval(size: 9 || 13, quality: ImperfectQuality.minor) => ' b',
-        Interval(size: 9 || 13, quality: ImperfectQuality.augmented) => ' #',
-        Interval(size: 11, quality: ImperfectQuality.augmented) => ' #',
-        Interval(size: 11, quality: ImperfectQuality.diminished) => ' b',
-        _ => '',
-      });
-      if (!chordPattern.isDiminished) buffer.write(interval.size);
+    if (chordPattern.intervals.first.size
+        case (Size.second || Size.fourth) && final size) {
+      buffer.write('$_sus$size ');
     }
 
-    return buffer.toString();
+    final intervals = chordPattern.modifiers.map((interval) {
+      final part = switch (interval) {
+        Interval(size: Size.seventh, quality: ImperfectQuality.major) =>
+          _majorSeventh,
+        Interval(
+          size: Size.ninth || Size.thirteenth,
+          :final quality,
+        ) =>
+          Accidental(
+            quality.semitones - 1,
+          ).toString(formatter: accidentalNotation),
+        Interval(size: Size.eleventh, :final quality) => Accidental(
+          quality.semitones,
+        ).toString(formatter: accidentalNotation),
+        _ => '',
+      };
+      return '$part${!chordPattern.isDiminished ? interval.size : ''}';
+    });
+
+    buffer.writeAll(intervals, ' ');
+
+    return buffer.toString().trimRight();
   }
 
   @override
   ChordPattern parse(String source) {
     var s = source.replaceAll(' ', '').toLowerCase();
 
-    if (s == 'ø') return ChordPattern.diminishedTriad.add7();
+    if (s == _halfDiminished) return ChordPattern.diminishedTriad.add7();
 
     ChordPattern triad;
-    if (s.startsWith('dim')) {
+    if (s.startsWith(_diminishedTriad)) {
       triad = ChordPattern.diminishedTriad;
       s = s.substring(3);
-    } else if (s.startsWith('+')) {
+    } else if (s.startsWith(_augmentedTriad)) {
       triad = ChordPattern.augmentedTriad;
       s = s.substring(1);
-    } else if (s.startsWith('-')) {
+    } else if (s.startsWith(_minorTriad)) {
       triad = ChordPattern.minorTriad;
       s = s.substring(1);
     } else {
       triad = ChordPattern.majorTriad;
     }
 
-    if (s.startsWith('maj7')) {
+    if (s.startsWith('$_majorSeventh${Size.seventh}')) {
       return triad.add7(ImperfectQuality.major);
-    } else if (s.startsWith('7')) {
+    } else if (s.startsWith('${Size.seventh}')) {
       return triad.add7();
     }
 
-    if (s.contains('sus2')) {
+    if (s.contains('$_sus${Size.second}')) {
       triad = const ChordPattern([Interval.M2, Interval.P5]);
-      s = s.replaceAll('sus2', '');
-    } else if (s.contains('sus4')) {
+      s = s.replaceAll('$_sus${Size.second}', '');
+    } else if (s.contains('$_sus${Size.fourth}')) {
       triad = const ChordPattern([Interval.P4, Interval.P5]);
-      s = s.replaceAll('sus4', '');
+      s = s.replaceAll('$_sus${Size.fourth}', '');
     }
 
     return triad;
