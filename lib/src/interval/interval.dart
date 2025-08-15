@@ -420,8 +420,8 @@ final class Interval
   /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
   /// ```
   Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
-    yield scalable;
-    var last = scalable;
+    T last;
+    yield last = scalable;
     const maxCircleLoop = 48;
     for (var i = 0; i < maxCircleLoop; i++) {
       yield last = last.transposeBy(this);
