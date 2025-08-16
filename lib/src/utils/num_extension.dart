@@ -15,7 +15,9 @@ extension NumExtension on num {
   /// 0.toDeltaString() == '+0'
   /// (-5).toDeltaString() == '-5'
   /// ```
-  String toDeltaString() => isNegative ? '$this' : '$plusSign$this';
+  String toDeltaString({bool useAscii = false}) => isNegative
+      ? (useAscii ? '$this' : toNegativeUnicode())
+      : '$plusSign$this';
 
   /// The negative Unicode representation of this [num].
   ///
