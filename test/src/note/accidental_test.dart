@@ -61,6 +61,28 @@ void main() {
           expect(Accidental.natural.toString(formatter: hideNatural), '');
           expect(Accidental.flat.toString(formatter: hideNatural), '♭');
         });
+
+        test('returns the ASCII string representation of this Accidental', () {
+          const formatter = SymbolAccidentalNotation.ascii();
+          expect(const Accidental(5).toString(formatter: formatter), '#xx');
+          expect(const Accidental(4).toString(formatter: formatter), 'xx');
+          expect(Accidental.tripleSharp.toString(formatter: formatter), '#x');
+          expect(Accidental.doubleSharp.toString(formatter: formatter), 'x');
+          expect(Accidental.sharp.toString(formatter: formatter), '#');
+          expect(Accidental.natural.toString(formatter: formatter), 'n');
+          expect(Accidental.flat.toString(formatter: formatter), 'b');
+          expect(Accidental.doubleFlat.toString(formatter: formatter), 'bb');
+          expect(Accidental.tripleFlat.toString(formatter: formatter), 'bbb');
+          expect(const Accidental(-4).toString(formatter: formatter), 'bbbb');
+          expect(const Accidental(-5).toString(formatter: formatter), 'bbbbb');
+
+          const hideNatural = SymbolAccidentalNotation.ascii(
+            showNatural: false,
+          );
+          expect(Accidental.sharp.toString(formatter: hideNatural), '#');
+          expect(Accidental.natural.toString(formatter: hideNatural), '');
+          expect(Accidental.flat.toString(formatter: hideNatural), 'b');
+        });
       });
     });
 

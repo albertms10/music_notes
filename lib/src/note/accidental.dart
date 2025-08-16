@@ -180,10 +180,7 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
   final bool useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
-  const SymbolAccidentalNotation({
-    this.showNatural = true,
-    this.useAscii = false,
-  });
+  const SymbolAccidentalNotation({this.showNatural = true}) : useAscii = false;
 
   /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
   const SymbolAccidentalNotation.ascii({this.showNatural = true})
