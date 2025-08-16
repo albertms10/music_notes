@@ -26,6 +26,7 @@ void main() {
           expect(() => ScaleDegree.parse(''), throwsFormatException);
           expect(() => ScaleDegree.parse('x'), throwsFormatException);
           expect(() => ScaleDegree.parse('H'), throwsFormatException);
+          expect(() => ScaleDegree.parse('vv'), throwsFormatException);
         });
 
         test('parses source as a ScaleDegree', () {
