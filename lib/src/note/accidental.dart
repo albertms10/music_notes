@@ -176,27 +176,36 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
   /// [Accidental.natural] symbol.
   final bool showNatural;
 
+  /// Whether to use ASCII symbols instead of Unicode symbols.
+  final bool useAscii;
+
   /// Creates a new [SymbolAccidentalNotation].
-  const SymbolAccidentalNotation({this.showNatural = true});
+  const SymbolAccidentalNotation({this.showNatural = true}) : useAscii = false;
+
+  /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
+  const SymbolAccidentalNotation.ascii({this.showNatural = true})
+    : useAscii = true;
 
   static const _doubleSharpSymbol = '𝄪';
-  static const _doubleSharpSymbolAlt = 'x';
+  static const _doubleSharpSymbolAscii = 'x';
   static const _sharpSymbol = '♯';
-  static const _sharpSymbolAlt = '#';
+  static const _sharpSymbolAscii = '#';
   static const _naturalSymbol = '♮';
+  static const _naturalSymbolAscii = 'n';
   static const _flatSymbol = '♭';
-  static const _flatSymbolAlt = 'b';
+  static const _flatSymbolAscii = 'b';
   static const _doubleFlatSymbol = '𝄫';
 
   /// The list of valid symbols for an [Accidental].
   static const symbols = [
     _doubleSharpSymbol,
-    _doubleSharpSymbolAlt,
+    _doubleSharpSymbolAscii,
     _sharpSymbol,
-    _sharpSymbolAlt,
+    _sharpSymbolAscii,
     _naturalSymbol,
+    _naturalSymbolAscii,
     _flatSymbol,
-    _flatSymbolAlt,
+    _flatSymbolAscii,
     _doubleFlatSymbol,
   ];
 
@@ -208,14 +217,16 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
   @override
   String format(Accidental accidental) {
     if (!showNatural && accidental.isNatural) return '';
-    if (accidental.semitones == 0) return _naturalSymbol;
+    if (accidental.semitones == 0) {
+      return useAscii ? _naturalSymbolAscii : _naturalSymbol;
+    }
 
     final accidentalSymbol = accidental.semitones.isNegative
-        ? _flatSymbol
-        : _sharpSymbol;
+        ? (useAscii ? _flatSymbolAscii : _flatSymbol)
+        : (useAscii ? _sharpSymbolAscii : _sharpSymbol);
     final doubleAccidentalSymbol = accidental.semitones.isNegative
-        ? _doubleFlatSymbol
-        : _doubleSharpSymbol;
+        ? (useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
+        : (useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
 
     final absSemitones = accidental.semitones.abs();
     final singleAccidentals = accidentalSymbol * (absSemitones % 2);
@@ -225,10 +236,10 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
   }
 
   static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
-    _doubleSharpSymbol || _doubleSharpSymbolAlt => 2,
-    _sharpSymbol || _sharpSymbolAlt => 1,
-    _naturalSymbol || '' => 0,
-    _flatSymbol || _flatSymbolAlt => -1,
+    _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,
+    _sharpSymbol || _sharpSymbolAscii => 1,
+    _naturalSymbol || _naturalSymbolAscii || '' => 0,
+    _flatSymbol || _flatSymbolAscii => -1,
     _doubleFlatSymbol => -2,
     _ => null,
   };
