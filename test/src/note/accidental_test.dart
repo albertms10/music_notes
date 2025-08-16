@@ -5,43 +5,109 @@ import 'package:test/test.dart';
 
 void main() {
   group('Accidental', () {
-    group('.parse()', () {
-      test('throws a FormatException when source is invalid', () {
-        expect(() => Accidental.parse('invalid'), throwsFormatException);
-        expect(() => Accidental.parse('s'), throwsFormatException);
+    group('SymbolAccidentalNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Accidental.parse('invalid'), throwsFormatException);
+          expect(() => Accidental.parse('z'), throwsFormatException);
+        });
+
+        test('parses source as an Accidental', () {
+          expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
+          expect(Accidental.parse('#xx'), const Accidental(5));
+          expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
+          expect(Accidental.parse('xx'), const Accidental(4));
+          expect(Accidental.parse('♯𝄪'), Accidental.tripleSharp);
+          expect(Accidental.parse('#x'), Accidental.tripleSharp);
+          expect(Accidental.parse('𝄪'), Accidental.doubleSharp);
+          expect(Accidental.parse('x'), Accidental.doubleSharp);
+          expect(Accidental.parse('♯'), Accidental.sharp);
+          expect(Accidental.parse('#'), Accidental.sharp);
+          expect(Accidental.parse('is'), Accidental.sharp);
+
+          expect(Accidental.parse(''), Accidental.natural);
+          expect(Accidental.parse('♮'), Accidental.natural);
+          expect(Accidental.parse('n'), Accidental.natural);
+
+          expect(Accidental.parse('♭'), Accidental.flat);
+          expect(Accidental.parse('b'), Accidental.flat);
+          expect(Accidental.parse('𝄫'), Accidental.doubleFlat);
+          expect(Accidental.parse('bb'), Accidental.doubleFlat);
+          expect(Accidental.parse('♭𝄫'), Accidental.tripleFlat);
+          expect(Accidental.parse('bbb'), Accidental.tripleFlat);
+          expect(Accidental.parse('𝄫𝄫'), const Accidental(-4));
+          expect(Accidental.parse('bbbb'), const Accidental(-4));
+          expect(Accidental.parse('♭𝄫𝄫'), const Accidental(-5));
+          expect(Accidental.parse('bbbbb'), const Accidental(-5));
+        });
       });
 
-      test('parses source as an Accidental', () {
-        expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
-        expect(Accidental.parse('#xx'), const Accidental(5));
-        expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
-        expect(Accidental.parse('xx'), const Accidental(4));
-        expect(Accidental.parse('♯𝄪'), Accidental.tripleSharp);
-        expect(Accidental.parse('#x'), Accidental.tripleSharp);
-        expect(Accidental.parse('isisis'), Accidental.tripleSharp);
-        expect(Accidental.parse('𝄪'), Accidental.doubleSharp);
-        expect(Accidental.parse('x'), Accidental.doubleSharp);
-        expect(Accidental.parse('isis'), Accidental.doubleSharp);
-        expect(Accidental.parse('♯'), Accidental.sharp);
-        expect(Accidental.parse('#'), Accidental.sharp);
-        expect(Accidental.parse('is'), Accidental.sharp);
+      group('.toString()', () {
+        test('returns the string representation of this Accidental', () {
+          expect(const Accidental(5).toString(), '♯𝄪𝄪');
+          expect(const Accidental(4).toString(), '𝄪𝄪');
+          expect(Accidental.tripleSharp.toString(), '♯𝄪');
+          expect(Accidental.doubleSharp.toString(), '𝄪');
+          expect(Accidental.sharp.toString(), '♯');
+          expect(Accidental.natural.toString(), '♮');
+          expect(Accidental.flat.toString(), '♭');
+          expect(Accidental.doubleFlat.toString(), '𝄫');
+          expect(Accidental.tripleFlat.toString(), '♭𝄫');
+          expect(const Accidental(-4).toString(), '𝄫𝄫');
+          expect(const Accidental(-5).toString(), '♭𝄫𝄫');
 
-        expect(Accidental.parse(''), Accidental.natural);
-        expect(Accidental.parse('♮'), Accidental.natural);
+          const hideNatural = SymbolAccidentalNotation(showNatural: false);
+          expect(Accidental.sharp.toString(formatter: hideNatural), '♯');
+          expect(Accidental.natural.toString(formatter: hideNatural), '');
+          expect(Accidental.flat.toString(formatter: hideNatural), '♭');
+        });
+      });
+    });
 
-        expect(Accidental.parse('es'), Accidental.flat);
-        expect(Accidental.parse('♭'), Accidental.flat);
-        expect(Accidental.parse('b'), Accidental.flat);
-        expect(Accidental.parse('eses'), Accidental.doubleFlat);
-        expect(Accidental.parse('𝄫'), Accidental.doubleFlat);
-        expect(Accidental.parse('bb'), Accidental.doubleFlat);
-        expect(Accidental.parse('eseses'), Accidental.tripleFlat);
-        expect(Accidental.parse('♭𝄫'), Accidental.tripleFlat);
-        expect(Accidental.parse('bbb'), Accidental.tripleFlat);
-        expect(Accidental.parse('𝄫𝄫'), const Accidental(-4));
-        expect(Accidental.parse('bbbb'), const Accidental(-4));
-        expect(Accidental.parse('♭𝄫𝄫'), const Accidental(-5));
-        expect(Accidental.parse('bbbbb'), const Accidental(-5));
+    group('GermanAccidentalNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Accidental.parse('invalid'), throwsFormatException);
+          expect(() => Accidental.parse('s'), throwsFormatException);
+        });
+
+        test('parses source as an Accidental', () {
+          expect(Accidental.parse('isisis'), Accidental.tripleSharp);
+          expect(Accidental.parse('isis'), Accidental.doubleSharp);
+          expect(Accidental.parse('is'), Accidental.sharp);
+          expect(Accidental.parse(''), Accidental.natural);
+          expect(Accidental.parse('es'), Accidental.flat);
+          expect(Accidental.parse('eses'), Accidental.doubleFlat);
+          expect(Accidental.parse('eseses'), Accidental.tripleFlat);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this Accidental', () {
+          const formatter = GermanAccidentalNotation();
+
+          expect(
+            const Accidental(4).toString(formatter: formatter),
+            'isisisis',
+          );
+          expect(
+            Accidental.tripleSharp.toString(formatter: formatter),
+            'isisis',
+          );
+          expect(Accidental.doubleSharp.toString(formatter: formatter), 'isis');
+          expect(Accidental.sharp.toString(formatter: formatter), 'is');
+          expect(Accidental.natural.toString(formatter: formatter), '');
+          expect(Accidental.flat.toString(formatter: formatter), 'es');
+          expect(Accidental.doubleFlat.toString(formatter: formatter), 'eses');
+          expect(
+            Accidental.tripleFlat.toString(formatter: formatter),
+            'eseses',
+          );
+          expect(
+            const Accidental(-4).toString(formatter: formatter),
+            'eseseses',
+          );
+        });
       });
     });
 
@@ -110,27 +176,6 @@ void main() {
         expect(Accidental.sharp.incrementBy(0), Accidental.sharp);
         expect(Accidental.sharp.incrementBy(1), Accidental.doubleSharp);
         expect(Accidental.sharp.incrementBy(2), Accidental.tripleSharp);
-      });
-    });
-
-    group('.toString()', () {
-      test('returns the string representation of this Accidental', () {
-        expect(const Accidental(5).toString(), '♯𝄪𝄪');
-        expect(const Accidental(4).toString(), '𝄪𝄪');
-        expect(Accidental.tripleSharp.toString(), '♯𝄪');
-        expect(Accidental.doubleSharp.toString(), '𝄪');
-        expect(Accidental.sharp.toString(), '♯');
-        expect(Accidental.natural.toString(), '♮');
-        expect(Accidental.flat.toString(), '♭');
-        expect(Accidental.doubleFlat.toString(), '𝄫');
-        expect(Accidental.tripleFlat.toString(), '♭𝄫');
-        expect(const Accidental(-4).toString(), '𝄫𝄫');
-        expect(const Accidental(-5).toString(), '♭𝄫𝄫');
-
-        const hideNatural = SymbolAccidentalNotation(showNatural: false);
-        expect(Accidental.sharp.toString(formatter: hideNatural), '♯');
-        expect(Accidental.natural.toString(formatter: hideNatural), '');
-        expect(Accidental.flat.toString(formatter: hideNatural), '♭');
       });
     });
 
