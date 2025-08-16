@@ -3,6 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../harmony/chord.dart';
 import '../interval/quality.dart';
+import '../notation_system.dart';
 import '../note/accidental.dart';
 import 'scale.dart';
 
@@ -62,6 +63,23 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 
   /// The VII [ScaleDegree].
   static const vii = ScaleDegree(7);
+
+  /// Parse [source] as a [ScaleDegree] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ScaleDegree], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.parse('I') == ScaleDegree.i.major
+  /// ScaleDegree.parse('bII6') == ScaleDegree.neapolitanSixth
+  /// ScaleDegree.parse('vi') == ScaleDegree.vi.minor
+  /// ScaleDegree.parse('z') // throws a FormatException
+  /// ```
+  factory ScaleDegree.parse(
+    String source, {
+    List<Parser<ScaleDegree>> chain = const [StandardScaleDegreeNotation()],
+  }) => chain.parse(source);
 
   /// Whether this [ScaleDegree] is raised.
   ///
@@ -165,8 +183,6 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
-  /// See [ScaleDegreeNotation] for all formatter implementations.
-  ///
   /// Example:
   /// ```dart
   /// ScaleDegree.iii.toString() == 'III'
@@ -175,8 +191,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   @override
   String toString({
-    ScaleDegreeNotation formatter = ScaleDegreeNotation.standard,
-  }) => formatter.scaleDegree(this);
+    Formatter<ScaleDegree> formatter = const StandardScaleDegreeNotation(),
+  }) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -206,31 +222,27 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ]);
 }
 
-/// The abstraction for [ScaleDegree] notation systems.
-@immutable
-abstract class ScaleDegreeNotation {
-  /// Creates a new [ScaleDegreeNotation].
-  const ScaleDegreeNotation();
-
-  /// The standard [ScaleDegreeNotation] formatter.
-  static const standard = StandardScaleDegreeNotation();
-
-  /// The string notation for [scaleDegree].
-  String scaleDegree(ScaleDegree scaleDegree);
-}
-
 /// The standard [ScaleDegree] notation formatter.
-final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
+final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
+  /// The [NotationSystem] for [Accidental].
+  final NotationSystem<Accidental> accidentalNotation;
+
   /// Creates a new [StandardScaleDegreeNotation].
-  const StandardScaleDegreeNotation();
+  const StandardScaleDegreeNotation({
+    this.accidentalNotation = const SymbolAccidentalNotation(),
+  });
 
   @override
-  String scaleDegree(ScaleDegree scaleDegree) {
+  String format(ScaleDegree scaleDegree) {
     final buffer = StringBuffer()
       ..writeAll([
         if (scaleDegree.semitonesDelta != 0)
-          Accidental(scaleDegree.semitonesDelta),
-        if (scaleDegree.quality != null && scaleDegree.quality!.semitones <= 0)
+          Accidental(
+            scaleDegree.semitonesDelta,
+          ).toString(formatter: accidentalNotation),
+        if (scaleDegree.quality case ImperfectQuality(
+          :final semitones,
+        ) when semitones <= 0)
           scaleDegree.romanNumeral.toLowerCase()
         else
           scaleDegree.romanNumeral,
@@ -242,5 +254,53 @@ final class StandardScaleDegreeNotation extends ScaleDegreeNotation {
       ]);
 
     return buffer.toString();
+  }
+
+  static final _regExp = RegExp(
+    r'^(?<accidental>[♯#♭b]*)(?<romanNumeral>[iv]+)(?<inversion>6|64)?$',
+    caseSensitive: false,
+  );
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  ScaleDegree parse(String source) {
+    final match = _regExp.firstMatch(source)!;
+    final accidentalPart = match.namedGroup('accidental')!;
+    final accidental = accidentalPart.isNotEmpty
+        ? Accidental.parse(accidentalPart, chain: [accidentalNotation])
+        : Accidental.natural;
+
+    final numeral = match.namedGroup('romanNumeral')!;
+    const romanNumerals = {
+      'i': 1,
+      'ii': 2,
+      'iii': 3,
+      'iv': 4,
+      'v': 5,
+      'vi': 6,
+      'vii': 7,
+    };
+    final ordinal = romanNumerals[numeral.toLowerCase()];
+    if (ordinal == null) {
+      throw FormatException('Invalid roman numeral: $numeral');
+    }
+
+    final inversionPart = match.namedGroup('inversion');
+    final inversion = switch (inversionPart) {
+      '6' => 1,
+      '64' => 2,
+      _ => 0,
+    };
+
+    return ScaleDegree(
+      ordinal,
+      inversion: inversion,
+      quality: numeral.isUpperCase
+          ? ImperfectQuality.major
+          : ImperfectQuality.minor,
+      semitonesDelta: accidental.semitones,
+    );
   }
 }
