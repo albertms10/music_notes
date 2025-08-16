@@ -5,64 +5,217 @@ import 'package:test/test.dart';
 
 void main() {
   group('Pitch', () {
-    group('.parse()', () {
-      test('throws a FormatException when source is invalid', () {
-        expect(() => Pitch.parse('x'), throwsFormatException);
-        expect(() => Pitch.parse('aa'), throwsFormatException);
-        expect(() => Pitch.parse('re,'), throwsFormatException);
-        expect(() => Pitch.parse("A,'"), throwsFormatException);
-        expect(() => Pitch.parse("A'"), throwsFormatException);
-        expect(() => Pitch.parse("Sol'"), throwsFormatException);
-        expect(() => Pitch.parse('bb,'), throwsFormatException);
-        expect(() => Pitch.parse("F#'"), throwsFormatException);
-        expect(() => Pitch.parse("g''h"), throwsFormatException);
-        expect(() => Pitch.parse('C,d'), throwsFormatException);
-        expect(() => Pitch.parse("d′'"), throwsFormatException);
-        expect(() => Pitch.parse('f″″'), throwsFormatException);
+    group('ScientificPitchNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Pitch.parse('x'), throwsFormatException);
+          expect(() => Pitch.parse('aa'), throwsFormatException);
+          expect(() => Pitch.parse('D5,'), throwsFormatException);
+          expect(() => Pitch.parse('ba'), throwsFormatException);
+          expect(() => Pitch.parse("d7'"), throwsFormatException);
+          expect(() => Pitch.parse("e'4"), throwsFormatException);
+          expect(() => Pitch.parse("'Eb3"), throwsFormatException);
+          expect(() => Pitch.parse('2a'), throwsFormatException);
+          expect(() => Pitch.parse('3B,'), throwsFormatException);
+        });
 
-        expect(() => Pitch.parse('D5,'), throwsFormatException);
-        expect(() => Pitch.parse('ba'), throwsFormatException);
-        expect(() => Pitch.parse("d7'"), throwsFormatException);
-        expect(() => Pitch.parse("e'4"), throwsFormatException);
-        expect(() => Pitch.parse("'E3"), throwsFormatException);
-        expect(() => Pitch.parse('2a'), throwsFormatException);
-        expect(() => Pitch.parse('3B,'), throwsFormatException);
+        test('parses source as a Pitch', () {
+          expect(Pitch.parse('A4'), Note.a.inOctave(4));
+          expect(Pitch.parse('d3'), Note.d.inOctave(3));
+          expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
+          expect(Pitch.parse('bb-1'), Note.b.flat.inOctave(-1));
+          expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
+          expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
+
+          final pitch = Note.b.flat.flat.inOctave(-2);
+          expect(Pitch.parse(pitch.toString()), pitch);
+        });
       });
 
-      test('parses source as a Pitch', () {
-        expect(Pitch.parse('A4'), Note.a.inOctave(4));
-        expect(Pitch.parse('d3'), Note.d.inOctave(3));
-        expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
-        expect(Pitch.parse('bb-1'), Note.b.flat.inOctave(-1));
-        expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
-        expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
+      group('.toString()', () {
+        test('returns the string representation of this Pitch', () {
+          expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
+          expect(Note.d.inOctave(0).toString(), 'D0');
+          expect(Note.b.flat.inOctave(1).toString(), 'B♭1');
+          expect(Note.g.inOctave(2).toString(), 'G2');
+          expect(Note.a.inOctave(3).toString(), 'A3');
+          expect(Note.c.inOctave(4).toString(), 'C4');
+          expect(Note.c.sharp.inOctave(4).toString(), 'C♯4');
+          expect(Note.a.inOctave(4).toString(), 'A4');
+          expect(Note.f.sharp.inOctave(5).toString(), 'F♯5');
+          expect(Note.e.inOctave(7).toString(), 'E7');
+        });
+      });
+    });
 
-        expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
-        expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
-        expect(Pitch.parse('C,,'), Note.c.inOctave(0));
-        expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
-        expect(Pitch.parse('A'), Note.a.inOctave(2));
-        expect(Pitch.parse('H'), Note.b.inOctave(2));
-        expect(Pitch.parse('Si'), Note.b.inOctave(2));
-        expect(Pitch.parse('h'), Note.b.inOctave(3));
-        expect(Pitch.parse('sol'), Note.g.inOctave(3));
-        expect(Pitch.parse('f'), Note.f.inOctave(3));
-        expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
-        expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
-        expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-        expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
-        expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
+    group('HelmholtzPitchNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Pitch.parse('x'), throwsFormatException);
+          expect(() => Pitch.parse('aa'), throwsFormatException);
+          expect(() => Pitch.parse('re,'), throwsFormatException);
+          expect(() => Pitch.parse("A,'"), throwsFormatException);
+          expect(() => Pitch.parse("A'"), throwsFormatException);
+          expect(() => Pitch.parse("Sol'"), throwsFormatException);
+          expect(() => Pitch.parse('bb,'), throwsFormatException);
+          expect(() => Pitch.parse("F#'"), throwsFormatException);
+          expect(() => Pitch.parse("g''h"), throwsFormatException);
+          expect(() => Pitch.parse('C,d'), throwsFormatException);
+          expect(() => Pitch.parse("d′'"), throwsFormatException);
+          expect(() => Pitch.parse('f″″'), throwsFormatException);
+        });
 
-        var pitch = Note.b.flat.flat.inOctave(-2);
-        expect(Pitch.parse(pitch.toString()), pitch);
+        test('parses source as a Pitch', () {
+          expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
+          expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
+          expect(Pitch.parse('C,,'), Note.c.inOctave(0));
+          expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
+          expect(Pitch.parse('A'), Note.a.inOctave(2));
+          expect(Pitch.parse('H'), Note.b.inOctave(2));
+          expect(Pitch.parse('Si'), Note.b.inOctave(2));
+          expect(Pitch.parse('h'), Note.b.inOctave(3));
+          expect(Pitch.parse('sol'), Note.g.inOctave(3));
+          expect(Pitch.parse('f'), Note.f.inOctave(3));
+          expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
+          expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
+          expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
+          expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
+          expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
 
-        pitch = Note.a.sharp.inOctave(7);
-        expect(
-          Pitch.parse(
-            pitch.toString(formatter: HelmholtzPitchNotation.english),
-          ),
-          pitch,
-        );
+          final pitch = Note.a.sharp.inOctave(7);
+          expect(
+            Pitch.parse(
+              pitch.toString(formatter: HelmholtzPitchNotation.english),
+            ),
+            pitch,
+          );
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the English Helmholtz string representation', () {
+          const formatter = HelmholtzPitchNotation.english;
+
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            'G♯͵͵͵',
+          );
+          expect(Note.d.inOctave(0).toString(formatter: formatter), 'D͵͵');
+          expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'B♭͵');
+          expect(Note.g.inOctave(2).toString(formatter: formatter), 'G');
+          expect(Note.a.inOctave(3).toString(formatter: formatter), 'a');
+          expect(Note.c.inOctave(4).toString(formatter: formatter), 'c′');
+          expect(
+            Note.c.sharp.inOctave(4).toString(formatter: formatter),
+            'c♯′',
+          );
+          expect(Note.a.inOctave(4).toString(formatter: formatter), 'a′');
+          expect(
+            Note.f.sharp.inOctave(5).toString(formatter: formatter),
+            'f♯″',
+          );
+          expect(Note.e.inOctave(7).toString(formatter: formatter), 'e⁗');
+          expect(
+            Note.b.flat.inOctave(8).toString(formatter: formatter),
+            'b♭′′′′′',
+          );
+        });
+
+        test('returns the German Helmholtz string representation', () {
+          const formatter = HelmholtzPitchNotation.german;
+
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            'Gis͵͵͵',
+          );
+          expect(
+            Note.d.flat.inOctave(0).toString(formatter: formatter),
+            'Des͵͵',
+          );
+          expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'B͵');
+          expect(Note.g.inOctave(2).toString(formatter: formatter), 'G');
+          expect(Note.a.inOctave(3).toString(formatter: formatter), 'a');
+          expect(Note.c.inOctave(4).toString(formatter: formatter), 'c′');
+          expect(
+            Note.c.sharp.inOctave(4).toString(formatter: formatter),
+            'cis′',
+          );
+          expect(Note.a.inOctave(4).toString(formatter: formatter), 'a′');
+          expect(Note.a.flat.inOctave(5).toString(formatter: formatter), 'as″');
+          expect(Note.e.inOctave(7).toString(formatter: formatter), 'e⁗');
+        });
+
+        test('returns the Romance Helmholtz string representation', () {
+          const formatter = HelmholtzPitchNotation.romance;
+
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            'Sol♯͵͵͵',
+          );
+          expect(
+            Note.d.flat.inOctave(0).toString(formatter: formatter),
+            'Re♭͵͵',
+          );
+          expect(
+            Note.b.flat.inOctave(1).toString(formatter: formatter),
+            'Si♭͵',
+          );
+          expect(Note.g.inOctave(2).toString(formatter: formatter), 'Sol');
+          expect(Note.a.inOctave(3).toString(formatter: formatter), 'la');
+          expect(Note.c.inOctave(4).toString(formatter: formatter), 'do′');
+          expect(
+            Note.c.sharp.inOctave(4).toString(formatter: formatter),
+            'do♯′',
+          );
+          expect(Note.a.inOctave(4).toString(formatter: formatter), 'la′');
+          expect(
+            Note.a.flat.inOctave(5).toString(formatter: formatter),
+            'la♭″',
+          );
+          expect(Note.e.inOctave(6).toString(formatter: formatter), 'mi‴');
+        });
+
+        test('returns the ASCII Helmholtz string representation', () {
+          const english = HelmholtzPitchNotation.ascii();
+
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: english),
+            'G#,,,',
+          );
+          expect(Note.a.flat.inOctave(1).toString(formatter: english), 'Ab,');
+          expect(Note.g.inOctave(2).toString(formatter: english), 'G');
+          expect(Note.c.inOctave(4).toString(formatter: english), "c'");
+          expect(
+            Note.f.sharp.inOctave(5).toString(formatter: english),
+            "f#''",
+          );
+          expect(Note.e.inOctave(7).toString(formatter: english), "e''''");
+          expect(
+            Note.b.flat.inOctave(8).toString(formatter: english),
+            "bb'''''",
+          );
+
+          const romance = HelmholtzPitchNotation.ascii(
+            noteNotation: RomanceNoteNotation.ascii(),
+          );
+
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: romance),
+            'Sol#,,,',
+          );
+          expect(Note.a.flat.inOctave(1).toString(formatter: romance), 'Lab,');
+          expect(Note.g.inOctave(2).toString(formatter: romance), 'Sol');
+          expect(Note.c.inOctave(4).toString(formatter: romance), "do'");
+          expect(
+            Note.f.sharp.inOctave(5).toString(formatter: romance),
+            "fa#''",
+          );
+          expect(Note.e.inOctave(7).toString(formatter: romance), "mi''''");
+          expect(
+            Note.b.flat.inOctave(8).toString(formatter: romance),
+            "sib'''''",
+          );
+        });
       });
     });
 
@@ -1199,206 +1352,6 @@ void main() {
               .toString(),
           '{C1+6, C2+6, G2+8, C3+6, E3-8, G3+8, A♯3-25, C4+6, D4+10, '
           'E4-8, F♯4-43, G4+8, A♭4+47, A♯4-25, B4-6, C5+6}',
-        );
-      });
-    });
-
-    group('.toString()', () {
-      test('returns the scientific string representation of this Pitch', () {
-        expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
-        expect(Note.d.inOctave(0).toString(), 'D0');
-        expect(Note.b.flat.inOctave(1).toString(), 'B♭1');
-        expect(Note.g.inOctave(2).toString(), 'G2');
-        expect(Note.a.inOctave(3).toString(), 'A3');
-        expect(Note.c.inOctave(4).toString(), 'C4');
-        expect(Note.c.sharp.inOctave(4).toString(), 'C♯4');
-        expect(Note.a.inOctave(4).toString(), 'A4');
-        expect(Note.f.sharp.inOctave(5).toString(), 'F♯5');
-        expect(Note.e.inOctave(7).toString(), 'E7');
-      });
-
-      test('returns the English Helmholtz string representation', () {
-        expect(
-          Note.g.sharp
-              .inOctave(-1)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'G♯͵͵͵',
-        );
-        expect(
-          Note.d
-              .inOctave(0)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'D͵͵',
-        );
-        expect(
-          Note.b.flat
-              .inOctave(1)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'B♭͵',
-        );
-        expect(
-          Note.g
-              .inOctave(2)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'G',
-        );
-        expect(
-          Note.a
-              .inOctave(3)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'a',
-        );
-        expect(
-          Note.c
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'c′',
-        );
-        expect(
-          Note.c.sharp
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'c♯′',
-        );
-        expect(
-          Note.a
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'a′',
-        );
-        expect(
-          Note.f.sharp
-              .inOctave(5)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'f♯″',
-        );
-        expect(
-          Note.e
-              .inOctave(7)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'e⁗',
-        );
-        expect(
-          Note.b.flat
-              .inOctave(8)
-              .toString(formatter: HelmholtzPitchNotation.english),
-          'b♭′′′′′',
-        );
-      });
-
-      test('returns the German Helmholtz string representation', () {
-        expect(
-          Note.g.sharp
-              .inOctave(-1)
-              .toString(formatter: HelmholtzPitchNotation.german),
-          'Gis͵͵͵',
-        );
-        expect(
-          Note.d.flat
-              .inOctave(0)
-              .toString(formatter: HelmholtzPitchNotation.german),
-          'Des͵͵',
-        );
-        expect(
-          Note.b.flat
-              .inOctave(1)
-              .toString(formatter: HelmholtzPitchNotation.german),
-          'B͵',
-        );
-        expect(
-          Note.g.inOctave(2).toString(formatter: HelmholtzPitchNotation.german),
-          'G',
-        );
-        expect(
-          Note.a.inOctave(3).toString(formatter: HelmholtzPitchNotation.german),
-          'a',
-        );
-        expect(
-          Note.c.inOctave(4).toString(formatter: HelmholtzPitchNotation.german),
-          'c′',
-        );
-        expect(
-          Note.c.sharp
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.german),
-          'cis′',
-        );
-        expect(
-          Note.a.inOctave(4).toString(formatter: HelmholtzPitchNotation.german),
-          'a′',
-        );
-        expect(
-          Note.a.flat
-              .inOctave(5)
-              .toString(formatter: HelmholtzPitchNotation.german),
-          'as″',
-        );
-        expect(
-          Note.e.inOctave(7).toString(formatter: HelmholtzPitchNotation.german),
-          'e⁗',
-        );
-      });
-
-      test('returns the Romance Helmholtz string representation', () {
-        expect(
-          Note.g.sharp
-              .inOctave(-1)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'Sol♯͵͵͵',
-        );
-        expect(
-          Note.d.flat
-              .inOctave(0)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'Re♭͵͵',
-        );
-        expect(
-          Note.b.flat
-              .inOctave(1)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'Si♭͵',
-        );
-        expect(
-          Note.g
-              .inOctave(2)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'Sol',
-        );
-        expect(
-          Note.a
-              .inOctave(3)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'la',
-        );
-        expect(
-          Note.c
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'do′',
-        );
-        expect(
-          Note.c.sharp
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'do♯′',
-        );
-        expect(
-          Note.a
-              .inOctave(4)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'la′',
-        );
-        expect(
-          Note.a.flat
-              .inOctave(5)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'la♭″',
-        );
-        expect(
-          Note.e
-              .inOctave(6)
-              .toString(formatter: HelmholtzPitchNotation.romance),
-          'mi‴',
         );
       });
     });
