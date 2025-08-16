@@ -505,10 +505,18 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   /// The [NotationSystem] used to format the [Pitch.note].
   final NotationSystem<Note> noteNotation;
 
+  /// Whether to use ASCII characters instead of Unicode characters.
+  final bool useAscii;
+
   /// Creates a new [ScientificPitchNotation].
   const ScientificPitchNotation({
     this.noteNotation = const EnglishNoteNotation(),
-  });
+  }) : useAscii = false;
+
+  /// Creates a new [ScientificPitchNotation] using ASCII characters.
+  const ScientificPitchNotation.ascii({
+    this.noteNotation = const EnglishNoteNotation.ascii(),
+  }) : useAscii = true;
 
   /// The [EnglishNoteNotation] variant of this [ScientificPitchNotation].
   static const english = ScientificPitchNotation();
@@ -523,10 +531,12 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation(),
   );
 
-  static final _regExp = RegExp(r'^(.+?)([-]?\d+)$');
+  static final _regExp = RegExp('^(.+?)([-${NumExtension.minusSign}]?\\d+)\$');
 
   @override
-  String format(Pitch pitch) => '${pitch.note}${pitch.octave}';
+  String format(Pitch pitch) =>
+      '${pitch.note.toString(formatter: noteNotation)}'
+      '${useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 
   @override
   bool matches(String source) => _regExp.hasMatch(source);
@@ -534,8 +544,9 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
+    final rawOctave = match[2]!.replaceFirst(NumExtension.minusSign, '-');
 
-    return Pitch(noteNotation.parse(match[1]!), octave: int.parse(match[2]!));
+    return Pitch(noteNotation.parse(match[1]!), octave: int.parse(rawOctave));
   }
 }
 

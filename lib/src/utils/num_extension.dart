@@ -1,5 +1,11 @@
 /// A num extension.
 extension NumExtension on num {
+  /// The plus sign.
+  static const plusSign = '+';
+
+  /// The Unicode minus sign.
+  static const minusSign = '−';
+
   /// The delta string representation of this [num]
   /// (showing always the positive sign).
   ///
@@ -9,7 +15,17 @@ extension NumExtension on num {
   /// 0.toDeltaString() == '+0'
   /// (-5).toDeltaString() == '-5'
   /// ```
-  String toDeltaString() => isNegative ? '$this' : '+$this';
+  String toDeltaString() => isNegative ? '$this' : '$plusSign$this';
+
+  /// The negative Unicode representation of this [num].
+  ///
+  /// Example:
+  /// ```dart
+  /// 1.1.toNegativeUnicode() == '1.1'
+  /// 0.toNegativeUnicode() == '0'
+  /// (-5).toNegativeUnicode() == '−5'
+  /// ```
+  String toNegativeUnicode() => isNegative ? '$minusSign${-this}' : '$this';
 
   /// The sign of this integer.
   ///

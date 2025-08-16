@@ -91,7 +91,7 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this ClosestPitch', () {
-        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A-3');
+        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3');
         expect(
           ClosestPitch(
             Note.f.sharp.inOctave(6),

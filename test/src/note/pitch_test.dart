@@ -26,6 +26,7 @@ void main() {
           expect(Pitch.parse('bb-1'), Note.b.flat.inOctave(-1));
           expect(Pitch.parse('G#6'), Note.g.sharp.inOctave(6));
           expect(Pitch.parse('Bx12'), Note.b.sharp.sharp.inOctave(12));
+          expect(Pitch.parse('G♯−1'), Note.g.sharp.inOctave(-1));
 
           final pitch = Note.b.flat.flat.inOctave(-2);
           expect(Pitch.parse(pitch.toString()), pitch);
@@ -34,7 +35,7 @@ void main() {
 
       group('.toString()', () {
         test('returns the string representation of this Pitch', () {
-          expect(Note.g.sharp.inOctave(-1).toString(), 'G♯-1');
+          expect(Note.g.sharp.inOctave(-1).toString(), 'G♯−1');
           expect(Note.d.inOctave(0).toString(), 'D0');
           expect(Note.b.flat.inOctave(1).toString(), 'B♭1');
           expect(Note.g.inOctave(2).toString(), 'G2');
@@ -44,6 +45,24 @@ void main() {
           expect(Note.a.inOctave(4).toString(), 'A4');
           expect(Note.f.sharp.inOctave(5).toString(), 'F♯5');
           expect(Note.e.inOctave(7).toString(), 'E7');
+        });
+
+        test('returns the ASCII scientific string representation', () {
+          const formatter = ScientificPitchNotation.ascii();
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            'G#-1',
+          );
+          expect(Note.d.inOctave(0).toString(formatter: formatter), 'D0');
+          expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'Bb1');
+          expect(
+            Note.c.sharp.inOctave(4).toString(formatter: formatter),
+            'C#4',
+          );
+          expect(
+            Note.f.sharp.inOctave(5).toString(formatter: formatter),
+            'F#5',
+          );
         });
       });
     });
