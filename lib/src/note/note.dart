@@ -479,6 +479,15 @@ final class EnglishNoteNotation extends NoteNotation {
     accidentalNotation: SymbolAccidentalNotation(),
   );
 
+  /// Creates a new [EnglishNoteNotation] using ASCII characters.
+  const EnglishNoteNotation.ascii({
+    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+  }) : super(
+         accidentalNotation: const SymbolAccidentalNotation.ascii(
+           showNatural: false,
+         ),
+       );
+
   @override
   String format(Note note) =>
       note.baseNote.toString(formatter: baseNoteNotation) +
@@ -573,6 +582,15 @@ final class RomanceNoteNotation extends NoteNotation {
   static const showNatural = RomanceNoteNotation(
     accidentalNotation: SymbolAccidentalNotation(),
   );
+
+  /// Creates a new [RomanceNoteNotation] using ASCII characters.
+  const RomanceNoteNotation.ascii({
+    super.baseNoteNotation = const RomanceBaseNoteNotation(),
+  }) : super(
+         accidentalNotation: const SymbolAccidentalNotation.ascii(
+           showNatural: false,
+         ),
+       );
 
   @override
   String format(Note note) =>

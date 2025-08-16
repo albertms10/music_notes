@@ -546,32 +546,18 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;
 
+  /// Whether to use ASCII characters instead of Unicode characters.
+  final bool useAscii;
+
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
     this.noteNotation = const EnglishNoteNotation(),
-  });
+  }) : useAscii = false;
 
-  static const _superPrime = '′';
-  static const _superDoublePrime = '″';
-  static const _superTriplePrime = '‴';
-  static const _superQuadruplePrime = '⁗';
-  static const _superPrimeAlt = "'";
-  static const _subPrime = '͵';
-  static const _subPrimeAlt = ',';
-
-  static const _compoundPrimeSymbols = [
-    _superDoublePrime,
-    _superTriplePrime,
-    _superQuadruplePrime,
-  ];
-  static const _primeSymbols = [
-    _superPrime,
-    _superPrimeAlt,
-    _subPrime,
-    _subPrimeAlt,
-  ];
-
-  static const _middleOctave = 3;
+  /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
+  const HelmholtzPitchNotation.ascii({
+    this.noteNotation = const EnglishNoteNotation.ascii(),
+  }) : useAscii = true;
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -586,6 +572,28 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation(),
   );
 
+  static const _superPrime = '′';
+  static const _superDoublePrime = '″';
+  static const _superTriplePrime = '‴';
+  static const _superQuadruplePrime = '⁗';
+  static const _superPrimeAscii = "'";
+  static const _subPrime = '͵';
+  static const _subPrimeAscii = ',';
+
+  static const _compoundPrimeSymbols = [
+    _superDoublePrime,
+    _superTriplePrime,
+    _superQuadruplePrime,
+  ];
+  static const _primeSymbols = [
+    _superPrime,
+    _superPrimeAscii,
+    _subPrime,
+    _subPrimeAscii,
+  ];
+
+  static const _middleOctave = 3;
+
   static String _symbols(int n) => switch (n) {
     4 => _superQuadruplePrime,
     3 => _superTriplePrime,
@@ -594,13 +602,19 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     _ => _superPrime * n,
   };
 
+  static String _asciiSymbols(int n) => switch (n) {
+    < 0 => _subPrimeAscii * n.abs(),
+    _ => _superPrimeAscii * n,
+  };
+
   @override
   String format(Pitch pitch) {
     final note = pitch.note.toString(formatter: noteNotation);
+    final symbols = useAscii ? _asciiSymbols : _symbols;
 
     return switch (pitch.octave) {
-      >= _middleOctave => '${note.toLowerCase()}${_symbols(pitch.octave - 3)}',
-      _ => '$note${_symbols(pitch.octave - 2)}',
+      >= _middleOctave => '${note.toLowerCase()}${symbols(pitch.octave - 3)}',
+      _ => '$note${symbols(pitch.octave - 2)}',
     };
   }
 
@@ -633,7 +647,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     final octave = notePart[0].isUpperCase
         ? switch (primes?.first) {
             '' || null => _middleOctave - 1,
-            _subPrime || _subPrimeAlt => _middleOctave - primes!.length - 1,
+            _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
             _ => throw FormatException(
               'Invalid Pitch',
               source,
@@ -642,7 +656,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
           }
         : switch (primes?.first) {
             '' || null => _middleOctave,
-            _superPrime || _superPrimeAlt => _middleOctave + primes!.length,
+            _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
             _superDoublePrime => _middleOctave + 2,
             _superTriplePrime => _middleOctave + 3,
             _superQuadruplePrime => _middleOctave + 4,
