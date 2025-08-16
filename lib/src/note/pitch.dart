@@ -544,7 +544,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
-    final rawOctave = match[2]!.replaceAll(NumExtension.minusSign, '-');
+    final rawOctave = match[2]!.replaceFirst(NumExtension.minusSign, '-');
 
     return Pitch(noteNotation.parse(match[1]!), octave: int.parse(rawOctave));
   }
