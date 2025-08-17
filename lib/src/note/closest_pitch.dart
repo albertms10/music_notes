@@ -1,6 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../notation_system.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
@@ -26,9 +27,10 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
-  static final _regExp = RegExp(r'^(.*?\d+)([+-].+)?$');
-
   /// Parse [source] as a [ClosestPitch] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ClosestPitch], a
+  /// [FormatException] is thrown.
   ///
   /// Example:
   /// ```dart
@@ -37,27 +39,10 @@ class ClosestPitch {
   /// ClosestPitch.parse('E♭3-28') == Note.e.flat.inOctave(3) - const Cent(28)
   /// ClosestPitch.parse('z') // throws a FormatException
   /// ```
-  factory ClosestPitch.parse(String source) {
-    final match = _regExp.firstMatch(source);
-    if (match == null) throw FormatException('Invalid ClosestPitch', source);
-
-    final digits = match[2];
-    var cents = const Cent(0);
-    if (digits != null) {
-      final parsed = num.tryParse(digits);
-      if (parsed == null) {
-        throw FormatException(
-          'Invalid ClosestPitch',
-          source,
-          // Adding 1 to skip the sign position.
-          source.indexOf(digits) + 1,
-        );
-      }
-      cents = Cent(parsed);
-    }
-
-    return ClosestPitch(Pitch.parse(match[1]!), cents: cents);
-  }
+  factory ClosestPitch.parse(
+    String source, {
+    List<Parser<ClosestPitch>> chain = const [StandardClosestPitchNotation()],
+  }) => chain.parse(source);
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
   /// [temperature].
@@ -100,12 +85,9 @@ class ClosestPitch {
   /// (Note.e.flat.inOctave(3) - const Cent(14.6)).toString() == 'E♭3-15'
   /// ```
   @override
-  String toString() {
-    final roundedCents = cents.round();
-    if (roundedCents == 0) return '$pitch';
-
-    return '$pitch${roundedCents.toDeltaString()}';
-  }
+  String toString({
+    Formatter<ClosestPitch> formatter = const StandardClosestPitchNotation(),
+  }) => formatter.format(this);
 
   /// Adds [cents] to this [ClosestPitch].
   ///
@@ -131,4 +113,53 @@ class ClosestPitch {
 
   @override
   int get hashCode => Object.hash(pitch, cents);
+}
+
+/// The [NotationSystem] for standard [ClosestPitch].
+class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
+  /// The [NotationSystem] for [Pitch] notation.
+  final NotationSystem<Pitch> pitchNotation;
+
+  /// Whether to use ASCII characters instead of Unicode characters.
+  final bool useAscii;
+
+  /// Creates a new [StandardClosestPitchNotation].
+  const StandardClosestPitchNotation({
+    this.pitchNotation = ScientificPitchNotation.english,
+  }) : useAscii = false;
+
+  /// Creates a new [StandardClosestPitchNotation] using ASCII characters.
+  const StandardClosestPitchNotation.ascii({
+    this.pitchNotation = const ScientificPitchNotation.ascii(),
+  }) : useAscii = true;
+
+  static final _regExp = RegExp(
+    r'^(?<pitch>.*?\d+)'
+    '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?\$',
+  );
+
+  @override
+  bool matches(String source) => _regExp.hasMatch(source);
+
+  @override
+  ClosestPitch parse(String source) {
+    final match = _regExp.firstMatch(source)!;
+    final digits =
+        match.namedGroup('cents')?.replaceFirst(NumExtension.minusSign, '-') ??
+        '0';
+
+    return ClosestPitch(
+      Pitch.parse(match.namedGroup('pitch')!),
+      cents: Cent(num.parse(digits)),
+    );
+  }
+
+  @override
+  String format(ClosestPitch closestPitch) {
+    final roundedCents = closestPitch.cents.round();
+    final pitch = closestPitch.pitch.toString(formatter: pitchNotation);
+    if (roundedCents == 0) return pitch;
+
+    return '$pitch${roundedCents.toDeltaString(useAscii: useAscii)}';
+  }
 }
