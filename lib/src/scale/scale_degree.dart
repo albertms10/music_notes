@@ -162,6 +162,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
     semitonesDelta: semitonesDelta ?? this.semitonesDelta,
   );
 
+  static const _romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
+
   /// The roman numeral of this [ScaleDegree] based on [ordinal].
   ///
   /// Example:
@@ -170,16 +172,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ScaleDegree.vii.romanNumeral == 'VII'
   /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
   /// ```
-  String get romanNumeral => switch (ordinal) {
-    1 => 'I',
-    2 => 'II',
-    3 => 'III',
-    4 => 'IV',
-    5 => 'V',
-    6 => 'VI',
-    7 => 'VII',
-    _ => '$ordinal',
-  };
+  String get romanNumeral =>
+      _romanNumerals.elementAtOrNull(ordinal - 1)?.toUpperCase() ?? '$ordinal';
 
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
@@ -232,6 +226,8 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
     this.accidentalNotation = const SymbolAccidentalNotation(),
   });
 
+  static const _inversions = ['6', '64'];
+
   @override
   String format(ScaleDegree scaleDegree) {
     final buffer = StringBuffer()
@@ -246,18 +242,17 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
           scaleDegree.romanNumeral.toLowerCase()
         else
           scaleDegree.romanNumeral,
-        switch (scaleDegree.inversion) {
-          1 => '6',
-          2 => '64',
-          _ => '',
-        },
+        if (scaleDegree.inversion != 0)
+          _inversions.elementAtOrNull(scaleDegree.inversion - 1) ?? '',
       ]);
 
     return buffer.toString();
   }
 
   static final _regExp = RegExp(
-    r'^(?<accidental>[♯#♭b]*)(?<romanNumeral>[iv]+)(?<inversion>6|64)?$',
+    '^(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
+    '(?<romanNumeral>${ScaleDegree._romanNumerals.join('|')})'
+    '(?<inversion>${_inversions.join('|')})?\$',
     caseSensitive: false,
   );
 
@@ -271,32 +266,11 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
     final accidental = accidentalPart.isNotEmpty
         ? Accidental.parse(accidentalPart, chain: [accidentalNotation])
         : Accidental.natural;
-
     final numeral = match.namedGroup('romanNumeral')!;
-    const romanNumerals = {
-      'i': 1,
-      'ii': 2,
-      'iii': 3,
-      'iv': 4,
-      'v': 5,
-      'vi': 6,
-      'vii': 7,
-    };
-    final ordinal = romanNumerals[numeral.toLowerCase()];
-    if (ordinal == null) {
-      throw FormatException('Invalid roman numeral: $numeral');
-    }
-
-    final inversionPart = match.namedGroup('inversion');
-    final inversion = switch (inversionPart) {
-      '6' => 1,
-      '64' => 2,
-      _ => 0,
-    };
 
     return ScaleDegree(
-      ordinal,
-      inversion: inversion,
+      ScaleDegree._romanNumerals.indexOf(numeral.toLowerCase()) + 1,
+      inversion: _inversions.indexOf(match.namedGroup('inversion') ?? '') + 1,
       quality: numeral.isUpperCase
           ? ImperfectQuality.major
           : ImperfectQuality.minor,

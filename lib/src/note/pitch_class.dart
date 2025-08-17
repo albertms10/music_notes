@@ -325,7 +325,7 @@ final class EnharmonicSpellingsPitchClassNotation
   String format(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 
-  static final _regExp = RegExp(r'^\{?([^}0-9et]+)\}?$');
+  static final _regExp = RegExp(r'^\{?(?<spellings>[^}0-9et]+)\}?$');
 
   @override
   bool matches(String source) => _regExp.hasMatch(source);
@@ -333,7 +333,7 @@ final class EnharmonicSpellingsPitchClassNotation
   @override
   PitchClass parse(String source) {
     final match = _regExp.firstMatch(source.trim())!;
-    final [spelling, ...] = match.group(1)!.split('|');
+    final [spelling, ...] = match.namedGroup('spellings')!.split('|');
     final Note(:semitones) = Note.parse(spelling.trim());
     return PitchClass(semitones);
   }

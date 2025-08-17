@@ -558,7 +558,7 @@ final class IntervalNotation extends NotationSystem<Interval> {
         '($quality${interval.simple.size.format(formatter: sizeNotation)})';
   }
 
-  static final _regExp = RegExp(r'(\w+?)(-?\d+)');
+  static final _regExp = RegExp(r'(?<quality>\w+?)(?<size>-?\d+)');
 
   @override
   bool matches(String source) => _regExp.hasMatch(source);
@@ -566,16 +566,17 @@ final class IntervalNotation extends NotationSystem<Interval> {
   @override
   Interval parse(String source) {
     final match = _regExp.firstMatch(source);
-    final size = sizeNotation.parse(match![2]!);
+    final size = sizeNotation.parse(match!.namedGroup('size')!);
     // ignore: omit_local_variable_types False positive (?)
     final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation
         : imperfectQualityNotation;
 
-    if (!parser.matches(match[1]!)) {
-      throw FormatException('Invalid Quality', match[1], 0);
+    final quality = match.namedGroup('quality')!;
+    if (!parser.matches(quality)) {
+      throw FormatException('Invalid Quality', quality, 0);
     }
 
-    return Interval._(size, parser.parse(match[1]!));
+    return Interval._(size, parser.parse(quality));
   }
 }
