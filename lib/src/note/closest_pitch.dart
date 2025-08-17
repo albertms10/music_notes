@@ -117,6 +117,7 @@ class ClosestPitch {
 
 /// The [NotationSystem] for standard [ClosestPitch].
 class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
+  /// The [NotationSystem] for [Pitch] notation.
   final NotationSystem<Pitch> pitchNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
