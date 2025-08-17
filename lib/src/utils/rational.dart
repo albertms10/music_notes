@@ -31,7 +31,9 @@ final class Rational implements Comparable<Rational> {
                numerator) *
            (wholePart < 0 ? -1 : 1);
 
-  static final _regExp = RegExp(r'^(-?\d+)\s*(?:(\d+)/(\d+))?$');
+  static final _regExp = RegExp(
+    r'^(?<integer>-?\d+)\s*(?:(?<numerator>\d+)/(?<denominator>\d+))?$',
+  );
 
   /// Parses source as a [Rational].
   factory Rational.parse(String source) {
@@ -40,11 +42,13 @@ final class Rational implements Comparable<Rational> {
       return throw FormatException('Invalid Ratio', source);
     }
 
-    final integer = int.parse(match[1]!);
-    if (match[2] == null) return Rational.fromMixed(integer);
+    final integer = int.parse(match.namedGroup('integer')!);
+    if (match.namedGroup('numerator') == null) {
+      return Rational.fromMixed(integer);
+    }
 
-    final numerator = int.parse(match[2]!);
-    final denominator = int.parse(match[3]!);
+    final numerator = int.parse(match.namedGroup('numerator')!);
+    final denominator = int.parse(match.namedGroup('denominator')!);
 
     return Rational.fromMixed(integer, numerator, denominator);
   }

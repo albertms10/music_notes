@@ -531,7 +531,9 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation(),
   );
 
-  static final _regExp = RegExp('^(.+?)([-${NumExtension.minusSign}]?\\d+)\$');
+  static final _regExp = RegExp(
+    '^(?<note>.+?)(?<octave>[-${NumExtension.minusSign}]?\\d+)\$',
+  );
 
   @override
   String format(Pitch pitch) =>
@@ -544,9 +546,14 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parse(String source) {
     final match = _regExp.firstMatch(source)!;
-    final rawOctave = match[2]!.replaceFirst(NumExtension.minusSign, '-');
+    final rawOctave = match
+        .namedGroup('octave')!
+        .replaceFirst(NumExtension.minusSign, '-');
 
-    return Pitch(noteNotation.parse(match[1]!), octave: int.parse(rawOctave));
+    return Pitch(
+      noteNotation.parse(match.namedGroup('note')!),
+      octave: int.parse(rawOctave),
+    );
   }
 }
 
@@ -636,9 +643,9 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     ].join('|');
 
     return RegExp(
-      '(^(?:$baseNotes)'
+      '(?<note>^(?:$baseNotes)'
       '[${SymbolAccidentalNotation.symbols.join()}]*)'
-      '(${[
+      '(?<primes>${[
         ..._compoundPrimeSymbols,
         for (final symbol in _primeSymbols) '$symbol+',
       ].join('|')})'
@@ -652,9 +659,9 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
 
   @override
   Pitch parse(String source) {
-    final helmholtzNotationMatch = _regExp.firstMatch(source)!;
-    final notePart = helmholtzNotationMatch[1]!;
-    final primes = helmholtzNotationMatch[2]?.split('');
+    final match = _regExp.firstMatch(source)!;
+    final notePart = match.namedGroup('note')!;
+    final primes = match.namedGroup('primes')?.split('');
     final octave = notePart[0].isUpperCase
         ? switch (primes?.first) {
             '' || null => _middleOctave - 1,
