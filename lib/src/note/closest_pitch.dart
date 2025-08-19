@@ -136,14 +136,14 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
   static final _regExp = RegExp(
     r'^(?<pitch>.*?\d+)'
     '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?\$',
+    caseSensitive: false,
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
-  ClosestPitch parse(String source) {
-    final match = _regExp.firstMatch(source)!;
+  ClosestPitch parseMatch(RegExpMatch match) {
     final digits =
         match.namedGroup('cents')?.replaceFirst(NumExtension.minusSign, '-') ??
         '0';

@@ -19,7 +19,16 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
   String format(T value);
 
   @override
-  bool matches(String source) => true;
+  RegExp? get regExp => null;
+
+  @override
+  bool matches(String source) =>
+      regExp == null ||
+      RegExp(
+        '^${regExp?.pattern}\$',
+        caseSensitive: regExp?.isCaseSensitive ?? true,
+        unicode: regExp?.isUnicode ?? false,
+      ).hasMatch(source);
 
   /// Parses [source] as [T].
   ///
@@ -29,7 +38,14 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
   /// If the [source] string does not contain a valid [T], a [FormatException]
   /// should be thrown.
   @override
-  T parse(String source);
+  T parse(String source) => parseMatch(
+    regExp?.firstMatch(source) ?? (throw FormatException('Invalid $T', source)),
+  );
+
+  @override
+  T parseMatch(RegExpMatch match) => throw UnimplementedError(
+    'parseMatch is not implemented for $runtimeType.',
+  );
 }
 
 /// An abstract representation of a formatter for [T].
@@ -40,11 +56,17 @@ abstract interface class Formatter<T> {
 
 /// An abstract representation of a parser for [T].
 abstract interface class Parser<T> {
+  /// The regular expression for matching [T].
+  RegExp? get regExp;
+
   /// Whether [source] can be parsed with [parse].
   bool matches(String source);
 
   /// Parses [source] as [T].
   T parse(String source);
+
+  /// Parses [match] from [regExp] as [T].
+  T parseMatch(RegExpMatch match);
 }
 
 /// A [Parser] chain.

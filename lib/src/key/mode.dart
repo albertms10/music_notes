@@ -91,23 +91,25 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
   static const _minor = 'minor';
 
   @override
-  bool matches(String source) {
-    if (source.toLowerCase() case _major || _minor) return true;
-
-    return false;
-  }
-
-  @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
     TonalMode.major => _major,
     TonalMode.minor => _minor,
   };
 
+  static final RegExp _regExp = RegExp(
+    '(?<mode>$_major|$_minor)',
+    caseSensitive: false,
+  );
+
   @override
-  TonalMode parse(String source) => switch (source.toLowerCase()) {
-    _major => TonalMode.major,
-    _ /* _minor */ => TonalMode.minor,
-  };
+  RegExp get regExp => _regExp;
+
+  @override
+  TonalMode parseMatch(RegExpMatch match) =>
+      switch (match.namedGroup('mode')?.toLowerCase()) {
+        _major => TonalMode.major,
+        _ /* _minor */ => TonalMode.minor,
+      };
 }
 
 /// The German notation system for [TonalMode
@@ -119,23 +121,25 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
   static const _minor = 'moll';
 
   @override
-  bool matches(String source) {
-    if (source.toLowerCase() case _major || _minor) return true;
-
-    return false;
-  }
-
-  @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
     TonalMode.major => _major,
     TonalMode.minor => _minor,
   }.toUpperFirst();
 
+  static final RegExp _regExp = RegExp(
+    '(?<mode>$_major|$_minor)',
+    caseSensitive: false,
+  );
+
   @override
-  TonalMode parse(String source) => switch (source.toLowerCase()) {
-    _major => TonalMode.major,
-    _ /* _minor */ => TonalMode.minor,
-  };
+  RegExp get regExp => _regExp;
+
+  @override
+  TonalMode parseMatch(RegExpMatch match) =>
+      switch (match.namedGroup('mode')?.toLowerCase()) {
+        _major => TonalMode.major,
+        _ /* _minor */ => TonalMode.minor,
+      };
 }
 
 /// The Romance notation system for [TonalMode
@@ -147,23 +151,25 @@ final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
   static const _minor = 'minore';
 
   @override
-  bool matches(String source) {
-    if (source.toLowerCase() case _major || _minor) return true;
-
-    return false;
-  }
-
-  @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
     TonalMode.major => _major,
     TonalMode.minor => _minor,
   };
 
+  static final RegExp _regExp = RegExp(
+    '(?<mode>$_major|$_minor)',
+    caseSensitive: false,
+  );
+
   @override
-  TonalMode parse(String source) => switch (source.toLowerCase()) {
-    _major => TonalMode.major,
-    _ /* _minor */ => TonalMode.minor,
-  };
+  RegExp get regExp => _regExp;
+
+  @override
+  TonalMode parseMatch(RegExpMatch match) =>
+      switch (match.namedGroup('mode')?.toLowerCase()) {
+        _major => TonalMode.major,
+        _ /* _minor */ => TonalMode.minor,
+      };
 }
 
 /// Modes of a modal system.
