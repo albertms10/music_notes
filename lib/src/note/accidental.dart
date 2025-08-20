@@ -209,10 +209,13 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
     _doubleFlatSymbol,
   ];
 
-  static final _regExp = RegExp('^(?:${symbols.join('|')})*\$');
+  static final _regExp = RegExp(
+    '(?<accidental>[${symbols.join()}]*)',
+    unicode: true,
+  );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
   String format(Accidental accidental) {
@@ -245,13 +248,13 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
   };
 
   @override
-  Accidental parse(String source) {
+  Accidental parseMatch(RegExpMatch match) {
+    final accidental = match.namedGroup('accidental') ?? '';
     // Safely split UTF-16 code units using `runes`.
-    final semitones = source.runes.fold(0, (acc, rune) {
-      final symbolSemitones = _semitonesFromSymbol(String.fromCharCode(rune));
-      if (symbolSemitones == null) {
-        throw FormatException('Invalid Accidental', source);
-      }
+    final semitones = accidental.runes.fold(0, (acc, rune) {
+      final symbolSemitones =
+          _semitonesFromSymbol(String.fromCharCode(rune)) ??
+          (throw FormatException('Invalid Accidental', match.group(0)));
 
       return acc + symbolSemitones;
     });
@@ -265,27 +268,30 @@ final class GermanAccidentalNotation extends NotationSystem<Accidental> {
   /// Creates a new [GermanAccidentalNotation].
   const GermanAccidentalNotation();
 
+  static const _flatShort = 's';
   static const _flat = 'es';
   static const _sharp = 'is';
 
-  static final _regExp = RegExp('^(?:($_flat)*|($_sharp))*\$');
+  static final _regExp = RegExp(
+    '(?<accidental>$_flatShort?(?:$_flat)*|(?:$_sharp)+)?',
+  );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
   String format(Accidental accidental) =>
       (accidental.isFlat ? _flat : _sharp) * accidental.semitones.abs();
 
   @override
-  Accidental parse(String source) {
-    if (source.isEmpty) return Accidental.natural;
+  Accidental parseMatch(RegExpMatch match) {
+    final accidental = match.namedGroup('accidental');
+    if (accidental == null) return Accidental.natural;
 
-    final flatCount = source.split(_flat).length - 1;
-    final sharpCount = source.split(_sharp).length - 1;
+    final semitones = accidental.split(_flatShort).length - 1;
 
-    if (flatCount > 0) return Accidental(-flatCount);
-
-    return Accidental(sharpCount);
+    return accidental.startsWith(_sharp)
+        ? Accidental(semitones)
+        : Accidental(-semitones);
   }
 }

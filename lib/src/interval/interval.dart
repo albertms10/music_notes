@@ -561,12 +561,11 @@ final class IntervalNotation extends NotationSystem<Interval> {
   static final _regExp = RegExp(r'(?<quality>\w+?)(?<size>-?\d+)');
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
-  Interval parse(String source) {
-    final match = _regExp.firstMatch(source);
-    final size = sizeNotation.parse(match!.namedGroup('size')!);
+  Interval parseMatch(RegExpMatch match) {
+    final size = sizeNotation.parse(match.namedGroup('size')!);
     // ignore: omit_local_variable_types False positive (?)
     final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation

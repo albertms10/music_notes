@@ -383,6 +383,12 @@ final class SizeNotation extends NotationSystem<Size> {
   @override
   String format(Size size) => '$size';
 
+  static final _regExp = RegExp(r'(?<size>-?\d+)');
+
   @override
-  Size parse(String source) => Size(int.parse(source));
+  RegExp get regExp => _regExp;
+
+  @override
+  Size parseMatch(RegExpMatch match) =>
+      Size(int.parse(match.namedGroup('size')!));
 }

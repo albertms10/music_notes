@@ -251,11 +251,11 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
   static const _augmentedSymbol = 'A';
 
   static final _regExp = RegExp(
-    '^($_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)\$',
+    '(?<quality>$_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)',
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
@@ -265,11 +265,15 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
   };
 
   @override
-  PerfectQuality parse(String source) => switch (source[0]) {
-    _diminishedSymbol => PerfectQuality(-source.length),
-    _perfectSymbol => PerfectQuality.perfect,
-    _ /* _augmentedSymbol */ => PerfectQuality(source.length),
-  };
+  PerfectQuality parseMatch(RegExpMatch match) {
+    final quality = match.namedGroup('quality')!;
+
+    return switch (quality[0]) {
+      _diminishedSymbol => PerfectQuality(-quality.length),
+      _perfectSymbol => PerfectQuality.perfect,
+      _ /* _augmentedSymbol */ => PerfectQuality(quality.length),
+    };
+  }
 }
 
 /// A notation system for [ImperfectQuality].
@@ -290,11 +294,12 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   static const _majorSymbol = 'M';
 
   static final _regExp = RegExp(
-    '^($_diminishedSymbol+|$_minorSymbol|$_majorSymbol|$_augmentedSymbol+)\$',
+    '(?<quality>$_diminishedSymbol+|$_minorSymbol|'
+    '$_majorSymbol|$_augmentedSymbol+)',
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
@@ -305,10 +310,14 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   };
 
   @override
-  ImperfectQuality parse(String source) => switch (source[0]) {
-    _diminishedSymbol => ImperfectQuality(-source.length),
-    _minorSymbol => ImperfectQuality.minor,
-    _majorSymbol => ImperfectQuality.major,
-    _ /* _augmentedSymbol */ => ImperfectQuality(source.length + 1),
-  };
+  ImperfectQuality parseMatch(RegExpMatch match) {
+    final quality = match.namedGroup('quality')!;
+
+    return switch (quality[0]) {
+      _diminishedSymbol => ImperfectQuality(-quality.length),
+      _minorSymbol => ImperfectQuality.minor,
+      _majorSymbol => ImperfectQuality.major,
+      _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
+    };
+  }
 }

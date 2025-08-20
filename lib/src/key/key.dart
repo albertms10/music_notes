@@ -168,17 +168,14 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
   }
 
   @override
-  Key parse(String source) {
-    final parts = source.trim().split(' ');
-    if (parts.length != 2) {
-      throw FormatException('Invalid Key', source);
-    }
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
+    caseSensitive: false,
+  );
 
-    final note = noteNotation.parse(parts[0]);
-    final mode = tonalModeNotation.parse(parts[1]);
-
-    return Key(note, mode);
-  }
+  @override
+  Key parseMatch(RegExpMatch match) =>
+      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
 }
 
 /// The German notation system for [Key].
@@ -208,14 +205,14 @@ final class GermanKeyNotation extends NotationSystem<Key> {
   }
 
   @override
-  Key parse(String source) {
-    final parts = source.trim().split('-');
-    if (parts.length != 2) throw FormatException('Invalid Key', source);
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp.pattern}-${tonalModeNotation.regExp.pattern}',
+    caseSensitive: false,
+  );
 
-    final [note, mode] = parts;
-
-    return Key(noteNotation.parse(note), tonalModeNotation.parse(mode));
-  }
+  @override
+  Key parseMatch(RegExpMatch match) =>
+      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
 }
 
 /// The Romance notation system for [Key].
@@ -241,13 +238,12 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   }
 
   @override
-  Key parse(String source) {
-    final parts = source.trim().split(' ');
-    if (parts.length != 2) throw FormatException('Invalid Key', source);
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
+    caseSensitive: false,
+  );
 
-    final note = noteNotation.parse(parts[0]);
-    final mode = tonalModeNotation.parse(parts[1]);
-
-    return Key(note, mode);
-  }
+  @override
+  Key parseMatch(RegExpMatch match) =>
+      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
 }

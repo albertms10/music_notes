@@ -531,8 +531,11 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation(),
   );
 
-  static final _regExp = RegExp(
-    '^(?<note>.+?)(?<octave>[-${NumExtension.minusSign}]?\\d+)\$',
+  @override
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp?.pattern}'
+    '(?<octave>[-${NumExtension.minusSign}]?\\d+)',
+    caseSensitive: false,
   );
 
   @override
@@ -541,17 +544,13 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
       '${useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
-
-  @override
-  Pitch parse(String source) {
-    final match = _regExp.firstMatch(source)!;
+  Pitch parseMatch(RegExpMatch match) {
     final rawOctave = match
         .namedGroup('octave')!
         .replaceFirst(NumExtension.minusSign, '-');
 
     return Pitch(
-      noteNotation.parse(match.namedGroup('note')!),
+      noteNotation.parseMatch(match),
       octave: int.parse(rawOctave),
     );
   }

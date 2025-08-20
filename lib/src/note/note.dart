@@ -494,22 +494,17 @@ final class EnglishNoteNotation extends NoteNotation {
       note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  bool matches(String source) => source.isNotEmpty;
+  RegExp get regExp => RegExp(
+    '${baseNoteNotation.regExp?.pattern}\\s*'
+    '${accidentalNotation.regExp?.pattern}',
+    caseSensitive: false,
+  );
 
   @override
-  Note parse(String source) {
-    // First character is the base note
-    if (!baseNoteNotation.matches(source[0])) {
-      throw FormatException('Invalid BaseNote', source[0], 0);
-    }
-    final baseNote = baseNoteNotation.parse(source[0]);
-
-    // Remaining characters are the accidental (if any)
-    final accidentalSource = source.length > 1 ? source.substring(1) : '';
-    final accidental = accidentalNotation.parse(accidentalSource);
-
-    return Note(baseNote, accidental);
-  }
+  Note parseMatch(RegExpMatch match) => Note(
+    baseNoteNotation.parseMatch(match),
+    accidentalNotation.parseMatch(match),
+  );
 }
 
 /// The German alphabetic notation system for [Note].
@@ -537,33 +532,29 @@ final class GermanNoteNotation extends NoteNotation {
   };
 
   @override
-  Note parse(String source) {
-    if (source.isEmpty) throw FormatException('Invalid Note', source);
-    if (source.toLowerCase() == 'b') {
-      return const Note(BaseNote.b, Accidental.flat);
-    }
+  RegExp get regExp => RegExp(
+    '${baseNoteNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
+    caseSensitive: false,
+  );
 
-    // For A and E with flats, the 'es' suffix is shortened to 's'
-    if (source.length > 1) {
-      final firstChar = source[0];
-      if ((firstChar == 'A' ||
-              firstChar == 'a' ||
-              firstChar == 'E' ||
-              firstChar == 'e') &&
-          source.substring(1).startsWith('s') &&
-          !source.substring(1).startsWith('es')) {
-        final baseNote = baseNoteNotation.parse(firstChar);
-        final accidental = accidentalNotation.parse('e${source.substring(1)}');
-        return Note(baseNote, accidental);
+  @override
+  Note parseMatch(RegExpMatch match) {
+    final baseNote = match.namedGroup('baseNote')!;
+    if (baseNote.toLowerCase() == 'b') return Note.b.flat;
+    final accidental = match.namedGroup('accidental');
+    if (accidental == null) return Note(baseNoteNotation.parse(baseNote));
+    if (const {'a', 'e'}.contains(baseNote.toLowerCase())) {
+      if (accidental.startsWith('e')) {
+        throw FormatException('Invalid Note', match);
       }
+    } else if (accidental.startsWith('s')) {
+      throw FormatException('Invalid Note', match);
     }
 
-    // Standard parsing: first character is base note, rest is accidental
-    final baseNote = baseNoteNotation.parse(source[0]);
-    final accidentalSource = source.length > 1 ? source.substring(1) : '';
-    final accidental = accidentalNotation.parse(accidentalSource);
-
-    return Note(baseNote, accidental);
+    return Note(
+      baseNoteNotation.parse(baseNote),
+      accidentalNotation.parse(accidental),
+    );
   }
 }
 
@@ -598,31 +589,17 @@ final class RomanceNoteNotation extends NoteNotation {
       note.accidental.toString(formatter: accidentalNotation);
 
   @override
-  Note parse(String source) {
-    if (source.isEmpty) throw FormatException('Invalid Note', source);
+  RegExp get regExp => RegExp(
+    '${baseNoteNotation.regExp?.pattern}\\s*'
+    '${accidentalNotation.regExp?.pattern}',
+    caseSensitive: false,
+  );
 
-    // Find where the base note ends and accidental begins
-    // Romance base notes can be 2-3 characters
-    var baseNoteStr = '';
-    var accidentalStr = '';
-
-    const baseNotes = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'];
-
-    for (final baseNoteOption in baseNotes) {
-      if (source.toLowerCase().startsWith(baseNoteOption.toLowerCase())) {
-        baseNoteStr = source.substring(0, baseNoteOption.length);
-        accidentalStr = source.substring(baseNoteOption.length);
-        break;
-      }
-    }
-
-    if (baseNoteStr.isEmpty) throw FormatException('Invalid Note', source);
-
-    final baseNote = baseNoteNotation.parse(baseNoteStr);
-    final accidental = accidentalNotation.parse(accidentalStr);
-
-    return Note(baseNote, accidental);
-  }
+  @override
+  Note parseMatch(RegExpMatch match) => Note(
+    baseNoteNotation.parseMatch(match),
+    accidentalNotation.parseMatch(match),
+  );
 }
 
 /// A list of notes extension.
