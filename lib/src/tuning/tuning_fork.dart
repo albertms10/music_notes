@@ -74,11 +74,15 @@ class TuningFork {
 
 /// The [NotationSystem] for compact [TuningFork].
 final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
+  /// The [NotationSystem] for [Note].
+  final NotationSystem<Note> noteNotation;
+
   /// The reference octave.
   final int referenceOctave;
 
   /// Creates a new [CompactTuningForkNotation].
   const CompactTuningForkNotation({
+    this.noteNotation = const EnglishNoteNotation(),
     this.referenceOctave = Pitch.referenceOctave,
   });
 
@@ -91,23 +95,23 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
     return '$pitch${tuningFork.frequency}';
   }
 
-  static final _regExp = RegExp(
-    r'^(?!.*=)(?<pitch>.*?)(?<octave>\d\s+)?\s*(?<frequency>\d+(\.\d+)?)'
-    '(\\s*${Frequency.hertzUnitSymbol})?\$',
+  @override
+  RegExp get regExp => RegExp(
+    '(?!.*=)${noteNotation.regExp?.pattern}'
+    r'(?<octave>-?\d\s+)?\s*(?<frequency>\d+(\.\d+)?)'
+    '(\\s*${Frequency.hertzUnitSymbol})?',
     caseSensitive: false,
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  TuningFork parseMatch(RegExpMatch match) {
+    final octavePart = match.namedGroup('octave');
+    final octave = octavePart != null ? int.parse(octavePart) : referenceOctave;
 
-  @override
-  TuningFork parse(String source) {
-    final match = _regExp.firstMatch(source)!;
-    final octave = match.namedGroup('octave')?.trim() ?? referenceOctave;
-    final pitch = Pitch.parse('${match.namedGroup('pitch')!}$octave');
-    final frequency = Frequency(double.parse(match.namedGroup('frequency')!));
-
-    return TuningFork(pitch, frequency);
+    return TuningFork(
+      noteNotation.parseMatch(match).inOctave(octave),
+      Frequency(double.parse(match.namedGroup('frequency')!)),
+    );
   }
 }
 
@@ -126,24 +130,17 @@ final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
       '${tuningFork.pitch.toString(formatter: pitchNotation)}'
       ' = ${tuningFork.frequency.format()}';
 
-  static final _regExp = RegExp(
-    r'^(?<pitch>.*?\d)\s*=\s*(?<frequency>\d+(\.\d+)?)'
-    '(?:\\s*${Frequency.hertzUnitSymbol})?\$',
+  @override
+  RegExp get regExp => RegExp(
+    '${pitchNotation.regExp?.pattern}'
+    r'\s*=\s*(?<frequency>\d+(\.\d+)?)'
+    '(?:\\s*${Frequency.hertzUnitSymbol})?',
     caseSensitive: false,
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
-
-  @override
-  TuningFork parse(String source) {
-    final match = _regExp.firstMatch(source)!;
-    final pitch = Pitch.parse(
-      match.namedGroup('pitch')!,
-      chain: [pitchNotation],
-    );
-    final frequency = Frequency(double.parse(match.namedGroup('frequency')!));
-
-    return TuningFork(pitch, frequency);
-  }
+  TuningFork parseMatch(RegExpMatch match) => TuningFork(
+    pitchNotation.parseMatch(match),
+    Frequency(double.parse(match.namedGroup('frequency')!)),
+  );
 }

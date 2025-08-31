@@ -18,6 +18,7 @@ void main() {
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
           expect(() => PitchClass.parse(''), throwsFormatException);
+          expect(() => PitchClass.parse('D'), throwsFormatException);
           expect(() => PitchClass.parse('z'), throwsFormatException);
           expect(() => PitchClass.parse('{}'), throwsFormatException);
           expect(() => PitchClass.parse('{z}'), throwsFormatException);
@@ -28,7 +29,6 @@ void main() {
           expect(PitchClass.parse('{c}'), PitchClass.c);
           expect(PitchClass.parse('{b#}'), PitchClass.c);
           expect(PitchClass.parse('{C♯|D♭}'), PitchClass.cSharp);
-          expect(PitchClass.parse('D'), PitchClass.d);
           expect(PitchClass.parse('{D♯|E♭}'), PitchClass.dSharp);
           expect(PitchClass.parse('{d♯}'), PitchClass.dSharp);
           expect(PitchClass.parse('{E}'), PitchClass.e);
@@ -38,7 +38,6 @@ void main() {
           expect(PitchClass.parse('{ab}'), PitchClass.gSharp);
           expect(PitchClass.parse('{G♯|A♭}'), PitchClass.gSharp);
           expect(PitchClass.parse('{A}'), PitchClass.a);
-          expect(PitchClass.parse('a'), PitchClass.a);
           expect(PitchClass.parse('{A♯|B♭}'), PitchClass.aSharp);
           expect(PitchClass.parse('{B}'), PitchClass.b);
         });

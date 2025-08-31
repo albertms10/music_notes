@@ -133,26 +133,18 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
     this.pitchNotation = const ScientificPitchNotation.ascii(),
   }) : useAscii = true;
 
-  static final _regExp = RegExp(
-    r'^(?<pitch>.*?\d+)'
-    '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?\$',
+  @override
+  RegExp get regExp => RegExp(
+    '${pitchNotation.regExp?.pattern}\\s*'
+    '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?',
     caseSensitive: false,
   );
 
   @override
-  RegExp get regExp => _regExp;
-
-  @override
-  ClosestPitch parseMatch(RegExpMatch match) {
-    final digits =
-        match.namedGroup('cents')?.replaceFirst(NumExtension.minusSign, '-') ??
-        '0';
-
-    return ClosestPitch(
-      Pitch.parse(match.namedGroup('pitch')!),
-      cents: Cent(num.parse(digits)),
-    );
-  }
+  ClosestPitch parseMatch(RegExpMatch match) => ClosestPitch(
+    pitchNotation.parseMatch(match),
+    cents: Cent(num.parse(match.namedGroup('cents')?.toNegativeAscii() ?? '0')),
+  );
 
   @override
   String format(ClosestPitch closestPitch) {
