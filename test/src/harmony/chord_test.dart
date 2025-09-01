@@ -374,6 +374,15 @@ void main() {
     });
 
     group('.toString()', () {
+      test('throws UnimplementedError when not implemented', () {
+        expect(
+          () => const ChordPatternNotation().parseMatch(
+            RegExp('a').firstMatch('a')!,
+          ),
+          throwsUnimplementedError,
+        );
+      });
+
       test('returns the string representation of this Chord', () {
         expect(ChordPattern.majorTriad.on(Note.d).toString(), 'D');
         expect(Chord([Note.g.sharp, Note.b, Note.d.sharp]).toString(), 'G♯-');

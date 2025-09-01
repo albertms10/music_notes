@@ -238,26 +238,22 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
     return singleAccidentals + doubleAccidentals;
   }
 
-  static int? _semitonesFromSymbol(String symbol) => switch (symbol) {
+  static int _semitonesFromSymbol(String symbol) => switch (symbol) {
     _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,
     _sharpSymbol || _sharpSymbolAscii => 1,
-    _naturalSymbol || _naturalSymbolAscii || '' => 0,
     _flatSymbol || _flatSymbolAscii => -1,
     _doubleFlatSymbol => -2,
-    _ => null,
+    _ /* _naturalSymbol || _naturalSymbolAscii || '' */ => 0,
   };
 
   @override
   Accidental parseMatch(RegExpMatch match) {
     final accidental = match.namedGroup('accidental') ?? '';
     // Safely split UTF-16 code units using `runes`.
-    final semitones = accidental.runes.fold(0, (acc, rune) {
-      final symbolSemitones =
-          _semitonesFromSymbol(String.fromCharCode(rune)) ??
-          (throw FormatException('Invalid Accidental', match.group(0)));
-
-      return acc + symbolSemitones;
-    });
+    final semitones = accidental.runes.fold(
+      0,
+      (acc, rune) => acc + _semitonesFromSymbol(String.fromCharCode(rune)),
+    );
 
     return Accidental(semitones);
   }
