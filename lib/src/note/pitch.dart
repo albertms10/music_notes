@@ -70,7 +70,7 @@ final class Pitch extends Scalable<Pitch>
       HelmholtzPitchNotation.german,
       HelmholtzPitchNotation.romance,
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// Changes the octave of this [Pitch].
   ///

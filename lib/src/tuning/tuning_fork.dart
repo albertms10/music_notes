@@ -47,7 +47,7 @@ class TuningFork {
       CompactTuningForkNotation(),
       ScientificTuningForkNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The string representation of this [TuningFork] based on [formatter].
   ///

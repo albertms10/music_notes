@@ -87,7 +87,7 @@ final class PitchClass extends Scalable<PitchClass>
       EnharmonicSpellingsPitchClassNotation(),
       IntegerPitchClassNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The different spellings at [distance] sharing the same number of
   /// [semitones].

@@ -42,7 +42,7 @@ class ClosestPitch {
   factory ClosestPitch.parse(
     String source, {
     List<Parser<ClosestPitch>> chain = const [StandardClosestPitchNotation()],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
   /// [temperature].

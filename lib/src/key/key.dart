@@ -47,7 +47,7 @@ final class Key implements Comparable<Key> {
       GermanKeyNotation(),
       RomanceKeyNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///

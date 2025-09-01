@@ -79,7 +79,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   factory ScaleDegree.parse(
     String source, {
     List<Parser<ScaleDegree>> chain = const [StandardScaleDegreeNotation()],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// Whether this [ScaleDegree] is raised.
   ///

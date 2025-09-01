@@ -81,7 +81,7 @@ enum BaseNote implements Comparable<BaseNote> {
       GermanBaseNoteNotation(),
       RomanceBaseNoteNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The ordinal number of this [BaseNote].
   ///
