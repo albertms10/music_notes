@@ -112,7 +112,7 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
       };
 }
 
-/// The German notation system for [TonalMode
+/// The German notation system for [TonalMode].
 final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
   /// Creates a new [GermanTonalModeNotation].
   const GermanTonalModeNotation();
@@ -142,7 +142,7 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
       };
 }
 
-/// The Romance notation system for [TonalMode
+/// The Romance notation system for [TonalMode].
 final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
   /// Creates a new [RomanceTonalModeNotation].
   const RomanceTonalModeNotation();

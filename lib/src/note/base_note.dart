@@ -176,7 +176,7 @@ enum BaseNote implements Comparable<BaseNote> {
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
 }
 
-/// The English notation system for [BaseNote
+/// The English notation system for [BaseNote].
 final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [EnglishBaseNoteNotation].
   const EnglishBaseNoteNotation();
@@ -197,7 +197,7 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
       BaseNote.values.byName(match.namedGroup('baseNote')!.toLowerCase());
 }
 
-/// The German notation system for [BaseNote
+/// The German notation system for [BaseNote].
 final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [GermanBaseNoteNotation].
   const GermanBaseNoteNotation();
@@ -208,9 +208,8 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
     BaseNote(:final name) => name.toUpperCase(),
   };
 
-  static final _noteNames = ['c', 'd', 'e', 'f', 'g', 'a', 'b', 'h'];
   static final _regExp = RegExp(
-    '(?<baseNote>[${_noteNames.join()}])',
+    '(?<baseNote>[${BaseNote.values.join()}h])',
     caseSensitive: false,
   );
 
@@ -220,36 +219,31 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   @override
   BaseNote parseMatch(RegExpMatch match) =>
       switch (match.namedGroup('baseNote')!.toLowerCase()) {
-        'c' => BaseNote.c,
-        'd' => BaseNote.d,
-        'e' => BaseNote.e,
-        'f' => BaseNote.f,
-        'g' => BaseNote.g,
-        'a' => BaseNote.a,
         'h' => BaseNote.b,
-        _ /* 'b' */ => BaseNote.b,
+        final name => BaseNote.values.byName(name),
       };
 }
 
-/// The Romance notation system for [BaseNote
+/// The Romance notation system for [BaseNote].
 final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [RomanceBaseNoteNotation].
   const RomanceBaseNoteNotation();
 
   @override
-  String format(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.c => 'Do',
-    BaseNote.d => 'Re',
-    BaseNote.e => 'Mi',
-    BaseNote.f => 'Fa',
-    BaseNote.g => 'Sol',
-    BaseNote.a => 'La',
-    BaseNote.b => 'Si',
+  String format(BaseNote baseNote) => _noteNames[baseNote]!;
+
+  static final _noteNames = {
+    BaseNote.c: 'Do',
+    BaseNote.d: 'Re',
+    BaseNote.e: 'Mi',
+    BaseNote.f: 'Fa',
+    BaseNote.g: 'Sol',
+    BaseNote.a: 'La',
+    BaseNote.b: 'Si',
   };
 
-  static final _noteNames = ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'];
   static final _regExp = RegExp(
-    '(?<baseNote>${_noteNames.join('|')})',
+    '(?<baseNote>${_noteNames.values.join('|')})',
     caseSensitive: false,
   );
 
@@ -257,14 +251,11 @@ final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
   RegExp get regExp => _regExp;
 
   @override
-  BaseNote parseMatch(RegExpMatch match) =>
-      switch (match.namedGroup('baseNote')!.toLowerCase()) {
-        'do' => BaseNote.c,
-        're' => BaseNote.d,
-        'mi' => BaseNote.e,
-        'fa' => BaseNote.f,
-        'sol' => BaseNote.g,
-        'la' => BaseNote.a,
-        _ /* 'si' */ => BaseNote.b,
-      };
+  BaseNote parseMatch(RegExpMatch match) {
+    final name = match.namedGroup('baseNote')!.toLowerCase();
+
+    return _noteNames.entries
+        .firstWhere((entry) => entry.value.toLowerCase() == name)
+        .key;
+  }
 }
