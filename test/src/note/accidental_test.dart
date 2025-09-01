@@ -90,7 +90,7 @@ void main() {
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
           expect(() => Accidental.parse('invalid'), throwsFormatException);
-          expect(() => Accidental.parse('s'), throwsFormatException);
+          expect(() => Accidental.parse('z'), throwsFormatException);
         });
 
         test('parses source as an Accidental', () {
@@ -98,6 +98,7 @@ void main() {
           expect(Accidental.parse('isis'), Accidental.doubleSharp);
           expect(Accidental.parse('is'), Accidental.sharp);
           expect(Accidental.parse(''), Accidental.natural);
+          expect(Accidental.parse('s'), Accidental.flat);
           expect(Accidental.parse('es'), Accidental.flat);
           expect(Accidental.parse('eses'), Accidental.doubleFlat);
           expect(Accidental.parse('eseses'), Accidental.tripleFlat);

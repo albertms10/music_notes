@@ -11,7 +11,6 @@ void main() {
         test('throws a FormatException when source is invalid', () {
           expect(() => Note.parse(''), throwsFormatException);
           expect(() => Note.parse('x'), throwsFormatException);
-          expect(() => Note.parse('H'), throwsFormatException);
         });
 
         test('parses source as a Note', () {
@@ -36,16 +35,19 @@ void main() {
         test('throws a FormatException when source is invalid', () {
           expect(() => Note.parse('', chain: chain), throwsFormatException);
           expect(() => Note.parse('X', chain: chain), throwsFormatException);
+          expect(() => Note.parse('cs', chain: chain), throwsFormatException);
+          expect(() => Note.parse('aes', chain: chain), throwsFormatException);
         });
 
         test('parses source as a Note', () {
-          expect(Note.parse('B', chain: chain), Note.b.flat);
+          expect(Note.parse('b', chain: chain), Note.b.flat);
           expect(Note.parse('Cis', chain: chain), Note.c.sharp);
           expect(Note.parse('Des', chain: chain), Note.d.flat);
-          expect(Note.parse('Geses', chain: chain), Note.g.flat.flat);
+          expect(Note.parse('geses', chain: chain), Note.g.flat.flat);
           expect(Note.parse('H', chain: chain), Note.b);
           expect(Note.parse('His', chain: chain), Note.b.sharp);
           expect(Note.parse('As', chain: chain), Note.a.flat);
+          expect(Note.parse('ais', chain: chain), Note.a.sharp);
           expect(Note.parse('Es', chain: chain), Note.e.flat);
         });
       });

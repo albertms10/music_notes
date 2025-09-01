@@ -250,18 +250,17 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
   }
 
   static final _regExp = RegExp(
-    '^(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
+    '(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
     '(?<romanNumeral>${ScaleDegree._romanNumerals.join('|')})'
     '(?<inversion>${_inversions.join('|')})?\$',
     caseSensitive: false,
   );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
-  ScaleDegree parse(String source) {
-    final match = _regExp.firstMatch(source)!;
+  ScaleDegree parseMatch(RegExpMatch match) {
     final accidentalPart = match.namedGroup('accidental')!;
     final accidental = accidentalPart.isNotEmpty
         ? Accidental.parse(accidentalPart, chain: [accidentalNotation])

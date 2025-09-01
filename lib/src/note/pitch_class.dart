@@ -318,23 +318,29 @@ final class PitchClass extends Scalable<PitchClass>
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
 final class EnharmonicSpellingsPitchClassNotation
     extends NotationSystem<PitchClass> {
+  /// The [NotationSystem] for [Note].
+  final NotationSystem<Note> noteNotation;
+
   /// Creates a new [EnharmonicSpellingsPitchClassNotation].
-  const EnharmonicSpellingsPitchClassNotation();
+  const EnharmonicSpellingsPitchClassNotation({
+    this.noteNotation = const EnglishNoteNotation(),
+  });
 
   @override
   String format(PitchClass pitchClass) =>
       '{${pitchClass.spellings().join('|')}}';
 
-  static final _regExp = RegExp(r'^\{?(?<spellings>[^}0-9et]+)\}?$');
+  @override
+  RegExp get regExp => RegExp(
+    r'(?:\{|\|)'
+    '${noteNotation.regExp?.pattern}'
+    r'(?:\|.*|\})',
+    caseSensitive: false,
+  );
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
-
-  @override
-  PitchClass parse(String source) {
-    final match = _regExp.firstMatch(source.trim())!;
-    final [spelling, ...] = match.namedGroup('spellings')!.split('|');
-    final Note(:semitones) = Note.parse(spelling.trim());
+  PitchClass parseMatch(RegExpMatch match) {
+    final Note(:semitones) = noteNotation.parseMatch(match);
     return PitchClass(semitones);
   }
 }
@@ -353,15 +359,16 @@ final class IntegerPitchClassNotation extends NotationSystem<PitchClass> {
     final semitones => '$semitones',
   };
 
-  static final _regExp = RegExp(r'^(t|e|[0-9])$');
+  static final _regExp = RegExp('(?<pitchClass>[0-9et])');
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
+  RegExp get regExp => _regExp;
 
   @override
-  PitchClass parse(String source) => PitchClass(switch (source) {
-    't' => 10,
-    'e' => 11,
-    final semitones => int.parse(semitones),
-  });
+  PitchClass parseMatch(RegExpMatch match) =>
+      PitchClass(switch (match.namedGroup('pitchClass')!) {
+        't' => 10,
+        'e' => 11,
+        final semitones => int.parse(semitones),
+      });
 }

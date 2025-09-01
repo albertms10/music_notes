@@ -176,7 +176,7 @@ enum BaseNote implements Comparable<BaseNote> {
   int compareTo(BaseNote other) => semitones.compareTo(other.semitones);
 }
 
-/// The English notation system for [BaseNote
+/// The English notation system for [BaseNote].
 final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [EnglishBaseNoteNotation].
   const EnglishBaseNoteNotation();
@@ -184,21 +184,20 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   @override
   String format(BaseNote baseNote) => baseNote.name.toUpperCase();
 
-  @override
-  bool matches(String source) {
-    if (source.toLowerCase()
-        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'b') {
-      return true;
-    }
-
-    return false;
-  }
+  static final _regExp = RegExp(
+    '(?<baseNote>[${BaseNote.values.join()}])',
+    caseSensitive: false,
+  );
 
   @override
-  BaseNote parse(String source) => BaseNote.values.byName(source.toLowerCase());
+  RegExp get regExp => _regExp;
+
+  @override
+  BaseNote parseMatch(RegExpMatch match) =>
+      BaseNote.values.byName(match.namedGroup('baseNote')!.toLowerCase());
 }
 
-/// The German notation system for [BaseNote
+/// The German notation system for [BaseNote].
 final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [GermanBaseNoteNotation].
   const GermanBaseNoteNotation();
@@ -209,65 +208,54 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
     BaseNote(:final name) => name.toUpperCase(),
   };
 
-  @override
-  bool matches(String source) {
-    if (source.toLowerCase()
-        case 'c' || 'd' || 'e' || 'f' || 'g' || 'a' || 'b' || 'h') {
-      return true;
-    }
-
-    return false;
-  }
+  static final _regExp = RegExp(
+    '(?<baseNote>[${BaseNote.values.join()}h])',
+    caseSensitive: false,
+  );
 
   @override
-  BaseNote parse(String source) => switch (source.toLowerCase()) {
-    'c' => BaseNote.c,
-    'd' => BaseNote.d,
-    'e' => BaseNote.e,
-    'f' => BaseNote.f,
-    'g' => BaseNote.g,
-    'a' => BaseNote.a,
-    'h' => BaseNote.b,
-    'b' => BaseNote.b,
-    _ => throw FormatException('Invalid BaseNote', source),
-  };
+  RegExp get regExp => _regExp;
+
+  @override
+  BaseNote parseMatch(RegExpMatch match) =>
+      switch (match.namedGroup('baseNote')!.toLowerCase()) {
+        'h' => BaseNote.b,
+        final name => BaseNote.values.byName(name),
+      };
 }
 
-/// The Romance notation system for [BaseNote
+/// The Romance notation system for [BaseNote].
 final class RomanceBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [RomanceBaseNoteNotation].
   const RomanceBaseNoteNotation();
 
   @override
-  String format(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.c => 'Do',
-    BaseNote.d => 'Re',
-    BaseNote.e => 'Mi',
-    BaseNote.f => 'Fa',
-    BaseNote.g => 'Sol',
-    BaseNote.a => 'La',
-    BaseNote.b => 'Si',
+  String format(BaseNote baseNote) => _noteNames[baseNote]!;
+
+  static final _noteNames = {
+    BaseNote.c: 'Do',
+    BaseNote.d: 'Re',
+    BaseNote.e: 'Mi',
+    BaseNote.f: 'Fa',
+    BaseNote.g: 'Sol',
+    BaseNote.a: 'La',
+    BaseNote.b: 'Si',
   };
 
-  @override
-  bool matches(String source) {
-    if (source.toLowerCase()
-        case 'do' || 're' || 'mi' || 'fa' || 'sol' || 'la' || 'si') {
-      return true;
-    }
+  static final _regExp = RegExp(
+    '(?<baseNote>${_noteNames.values.join('|')})',
+    caseSensitive: false,
+  );
 
-    return false;
+  @override
+  RegExp get regExp => _regExp;
+
+  @override
+  BaseNote parseMatch(RegExpMatch match) {
+    final name = match.namedGroup('baseNote')!.toLowerCase();
+
+    return _noteNames.entries
+        .firstWhere((entry) => entry.value.toLowerCase() == name)
+        .key;
   }
-
-  @override
-  BaseNote parse(String source) => switch (source.toLowerCase()) {
-    'do' => BaseNote.c,
-    're' => BaseNote.d,
-    'mi' => BaseNote.e,
-    'fa' => BaseNote.f,
-    'sol' => BaseNote.g,
-    'la' => BaseNote.a,
-    'si' => BaseNote.b,
-    _ => throw FormatException('Invalid BaseNote', source),
-  };
 }

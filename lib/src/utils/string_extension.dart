@@ -1,3 +1,5 @@
+import 'num_extension.dart';
+
 /// A string extension.
 extension StringExtension on String {
   /// Whether this [String] is upper-cased.
@@ -23,4 +25,13 @@ extension StringExtension on String {
 
     return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
   }
+
+  /// Converts the negative Unicode representation of this [String] to ASCII.
+  ///
+  /// Example:
+  /// ```dart
+  /// '1'.toNegativeAscii() == '1'
+  /// '−5'.toNegativeAscii() == '-5'
+  /// ```
+  String toNegativeAscii() => replaceFirst(NumExtension.minusSign, '-');
 }

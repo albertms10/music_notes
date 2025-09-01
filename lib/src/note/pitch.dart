@@ -531,8 +531,11 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation(),
   );
 
-  static final _regExp = RegExp(
-    '^(?<note>.+?)(?<octave>[-${NumExtension.minusSign}]?\\d+)\$',
+  @override
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp?.pattern}'
+    '(?<octave>[-${NumExtension.minusSign}]?\\d+)',
+    caseSensitive: false,
   );
 
   @override
@@ -541,20 +544,10 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
       '${useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
-
-  @override
-  Pitch parse(String source) {
-    final match = _regExp.firstMatch(source)!;
-    final rawOctave = match
-        .namedGroup('octave')!
-        .replaceFirst(NumExtension.minusSign, '-');
-
-    return Pitch(
-      noteNotation.parse(match.namedGroup('note')!),
-      octave: int.parse(rawOctave),
-    );
-  }
+  Pitch parseMatch(RegExpMatch match) => Pitch(
+    noteNotation.parseMatch(match),
+    octave: int.parse(match.namedGroup('octave')!.toNegativeAscii()),
+  );
 }
 
 /// The Helmholtz [Pitch] notation formatter.
@@ -636,30 +629,26 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     };
   }
 
-  RegExp get _regExp {
+  @override
+  RegExp get regExp {
     final baseNotes = [
       for (final baseNote in BaseNote.values)
         baseNote.toString(formatter: noteNotation.baseNoteNotation),
     ].join('|');
 
     return RegExp(
-      '(?<note>^(?:$baseNotes)'
+      '(?<note>(?:$baseNotes)'
       '[${SymbolAccidentalNotation.symbols.join()}]*)'
       '(?<primes>${[
         ..._compoundPrimeSymbols,
         for (final symbol in _primeSymbols) '$symbol+',
-      ].join('|')})'
-      r'?$',
+      ].join('|')})?',
       caseSensitive: false,
     );
   }
 
   @override
-  bool matches(String source) => _regExp.hasMatch(source);
-
-  @override
-  Pitch parse(String source) {
-    final match = _regExp.firstMatch(source)!;
+  Pitch parseMatch(RegExpMatch match) {
     final notePart = match.namedGroup('note')!;
     final primes = match.namedGroup('primes')?.split('');
     final octave = notePart[0].isUpperCase
@@ -668,7 +657,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
             _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
             _ => throw FormatException(
               'Invalid Pitch',
-              source,
+              match[0],
               notePart.length,
             ),
           }
@@ -680,7 +669,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
             _superQuadruplePrime => _middleOctave + 4,
             _ => throw FormatException(
               'Invalid Pitch',
-              source,
+              match[0],
               notePart.length,
             ),
           };
