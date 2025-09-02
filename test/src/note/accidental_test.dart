@@ -86,6 +86,65 @@ void main() {
       });
     });
 
+    group('EnglishAccidentalNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Accidental.parse('invalid'), throwsFormatException);
+          expect(() => Accidental.parse('z'), throwsFormatException);
+        });
+
+        test('parses source as an Accidental', () {
+          expect(Accidental.parse('triple sharp'), Accidental.tripleSharp);
+          expect(Accidental.parse('Double Sharp'), Accidental.doubleSharp);
+          expect(Accidental.parse('sharp'), Accidental.sharp);
+          expect(Accidental.parse('natural'), Accidental.natural);
+          expect(Accidental.parse(''), Accidental.natural);
+          expect(Accidental.parse('flat'), Accidental.flat);
+          expect(Accidental.parse('double Flat'), Accidental.doubleFlat);
+          expect(Accidental.parse('Triple flat'), Accidental.tripleFlat);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this Accidental', () {
+          const formatter = EnglishAccidentalNotation();
+
+          expect(
+            const Accidental(4).toString(formatter: formatter),
+            '×4 sharp',
+          );
+          expect(
+            Accidental.tripleSharp.toString(formatter: formatter),
+            'triple sharp',
+          );
+          expect(
+            Accidental.doubleSharp.toString(formatter: formatter),
+            'double sharp',
+          );
+          expect(Accidental.sharp.toString(formatter: formatter), 'sharp');
+          expect(Accidental.natural.toString(formatter: formatter), 'natural');
+          expect(Accidental.flat.toString(formatter: formatter), 'flat');
+          expect(
+            Accidental.doubleFlat.toString(formatter: formatter),
+            'double flat',
+          );
+          expect(
+            Accidental.tripleFlat.toString(formatter: formatter),
+            'triple flat',
+          );
+          expect(
+            const Accidental(-4).toString(formatter: formatter),
+            '×4 flat',
+          );
+
+          const hideNatural = EnglishAccidentalNotation(showNatural: false);
+          expect(Accidental.sharp.toString(formatter: hideNatural), 'sharp');
+          expect(Accidental.natural.toString(formatter: hideNatural), '');
+          expect(Accidental.flat.toString(formatter: hideNatural), 'flat');
+        });
+      });
+    });
+
     group('GermanAccidentalNotation', () {
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
@@ -130,6 +189,65 @@ void main() {
             const Accidental(-4).toString(formatter: formatter),
             'eseseses',
           );
+        });
+      });
+    });
+
+    group('RomanceAccidentalNotation', () {
+      group('.parse()', () {
+        test('throws a FormatException when source is invalid', () {
+          expect(() => Accidental.parse('invalid'), throwsFormatException);
+          expect(() => Accidental.parse('z'), throwsFormatException);
+        });
+
+        test('parses source as an Accidental', () {
+          expect(Accidental.parse('triplo diesis'), Accidental.tripleSharp);
+          expect(Accidental.parse('Doppio Diesis'), Accidental.doubleSharp);
+          expect(Accidental.parse('diesis'), Accidental.sharp);
+          expect(Accidental.parse('naturale'), Accidental.natural);
+          expect(Accidental.parse(''), Accidental.natural);
+          expect(Accidental.parse('bemolle'), Accidental.flat);
+          expect(Accidental.parse('doppio Bemolle'), Accidental.doubleFlat);
+          expect(Accidental.parse('Triplo bemolle'), Accidental.tripleFlat);
+        });
+      });
+
+      group('.toString()', () {
+        test('returns the string representation of this Accidental', () {
+          const formatter = RomanceAccidentalNotation();
+
+          expect(
+            const Accidental(4).toString(formatter: formatter),
+            '×4 diesis',
+          );
+          expect(
+            Accidental.tripleSharp.toString(formatter: formatter),
+            'triplo diesis',
+          );
+          expect(
+            Accidental.doubleSharp.toString(formatter: formatter),
+            'doppio diesis',
+          );
+          expect(Accidental.sharp.toString(formatter: formatter), 'diesis');
+          expect(Accidental.natural.toString(formatter: formatter), 'naturale');
+          expect(Accidental.flat.toString(formatter: formatter), 'bemolle');
+          expect(
+            Accidental.doubleFlat.toString(formatter: formatter),
+            'doppio bemolle',
+          );
+          expect(
+            Accidental.tripleFlat.toString(formatter: formatter),
+            'triplo bemolle',
+          );
+          expect(
+            const Accidental(-4).toString(formatter: formatter),
+            '×4 bemolle',
+          );
+
+          const hideNatural = RomanceAccidentalNotation(showNatural: false);
+          expect(Accidental.sharp.toString(formatter: hideNatural), 'diesis');
+          expect(Accidental.natural.toString(formatter: hideNatural), '');
+          expect(Accidental.flat.toString(formatter: hideNatural), 'bemolle');
         });
       });
     });
