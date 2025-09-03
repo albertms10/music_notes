@@ -146,8 +146,8 @@ Represent them using any notation formatter:
 ```dart
 Note.d.flat
   ..toString() // D♭
-  ..toString(formatter: NoteNotation.romance) // Re♭
-  ..toString(formatter: NoteNotation.german); // Des
+  ..toString(formatter: const GermanNoteNotation()) // Des
+  ..toString(formatter: const RomanceNoteNotation.symbol()); // Re♭
 
 Note.b.flat.inOctave(-1).toString(); // B♭-1
 Note.c.inOctave(6).toString(formatter: HelmholtzPitchNotation.english); // c‴

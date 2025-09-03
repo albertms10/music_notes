@@ -54,7 +54,7 @@ class TuningFork {
   /// Example:
   /// ```dart
   /// TuningFork.a440.toString() == 'A440'
-  /// TuningFork.a432.toString(formatter: TuningForkNotation.scientific)
+  /// TuningFork.a432.toString(formatter: ScientificTuningForkNotation())
   ///   == 'A4 = 432 Hz'
   /// ```
   @override
@@ -82,7 +82,7 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
 
   /// Creates a new [CompactTuningForkNotation].
   const CompactTuningForkNotation({
-    this.noteNotation = const EnglishNoteNotation(),
+    this.noteNotation = const EnglishNoteNotation.symbol(),
     this.referenceOctave = Pitch.referenceOctave,
   });
 

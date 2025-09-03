@@ -66,8 +66,8 @@ void main() {
 
   Note.d.flat
     ..toString() // D♭
-    ..toString(formatter: const RomanceNoteNotation()) // Re♭
-    ..toString(formatter: const GermanNoteNotation()); // Des
+    ..toString(formatter: const GermanNoteNotation()) // Des
+    ..toString(formatter: const RomanceNoteNotation.symbol()); // Re♭
 
   Note.b.flat.inOctave(-1).toString(); // B♭-1
   Note.c.inOctave(6).toString(formatter: HelmholtzPitchNotation.english); // c‴

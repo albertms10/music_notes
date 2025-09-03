@@ -456,10 +456,10 @@ final class Pitch extends Scalable<Pitch>
   /// Note.a.inOctave(3).toString() == 'A3'
   /// Note.b.flat.inOctave(1).toString() == 'B♭1'
   ///
-  /// Note.c.inOctave(4).toString(formatter: PitchNotation.helmholtz) == 'c′'
-  /// Note.a.inOctave(3).toString(formatter: PitchNotation.helmholtz) == 'a'
-  /// Note.b.flat.inOctave(1).toString(formatter: PitchNotation.helmholtz)
-  ///   == 'B♭͵'
+  /// const helmholtz = HelmholtzPitchNotation.english;
+  /// Note.c.inOctave(4).toString(formatter: helmholtz) == 'c′'
+  /// Note.a.inOctave(3).toString(formatter: helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).toString(formatter: helmholtz) == 'B♭͵'
   /// ```
   @override
   String toString({
@@ -506,17 +506,17 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   final NotationSystem<Note> noteNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
-  final bool useAscii;
+  final bool _useAscii;
 
   /// Creates a new [ScientificPitchNotation].
   const ScientificPitchNotation({
-    this.noteNotation = const EnglishNoteNotation(),
-  }) : useAscii = false;
+    this.noteNotation = const EnglishNoteNotation.symbol(),
+  }) : _useAscii = false;
 
   /// Creates a new [ScientificPitchNotation] using ASCII characters.
   const ScientificPitchNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : useAscii = true;
+  }) : _useAscii = true;
 
   /// The [EnglishNoteNotation] variant of this [ScientificPitchNotation].
   static const english = ScientificPitchNotation();
@@ -528,7 +528,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
 
   /// The [RomanceNoteNotation] variant of this [ScientificPitchNotation].
   static const romance = ScientificPitchNotation(
-    noteNotation: RomanceNoteNotation(),
+    noteNotation: RomanceNoteNotation.symbol(),
   );
 
   @override
@@ -541,7 +541,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   String format(Pitch pitch) =>
       '${pitch.note.toString(formatter: noteNotation)}'
-      '${useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
+      '${_useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 
   @override
   Pitch parseMatch(RegExpMatch match) => Pitch(
@@ -558,17 +558,17 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   final NoteNotation noteNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
-  final bool useAscii;
+  final bool _useAscii;
 
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
-    this.noteNotation = const EnglishNoteNotation(),
-  }) : useAscii = false;
+    this.noteNotation = const EnglishNoteNotation.symbol(),
+  }) : _useAscii = false;
 
   /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
   const HelmholtzPitchNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : useAscii = true;
+  }) : _useAscii = true;
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -580,7 +580,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
 
   /// The [RomanceNoteNotation] variant of this [HelmholtzPitchNotation].
   static const romance = HelmholtzPitchNotation(
-    noteNotation: RomanceNoteNotation(),
+    noteNotation: RomanceNoteNotation.symbol(),
   );
 
   static const _superPrime = '′';
@@ -621,7 +621,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   @override
   String format(Pitch pitch) {
     final note = pitch.note.toString(formatter: noteNotation);
-    final symbols = useAscii ? _asciiSymbols : _symbols;
+    final symbols = _useAscii ? _asciiSymbols : _symbols;
 
     return switch (pitch.octave) {
       >= _middleOctave => '${note.toLowerCase()}${symbols(pitch.octave - 3)}',

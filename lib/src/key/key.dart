@@ -44,8 +44,10 @@ final class Key implements Comparable<Key> {
     String source, {
     List<Parser<Key>> chain = const [
       EnglishKeyNotation(),
+      EnglishKeyNotation.symbol(),
       GermanKeyNotation(),
       RomanceKeyNotation(),
+      RomanceKeyNotation.symbol(),
     ],
   }) => chain.parse(source);
 
@@ -116,19 +118,17 @@ final class Key implements Comparable<Key> {
   /// Note.c.minor.toString() == 'C minor'
   /// Note.e.flat.major.toString() == 'E♭ major'
   ///
-  /// Note.c.major.toString(formatter: const RomanceKeyNotation())
-  ///   == 'Do maggiore'
-  /// Note.a.minor.toString(formatter: const RomanceKeyNotation())
-  ///   == 'La minore'
+  /// const romance = RomanceKeyNotation.symbol();
+  /// Note.c.major.toString(formatter: romance) == 'Do maggiore'
+  /// Note.f.sharp.minor.toString(formatter: romance) == 'Fa♯ minore'
   ///
-  /// Note.e.flat.major.toString(formatter: const GermanKeyNotation())
-  ///   == 'Es-dur'
-  /// Note.g.sharp.minor.toString(formatter: const GermanKeyNotation())
-  ///   == 'gis-moll'
+  /// const german = GermanKeyNotation();
+  /// Note.e.flat.major.toString(formatter: german) == 'Es-dur'
+  /// Note.g.sharp.minor.toString(formatter: german) == 'gis-moll'
   /// ```
   @override
   String toString({
-    Formatter<Key> formatter = const EnglishKeyNotation(),
+    Formatter<Key> formatter = const EnglishKeyNotation.symbol(),
   }) => formatter.format(this);
 
   @override
@@ -156,6 +156,12 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
   /// Creates a new [EnglishKeyNotation].
   const EnglishKeyNotation({
     this.noteNotation = const EnglishNoteNotation(),
+    this.tonalModeNotation = const EnglishTonalModeNotation(),
+  });
+
+  /// Creates a new symbolic [EnglishKeyNotation].
+  const EnglishKeyNotation.symbol({
+    this.noteNotation = const EnglishNoteNotation.symbol(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
   });
 
@@ -226,6 +232,12 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   /// Creates a new [RomanceKeyNotation].
   const RomanceKeyNotation({
     this.noteNotation = const RomanceNoteNotation(),
+    this.tonalModeNotation = const RomanceTonalModeNotation(),
+  });
+
+  /// Creates a new symbolic [RomanceKeyNotation].
+  const RomanceKeyNotation.symbol({
+    this.noteNotation = const RomanceNoteNotation.symbol(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
   });
 

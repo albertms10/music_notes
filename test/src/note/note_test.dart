@@ -51,7 +51,7 @@ void main() {
           expect(Note.e.sharp.toString(formatter: showNatural), 'E♯');
           expect(Note.b.flat.flat.toString(formatter: showNatural), 'B𝄫');
 
-          const textual = EnglishNoteNotation.textual();
+          const textual = EnglishNoteNotation();
           expect(Note.c.toString(formatter: textual), 'C');
           expect(Note.c.sharp.toString(formatter: textual), 'C-sharp');
           expect(Note.d.flat.toString(formatter: textual), 'D-flat');
@@ -144,8 +144,9 @@ void main() {
     });
 
     group('RomanceNoteNotation', () {
-      const formatter = RomanceNoteNotation();
-      const chain = [formatter, RomanceNoteNotation.textual()];
+      const textual = RomanceNoteNotation();
+      const symbol = RomanceNoteNotation.symbol();
+      const chain = [textual, symbol];
 
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
@@ -181,15 +182,15 @@ void main() {
 
       group('.toString()', () {
         test('returns the Romance string representation of this Note', () {
-          expect(Note.c.toString(formatter: formatter), 'Do');
-          expect(Note.c.sharp.toString(formatter: formatter), 'Do♯');
-          expect(Note.d.toString(formatter: formatter), 'Re');
-          expect(Note.d.flat.toString(formatter: formatter), 'Re♭');
-          expect(Note.e.toString(formatter: formatter), 'Mi');
-          expect(Note.b.flat.toString(formatter: formatter), 'Si♭');
-          expect(Note.f.sharp.toString(formatter: formatter), 'Fa♯');
-          expect(Note.a.sharp.sharp.toString(formatter: formatter), 'La𝄪');
-          expect(Note.g.flat.flat.toString(formatter: formatter), 'Sol𝄫');
+          expect(Note.c.toString(formatter: symbol), 'Do');
+          expect(Note.c.sharp.toString(formatter: symbol), 'Do♯');
+          expect(Note.d.toString(formatter: symbol), 'Re');
+          expect(Note.d.flat.toString(formatter: symbol), 'Re♭');
+          expect(Note.e.toString(formatter: symbol), 'Mi');
+          expect(Note.b.flat.toString(formatter: symbol), 'Si♭');
+          expect(Note.f.sharp.toString(formatter: symbol), 'Fa♯');
+          expect(Note.a.sharp.sharp.toString(formatter: symbol), 'La𝄪');
+          expect(Note.g.flat.flat.toString(formatter: symbol), 'Sol𝄫');
 
           const showNatural = RomanceNoteNotation.showNatural;
           expect(Note.c.toString(formatter: showNatural), 'Do♮');
@@ -197,7 +198,6 @@ void main() {
           expect(Note.e.sharp.toString(formatter: showNatural), 'Mi♯');
           expect(Note.b.flat.flat.toString(formatter: showNatural), 'Si𝄫');
 
-          const textual = RomanceNoteNotation.textual();
           expect(Note.e.toString(formatter: textual), 'Mi');
           expect(Note.c.sharp.toString(formatter: textual), 'Do diesis');
           expect(Note.d.flat.toString(formatter: textual), 'Re bemolle');
