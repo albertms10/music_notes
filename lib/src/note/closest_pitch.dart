@@ -121,17 +121,17 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
   final NotationSystem<Pitch> pitchNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
-  final bool useAscii;
+  final bool _useAscii;
 
   /// Creates a new [StandardClosestPitchNotation].
   const StandardClosestPitchNotation({
     this.pitchNotation = ScientificPitchNotation.english,
-  }) : useAscii = false;
+  }) : _useAscii = false;
 
   /// Creates a new [StandardClosestPitchNotation] using ASCII characters.
   const StandardClosestPitchNotation.ascii({
     this.pitchNotation = const ScientificPitchNotation.ascii(),
-  }) : useAscii = true;
+  }) : _useAscii = true;
 
   @override
   RegExp get regExp => RegExp(
@@ -152,6 +152,6 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
     final pitch = closestPitch.pitch.toString(formatter: pitchNotation);
     if (roundedCents == 0) return pitch;
 
-    return '$pitch${roundedCents.toDeltaString(useAscii: useAscii)}';
+    return '$pitch${roundedCents.toDeltaString(useAscii: _useAscii)}';
   }
 }

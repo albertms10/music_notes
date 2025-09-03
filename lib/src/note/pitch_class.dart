@@ -290,11 +290,11 @@ final class PitchClass extends Scalable<PitchClass>
   /// PitchClass.g.toString() == '{G}'
   /// PitchClass.dSharp.toString() == '{D♯|E♭}'
   ///
-  /// const integerNotation = IntegerPitchClassNotation();
-  /// PitchClass.c.toString(formatter: integerNotation) == '0'
-  /// PitchClass.f.toString(formatter: integerNotation) == '5'
-  /// PitchClass.aSharp.toString(formatter: integerNotation) == 't'
-  /// PitchClass.b.toString(formatter: integerNotation) == 'e'
+  /// const integer = IntegerPitchClassNotation();
+  /// PitchClass.c.toString(formatter: integer) == '0'
+  /// PitchClass.f.toString(formatter: integer) == '5'
+  /// PitchClass.aSharp.toString(formatter: integer) == 't'
+  /// PitchClass.b.toString(formatter: integer) == 'e'
   /// ```
   @override
   String toString({
@@ -323,7 +323,7 @@ final class EnharmonicSpellingsPitchClassNotation
 
   /// Creates a new [EnharmonicSpellingsPitchClassNotation].
   const EnharmonicSpellingsPitchClassNotation({
-    this.noteNotation = const EnglishNoteNotation(),
+    this.noteNotation = const EnglishNoteNotation.symbol(),
   });
 
   @override

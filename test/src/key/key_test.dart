@@ -115,8 +115,9 @@ void main() {
     });
 
     group('RomanceKeyNotation', () {
-      const formatter = RomanceKeyNotation();
-      const chain = [formatter];
+      const textual = RomanceKeyNotation();
+      const symbol = RomanceKeyNotation.symbol();
+      const chain = [textual, symbol];
 
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
@@ -135,8 +136,16 @@ void main() {
         test('parses source as a Key', () {
           expect(Key.parse('Do maggiore', chain: chain), Note.c.major);
           expect(Key.parse('Sol# maggiore', chain: chain), Note.g.sharp.major);
+          expect(
+            Key.parse('Fa diesis minore', chain: chain),
+            Note.f.sharp.minor,
+          );
           expect(Key.parse('Re maggiore', chain: chain), Note.d.major);
           expect(Key.parse('Lab minore', chain: chain), Note.a.flat.minor);
+          expect(
+            Key.parse('La bemolle minore', chain: chain),
+            Note.a.flat.minor,
+          );
           expect(Key.parse('La minore', chain: chain), Note.a.minor);
           expect(Key.parse('Re minore', chain: chain), Note.d.minor);
         });
@@ -152,7 +161,7 @@ void main() {
           for (final key in testKeys) {
             expect(
               key,
-              Key.parse(key.toString(formatter: formatter), chain: chain),
+              Key.parse(key.toString(formatter: symbol), chain: chain),
             );
           }
         });
@@ -160,22 +169,30 @@ void main() {
 
       group('.toString()', () {
         test('returns the string representation of this Key', () {
-          expect(Note.c.major.toString(formatter: formatter), 'Do maggiore');
-          expect(Note.d.minor.toString(formatter: formatter), 'Re minore');
+          expect(Note.c.major.toString(formatter: symbol), 'Do maggiore');
+          expect(Note.d.minor.toString(formatter: symbol), 'Re minore');
           expect(
-            Note.a.flat.major.toString(formatter: formatter),
+            Note.a.flat.major.toString(formatter: textual),
+            'La bemolle maggiore',
+          );
+          expect(
+            Note.a.flat.major.toString(formatter: symbol),
             'La♭ maggiore',
           );
           expect(
-            Note.f.sharp.minor.toString(formatter: formatter),
+            Note.f.sharp.minor.toString(formatter: symbol),
             'Fa♯ minore',
           );
           expect(
-            Note.g.sharp.sharp.major.toString(formatter: formatter),
+            Note.g.sharp.sharp.major.toString(formatter: symbol),
             'Sol𝄪 maggiore',
           );
           expect(
-            Note.e.flat.flat.minor.toString(formatter: formatter),
+            Note.a.sharp.sharp.major.toString(formatter: textual),
+            'La doppio diesis maggiore',
+          );
+          expect(
+            Note.e.flat.flat.minor.toString(formatter: symbol),
             'Mi𝄫 minore',
           );
         });

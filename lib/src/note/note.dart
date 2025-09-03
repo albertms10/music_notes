@@ -73,10 +73,10 @@ final class Note extends Scalable<Note>
     String source, {
     List<Parser<Note>> chain = const [
       EnglishNoteNotation(),
-      EnglishNoteNotation.textual(),
+      EnglishNoteNotation.symbol(),
       GermanNoteNotation(),
       RomanceNoteNotation(),
-      RomanceNoteNotation.textual(),
+      RomanceNoteNotation.symbol(),
     ],
   }) => chain.parse(source);
 
@@ -429,12 +429,13 @@ final class Note extends Scalable<Note>
   /// Example:
   /// ```dart
   /// Note.d.flat.toString() == 'D♭'
-  /// Note.d.flat.toString(formatter: const RomanceNoteNotation()) == 'Re♭'
   /// Note.d.flat.toString(formatter: const GermanNoteNotation()) == 'Des'
+  /// Note.d.flat.toString(formatter: const RomanceNoteNotation.symbol())
+  ///   == 'Re♭'
   /// ```
   @override
   String toString({
-    Formatter<Note> formatter = const EnglishNoteNotation(),
+    Formatter<Note> formatter = const EnglishNoteNotation.symbol(),
   }) => formatter.format(this);
 
   @override
@@ -467,32 +468,26 @@ abstract interface class NoteNotation extends NotationSystem<Note> {
 
 /// The English notation system for [Note].
 final class EnglishNoteNotation extends NoteNotation {
-  /// Whether to use textual representation for [Accidental].
-  final bool isTextual;
-
   /// Creates a new [EnglishNoteNotation].
   const EnglishNoteNotation({
+    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+    super.accidentalNotation = const EnglishAccidentalNotation(
+      showNatural: false,
+    ),
+  });
+
+  /// Creates a new symbolic [EnglishNoteNotation].
+  const EnglishNoteNotation.symbol({
     super.baseNoteNotation = const EnglishBaseNoteNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),
-  }) : isTextual = false;
+  });
 
-  /// Creates a new textual [EnglishNoteNotation].
-  const EnglishNoteNotation.textual({
-    super.baseNoteNotation = const EnglishBaseNoteNotation(),
-  }) : isTextual = true,
-       super(
-         accidentalNotation: const EnglishAccidentalNotation(
-           showNatural: false,
-         ),
-       );
-
-  /// Creates a new [EnglishNoteNotation] using ASCII characters.
+  /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
   const EnglishNoteNotation.ascii({
     super.baseNoteNotation = const EnglishBaseNoteNotation(),
-  }) : isTextual = false,
-       super(
+  }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
          ),
@@ -500,9 +495,12 @@ final class EnglishNoteNotation extends NoteNotation {
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
-  static const showNatural = EnglishNoteNotation(
+  static const showNatural = EnglishNoteNotation.symbol(
     accidentalNotation: SymbolAccidentalNotation(),
   );
+
+  /// Whether to use symbolic representation for [Accidental].
+  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
   String format(Note note) {
@@ -511,12 +509,12 @@ final class EnglishNoteNotation extends NoteNotation {
 
     if (accidental.isEmpty) return baseNote;
 
-    return '$baseNote${isTextual ? '-' : ''}$accidental';
+    return '$baseNote${_isSymbol ? '' : '-'}$accidental';
   }
 
   @override
   RegExp get regExp => RegExp(
-    '${baseNoteNotation.regExp?.pattern}${isTextual ? r'(?:-|\s*)' : r'\s*'}'
+    '${baseNoteNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
     '${accidentalNotation.regExp?.pattern}',
     caseSensitive: false,
   );
@@ -581,32 +579,25 @@ final class GermanNoteNotation extends NoteNotation {
 
 /// The Romance alphabetic notation system for [Note].
 final class RomanceNoteNotation extends NoteNotation {
-  /// Whether to use textual representation for [Accidental].
-  final bool isTextual;
-
   /// Creates a new [RomanceNoteNotation].
   const RomanceNoteNotation({
     super.baseNoteNotation = const RomanceBaseNoteNotation(),
-    super.accidentalNotation = const SymbolAccidentalNotation(
+    super.accidentalNotation = const RomanceAccidentalNotation(
       showNatural: false,
     ),
-  }) : isTextual = false;
+  });
 
-  /// Creates a new textual [RomanceNoteNotation].
-  const RomanceNoteNotation.textual({
+  /// Creates a new symbolic [RomanceNoteNotation].
+  const RomanceNoteNotation.symbol({
     super.baseNoteNotation = const RomanceBaseNoteNotation(),
-  }) : isTextual = true,
-       super(
-         accidentalNotation: const RomanceAccidentalNotation(
-           showNatural: false,
-         ),
+  }) : super(
+         accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
        );
 
-  /// Creates a new [RomanceNoteNotation] using ASCII characters.
+  /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
   const RomanceNoteNotation.ascii({
     super.baseNoteNotation = const RomanceBaseNoteNotation(),
-  }) : isTextual = false,
-       super(
+  }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
          ),
@@ -618,6 +609,9 @@ final class RomanceNoteNotation extends NoteNotation {
     accidentalNotation: SymbolAccidentalNotation(),
   );
 
+  /// Whether to use symbolic representation for [Accidental].
+  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
+
   @override
   String format(Note note) {
     final baseNote = note.baseNote.toString(formatter: baseNoteNotation);
@@ -625,7 +619,7 @@ final class RomanceNoteNotation extends NoteNotation {
 
     if (accidental == '') return baseNote;
 
-    return '$baseNote${isTextual ? ' ' : ''}$accidental';
+    return '$baseNote${_isSymbol ? '' : ' '}$accidental';
   }
 
   @override
