@@ -504,9 +504,8 @@ final class EnglishNoteNotation extends NoteNotation {
 
   @override
   String format(Note note) {
-    final baseNote = note.baseNote.toString(formatter: baseNoteNotation);
-    final accidental = note.accidental.toString(formatter: accidentalNotation);
-
+    final baseNote = baseNoteNotation.format(note.baseNote);
+    final accidental = accidentalNotation.format(note.accidental);
     if (accidental.isEmpty) return baseNote;
 
     return '$baseNote${_isSymbol ? '' : '-'}$accidental';
@@ -542,12 +541,11 @@ final class GermanNoteNotation extends NoteNotation {
 
     Note(baseNote: BaseNote.a || BaseNote.e, :final accidental)
         when accidental.isFlat =>
-      note.baseNote.toString(formatter: baseNoteNotation) +
-          accidental.toString(formatter: accidentalNotation).substring(1),
+      baseNoteNotation.format(note.baseNote) +
+          accidentalNotation.format(accidental).substring(1),
 
     Note(:final baseNote, :final accidental) =>
-      baseNote.toString(formatter: baseNoteNotation) +
-          accidental.toString(formatter: accidentalNotation),
+      baseNoteNotation.format(baseNote) + accidentalNotation.format(accidental),
   };
 
   @override
@@ -614,10 +612,9 @@ final class RomanceNoteNotation extends NoteNotation {
 
   @override
   String format(Note note) {
-    final baseNote = note.baseNote.toString(formatter: baseNoteNotation);
-    final accidental = note.accidental.toString(formatter: accidentalNotation);
-
-    if (accidental == '') return baseNote;
+    final baseNote = baseNoteNotation.format(note.baseNote);
+    final accidental = accidentalNotation.format(note.accidental);
+    if (accidental.isEmpty) return baseNote;
 
     return '$baseNote${_isSymbol ? '' : ' '}$accidental';
   }

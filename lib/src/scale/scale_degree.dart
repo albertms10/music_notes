@@ -233,9 +233,7 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
     final buffer = StringBuffer()
       ..writeAll([
         if (scaleDegree.semitonesDelta != 0)
-          Accidental(
-            scaleDegree.semitonesDelta,
-          ).toString(formatter: accidentalNotation),
+          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
         if (scaleDegree.quality case ImperfectQuality(
           :final semitones,
         ) when semitones <= 0)

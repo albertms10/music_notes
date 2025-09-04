@@ -149,7 +149,7 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
   @override
   String format(ClosestPitch closestPitch) {
     final roundedCents = closestPitch.cents.round();
-    final pitch = closestPitch.pitch.toString(formatter: pitchNotation);
+    final pitch = pitchNotation.format(closestPitch.pitch);
     if (roundedCents == 0) return pitch;
 
     return '$pitch${roundedCents.toDeltaString(useAscii: _useAscii)}';

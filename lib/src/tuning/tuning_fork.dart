@@ -127,7 +127,7 @@ final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
 
   @override
   String format(TuningFork tuningFork) =>
-      '${tuningFork.pitch.toString(formatter: pitchNotation)}'
+      '${pitchNotation.format(tuningFork.pitch)}'
       ' = ${tuningFork.frequency.format()}';
 
   @override

@@ -295,12 +295,9 @@ final class ChordPatternNotation extends NotationSystem<ChordPattern> {
           size: Size.ninth || Size.thirteenth,
           :final quality,
         ) =>
-          Accidental(
-            quality.semitones - 1,
-          ).toString(formatter: accidentalNotation),
-        Interval(size: Size.eleventh, :final quality) => Accidental(
-          quality.semitones,
-        ).toString(formatter: accidentalNotation),
+          accidentalNotation.format(Accidental(quality.semitones - 1)),
+        Interval(size: Size.eleventh, :final quality) =>
+          accidentalNotation.format(Accidental(quality.semitones)),
         _ => '',
       };
       return '$part${chordPattern.isDiminished ? '' : interval.size}';
