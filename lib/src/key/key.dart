@@ -49,7 +49,7 @@ final class Key implements Comparable<Key> {
       RomanceKeyNotation(),
       RomanceKeyNotation.symbol(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///

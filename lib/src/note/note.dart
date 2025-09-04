@@ -78,7 +78,7 @@ final class Note extends Scalable<Note>
       RomanceNoteNotation(),
       RomanceNoteNotation.symbol(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>

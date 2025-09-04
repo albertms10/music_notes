@@ -61,7 +61,7 @@ final class Accidental implements Comparable<Accidental> {
       GermanAccidentalNotation(),
       RomanceAccidentalNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
   ///

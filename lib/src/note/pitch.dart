@@ -49,6 +49,16 @@ final class Pitch extends Scalable<Pitch>
   /// The reference octave.
   static const referenceOctave = 4;
 
+  /// The default chain of [Parser] for [Pitch].
+  static const parserChain = [
+    ScientificPitchNotation.english,
+    ScientificPitchNotation.german,
+    ScientificPitchNotation.romance,
+    HelmholtzPitchNotation.english,
+    HelmholtzPitchNotation.german,
+    HelmholtzPitchNotation.romance,
+  ];
+
   /// Parse [source] as a [Pitch] and return its value.
   ///
   /// If the [source] string does not contain a valid [Pitch], a
@@ -62,15 +72,8 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   factory Pitch.parse(
     String source, {
-    List<Parser<Pitch>> chain = const [
-      ScientificPitchNotation.english,
-      ScientificPitchNotation.german,
-      ScientificPitchNotation.romance,
-      HelmholtzPitchNotation.english,
-      HelmholtzPitchNotation.german,
-      HelmholtzPitchNotation.romance,
-    ],
-  }) => chain.parse(source);
+    List<Parser<Pitch>> chain = parserChain,
+  }) => chain.parse(source).match;
 
   /// Changes the octave of this [Pitch].
   ///

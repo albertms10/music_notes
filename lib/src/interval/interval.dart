@@ -231,7 +231,7 @@ final class Interval
   factory Interval.parse(
     String source, {
     List<Parser<Interval>> chain = const [IntervalNotation()],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The number of semitones of this [Interval].
   ///

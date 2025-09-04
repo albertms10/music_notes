@@ -20,7 +20,11 @@ void main() {
         });
 
         test('parses source as a Pitch', () {
-          expect(Pitch.parse('A4'), Note.a.inOctave(4));
+          expect(Pitch.parserChain.parse('A4'), (
+            match: Note.a.inOctave(4),
+            parser: ScientificPitchNotation.english,
+          ));
+
           expect(Pitch.parse('d3'), Note.d.inOctave(3));
           expect(Pitch.parse('C-1'), Note.c.inOctave(-1));
           expect(Pitch.parse('bb-1'), Note.b.flat.inOctave(-1));
@@ -85,6 +89,11 @@ void main() {
         });
 
         test('parses source as a Pitch', () {
+          expect(Pitch.parserChain.parse("d#'"), (
+            match: Note.d.sharp.inOctave(4),
+            parser: HelmholtzPitchNotation.english,
+          ));
+
           expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
           expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
           expect(Pitch.parse('C,,'), Note.c.inOctave(0));
@@ -95,7 +104,6 @@ void main() {
           expect(Pitch.parse('h'), Note.b.inOctave(3));
           expect(Pitch.parse('sol'), Note.g.inOctave(3));
           expect(Pitch.parse('f'), Note.f.inOctave(3));
-          expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
           expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
           expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
           expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));

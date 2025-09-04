@@ -72,9 +72,11 @@ abstract interface class Parser<T> {
 /// A [Parser] chain.
 extension ParserChain<T> on List<Parser<T>> {
   /// Parses [source] from this chain of [Parser]s.
-  T parse(String source) {
+  ({T match, Parser<T> parser}) parse(String source) {
     for (final parser in this) {
-      if (parser.matches(source)) return parser.parse(source);
+      if (parser.matches(source)) {
+        return (match: parser.parse(source), parser: parser);
+      }
     }
     throw FormatException('End of parser chain: invalid $T', source);
   }

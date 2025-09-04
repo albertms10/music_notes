@@ -58,7 +58,7 @@ enum TonalMode implements Mode {
       GermanTonalModeNotation(),
       RomanceTonalModeNotation(),
     ],
-  }) => chain.parse(source);
+  }) => chain.parse(source).match;
 
   /// The parallel (opposite) of this [TonalMode].
   ///
