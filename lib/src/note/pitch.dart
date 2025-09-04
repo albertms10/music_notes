@@ -540,7 +540,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
 
   @override
   String format(Pitch pitch) =>
-      '${pitch.note.toString(formatter: noteNotation)}'
+      '${noteNotation.format(pitch.note)}'
       '${_useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 
   @override
@@ -620,7 +620,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
 
   @override
   String format(Pitch pitch) {
-    final note = pitch.note.toString(formatter: noteNotation);
+    final note = noteNotation.format(pitch.note);
     final symbols = _useAscii ? _asciiSymbols : _symbols;
 
     return switch (pitch.octave) {
@@ -633,7 +633,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   RegExp get regExp {
     final baseNotes = [
       for (final baseNote in BaseNote.values)
-        baseNote.toString(formatter: noteNotation.baseNoteNotation),
+        noteNotation.baseNoteNotation.format(baseNote),
     ].join('|');
 
     return RegExp(

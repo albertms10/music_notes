@@ -166,12 +166,8 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
   });
 
   @override
-  String format(Key key) {
-    final note = key.note.toString(formatter: noteNotation);
-    final mode = key.mode.toString(formatter: tonalModeNotation);
-
-    return '$note $mode';
-  }
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 
   @override
   RegExp get regExp => RegExp(
@@ -200,8 +196,8 @@ final class GermanKeyNotation extends NotationSystem<Key> {
 
   @override
   String format(Key key) {
-    final note = key.note.toString(formatter: noteNotation);
-    final mode = key.mode.toString(formatter: tonalModeNotation).toLowerCase();
+    final note = noteNotation.format(key.note);
+    final mode = tonalModeNotation.format(key.mode).toLowerCase();
     final casedNote = switch (key.mode) {
       TonalMode.major => note,
       TonalMode.minor => note.toLowerCase(),
@@ -242,12 +238,8 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   });
 
   @override
-  String format(Key key) {
-    final note = key.note.toString(formatter: noteNotation);
-    final mode = key.mode.toString(formatter: tonalModeNotation);
-
-    return '$note $mode';
-  }
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 
   @override
   RegExp get regExp => RegExp(

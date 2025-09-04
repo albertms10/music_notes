@@ -544,18 +544,15 @@ final class IntervalNotation extends NotationSystem<Interval> {
   @override
   String format(Interval interval) {
     final quality = switch (interval.quality) {
-      final PerfectQuality quality => quality.toString(
-        formatter: perfectQualityNotation,
-      ),
-      final ImperfectQuality quality => quality.toString(
-        formatter: imperfectQualityNotation,
+      final PerfectQuality quality => perfectQualityNotation.format(quality),
+      final ImperfectQuality quality => imperfectQualityNotation.format(
+        quality,
       ),
     };
-    final naming = '$quality${interval.size.format(formatter: sizeNotation)}';
+    final naming = '$quality${sizeNotation.format(interval.size)}';
     if (!interval.isCompound) return naming;
 
-    return '$naming '
-        '($quality${interval.simple.size.format(formatter: sizeNotation)})';
+    return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
 
   static final _regExp = RegExp(r'(?<quality>\w+?)(?<size>-?\d+)');
