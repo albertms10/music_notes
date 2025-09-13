@@ -297,6 +297,7 @@ void main() {
         expect(() => Interval.parse('M+6'), throwsFormatException);
         expect(() => Interval.parse('P--6'), throwsFormatException);
         expect(() => Interval.parse('P6'), throwsFormatException);
+        expect(() => Interval.parse('P- 2'), throwsFormatException);
         expect(() => Interval.parse('m4'), throwsFormatException);
         expect(() => Interval.parse('p5'), throwsFormatException);
         expect(() => Interval.parse('a2'), throwsFormatException);
@@ -313,6 +314,7 @@ void main() {
         expect(Interval.parse('P1'), Interval.P1);
         expect(Interval.parse('P22'), const Interval.perfect(Size(22)));
         expect(Interval.parse('d5'), Interval.d5);
+        expect(Interval.parse('d 5'), Interval.d5);
         expect(Interval.parse('d-5'), -Interval.d5);
         expect(
           Interval.parse('dd8'),
@@ -335,7 +337,7 @@ void main() {
         expect(Interval.parse('M-3'), -Interval.M3);
         expect(Interval.parse('M16'), const ImperfectSize(16).major);
         expect(Interval.parse('m2'), Interval.m2);
-        expect(Interval.parse('m-2'), -Interval.m2);
+        expect(Interval.parse('m -2'), -Interval.m2);
         expect(Interval.parse('d7'), Interval.d7);
         expect(
           Interval.parse('dd9'),

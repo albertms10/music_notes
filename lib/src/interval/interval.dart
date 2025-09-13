@@ -555,14 +555,16 @@ final class IntervalNotation extends NotationSystem<Interval> {
     return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
 
-  static final _regExp = RegExp(r'(?<quality>\w+?)(?<size>-?\d+)');
-
   @override
-  RegExp get regExp => _regExp;
+  RegExp get regExp =>
+      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
+      //  named capture groups are supported.
+      //  See https://github.com/dart-lang/sdk/issues/61337.
+      RegExp('(?<quality>\\w+?)\\s*${sizeNotation.regExp.pattern}');
 
   @override
   Interval parseMatch(RegExpMatch match) {
-    final size = sizeNotation.parse(match.namedGroup('size')!);
+    final size = sizeNotation.parseMatch(match);
     // ignore: omit_local_variable_types False positive (?)
     final Parser<Quality> parser = size.isPerfect
         ? perfectQualityNotation
@@ -573,6 +575,6 @@ final class IntervalNotation extends NotationSystem<Interval> {
       throw FormatException('Invalid Quality', quality, 0);
     }
 
-    return Interval._(size, parser.parse(quality));
+    return Interval._(size, parser.parseMatch(match));
   }
 }
