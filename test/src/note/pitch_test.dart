@@ -87,19 +87,26 @@ void main() {
         test('parses source as a Pitch', () {
           expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
           expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
+          expect(Pitch.parse('Cis,,'), Note.c.sharp.inOctave(0));
           expect(Pitch.parse('C,,'), Note.c.inOctave(0));
           expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
           expect(Pitch.parse('A'), Note.a.inOctave(2));
+          expect(Pitch.parse('As'), Note.a.flat.inOctave(2));
+          expect(Pitch.parse('Ais'), Note.a.sharp.inOctave(2));
           expect(Pitch.parse('H'), Note.b.inOctave(2));
           expect(Pitch.parse('Si'), Note.b.inOctave(2));
           expect(Pitch.parse('h'), Note.b.inOctave(3));
+          expect(Pitch.parse('his'), Note.b.sharp.inOctave(3));
           expect(Pitch.parse('sol'), Note.g.inOctave(3));
           expect(Pitch.parse('f'), Note.f.inOctave(3));
+          expect(Pitch.parse('fis'), Note.f.sharp.inOctave(3));
           expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
           expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
+          expect(Pitch.parse("es''"), Note.e.flat.inOctave(5));
           expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
           expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
           expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
+          expect(Pitch.parse('gisis‴'), Note.g.sharp.sharp.inOctave(6));
 
           final pitch = Note.a.sharp.inOctave(7);
           expect(

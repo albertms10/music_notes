@@ -630,36 +630,24 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   }
 
   @override
-  RegExp get regExp {
-    final baseNotes = [
-      for (final baseNote in BaseNote.values)
-        noteNotation.baseNoteNotation.format(baseNote),
-    ].join('|');
-
-    return RegExp(
-      '(?<note>(?:$baseNotes)'
-      '[${SymbolAccidentalNotation.symbols.join()}]*)'
-      '(?<primes>${[
-        ..._compoundPrimeSymbols,
-        for (final symbol in _primeSymbols) '$symbol+',
-      ].join('|')})?',
-      caseSensitive: false,
-    );
-  }
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp?.pattern}'
+    '(?<primes>${[
+      ..._compoundPrimeSymbols,
+      for (final symbol in _primeSymbols) '$symbol+',
+    ].join('|')})?',
+    caseSensitive: false,
+  );
 
   @override
   Pitch parseMatch(RegExpMatch match) {
-    final notePart = match.namedGroup('note')!;
+    final baseNote = match.namedGroup('baseNote')!;
     final primes = match.namedGroup('primes')?.split('');
-    final octave = notePart[0].isUpperCase
+    final octave = baseNote[0].isUpperCase
         ? switch (primes?.first) {
             '' || null => _middleOctave - 1,
             _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
-            _ => throw FormatException(
-              'Invalid Pitch',
-              match[0],
-              notePart.length,
-            ),
+            _ => null,
           }
         : switch (primes?.first) {
             '' || null => _middleOctave,
@@ -667,14 +655,13 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
             _superDoublePrime => _middleOctave + 2,
             _superTriplePrime => _middleOctave + 3,
             _superQuadruplePrime => _middleOctave + 4,
-            _ => throw FormatException(
-              'Invalid Pitch',
-              match[0],
-              notePart.length,
-            ),
+            _ => null,
           };
+    if (octave == null) {
+      throw FormatException('Invalid Pitch', match[0], baseNote.length);
+    }
 
-    return Pitch(noteNotation.parse(notePart), octave: octave);
+    return Pitch(noteNotation.parseMatch(match), octave: octave);
   }
 }
 
