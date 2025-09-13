@@ -341,6 +341,7 @@ final class EnharmonicSpellingsPitchClassNotation
   @override
   PitchClass parseMatch(RegExpMatch match) {
     final Note(:semitones) = noteNotation.parseMatch(match);
+
     return PitchClass(semitones);
   }
 }

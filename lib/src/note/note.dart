@@ -451,8 +451,8 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The [NotationSystem] interface for [Note].
-abstract interface class NoteNotation extends NotationSystem<Note> {
+/// The abstract [NotationSystem] for [Note].
+abstract class NoteNotation extends NotationSystem<Note> {
   /// The [BaseNote] notation system used to format the [Note.baseNote].
   final NotationSystem<BaseNote> baseNoteNotation;
 
@@ -559,7 +559,7 @@ final class GermanNoteNotation extends NoteNotation {
     final baseNote = match.namedGroup('baseNote')!;
     if (baseNote.toLowerCase() == 'b') return Note.b.flat;
     final accidental = match.namedGroup('accidental');
-    if (accidental == null) return Note(baseNoteNotation.parse(baseNote));
+    if (accidental == null) return Note(baseNoteNotation.parseMatch(match));
     if (const {'a', 'e'}.contains(baseNote.toLowerCase())) {
       if (accidental.startsWith('e')) {
         throw FormatException('Invalid Note', match);
@@ -569,8 +569,8 @@ final class GermanNoteNotation extends NoteNotation {
     }
 
     return Note(
-      baseNoteNotation.parse(baseNote),
-      accidentalNotation.parse(accidental),
+      baseNoteNotation.parseMatch(match),
+      accidentalNotation.parseMatch(match),
     );
   }
 }
