@@ -17,6 +17,7 @@ environment:
 dependencies:
   collection: ^1.19.0
   meta: ^1.15.0
+  xml: ^6.6.1
 
 dev_dependencies:
   test: ^1.25.14
