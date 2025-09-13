@@ -64,6 +64,12 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
+  /// Parses [source] as a [Size].
+  factory Size.parse(
+    String source, {
+    List<Parser<Size>> chain = const [SizeNotation()],
+  }) => chain.parse(source);
+
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {
     final absSemitones = semitones.abs();
