@@ -2,6 +2,7 @@ import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
+import 'package:xml/xml.dart' show XmlParserException;
 
 void main() {
   group('Pitch', () {
@@ -251,13 +252,18 @@ void main() {
 
       group('.parse()', () {
         test('throws ArgumentError when source is invalid', () {
+          expect(() => Pitch.parse('', chain: chain), throwsArgumentError);
           expect(
-            () => Pitch.parse('', chain: chain),
-            throwsA(isA<ArgumentError>()),
+            () => Pitch.parse('x', chain: chain),
+            throwsA(isA<XmlParserException>()),
+          );
+          expect(
+            () => Pitch.parse('<note></note>', chain: chain),
+            throwsArgumentError,
           );
           expect(
             () => Pitch.parse('<pitch></pitch>', chain: chain),
-            throwsA(isA<ArgumentError>()),
+            throwsArgumentError,
           );
           expect(
             () => Pitch.parse('''
@@ -265,7 +271,7 @@ void main() {
                 <step>C</step>
               </pitch>
             ''', chain: chain),
-            throwsA(isA<ArgumentError>()),
+            throwsArgumentError,
           );
           expect(
             () => Pitch.parse('''
@@ -273,7 +279,7 @@ void main() {
                 <octave>4</octave>
               </pitch>
             ''', chain: chain),
-            throwsA(isA<ArgumentError>()),
+            throwsArgumentError,
           );
         });
 
