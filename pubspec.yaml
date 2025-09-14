@@ -12,11 +12,11 @@ topics:
   - midi
 
 environment:
-  sdk: ">=3.8.0 <4.0.0"
+  sdk: ">=3.9.0 <4.0.0"
 
 dependencies:
-  collection: ^1.19.0
-  meta: ^1.15.0
+  collection: ^1.19.1
+  meta: ^1.17.0
 
 dev_dependencies:
   test: ^1.26.3
