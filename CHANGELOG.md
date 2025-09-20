@@ -1,3 +1,48 @@
+## 0.23.0
+
+- build(pubspec): 🚚 bump Dart SDK 3.8 [#603](https://github.com/albertms10/music_notes/pull/603)
+- feat(scale_pattern): ✨ add Lydian augmented `name` [#610](https://github.com/albertms10/music_notes/pull/610)
+- refactor(note): ♻️ simplify `GermanNoteNotation.note` formatter switch [#611](https://github.com/albertms10/music_notes/pull/611)
+- refactor(equal_temperament): ♻️ move `chromaticDivisions` from `music.dart` [#616](https://github.com/albertms10/music_notes/pull/616)
+- refactor: ♻️ rename formatters to `*Notation` [#608](https://github.com/albertms10/music_notes/pull/608)
+- refactor(pitch): ♻️ rewrite using `NotationSystem` [#617](https://github.com/albertms10/music_notes/pull/617)
+- refactor(chord_pattern): ♻️ rewrite clearer formatter for intervals [#619](https://github.com/albertms10/music_notes/pull/619)
+- feat(interval): ✨ override subtract operator and add `intervalSteps` extension method [#621](https://github.com/albertms10/music_notes/pull/621)
+- feat(chord_pattern): ✨ add `under` method [#620](https://github.com/albertms10/music_notes/pull/620)
+- refactor(pitch_class): ♻️ rewrite formatter using `NotationSystem` [#622](https://github.com/albertms10/music_notes/pull/622)
+- refactor(tuning_fork): ♻️ rewrite formatter using `NotationSystem` [#623](https://github.com/albertms10/music_notes/pull/623)
+- refactor(scale_degree): ♻️ rewrite formatter using `NotationSystem` [#624](https://github.com/albertms10/music_notes/pull/624)
+- feat(accidental): ✨ allow using ASCII characters for `SymbolAccidentalNotation` [#625](https://github.com/albertms10/music_notes/pull/625)
+- feat(pitch): ✨ allow using ASCII characters for `HelmholtzPitchNotation` [#626](https://github.com/albertms10/music_notes/pull/626)
+- feat(pitch): ✨ allow using ASCII characters for `ScientificPitchNotation` [#627](https://github.com/albertms10/music_notes/pull/627)
+- feat(closest_pitch): ✨ allow using ASCII characters for `StandardClosestPitchNotation` [#628](https://github.com/albertms10/music_notes/pull/628)
+- refactor(notation_system): ♻️ use named groups for regular expressions [#629](https://github.com/albertms10/music_notes/pull/629)
+- refactor(notation_system): ♻️ use regular expressions consistently [#632](https://github.com/albertms10/music_notes/pull/632)
+- feat(note): ✨ add `.textual` constructor to `NoteNotation` systems [#635](https://github.com/albertms10/music_notes/pull/635)
+- refactor: ♻️ make textual string representations the default and add `symbol` constructors [#636](https://github.com/albertms10/music_notes/pull/636)
+- perf: ⚡ replace `.toString` calls in favor of `.format` inside `Formatter` implementations [#637](https://github.com/albertms10/music_notes/pull/637)
+- refactor(interval): ♻️ use `sizeNotation` RegExp pattern to match the `Interval.size` [#639](https://github.com/albertms10/music_notes/pull/639)
+- fix(pitch): 🐛 use `noteNotation` RegExp to correctly match the note pattern (e.g., German as well) [#640](https://github.com/albertms10/music_notes/pull/640)
+- feat(size): ✨ add `Size.parse` factory method [#641](https://github.com/albertms10/music_notes/pull/641)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump ossf/scorecard-action from 2.4.1 to 2.4.2 in the minor-actions-dependencies group [#604](https://github.com/albertms10/music_notes/pull/604)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.18 to 3.28.19 in the minor-actions-dependencies group [#607](https://github.com/albertms10/music_notes/pull/607)
+- chore(deps): ⬆️ bump very_good_analysis from 7.0.0 to 9.0.0 [#606](https://github.com/albertms10/music_notes/pull/606)
+- chore(deps): ⬆️ bump github/codeql-action from 3.28.19 to 3.29.0 in the minor-actions-dependencies group [#609](https://github.com/albertms10/music_notes/pull/609)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.0 to 3.29.1 in the minor-actions-dependencies group [#612](https://github.com/albertms10/music_notes/pull/612)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.1 to 3.29.2 in the minor-actions-dependencies group [#613](https://github.com/albertms10/music_notes/pull/613)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.2 to 3.29.4 in the minor-actions-dependencies group [#614](https://github.com/albertms10/music_notes/pull/614)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.4 to 3.29.5 in the minor-actions-dependencies group [#615](https://github.com/albertms10/music_notes/pull/615)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#618](https://github.com/albertms10/music_notes/pull/618)
+- chore(deps): ⬆️ bump actions/checkout from 4.2.2 to 5.0.0 [#631](https://github.com/albertms10/music_notes/pull/631)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.8 to 3.29.9 in the minor-actions-dependencies group [#630](https://github.com/albertms10/music_notes/pull/630)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.9 to 3.29.11 in the minor-actions-dependencies group [#633](https://github.com/albertms10/music_notes/pull/633)
+- chore(deps): ⬆️ bump github/codeql-action from 3.29.11 to 3.30.1 in the minor-actions-dependencies group [#638](https://github.com/albertms10/music_notes/pull/638)
+
+**Full Changelog**: [`v0.22.0...v0.23.0`](https://github.com/albertms10/music_notes/compare/v0.22.0...v0.23.0)
+
 ## 0.22.0
 
 - docs(README): 📖 add examples for `Frequency.at` temperature method [#581](https://github.com/albertms10/music_notes/pull/581)
