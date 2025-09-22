@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
+import 'package:xml/xml.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
@@ -662,6 +663,58 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     }
 
     return Pitch(noteNotation.parseMatch(match), octave: octave);
+  }
+}
+
+/// The MusicXML representation of a [Pitch].
+final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
+  /// The [NotationSystem] for [BaseNote].
+  final NotationSystem<BaseNote> baseNoteNotation;
+
+  /// Creates a new [MusicXMLPitchNotation].
+  const MusicXMLPitchNotation({
+    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+  });
+
+  @override
+  String format(Pitch pitch) {
+    final builder = XmlBuilder();
+    builder.element(
+      'pitch',
+      nest: () {
+        builder
+          ..element('step', nest: baseNoteNotation.format(pitch.note.baseNote))
+          ..element('alter', nest: pitch.note.accidental.semitones)
+          ..element('octave', nest: pitch.octave);
+      },
+    );
+    return builder.buildDocument().toXmlString(pretty: true);
+  }
+
+  @override
+  Pitch parse(String source) {
+    if (source.trim().isEmpty) {
+      throw ArgumentError('No <pitch> element found in MusicXML.');
+    }
+    final xml = XmlDocument.parse(source);
+    final pitch = xml.getElement('pitch');
+    if (pitch == null) {
+      throw ArgumentError('No <pitch> element found in MusicXML.');
+    }
+    final step = pitch.getElement('step')?.innerText;
+    final alter = pitch.getElement('alter')?.innerText;
+    final octave = pitch.getElement('octave')?.innerText;
+    if (step == null || octave == null) {
+      throw ArgumentError('Missing required <step> or <octave> elements.');
+    }
+
+    return Pitch(
+      Note(
+        baseNoteNotation.parse(step),
+        alter == null ? Accidental.natural : Accidental(int.parse(alter)),
+      ),
+      octave: int.parse(octave),
+    );
   }
 }
 
