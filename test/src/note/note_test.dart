@@ -266,31 +266,31 @@ void main() {
 
     group('.sharp', () {
       test('returns this Note sharpened by 1 semitone', () {
-        expect(Note.f.sharp, const Note(BaseNote.f, Accidental.sharp));
-        expect(Note.a.sharp, const Note(BaseNote.a, Accidental.sharp));
-        expect(Note.e.sharp, const Note(BaseNote.e, Accidental.sharp));
+        expect(Note.f.sharp, const Note(NoteName.f, Accidental.sharp));
+        expect(Note.a.sharp, const Note(NoteName.a, Accidental.sharp));
+        expect(Note.e.sharp, const Note(NoteName.e, Accidental.sharp));
         expect(Note.b.flat.sharp, Note.b);
         expect(
           Note.g.sharp.sharp,
-          const Note(BaseNote.g, Accidental.doubleSharp),
+          const Note(NoteName.g, Accidental.doubleSharp),
         );
         expect(
           Note.c.sharp.sharp.sharp,
-          const Note(BaseNote.c, Accidental.tripleSharp),
+          const Note(NoteName.c, Accidental.tripleSharp),
         );
       });
     });
 
     group('.flat', () {
       test('returns this Note flattened by 1 semitone', () {
-        expect(Note.e.flat, const Note(BaseNote.e, Accidental.flat));
-        expect(Note.a.flat, const Note(BaseNote.a, Accidental.flat));
-        expect(Note.d.flat, const Note(BaseNote.d, Accidental.flat));
+        expect(Note.e.flat, const Note(NoteName.e, Accidental.flat));
+        expect(Note.a.flat, const Note(NoteName.a, Accidental.flat));
+        expect(Note.d.flat, const Note(NoteName.d, Accidental.flat));
         expect(Note.g.flat.sharp, Note.g);
-        expect(Note.e.flat.flat, const Note(BaseNote.e, Accidental.doubleFlat));
+        expect(Note.e.flat.flat, const Note(NoteName.e, Accidental.doubleFlat));
         expect(
           Note.c.flat.flat.flat,
-          const Note(BaseNote.c, Accidental.tripleFlat),
+          const Note(NoteName.c, Accidental.tripleFlat),
         );
       });
     });
@@ -372,16 +372,16 @@ void main() {
       });
     });
 
-    group('.respellByBaseNote()', () {
-      test('returns this Note respelled by BaseNote', () {
-        expect(Note.c.sharp.respellByBaseNote(BaseNote.d), Note.d.flat);
-        expect(Note.e.flat.respellByBaseNote(BaseNote.d), Note.d.sharp);
-        expect(Note.e.sharp.respellByBaseNote(BaseNote.f), Note.f);
-        expect(Note.f.flat.respellByBaseNote(BaseNote.e), Note.e);
-        expect(Note.c.respellByBaseNote(BaseNote.b), Note.b.sharp);
-        expect(Note.c.respellByBaseNote(BaseNote.d), Note.d.flat.flat);
-        expect(Note.b.respellByBaseNote(BaseNote.c), Note.c.flat);
-        expect(Note.b.respellByBaseNote(BaseNote.a), Note.a.sharp.sharp);
+    group('.respellByNoteName()', () {
+      test('returns this Note respelled by NoteName', () {
+        expect(Note.c.sharp.respellByNoteName(NoteName.d), Note.d.flat);
+        expect(Note.e.flat.respellByNoteName(NoteName.d), Note.d.sharp);
+        expect(Note.e.sharp.respellByNoteName(NoteName.f), Note.f);
+        expect(Note.f.flat.respellByNoteName(NoteName.e), Note.e);
+        expect(Note.c.respellByNoteName(NoteName.b), Note.b.sharp);
+        expect(Note.c.respellByNoteName(NoteName.d), Note.d.flat.flat);
+        expect(Note.b.respellByNoteName(NoteName.c), Note.c.flat);
+        expect(Note.b.respellByNoteName(NoteName.a), Note.a.sharp.sharp);
       });
     });
 
@@ -397,19 +397,19 @@ void main() {
 
         expect(
           Note.f.respellByOrdinalDistance(2),
-          const Note(BaseNote.a, Accidental(-4)),
+          const Note(NoteName.a, Accidental(-4)),
         );
         expect(
           Note.f.respellByOrdinalDistance(3),
-          const Note(BaseNote.b, Accidental(-6)),
+          const Note(NoteName.b, Accidental(-6)),
         );
         expect(
           Note.f.respellByOrdinalDistance(4),
-          const Note(BaseNote.c, Accidental(5)),
+          const Note(NoteName.c, Accidental(5)),
         );
         expect(
           Note.f.respellByOrdinalDistance(-3),
-          const Note(BaseNote.c, Accidental(5)),
+          const Note(NoteName.c, Accidental(5)),
         );
       });
     });

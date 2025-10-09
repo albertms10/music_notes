@@ -31,24 +31,24 @@ For more detailed usage instructions and examples, please refer to the
 
 ### Notes
 
-Define a `Note` from a `BaseNote` and an `Accidental`, or using their
+Define a `Note` from a `NoteName` and an `Accidental`, or using their
 shorthand static constants:
 
 ```dart
-const Note(BaseNote.e, Accidental.flat); // E♭
+const Note(NoteName.e, Accidental.flat); // E♭
 Note.c; // C
 Note.d; // D
 Note.f; // F
 ```
 
-`BaseNote`s can be obtained from semitones or ordinal:
+`NoteName`s can be obtained from semitones or ordinal:
 
 ```dart
-BaseNote.fromSemitones(2); // BaseNote.d
-BaseNote.fromSemitones(9); // BaseNote.a
+NoteName.fromSemitones(2); // NoteName.d
+NoteName.fromSemitones(9); // NoteName.a
 
-BaseNote.fromOrdinal(3); // BaseNote.e
-BaseNote.fromOrdinal(7); // BaseNote.b
+NoteName.fromOrdinal(3); // NoteName.e
+NoteName.fromOrdinal(7); // NoteName.b
 ```
 
 Alter a `Note` with `sharp` or `flat`:
@@ -70,7 +70,7 @@ Note.b.flat.inOctave(5); // B♭5
 Or parse them in both scientific and Helmholtz notations:
 
 ```dart
-BaseNote.parse('b'); // BaseNote.b
+NoteName.parse('b'); // NoteName.b
 Note.parse('a#'); // A♯
 Pitch.parse("g''"); // G5
 Pitch.parse('Eb3'); // E♭3
@@ -79,9 +79,9 @@ Pitch.parse('Eb3'); // E♭3
 Get their difference in semitones:
 
 ```dart
-BaseNote.c.difference(BaseNote.e); // 4
-BaseNote.a.difference(BaseNote.e); // -5
-BaseNote.a.positiveDifference(BaseNote.e); // 7
+NoteName.c.difference(NoteName.e); // 4
+NoteName.a.difference(NoteName.e); // -5
+NoteName.a.positiveDifference(NoteName.e); // 7
 
 Note.c.difference(Note.e.flat); // 3
 Pitch.parse('C').difference(Pitch.parse("c''''")); // 60
@@ -97,7 +97,7 @@ Note.b.inOctave(3).transposeBy(Interval.P5); // F♯4
 Respell them by any criteria:
 
 ```dart
-Note.c.sharp.respellByBaseNote(BaseNote.d); // D♭
+Note.c.sharp.respellByNoteName(NoteName.d); // D♭
 Note.e.flat.respellByAccidental(Accidental.sharp); // D♯
 Note.g.flat.inOctave(3).respellByOrdinalDistance(-1); // F♯3
 
@@ -219,8 +219,8 @@ Calculate the `Interval` between two notes:
 Note.c.interval(Note.g); // P5
 Note.d.interval(Note.f.sharp).inversion; // m6
 
-BaseNote.d.intervalSize(BaseNote.f); // 3
-BaseNote.a.intervalSize(BaseNote.e); // 5
+NoteName.d.intervalSize(NoteName.f); // 3
+NoteName.a.intervalSize(NoteName.e); // 5
 ```
 
 Know the intervallic distance between two notes:

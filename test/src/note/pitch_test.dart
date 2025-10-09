@@ -458,38 +458,38 @@ void main() {
       });
     });
 
-    group('.respellByBaseNote()', () {
-      test('returns this Pitch respelled by BaseNote', () {
+    group('.respellByNoteName()', () {
+      test('returns this Pitch respelled by NoteName', () {
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNote(BaseNote.d),
+          Note.c.sharp.inOctave(4).respellByNoteName(NoteName.d),
           Note.d.flat.inOctave(4),
         );
         expect(
-          Note.e.flat.inOctave(3).respellByBaseNote(BaseNote.d),
+          Note.e.flat.inOctave(3).respellByNoteName(NoteName.d),
           Note.d.sharp.inOctave(3),
         );
         expect(
-          Note.e.sharp.inOctave(6).respellByBaseNote(BaseNote.f),
+          Note.e.sharp.inOctave(6).respellByNoteName(NoteName.f),
           Note.f.inOctave(6),
         );
         expect(
-          Note.f.flat.inOctave(4).respellByBaseNote(BaseNote.e),
+          Note.f.flat.inOctave(4).respellByNoteName(NoteName.e),
           Note.e.inOctave(4),
         );
         expect(
-          Note.c.inOctave(4).respellByBaseNote(BaseNote.b),
+          Note.c.inOctave(4).respellByNoteName(NoteName.b),
           Note.b.sharp.inOctave(3),
         );
         expect(
-          Note.c.inOctave(5).respellByBaseNote(BaseNote.d),
+          Note.c.inOctave(5).respellByNoteName(NoteName.d),
           Note.d.flat.flat.inOctave(5),
         );
         expect(
-          Note.b.inOctave(4).respellByBaseNote(BaseNote.c),
+          Note.b.inOctave(4).respellByNoteName(NoteName.c),
           Note.c.flat.inOctave(5),
         );
         expect(
-          Note.b.inOctave(4).respellByBaseNote(BaseNote.a),
+          Note.b.inOctave(4).respellByNoteName(NoteName.a),
           Note.a.sharp.sharp.inOctave(4),
         );
       });
@@ -540,19 +540,19 @@ void main() {
 
         expect(
           Note.f.inOctave(4).respellByOrdinalDistance(2),
-          const Note(BaseNote.a, Accidental(-4)).inOctave(4),
+          const Note(NoteName.a, Accidental(-4)).inOctave(4),
         );
         expect(
           Note.g.inOctave(4).respellByOrdinalDistance(3),
-          const Note(BaseNote.c, Accidental(-5)).inOctave(5),
+          const Note(NoteName.c, Accidental(-5)).inOctave(5),
         );
         expect(
           Note.f.inOctave(4).respellByOrdinalDistance(4),
-          const Note(BaseNote.c, Accidental(5)).inOctave(4),
+          const Note(NoteName.c, Accidental(5)).inOctave(4),
         );
         expect(
           Note.d.inOctave(4).respellByOrdinalDistance(-3),
-          const Note(BaseNote.a, Accidental(5)).inOctave(3),
+          const Note(NoteName.a, Accidental(5)).inOctave(3),
         );
       });
     });

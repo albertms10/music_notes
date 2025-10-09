@@ -5,16 +5,16 @@ import 'package:music_notes/music_notes.dart';
 
 void main() {
   // Notes
-  const Note(BaseNote.e, Accidental.flat); // E♭
+  const Note(NoteName.e, Accidental.flat); // E♭
   Note.c; // C
   Note.d; // D
   Note.f; // F
 
-  BaseNote.fromSemitones(2); // BaseNote.d
-  BaseNote.fromSemitones(9); // BaseNote.a
+  NoteName.fromSemitones(2); // NoteName.d
+  NoteName.fromSemitones(9); // NoteName.a
 
-  BaseNote.fromOrdinal(3); // BaseNote.e
-  BaseNote.fromOrdinal(7); // BaseNote.b
+  NoteName.fromOrdinal(3); // NoteName.e
+  NoteName.fromOrdinal(7); // NoteName.b
 
   Note.c.sharp; // C♯
   Note.d.flat; // D♭
@@ -24,14 +24,14 @@ void main() {
   Note.f.inOctave(4); // F4
   Note.b.flat.inOctave(5); // B♭5
 
-  BaseNote.parse('b'); // BaseNote.b
+  NoteName.parse('b'); // NoteName.b
   Note.parse('a#'); // A♯
   Pitch.parse("g''"); // G5
   Pitch.parse('Eb3'); // E♭3
 
-  BaseNote.c.difference(BaseNote.e); // 4
-  BaseNote.a.difference(BaseNote.e); // -5
-  BaseNote.a.positiveDifference(BaseNote.e); // 7
+  NoteName.c.difference(NoteName.e); // 4
+  NoteName.a.difference(NoteName.e); // -5
+  NoteName.a.positiveDifference(NoteName.e); // 7
 
   Note.c.difference(Note.e.flat); // 3
   Pitch.parse('C').difference(Pitch.parse("c''''")); // 60
@@ -39,7 +39,7 @@ void main() {
   Note.g.flat.transposeBy(-Interval.m3); // E♭
   Note.b.inOctave(3).transposeBy(Interval.P5); // F♯4
 
-  Note.c.sharp.respellByBaseNote(BaseNote.d); // D♭
+  Note.c.sharp.respellByNoteName(NoteName.d); // D♭
   Note.e.flat.respellByAccidental(Accidental.sharp); // D♯
   Note.g.flat.inOctave(3).respellByOrdinalDistance(-1); // F♯3
 
@@ -114,8 +114,8 @@ void main() {
   Note.c.interval(Note.g); // P5
   Note.d.interval(Note.f.sharp).inversion; // m6
 
-  BaseNote.d.intervalSize(BaseNote.f); // 3
-  BaseNote.a.intervalSize(BaseNote.e); // 5
+  NoteName.d.intervalSize(NoteName.f); // 3
+  NoteName.a.intervalSize(NoteName.e); // 5
 
   Interval.P5.circleDistance(from: Note.c, to: Note.d);
   // (2, notes: [Note.c, Note.g, Note.d])
