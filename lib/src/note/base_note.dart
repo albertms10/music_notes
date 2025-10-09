@@ -181,13 +181,20 @@ final class EnglishBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [EnglishBaseNoteNotation].
   const EnglishBaseNoteNotation();
 
-  @override
-  String format(BaseNote baseNote) => baseNote.name.toUpperCase();
+  static final _baseNotes =
+      (BaseNote.values
+              .map(const EnglishBaseNoteNotation().format)
+              .toList(growable: false)
+            ..sort())
+          .join();
 
   static final _regExp = RegExp(
-    '(?<baseNote>[${BaseNote.values.join()}])',
+    '(?<baseNote>[$_baseNotes])',
     caseSensitive: false,
   );
+
+  @override
+  String format(BaseNote baseNote) => baseNote.name.toUpperCase();
 
   @override
   RegExp get regExp => _regExp;
@@ -202,16 +209,23 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   /// Creates a new [GermanBaseNoteNotation].
   const GermanBaseNoteNotation();
 
-  @override
-  String format(BaseNote baseNote) => switch (baseNote) {
-    BaseNote.b => 'H',
-    BaseNote(:final name) => name.toUpperCase(),
-  };
+  static const _altB = 'h';
+
+  static final _baseNotes = ([
+    ...BaseNote.values.map(const EnglishBaseNoteNotation().format),
+    _altB.toUpperCase(),
+  ]..sort()).join();
 
   static final _regExp = RegExp(
-    '(?<baseNote>[${BaseNote.values.join()}h])',
+    '(?<baseNote>[$_baseNotes])',
     caseSensitive: false,
   );
+
+  @override
+  String format(BaseNote baseNote) => switch (baseNote) {
+    BaseNote.b => _altB,
+    BaseNote(:final name) => name,
+  }.toUpperCase();
 
   @override
   RegExp get regExp => _regExp;
@@ -219,7 +233,7 @@ final class GermanBaseNoteNotation extends NotationSystem<BaseNote> {
   @override
   BaseNote parseMatch(RegExpMatch match) =>
       switch (match.namedGroup('baseNote')!.toLowerCase()) {
-        'h' => BaseNote.b,
+        _altB => BaseNote.b,
         final name => BaseNote.values.byName(name),
       };
 }
