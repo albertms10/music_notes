@@ -263,9 +263,9 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 
   @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
-    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
     0 => _perfectSymbol,
-    _ => _augmentedSymbol * quality.semitones,
+    final semitones => _augmentedSymbol * semitones,
   };
 
   @override
@@ -307,10 +307,10 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
 
   @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
-    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
     0 => _minorSymbol,
     1 => _majorSymbol,
-    _ => _augmentedSymbol * (quality.semitones - 1),
+    final semitones => _augmentedSymbol * (semitones - 1),
   };
 
   @override

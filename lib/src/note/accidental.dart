@@ -106,7 +106,6 @@ final class Accidental implements Comparable<Accidental> {
   /// Accidental.natural.name == 'Natural'
   /// ```
   String get name => switch (semitones) {
-    > 3 => '×$semitones sharp',
     3 => 'Triple sharp',
     2 => 'Double sharp',
     1 => 'Sharp',
@@ -114,7 +113,8 @@ final class Accidental implements Comparable<Accidental> {
     -1 => 'Flat',
     -2 => 'Double flat',
     -3 => 'Triple flat',
-    _ => '×${semitones.abs()} flat',
+    > 3 && final semitones => '×$semitones sharp',
+    final semitones => '×${semitones.abs()} flat',
   };
 
   /// This [Accidental] incremented by [semitones].
