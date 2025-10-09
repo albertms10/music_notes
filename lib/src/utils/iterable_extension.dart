@@ -1,3 +1,4 @@
+import '../range.dart';
 import '../scalable.dart';
 import 'range_extension.dart';
 

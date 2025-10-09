@@ -22,6 +22,7 @@ export 'src/note/hearing_range.dart';
 export 'src/note/note.dart';
 export 'src/note/pitch.dart';
 export 'src/note/pitch_class.dart';
+export 'src/range.dart';
 export 'src/scalable.dart';
 export 'src/scale/scale.dart';
 export 'src/scale/scale_degree.dart';
