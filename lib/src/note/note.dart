@@ -539,9 +539,10 @@ final class GermanNoteNotation extends NoteNotation {
   String format(Note note) => switch (note) {
     Note(noteName: NoteName.b, accidental: Accidental.flat) => 'B',
 
-    Note(noteName: NoteName.a || NoteName.e, :final accidental)
+    Note(noteName: NoteName.a || NoteName.e, :final accidental) &&
+            Note(:final noteName)
         when accidental.isFlat =>
-      noteNameNotation.format(note.noteName) +
+      noteNameNotation.format(noteName) +
           accidentalNotation.format(accidental).substring(1),
 
     Note(:final noteName, :final accidental) =>

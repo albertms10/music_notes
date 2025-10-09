@@ -609,13 +609,13 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     4 => _superQuadruplePrime,
     3 => _superTriplePrime,
     2 => _superDoublePrime,
-    < 0 => _subPrime * n.abs(),
-    _ => _superPrime * n,
+    < 0 && final n => _subPrime * n.abs(),
+    final n => _superPrime * n,
   };
 
   static String _asciiSymbols(int n) => switch (n) {
-    < 0 => _subPrimeAscii * n.abs(),
-    _ => _superPrimeAscii * n,
+    < 0 && final n => _subPrimeAscii * n.abs(),
+    final n => _superPrimeAscii * n,
   };
 
   @override
@@ -624,8 +624,9 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     final symbols = _useAscii ? _asciiSymbols : _symbols;
 
     return switch (pitch.octave) {
-      >= _middleOctave => '${note.toLowerCase()}${symbols(pitch.octave - 3)}',
-      _ => '$note${symbols(pitch.octave - 2)}',
+      >= _middleOctave && final octave =>
+        '${note.toLowerCase()}${symbols(octave - 3)}',
+      final octave => '$note${symbols(octave - 2)}',
     };
   }
 
