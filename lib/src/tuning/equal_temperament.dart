@@ -5,7 +5,7 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../note/base_note.dart';
+import '../note/note_name.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'tuning_fork.dart';
@@ -25,7 +25,7 @@ const int chromaticDivisions = 12;
 class EqualTemperament extends TuningSystem {
   final List<int> _steps;
 
-  /// The equal divisions between each [BaseNote] and the next one.
+  /// The equal divisions between each [NoteName] and the next one.
   List<int> get steps => UnmodifiableListView(_steps);
 
   /// Creates a new [EqualTemperament] from [_steps] and [fork].

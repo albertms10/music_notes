@@ -16,10 +16,10 @@ import '../tuning/temperature.dart';
 import '../tuning/tuning_fork.dart';
 import '../tuning/tuning_system.dart';
 import 'accidental.dart';
-import 'base_note.dart';
 import 'closest_pitch.dart';
 import 'frequency.dart';
 import 'note.dart';
+import 'note_name.dart';
 import 'pitch_class.dart';
 
 /// A note in the octave range.
@@ -217,21 +217,21 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   Chord<Pitch> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// This [Pitch] respelled by [baseNote] while keeping the
+  /// This [Pitch] respelled by [noteName] while keeping the
   /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Note.b.sharp.inOctave(4).respellByBaseNote(BaseNote.c)
+  /// Note.b.sharp.inOctave(4).respellByNoteName(NoteName.c)
   ///   == Note.c.inOctave(5)
-  /// Note.f.inOctave(5).respellByBaseNote(BaseNote.e)
+  /// Note.f.inOctave(5).respellByNoteName(NoteName.e)
   ///   == Note.e.sharp.inOctave(5)
-  /// Note.g.inOctave(3).respellByBaseNote(BaseNote.a)
+  /// Note.g.inOctave(3).respellByNoteName(NoteName.a)
   ///   == Note.a.flat.flat.inOctave(3)
   /// ```
   @override
-  Pitch respellByBaseNote(BaseNote baseNote) {
-    final respelledNote = note.respellByBaseNote(baseNote);
+  Pitch respellByNoteName(NoteName noteName) {
+    final respelledNote = note.respellByNoteName(noteName);
 
     return Pitch(
       respelledNote,
@@ -241,7 +241,7 @@ final class Pitch extends Scalable<Pitch>
     );
   }
 
-  /// This [Pitch] respelled by [BaseNote.ordinal] distance while keeping the
+  /// This [Pitch] respelled by [NoteName.ordinal] distance while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -253,7 +253,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   Pitch respellByOrdinalDistance(int distance) =>
-      respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
+      respellByNoteName(NoteName.fromOrdinal(note.noteName.ordinal + distance));
 
   /// This [Pitch] respelled upwards while keeping the same number of
   /// [semitones].
@@ -361,7 +361,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   Interval interval(Pitch other) {
-    final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
+    final ordinalDelta = other.note.noteName.ordinal - note.noteName.ordinal;
     final sizeDelta = ordinalDelta + 7 * (other.octave - octave);
 
     return Interval.fromSizeAndSemitones(
@@ -641,9 +641,9 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
 
   @override
   Pitch parseMatch(RegExpMatch match) {
-    final baseNote = match.namedGroup('baseNote')!;
+    final noteName = match.namedGroup('noteName')!;
     final primes = match.namedGroup('primes')?.split('');
-    final octave = baseNote[0].isUpperCase
+    final octave = noteName[0].isUpperCase
         ? switch (primes?.first) {
             '' || null => _middleOctave - 1,
             _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
@@ -658,7 +658,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
             _ => null,
           };
     if (octave == null) {
-      throw FormatException('Invalid Pitch', match[0], baseNote.length);
+      throw FormatException('Invalid Pitch', match[0], noteName.length);
     }
 
     return Pitch(noteNotation.parseMatch(match), octave: octave);

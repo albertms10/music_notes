@@ -12,14 +12,14 @@ import '../respellable.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
-import 'base_note.dart';
+import 'note_name.dart';
 import 'pitch.dart';
 
 /// A musical note.
 ///
 /// ---
 /// See also:
-/// * [BaseNote].
+/// * [NoteName].
 /// * [Accidental].
 /// * [Pitch].
 /// * [KeySignature].
@@ -28,35 +28,35 @@ import 'pitch.dart';
 final class Note extends Scalable<Note>
     with RespellableScalable<Note>
     implements Comparable<Note> {
-  /// The base note that defines this [Note].
-  final BaseNote baseNote;
+  /// The name that defines this [Note].
+  final NoteName noteName;
 
-  /// The accidental that modifies the [baseNote].
+  /// The accidental that modifies the [noteName].
   final Accidental accidental;
 
-  /// Creates a new [Note] from [baseNote] and [accidental].
-  const Note(this.baseNote, [this.accidental = Accidental.natural]);
+  /// Creates a new [Note] from [noteName] and [accidental].
+  const Note(this.noteName, [this.accidental = Accidental.natural]);
 
   /// Note C.
-  static const c = Note(BaseNote.c);
+  static const c = Note(NoteName.c);
 
   /// Note D.
-  static const d = Note(BaseNote.d);
+  static const d = Note(NoteName.d);
 
   /// Note E.
-  static const e = Note(BaseNote.e);
+  static const e = Note(NoteName.e);
 
   /// Note F.
-  static const f = Note(BaseNote.f);
+  static const f = Note(NoteName.f);
 
   /// Note G.
-  static const g = Note(BaseNote.g);
+  static const g = Note(NoteName.g);
 
   /// Note A.
-  static const a = Note(BaseNote.a);
+  static const a = Note(NoteName.a);
 
   /// Note B.
-  static const b = Note(BaseNote.b);
+  static const b = Note(NoteName.b);
 
   static const _parsers = [
     EnglishNoteNotation(),
@@ -98,7 +98,7 @@ final class Note extends Scalable<Note>
 
   static List<int Function()> _comparators(Note a, Note b) => [
     () => Scalable.compareEnharmonically(a, b),
-    () => a.baseNote.semitones.compareTo(b.baseNote.semitones),
+    () => a.noteName.semitones.compareTo(b.noteName.semitones),
   ];
 
   /// The semitones distance of this [Note] relative to [Note.c].
@@ -112,7 +112,7 @@ final class Note extends Scalable<Note>
   /// Note.c.flat.semitones == -1
   /// ```
   @override
-  int get semitones => baseNote.semitones + accidental.semitones;
+  int get semitones => noteName.semitones + accidental.semitones;
 
   /// The difference in semitones between this [Note] and [other].
   ///
@@ -129,19 +129,19 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.sharp == const Note(BaseNote.c, Accidental.sharp)
-  /// Note.a.sharp == const Note(BaseNote.a, Accidental.sharp)
+  /// Note.c.sharp == const Note(NoteName.c, Accidental.sharp)
+  /// Note.a.sharp == const Note(NoteName.a, Accidental.sharp)
   /// ```
-  Note get sharp => Note(baseNote, accidental + 1);
+  Note get sharp => Note(noteName, accidental + 1);
 
   /// This [Note] flattened by 1 semitone.
   ///
   /// Example:
   /// ```dart
-  /// Note.e.flat == const Note(BaseNote.e, Accidental.flat)
-  /// Note.f.flat == const Note(BaseNote.f, Accidental.flat)
+  /// Note.e.flat == const Note(NoteName.e, Accidental.flat)
+  /// Note.f.flat == const Note(NoteName.f, Accidental.flat)
   /// ```
-  Note get flat => Note(baseNote, accidental - 1);
+  Note get flat => Note(noteName, accidental - 1);
 
   /// This [Note] without an accidental (natural).
   ///
@@ -151,7 +151,7 @@ final class Note extends Scalable<Note>
   /// Note.c.sharp.sharp.natural == Note.c
   /// Note.a.natural == Note.a
   /// ```
-  Note get natural => Note(baseNote);
+  Note get natural => Note(noteName);
 
   /// The [TonalMode.major] [Key] from this [Note].
   ///
@@ -207,28 +207,28 @@ final class Note extends Scalable<Note>
   /// ```
   Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// This [Note] respelled by [baseNote] while keeping the same number of
+  /// This [Note] respelled by [noteName] while keeping the same number of
   /// [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Note.c.sharp.respellByBaseNote(BaseNote.d) == Note.d.flat
-  /// Note.f.respellByBaseNote(BaseNote.e) == Note.e.sharp
-  /// Note.g.respellByBaseNote(BaseNote.a) == Note.a.flat.flat
+  /// Note.c.sharp.respellByNoteName(NoteName.d) == Note.d.flat
+  /// Note.f.respellByNoteName(NoteName.e) == Note.e.sharp
+  /// Note.g.respellByNoteName(NoteName.a) == Note.a.flat.flat
   /// ```
   @override
-  Note respellByBaseNote(BaseNote baseNote) {
-    final rawSemitones = semitones - baseNote.semitones;
+  Note respellByNoteName(NoteName noteName) {
+    final rawSemitones = semitones - noteName.semitones;
     final deltaSemitones =
         rawSemitones +
         (rawSemitones.abs() > (chromaticDivisions * 0.5)
             ? chromaticDivisions * -rawSemitones.sign
             : 0);
 
-    return Note(baseNote, Accidental(deltaSemitones));
+    return Note(noteName, Accidental(deltaSemitones));
   }
 
-  /// This [Note] respelled by [BaseNote.ordinal] distance while keeping the
+  /// This [Note] respelled by [NoteName.ordinal] distance while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -238,7 +238,7 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   Note respellByOrdinalDistance(int distance) =>
-      respellByBaseNote(BaseNote.fromOrdinal(baseNote.ordinal + distance));
+      respellByNoteName(NoteName.fromOrdinal(noteName.ordinal + distance));
 
   /// This [Note] respelled upwards while keeping the same number of
   /// [semitones].
@@ -276,8 +276,8 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   Note respellByAccidental(Accidental accidental) {
-    final baseNote = BaseNote.fromSemitones(semitones - accidental.semitones);
-    if (baseNote != null) return Note(baseNote, accidental);
+    final noteName = NoteName.fromSemitones(semitones - accidental.semitones);
+    if (noteName != null) return Note(noteName, accidental);
 
     if (accidental.isNatural) {
       return respellByAccidental(Accidental(this.accidental.semitones.sign));
@@ -393,7 +393,7 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   Interval interval(Note other) => Interval.fromSizeAndSemitones(
-    baseNote.intervalSize(other.baseNote),
+    noteName.intervalSize(other.noteName),
     difference(other) % chromaticDivisions,
   );
 
@@ -406,10 +406,10 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   Note transposeBy(Interval interval) {
-    final transposedBaseNote = baseNote.transposeBySize(interval.size);
+    final transposedNoteName = noteName.transposeBySize(interval.size);
     final positiveDifference = interval.isDescending
-        ? transposedBaseNote.positiveDifference(baseNote)
-        : baseNote.positiveDifference(transposedBaseNote);
+        ? transposedNoteName.positiveDifference(noteName)
+        : noteName.positiveDifference(transposedNoteName);
 
     final accidentalSemitones =
         (accidental.semitones * interval.size.sign) +
@@ -419,7 +419,7 @@ final class Note extends Scalable<Note>
         chromaticDivisions * ((interval.size.abs() - 1) ~/ 7);
 
     return Note(
-      transposedBaseNote,
+      transposedNoteName,
       Accidental(semitonesOctaveMod * interval.size.sign),
     );
   }
@@ -441,11 +441,11 @@ final class Note extends Scalable<Note>
   @override
   bool operator ==(Object other) =>
       other is Note &&
-      baseNote == other.baseNote &&
+      noteName == other.noteName &&
       accidental == other.accidental;
 
   @override
-  int get hashCode => Object.hash(baseNote, accidental);
+  int get hashCode => Object.hash(noteName, accidental);
 
   @override
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
@@ -453,15 +453,15 @@ final class Note extends Scalable<Note>
 
 /// The abstract [NotationSystem] for [Note].
 abstract class NoteNotation extends NotationSystem<Note> {
-  /// The [BaseNote] notation system used to format the [Note.baseNote].
-  final NotationSystem<BaseNote> baseNoteNotation;
+  /// The [NoteName] notation system used to format the [Note.noteName].
+  final NotationSystem<NoteName> noteNameNotation;
 
   /// The [Accidental] notation system used to format the [Note.accidental].
   final NotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [NoteNotation].
   const NoteNotation({
-    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+    this.noteNameNotation = const EnglishNoteNameNotation(),
     this.accidentalNotation = const SymbolAccidentalNotation(),
   });
 }
@@ -470,7 +470,7 @@ abstract class NoteNotation extends NotationSystem<Note> {
 final class EnglishNoteNotation extends NoteNotation {
   /// Creates a new [EnglishNoteNotation].
   const EnglishNoteNotation({
-    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+    super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const EnglishAccidentalNotation(
       showNatural: false,
     ),
@@ -478,7 +478,7 @@ final class EnglishNoteNotation extends NoteNotation {
 
   /// Creates a new symbolic [EnglishNoteNotation].
   const EnglishNoteNotation.symbol({
-    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+    super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),
@@ -486,7 +486,7 @@ final class EnglishNoteNotation extends NoteNotation {
 
   /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
   const EnglishNoteNotation.ascii({
-    super.baseNoteNotation = const EnglishBaseNoteNotation(),
+    super.noteNameNotation = const EnglishNoteNameNotation(),
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
@@ -504,23 +504,23 @@ final class EnglishNoteNotation extends NoteNotation {
 
   @override
   String format(Note note) {
-    final baseNote = baseNoteNotation.format(note.baseNote);
+    final noteName = noteNameNotation.format(note.noteName);
     final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return baseNote;
+    if (accidental.isEmpty) return noteName;
 
-    return '$baseNote${_isSymbol ? '' : '-'}$accidental';
+    return '$noteName${_isSymbol ? '' : '-'}$accidental';
   }
 
   @override
   RegExp get regExp => RegExp(
-    '${baseNoteNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
+    '${noteNameNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
     '${accidentalNotation.regExp?.pattern}',
     caseSensitive: false,
   );
 
   @override
   Note parseMatch(RegExpMatch match) => Note(
-    baseNoteNotation.parseMatch(match),
+    noteNameNotation.parseMatch(match),
     accidentalNotation.parseMatch(match),
   );
 }
@@ -531,36 +531,36 @@ final class EnglishNoteNotation extends NoteNotation {
 final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
   const GermanNoteNotation({
-    super.baseNoteNotation = const GermanBaseNoteNotation(),
+    super.noteNameNotation = const GermanNoteNameNotation(),
     super.accidentalNotation = const GermanAccidentalNotation(),
   });
 
   @override
   String format(Note note) => switch (note) {
-    Note(baseNote: BaseNote.b, accidental: Accidental.flat) => 'B',
+    Note(noteName: NoteName.b, accidental: Accidental.flat) => 'B',
 
-    Note(baseNote: BaseNote.a || BaseNote.e, :final accidental)
+    Note(noteName: NoteName.a || NoteName.e, :final accidental)
         when accidental.isFlat =>
-      baseNoteNotation.format(note.baseNote) +
+      noteNameNotation.format(note.noteName) +
           accidentalNotation.format(accidental).substring(1),
 
-    Note(:final baseNote, :final accidental) =>
-      baseNoteNotation.format(baseNote) + accidentalNotation.format(accidental),
+    Note(:final noteName, :final accidental) =>
+      noteNameNotation.format(noteName) + accidentalNotation.format(accidental),
   };
 
   @override
   RegExp get regExp => RegExp(
-    '${baseNoteNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
+    '${noteNameNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
     caseSensitive: false,
   );
 
   @override
   Note parseMatch(RegExpMatch match) {
-    final baseNote = match.namedGroup('baseNote')!;
-    if (baseNote.toLowerCase() == 'b') return Note.b.flat;
+    final noteName = match.namedGroup('noteName')!;
+    if (noteName.toLowerCase() == 'b') return Note.b.flat;
     final accidental = match.namedGroup('accidental');
-    if (accidental == null) return Note(baseNoteNotation.parseMatch(match));
-    if (const {'a', 'e'}.contains(baseNote.toLowerCase())) {
+    if (accidental == null) return Note(noteNameNotation.parseMatch(match));
+    if (const {'a', 'e'}.contains(noteName.toLowerCase())) {
       if (accidental.startsWith('e')) {
         throw FormatException('Invalid Note', match);
       }
@@ -569,7 +569,7 @@ final class GermanNoteNotation extends NoteNotation {
     }
 
     return Note(
-      baseNoteNotation.parseMatch(match),
+      noteNameNotation.parseMatch(match),
       accidentalNotation.parseMatch(match),
     );
   }
@@ -579,7 +579,7 @@ final class GermanNoteNotation extends NoteNotation {
 final class RomanceNoteNotation extends NoteNotation {
   /// Creates a new [RomanceNoteNotation].
   const RomanceNoteNotation({
-    super.baseNoteNotation = const RomanceBaseNoteNotation(),
+    super.noteNameNotation = const RomanceNoteNameNotation(),
     super.accidentalNotation = const RomanceAccidentalNotation(
       showNatural: false,
     ),
@@ -587,14 +587,14 @@ final class RomanceNoteNotation extends NoteNotation {
 
   /// Creates a new symbolic [RomanceNoteNotation].
   const RomanceNoteNotation.symbol({
-    super.baseNoteNotation = const RomanceBaseNoteNotation(),
+    super.noteNameNotation = const RomanceNoteNameNotation(),
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
        );
 
   /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
   const RomanceNoteNotation.ascii({
-    super.baseNoteNotation = const RomanceBaseNoteNotation(),
+    super.noteNameNotation = const RomanceNoteNameNotation(),
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
@@ -612,23 +612,23 @@ final class RomanceNoteNotation extends NoteNotation {
 
   @override
   String format(Note note) {
-    final baseNote = baseNoteNotation.format(note.baseNote);
+    final noteName = noteNameNotation.format(note.noteName);
     final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return baseNote;
+    if (accidental.isEmpty) return noteName;
 
-    return '$baseNote${_isSymbol ? '' : ' '}$accidental';
+    return '$noteName${_isSymbol ? '' : ' '}$accidental';
   }
 
   @override
   RegExp get regExp => RegExp(
-    '${baseNoteNotation.regExp?.pattern}\\s*'
+    '${noteNameNotation.regExp?.pattern}\\s*'
     '${accidentalNotation.regExp?.pattern}',
     caseSensitive: false,
   );
 
   @override
   Note parseMatch(RegExpMatch match) => Note(
-    baseNoteNotation.parseMatch(match),
+    noteNameNotation.parseMatch(match),
     accidentalNotation.parseMatch(match),
   );
 }

@@ -10,8 +10,8 @@ import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
 import '../note/accidental.dart';
-import '../note/base_note.dart';
 import '../note/note.dart';
+import '../note/note_name.dart';
 import 'key.dart';
 import 'mode.dart';
 
@@ -35,8 +35,8 @@ final class KeySignature implements Comparable<KeySignature> {
   /// An empty [KeySignature].
   static const empty = KeySignature([]);
 
-  static const _firstCanonicalFlatNote = Note(BaseNote.b, Accidental.flat);
-  static const _firstCanonicalSharpNote = Note(BaseNote.f, Accidental.sharp);
+  static const _firstCanonicalFlatNote = Note(NoteName.b, Accidental.flat);
+  static const _firstCanonicalSharpNote = Note(NoteName.f, Accidental.sharp);
 
   /// Creates a new [KeySignature] from fifths [distance].
   ///

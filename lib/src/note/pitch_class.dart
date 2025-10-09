@@ -9,8 +9,8 @@ import '../notation_system.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
-import 'base_note.dart';
 import 'note.dart';
+import 'note_name.dart';
 import 'pitch.dart';
 
 /// A set of all pitches that are a whole number of octaves apart, sharing the
@@ -103,10 +103,10 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   Set<Note> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final baseNote = BaseNote.fromSemitones(semitones);
+    final noteName = NoteName.fromSemitones(semitones);
 
-    if (baseNote != null) {
-      final note = Note(baseNote);
+    if (noteName != null) {
+      final note = Note(noteName);
 
       return SplayTreeSet<Note>.of({
         note,
@@ -118,11 +118,11 @@ final class PitchClass extends Scalable<PitchClass>
     }
 
     final aboveNote = Note(
-      BaseNote.fromSemitones(semitones - 1)!,
+      NoteName.fromSemitones(semitones - 1)!,
       Accidental.sharp,
     );
     final belowNote = Note(
-      BaseNote.fromSemitones(semitones + 1)!,
+      NoteName.fromSemitones(semitones + 1)!,
       Accidental.flat,
     );
 
