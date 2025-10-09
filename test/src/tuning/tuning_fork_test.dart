@@ -22,6 +22,11 @@ void main() {
             TuningFork(Note.d.flat.inOctave(5), const Frequency(256.14)),
           );
           expect(
+            skip: 'Support Helmholtz pitch notation',
+            () => TuningFork.parse("db'' 223.9"),
+            TuningFork(Note.d.flat.inOctave(5), const Frequency(223.9)),
+          );
+          expect(
             TuningFork.parse('fx-2 314.1 hz'),
             TuningFork(Note.f.sharp.sharp.inOctave(-2), const Frequency(314.1)),
           );
@@ -73,7 +78,7 @@ void main() {
     });
 
     group('ScientificTuningForkNotation', () {
-      const formatter = ScientificTuningForkNotation();
+      const formatter = ScientificTuningForkNotation.english;
       const chain = [formatter];
 
       group('.parse()', () {
@@ -99,30 +104,55 @@ void main() {
         test('parses source as a TuningFork', () {
           expect(TuningFork.parse('A4 = 440 Hz'), TuningFork.a440);
           expect(TuningFork.parse('A4=415hz'), TuningFork.a415);
+          expect(TuningFork.parse("a' = 415hz"), TuningFork.a415);
           expect(
             TuningFork.parse('C2 =  256.9'),
             TuningFork(Note.c.inOctave(2), const Frequency(256.9)),
+          );
+          expect(
+            TuningFork.parse('Cis =  256.9'),
+            TuningFork(Note.c.sharp.inOctave(2), const Frequency(256.9)),
           );
         });
       });
 
       group('.toString()', () {
         test('returns the string representation of this TuningFork', () {
-          const formatter = ScientificTuningForkNotation();
-          expect(TuningFork.a440.toString(formatter: formatter), 'A4 = 440 Hz');
+          const english = ScientificTuningForkNotation.english;
+          expect(TuningFork.a440.toString(formatter: english), 'A4 = 440 Hz');
           expect(
             TuningFork(
               Note.f.sharp.inOctave(4),
               const Frequency(402.3),
-            ).toString(formatter: formatter),
+            ).toString(formatter: english),
             'F♯4 = 402.3 Hz',
           );
           expect(
             TuningFork(
               Note.a.flat.inOctave(3),
               const Frequency(437.15),
-            ).toString(formatter: formatter),
+            ).toString(formatter: english),
             'A♭3 = 437.15 Hz',
+          );
+
+          const germanHelmholtz = ScientificTuningForkNotation.germanHelmholtz;
+          expect(
+            TuningFork.a440.toString(formatter: germanHelmholtz),
+            'a′ = 440 Hz',
+          );
+          expect(
+            TuningFork(
+              Note.f.sharp.inOctave(4),
+              const Frequency(402.3),
+            ).toString(formatter: germanHelmholtz),
+            'fis′ = 402.3 Hz',
+          );
+          expect(
+            TuningFork(
+              Note.a.flat.inOctave(3),
+              const Frequency(437.15),
+            ).toString(formatter: germanHelmholtz),
+            'as = 437.15 Hz',
           );
         });
       });
