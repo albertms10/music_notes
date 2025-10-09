@@ -1,9 +1,7 @@
 import '../note/pitch.dart';
+import '../range.dart';
 import '../scalable.dart';
 import './iterable_extension.dart';
-
-/// A representation of a range between `from` and `to`.
-typedef Range<E> = ({E from, E to});
 
 /// A Range record extension.
 extension RangeExtension<E> on Range<E> {
