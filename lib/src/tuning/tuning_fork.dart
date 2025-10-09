@@ -30,6 +30,11 @@ class TuningFork {
   /// The C256 tuning fork.
   static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
 
+  static const _parsers = [
+    CompactTuningForkNotation(),
+    ScientificTuningForkNotation(),
+  ];
+
   /// Parse [source] as a [TuningFork] and return its value.
   ///
   /// If the [source] string does not contain a valid [TuningFork], a
@@ -43,10 +48,7 @@ class TuningFork {
   /// ```
   factory TuningFork.parse(
     String source, {
-    List<Parser<TuningFork>> chain = const [
-      CompactTuningForkNotation(),
-      ScientificTuningForkNotation(),
-    ],
+    List<Parser<TuningFork>> chain = _parsers,
   }) => chain.parse(source);
 
   /// The string representation of this [TuningFork] based on [formatter].

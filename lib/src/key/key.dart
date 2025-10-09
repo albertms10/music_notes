@@ -29,6 +29,14 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
+  static const _parsers = [
+    EnglishKeyNotation(),
+    EnglishKeyNotation.symbol(),
+    GermanKeyNotation(),
+    RomanceKeyNotation(),
+    RomanceKeyNotation.symbol(),
+  ];
+
   /// Parse [source] as a [Key] and return its value.
   ///
   /// If the [source] string does not contain a valid [Key], a
@@ -40,16 +48,8 @@ final class Key implements Comparable<Key> {
   /// Key.parse('f# minor') == Note.f.sharp.minor
   /// Key.parse('z') // throws a FormatException
   /// ```
-  factory Key.parse(
-    String source, {
-    List<Parser<Key>> chain = const [
-      EnglishKeyNotation(),
-      EnglishKeyNotation.symbol(),
-      GermanKeyNotation(),
-      RomanceKeyNotation(),
-      RomanceKeyNotation.symbol(),
-    ],
-  }) => chain.parse(source);
+  factory Key.parse(String source, {List<Parser<Key>> chain = _parsers}) =>
+      chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
   ///
