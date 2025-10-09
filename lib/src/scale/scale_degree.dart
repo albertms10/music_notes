@@ -64,6 +64,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// The VII [ScaleDegree].
   static const vii = ScaleDegree(7);
 
+  static const _parsers = [StandardScaleDegreeNotation()];
+
   /// Parse [source] as a [ScaleDegree] and return its value.
   ///
   /// If the [source] string does not contain a valid [ScaleDegree], a
@@ -78,7 +80,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   factory ScaleDegree.parse(
     String source, {
-    List<Parser<ScaleDegree>> chain = const [StandardScaleDegreeNotation()],
+    List<Parser<ScaleDegree>> chain = _parsers,
   }) => chain.parse(source);
 
   /// Whether this [ScaleDegree] is raised.

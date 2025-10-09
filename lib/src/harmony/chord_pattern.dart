@@ -73,6 +73,8 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
+  static const _parsers = [ChordPatternNotation()];
+
   /// Parse [source] as a [ChordPattern] and return its value.
   ///
   /// If the [source] string does not contain a valid [ChordPattern], a
@@ -86,7 +88,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    List<Parser<ChordPattern>> chain = const [ChordPatternNotation()],
+    List<Parser<ChordPattern>> chain = _parsers,
   }) => chain.parse(source);
 
   /// The [Chord] built on top of [scalable].

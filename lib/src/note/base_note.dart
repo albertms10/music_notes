@@ -63,6 +63,12 @@ enum BaseNote implements Comparable<BaseNote> {
   factory BaseNote.fromOrdinal(int ordinal) =>
       values[ordinal.nonZeroMod(values.length) - 1];
 
+  static const _parsers = [
+    EnglishBaseNoteNotation(),
+    GermanBaseNoteNotation(),
+    RomanceBaseNoteNotation(),
+  ];
+
   /// Parse [source] as a [BaseNote] and return its value.
   ///
   /// If the [source] string does not contain a valid [BaseNote], a
@@ -76,11 +82,7 @@ enum BaseNote implements Comparable<BaseNote> {
   /// ```
   factory BaseNote.parse(
     String source, {
-    List<Parser<BaseNote>> chain = const [
-      EnglishBaseNoteNotation(),
-      GermanBaseNoteNotation(),
-      RomanceBaseNoteNotation(),
-    ],
+    List<Parser<BaseNote>> chain = _parsers,
   }) => chain.parse(source);
 
   /// The ordinal number of this [BaseNote].

@@ -58,6 +58,14 @@ final class Note extends Scalable<Note>
   /// Note B.
   static const b = Note(BaseNote.b);
 
+  static const _parsers = [
+    EnglishNoteNotation(),
+    EnglishNoteNotation.symbol(),
+    GermanNoteNotation(),
+    RomanceNoteNotation(),
+    RomanceNoteNotation.symbol(),
+  ];
+
   /// Parse [source] as a [Note] and return its value.
   ///
   /// If the [source] string does not contain a valid [Note], a
@@ -69,16 +77,8 @@ final class Note extends Scalable<Note>
   /// Note.parse('c') == Note.c
   /// Note.parse('z') // throws a FormatException
   /// ```
-  factory Note.parse(
-    String source, {
-    List<Parser<Note>> chain = const [
-      EnglishNoteNotation(),
-      EnglishNoteNotation.symbol(),
-      GermanNoteNotation(),
-      RomanceNoteNotation(),
-      RomanceNoteNotation.symbol(),
-    ],
-  }) => chain.parse(source);
+  factory Note.parse(String source, {List<Parser<Note>> chain = _parsers}) =>
+      chain.parse(source);
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
