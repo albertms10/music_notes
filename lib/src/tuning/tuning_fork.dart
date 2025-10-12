@@ -31,7 +31,7 @@ class TuningFork {
   static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
 
   /// The chain of [Parser]s used to parse a [TuningFork].
-  static const chainParsers = [
+  static const parsers = [
     CompactTuningForkNotation(),
     ScientificTuningForkNotation.english,
     ScientificTuningForkNotation.englishHelmholtz,
@@ -52,7 +52,7 @@ class TuningFork {
   /// ```
   factory TuningFork.parse(
     String source, {
-    List<Parser<TuningFork>> chain = chainParsers,
+    List<Parser<TuningFork>> chain = parsers,
   }) => chain.parse(source);
 
   /// The string representation of this [TuningFork] based on [formatter].

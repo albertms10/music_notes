@@ -124,17 +124,17 @@ void main() {
     group('.parse()', () {
       test('parses source as a compressed range list.', () {
         expect(
-          RangeIterableExtension.parse('C', chain: Note.chainParsers),
+          RangeIterableExtension.parse('C', chain: Note.parsers),
           const [(from: Note.c, to: Note.c)],
         );
         expect(
-          RangeIterableExtension.parse('A♯–D♭', chain: Note.chainParsers),
+          RangeIterableExtension.parse('A♯–D♭', chain: Note.parsers),
           [(from: Note.a.sharp, to: Note.d.flat)],
         );
         expect(
           RangeIterableExtension.parse(
             'C-D# | F#-Ab | Bb',
-            chain: Note.chainParsers,
+            chain: Note.parsers,
             rangeSeparator: '-',
             nonConsecutiveSeparator: '|',
           ),
