@@ -1,3 +1,4 @@
+import '../notation_system.dart';
 import '../note/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
@@ -67,13 +68,24 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
 /// A compressed range extension.
 extension RangeIterableExtension<E> on Iterable<Range<E>> {
   /// Formats this compressed range list into a readable string representation.
+  ///
+  /// The function expects the given [E] type to have a proper implementation
+  /// of `operator ==`.
+  ///
+  /// Example:
+  /// ```dart
+  /// [
+  ///   (from: Note.c, to: Note.e.flat),
+  ///   (from: Note.g.sharp, to: Note.b),
+  /// ].format() == 'C–E♭, G♯–B'
+  /// ```
   String format({
     String rangeSeparator = '–',
     String nonConsecutiveSeparator = ', ',
-    String Function(E)? toString,
+    Formatter<E>? formatter,
   }) => map(
     (range) => [range.from, if (range.from != range.to) range.to]
-        .map((item) => toString?.call(item) ?? item.toString())
+        .map(formatter?.format ?? (element) => element.toString())
         .join(rangeSeparator),
   ).join(nonConsecutiveSeparator);
 }
