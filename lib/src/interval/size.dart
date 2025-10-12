@@ -64,11 +64,14 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
-  static const _parsers = [SizeNotation()];
+  /// The chain of [Parser]s used to parse a [Size].
+  static const chainParsers = [SizeNotation()];
 
   /// Parses [source] as a [Size].
-  factory Size.parse(String source, {List<Parser<Size>> chain = _parsers}) =>
-      chain.parse(source);
+  factory Size.parse(
+    String source, {
+    List<Parser<Size>> chain = chainParsers,
+  }) => chain.parse(source);
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {

@@ -69,7 +69,8 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  static const _parsers = [
+  /// The chain of [Parser]s used to parse a [PitchClass].
+  static const chainParsers = [
     EnharmonicSpellingsPitchClassNotation(),
     IntegerPitchClassNotation(),
   ];
@@ -88,7 +89,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   factory PitchClass.parse(
     String source, {
-    List<Parser<PitchClass>> chain = _parsers,
+    List<Parser<PitchClass>> chain = chainParsers,
   }) => chain.parse(source);
 
   /// The different spellings at [distance] sharing the same number of
