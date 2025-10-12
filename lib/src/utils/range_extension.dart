@@ -67,6 +67,34 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
 
 /// A compressed range extension.
 extension RangeIterableExtension<E> on Iterable<Range<E>> {
+  /// Parses [source] as a compressed range list.
+  ///
+  /// Example:
+  /// ```dart
+  /// RangeIterableExtension.parse('C–E♭, G♯–B', chain: Note.parseChain) == [
+  ///   (from: Note.c, to: Note.e.flat),
+  ///   (from: Note.g.sharp, to: Note.b),
+  /// ]
+  /// ```
+  static List<Range<E>> parse<E>(
+    String source, {
+    String rangeSeparator = '–',
+    String nonConsecutiveSeparator = ', ',
+    List<Parser<E>>? chain,
+  }) => source
+      .split(nonConsecutiveSeparator)
+      .map((range) {
+        final List(:first, :last) = range.split(rangeSeparator);
+        final from = first.trim();
+        final to = last.trim();
+
+        return (
+          from: (chain?.parse(from) ?? from) as E,
+          to: (chain?.parse(to) ?? to) as E,
+        );
+      })
+      .toList(growable: false);
+
   /// Formats this compressed range list into a readable string representation.
   ///
   /// The function expects the given [E] type to have a proper implementation
