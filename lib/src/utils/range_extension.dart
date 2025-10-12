@@ -71,7 +71,7 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
   ///
   /// Example:
   /// ```dart
-  /// RangeIterableExtension.parse('C–E♭, G♯–B', chain: Note.parseChain) == [
+  /// RangeIterableExtension.parse('C–E♭, G♯–B', chain: Note.chainParsers) == [
   ///   (from: Note.c, to: Note.e.flat),
   ///   (from: Note.g.sharp, to: Note.b),
   /// ]
