@@ -50,7 +50,7 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  static const _parsers = [
+  static const chainParsers = [
     EnglishTonalModeNotation(),
     GermanTonalModeNotation(),
     RomanceTonalModeNotation(),
@@ -59,7 +59,7 @@ enum TonalMode implements Mode {
   /// Parse [source] as a [TonalMode] and return its value.
   factory TonalMode.parse(
     String source, {
-    List<Parser<TonalMode>> chain = _parsers,
+    List<Parser<TonalMode>> chain = chainParsers,
   }) => chain.parse(source);
 
   /// The parallel (opposite) of this [TonalMode].

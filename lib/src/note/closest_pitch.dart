@@ -27,7 +27,7 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
-  static const _parsers = [StandardClosestPitchNotation()];
+  static const chainParsers = [StandardClosestPitchNotation()];
 
   /// Parse [source] as a [ClosestPitch] and return its value.
   ///
@@ -43,7 +43,7 @@ class ClosestPitch {
   /// ```
   factory ClosestPitch.parse(
     String source, {
-    List<Parser<ClosestPitch>> chain = _parsers,
+    List<Parser<ClosestPitch>> chain = chainParsers,
   }) => chain.parse(source);
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
