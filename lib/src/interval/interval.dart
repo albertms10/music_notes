@@ -218,7 +218,7 @@ final class Interval
       );
 
   /// The chain of [Parser]s used to parse an [Interval].
-  static const chainParsers = [IntervalNotation()];
+  static const parsers = [IntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -233,7 +233,7 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    List<Parser<Interval>> chain = chainParsers,
+    List<Parser<Interval>> chain = parsers,
   }) => chain.parse(source);
 
   /// The number of semitones of this [Interval].

@@ -64,7 +64,7 @@ enum NoteName implements Comparable<NoteName> {
       values[ordinal.nonZeroMod(values.length) - 1];
 
   /// The chain of [Parser]s used to parse a [NoteName].
-  static const chainParsers = [
+  static const parsers = [
     EnglishNoteNameNotation(),
     GermanNoteNameNotation(),
     RomanceNoteNameNotation(),
@@ -83,7 +83,7 @@ enum NoteName implements Comparable<NoteName> {
   /// ```
   factory NoteName.parse(
     String source, {
-    List<Parser<NoteName>> chain = chainParsers,
+    List<Parser<NoteName>> chain = parsers,
   }) => chain.parse(source);
 
   /// The ordinal number of this [NoteName].

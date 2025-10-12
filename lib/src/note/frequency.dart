@@ -22,12 +22,12 @@ extension type const Frequency._(num hertz) implements num {
   static const reference = Frequency(440);
 
   /// The chain of [Parser]s used to parse a [Frequency].
-  static const chainParsers = [FrequencySINotation()];
+  static const parsers = [FrequencySINotation()];
 
   /// Parses [source] as a [Frequency].
   factory Frequency.parse(
     String source, {
-    List<Parser<Frequency>> chain = chainParsers,
+    List<Parser<Frequency>> chain = parsers,
   }) => chain.parse(source);
 
   /// Whether this [Frequency] is inside the [HearingRange.human].

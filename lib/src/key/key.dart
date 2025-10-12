@@ -30,7 +30,7 @@ final class Key implements Comparable<Key> {
   const Key(this.note, this.mode);
 
   /// The chain of [Parser]s used to parse a [Key].
-  static const chainParsers = [
+  static const parsers = [
     EnglishKeyNotation(),
     EnglishKeyNotation.symbol(),
     GermanKeyNotation(),
@@ -49,7 +49,7 @@ final class Key implements Comparable<Key> {
   /// Key.parse('f# minor') == Note.f.sharp.minor
   /// Key.parse('z') // throws a FormatException
   /// ```
-  factory Key.parse(String source, {List<Parser<Key>> chain = chainParsers}) =>
+  factory Key.parse(String source, {List<Parser<Key>> chain = parsers}) =>
       chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].

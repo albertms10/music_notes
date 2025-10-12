@@ -74,7 +74,7 @@ class ChordPattern with Chordable<ChordPattern> {
       };
 
   /// The chain of [Parser]s used to parse a [ChordPattern].
-  static const chainParsers = [ChordPatternNotation()];
+  static const parsers = [ChordPatternNotation()];
 
   /// Parse [source] as a [ChordPattern] and return its value.
   ///
@@ -89,7 +89,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    List<Parser<ChordPattern>> chain = chainParsers,
+    List<Parser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
 
   /// The [Chord] built on top of [scalable].

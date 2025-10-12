@@ -65,13 +65,11 @@ extension type const Size._(int size) implements int {
   };
 
   /// The chain of [Parser]s used to parse a [Size].
-  static const chainParsers = [SizeNotation()];
+  static const parsers = [SizeNotation()];
 
   /// Parses [source] as a [Size].
-  factory Size.parse(
-    String source, {
-    List<Parser<Size>> chain = chainParsers,
-  }) => chain.parse(source);
+  factory Size.parse(String source, {List<Parser<Size>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {

@@ -82,7 +82,7 @@ final class PerfectQuality extends Quality {
   static const triplyAugmented = PerfectQuality(3);
 
   /// The chain of [Parser]s used to parse a [PerfectQuality].
-  static const chainParsers = [PerfectQualityNotation()];
+  static const parsers = [PerfectQualityNotation()];
 
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
@@ -97,7 +97,7 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    List<Parser<PerfectQuality>> chain = chainParsers,
+    List<Parser<PerfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [PerfectQuality].
@@ -177,7 +177,7 @@ final class ImperfectQuality extends Quality {
   static const triplyAugmented = ImperfectQuality(4);
 
   /// The chain of [Parser]s used to parse an [ImperfectQuality].
-  static const chainParsers = [ImperfectQualityNotation()];
+  static const parsers = [ImperfectQualityNotation()];
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
@@ -192,7 +192,7 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    List<Parser<ImperfectQuality>> chain = chainParsers,
+    List<Parser<ImperfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [ImperfectQuality].

@@ -121,10 +121,36 @@ void main() {
   });
 
   group('RangeIterableExtension', () {
+    group('.parse()', () {
+      test('parses source as a compressed range list.', () {
+        expect(
+          RangeIterableExtension.parse('C', chain: Note.parsers),
+          const [(from: Note.c, to: Note.c)],
+        );
+        expect(
+          RangeIterableExtension.parse('A♯–D♭', chain: Note.parsers),
+          [(from: Note.a.sharp, to: Note.d.flat)],
+        );
+        expect(
+          RangeIterableExtension.parse(
+            'C-D# | F#-Ab | Bb',
+            chain: Note.parsers,
+            rangeSeparator: '-',
+            nonConsecutiveSeparator: '|',
+          ),
+          [
+            (from: Note.c, to: Note.d.sharp),
+            (from: Note.f.sharp, to: Note.a.flat),
+            (from: Note.b.flat, to: Note.b.flat),
+          ],
+        );
+      });
+    });
+
     group('.format()', () {
       test('returns the string representation of this Range iterable.', () {
         expect(const <Range<Note>>[].format(), '');
-        expect([(from: Note.e, to: Note.e)].format(), 'E');
+        expect(const [(from: Note.e, to: Note.e)].format(), 'E');
         expect([(from: Note.d.flat, to: Note.f.sharp)].format(), 'D♭–F♯');
         expect(
           [
@@ -140,9 +166,9 @@ void main() {
             (from: Note.g.inOctave(4), to: Note.g.inOctave(4)),
             (from: Note.a.flat.inOctave(5), to: Note.d.sharp.inOctave(5)),
           ].format(
+            formatter: HelmholtzPitchNotation.english,
             rangeSeparator: ' to ',
             nonConsecutiveSeparator: '; ',
-            formatter: HelmholtzPitchNotation.english,
           ),
           'c to e♭; g′; a♭″ to d♯″',
         );
