@@ -142,8 +142,7 @@ void main() {
           ].format(
             rangeSeparator: ' to ',
             nonConsecutiveSeparator: '; ',
-            toString: (pitch) =>
-                pitch.toString(formatter: HelmholtzPitchNotation.english),
+            formatter: HelmholtzPitchNotation.english,
           ),
           'c to e♭; g′; a♭″ to d♯″',
         );
