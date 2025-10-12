@@ -30,6 +30,7 @@ class TuningFork {
   /// The C256 tuning fork.
   static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
 
+  /// The chain of [Parser]s used to parse a [TuningFork].
   static const chainParsers = [
     CompactTuningForkNotation(),
     ScientificTuningForkNotation.english,

@@ -42,6 +42,7 @@ final class Accidental implements Comparable<Accidental> {
   /// A triple flat (♭𝄫) [Accidental].
   static const tripleFlat = Accidental(-3);
 
+  /// The chain of [Parser]s used to parse an [Accidental].
   static const chainParsers = [
     SymbolAccidentalNotation(),
     EnglishAccidentalNotation(),

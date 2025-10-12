@@ -50,6 +50,7 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
+  /// The chain of [Parser]s used to parse a [TonalMode].
   static const chainParsers = [
     EnglishTonalModeNotation(),
     GermanTonalModeNotation(),

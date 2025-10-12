@@ -217,6 +217,7 @@ final class Interval
         semitones,
       );
 
+  /// The chain of [Parser]s used to parse an [Interval].
   static const chainParsers = [IntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.

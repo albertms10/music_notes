@@ -49,6 +49,7 @@ final class Pitch extends Scalable<Pitch>
   /// The reference octave.
   static const referenceOctave = 4;
 
+  /// The chain of [Parser]s used to parse a [Pitch].
   static const chainParsers = [
     ScientificPitchNotation.english,
     ScientificPitchNotation.german,

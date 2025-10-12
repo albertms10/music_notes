@@ -29,6 +29,7 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
+  /// The chain of [Parser]s used to parse a [Key].
   static const chainParsers = [
     EnglishKeyNotation(),
     EnglishKeyNotation.symbol(),

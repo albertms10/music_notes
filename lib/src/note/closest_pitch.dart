@@ -27,6 +27,7 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
+  /// The chain of [Parser]s used to parse a [ClosestPitch].
   static const chainParsers = [StandardClosestPitchNotation()];
 
   /// Parse [source] as a [ClosestPitch] and return its value.

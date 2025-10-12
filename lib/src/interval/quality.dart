@@ -81,6 +81,7 @@ final class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
+  /// The chain of [Parser]s used to parse a [PerfectQuality].
   static const chainParsers = [PerfectQualityNotation()];
 
   /// Parse [source] as a [PerfectQuality] and return its value.
@@ -175,6 +176,7 @@ final class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
+  /// The chain of [Parser]s used to parse an [ImperfectQuality].
   static const chainParsers = [ImperfectQualityNotation()];
 
   /// Parse [source] as a [ImperfectQuality] and return its value.

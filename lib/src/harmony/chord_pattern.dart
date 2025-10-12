@@ -73,6 +73,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
+  /// The chain of [Parser]s used to parse a [ChordPattern].
   static const chainParsers = [ChordPatternNotation()];
 
   /// Parse [source] as a [ChordPattern] and return its value.

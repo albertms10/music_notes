@@ -64,6 +64,7 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
+  /// The chain of [Parser]s used to parse a [Size].
   static const chainParsers = [SizeNotation()];
 
   /// Parses [source] as a [Size].
