@@ -44,7 +44,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// The neapolitan sixth [ScaleDegree].
   static const neapolitanSixth = ScaleDegree(
     2,
-    quality: ImperfectQuality.major,
+    quality: .major,
     inversion: 1,
     semitonesDelta: -1,
   );
@@ -74,9 +74,9 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.parse('I') == ScaleDegree.i.major
-  /// ScaleDegree.parse('bII6') == ScaleDegree.neapolitanSixth
-  /// ScaleDegree.parse('vi') == ScaleDegree.vi.minor
+  /// ScaleDegree.parse('I') == .i.major
+  /// ScaleDegree.parse('bII6') == .neapolitanSixth
+  /// ScaleDegree.parse('vi') == .vi.minor
   /// ScaleDegree.parse('z') // throws a FormatException
   /// ```
   factory ScaleDegree.parse(
@@ -131,27 +131,25 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.ii.major
-  ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
+  /// ScaleDegree.ii.major == const ScaleDegree(2, quality: .major)
   /// ```
-  ScaleDegree get major => copyWith(quality: ImperfectQuality.major);
+  ScaleDegree get major => copyWith(quality: .major);
 
   /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.v.minor
-  ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
+  /// ScaleDegree.v.minor == const ScaleDegree(5, quality: .minor)
   /// ```
-  ScaleDegree get minor => copyWith(quality: ImperfectQuality.minor);
+  ScaleDegree get minor => copyWith(quality: .minor);
 
   /// Creates a new [ScaleDegree] from this one by updating individual
   /// properties.
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.i.copyWith(inversion: 2) == ScaleDegree.i.inverted.inverted
-  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == ScaleDegree.vi.lowered
+  /// ScaleDegree.i.copyWith(inversion: 2) == .i.inverted.inverted
+  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == .vi.lowered
   /// ```
   ScaleDegree copyWith({
     int? ordinal,
@@ -271,9 +269,7 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
     return ScaleDegree(
       ScaleDegree._romanNumerals.indexOf(numeral.toLowerCase()) + 1,
       inversion: _inversions.indexOf(match.namedGroup('inversion') ?? '') + 1,
-      quality: numeral.isUpperCase
-          ? ImperfectQuality.major
-          : ImperfectQuality.minor,
+      quality: numeral.isUpperCase ? .major : .minor,
       semitonesDelta: accidental.semitones,
     );
   }

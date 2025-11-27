@@ -28,25 +28,23 @@ class ChordPattern with Chordable<ChordPattern> {
   const ChordPattern(this._intervals);
 
   /// A diminished triad [ChordPattern].
-  static const diminishedTriad = ChordPattern([Interval.m3, Interval.d5]);
+  static const diminishedTriad = ChordPattern([.m3, .d5]);
 
   /// A minor triad [ChordPattern].
-  static const minorTriad = ChordPattern([Interval.m3, Interval.P5]);
+  static const minorTriad = ChordPattern([.m3, .P5]);
 
   /// A major triad [ChordPattern].
-  static const majorTriad = ChordPattern([Interval.M3, Interval.P5]);
+  static const majorTriad = ChordPattern([.M3, .P5]);
 
   /// An augmented triad [ChordPattern].
-  static const augmentedTriad = ChordPattern([Interval.M3, Interval.A5]);
+  static const augmentedTriad = ChordPattern([.M3, .A5]);
 
   /// Creates a new [ChordPattern] from [intervalSteps].
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.fromIntervalSteps([Interval.m3, Interval.M3])
-  ///   == ChordPattern.minorTriad
-  /// ChordPattern.fromIntervalSteps([Interval.M3, Interval.M3])
-  ///   == ChordPattern.augmentedTriad
+  /// ChordPattern.fromIntervalSteps([.m3, .M3]) == .minorTriad
+  /// ChordPattern.fromIntervalSteps([.M3, .M3]) == .augmentedTriad
   /// ```
   factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
       ChordPattern(
@@ -59,17 +57,15 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.fromQuality(ImperfectQuality.augmented)
-  ///   == ChordPattern.augmentedTriad
-  /// ChordPattern.fromQuality(ImperfectQuality.minor)
-  ///   == ChordPattern.minorTriad
+  /// ChordPattern.fromQuality(ImperfectQuality.augmented) == .augmentedTriad
+  /// ChordPattern.fromQuality(ImperfectQuality.minor) == .minorTriad
   /// ```
   factory ChordPattern.fromQuality(ImperfectQuality quality) =>
       switch (quality) {
-        ImperfectQuality.diminished => diminishedTriad,
-        ImperfectQuality.minor => minorTriad,
-        ImperfectQuality.major => majorTriad,
-        ImperfectQuality.augmented => augmentedTriad,
+        .diminished => diminishedTriad,
+        .minor => minorTriad,
+        .major => majorTriad,
+        .augmented => augmentedTriad,
         _ => majorTriad,
       };
 
@@ -83,8 +79,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.parse('maj7')
-  ///   == ChordPattern.majorTriad.add7(ImperfectQuality.major)
+  /// ChordPattern.parse('maj7') == .majorTriad.add7(.major)
   /// ChordPattern.parse('z') // throws a FormatException
   /// ```
   factory ChordPattern.parse(
@@ -96,8 +91,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.on(Note.c)
-  ///   == const Chord([Note.c, Note.e, Note.g])
+  /// ChordPattern.majorTriad.on(Note.c) == const Chord<Note>([.c, .e, .g])
   /// ```
   Chord<T> on<T extends Scalable<T>>(T scalable) => Chord(
     _intervals.fold(
@@ -111,7 +105,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.under(Note.c)
-  ///   == const Chord([Note.f, Note.a.flat, Note.c])
+  ///   == const Chord<Note>([.f, .a.flat, .c])
   /// ```
   Chord<T> under<T extends Scalable<T>>(T scalable) => Chord(
     _intervals
@@ -130,7 +124,7 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.add7().add9().rootTriad == ChordPattern.majorTriad
+  /// ChordPattern.majorTriad.add7().add9().rootTriad == .majorTriad
   /// ```
   ChordPattern get rootTriad => ChordPattern(_intervals.sublist(0, 2));
 
@@ -151,7 +145,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().add9().modifiers
-  ///   == const [Interval.m7, Interval.M9]
+  ///   == const <Interval>[.m7, .M9]
   /// ```
   List<Interval> get modifiers => _intervals.sublist(2);
 
@@ -160,7 +154,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().diminished
-  ///   == const ChordPattern([Interval.m3, Interval.d5, Interval.m7])
+  ///   == const ChordPattern([.m3, .d5, .m7])
   /// ```
   @override
   ChordPattern get diminished =>
@@ -172,7 +166,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().minor
-  ///   == const ChordPattern([Interval.m3, Interval.P5, Interval.m7])
+  ///   == const ChordPattern([.m3, .P5, .m7])
   /// ```
   @override
   ChordPattern get minor =>
@@ -183,7 +177,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.minorTriad.add7().major
-  ///   == const ChordPattern([Interval.M3, Interval.P5, Interval.m7])
+  ///   == const ChordPattern([.M3, .P5, .m7])
   /// ```
   @override
   ChordPattern get major =>
@@ -194,7 +188,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// Example:
   /// ```dart
   /// ChordPattern.majorTriad.add7().augmented
-  ///   == const ChordPattern([Interval.M3, Interval.A5, Interval.m7])
+  ///   == const ChordPattern([.M3, .A5, .m7])
   /// ```
   @override
   ChordPattern get augmented =>
@@ -215,10 +209,10 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.size(Size.third) == Interval.M3
-  /// ChordPattern.diminishedTriad.size(Size.fifth) == Interval.d5
-  /// ChordPattern.minorTriad.add7().size(Size.seventh) == Interval.m7
-  /// ChordPattern.augmentedTriad.size(Size.ninth) == null
+  /// ChordPattern.majorTriad.at(.third) == .M3
+  /// ChordPattern.diminishedTriad.at(.fifth) == .d5
+  /// ChordPattern.minorTriad.add7().at(.seventh) == .m7
+  /// ChordPattern.augmentedTriad.at(.ninth) == null
   /// ```
   Interval? at(Size size) =>
       intervals.firstWhereOrNull((interval) => interval.size == size);
@@ -286,21 +280,19 @@ final class ChordPatternNotation extends NotationSystem<ChordPattern> {
     }
 
     if (chordPattern.intervals.first.size
-        case (Size.second || Size.fourth) && final size) {
+        case (.second || .fourth) && final size) {
       buffer.write('$_sus$size');
     }
 
     final intervals = chordPattern.modifiers.map((interval) {
       final part = switch (interval) {
-        Interval(size: Size.seventh, quality: ImperfectQuality.major) =>
+        Interval(size: .seventh, quality: ImperfectQuality.major) =>
           _majorSeventh,
-        Interval(
-          size: Size.ninth || Size.thirteenth,
-          :final quality,
-        ) =>
+        Interval(size: .ninth || .thirteenth, :final quality) =>
           accidentalNotation.format(Accidental(quality.semitones - 1)),
-        Interval(size: Size.eleventh, :final quality) =>
-          accidentalNotation.format(Accidental(quality.semitones)),
+        Interval(size: .eleventh, :final quality) => accidentalNotation.format(
+          Accidental(quality.semitones),
+        ),
         _ => '',
       };
       return '$part${chordPattern.isDiminished ? '' : interval.size}';
@@ -315,33 +307,33 @@ final class ChordPatternNotation extends NotationSystem<ChordPattern> {
   ChordPattern parse(String source) {
     var s = source.replaceAll(' ', '').toLowerCase();
 
-    if (s == _halfDiminished) return ChordPattern.diminishedTriad.add7();
+    if (s == _halfDiminished) return .diminishedTriad.add7();
 
     ChordPattern triad;
     if (s.startsWith(_diminishedTriad)) {
-      triad = ChordPattern.diminishedTriad;
+      triad = .diminishedTriad;
       s = s.substring(3);
     } else if (s.startsWith(_augmentedTriad)) {
-      triad = ChordPattern.augmentedTriad;
+      triad = .augmentedTriad;
       s = s.substring(1);
     } else if (s.startsWith(_minorTriad)) {
-      triad = ChordPattern.minorTriad;
+      triad = .minorTriad;
       s = s.substring(1);
     } else {
-      triad = ChordPattern.majorTriad;
+      triad = .majorTriad;
     }
 
     if (s.startsWith('$_majorSeventh${Size.seventh}')) {
-      return triad.add7(ImperfectQuality.major);
+      return triad.add7(.major);
     } else if (s.startsWith('${Size.seventh}')) {
       return triad.add7();
     }
 
     if (s.contains('$_sus${Size.second}')) {
-      triad = const ChordPattern([Interval.M2, Interval.P5]);
+      triad = const ChordPattern([.M2, .P5]);
       s = s.replaceAll('$_sus${Size.second}', '');
     } else if (s.contains('$_sus${Size.fourth}')) {
-      triad = const ChordPattern([Interval.P4, Interval.P5]);
+      triad = const ChordPattern([.P4, .P5]);
       s = s.replaceAll('$_sus${Size.fourth}', '');
     }
 

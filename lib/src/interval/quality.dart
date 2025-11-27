@@ -91,8 +91,8 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.parse('P') == PerfectQuality.perfect
-  /// PerfectQuality.parse('dd') == PerfectQuality.doublyDiminished
+  /// PerfectQuality.parse('P') == .perfect
+  /// PerfectQuality.parse('dd') == .doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(
@@ -106,8 +106,8 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.inversion == PerfectQuality.perfect
-  /// PerfectQuality.augmented.inversion == PerfectQuality.diminished
+  /// PerfectQuality.perfect.inversion == .perfect
+  /// PerfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   PerfectQuality get inversion => PerfectQuality(-semitones);
@@ -186,8 +186,8 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.parse('m') == ImperfectQuality.minor
-  /// ImperfectQuality.parse('A') == ImperfectQuality.augmented
+  /// ImperfectQuality.parse('m') == .minor
+  /// ImperfectQuality.parse('A') == .augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(
@@ -201,8 +201,8 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.inversion == ImperfectQuality.major
-  /// ImperfectQuality.augmented.inversion == ImperfectQuality.diminished
+  /// ImperfectQuality.minor.inversion == .major
+  /// ImperfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   ImperfectQuality get inversion => ImperfectQuality(1 - semitones);
@@ -276,7 +276,7 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 
     return switch (quality[0]) {
       _diminishedSymbol => PerfectQuality(-quality.length),
-      _perfectSymbol => PerfectQuality.perfect,
+      _perfectSymbol => .perfect,
       _ /* _augmentedSymbol */ => PerfectQuality(quality.length),
     };
   }
@@ -321,8 +321,8 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
 
     return switch (quality[0]) {
       _diminishedSymbol => ImperfectQuality(-quality.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
+      _minorSymbol => .minor,
+      _majorSymbol => .major,
       _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
     };
   }

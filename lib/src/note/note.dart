@@ -6,7 +6,6 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../key/key.dart';
 import '../key/key_signature.dart';
-import '../key/mode.dart';
 import '../notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
@@ -35,28 +34,28 @@ final class Note extends Scalable<Note>
   final Accidental accidental;
 
   /// Creates a new [Note] from [noteName] and [accidental].
-  const Note(this.noteName, [this.accidental = Accidental.natural]);
+  const Note(this.noteName, [this.accidental = .natural]);
 
   /// Note C.
-  static const c = Note(NoteName.c);
+  static const c = Note(.c);
 
   /// Note D.
-  static const d = Note(NoteName.d);
+  static const d = Note(.d);
 
   /// Note E.
-  static const e = Note(NoteName.e);
+  static const e = Note(.e);
 
   /// Note F.
-  static const f = Note(NoteName.f);
+  static const f = Note(.f);
 
   /// Note G.
-  static const g = Note(NoteName.g);
+  static const g = Note(.g);
 
   /// Note A.
-  static const a = Note(NoteName.a);
+  static const a = Note(.a);
 
   /// Note B.
-  static const b = Note(NoteName.b);
+  static const b = Note(.b);
 
   /// The chain of [Parser]s used to parse a [Note].
   static const parsers = [
@@ -74,8 +73,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.parse('Bb') == Note.b.flat
-  /// Note.parse('c') == Note.c
+  /// Note.parse('Bb') == .b.flat
+  /// Note.parse('c') == .c
   /// Note.parse('z') // throws a FormatException
   /// ```
   factory Note.parse(String source, {List<Parser<Note>> chain = parsers}) =>
@@ -119,9 +118,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.difference(Note.d) == 2
-  /// Note.a.difference(Note.g) == -2
-  /// Note.e.flat.difference(Note.b.flat) == -5
+  /// Note.c.difference(.d) == 2
+  /// Note.a.difference(.g) == -2
+  /// Note.e.flat.difference(.b.flat) == -5
   /// ```
   @override
   int difference(Note other) => super.difference(other);
@@ -130,8 +129,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.sharp == const Note(NoteName.c, Accidental.sharp)
-  /// Note.a.sharp == const Note(NoteName.a, Accidental.sharp)
+  /// Note.c.sharp == const Note(.c, .sharp)
+  /// Note.a.sharp == const Note(.a, .sharp)
   /// ```
   Note get sharp => Note(noteName, accidental + 1);
 
@@ -139,8 +138,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.flat == const Note(NoteName.e, Accidental.flat)
-  /// Note.f.flat == const Note(NoteName.f, Accidental.flat)
+  /// Note.e.flat == const Note(.e, .flat)
+  /// Note.f.flat == const Note(.f, .flat)
   /// ```
   Note get flat => Note(noteName, accidental - 1);
 
@@ -148,9 +147,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.natural == Note.g
-  /// Note.c.sharp.sharp.natural == Note.c
-  /// Note.a.natural == Note.a
+  /// Note.g.flat.natural == .g
+  /// Note.c.sharp.sharp.natural == .c
+  /// Note.a.natural == .a
   /// ```
   Note get natural => Note(noteName);
 
@@ -158,26 +157,26 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major == const Key(Note.c, TonalMode.major)
-  /// Note.e.flat.major == Key(Note.e.flat, TonalMode.major)
+  /// Note.c.major == const Key(.c, .major)
+  /// Note.e.flat.major == Key(.e.flat, .major)
   /// ```
-  Key get major => Key(this, TonalMode.major);
+  Key get major => Key(this, .major);
 
   /// The [TonalMode.minor] [Key] from this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.minor == const Key(Note.d, TonalMode.minor)
-  /// Note.g.sharp.minor == Key(Note.g.sharp, TonalMode.minor)
+  /// Note.d.minor == const Key(.d, .minor)
+  /// Note.g.sharp.minor == Key(.g.sharp, .minor)
   /// ```
-  Key get minor => Key(this, TonalMode.minor);
+  Key get minor => Key(this, .minor);
 
   /// The [ChordPattern.diminishedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.a.diminishedTriad == Chord([Note.a, Note.c, Note.e.flat])
-  /// Note.b.diminishedTriad == Chord([Note.b, Note.d, Note.f])
+  /// Note.a.diminishedTriad == Chord<Note>([.a, .c, .e.flat])
+  /// Note.b.diminishedTriad == Chord<Note>([.b, .d, .f])
   /// ```
   Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
@@ -185,8 +184,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.minorTriad == Chord([Note.e, Note.g, Note.b])
-  /// Note.f.sharp.minorTriad == Chord([Note.f.sharp, Note.a, Note.c.sharp])
+  /// Note.e.minorTriad == Chord<Note>([.e, .g, .b])
+  /// Note.f.sharp.minorTriad == Chord<Note>([.f.sharp, .a, .c.sharp])
   /// ```
   Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
 
@@ -194,8 +193,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.d.majorTriad == Chord([Note.d, Note.f.sharp, Note.a])
-  /// Note.a.flat.majorTriad == Chord([Note.a.flat, Note.c, Note.e.flat])
+  /// Note.d.majorTriad == Chord<Note>([.d, .f.sharp, .a])
+  /// Note.a.flat.majorTriad == Chord<Note>([.a.flat, .c, .e.flat])
   /// ```
   Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
 
@@ -203,8 +202,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.augmentedTriad == Chord([Note.d.flat, Note.f, Note.a])
-  /// Note.g.augmentedTriad == Chord([Note.g, Note.b, Note.d.sharp])
+  /// Note.d.flat.augmentedTriad == Chord<Note>([.d.flat, .f, .a])
+  /// Note.g.augmentedTriad == Chord<Note>([.g, .b, .d.sharp])
   /// ```
   Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
@@ -213,9 +212,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.sharp.respellByNoteName(NoteName.d) == Note.d.flat
-  /// Note.f.respellByNoteName(NoteName.e) == Note.e.sharp
-  /// Note.g.respellByNoteName(NoteName.a) == Note.a.flat.flat
+  /// Note.c.sharp.respellByNoteName(.d) == .d.flat
+  /// Note.f.respellByNoteName(.e) == .e.sharp
+  /// Note.g.respellByNoteName(.a) == .a.flat.flat
   /// ```
   @override
   Note respellByNoteName(NoteName noteName) {
@@ -234,20 +233,20 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.respellByOrdinalDistance(-1) == Note.f.sharp
-  /// Note.e.sharp.respellByOrdinalDistance(2) == Note.g.flat.flat
+  /// Note.g.flat.respellByOrdinalDistance(-1) == .f.sharp
+  /// Note.e.sharp.respellByOrdinalDistance(2) == .g.flat.flat
   /// ```
   @override
   Note respellByOrdinalDistance(int distance) =>
-      respellByNoteName(NoteName.fromOrdinal(noteName.ordinal + distance));
+      respellByNoteName(.fromOrdinal(noteName.ordinal + distance));
 
   /// This [Note] respelled upwards while keeping the same number of
   /// [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Note.g.sharp.respelledUpwards == Note.a.flat
-  /// Note.e.sharp.respelledUpwards == Note.f
+  /// Note.g.sharp.respelledUpwards == .a.flat
+  /// Note.e.sharp.respelledUpwards == .f
   /// ```
   @override
   Note get respelledUpwards => super.respelledUpwards;
@@ -257,8 +256,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.flat.respelledDownwards == Note.f.sharp
-  /// Note.c.respelledDownwards == Note.b.sharp
+  /// Note.g.flat.respelledDownwards == .f.sharp
+  /// Note.c.respelledDownwards == .b.sharp
   /// ```
   @override
   Note get respelledDownwards => super.respelledDownwards;
@@ -271,9 +270,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.flat.respellByAccidental(Accidental.sharp) == Note.d.sharp
-  /// Note.b.respellByAccidental(Accidental.flat) == Note.c.flat
-  /// Note.g.respellByAccidental(Accidental.sharp) == Note.f.sharp.sharp
+  /// Note.e.flat.respellByAccidental(Accidental.sharp) == .d.sharp
+  /// Note.b.respellByAccidental(Accidental.flat) == .c.flat
+  /// Note.g.respellByAccidental(Accidental.sharp) == .f.sharp.sharp
   /// ```
   @override
   Note respellByAccidental(Accidental accidental) {
@@ -292,9 +291,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.sharp.respelledSimple == Note.f
-  /// Note.d.flat.flat.respelledSimple == Note.c
-  /// Note.f.sharp.sharp.sharp.respelledSimple == Note.g.sharp
+  /// Note.e.sharp.respelledSimple == .f
+  /// Note.d.flat.flat.respelledSimple == .c
+  /// Note.f.sharp.sharp.sharp.respelledSimple == .g.sharp
   /// ```
   @override
   Note get respelledSimple => super.respelledSimple;
@@ -303,8 +302,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(3) == const Pitch(Note.c, octave: 3)
-  /// Note.a.flat.inOctave(2) == Pitch(Note.a.flat, octave: 2)
+  /// Note.c.inOctave(3) == const Pitch(.c, octave: 3)
+  /// Note.a.flat.inOctave(2) == Pitch(.a.flat, octave: 2)
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
@@ -314,13 +313,13 @@ final class Note extends Scalable<Note>
   /// Example:
   /// ```dart
   /// Note.c.splitCircleOfFifths.up.take(6).toList()
-  ///   == [Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
+  ///   == <Note>[.g, .d, .a, .e, .b, .f.sharp]
   ///
   /// Note.c.splitCircleOfFifths.down.take(4).toList()
-  ///   == [Note.f, Note.b.flat, Note.e.flat, Note.a.flat]
+  ///   == <Note>[.f, .b.flat, .e.flat, .a.flat]
   ///
   /// Note.a.splitCircleOfFifths.up.take(4).toList()
-  ///   == [Note.e, Note.b, Note.f.sharp, Note.c.sharp]
+  ///   == <Note>[.e, .b, .f.sharp, .c.sharp]
   /// ```
   /// ---
   /// See also:
@@ -336,10 +335,10 @@ final class Note extends Scalable<Note>
   /// Example:
   /// ```dart
   /// Note.c.circleOfFifths(distance: 3)
-  ///   == [Note.e.flat, Note.b.flat, Note.f, Note.c, Note.g, Note.d, Note.a]
+  ///   == <Note>[.e.flat, .b.flat, .f, .c, .g, .d, .a]
   ///
   /// Note.a.circleOfFifths(distance: 3)
-  ///   == [Note.c, Note.g, Note.d, Note.a, Note.e, Note.b, Note.f.sharp]
+  ///   == <Note>[.c, .g, .d, .a, .e, .b, .f.sharp]
   /// ```
   ///
   /// It is equivalent to sorting an array of the same [Note]s using the
@@ -393,7 +392,7 @@ final class Note extends Scalable<Note>
   /// Note.d.interval(Note.a.flat) == Interval.d5
   /// ```
   @override
-  Interval interval(Note other) => Interval.fromSizeAndSemitones(
+  Interval interval(Note other) => .fromSizeAndSemitones(
     noteName.intervalSize(other.noteName),
     difference(other) % chromaticDivisions,
   );
@@ -538,10 +537,9 @@ final class GermanNoteNotation extends NoteNotation {
 
   @override
   String format(Note note) => switch (note) {
-    Note(noteName: NoteName.b, accidental: Accidental.flat) => 'B',
+    Note(noteName: .b, accidental: .flat) => 'B',
 
-    Note(noteName: NoteName.a || NoteName.e, :final accidental) &&
-            Note(:final noteName)
+    Note(noteName: .a || .e, :final accidental) && Note(:final noteName)
         when accidental.isFlat =>
       noteNameNotation.format(noteName) +
           accidentalNotation.format(accidental).substring(1),
@@ -559,7 +557,7 @@ final class GermanNoteNotation extends NoteNotation {
   @override
   Note parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
-    if (noteName.toLowerCase() == 'b') return Note.b.flat;
+    if (noteName.toLowerCase() == 'b') return .b.flat;
     final accidental = match.namedGroup('accidental');
     if (accidental == null) return Note(noteNameNotation.parseMatch(match));
     if (const {'a', 'e'}.contains(noteName.toLowerCase())) {
@@ -650,7 +648,7 @@ extension Notes on List<Note> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.a, Note.c, Note.e].inOctave(4)
+  /// <Note>[.a, .c, .e].inOctave(4)
   ///   == [Note.a.inOctave(4), Note.c.inOctave(4), Note.e.inOctave(4)]
   /// ```
   List<Pitch> inOctave(int octave) =>

@@ -1,7 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../interval/interval.dart';
 import '../notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
@@ -59,10 +58,8 @@ final class Key implements Comparable<Key> {
   /// Note.d.minor.relative == Note.f.major
   /// Note.b.flat.major.relative == Note.g.minor
   /// ```
-  Key get relative => Key(
-    note.transposeBy(Interval.m3.descending(mode == TonalMode.major)),
-    mode.parallel,
-  );
+  Key get relative =>
+      Key(note.transposeBy(.m3.descending(mode == .major)), mode.parallel);
 
   /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///
@@ -79,11 +76,11 @@ final class Key implements Comparable<Key> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.signature == KeySignature.empty
-  /// Note.a.major.signature == KeySignature.fromDistance(3)
-  /// Note.g.flat.major.signature == KeySignature.fromDistance(-6)
+  /// Note.c.major.signature == .empty
+  /// Note.a.major.signature == .fromDistance(3)
+  /// Note.g.flat.major.signature == .fromDistance(-6)
   /// ```
-  KeySignature get signature => KeySignature.fromDistance(
+  KeySignature get signature => .fromDistance(
     KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
   );
 
@@ -104,11 +101,8 @@ final class Key implements Comparable<Key> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale == const Scale([Note.c, Note.d, Note.e, Note.f, Note.g,
-  ///   Note.a, Note.b, Note.c])
-  ///
-  /// Note.e.minor.scale == Scale([Note.e, Note.f.sharp, Note.g, Note.a, Note.b,
-  ///   Note.d, Note.d, Note.e])
+  /// Note.c.major.scale == const Scale<Note>([.c, .d, .e, .f, .g, .a, .b, .c])
+  /// Note.e.minor.scale == Scale<Note>([.e, .f.sharp, .g, .a, .b, .d, .d, .e])
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
@@ -200,8 +194,8 @@ final class GermanKeyNotation extends NotationSystem<Key> {
     final note = noteNotation.format(key.note);
     final mode = tonalModeNotation.format(key.mode).toLowerCase();
     final casedNote = switch (key.mode) {
-      TonalMode.major => note,
-      TonalMode.minor => note.toLowerCase(),
+      .major => note,
+      .minor => note.toLowerCase(),
     };
 
     return '$casedNote-$mode';
