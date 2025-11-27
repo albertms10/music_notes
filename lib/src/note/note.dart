@@ -648,7 +648,7 @@ extension Notes on List<Note> {
   ///
   /// Example:
   /// ```dart
-  /// <Note>[.a, .c, .e].inOctave(4)
+  /// const <Note>[.a, .c, .e].inOctave(4)
   ///   == [Note.a.inOctave(4), Note.c.inOctave(4), Note.e.inOctave(4)]
   /// ```
   List<Pitch> inOctave(int octave) =>

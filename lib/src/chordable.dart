@@ -22,31 +22,31 @@ mixin Chordable<T> {
   T get augmented;
 
   /// Returns this [T] with a suspended [Interval.M2].
-  T sus2() => add(Interval.M2, replaceSizes: const {Size.third, Size.fourth});
+  T sus2() => add(.M2, replaceSizes: const {.third, .fourth});
 
   /// Returns this [T] with a suspended [Interval.P4].
-  T sus4() => add(Interval.P4, replaceSizes: const {Size.second, Size.third});
+  T sus4() => add(.P4, replaceSizes: const {.second, .third});
 
   /// Returns this [T] adding a [quality] 6th.
-  T add6([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(Size.sixth, quality));
+  T add6([ImperfectQuality quality = .major]) =>
+      add(.imperfect(.sixth, quality));
 
   /// Returns this [T] adding a [quality] 7th.
-  T add7([ImperfectQuality quality = ImperfectQuality.minor]) =>
-      add(Interval.imperfect(Size.seventh, quality));
+  T add7([ImperfectQuality quality = .minor]) =>
+      add(.imperfect(.seventh, quality));
 
   /// Returns this [T] adding a [quality] 9th.
-  T add9([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(Size.ninth, quality));
+  T add9([ImperfectQuality quality = .major]) =>
+      add(.imperfect(.ninth, quality));
 
   /// Returns this [T] adding an [quality] 11th.
-  T add11([PerfectQuality quality = PerfectQuality.perfect]) =>
-      add(Interval.perfect(Size.eleventh, quality));
+  T add11([PerfectQuality quality = .perfect]) =>
+      add(.perfect(.eleventh, quality));
 
   /// Returns this [T] adding a [quality] 13th.
-  T add13([ImperfectQuality quality = ImperfectQuality.major]) =>
-      add(Interval.imperfect(Size.thirteenth, quality));
+  T add13([ImperfectQuality quality = .major]) =>
+      add(.imperfect(.thirteenth, quality));
 
   /// Returns this [T] adding [interval].
-  T add(Interval interval, {Set<int>? replaceSizes});
+  T add(Interval interval, {Set<Size>? replaceSizes});
 }

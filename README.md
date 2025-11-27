@@ -461,9 +461,9 @@ ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
 Or build it on top of a `Note`:
 
 ```dart
-Note.f.minorTriad.add7().add9(ImperfectQuality.minor);
+Note.f.minorTriad.add7().add9(.minor);
 // F min. (F A♭ C E♭ G♭)
-Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
+Note.e.flat.diminishedTriad.add7().transposeBy(.m2);
 // F♭ dim. (F♭ A𝄫 C𝄫 E𝄫)
 ```
 
@@ -554,7 +554,7 @@ ScalePattern
     .major // E♭ major
     .relative // C minor
     .scale // C Natural minor (aeolian) (C D E♭ F G A♭ B♭ C)
-    .degreeChord(ScaleDegree.v) // G min. (G B♭ D)
+    .degreeChord(.v) // G min. (G B♭ D)
     .add9(); // G min. (G B♭ D A)
 ```
 

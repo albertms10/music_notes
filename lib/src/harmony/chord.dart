@@ -5,6 +5,7 @@ import 'package:meta/meta.dart' show immutable;
 import '../chordable.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../interval/size.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'chord_pattern.dart';
@@ -95,7 +96,7 @@ class Chord<T extends Scalable<T>>
 
   /// Returns this [Chord] adding [interval].
   @override
-  Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
+  Chord<T> add(Interval interval, {Set<Size>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
   /// Transposes this [Chord] by [interval].

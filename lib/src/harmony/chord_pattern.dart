@@ -57,8 +57,8 @@ class ChordPattern with Chordable<ChordPattern> {
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.fromQuality(ImperfectQuality.augmented) == .augmentedTriad
-  /// ChordPattern.fromQuality(ImperfectQuality.minor) == .minorTriad
+  /// ChordPattern.fromQuality(.augmented) == .augmentedTriad
+  /// ChordPattern.fromQuality(.minor) == .minorTriad
   /// ```
   factory ChordPattern.fromQuality(ImperfectQuality quality) =>
       switch (quality) {
@@ -196,7 +196,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
   /// Returns this [ChordPattern] adding [interval].
   @override
-  ChordPattern add(Interval interval, {Set<int>? replaceSizes}) {
+  ChordPattern add(Interval interval, {Set<Size>? replaceSizes}) {
     final sizesToReplace = [interval.size, ...?replaceSizes];
     final filteredIntervals = _intervals.whereNot(
       (chordInterval) => sizesToReplace.contains(chordInterval.size),

@@ -176,10 +176,11 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.fromBinary(101010110101.b) == .major
-  /// ScalePattern.fromBinary(111111111111.b) == .chromatic
-  /// ScalePattern.fromBinary(1010010101.b) == .majorPentatonic
-  /// ScalePattern.fromBinary(101010101101.b, 10110101101.b) == .melodicMinor
+  /// ScalePattern.fromBinary(1010_1011_0101.b) == .major
+  /// ScalePattern.fromBinary(1111_1111_1111.b) == .chromatic
+  /// ScalePattern.fromBinary(0010_1001_0101.b) == .majorPentatonic
+  /// ScalePattern.fromBinary(1010_1010_1101.b, 0101_1010_1101.b)
+  ///   == .melodicMinor
   /// ```
   factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
@@ -206,10 +207,11 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.toBinary() == (101010110101.b, null)
-  /// ScalePattern.chromatic.toBinary() == (111111111111.b, null)
-  /// ScalePattern.majorPentatonic.toBinary() == (1010010101.b, null)
-  /// ScalePattern.melodicMinor.toBinary() == (101010101101.b, 10110101101.b)
+  /// ScalePattern.major.toBinary() == const (1010_1011_0101.b, null)
+  /// ScalePattern.chromatic.toBinary() == const (1111_1111_1111.b, null)
+  /// ScalePattern.majorPentatonic.toBinary() == const (0010_1001_0101.b, null)
+  /// ScalePattern.melodicMinor.toBinary()
+  ///   == (1010_1010_1101.b, 0101_1010_1101.b)
   /// ```
   (int sequence, int? descendingSequence) toBinary() {
     final Scale<PitchClass>(:degrees, :descendingDegrees) = on(.c);
@@ -248,7 +250,7 @@ final class ScalePattern {
   ///   == const Scale<Note>([.a, .b, .c, .d, .e, .f, .g, .a])
   ///
   /// ScalePattern.melodicMinor.on(Note.c)
-  ///   == Scale([.c, .d, .e.flat, .f, .g, .a, .b, .c])
+  ///   == Scale<Note>([.c, .d, .e.flat, .f, .g, .a, .b, .c])
   /// ```
   Scale<T> on<T extends Scalable<T>>(T scalable) => Scale(
     _intervalSteps.fold([
@@ -350,8 +352,9 @@ final class ScalePattern {
   ///
   /// Example:
   /// ```dart
-  /// const ScalePattern([.m2, .m3, .M2])
-  ///   .isEnharmonicWith(ScalePattern([.m2, .A2, .d3])) == true
+  /// const scaleA = ScalePattern([.m2, .m3, .M2]);
+  /// const scaleB = ScalePattern([.m2, .A2, .d3]);
+  /// scaleA.isEnharmonicWith(scaleB) == true
   /// ```
   bool isEnharmonicWith(ScalePattern other) =>
       _intervalSteps.isEnharmonicWith(other._intervalSteps) &&
