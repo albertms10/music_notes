@@ -42,4 +42,3 @@ mixin RespellableScalable<T extends Scalable<T>> on Respellable<T> {
   @override
   T get respelledSimple => respellByAccidental(.natural);
 }
-
