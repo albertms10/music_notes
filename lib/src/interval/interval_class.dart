@@ -88,10 +88,7 @@ final class IntervalClass
         .fromSizeAndSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            .fromSizeAndSemitones(
-              Size(size.incrementBy(-i)),
-              semitones,
-            ),
+            .fromSizeAndSemitones(Size(size.incrementBy(-i)), semitones),
           .fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });

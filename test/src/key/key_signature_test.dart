@@ -200,10 +200,7 @@ void main() {
 
       test('returns an empty Map when this KeySignature is not canonical', () {
         expect(KeySignature([.d.flat]).keys, const <TonalMode, Key>{});
-        expect(
-          KeySignature([.c.sharp.sharp]).keys,
-          const <TonalMode, Key>{},
-        );
+        expect(KeySignature([.c.sharp.sharp]).keys, const <TonalMode, Key>{});
       });
     });
 

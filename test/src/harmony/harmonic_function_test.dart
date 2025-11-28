@@ -21,10 +21,7 @@ void main() {
           HarmonicFunction([.v.major, .v.major]),
         );
         expect(HarmonicFunction.ii / .ii, const HarmonicFunction([.ii, .ii]));
-        expect(
-          HarmonicFunction.vi / .iv,
-          const HarmonicFunction([.vi, .iv]),
-        );
+        expect(HarmonicFunction.vi / .iv, const HarmonicFunction([.vi, .iv]));
         expect(
           HarmonicFunction.i / .ii / .iii,
           const HarmonicFunction([.i, .ii, .iii]),
@@ -36,10 +33,7 @@ void main() {
       test('returns the string representation of this HarmonicFunction', () {
         expect(HarmonicFunction.i.toString(), 'I');
         expect(HarmonicFunction.vii.toString(), 'VII');
-        expect(
-          (HarmonicFunction.dominantV / .dominantV).toString(),
-          'V/V',
-        );
+        expect((HarmonicFunction.dominantV / .dominantV).toString(), 'V/V');
         expect(
           (HarmonicFunction([.iv.minor]) / .neapolitanSixth / .dominantV)
               .toString(),

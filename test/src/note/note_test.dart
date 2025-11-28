@@ -173,10 +173,7 @@ void main() {
           expect(Note.parse('Sol bemolle'), Note.g.flat);
           expect(Note.parse('mi naturale'), Note.e);
           expect(Note.parse('La doppio bemolle'), Note.a.flat.flat);
-          expect(
-            Note.parse('Fa triplo diesis'),
-            Note.f.sharp.sharp.sharp,
-          );
+          expect(Note.parse('Fa triplo diesis'), Note.f.sharp.sharp.sharp);
         });
       });
 

@@ -147,10 +147,7 @@ final class KeySignature implements Comparable<KeySignature> {
         .circleFrom(Note.c)
         .elementAt(distance.abs());
 
-    return UnmodifiableMapView({
-      .major: major,
-      .minor: major.relative,
-    });
+    return UnmodifiableMapView({.major: major, .minor: major.relative});
   }
 
   /// Returns this [KeySignature] incrementing its fifths [distance].

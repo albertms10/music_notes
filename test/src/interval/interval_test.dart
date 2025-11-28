@@ -1075,12 +1075,7 @@ void main() {
             -Interval.M2,
             -Interval.P4,
           ].intervalSteps.toList(),
-          [
-            Interval.P1,
-            -Interval.m2,
-            -Interval.A1,
-            -Interval.m3,
-          ],
+          [Interval.P1, -Interval.m2, -Interval.A1, -Interval.m3],
         );
       });
     });

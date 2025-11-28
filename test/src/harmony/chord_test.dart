@@ -244,10 +244,7 @@ void main() {
           Note.c.majorTriad.add(.P4, replaceSizes: const {.third}),
           const Chord<Note>([.c, .f, .g]),
         );
-        expect(
-          Note.c.majorTriad.add(.M7),
-          const Chord<Note>([.c, .e, .g, .b]),
-        );
+        expect(Note.c.majorTriad.add(.M7), const Chord<Note>([.c, .e, .g, .b]));
       });
 
       test('ignores any previous Interval size in this ChordPattern', () {

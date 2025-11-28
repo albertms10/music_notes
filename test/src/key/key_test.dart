@@ -175,14 +175,8 @@ void main() {
             Note.a.flat.major.toString(formatter: textual),
             'La bemolle maggiore',
           );
-          expect(
-            Note.a.flat.major.toString(formatter: symbol),
-            'La♭ maggiore',
-          );
-          expect(
-            Note.f.sharp.minor.toString(formatter: symbol),
-            'Fa♯ minore',
-          );
+          expect(Note.a.flat.major.toString(formatter: symbol), 'La♭ maggiore');
+          expect(Note.f.sharp.minor.toString(formatter: symbol), 'Fa♯ minore');
           expect(
             Note.g.sharp.sharp.major.toString(formatter: symbol),
             'Sol𝄪 maggiore',

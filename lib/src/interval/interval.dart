@@ -187,10 +187,8 @@ final class Interval
 
   /// Creates a new [Interval] from the given distance in [semitones].
   /// The size is inferred.
-  factory Interval.fromSemitones(int semitones) => .fromSizeAndSemitones(
-    .nearestFromSemitones(semitones),
-    semitones,
-  );
+  factory Interval.fromSemitones(int semitones) =>
+      .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
   /// The chain of [Parser]s used to parse an [Interval].
   static const parsers = [IntervalNotation()];
@@ -243,10 +241,8 @@ final class Interval
   /// (-Interval.M7).descending(false) == .M7
   /// ```
   // ignore: avoid_positional_boolean_parameters
-  Interval descending([bool isDescending = true]) => ._(
-    Size(size * (this.isDescending == isDescending ? 1 : -1)),
-    quality,
-  );
+  Interval descending([bool isDescending = true]) =>
+      ._(Size(size * (this.isDescending == isDescending ? 1 : -1)), quality);
 
   /// The inversion of this [Interval], regardless of its direction (ascending
   /// or descending).
@@ -425,9 +421,8 @@ final class Interval
   /// .twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({
-    Formatter<Interval> formatter = const IntervalNotation(),
-  }) => formatter.format(this);
+  String toString({Formatter<Interval> formatter = const IntervalNotation()}) =>
+      formatter.format(this);
 
   /// Adds [other] to this [Interval].
   ///
