@@ -50,38 +50,35 @@ void main() {
 
         expect(const <Note>[].compact(), const <List<Note>>[]);
         expect(const [Note.c].compact(), [(from: Note.c, to: Note.d.flat)]);
-        expect(
-          const [Note.c, Note.d, Note.e, Note.g, Note.a, Note.b].compact(),
-          [
-            (from: Note.c, to: Note.d.flat),
-            (from: Note.d, to: Note.e.flat),
-            (from: Note.e, to: Note.f),
-            (from: Note.g, to: Note.a.flat),
-            (from: Note.a, to: Note.b.flat),
-            (from: Note.b, to: Note.c),
-          ],
-        );
-        expect([Note.c, Note.c.sharp].compact(), [(from: Note.c, to: Note.d)]);
-        expect([Note.c, Note.d.flat].compact(), [(from: Note.c, to: Note.d)]);
-        expect([Note.c, Note.d.flat, Note.d].compact(), [
+        expect(const <Note>[.c, .d, .e, .g, .a, .b].compact(), [
+          (from: Note.c, to: Note.d.flat),
+          (from: Note.d, to: Note.e.flat),
+          (from: Note.e, to: Note.f),
+          (from: Note.g, to: Note.a.flat),
+          (from: Note.a, to: Note.b.flat),
+          (from: Note.b, to: Note.c),
+        ]);
+        expect(<Note>[.c, .c.sharp].compact(), [(from: Note.c, to: Note.d)]);
+        expect(<Note>[.c, .d.flat].compact(), [(from: Note.c, to: Note.d)]);
+        expect(<Note>[.c, .d.flat, .d].compact(), [
           (from: Note.c, to: Note.e.flat),
         ]);
-        expect([Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact(), [
+        expect(<Note>[.c, .d.flat, .d, .e.flat, .g].compact(), [
           (from: Note.c, to: Note.e),
           (from: Note.g, to: Note.a.flat),
         ]);
         expect(
-          [
-            Note.c,
-            Note.d.flat,
-            Note.d,
-            Note.e.flat,
-            Note.f.sharp,
-            Note.a,
-            Note.b.flat,
-            Note.b,
-            Note.c,
-            Note.c.sharp,
+          <Note>[
+            .c,
+            .d.flat,
+            .d,
+            .e.flat,
+            .f.sharp,
+            .a,
+            .b.flat,
+            .b,
+            .c,
+            .c.sharp,
           ].compact(),
           [
             (from: Note.c, to: Note.e),

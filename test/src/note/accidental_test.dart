@@ -338,26 +338,23 @@ void main() {
 
     group('.hashCode', () {
       test('ignores equal Accidental instances in a Set', () {
-        final collection = {Accidental.natural, Accidental.flat};
+        final collection = <Accidental>{.natural, .flat};
         collection.addAll(collection);
-        expect(collection.toList(), const [
-          Accidental.natural,
-          Accidental.flat,
-        ]);
+        expect(collection.toList(), const <Accidental>[.natural, .flat]);
       });
     });
 
     group('.compareTo()', () {
       test('sorts Accidentals in a collection', () {
         final orderedSet = SplayTreeSet<Accidental>.of({
-          Accidental.doubleSharp,
-          Accidental.natural,
-          Accidental.flat,
+          .doubleSharp,
+          .natural,
+          .flat,
         });
-        expect(orderedSet.toList(), const [
-          Accidental.flat,
-          Accidental.natural,
-          Accidental.doubleSharp,
+        expect(orderedSet.toList(), const <Accidental>[
+          .flat,
+          .natural,
+          .doubleSharp,
         ]);
       });
     });

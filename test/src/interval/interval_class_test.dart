@@ -17,51 +17,39 @@ void main() {
     group('.spellings()', () {
       test('returns the correct Interval spellings for this IntervalClass', () {
         expect(IntervalClass.P1.spellings(), {Interval.P1});
-        expect(IntervalClass.P1.spellings(distance: 1), {
-          Interval.P1,
-          Interval.d2,
-        });
+        expect(IntervalClass.P1.spellings(distance: 1), <Interval>{.P1, .d2});
 
         expect(IntervalClass.m2.spellings(), {Interval.m2});
-        expect(IntervalClass.m2.spellings(distance: 1), {
-          Interval.A1,
-          Interval.m2,
-          const Interval.imperfect(
-            Size.third,
-            ImperfectQuality.doublyDiminished,
-          ),
+        expect(IntervalClass.m2.spellings(distance: 1), <Interval>{
+          .A1,
+          .m2,
+          const .imperfect(.third, .doublyDiminished),
         });
 
-        expect(IntervalClass.M2.spellings(), {Interval.M2, Interval.d3});
-        expect(IntervalClass.M2.spellings(distance: 1), {
-          Interval.M2,
-          Interval.d3,
-        });
+        expect(IntervalClass.M2.spellings(), <Interval>{.M2, .d3});
+        expect(IntervalClass.M2.spellings(distance: 1), <Interval>{.M2, .d3});
 
         expect(IntervalClass.m3.spellings(), {Interval.m3});
-        expect(IntervalClass.m3.spellings(distance: 1), {
-          Interval.A2,
-          Interval.m3,
-          const Interval.perfect(Size.fourth, PerfectQuality.doublyDiminished),
+        expect(IntervalClass.m3.spellings(distance: 1), <Interval>{
+          .A2,
+          .m3,
+          const .perfect(.fourth, .doublyDiminished),
         });
 
-        expect(IntervalClass.M3.spellings(), {Interval.M3, Interval.d4});
-        expect(IntervalClass.M3.spellings(distance: 1), {
-          Interval.M3,
-          Interval.d4,
-        });
+        expect(IntervalClass.M3.spellings(), <Interval>{.M3, .d4});
+        expect(IntervalClass.M3.spellings(distance: 1), <Interval>{.M3, .d4});
 
         expect(IntervalClass.P4.spellings(), {Interval.P4});
-        expect(IntervalClass.P4.spellings(distance: 1), {
-          Interval.A3,
-          Interval.P4,
-          const Interval.perfect(Size.fifth, PerfectQuality.doublyDiminished),
+        expect(IntervalClass.P4.spellings(distance: 1), <Interval>{
+          .A3,
+          .P4,
+          const .perfect(.fifth, .doublyDiminished),
         });
 
-        expect(IntervalClass.tritone.spellings(), {Interval.A4, Interval.d5});
-        expect(IntervalClass.tritone.spellings(distance: 1), {
-          Interval.A4,
-          Interval.d5,
+        expect(IntervalClass.tritone.spellings(), <Interval>{.A4, .d5});
+        expect(IntervalClass.tritone.spellings(distance: 1), <Interval>{
+          .A4,
+          .d5,
         });
       });
     });
@@ -92,19 +80,19 @@ void main() {
 
     group('operator +()', () {
       test('adds other to this IntervalClass', () {
-        expect(IntervalClass.P1 + IntervalClass.M2, IntervalClass.M2);
-        expect(IntervalClass.tritone + IntervalClass.m2, IntervalClass.P4);
-        expect(IntervalClass.tritone + IntervalClass.tritone, IntervalClass.P1);
-        expect(IntervalClass.M3 + IntervalClass.P4, IntervalClass.m3);
+        expect(IntervalClass.P1 + .M2, IntervalClass.M2);
+        expect(IntervalClass.tritone + .m2, IntervalClass.P4);
+        expect(IntervalClass.tritone + .tritone, IntervalClass.P1);
+        expect(IntervalClass.M3 + .P4, IntervalClass.m3);
       });
     });
 
     group('operator -()', () {
       test('subtracts other from this IntervalClass', () {
-        expect(IntervalClass.P4 - IntervalClass.m3, IntervalClass.M2);
-        expect(IntervalClass.tritone - IntervalClass.M2, IntervalClass.M3);
-        expect(IntervalClass.M3 - IntervalClass.M3, IntervalClass.P1);
-        expect(IntervalClass.m3 - IntervalClass.tritone, IntervalClass.m3);
+        expect(IntervalClass.P4 - .m3, IntervalClass.M2);
+        expect(IntervalClass.tritone - .M2, IntervalClass.M3);
+        expect(IntervalClass.M3 - .M3, IntervalClass.P1);
+        expect(IntervalClass.m3 - .tritone, IntervalClass.m3);
       });
     });
 
@@ -131,24 +119,16 @@ void main() {
 
     group('.hashCode', () {
       test('ignores equal IntervalClass instances in a Set', () {
-        final collection = {IntervalClass.P1, IntervalClass.M3};
+        final collection = <Interval>{.P1, .M3};
         collection.addAll(collection);
-        expect(collection.toList(), const [IntervalClass.P1, IntervalClass.M3]);
+        expect(collection.toList(), const <Interval>[.P1, .M3]);
       });
     });
 
     group('.compareTo()', () {
       test('sorts IntervalClasses in a collection', () {
-        final orderedSet = SplayTreeSet<IntervalClass>.of({
-          IntervalClass.m2,
-          IntervalClass.M3,
-          IntervalClass.P1,
-        });
-        expect(orderedSet.toList(), const [
-          IntervalClass.P1,
-          IntervalClass.m2,
-          IntervalClass.M3,
-        ]);
+        final orderedSet = SplayTreeSet<IntervalClass>.of({.m2, .M3, .P1});
+        expect(orderedSet.toList(), const <IntervalClass>[.P1, .m2, .M3]);
       });
     });
   });
