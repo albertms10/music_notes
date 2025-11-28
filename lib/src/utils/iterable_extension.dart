@@ -83,7 +83,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c, Note.e, Note.f.sharp, Note.a].closestTo(Note.g) == Note.f.sharp
+  /// <Note>[.c, .e, .f.sharp, .a].closestTo(.g) == .f.sharp
   /// ```
   E closestTo(E target, [num Function(E a, E b)? difference]) =>
       _closestTo(target, difference ?? _difference);
@@ -93,7 +93,7 @@ extension ScalableIterableExtension<E extends Scalable<E>> on Iterable<E> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c, Note.d.flat, Note.d, Note.e.flat, Note.g].compact().toList() == [
+  /// <Note>[.c, .d.flat, .d, .e.flat, .g].compact().toList() == [
   ///   (from: Note.c, to: Note.e),
   ///   (from: Note.g, to: Note.a.flat),
   /// ]

@@ -50,16 +50,7 @@ void main() {
       test('returns this Scale reversed', () {
         expect(
           Note.a.major.scale.reversed,
-          Scale([
-            Note.a,
-            Note.g.sharp,
-            Note.f.sharp,
-            Note.e,
-            Note.d,
-            Note.c.sharp,
-            Note.b,
-            Note.a,
-          ]),
+          Scale<Note>([.a, .g.sharp, .f.sharp, .e, .d, .c.sharp, .b, .a]),
         );
         expect(
           ScalePattern.naturalMinor.on(Note.g.inOctave(5)).reversed,
@@ -102,47 +93,33 @@ void main() {
 
     group('.degree()', () {
       test('returns the Scalable for the ScaleDegree of this Scale', () {
-        expect(Note.c.major.scale.degree(ScaleDegree.ii), Note.d);
-        expect(Note.d.minor.scale.degree(ScaleDegree.vii), Note.c);
+        expect(Note.c.major.scale.degree(.ii), Note.d);
+        expect(Note.d.minor.scale.degree(.vii), Note.c);
         expect(
-          ScalePattern.harmonicMinor.on(Note.f.sharp).degree(ScaleDegree.iii),
+          ScalePattern.harmonicMinor.on(Note.f.sharp).degree(.iii),
           Note.a,
         );
-        expect(
-          ScalePattern.melodicMinor.on(Note.a.flat).degree(ScaleDegree.vi),
-          Note.f,
-        );
+        expect(ScalePattern.melodicMinor.on(Note.a.flat).degree(.vi), Note.f);
 
-        expect(
-          Note.c.major.scale.degree(ScaleDegree.neapolitanSixth),
-          Note.d.flat,
-        );
+        expect(Note.c.major.scale.degree(.neapolitanSixth), Note.d.flat);
       });
     });
 
     group('.degreeChord()', () {
       test('returns the Chord for the ScaleDegree of this Scale', () {
+        expect(Note.c.major.scale.degreeChord(.ii), Note.d.minorTriad);
+        expect(Note.d.minor.scale.degreeChord(.vii), Note.c.majorTriad);
         expect(
-          Note.c.major.scale.degreeChord(ScaleDegree.ii),
-          Note.d.minorTriad,
-        );
-        expect(
-          Note.d.minor.scale.degreeChord(ScaleDegree.vii),
-          Note.c.majorTriad,
-        );
-        expect(
-          ScalePattern.harmonicMinor
-              .on(Note.f.sharp)
-              .degreeChord(ScaleDegree.iii),
+          ScalePattern.harmonicMinor.on(Note.f.sharp).degreeChord(.iii),
           Note.a.augmentedTriad,
         );
         expect(
-          ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(ScaleDegree.vi),
+          ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(.vi),
           Note.f.diminishedTriad,
         );
 
         expect(
-          Note.c.major.scale.degreeChord(ScaleDegree.neapolitanSixth),
+          Note.c.major.scale.degreeChord(.neapolitanSixth),
           // TODO(albertms10): take the inversion into account.
           Note.d.flat.majorTriad,
         );
@@ -151,68 +128,52 @@ void main() {
 
     group('.functionChord()', () {
       test('returns the Chord for the HarmonicFunction of this Scale', () {
+        expect(Note.c.major.scale.functionChord(.i), Note.c.majorTriad);
         expect(
-          Note.c.major.scale.functionChord(HarmonicFunction.i),
-          Note.c.majorTriad,
-        );
-        expect(
-          Note.d.major.scale.functionChord(HarmonicFunction.vii),
+          Note.d.major.scale.functionChord(.vii),
           Note.c.sharp.diminishedTriad,
         );
 
         expect(
           Note.g.major.scale.functionChord(
-            HarmonicFunction.dominantV / HarmonicFunction.dominantV,
+            HarmonicFunction.dominantV / .dominantV,
           ),
           Note.a.majorTriad,
         );
         expect(
-          Note.f.major.scale.functionChord(
-            HarmonicFunction.iv / HarmonicFunction.vi,
-          ),
+          Note.f.major.scale.functionChord(HarmonicFunction.iv / .vi),
           Note.g.minorTriad,
         );
         expect(
-          Note.b.flat.major.scale.functionChord(
-            HarmonicFunction.vi / HarmonicFunction.iv,
-          ),
+          Note.b.flat.major.scale.functionChord(HarmonicFunction.vi / .iv),
           Note.c.minorTriad,
         );
         expect(
           Note.c.sharp.minor.scale.functionChord(
-            HarmonicFunction.ii / HarmonicFunction.dominantV,
+            HarmonicFunction.ii / .dominantV,
           ),
           Note.a.sharp.minorTriad,
         );
 
         expect(
           Note.d.flat.major.scale.functionChord(
-            HarmonicFunction.ii /
-                HarmonicFunction.vi /
-                HarmonicFunction.dominantV,
+            HarmonicFunction.ii / .vi / .dominantV,
           ),
           Note.g.diminishedTriad,
         );
         expect(
-          Note.b.major.scale.functionChord(
-            HarmonicFunction.iv / HarmonicFunction.iv / HarmonicFunction.iv,
-          ),
+          Note.b.major.scale.functionChord(HarmonicFunction.iv / .iv / .iv),
           Note.d.majorTriad,
         );
         expect(
           Note.a.major.scale.functionChord(
-            HarmonicFunction.dominantV /
-                HarmonicFunction.dominantV /
-                HarmonicFunction.dominantV,
+            HarmonicFunction.dominantV / .dominantV / .dominantV,
           ),
           Note.f.sharp.majorTriad,
         );
         expect(
           Note.e.flat.major.scale.functionChord(
-            HarmonicFunction.dominantV /
-                HarmonicFunction.dominantV /
-                HarmonicFunction.dominantV /
-                HarmonicFunction.dominantV,
+            HarmonicFunction.dominantV / .dominantV / .dominantV / .dominantV,
           ),
           Note.g.majorTriad,
         );
@@ -224,9 +185,12 @@ void main() {
         'returns whether this Scale is enharmonically equivalent to other',
         () {
           expect(
-            const Scale([Note.c, Note.d, Note.f, Note.g]).isEnharmonicWith(
-              Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]),
-            ),
+            const Scale<Note>([
+              .c,
+              .d,
+              .f,
+              .g,
+            ]).isEnharmonicWith(Scale<Note>([.b.sharp, .d, .e.sharp, .g])),
             isTrue,
           );
           expect(
@@ -243,13 +207,13 @@ void main() {
 
     group('.transposeBy()', () {
       test('transposes this Scale by Interval', () {
-        expect(Note.c.major.scale.transposeBy(Interval.M3), Note.e.major.scale);
+        expect(Note.c.major.scale.transposeBy(.M3), Note.e.major.scale);
         expect(
           Note.d.flat.minor.scale.transposeBy(-Interval.m3),
           Note.b.flat.minor.scale,
         );
         expect(
-          ScalePattern.melodicMinor.on(Note.g.sharp).transposeBy(Interval.P5),
+          ScalePattern.melodicMinor.on(Note.g.sharp).transposeBy(.P5),
           ScalePattern.melodicMinor.on(Note.d.sharp),
         );
       });

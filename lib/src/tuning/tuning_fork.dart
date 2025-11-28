@@ -19,16 +19,16 @@ class TuningFork {
 
   /// The [A440 (pitch standard)](https://en.wikipedia.org/wiki/A440_(pitch_standard))
   /// tuning fork.
-  static const a440 = TuningFork(Pitch.reference, Frequency.reference);
+  static const a440 = TuningFork(.reference, .reference);
 
   /// The A432 tuning fork.
-  static const a432 = TuningFork(Pitch.reference, Frequency(432));
+  static const a432 = TuningFork(.reference, Frequency(432));
 
   /// The A415 tuning fork.
-  static const a415 = TuningFork(Pitch.reference, Frequency(415));
+  static const a415 = TuningFork(.reference, Frequency(415));
 
   /// The C256 tuning fork.
-  static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
+  static const c256 = TuningFork(Pitch(.c, octave: 4), Frequency(256));
 
   /// The chain of [Parser]s used to parse a [TuningFork].
   static const parsers = [
@@ -46,8 +46,8 @@ class TuningFork {
   ///
   /// Example:
   /// ```dart
-  /// TuningFork.parse('A440') == TuningFork.a440
-  /// TuningFork.parse('C = 256') == TuningFork.c256
+  /// TuningFork.parse('A440') == .a440
+  /// TuningFork.parse('C = 256') == .c256
   /// TuningFork.parse('z') // throws a FormatException
   /// ```
   factory TuningFork.parse(

@@ -53,7 +53,7 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// Example:
   /// ```dart
   /// (from: Note.c, to: Note.e.flat).explode()
-  ///   == const [Note.c, Note.d.flat, Note.d, Note.e.flat]
+  ///   == <Note>[.c, .d.flat, .d, .e.flat]
   /// ```
   /// ---
   /// See also:

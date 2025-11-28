@@ -9,7 +9,7 @@ void main() {
     group('.notes', () {
       test('returns an unmodifiable collection', () {
         expect(
-          KeySignature([Note.f.sharp]).notes,
+          KeySignature([.f.sharp]).notes,
           isA<UnmodifiableListView<Note>>(),
         );
       });
@@ -20,45 +20,41 @@ void main() {
         expect(
           KeySignature.fromDistance(-9),
           KeySignature([
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-            Note.c.flat,
-            Note.f.flat,
-            Note.b.flat.flat,
-            Note.e.flat.flat,
+            .b.flat,
+            .e.flat,
+            .a.flat,
+            .d.flat,
+            .g.flat,
+            .c.flat,
+            .f.flat,
+            .b.flat.flat,
+            .e.flat.flat,
           ]),
         );
         expect(
           KeySignature.fromDistance(-6),
-          KeySignature(
-            const [Note.b, Note.e, Note.a, Note.d, Note.g, Note.c].flat,
-          ),
+          KeySignature(const <Note>[.b, .e, .a, .d, .g, .c].flat),
         );
-        expect(KeySignature.fromDistance(-1), KeySignature([Note.b.flat]));
+        expect(KeySignature.fromDistance(-1), KeySignature([.b.flat]));
         expect(KeySignature.fromDistance(0), KeySignature.empty);
-        expect(KeySignature.fromDistance(1), KeySignature([Note.f.sharp]));
+        expect(KeySignature.fromDistance(1), KeySignature([.f.sharp]));
         expect(
           KeySignature.fromDistance(6),
-          KeySignature(
-            const [Note.f, Note.c, Note.g, Note.d, Note.a, Note.e].sharp,
-          ),
+          KeySignature(const <Note>[.f, .c, .g, .d, .a, .e].sharp),
         );
         expect(
           KeySignature.fromDistance(10),
           KeySignature([
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-            Note.e.sharp,
-            Note.b.sharp,
-            Note.f.sharp.sharp,
-            Note.c.sharp.sharp,
-            Note.g.sharp.sharp,
+            .f.sharp,
+            .c.sharp,
+            .g.sharp,
+            .d.sharp,
+            .a.sharp,
+            .e.sharp,
+            .b.sharp,
+            .f.sharp.sharp,
+            .c.sharp.sharp,
+            .g.sharp.sharp,
           ]),
         );
       });
@@ -66,23 +62,11 @@ void main() {
 
     group('.clean', () {
       test('returns a new KeySignature without cancellation naturals', () {
+        expect(const KeySignature([.f, .c, .g]).clean, KeySignature.empty);
+        expect(KeySignature([.f, .b.flat]).clean, KeySignature([.b.flat]));
         expect(
-          const KeySignature([Note.f, Note.c, Note.g]).clean,
-          KeySignature.empty,
-        );
-        expect(
-          KeySignature([Note.f, Note.b.flat]).clean,
-          KeySignature([Note.b.flat]),
-        );
-        expect(
-          KeySignature([
-            Note.b,
-            Note.e,
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-          ]).clean,
-          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([.b, .e, .f.sharp, .c.sharp, .g.sharp]).clean,
+          KeySignature([.f.sharp, .c.sharp, .g.sharp]),
         );
       });
     });
@@ -93,21 +77,18 @@ void main() {
         expect(KeySignature.fromDistance(-7).distance, -7);
         expect(KeySignature.fromDistance(-2).distance, -2);
         expect(KeySignature.empty.distance, 0);
-        expect(const KeySignature([Note.b, Note.e]).distance, 0);
+        expect(const KeySignature([.b, .e]).distance, 0);
         expect(KeySignature.fromDistance(1).distance, 1);
         expect(KeySignature.fromDistance(5).distance, 5);
         expect(KeySignature.fromDistance(10).distance, 10);
 
-        expect(KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).distance, 2);
-        expect(
-          KeySignature([Note.f, Note.c, Note.g, Note.b.flat]).distance,
-          -1,
-        );
+        expect(KeySignature([.b, .f.sharp, .c.sharp]).distance, 2);
+        expect(KeySignature([.f, .c, .g, .b.flat]).distance, -1);
       });
 
       test('returns null when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.b.flat, Note.a.flat]).distance, isNull);
-        expect(KeySignature([Note.g.sharp]).distance, isNull);
+        expect(KeySignature([.b.flat, .a.flat]).distance, isNull);
+        expect(KeySignature([.g.sharp]).distance, isNull);
       });
     });
 
@@ -115,20 +96,17 @@ void main() {
       test('returns whether this KeySignature is canonical', () {
         expect(KeySignature.fromDistance(-3).isCanonical, isTrue);
         expect(KeySignature.empty.isCanonical, isTrue);
-        expect(
-          KeySignature([Note.b, Note.f.sharp, Note.c.sharp]).isCanonical,
-          isTrue,
-        );
+        expect(KeySignature([.b, .f.sharp, .c.sharp]).isCanonical, isTrue);
 
-        expect(KeySignature([Note.g.sharp]).isCanonical, isFalse);
-        expect(KeySignature([Note.a.flat.flat]).isCanonical, isFalse);
+        expect(KeySignature([.g.sharp]).isCanonical, isFalse);
+        expect(KeySignature([.a.flat.flat]).isCanonical, isFalse);
       });
     });
 
     group('.keys', () {
       test('returns an unmodifiable collection', () {
         expect(
-          KeySignature([Note.f.sharp]).keys,
+          KeySignature([.f.sharp]).keys,
           isA<UnmodifiableMapView<TonalMode, Key>>(),
         );
       });
@@ -221,32 +199,29 @@ void main() {
       });
 
       test('returns an empty Map when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.d.flat]).keys, const <TonalMode, Key>{});
-        expect(
-          KeySignature([Note.c.sharp.sharp]).keys,
-          const <TonalMode, Key>{},
-        );
+        expect(KeySignature([.d.flat]).keys, const <TonalMode, Key>{});
+        expect(KeySignature([.c.sharp.sharp]).keys, const <TonalMode, Key>{});
       });
     });
 
     group('.incrementBy()', () {
       test('returns a new KeySignature increasing the fifths distance', () {
-        expect(KeySignature.empty.incrementBy(-1), KeySignature([Note.b.flat]));
+        expect(KeySignature.empty.incrementBy(-1), KeySignature([.b.flat]));
         expect(KeySignature.empty.incrementBy(0), KeySignature.empty);
-        expect(KeySignature.empty.incrementBy(1), KeySignature([Note.f.sharp]));
+        expect(KeySignature.empty.incrementBy(1), KeySignature([.f.sharp]));
 
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3),
+          KeySignature([.f.sharp, .c.sharp]).incrementBy(3),
           KeySignature.fromDistance(5),
         );
         expect(
           KeySignature.fromDistance(-3).incrementBy(-1),
-          KeySignature([Note.b.flat, Note.e.flat]),
+          KeySignature([.b.flat, .e.flat]),
         );
       });
 
       test('returns null when this KeySignature is not canonical', () {
-        expect(KeySignature([Note.e.flat]).incrementBy(1), isNull);
+        expect(KeySignature([.e.flat]).incrementBy(1), isNull);
       });
     });
 
@@ -296,16 +271,10 @@ void main() {
           '10 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪 C𝄪 G𝄪)',
         );
 
-        expect(const KeySignature([Note.b]).toString(), '0 (B♮)');
-        expect(const KeySignature([Note.f, Note.c]).toString(), '0 (F♮ C♮)');
+        expect(const KeySignature([.b]).toString(), '0 (B♮)');
+        expect(const KeySignature([.f, .c]).toString(), '0 (F♮ C♮)');
         expect(
-          KeySignature([
-            Note.f,
-            Note.c,
-            Note.g,
-            Note.b.flat,
-            Note.e.flat,
-          ]).toString(),
+          KeySignature([.f, .c, .g, .b.flat, .e.flat]).toString(),
           '-2 (F♮ C♮ G♮ B♭ E♭)',
         );
       });
@@ -313,116 +282,91 @@ void main() {
 
     group('operator |()', () {
       test('keeps the same KeySignature when this is empty', () {
-        expect(KeySignature.empty | KeySignature.empty, KeySignature.empty);
+        expect(KeySignature.empty | .empty, KeySignature.empty);
         expect(
-          KeySignature.empty | KeySignature([Note.b.flat]),
-          KeySignature([Note.b.flat]),
+          KeySignature.empty | KeySignature([.b.flat]),
+          KeySignature([.b.flat]),
         );
 
         expect(
-          const KeySignature([Note.b]) | const KeySignature([Note.e]),
-          const KeySignature([Note.e]),
+          const KeySignature([.b]) | const KeySignature([.e]),
+          const KeySignature([.e]),
         );
       });
 
       test('keeps the other KeySignature when it has more Accidentals of '
           'the same kind', () {
         expect(
-          KeySignature([Note.b.flat]) |
-              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
+          KeySignature([.b.flat]) | KeySignature([.b.flat, .e.flat, .a.flat]),
+          KeySignature([.b.flat, .e.flat, .a.flat]),
         );
         expect(
-          KeySignature([Note.f.sharp]) |
-              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([.f.sharp]) |
+              KeySignature([.f.sharp, .c.sharp, .g.sharp]),
+          KeySignature([.f.sharp, .c.sharp, .g.sharp]),
         );
       });
 
       test('ignores any previously cancelled Accidentals', () {
         expect(
-          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) |
-              KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
-          KeySignature([Note.f.sharp, Note.c.sharp, Note.g.sharp]),
+          KeySignature([.b, .e, .f.sharp, .c.sharp]) |
+              KeySignature([.f.sharp, .c.sharp, .g.sharp]),
+          KeySignature([.f.sharp, .c.sharp, .g.sharp]),
         );
         expect(
-          KeySignature([Note.b, Note.e, Note.f.sharp, Note.c.sharp]) |
-              KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]),
-          KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat, Note.a.flat]),
+          KeySignature([.b, .e, .f.sharp, .c.sharp]) |
+              KeySignature([.b.flat, .e.flat, .a.flat]),
+          KeySignature([.f, .c, .b.flat, .e.flat, .a.flat]),
         );
       });
 
       test('cancels Accidentals when needed', () {
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) | KeySignature.empty,
-          const KeySignature([Note.f, Note.c]),
+          KeySignature([.f.sharp, .c.sharp]) | .empty,
+          const KeySignature([.f, .c]),
         );
 
         expect(
-          KeySignature([Note.b.flat]) |
-              KeySignature([Note.f.sharp, Note.c.sharp]),
-          KeySignature([Note.b, Note.f.sharp, Note.c.sharp]),
+          KeySignature([.b.flat]) | KeySignature([.f.sharp, .c.sharp]),
+          KeySignature([.b, .f.sharp, .c.sharp]),
         );
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) |
-              KeySignature([Note.b.flat, Note.e.flat]),
-          KeySignature([Note.f, Note.c, Note.b.flat, Note.e.flat]),
+          KeySignature([.f.sharp, .c.sharp]) | KeySignature([.b.flat, .e.flat]),
+          KeySignature([.f, .c, .b.flat, .e.flat]),
         );
         expect(
-          KeySignature([Note.f.sharp, Note.c.sharp]) |
-              KeySignature([Note.f.sharp]),
-          KeySignature([Note.c, Note.f.sharp]),
+          KeySignature([.f.sharp, .c.sharp]) | KeySignature([.f.sharp]),
+          KeySignature([.c, .f.sharp]),
         );
         expect(
-          KeySignature([Note.b.flat, Note.e.flat, Note.a.flat]) |
-              KeySignature([Note.b.flat]),
-          KeySignature([Note.e, Note.a, Note.b.flat]),
+          KeySignature([.b.flat, .e.flat, .a.flat]) | KeySignature([.b.flat]),
+          KeySignature([.e, .a, .b.flat]),
         );
 
         expect(
-          KeySignature.fromDistance(-8) | KeySignature.fromDistance(1),
-          KeySignature([
-            Note.b,
-            Note.e,
-            Note.a,
-            Note.d,
-            Note.g,
-            Note.c,
-            Note.f,
-            Note.f.sharp,
-          ]),
+          KeySignature.fromDistance(-8) | .fromDistance(1),
+          KeySignature([.b, .e, .a, .d, .g, .c, .f, .f.sharp]),
         );
       });
 
       test('shows each cancelled Accidental once in edge KeySignatures', () {
         expect(
-          KeySignature.fromDistance(10) | KeySignature.fromDistance(-3),
-          KeySignature([
-            Note.f,
-            Note.c,
-            Note.g,
-            Note.d,
-            Note.a,
-            Note.e,
-            Note.b,
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-          ]),
+          KeySignature.fromDistance(10) | .fromDistance(-3),
+          KeySignature([.f, .c, .g, .d, .a, .e, .b, .b.flat, .e.flat, .a.flat]),
         );
       });
     });
 
     group('.hashCode', () {
       test('ignores equal KeySignature instances in a Set', () {
-        final collection = {
-          KeySignature.empty,
-          KeySignature([Note.f.sharp]),
+        final collection = <KeySignature>{
+          .empty,
+          KeySignature([.f.sharp]),
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          KeySignature.empty,
-          KeySignature([Note.f.sharp]),
+        expect(collection.toList(), <KeySignature>[
+          .empty,
+          KeySignature([.f.sharp]),
         ]);
       });
     });
@@ -430,18 +374,18 @@ void main() {
     group('.compareTo()', () {
       test('sorts KeySignatures in a collection', () {
         final orderedSet = SplayTreeSet<KeySignature>.of({
-          KeySignature.fromDistance(-3),
-          KeySignature.empty,
-          KeySignature.fromDistance(-6),
-          KeySignature.fromDistance(4),
-          KeySignature.fromDistance(3),
+          .fromDistance(-3),
+          .empty,
+          .fromDistance(-6),
+          .fromDistance(4),
+          .fromDistance(3),
         });
-        expect(orderedSet.toList(), [
-          KeySignature.fromDistance(-6),
-          KeySignature.fromDistance(-3),
-          KeySignature.empty,
-          KeySignature.fromDistance(3),
-          KeySignature.fromDistance(4),
+        expect(orderedSet.toList(), <KeySignature>[
+          .fromDistance(-6),
+          .fromDistance(-3),
+          .empty,
+          .fromDistance(3),
+          .fromDistance(4),
         ]);
       });
     });

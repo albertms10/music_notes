@@ -17,24 +17,14 @@ void main() {
     group('operator /()', () {
       test('returns the HarmonicFunction relating this to other', () {
         expect(
-          HarmonicFunction.dominantV / HarmonicFunction.dominantV,
-          HarmonicFunction([ScaleDegree.v.major, ScaleDegree.v.major]),
+          HarmonicFunction.dominantV / .dominantV,
+          HarmonicFunction([.v.major, .v.major]),
         );
+        expect(HarmonicFunction.ii / .ii, const HarmonicFunction([.ii, .ii]));
+        expect(HarmonicFunction.vi / .iv, const HarmonicFunction([.vi, .iv]));
         expect(
-          HarmonicFunction.ii / HarmonicFunction.ii,
-          const HarmonicFunction([ScaleDegree.ii, ScaleDegree.ii]),
-        );
-        expect(
-          HarmonicFunction.vi / HarmonicFunction.iv,
-          const HarmonicFunction([ScaleDegree.vi, ScaleDegree.iv]),
-        );
-        expect(
-          HarmonicFunction.i / HarmonicFunction.ii / HarmonicFunction.iii,
-          const HarmonicFunction([
-            ScaleDegree.i,
-            ScaleDegree.ii,
-            ScaleDegree.iii,
-          ]),
+          HarmonicFunction.i / .ii / .iii,
+          const HarmonicFunction([.i, .ii, .iii]),
         );
       });
     });
@@ -43,14 +33,9 @@ void main() {
       test('returns the string representation of this HarmonicFunction', () {
         expect(HarmonicFunction.i.toString(), 'I');
         expect(HarmonicFunction.vii.toString(), 'VII');
+        expect((HarmonicFunction.dominantV / .dominantV).toString(), 'V/V');
         expect(
-          (HarmonicFunction.dominantV / HarmonicFunction.dominantV).toString(),
-          'V/V',
-        );
-        expect(
-          (HarmonicFunction([ScaleDegree.iv.minor]) /
-                  HarmonicFunction.neapolitanSixth /
-                  HarmonicFunction.dominantV)
+          (HarmonicFunction([.iv.minor]) / .neapolitanSixth / .dominantV)
               .toString(),
           'iv/♭II6/V',
         );
@@ -61,30 +46,20 @@ void main() {
       test('returns the same hashCode for equal HarmonicFunctions', () {
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([ScaleDegree.i]).hashCode,
+          HarmonicFunction([.i]).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([ScaleDegree.i]).hashCode,
+          HarmonicFunction([.i]).hashCode,
         );
         expect(
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
             // ignore: prefer_const_constructors test
-            ScaleDegree(
-              2,
-              quality: ImperfectQuality.major,
-              inversion: 1,
-              semitonesDelta: -1,
-            ),
+            ScaleDegree(2, quality: .major, inversion: 1, semitonesDelta: -1),
           ]).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
             // ignore: prefer_const_constructors test
-            ScaleDegree(
-              2,
-              quality: ImperfectQuality.major,
-              inversion: 1,
-              semitonesDelta: -1,
-            ),
+            ScaleDegree(2, quality: .major, inversion: 1, semitonesDelta: -1),
           ]).hashCode,
         );
       });
@@ -95,24 +70,24 @@ void main() {
           isNot(HarmonicFunction.ii.hashCode),
         );
         expect(
-          const HarmonicFunction([ScaleDegree.vi, ScaleDegree.i]).hashCode,
+          const HarmonicFunction([.vi, .i]).hashCode,
           isNot(HarmonicFunction.vi.hashCode),
         );
       });
 
       test('ignores equal HarmonicFunction instances in a Set', () {
-        final collection = {
-          HarmonicFunction.i,
-          HarmonicFunction.neapolitanSixth,
-          HarmonicFunction.iii,
-          HarmonicFunction.iv / HarmonicFunction.iv,
+        final collection = <HarmonicFunction>{
+          .i,
+          .neapolitanSixth,
+          .iii,
+          HarmonicFunction.iv / .iv,
         };
         collection.addAll(collection);
-        expect(collection.toList(), [
-          HarmonicFunction.i,
-          HarmonicFunction.neapolitanSixth,
-          HarmonicFunction.iii,
-          HarmonicFunction.iv / HarmonicFunction.iv,
+        expect(collection.toList(), <HarmonicFunction>[
+          .i,
+          .neapolitanSixth,
+          .iii,
+          HarmonicFunction.iv / .iv,
         ]);
       });
     });

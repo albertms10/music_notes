@@ -64,8 +64,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   ClosestPitch closestPitch({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) {
     final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
@@ -89,7 +89,7 @@ extension type const Frequency._(num hertz) implements num {
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
-      cents: Cent.fromRatio(hertz / closestPitchFrequency),
+      cents: .fromRatio(hertz / closestPitchFrequency),
     );
   }
 
@@ -98,7 +98,7 @@ extension type const Frequency._(num hertz) implements num {
   /// See [Change of pitch with change of temperature](https://sengpielaudio.com/calculator-pitchchange.htm).
   ///
   /// ![Effect of a Local Temperature Change in an Organ Pipe](https://sengpielaudio.com/TonhoehenaenderungDurchTemperaturaenderung.gif)
-  Frequency at(Celsius temperature, [Celsius reference = Celsius.reference]) =>
+  Frequency at(Celsius temperature, [Celsius reference = .reference]) =>
       Frequency(hertz * temperature.ratio(reference));
 
   /// The harmonic at [index] from this [Frequency], including negative
@@ -171,5 +171,5 @@ class FrequencySINotation extends NotationSystem<Frequency> {
 
   @override
   Frequency parseMatch(RegExpMatch match) =>
-      Frequency(double.parse(match.namedGroup('frequency')!));
+      Frequency(.parse(match.namedGroup('frequency')!));
 }

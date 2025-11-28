@@ -147,50 +147,50 @@ void main() {
 
     group('.intervalSize()', () {
       test('returns the Interval size between this NoteName and other', () {
-        expect(NoteName.c.intervalSize(NoteName.c), 1);
-        expect(NoteName.d.intervalSize(NoteName.e), 2);
-        expect(NoteName.e.intervalSize(NoteName.f), 2);
-        expect(NoteName.b.intervalSize(NoteName.c), 2);
-        expect(NoteName.a.intervalSize(NoteName.c), 3);
-        expect(NoteName.f.intervalSize(NoteName.b), 4);
-        expect(NoteName.b.intervalSize(NoteName.e), 4);
-        expect(NoteName.a.intervalSize(NoteName.e), 5);
-        expect(NoteName.c.intervalSize(NoteName.a), 6);
-        expect(NoteName.a.intervalSize(NoteName.g), 7);
+        expect(NoteName.c.intervalSize(.c), 1);
+        expect(NoteName.d.intervalSize(.e), 2);
+        expect(NoteName.e.intervalSize(.f), 2);
+        expect(NoteName.b.intervalSize(.c), 2);
+        expect(NoteName.a.intervalSize(.c), 3);
+        expect(NoteName.f.intervalSize(.b), 4);
+        expect(NoteName.b.intervalSize(.e), 4);
+        expect(NoteName.a.intervalSize(.e), 5);
+        expect(NoteName.c.intervalSize(.a), 6);
+        expect(NoteName.a.intervalSize(.g), 7);
       });
     });
 
     group('.difference()', () {
       test('returns the difference in semitones with another NoteName', () {
-        expect(NoteName.f.difference(NoteName.b), -6);
-        expect(NoteName.e.difference(NoteName.b), -5);
-        expect(NoteName.e.difference(NoteName.c), -4);
-        expect(NoteName.d.difference(NoteName.b), -3);
-        expect(NoteName.e.difference(NoteName.d), -2);
-        expect(NoteName.c.difference(NoteName.b), -1);
-        expect(NoteName.c.difference(NoteName.c), 0);
-        expect(NoteName.b.difference(NoteName.c), 1);
-        expect(NoteName.c.difference(NoteName.d), 2);
-        expect(NoteName.c.difference(NoteName.e), 4);
-        expect(NoteName.a.difference(NoteName.d), 5);
-        expect(NoteName.c.difference(NoteName.f), 5);
-        expect(NoteName.b.difference(NoteName.f), 6);
+        expect(NoteName.f.difference(.b), -6);
+        expect(NoteName.e.difference(.b), -5);
+        expect(NoteName.e.difference(.c), -4);
+        expect(NoteName.d.difference(.b), -3);
+        expect(NoteName.e.difference(.d), -2);
+        expect(NoteName.c.difference(.b), -1);
+        expect(NoteName.c.difference(.c), 0);
+        expect(NoteName.b.difference(.c), 1);
+        expect(NoteName.c.difference(.d), 2);
+        expect(NoteName.c.difference(.e), 4);
+        expect(NoteName.a.difference(.d), 5);
+        expect(NoteName.c.difference(.f), 5);
+        expect(NoteName.b.difference(.f), 6);
       });
     });
 
     group('.positiveDifference()', () {
       test('returns the positive difference in semitones with other', () {
-        expect(NoteName.c.positiveDifference(NoteName.c), 0);
-        expect(NoteName.b.positiveDifference(NoteName.c), 1);
-        expect(NoteName.c.positiveDifference(NoteName.d), 2);
-        expect(NoteName.c.positiveDifference(NoteName.e), 4);
-        expect(NoteName.c.positiveDifference(NoteName.f), 5);
-        expect(NoteName.a.positiveDifference(NoteName.d), 5);
-        expect(NoteName.e.positiveDifference(NoteName.b), 7);
-        expect(NoteName.e.positiveDifference(NoteName.c), 8);
-        expect(NoteName.d.positiveDifference(NoteName.b), 9);
-        expect(NoteName.e.positiveDifference(NoteName.d), 10);
-        expect(NoteName.c.positiveDifference(NoteName.b), 11);
+        expect(NoteName.c.positiveDifference(.c), 0);
+        expect(NoteName.b.positiveDifference(.c), 1);
+        expect(NoteName.c.positiveDifference(.d), 2);
+        expect(NoteName.c.positiveDifference(.e), 4);
+        expect(NoteName.c.positiveDifference(.f), 5);
+        expect(NoteName.a.positiveDifference(.d), 5);
+        expect(NoteName.e.positiveDifference(.b), 7);
+        expect(NoteName.e.positiveDifference(.c), 8);
+        expect(NoteName.d.positiveDifference(.b), 9);
+        expect(NoteName.e.positiveDifference(.d), 10);
+        expect(NoteName.c.positiveDifference(.b), 11);
       });
     });
 
@@ -200,14 +200,14 @@ void main() {
         expect(NoteName.g.transposeBySize(-Size.third), NoteName.e);
         expect(NoteName.c.transposeBySize(-Size.second), NoteName.b);
         expect(NoteName.d.transposeBySize(-Size.unison), NoteName.d);
-        expect(NoteName.c.transposeBySize(Size.unison), NoteName.c);
-        expect(NoteName.d.transposeBySize(Size.second), NoteName.e);
-        expect(NoteName.e.transposeBySize(Size.third), NoteName.g);
-        expect(NoteName.e.transposeBySize(Size.fourth), NoteName.a);
-        expect(NoteName.f.transposeBySize(Size.fifth), NoteName.c);
-        expect(NoteName.a.transposeBySize(Size.sixth), NoteName.f);
-        expect(NoteName.b.transposeBySize(Size.seventh), NoteName.a);
-        expect(NoteName.c.transposeBySize(Size.octave), NoteName.c);
+        expect(NoteName.c.transposeBySize(.unison), NoteName.c);
+        expect(NoteName.d.transposeBySize(.second), NoteName.e);
+        expect(NoteName.e.transposeBySize(.third), NoteName.g);
+        expect(NoteName.e.transposeBySize(.fourth), NoteName.a);
+        expect(NoteName.f.transposeBySize(.fifth), NoteName.c);
+        expect(NoteName.a.transposeBySize(.sixth), NoteName.f);
+        expect(NoteName.b.transposeBySize(.seventh), NoteName.a);
+        expect(NoteName.c.transposeBySize(.octave), NoteName.c);
       });
     });
 
@@ -232,23 +232,15 @@ void main() {
     group('.compareTo()', () {
       test('sorts NoteNames in a collection', () {
         final orderedSet = SplayTreeSet<NoteName>.of({
-          NoteName.b,
-          NoteName.e,
-          NoteName.d,
-          NoteName.c,
-          NoteName.g,
-          NoteName.f,
-          NoteName.a,
+          .b,
+          .e,
+          .d,
+          .c,
+          .g,
+          .f,
+          .a,
         });
-        expect(orderedSet.toList(), [
-          NoteName.c,
-          NoteName.d,
-          NoteName.e,
-          NoteName.f,
-          NoteName.g,
-          NoteName.a,
-          NoteName.b,
-        ]);
+        expect(orderedSet.toList(), <NoteName>[.c, .d, .e, .f, .g, .a, .b]);
       });
     });
   });

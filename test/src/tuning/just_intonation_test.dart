@@ -10,7 +10,7 @@ void main() {
         expect(const PythagoreanTuning().generator, generator);
         expect(
           PythagoreanTuning(
-            fork: Note.a.flat.inOctave(3).at(Frequency.reference),
+            fork: Note.a.flat.inOctave(3).at(.reference),
           ).generator,
           generator,
         );
@@ -75,7 +75,7 @@ void main() {
         expect(const PythagoreanTuning().pythagoreanComma, pythagoreanComma);
         expect(
           PythagoreanTuning(
-            fork: Note.f.sharp.inOctave(5).at(Frequency.reference),
+            fork: Note.f.sharp.inOctave(5).at(.reference),
           ).pythagoreanComma,
           pythagoreanComma,
         );

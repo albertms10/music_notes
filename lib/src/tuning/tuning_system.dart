@@ -39,7 +39,7 @@ abstract class TuningSystem {
   /// edo12.ratio(Note.b.inOctave(4)) == 1.12
   /// edo12.ratio(Note.d.inOctave(5)) == 1.33
   ///
-  /// final pt = PythagoreanTuning(fork: TuningFork.c256);
+  /// final pt = PythagoreanTuning(fork: .c256);
   /// pt.ratio(Note.d.inOctave(4)) == 9 / 8
   /// pt.ratio(Note.f.inOctave(4)) == 4 / 3
   /// ```

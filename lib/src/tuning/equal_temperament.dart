@@ -8,7 +8,6 @@ import 'package:music_notes/utils.dart';
 import '../note/note_name.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
-import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// Number of chromatic octave divisions in [EqualTemperament.edo12].
@@ -29,14 +28,14 @@ class EqualTemperament extends TuningSystem {
   List<int> get steps => UnmodifiableListView(_steps);
 
   /// Creates a new [EqualTemperament] from [_steps] and [fork].
-  const EqualTemperament(this._steps, {super.fork = TuningFork.a440});
+  const EqualTemperament(this._steps, {super.fork = .a440});
 
   /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.fork = TuningFork.a440})
+  const EqualTemperament.edo12({super.fork = .a440})
     : _steps = const [2, 2, 1, 2, 2, 2, 1];
 
   /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.fork = TuningFork.a440})
+  const EqualTemperament.edo19({super.fork = .a440})
     : _steps = const [3, 3, 2, 3, 3, 3, 2];
 
   /// The equal divisions of the octave of this [EqualTemperament].

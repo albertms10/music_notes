@@ -63,7 +63,7 @@ void main() {
 
         expect(
           const Frequency(440).closestPitch(
-            tuningSystem: const EqualTemperament.edo12(fork: TuningFork.a415),
+            tuningSystem: const EqualTemperament.edo12(fork: .a415),
           ),
           Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );

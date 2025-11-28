@@ -44,7 +44,7 @@ final class Pitch extends Scalable<Pitch>
   const Pitch(this.note, {required this.octave});
 
   /// The reference [Pitch].
-  static const reference = Pitch(Note.a, octave: referenceOctave);
+  static const reference = Pitch(.a, octave: referenceOctave);
 
   /// The reference octave.
   static const referenceOctave = 4;
@@ -105,13 +105,13 @@ final class Pitch extends Scalable<Pitch>
   @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
-  static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
-  static const _higherMidiPitch = Pitch(Note.g, octave: 9);
+  static const _lowerMidiPitch = Pitch(.c, octave: -1);
+  static const _higherMidiPitch = Pitch(.g, octave: 9);
 
   /// The MIDI number (an integer from 0 to 127) of this [Pitch],
   /// or `null` for pitches out of the MIDI range.
   ///
-  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
+  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI#Messages) and
   /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
   ///
   /// Example:
@@ -223,12 +223,9 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.b.sharp.inOctave(4).respellByNoteName(NoteName.c)
-  ///   == Note.c.inOctave(5)
-  /// Note.f.inOctave(5).respellByNoteName(NoteName.e)
-  ///   == Note.e.sharp.inOctave(5)
-  /// Note.g.inOctave(3).respellByNoteName(NoteName.a)
-  ///   == Note.a.flat.flat.inOctave(3)
+  /// Note.b.sharp.inOctave(4).respellByNoteName(.c) == Note.c.inOctave(5)
+  /// Note.f.inOctave(5).respellByNoteName(.e) == Note.e.sharp.inOctave(5)
+  /// Note.g.inOctave(3).respellByNoteName(.a) == Note.a.flat.flat.inOctave(3)
   /// ```
   @override
   Pitch respellByNoteName(NoteName noteName) {
@@ -254,7 +251,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   Pitch respellByOrdinalDistance(int distance) =>
-      respellByNoteName(NoteName.fromOrdinal(note.noteName.ordinal + distance));
+      respellByNoteName(.fromOrdinal(note.noteName.ordinal + distance));
 
   /// This [Pitch] respelled upwards while keeping the same number of
   /// [semitones].
@@ -286,11 +283,11 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
+  /// Note.e.flat.inOctave(4).respellByAccidental(.sharp)
   ///   == Note.d.sharp.inOctave(4)
-  /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
+  /// Note.b.inOctave(4).respellByAccidental(.flat)
   ///   == Note.c.flat.inOctave(5)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
+  /// Note.g.inOctave(4).respellByAccidental(.sharp)
   ///   == Note.f.sharp.sharp.inOctave(4)
   /// ```
   @override
@@ -333,7 +330,7 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).transposeBy(Interval.P5) == Note.d.inOctave(5)
+  /// Note.g.inOctave(4).transposeBy(.P5) == Note.d.inOctave(5)
   /// Note.d.flat.inOctave(2).transposeBy(-Interval.M2)
   ///   == Note.c.flat.inOctave(2)
   /// ```
@@ -356,8 +353,8 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
-  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == Interval.A4
+  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == .P5
+  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == .A4
   /// Note.c.inOctave(5).interval(Note.b.inOctave(4)) == -Interval.m2
   /// ```
   @override
@@ -365,7 +362,7 @@ final class Pitch extends Scalable<Pitch>
     final ordinalDelta = other.note.noteName.ordinal - note.noteName.ordinal;
     final sizeDelta = ordinalDelta + 7 * (other.octave - octave);
 
-    return Interval.fromSizeAndSemitones(
+    return .fromSizeAndSemitones(
       Size(sizeDelta.abs() + 1),
       difference(other).abs(),
     ).descending(sizeDelta < 0);
@@ -385,7 +382,7 @@ final class Pitch extends Scalable<Pitch>
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).frequency(
-  ///   tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
+  ///   tuningSystem: const EqualTemperament.edo12(fork: .c256),
   /// ) == const Frequency(430.54)
   ///
   /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))
@@ -403,8 +400,8 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) => Frequency(
     tuningSystem.fork.frequency * tuningSystem.ratio(this),
   ).at(temperature, referenceTemperature);
@@ -413,8 +410,8 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Pitch.reference.at(const Frequency(440)) == TuningFork.a440
-  /// Note.c.inOctave(4).at(const Frequency(256)) == TuningFork.c256
+  /// Pitch.reference.at(const Frequency(440)) == .a440
+  /// Note.c.inOctave(4).at(const Frequency(256)) == .c256
   /// ```
   TuningFork at(Frequency frequency) => TuningFork(this, frequency);
 
@@ -430,8 +427,8 @@ final class Pitch extends Scalable<Pitch>
   Iterable<ClosestPitch> harmonics({
     bool undertone = false,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) =>
       frequency(
             tuningSystem: tuningSystem,
@@ -547,7 +544,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parseMatch(RegExpMatch match) => Pitch(
     noteNotation.parseMatch(match),
-    octave: int.parse(match.namedGroup('octave')!.toNegativeAscii()),
+    octave: .parse(match.namedGroup('octave')!.toNegativeAscii()),
   );
 }
 
