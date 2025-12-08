@@ -557,21 +557,24 @@ final class GermanNoteNotation extends NoteNotation {
   @override
   Note parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
-    if (noteName.toLowerCase() == 'b') return .b.flat;
-    final accidental = match.namedGroup('accidental');
-    if (accidental == null) return Note(noteNameNotation.parseMatch(match));
-    if (const {'a', 'e'}.contains(noteName.toLowerCase())) {
-      if (accidental.startsWith('e')) {
+    final textualAccidental = match.namedGroup('accidental') ?? '';
+    final accidental = accidentalNotation.parseMatch(match);
+    switch (noteName.toLowerCase()) {
+      case 'b' when accidental.isSharp:
         throw FormatException('Invalid Note', match);
-      }
-    } else if (accidental.startsWith('s')) {
-      throw FormatException('Invalid Note', match);
+      case 'b':
+        return Note(.b, accidental - 1);
+      case 'h' when accidental.isFlat:
+        throw FormatException('Invalid Note', match);
+      case 'a' || 'e':
+        if (textualAccidental.startsWith('e')) {
+          throw FormatException('Invalid Note', match);
+        }
+      case _ when textualAccidental.startsWith('s'):
+        throw FormatException('Invalid Note', match);
     }
 
-    return Note(
-      noteNameNotation.parseMatch(match),
-      accidentalNotation.parseMatch(match),
-    );
+    return Note(noteNameNotation.parseMatch(match), accidental);
   }
 }
 
