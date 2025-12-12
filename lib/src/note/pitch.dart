@@ -682,9 +682,9 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
               _superQuadruplePrime => _middleOctave + 4,
               _ => null,
             };
-    }
-    if (octave == null) {
-      throw FormatException('Invalid Pitch', match[0], noteName.length);
+      if (octave == null) {
+        throw FormatException('Invalid Pitch', match[0], noteName.length);
+      }
     }
 
     return Pitch(noteNotation.parseMatch(match), octave: octave);
