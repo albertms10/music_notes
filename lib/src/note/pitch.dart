@@ -654,7 +654,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
       ..._compoundPrimeSymbols,
       for (final symbol in _primeSymbols) '$symbol+',
     ].join('|')})|'
-    r'(?<numbers>[1-9]+))?',
+    '(?<numbers>[1-9]+))?',
     caseSensitive: false,
   );
 
