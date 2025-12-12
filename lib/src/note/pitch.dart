@@ -56,6 +56,7 @@ final class Pitch extends Scalable<Pitch>
     ScientificPitchNotation.romance,
     HelmholtzPitchNotation.english,
     HelmholtzPitchNotation.german,
+    HelmholtzPitchNotation.numbered(),
     HelmholtzPitchNotation.romance,
   ];
 
@@ -555,18 +556,30 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;
 
+  /// Whether to use numbers instead of prime symbols.
+  final bool _useNumbers;
+
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;
 
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
     this.noteNotation = const EnglishNoteNotation.symbol(),
-  }) : _useAscii = false;
+  }) : _useNumbers = false,
+       _useAscii = false;
 
   /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
   const HelmholtzPitchNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : _useAscii = true;
+  }) : _useNumbers = false,
+       _useAscii = true;
+
+  /// Creates a new [HelmholtzPitchNotation] using numbers instead of prime
+  /// symbols.
+  const HelmholtzPitchNotation.numbered({
+    this.noteNotation = const GermanNoteNotation(),
+  }) : _useNumbers = true,
+       _useAscii = false;
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -616,10 +629,16 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     final n => _superPrimeAscii * n,
   };
 
+  static String _numbered(int n) => n == 0 ? '' : '${n.abs()}';
+
   @override
   String format(Pitch pitch) {
     final note = noteNotation.format(pitch.note);
-    final symbols = _useAscii ? _asciiSymbols : _symbols;
+    final symbols = _useNumbers
+        ? _numbered
+        : _useAscii
+        ? _asciiSymbols
+        : _symbols;
 
     return switch (pitch.octave) {
       >= _middleOctave && final octave =>
@@ -631,31 +650,39 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp?.pattern}'
-    '(?<primes>${[
+    '((?<primes>${[
       ..._compoundPrimeSymbols,
       for (final symbol in _primeSymbols) '$symbol+',
-    ].join('|')})?',
+    ].join('|')})|'
+    r'(?<numbers>[1-9]+))?',
     caseSensitive: false,
   );
 
   @override
   Pitch parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
-    final primes = match.namedGroup('primes')?.split('');
-    final octave = noteName[0].isUpperCase
-        ? switch (primes?.first) {
-            '' || null => _middleOctave - 1,
-            _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
-            _ => null,
-          }
-        : switch (primes?.first) {
-            '' || null => _middleOctave,
-            _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
-            _superDoublePrime => _middleOctave + 2,
-            _superTriplePrime => _middleOctave + 3,
-            _superQuadruplePrime => _middleOctave + 4,
-            _ => null,
-          };
+    final textualNumbers = match.namedGroup('numbers');
+    final int? octave;
+    if (textualNumbers != null) {
+      final numbers = int.parse(textualNumbers);
+      octave = noteName[0].isUpperCase ? 2 - numbers : numbers + 3;
+    } else {
+      final primes = match.namedGroup('primes')?.split('');
+      octave = noteName[0].isUpperCase
+          ? switch (primes?.first) {
+              '' || null => _middleOctave - 1,
+              _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
+              _ => null,
+            }
+          : switch (primes?.first) {
+              '' || null => _middleOctave,
+              _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
+              _superDoublePrime => _middleOctave + 2,
+              _superTriplePrime => _middleOctave + 3,
+              _superQuadruplePrime => _middleOctave + 4,
+              _ => null,
+            };
+    }
     if (octave == null) {
       throw FormatException('Invalid Pitch', match[0], noteName.length);
     }
