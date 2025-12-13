@@ -117,6 +117,7 @@ void main() {
           expect(() => Pitch.parse('0b', chain: chain), throwsFormatException);
           expect(() => Pitch.parse('F0', chain: chain), throwsFormatException);
           expect(() => Pitch.parse('g0', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('h00', chain: chain), throwsFormatException);
           expect(() => Pitch.parse("g1'", chain: chain), throwsFormatException);
           expect(
             () => Pitch.parse("ais'1", chain: chain),
