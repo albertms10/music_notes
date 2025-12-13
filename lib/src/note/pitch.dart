@@ -614,7 +614,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     _subPrimeAscii,
   ];
 
-  static const _middleOctave = 3;
+  static const _middleOctave = Pitch.referenceOctave - 1;
 
   static String _symbols(int n) => switch (n) {
     4 => _superQuadruplePrime,
@@ -654,7 +654,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
       ..._compoundPrimeSymbols,
       for (final symbol in _primeSymbols) '$symbol+',
     ].join('|')})|'
-    '(?<numbers>[1-9]+))?',
+    r'(?<numbers>[1-9]\d*))?',
     caseSensitive: false,
   );
 

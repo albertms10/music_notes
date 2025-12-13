@@ -245,6 +245,10 @@ void main() {
 
         test('returns the numbered German Helmholtz string representation', () {
           expect(
+            Note.a.sharp.inOctave(-8).toString(formatter: numbered),
+            'Ais10',
+          );
+          expect(
             Note.g.sharp.inOctave(-1).toString(formatter: numbered),
             'Gis3',
           );
@@ -260,6 +264,10 @@ void main() {
           expect(Note.a.inOctave(4).toString(formatter: numbered), 'a1');
           expect(Note.a.flat.inOctave(5).toString(formatter: numbered), 'as2');
           expect(Note.e.inOctave(6).toString(formatter: numbered), 'e3');
+          expect(
+            Note.f.sharp.inOctave(13).toString(formatter: numbered),
+            'fis10',
+          );
         });
       });
     });
