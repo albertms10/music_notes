@@ -658,10 +658,10 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     caseSensitive: false,
   );
 
-  int _octaveFromNumbers(int numbers, {required bool isBass}) =>
+  int _octaveFromNumbers(int numbers, bool isBass) =>
       isBass ? 2 - numbers : numbers + 3;
 
-  int? _octaveFromPrimes(List<String>? primes, {required bool isBass}) => isBass
+  int? _octaveFromPrimes(List<String>? primes, bool isBass) => isBass
       ? switch (primes?.first) {
           '' || null => _middleOctave - 1,
           _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
@@ -680,18 +680,13 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   Pitch parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
     final textualNumbers = match.namedGroup('numbers');
+    final isBass = noteName[0].isUpperCase;
 
     return Pitch(
       noteNotation.parseMatch(match),
       octave: textualNumbers != null
-          ? _octaveFromNumbers(
-              int.parse(textualNumbers),
-              isBass: noteName[0].isUpperCase,
-            )
-          : _octaveFromPrimes(
-                  match.namedGroup('primes')?.split(''),
-                  isBass: noteName[0].isUpperCase,
-                ) ??
+          ? _octaveFromNumbers(int.parse(textualNumbers), isBass)
+          : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
                 (throw FormatException(
                   'Invalid Pitch',
                   match[0],
