@@ -125,28 +125,56 @@ void main() {
         });
 
         test('parses source as a Pitch', () {
-          expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
-          expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
-          expect(Pitch.parse('Cis,,'), Note.c.sharp.inOctave(0));
-          expect(Pitch.parse('C,,'), Note.c.inOctave(0));
-          expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
-          expect(Pitch.parse('A'), Note.a.inOctave(2));
-          expect(Pitch.parse('As'), Note.a.flat.inOctave(2));
-          expect(Pitch.parse('Ais'), Note.a.sharp.inOctave(2));
-          expect(Pitch.parse('H'), Note.b.inOctave(2));
-          expect(Pitch.parse('Si'), Note.b.inOctave(2));
-          expect(Pitch.parse('h'), Note.b.inOctave(3));
-          expect(Pitch.parse('his'), Note.b.sharp.inOctave(3));
-          expect(Pitch.parse('sol'), Note.g.inOctave(3));
-          expect(Pitch.parse('f'), Note.f.inOctave(3));
-          expect(Pitch.parse('fis'), Note.f.sharp.inOctave(3));
-          expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
-          expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
-          expect(Pitch.parse("es''"), Note.e.flat.inOctave(5));
-          expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-          expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
-          expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
-          expect(Pitch.parse('gisis‴'), Note.g.sharp.sharp.inOctave(6));
+          expect(Pitch.parse('Do͵͵͵', chain: chain), Note.c.inOctave(-1));
+          expect(Pitch.parse('C͵͵͵', chain: chain), Note.c.inOctave(-1));
+          expect(Pitch.parse('Cis,,', chain: chain), Note.c.sharp.inOctave(0));
+          expect(Pitch.parse('C,,', chain: chain), Note.c.inOctave(0));
+          expect(Pitch.parse('Gb,', chain: chain), Note.g.flat.inOctave(1));
+          expect(Pitch.parse('A', chain: chain), Note.a.inOctave(2));
+          expect(Pitch.parse('As', chain: chain), Note.a.flat.inOctave(2));
+          expect(Pitch.parse('Ais', chain: chain), Note.a.sharp.inOctave(2));
+          expect(Pitch.parse('H', chain: chain), Note.b.inOctave(2));
+          expect(Pitch.parse('Si', chain: chain), Note.b.inOctave(2));
+          expect(Pitch.parse('h', chain: chain), Note.b.inOctave(3));
+          expect(Pitch.parse('his', chain: chain), Note.b.sharp.inOctave(3));
+          expect(Pitch.parse('sol', chain: chain), Note.g.inOctave(3));
+          expect(Pitch.parse('f', chain: chain), Note.f.inOctave(3));
+          expect(Pitch.parse('fis', chain: chain), Note.f.sharp.inOctave(3));
+          expect(Pitch.parse("d#'", chain: chain), Note.d.sharp.inOctave(4));
+          expect(Pitch.parse("fa#'", chain: chain), Note.f.sharp.inOctave(4));
+          expect(Pitch.parse("es''", chain: chain), Note.e.flat.inOctave(5));
+          expect(
+            Pitch.parse("ebb''", chain: chain),
+            Note.e.flat.flat.inOctave(5),
+          );
+          expect(Pitch.parse('b#′′', chain: chain), Note.b.sharp.inOctave(5));
+          expect(
+            Pitch.parse('gx‴', chain: chain),
+            Note.g.sharp.sharp.inOctave(6),
+          );
+          expect(
+            Pitch.parse('gisis‴', chain: chain),
+            Note.g.sharp.sharp.inOctave(6),
+          );
+          const chain2 = [numbered];
+          expect(
+            Pitch.parse('Ais10', chain: chain2),
+            Note.a.sharp.inOctave(-8),
+          );
+          expect(Pitch.parse('Gis3', chain: chain2), Note.g.sharp.inOctave(-1));
+          expect(Pitch.parse('Des2', chain: chain2), Note.d.flat.inOctave(0));
+          expect(Pitch.parse('B1', chain: chain2), Note.b.flat.inOctave(1));
+          expect(Pitch.parse('H', chain: chain2), Note.b.inOctave(2));
+          expect(Pitch.parse('a', chain: chain2), Note.a.inOctave(3));
+          expect(Pitch.parse('c1', chain: chain2), Note.c.inOctave(4));
+          expect(Pitch.parse('cis1', chain: chain2), Note.c.sharp.inOctave(4));
+          expect(Pitch.parse('a1', chain: chain2), Note.a.inOctave(4));
+          expect(Pitch.parse('as2', chain: chain2), Note.a.flat.inOctave(5));
+          expect(Pitch.parse('e3', chain: chain2), Note.e.inOctave(6));
+          expect(
+            Pitch.parse('fis10', chain: chain2),
+            Note.f.sharp.inOctave(13),
+          );
 
           final pitch = Note.a.sharp.inOctave(7);
           expect(Pitch.parse(pitch.toString(formatter: english)), pitch);
