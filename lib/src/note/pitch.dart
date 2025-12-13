@@ -658,36 +658,46 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     caseSensitive: false,
   );
 
+  int _octaveFromNumbers(int numbers, {required bool isBass}) =>
+      isBass ? 2 - numbers : numbers + 3;
+
+  int? _octaveFromPrimes(List<String>? primes, {required bool isBass}) => isBass
+      ? switch (primes?.first) {
+          '' || null => _middleOctave - 1,
+          _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
+          _ => null,
+        }
+      : switch (primes?.first) {
+          '' || null => _middleOctave,
+          _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
+          _superDoublePrime => _middleOctave + 2,
+          _superTriplePrime => _middleOctave + 3,
+          _superQuadruplePrime => _middleOctave + 4,
+          _ => null,
+        };
+
   @override
   Pitch parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
     final textualNumbers = match.namedGroup('numbers');
-    final int? octave;
-    if (textualNumbers != null) {
-      final numbers = int.parse(textualNumbers);
-      octave = noteName[0].isUpperCase ? 2 - numbers : numbers + 3;
-    } else {
-      final primes = match.namedGroup('primes')?.split('');
-      octave = noteName[0].isUpperCase
-          ? switch (primes?.first) {
-              '' || null => _middleOctave - 1,
-              _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
-              _ => null,
-            }
-          : switch (primes?.first) {
-              '' || null => _middleOctave,
-              _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
-              _superDoublePrime => _middleOctave + 2,
-              _superTriplePrime => _middleOctave + 3,
-              _superQuadruplePrime => _middleOctave + 4,
-              _ => null,
-            };
-      if (octave == null) {
-        throw FormatException('Invalid Pitch', match[0], noteName.length);
-      }
-    }
 
-    return Pitch(noteNotation.parseMatch(match), octave: octave);
+    return Pitch(
+      noteNotation.parseMatch(match),
+      octave: textualNumbers != null
+          ? _octaveFromNumbers(
+              int.parse(textualNumbers),
+              isBass: noteName[0].isUpperCase,
+            )
+          : _octaveFromPrimes(
+                  match.namedGroup('primes')?.split(''),
+                  isBass: noteName[0].isUpperCase,
+                ) ??
+                (throw FormatException(
+                  'Invalid Pitch',
+                  match[0],
+                  noteName.length,
+                )),
+    );
   }
 }
 
