@@ -687,11 +687,7 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
       octave: textualNumbers != null
           ? _octaveFromNumbers(int.parse(textualNumbers), isBass)
           : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
-                (throw FormatException(
-                  'Invalid Pitch',
-                  match[0],
-                  noteName.length,
-                )),
+                (throw FormatException('Invalid Pitch', match[0])),
     );
   }
 }
