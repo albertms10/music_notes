@@ -69,7 +69,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
-  /// The chain of [Parser]s used to parse a [PitchClass].
+  /// The chain of [StringParser]s used to parse a [PitchClass].
   static const parsers = [
     EnharmonicSpellingsPitchClassNotation(),
     IntegerPitchClassNotation(),
@@ -89,7 +89,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   factory PitchClass.parse(
     String source, {
-    List<Parser<PitchClass>> chain = parsers,
+    List<StringParser<PitchClass>> chain = parsers,
   }) => chain.parse(source);
 
   /// The different spellings at [distance] sharing the same number of
@@ -293,7 +293,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// ```
   @override
   String toString({
-    Formatter<PitchClass> formatter =
+    StringFormatter<PitchClass> formatter =
         const EnharmonicSpellingsPitchClassNotation(),
   }) => formatter.format(this);
 
@@ -308,13 +308,13 @@ final class PitchClass extends Scalable<PitchClass>
   int compareTo(PitchClass other) => semitones.compareTo(other.semitones);
 }
 
-/// The [NotationSystem] for enharmonic spellings [PitchClass].
+/// The [StringNotationSystem] for enharmonic spellings [PitchClass].
 ///
 /// See [Tonal counterparts](https://en.wikipedia.org/wiki/Pitch_class#Other_ways_to_label_pitch_classes).
 final class EnharmonicSpellingsPitchClassNotation
-    extends NotationSystem<PitchClass> {
-  /// The [NotationSystem] for [Note].
-  final NotationSystem<Note> noteNotation;
+    extends StringNotationSystem<PitchClass> {
+  /// The [StringNotationSystem] for [Note].
+  final StringNotationSystem<Note> noteNotation;
 
   /// Creates a new [EnharmonicSpellingsPitchClassNotation].
   const EnharmonicSpellingsPitchClassNotation({
@@ -341,10 +341,10 @@ final class EnharmonicSpellingsPitchClassNotation
   }
 }
 
-/// The [NotationSystem] for integer [PitchClass].
+/// The [StringNotationSystem] for integer [PitchClass].
 ///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
-final class IntegerPitchClassNotation extends NotationSystem<PitchClass> {
+final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
   const IntegerPitchClassNotation();
 

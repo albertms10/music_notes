@@ -30,7 +30,7 @@ class TuningFork {
   /// The C256 tuning fork.
   static const c256 = TuningFork(Pitch(.c, octave: 4), Frequency(256));
 
-  /// The chain of [Parser]s used to parse a [TuningFork].
+  /// The chain of [StringParser]s used to parse a [TuningFork].
   static const parsers = [
     CompactTuningForkNotation(),
     ScientificTuningForkNotation.english,
@@ -52,7 +52,7 @@ class TuningFork {
   /// ```
   factory TuningFork.parse(
     String source, {
-    List<Parser<TuningFork>> chain = parsers,
+    List<StringParser<TuningFork>> chain = parsers,
   }) => chain.parse(source);
 
   /// The string representation of this [TuningFork] based on [formatter].
@@ -65,7 +65,7 @@ class TuningFork {
   /// ```
   @override
   String toString({
-    Formatter<TuningFork> formatter = const CompactTuningForkNotation(),
+    StringFormatter<TuningFork> formatter = const CompactTuningForkNotation(),
   }) => formatter.format(this);
 
   @override
@@ -78,13 +78,13 @@ class TuningFork {
   int get hashCode => Object.hash(pitch, frequency);
 }
 
-/// The [NotationSystem] for compact [TuningFork].
-final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
-  /// The [NotationSystem] for [Note].
-  final NotationSystem<Note> noteNotation;
+/// The [StringNotationSystem] for compact [TuningFork].
+final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
+  /// The [StringNotationSystem] for [Note].
+  final StringNotationSystem<Note> noteNotation;
 
-  /// The [NotationSystem] for [Frequency].
-  final NotationSystem<Frequency> frequencyNotation;
+  /// The [StringNotationSystem] for [Frequency].
+  final StringNotationSystem<Frequency> frequencyNotation;
 
   /// The reference octave.
   final int referenceOctave;
@@ -125,12 +125,13 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
 }
 
 /// The scientific [TuningFork] notation formatter.
-final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
-  /// The [NotationSystem] for [Pitch].
-  final NotationSystem<Pitch> pitchNotation;
+final class ScientificTuningForkNotation
+    extends StringNotationSystem<TuningFork> {
+  /// The [StringNotationSystem] for [Pitch].
+  final StringNotationSystem<Pitch> pitchNotation;
 
-  /// The [NotationSystem] for [Frequency].
-  final NotationSystem<Frequency> frequencyNotation;
+  /// The [StringNotationSystem] for [Frequency].
+  final StringNotationSystem<Frequency> frequencyNotation;
 
   /// Creates a new [ScientificTuningForkNotation].
   const ScientificTuningForkNotation({

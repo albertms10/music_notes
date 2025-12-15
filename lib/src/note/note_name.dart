@@ -64,7 +64,7 @@ enum NoteName implements Comparable<NoteName> {
   factory NoteName.fromOrdinal(int ordinal) =>
       values[ordinal.nonZeroMod(values.length) - 1];
 
-  /// The chain of [Parser]s used to parse a [NoteName].
+  /// The chain of [StringParser]s used to parse a [NoteName].
   static const parsers = [
     EnglishNoteNameNotation(),
     GermanNoteNameNotation(),
@@ -84,7 +84,7 @@ enum NoteName implements Comparable<NoteName> {
   /// ```
   factory NoteName.parse(
     String source, {
-    List<Parser<NoteName>> chain = parsers,
+    List<StringParser<NoteName>> chain = parsers,
   }) => chain.parse(source);
 
   /// The ordinal number of this [NoteName].
@@ -173,7 +173,7 @@ enum NoteName implements Comparable<NoteName> {
   /// The string representation of this [NoteName] based on [formatter].
   @override
   String toString({
-    Formatter<NoteName> formatter = const EnglishNoteNameNotation(),
+    StringFormatter<NoteName> formatter = const EnglishNoteNameNotation(),
   }) => formatter.format(this);
 
   @override
@@ -181,7 +181,7 @@ enum NoteName implements Comparable<NoteName> {
 }
 
 /// The English notation system for [NoteName].
-final class EnglishNoteNameNotation extends NotationSystem<NoteName> {
+final class EnglishNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [EnglishNoteNameNotation].
   const EnglishNoteNameNotation();
 
@@ -209,7 +209,7 @@ final class EnglishNoteNameNotation extends NotationSystem<NoteName> {
 }
 
 /// The German notation system for [NoteName].
-final class GermanNoteNameNotation extends NotationSystem<NoteName> {
+final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [GermanNoteNameNotation].
   const GermanNoteNameNotation();
 
@@ -243,7 +243,7 @@ final class GermanNoteNameNotation extends NotationSystem<NoteName> {
 }
 
 /// The Romance notation system for [NoteName].
-final class RomanceNoteNameNotation extends NotationSystem<NoteName> {
+final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [RomanceNoteNameNotation].
   const RomanceNoteNameNotation();
 
