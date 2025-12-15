@@ -233,7 +233,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
 /// A notation system for [ChordPattern].
 final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
-  /// The [StringNotationSystem] for [Accidental].
+  /// The [StringFormatter] for [Accidental].
   final StringFormatter<Accidental> accidentalNotation;
 
   /// Creates a new [ChordPatternNotation].
