@@ -2,20 +2,20 @@ import 'package:xml/xml.dart' show XmlDocument;
 
 import 'notation_system.dart';
 
-/// The stringified [XmlDocument] Notation system representation of [I].
-final class StringXmlNotationSystem<I> extends StringNotationSystem<I> {
-  /// The wrapped [NotationSystem].
-  final NotationSystem<I, XmlDocument> notationSystem;
+/// The stringified [XmlDocument] Notation system representation of [V].
+final class StringXmlNotationSystem<V> extends StringNotationSystem<V> {
+  /// The wrapped XML [NotationSystem].
+  final NotationSystem<V, XmlDocument> notationSystem;
 
   /// Creates a new [StringXmlNotationSystem].
   const StringXmlNotationSystem(this.notationSystem);
 
   @override
-  String format(I pitch) =>
-      notationSystem.format(pitch).toXmlString(pretty: true);
+  String format(V value) =>
+      notationSystem.format(value).toXmlString(pretty: true);
 
   @override
-  I parse(String source) => source.trim().isEmpty
+  V parse(String source) => source.trim().isEmpty
       ? throw ArgumentError('Empty XML document.')
       : notationSystem.parse(XmlDocument.parse(source));
 }
