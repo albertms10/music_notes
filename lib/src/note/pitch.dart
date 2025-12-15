@@ -723,23 +723,19 @@ final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
     if (source.trim().isEmpty) {
       throw ArgumentError('No <pitch> element found in MusicXML.');
     }
-    final xml = XmlDocument.parse(source);
-    final pitch = xml.getElement('pitch');
+    final pitch = XmlDocument.parse(source).getElement('pitch');
     if (pitch == null) {
       throw ArgumentError('No <pitch> element found in MusicXML.');
     }
     final step = pitch.getElement('step')?.innerText;
-    final alter = pitch.getElement('alter')?.innerText;
     final octave = pitch.getElement('octave')?.innerText;
     if (step == null || octave == null) {
       throw ArgumentError('Missing required <step> or <octave> elements.');
     }
+    final alter = pitch.getElement('alter')?.innerText ?? '0';
 
     return Pitch(
-      Note(
-        noteNameNotation.parse(step),
-        alter == null ? .natural : Accidental(.parse(alter)),
-      ),
+      Note(noteNameNotation.parse(step), Accidental(.parse(alter))),
       octave: .parse(octave),
     );
   }
