@@ -303,7 +303,7 @@ void main() {
     });
 
     group('MusicXMLPitchNotation', () {
-      const formatter = MusicXMLPitchNotation();
+      const formatter = StringXMLNotationSystem(MusicXMLPitchNotation());
       const chain = [formatter];
 
       group('.parse()', () {

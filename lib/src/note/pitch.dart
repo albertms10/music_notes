@@ -696,9 +696,9 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
 }
 
 /// The MusicXML representation of a [Pitch].
-final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
-  /// The [NotationSystem] for [NoteName].
-  final NotationSystem<NoteName> noteNameNotation;
+class MusicXMLPitchNotation extends NotationSystem<Pitch, XmlDocument> {
+  /// The [StringNotationSystem] for [NoteName].
+  final StringNotationSystem<NoteName> noteNameNotation;
 
   /// Creates a new [MusicXMLPitchNotation].
   const MusicXMLPitchNotation({
@@ -706,7 +706,7 @@ final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
   });
 
   @override
-  String format(Pitch pitch) {
+  XmlDocument format(Pitch pitch) {
     final builder = XmlBuilder();
     builder.element(
       'pitch',
@@ -717,23 +717,17 @@ final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
           ..element('octave', nest: pitch.octave);
       },
     );
-    return builder.buildDocument().toXmlString(pretty: true);
+    return builder.buildDocument();
   }
 
+  static Never _required(String elementName) =>
+      throw ArgumentError('Missing required <$elementName> element.');
+
   @override
-  Pitch parse(String source) {
-    if (source.trim().isEmpty) {
-      throw ArgumentError('No <pitch> element found in MusicXML.');
-    }
-    final pitch = XmlDocument.parse(source).getElement('pitch');
-    if (pitch == null) {
-      throw ArgumentError('No <pitch> element found in MusicXML.');
-    }
-    final step = pitch.getElement('step')?.innerText;
-    final octave = pitch.getElement('octave')?.innerText;
-    if (step == null || octave == null) {
-      throw ArgumentError('Missing required <step> or <octave> elements.');
-    }
+  Pitch parse(XmlDocument source) {
+    final pitch = source.getElement('pitch') ?? _required('pitch');
+    final step = pitch.getElement('step')?.innerText ?? _required('step');
+    final octave = pitch.getElement('octave')?.innerText ?? _required('octave');
     final alter = pitch.getElement('alter')?.innerText ?? '0';
 
     return Pitch(

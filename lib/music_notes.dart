@@ -34,3 +34,4 @@ export 'src/tuning/just_intonation.dart';
 export 'src/tuning/temperature.dart';
 export 'src/tuning/tuning_fork.dart';
 export 'src/tuning/tuning_system.dart';
+export 'src/xml_notation_system.dart';
