@@ -28,7 +28,7 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
-  /// The chain of [Parser]s used to parse a [Key].
+  /// The chain of [StringParser]s used to parse a [Key].
   static const parsers = [
     EnglishKeyNotation(),
     EnglishKeyNotation.symbol(),
@@ -48,7 +48,7 @@ final class Key implements Comparable<Key> {
   /// Key.parse('f# minor') == Note.f.sharp.minor
   /// Key.parse('z') // throws a FormatException
   /// ```
-  factory Key.parse(String source, {List<Parser<Key>> chain = parsers}) =>
+  factory Key.parse(String source, {List<StringParser<Key>> chain = parsers}) =>
       chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
@@ -123,7 +123,7 @@ final class Key implements Comparable<Key> {
   /// ```
   @override
   String toString({
-    Formatter<Key> formatter = const EnglishKeyNotation.symbol(),
+    StringFormatter<Key> formatter = const EnglishKeyNotation.symbol(),
   }) => formatter.format(this);
 
   @override
@@ -141,7 +141,7 @@ final class Key implements Comparable<Key> {
 }
 
 /// The English notation system for [Key].
-final class EnglishKeyNotation extends NotationSystem<Key> {
+final class EnglishKeyNotation extends StringNotationSystem<Key> {
   /// The [EnglishNoteNotation] used to format the [Key.note].
   final EnglishNoteNotation noteNotation;
 
@@ -176,7 +176,7 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
 }
 
 /// The German notation system for [Key].
-final class GermanKeyNotation extends NotationSystem<Key> {
+final class GermanKeyNotation extends StringNotationSystem<Key> {
   /// The [GermanNoteNotation] used to format the [Key.note].
   final GermanNoteNotation noteNotation;
 
@@ -213,7 +213,7 @@ final class GermanKeyNotation extends NotationSystem<Key> {
 }
 
 /// The Romance notation system for [Key].
-final class RomanceKeyNotation extends NotationSystem<Key> {
+final class RomanceKeyNotation extends StringNotationSystem<Key> {
   /// The [RomanceNoteNotation] used to format the [Key.note].
   final RomanceNoteNotation noteNotation;
 

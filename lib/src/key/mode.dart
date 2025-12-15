@@ -51,7 +51,7 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
-  /// The chain of [Parser]s used to parse a [TonalMode].
+  /// The chain of [StringParser]s used to parse a [TonalMode].
   static const parsers = [
     EnglishTonalModeNotation(),
     GermanTonalModeNotation(),
@@ -61,7 +61,7 @@ enum TonalMode implements Mode {
   /// Parse [source] as a [TonalMode] and return its value.
   factory TonalMode.parse(
     String source, {
-    List<Parser<TonalMode>> chain = parsers,
+    List<StringParser<TonalMode>> chain = parsers,
   }) => chain.parse(source);
 
   /// The parallel (opposite) of this [TonalMode].
@@ -79,7 +79,7 @@ enum TonalMode implements Mode {
   /// The string representation of this [TonalMode] based on [formatter].
   @override
   String toString({
-    Formatter<TonalMode> formatter = const EnglishTonalModeNotation(),
+    StringFormatter<TonalMode> formatter = const EnglishTonalModeNotation(),
   }) => formatter.format(this);
 
   @override
@@ -87,7 +87,7 @@ enum TonalMode implements Mode {
 }
 
 /// The English notation system for [TonalMode].
-final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
+final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [EnglishTonalModeNotation].
   const EnglishTonalModeNotation();
 
@@ -117,7 +117,7 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
 }
 
 /// The German notation system for [TonalMode].
-final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
+final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [GermanTonalModeNotation].
   const GermanTonalModeNotation();
 
@@ -147,7 +147,7 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
 }
 
 /// The Romance notation system for [TonalMode].
-final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
+final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [RomanceTonalModeNotation].
   const RomanceTonalModeNotation();
 

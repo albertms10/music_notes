@@ -69,7 +69,7 @@ class ChordPattern with Chordable<ChordPattern> {
         _ => majorTriad,
       };
 
-  /// The chain of [Parser]s used to parse a [ChordPattern].
+  /// The chain of [StringParser]s used to parse a [ChordPattern].
   static const parsers = [ChordPatternNotation()];
 
   /// Parse [source] as a [ChordPattern] and return its value.
@@ -84,7 +84,7 @@ class ChordPattern with Chordable<ChordPattern> {
   /// ```
   factory ChordPattern.parse(
     String source, {
-    List<Parser<ChordPattern>> chain = parsers,
+    List<StringParser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
 
   /// The [Chord] built on top of [scalable].
@@ -219,7 +219,7 @@ class ChordPattern with Chordable<ChordPattern> {
 
   @override
   String toString({
-    Formatter<ChordPattern> formatter = const ChordPatternNotation(),
+    StringFormatter<ChordPattern> formatter = const ChordPatternNotation(),
   }) => formatter.format(this);
 
   @override
@@ -232,9 +232,9 @@ class ChordPattern with Chordable<ChordPattern> {
 }
 
 /// A notation system for [ChordPattern].
-final class ChordPatternNotation extends NotationSystem<ChordPattern> {
-  /// The [NotationSystem] for [Accidental].
-  final Formatter<Accidental> accidentalNotation;
+final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
+  /// The [StringFormatter] for [Accidental].
+  final StringFormatter<Accidental> accidentalNotation;
 
   /// Creates a new [ChordPatternNotation].
   const ChordPatternNotation({

@@ -64,12 +64,14 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
-  /// The chain of [Parser]s used to parse a [Size].
+  /// The chain of [StringParser]s used to parse a [Size].
   static const parsers = [SizeNotation()];
 
   /// Parses [source] as a [Size].
-  factory Size.parse(String source, {List<Parser<Size>> chain = parsers}) =>
-      chain.parse(source);
+  factory Size.parse(
+    String source, {
+    List<StringParser<Size>> chain = parsers,
+  }) => chain.parse(source);
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {
@@ -283,7 +285,7 @@ extension type const Size._(int size) implements int {
   }
 
   /// This [Size] formatted as a string.
-  String format({Formatter<Size> formatter = const SizeNotation()}) =>
+  String format({StringFormatter<Size> formatter = const SizeNotation()}) =>
       formatter.format(this);
 
   /// The negation of this [Size].
@@ -382,7 +384,7 @@ extension type const ImperfectSize._(int size) implements Size {
 }
 
 /// A notation system for [Size].
-final class SizeNotation extends NotationSystem<Size> {
+final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
   const SizeNotation();
 

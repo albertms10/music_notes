@@ -64,7 +64,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// The VII [ScaleDegree].
   static const vii = ScaleDegree(7);
 
-  /// The chain of [Parser]s used to parse a [ScaleDegree].
+  /// The chain of [StringParser]s used to parse a [ScaleDegree].
   static const parsers = [StandardScaleDegreeNotation()];
 
   /// Parse [source] as a [ScaleDegree] and return its value.
@@ -81,7 +81,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   factory ScaleDegree.parse(
     String source, {
-    List<Parser<ScaleDegree>> chain = parsers,
+    List<StringParser<ScaleDegree>> chain = parsers,
   }) => chain.parse(source);
 
   /// Whether this [ScaleDegree] is raised.
@@ -186,7 +186,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   @override
   String toString({
-    Formatter<ScaleDegree> formatter = const StandardScaleDegreeNotation(),
+    StringFormatter<ScaleDegree> formatter =
+        const StandardScaleDegreeNotation(),
   }) => formatter.format(this);
 
   @override
@@ -218,9 +219,10 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 }
 
 /// The standard [ScaleDegree] notation formatter.
-final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
-  /// The [NotationSystem] for [Accidental].
-  final NotationSystem<Accidental> accidentalNotation;
+final class StandardScaleDegreeNotation
+    extends StringNotationSystem<ScaleDegree> {
+  /// The [StringNotationSystem] for [Accidental].
+  final StringNotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [StandardScaleDegreeNotation].
   const StandardScaleDegreeNotation({

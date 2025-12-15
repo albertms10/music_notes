@@ -1,22 +1,47 @@
 // ignore_for_file: one_member_abstracts - Code reusability
 
 /// An abstract representation of a notation system for parsing
-/// and formatting [T].
+/// and formatting [I].
 ///
 /// The [format] and [parse] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
 /// of each other:
 /// the output of [format] should be a valid argument for [parse], and
 /// `parse(format(value))` should return a value equal to the original value.
-abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
+abstract class NotationSystem<I, O> implements Formatter<I, O>, Parser<O, I> {
   /// Creates a new formatter.
   const NotationSystem();
 
-  /// Formats this [T].
+  /// Formats this [I].
   ///
   /// The output of this method should be accepted by [parse] to reconstruct
   /// the original value.
   @override
-  String format(T value);
+  O format(I value);
+
+  /// Parses [source] as [I].
+  ///
+  /// The input [source] should typically be produced by [format], ensuring
+  /// that `parse(format(value)) == value`.
+  ///
+  /// If the [source] string does not contain a valid [I], a [FormatException]
+  /// should be thrown.
+  @override
+  I parse(O source);
+}
+
+/// An abstract representation of a notation system for parsing
+/// and formatting [V] from and to a string.
+abstract class StringNotationSystem<V> extends NotationSystem<V, String>
+    implements StringFormatter<V>, StringParser<V> {
+  /// Creates a new formatter.
+  const StringNotationSystem();
+
+  /// Formats this [V].
+  ///
+  /// The output of this method should be accepted by [parse] to reconstruct
+  /// the original value.
+  @override
+  String format(V value);
 
   @override
   RegExp? get regExp => null;
@@ -30,52 +55,62 @@ abstract class NotationSystem<T> implements Formatter<T>, Parser<T> {
         unicode: regExp?.isUnicode ?? false,
       ).hasMatch(source);
 
-  /// Parses [source] as [T].
+  /// Parses [source] as [V].
   ///
   /// The input [source] should typically be produced by [format], ensuring
   /// that `parse(format(value)) == value`.
   ///
-  /// If the [source] string does not contain a valid [T], a [FormatException]
+  /// If the [source] string does not contain a valid [V], a [FormatException]
   /// should be thrown.
   @override
-  T parse(String source) => parseMatch(
-    regExp?.firstMatch(source) ?? (throw FormatException('Invalid $T', source)),
+  V parse(String source) => parseMatch(
+    regExp?.firstMatch(source) ?? (throw FormatException('Invalid $V', source)),
   );
 
   @override
-  T parseMatch(RegExpMatch match) => throw UnimplementedError(
+  V parseMatch(RegExpMatch match) => throw UnimplementedError(
     'parseMatch is not implemented for $runtimeType.',
   );
 }
 
-/// An abstract representation of a formatter for [T].
-abstract interface class Formatter<T> {
-  /// Formats this [T].
-  String format(T value);
+/// An abstract representation of a formatter for [V].
+abstract interface class Formatter<V, O> {
+  /// Formats this [V].
+  O format(V value);
 }
 
-/// An abstract representation of a parser for [T].
-abstract interface class Parser<T> {
-  /// The regular expression for matching [T].
+/// An abstract representation of a string formatter for [V].
+abstract interface class StringFormatter<V> extends Formatter<V, String> {}
+
+/// An abstract representation of a parser for [V].
+abstract interface class Parser<I, V> {
+  /// Parses [source] as [V].
+  V parse(I source);
+}
+
+/// An abstract representation of a parser for [V].
+abstract interface class StringParser<V> extends Parser<String, V> {
+  /// The regular expression for matching [V].
   RegExp? get regExp;
 
   /// Whether [source] can be parsed with [parse].
   bool matches(String source);
 
-  /// Parses [source] as [T].
-  T parse(String source);
+  /// Parses [source] as [V].
+  @override
+  V parse(String source);
 
-  /// Parses [match] from [regExp] as [T].
-  T parseMatch(RegExpMatch match);
+  /// Parses [match] from [regExp] as [V].
+  V parseMatch(RegExpMatch match);
 }
 
-/// A [Parser] chain.
-extension ParserChain<T> on List<Parser<T>> {
-  /// Parses [source] from this chain of [Parser]s.
-  T parse(String source) {
+/// A [StringParser] chain.
+extension StringParserChain<V> on List<StringParser<V>> {
+  /// Parses [source] from this chain of [StringParser]s.
+  V parse(String source) {
     for (final parser in this) {
       if (parser.matches(source)) return parser.parse(source);
     }
-    throw FormatException('End of parser chain: invalid $T', source);
+    throw FormatException('End of parser chain: invalid $V', source);
   }
 }

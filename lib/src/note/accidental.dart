@@ -42,7 +42,7 @@ final class Accidental implements Comparable<Accidental> {
   /// A triple flat (♭𝄫) [Accidental].
   static const tripleFlat = Accidental(-3);
 
-  /// The chain of [Parser]s used to parse an [Accidental].
+  /// The chain of [StringParser]s used to parse an [Accidental].
   static const parsers = [
     SymbolAccidentalNotation(),
     EnglishAccidentalNotation(),
@@ -63,7 +63,7 @@ final class Accidental implements Comparable<Accidental> {
   /// ```
   factory Accidental.parse(
     String source, {
-    List<Parser<Accidental>> chain = parsers,
+    List<StringParser<Accidental>> chain = parsers,
   }) => chain.parse(source);
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
@@ -132,7 +132,7 @@ final class Accidental implements Comparable<Accidental> {
   /// The string representation of this [Accidental] based on [formatter].
   @override
   String toString({
-    Formatter<Accidental> formatter = const SymbolAccidentalNotation(),
+    StringFormatter<Accidental> formatter = const SymbolAccidentalNotation(),
   }) => formatter.format(this);
 
   @override
@@ -176,7 +176,7 @@ final class Accidental implements Comparable<Accidental> {
 /// For other accidentals, returns a combination of sharp (♯), flat (♭), or
 /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
 /// above or below the natural note.
-final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
+final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
   final bool showNatural;
@@ -265,7 +265,7 @@ final class SymbolAccidentalNotation extends NotationSystem<Accidental> {
 }
 
 /// The English notation system for [Accidental].
-final class EnglishAccidentalNotation extends NotationSystem<Accidental> {
+final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
   final bool showNatural;
@@ -320,7 +320,7 @@ final class EnglishAccidentalNotation extends NotationSystem<Accidental> {
 }
 
 /// The German notation system for [Accidental].
-final class GermanAccidentalNotation extends NotationSystem<Accidental> {
+final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Creates a new [GermanAccidentalNotation].
   const GermanAccidentalNotation();
 
@@ -353,7 +353,7 @@ final class GermanAccidentalNotation extends NotationSystem<Accidental> {
 }
 
 /// The Romance notation system for [Accidental].
-final class RomanceAccidentalNotation extends NotationSystem<Accidental> {
+final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
   final bool showNatural;

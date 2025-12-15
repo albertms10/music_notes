@@ -81,7 +81,7 @@ final class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  /// The chain of [Parser]s used to parse a [PerfectQuality].
+  /// The chain of [StringParser]s used to parse a [PerfectQuality].
   static const parsers = [PerfectQualityNotation()];
 
   /// Parse [source] as a [PerfectQuality] and return its value.
@@ -97,7 +97,7 @@ final class PerfectQuality extends Quality {
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    List<Parser<PerfectQuality>> chain = parsers,
+    List<StringParser<PerfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [PerfectQuality].
@@ -133,7 +133,7 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    Formatter<PerfectQuality> formatter = const PerfectQualityNotation(),
+    StringFormatter<PerfectQuality> formatter = const PerfectQualityNotation(),
   }) => formatter.format(this);
 
   @override
@@ -176,7 +176,7 @@ final class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  /// The chain of [Parser]s used to parse an [ImperfectQuality].
+  /// The chain of [StringParser]s used to parse an [ImperfectQuality].
   static const parsers = [ImperfectQualityNotation()];
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
@@ -192,7 +192,7 @@ final class ImperfectQuality extends Quality {
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    List<Parser<ImperfectQuality>> chain = parsers,
+    List<StringParser<ImperfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [ImperfectQuality].
@@ -233,7 +233,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    Formatter<ImperfectQuality> formatter = const ImperfectQualityNotation(),
+    StringFormatter<ImperfectQuality> formatter =
+        const ImperfectQualityNotation(),
   }) => formatter.format(this);
 
   @override
@@ -243,7 +244,8 @@ final class ImperfectQuality extends Quality {
 }
 
 /// A notation system for [PerfectQuality].
-final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
+final class PerfectQualityNotation
+    extends StringNotationSystem<PerfectQuality> {
   /// Creates a new [PerfectQualityNotation].
   const PerfectQualityNotation();
 
@@ -283,7 +285,8 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 }
 
 /// A notation system for [ImperfectQuality].
-final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
+final class ImperfectQualityNotation
+    extends StringNotationSystem<ImperfectQuality> {
   /// Creates a new [ImperfectQualityNotation].
   const ImperfectQualityNotation();
 

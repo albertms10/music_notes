@@ -21,13 +21,13 @@ extension type const Frequency._(num hertz) implements num {
   /// The standard reference [Frequency].
   static const reference = Frequency(440);
 
-  /// The chain of [Parser]s used to parse a [Frequency].
+  /// The chain of [StringParser]s used to parse a [Frequency].
   static const parsers = [FrequencySINotation()];
 
   /// Parses [source] as a [Frequency].
   factory Frequency.parse(
     String source, {
-    List<Parser<Frequency>> chain = parsers,
+    List<StringParser<Frequency>> chain = parsers,
   }) => chain.parse(source);
 
   /// Whether this [Frequency] is inside the [HearingRange.human].
@@ -146,12 +146,12 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
   String format({
-    Formatter<Frequency> formatter = const FrequencySINotation(),
+    StringFormatter<Frequency> formatter = const FrequencySINotation(),
   }) => formatter.format(this);
 }
 
-/// The [NotationSystem] for SI-notated [Frequency].
-class FrequencySINotation extends NotationSystem<Frequency> {
+/// The [StringNotationSystem] for SI-notated [Frequency].
+class FrequencySINotation extends StringNotationSystem<Frequency> {
   /// Creates a new [FrequencySINotation].
   const FrequencySINotation();
 
