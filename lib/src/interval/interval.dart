@@ -190,7 +190,7 @@ final class Interval
   factory Interval.fromSemitones(int semitones) =>
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
-  /// The chain of [Parser]s used to parse an [Interval].
+  /// The chain of [StringParser]s used to parse an [Interval].
   static const parsers = [IntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.
@@ -206,7 +206,7 @@ final class Interval
   /// ```
   factory Interval.parse(
     String source, {
-    List<Parser<Interval>> chain = parsers,
+    List<StringParser<Interval>> chain = parsers,
   }) => chain.parse(source);
 
   /// The number of semitones of this [Interval].
@@ -421,8 +421,9 @@ final class Interval
   /// .twelfth.perfect.toString() == 'P12 (P5)'
   /// ```
   @override
-  String toString({Formatter<Interval> formatter = const IntervalNotation()}) =>
-      formatter.format(this);
+  String toString({
+    StringFormatter<Interval> formatter = const IntervalNotation(),
+  }) => formatter.format(this);
 
   /// Adds [other] to this [Interval].
   ///
@@ -496,7 +497,7 @@ extension IntervalIterable on Iterable<Interval> {
 }
 
 /// A notation system for [Interval].
-final class IntervalNotation extends NotationSystem<Interval> {
+final class IntervalNotation extends StringNotationSystem<Interval> {
   /// The [SizeNotation].
   final SizeNotation sizeNotation;
 
@@ -538,7 +539,7 @@ final class IntervalNotation extends NotationSystem<Interval> {
   Interval parseMatch(RegExpMatch match) {
     final size = sizeNotation.parseMatch(match);
     // ignore: omit_local_variable_types False positive (?)
-    final Parser<Quality> parser = size.isPerfect
+    final StringParser<Quality> parser = size.isPerfect
         ? perfectQualityNotation
         : imperfectQualityNotation;
 

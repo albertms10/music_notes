@@ -49,7 +49,7 @@ final class Pitch extends Scalable<Pitch>
   /// The reference octave.
   static const referenceOctave = 4;
 
-  /// The chain of [Parser]s used to parse a [Pitch].
+  /// The chain of [StringParser]s used to parse a [Pitch].
   static const parsers = [
     ScientificPitchNotation.english,
     ScientificPitchNotation.german,
@@ -71,8 +71,10 @@ final class Pitch extends Scalable<Pitch>
   /// Pitch.parse("c'") == Note.c.inOctave(4)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory Pitch.parse(String source, {List<Parser<Pitch>> chain = parsers}) =>
-      chain.parse(source);
+  factory Pitch.parse(
+    String source, {
+    List<StringParser<Pitch>> chain = parsers,
+  }) => chain.parse(source);
 
   /// Changes the octave of this [Pitch].
   ///
@@ -462,7 +464,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   String toString({
-    Formatter<Pitch> formatter = ScientificPitchNotation.english,
+    StringFormatter<Pitch> formatter = ScientificPitchNotation.english,
   }) => formatter.format(this);
 
   /// Returns the [ClosestPitch] with [cents] added to this [Pitch].
@@ -500,9 +502,9 @@ final class Pitch extends Scalable<Pitch>
 /// The scientific notation system for [Pitch].
 ///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
-final class ScientificPitchNotation extends NotationSystem<Pitch> {
-  /// The [NotationSystem] used to format the [Pitch.note].
-  final NotationSystem<Note> noteNotation;
+final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
+  /// The [StringNotationSystem] used to format the [Pitch.note].
+  final StringNotationSystem<Note> noteNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;
@@ -552,7 +554,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
 /// The Helmholtz [Pitch] notation formatter.
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
-final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
+final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;
 

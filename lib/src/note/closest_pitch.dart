@@ -27,7 +27,7 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
-  /// The chain of [Parser]s used to parse a [ClosestPitch].
+  /// The chain of [StringParser]s used to parse a [ClosestPitch].
   static const parsers = [StandardClosestPitchNotation()];
 
   /// Parse [source] as a [ClosestPitch] and return its value.
@@ -44,7 +44,7 @@ class ClosestPitch {
   /// ```
   factory ClosestPitch.parse(
     String source, {
-    List<Parser<ClosestPitch>> chain = parsers,
+    List<StringParser<ClosestPitch>> chain = parsers,
   }) => chain.parse(source);
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
@@ -89,7 +89,8 @@ class ClosestPitch {
   /// ```
   @override
   String toString({
-    Formatter<ClosestPitch> formatter = const StandardClosestPitchNotation(),
+    StringFormatter<ClosestPitch> formatter =
+        const StandardClosestPitchNotation(),
   }) => formatter.format(this);
 
   /// Adds [cents] to this [ClosestPitch].
@@ -118,10 +119,10 @@ class ClosestPitch {
   int get hashCode => Object.hash(pitch, cents);
 }
 
-/// The [NotationSystem] for standard [ClosestPitch].
-class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
-  /// The [NotationSystem] for [Pitch] notation.
-  final NotationSystem<Pitch> pitchNotation;
+/// The [StringNotationSystem] for standard [ClosestPitch].
+class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
+  /// The [StringNotationSystem] for [Pitch] notation.
+  final StringNotationSystem<Pitch> pitchNotation;
 
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;

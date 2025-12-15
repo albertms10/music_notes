@@ -57,7 +57,7 @@ final class Note extends Scalable<Note>
   /// Note B.
   static const b = Note(.b);
 
-  /// The chain of [Parser]s used to parse a [Note].
+  /// The chain of [StringParser]s used to parse a [Note].
   static const parsers = [
     EnglishNoteNotation(),
     EnglishNoteNotation.symbol(),
@@ -77,8 +77,10 @@ final class Note extends Scalable<Note>
   /// Note.parse('c') == .c
   /// Note.parse('z') // throws a FormatException
   /// ```
-  factory Note.parse(String source, {List<Parser<Note>> chain = parsers}) =>
-      chain.parse(source);
+  factory Note.parse(
+    String source, {
+    List<StringParser<Note>> chain = parsers,
+  }) => chain.parse(source);
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
@@ -435,7 +437,7 @@ final class Note extends Scalable<Note>
   /// ```
   @override
   String toString({
-    Formatter<Note> formatter = const EnglishNoteNotation.symbol(),
+    StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
   }) => formatter.format(this);
 
   @override
@@ -451,13 +453,13 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The abstract [NotationSystem] for [Note].
-abstract class NoteNotation extends NotationSystem<Note> {
+/// The abstract [StringNotationSystem] for [Note].
+abstract class NoteNotation extends StringNotationSystem<Note> {
   /// The [NoteName] notation system used to format the [Note.noteName].
-  final NotationSystem<NoteName> noteNameNotation;
+  final StringNotationSystem<NoteName> noteNameNotation;
 
   /// The [Accidental] notation system used to format the [Note.accidental].
-  final NotationSystem<Accidental> accidentalNotation;
+  final StringNotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [NoteNotation].
   const NoteNotation({
