@@ -695,12 +695,12 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
 
 /// The MusicXML representation of a [Pitch].
 final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
-  /// The [NotationSystem] for [BaseNote].
-  final NotationSystem<BaseNote> baseNoteNotation;
+  /// The [NotationSystem] for [NoteName].
+  final NotationSystem<NoteName> noteNameNotation;
 
   /// Creates a new [MusicXMLPitchNotation].
   const MusicXMLPitchNotation({
-    this.baseNoteNotation = const EnglishBaseNoteNotation(),
+    this.noteNameNotation = const EnglishNoteNameNotation(),
   });
 
   @override
@@ -710,7 +710,7 @@ final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
       'pitch',
       nest: () {
         builder
-          ..element('step', nest: baseNoteNotation.format(pitch.note.baseNote))
+          ..element('step', nest: noteNameNotation.format(pitch.note.noteName))
           ..element('alter', nest: pitch.note.accidental.semitones)
           ..element('octave', nest: pitch.octave);
       },
@@ -737,10 +737,10 @@ final class MusicXMLPitchNotation extends NotationSystem<Pitch> {
 
     return Pitch(
       Note(
-        baseNoteNotation.parse(step),
-        alter == null ? Accidental.natural : Accidental(int.parse(alter)),
+        noteNameNotation.parse(step),
+        alter == null ? .natural : Accidental(.parse(alter)),
       ),
-      octave: int.parse(octave),
+      octave: .parse(octave),
     );
   }
 }
