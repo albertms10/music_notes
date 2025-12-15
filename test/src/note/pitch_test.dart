@@ -302,8 +302,8 @@ void main() {
       });
     });
 
-    group('MusicXMLPitchNotation', () {
-      const formatter = StringXMLNotationSystem(MusicXMLPitchNotation());
+    group('MusicXmlPitchNotation', () {
+      const formatter = StringXmlNotationSystem(MusicXmlPitchNotation());
       const chain = [formatter];
 
       group('.parse()', () {

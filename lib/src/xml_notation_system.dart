@@ -3,12 +3,12 @@ import 'package:xml/xml.dart' show XmlDocument;
 import 'notation_system.dart';
 
 /// The stringified [XmlDocument] Notation system representation of [I].
-final class StringXMLNotationSystem<I> extends StringNotationSystem<I> {
+final class StringXmlNotationSystem<I> extends StringNotationSystem<I> {
   /// The wrapped [NotationSystem].
   final NotationSystem<I, XmlDocument> notationSystem;
 
-  /// Creates a new [StringXMLNotationSystem].
-  const StringXMLNotationSystem(this.notationSystem);
+  /// Creates a new [StringXmlNotationSystem].
+  const StringXmlNotationSystem(this.notationSystem);
 
   @override
   String format(I pitch) =>

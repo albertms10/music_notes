@@ -696,12 +696,12 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
 }
 
 /// The MusicXML representation of a [Pitch].
-class MusicXMLPitchNotation extends NotationSystem<Pitch, XmlDocument> {
+class MusicXmlPitchNotation extends NotationSystem<Pitch, XmlDocument> {
   /// The [StringNotationSystem] for [NoteName].
   final StringNotationSystem<NoteName> noteNameNotation;
 
-  /// Creates a new [MusicXMLPitchNotation].
-  const MusicXMLPitchNotation({
+  /// Creates a new [MusicXmlPitchNotation].
+  const MusicXmlPitchNotation({
     this.noteNameNotation = const EnglishNoteNameNotation(),
   });
 
