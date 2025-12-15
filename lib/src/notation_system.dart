@@ -30,11 +30,18 @@ abstract class NotationSystem<I, O> implements Formatter<I, O>, Parser<O, I> {
 }
 
 /// An abstract representation of a notation system for parsing
-/// and formatting [I] from and to a string.
-abstract class StringNotationSystem<I>
-    implements StringFormatter<I>, StringParser<I> {
+/// and formatting [V] from and to a string.
+abstract class StringNotationSystem<V> extends NotationSystem<V, String>
+    implements StringFormatter<V>, StringParser<V> {
   /// Creates a new formatter.
   const StringNotationSystem();
+
+  /// Formats this [V].
+  ///
+  /// The output of this method should be accepted by [parse] to reconstruct
+  /// the original value.
+  @override
+  String format(V value);
 
   @override
   RegExp? get regExp => null;
@@ -48,62 +55,62 @@ abstract class StringNotationSystem<I>
         unicode: regExp?.isUnicode ?? false,
       ).hasMatch(source);
 
-  /// Parses [source] as [I].
+  /// Parses [source] as [V].
   ///
   /// The input [source] should typically be produced by [format], ensuring
   /// that `parse(format(value)) == value`.
   ///
-  /// If the [source] string does not contain a valid [I], a [FormatException]
+  /// If the [source] string does not contain a valid [V], a [FormatException]
   /// should be thrown.
   @override
-  I parse(String source) => parseMatch(
-    regExp?.firstMatch(source) ?? (throw FormatException('Invalid $I', source)),
+  V parse(String source) => parseMatch(
+    regExp?.firstMatch(source) ?? (throw FormatException('Invalid $V', source)),
   );
 
   @override
-  I parseMatch(RegExpMatch match) => throw UnimplementedError(
+  V parseMatch(RegExpMatch match) => throw UnimplementedError(
     'parseMatch is not implemented for $runtimeType.',
   );
 }
 
-/// An abstract representation of a formatter for [I].
-abstract interface class Formatter<I, O> {
-  /// Formats this [I].
-  O format(I value);
+/// An abstract representation of a formatter for [V].
+abstract interface class Formatter<V, O> {
+  /// Formats this [V].
+  O format(V value);
 }
 
-/// An abstract representation of a string formatter for [I].
-abstract interface class StringFormatter<I> extends Formatter<I, String> {}
+/// An abstract representation of a string formatter for [V].
+abstract interface class StringFormatter<V> extends Formatter<V, String> {}
 
-/// An abstract representation of a parser for [O].
-abstract interface class Parser<S, O> {
-  /// Parses [source] as [O].
-  O parse(S source);
+/// An abstract representation of a parser for [V].
+abstract interface class Parser<I, V> {
+  /// Parses [source] as [V].
+  V parse(I source);
 }
 
-/// An abstract representation of a parser for [O].
-abstract interface class StringParser<O> extends Parser<String, O> {
-  /// The regular expression for matching [O].
+/// An abstract representation of a parser for [V].
+abstract interface class StringParser<V> extends Parser<String, V> {
+  /// The regular expression for matching [V].
   RegExp? get regExp;
 
   /// Whether [source] can be parsed with [parse].
   bool matches(String source);
 
-  /// Parses [source] as [O].
+  /// Parses [source] as [V].
   @override
-  O parse(String source);
+  V parse(String source);
 
-  /// Parses [match] from [regExp] as [O].
-  O parseMatch(RegExpMatch match);
+  /// Parses [match] from [regExp] as [V].
+  V parseMatch(RegExpMatch match);
 }
 
 /// A [StringParser] chain.
-extension StringParserChain<O> on List<StringParser<O>> {
+extension StringParserChain<V> on List<StringParser<V>> {
   /// Parses [source] from this chain of [StringParser]s.
-  O parse(String source) {
+  V parse(String source) {
     for (final parser in this) {
       if (parser.matches(source)) return parser.parse(source);
     }
-    throw FormatException('End of parser chain: invalid $O', source);
+    throw FormatException('End of parser chain: invalid $V', source);
   }
 }
