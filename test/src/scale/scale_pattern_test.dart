@@ -21,19 +21,16 @@ void main() {
     group('.fromChordPattern()', () {
       test('creates a new ScalePattern from the given ChordPattern', () {
         expect(
-          ScalePattern.fromChordPattern(ChordPattern.augmentedTriad),
+          ScalePattern.fromChordPattern(.augmentedTriad),
           ScalePattern.lydianAugmented,
         );
+        expect(ScalePattern.fromChordPattern(.majorTriad), ScalePattern.major);
         expect(
-          ScalePattern.fromChordPattern(ChordPattern.majorTriad),
-          ScalePattern.major,
-        );
-        expect(
-          ScalePattern.fromChordPattern(ChordPattern.minorTriad),
+          ScalePattern.fromChordPattern(.minorTriad),
           ScalePattern.naturalMinor,
         );
         expect(
-          ScalePattern.fromChordPattern(ChordPattern.diminishedTriad),
+          ScalePattern.fromChordPattern(.diminishedTriad),
           ScalePattern.locrian,
         );
       });
@@ -41,18 +38,21 @@ void main() {
 
     group('.fromBinary()', () {
       test('creates a new ScalePattern from a binary sequence', () {
-        expect(ScalePattern.fromBinary(101010110101.b), ScalePattern.major);
+        expect(ScalePattern.fromBinary(1010_1011_0101.b), ScalePattern.major);
         expect(
-          ScalePattern.fromBinary(10110101101.b),
+          ScalePattern.fromBinary(0101_1010_1101.b),
           ScalePattern.naturalMinor,
         );
         expect(
-          ScalePattern.fromBinary(101010101101.b, 10110101101.b),
+          ScalePattern.fromBinary(1010_1010_1101.b, 0101_1010_1101.b),
           ScalePattern.melodicMinor,
         );
-        expect(ScalePattern.fromBinary(111111111111.b), ScalePattern.chromatic);
         expect(
-          ScalePattern.fromBinary(1010010101.b),
+          ScalePattern.fromBinary(1111_1111_1111.b),
+          ScalePattern.chromatic,
+        );
+        expect(
+          ScalePattern.fromBinary(0010_1001_0101.b),
           ScalePattern.majorPentatonic,
         );
       });
@@ -60,14 +60,17 @@ void main() {
 
     group('.toBinary()', () {
       test('returns the binary representation of this ScalePattern', () {
-        expect(ScalePattern.major.toBinary(), (101010110101.b, null));
-        expect(ScalePattern.naturalMinor.toBinary(), (10110101101.b, null));
+        expect(ScalePattern.major.toBinary(), (1010_1011_0101.b, null));
+        expect(ScalePattern.naturalMinor.toBinary(), (0101_1010_1101.b, null));
         expect(ScalePattern.melodicMinor.toBinary(), (
-          101010101101.b,
-          10110101101.b,
+          1010_1010_1101.b,
+          0101_1010_1101.b,
         ));
-        expect(ScalePattern.chromatic.toBinary(), (111111111111.b, null));
-        expect(ScalePattern.majorPentatonic.toBinary(), (1010010101.b, null));
+        expect(ScalePattern.chromatic.toBinary(), (1111_1111_1111.b, null));
+        expect(ScalePattern.majorPentatonic.toBinary(), (
+          0010_1001_0101.b,
+          null,
+        ));
       });
     });
 
@@ -84,15 +87,15 @@ void main() {
       test('returns the major Scale on Note', () {
         expect(
           ScalePattern.major.on(Note.a.flat),
-          Scale([
-            Note.a.flat,
-            Note.b.flat,
-            Note.c,
-            Note.d.flat,
-            Note.e.flat,
-            Note.f,
-            Note.g,
-            Note.a.flat,
+          Scale<Note>([
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+            .f,
+            .g,
+            .a.flat,
           ]),
         );
         expect(
@@ -110,16 +113,7 @@ void main() {
         );
         expect(
           ScalePattern.major.on(Note.c),
-          const Scale([
-            Note.c,
-            Note.d,
-            Note.e,
-            Note.f,
-            Note.g,
-            Note.a,
-            Note.b,
-            Note.c,
-          ]),
+          const Scale<Note>([.c, .d, .e, .f, .g, .a, .b, .c]),
         );
         expect(
           ScalePattern.major.on(Note.d.inOctave(2)),
@@ -152,16 +146,7 @@ void main() {
         );
         expect(
           ScalePattern.naturalMinor.on(Note.d),
-          Scale([
-            Note.d,
-            Note.e,
-            Note.f,
-            Note.g,
-            Note.a,
-            Note.b.flat,
-            Note.c,
-            Note.d,
-          ]),
+          Scale<Note>([.d, .e, .f, .g, .a, .b.flat, .c, .d]),
         );
       });
 
@@ -181,16 +166,7 @@ void main() {
         );
         expect(
           ScalePattern.harmonicMinor.on(Note.d),
-          Scale([
-            Note.d,
-            Note.e,
-            Note.f,
-            Note.g,
-            Note.a,
-            Note.b.flat,
-            Note.c.sharp,
-            Note.d,
-          ]),
+          Scale<Note>([.d, .e, .f, .g, .a, .b.flat, .c.sharp, .d]),
         );
       });
 
@@ -198,26 +174,8 @@ void main() {
         expect(
           ScalePattern.melodicMinor.on(Note.d),
           Scale(
-            [
-              Note.d,
-              Note.e,
-              Note.f,
-              Note.g,
-              Note.a,
-              Note.b,
-              Note.c.sharp,
-              Note.d,
-            ],
-            [
-              Note.d,
-              Note.c,
-              Note.b.flat,
-              Note.a,
-              Note.g,
-              Note.f,
-              Note.e,
-              Note.d,
-            ],
+            <Note>[.d, .e, .f, .g, .a, .b, .c.sharp, .d],
+            <Note>[.d, .c, .b.flat, .a, .g, .f, .e, .d],
           ),
         );
         expect(
@@ -250,38 +208,22 @@ void main() {
       test('returns the whole-tone Scale on Note', () {
         expect(
           ScalePattern.wholeTone.on(PitchClass.c),
-          const Scale([
-            PitchClass.c,
-            PitchClass.d,
-            PitchClass.e,
-            PitchClass.fSharp,
-            PitchClass.gSharp,
-            PitchClass.aSharp,
-            PitchClass.c,
-          ]),
+          const Scale<PitchClass>([.c, .d, .e, .fSharp, .gSharp, .aSharp, .c]),
         );
         expect(
           ScalePattern.wholeTone.on(Note.d.flat),
-          Scale([
-            Note.d.flat,
-            Note.e.flat,
-            Note.f,
-            Note.g,
-            Note.a,
-            Note.b,
-            Note.d.flat,
-          ]),
+          Scale<Note>([.d.flat, .e.flat, .f, .g, .a, .b, .d.flat]),
         );
         expect(
           ScalePattern.wholeTone.on(Note.c.sharp),
-          Scale([
-            Note.c.sharp,
-            Note.d.sharp,
-            Note.e.sharp,
-            Note.f.sharp.sharp,
-            Note.g.sharp.sharp,
-            Note.a.sharp.sharp,
-            Note.c.sharp,
+          Scale<Note>([
+            .c.sharp,
+            .d.sharp,
+            .e.sharp,
+            .f.sharp.sharp,
+            .g.sharp.sharp,
+            .a.sharp.sharp,
+            .c.sharp,
           ]),
         );
       });
@@ -289,56 +231,56 @@ void main() {
       test('returns the chromatic Scale on Note', () {
         expect(
           ScalePattern.chromatic.on(Note.c),
-          Scale([
-            Note.c,
-            Note.c.sharp,
-            Note.d,
-            Note.d.sharp,
-            Note.e,
-            Note.f,
-            Note.f.sharp,
-            Note.g,
-            Note.g.sharp,
-            Note.a,
-            Note.a.sharp,
-            Note.b,
-            Note.c,
+          Scale<Note>([
+            .c,
+            .c.sharp,
+            .d,
+            .d.sharp,
+            .e,
+            .f,
+            .f.sharp,
+            .g,
+            .g.sharp,
+            .a,
+            .a.sharp,
+            .b,
+            .c,
           ]),
         );
         expect(
           ScalePattern.chromatic.on(PitchClass.cSharp),
-          const Scale([
-            PitchClass.cSharp,
-            PitchClass.d,
-            PitchClass.dSharp,
-            PitchClass.e,
-            PitchClass.f,
-            PitchClass.fSharp,
-            PitchClass.g,
-            PitchClass.gSharp,
-            PitchClass.a,
-            PitchClass.aSharp,
-            PitchClass.b,
-            PitchClass.c,
-            PitchClass.cSharp,
+          const Scale<PitchClass>([
+            .cSharp,
+            .d,
+            .dSharp,
+            .e,
+            .f,
+            .fSharp,
+            .g,
+            .gSharp,
+            .a,
+            .aSharp,
+            .b,
+            .c,
+            .cSharp,
           ]),
         );
         expect(
           ScalePattern.chromatic.on(Note.d.flat),
-          Scale([
-            Note.d.flat,
-            Note.d,
-            Note.e.flat,
-            Note.e,
-            Note.f,
-            Note.g.flat,
-            Note.g,
-            Note.a.flat,
-            Note.a,
-            Note.b.flat,
-            Note.b,
-            Note.c,
-            Note.d.flat,
+          Scale<Note>([
+            .d.flat,
+            .d,
+            .e.flat,
+            .e,
+            .f,
+            .g.flat,
+            .g,
+            .a.flat,
+            .a,
+            .b.flat,
+            .b,
+            .c,
+            .d.flat,
           ]),
         );
       });
@@ -346,28 +288,28 @@ void main() {
       test('returns the major pentatonic Scale on Note', () {
         expect(
           ScalePattern.majorPentatonic.on(Note.c),
-          const Scale([Note.c, Note.d, Note.e, Note.g, Note.a, Note.c]),
+          const Scale<Note>([.c, .d, .e, .g, .a, .c]),
         );
         expect(
           ScalePattern.majorPentatonic.on(Note.f.sharp),
-          Scale([
-            Note.f.sharp,
-            Note.g.sharp,
-            Note.a.sharp,
-            Note.c.sharp,
-            Note.d.sharp,
-            Note.f.sharp,
+          Scale<Note>([
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+            .c.sharp,
+            .d.sharp,
+            .f.sharp,
           ]),
         );
         expect(
           ScalePattern.majorPentatonic.on(PitchClass.fSharp),
-          const Scale([
-            PitchClass.fSharp,
-            PitchClass.gSharp,
-            PitchClass.aSharp,
-            PitchClass.cSharp,
-            PitchClass.dSharp,
-            PitchClass.fSharp,
+          const Scale<PitchClass>([
+            .fSharp,
+            .gSharp,
+            .aSharp,
+            .cSharp,
+            .dSharp,
+            .fSharp,
           ]),
         );
       });
@@ -375,39 +317,30 @@ void main() {
       test('returns the minor pentatonic Scale on Note', () {
         expect(
           ScalePattern.minorPentatonic.on(Note.a),
-          const Scale([Note.a, Note.c, Note.d, Note.e, Note.g, Note.a]),
+          const Scale<Note>([.a, .c, .d, .e, .g, .a]),
         );
         expect(
           ScalePattern.minorPentatonic.on(Note.g),
-          Scale([Note.g, Note.b.flat, Note.c, Note.d, Note.f, Note.g]),
+          Scale<Note>([.g, .b.flat, .c, .d, .f, .g]),
         );
       });
 
       test('returns the double harmonic major Scale on Note', () {
         expect(
           ScalePattern.doubleHarmonicMajor.on(Note.c),
-          Scale([
-            Note.c,
-            Note.d.flat,
-            Note.e,
-            Note.f,
-            Note.g,
-            Note.a.flat,
-            Note.b,
-            Note.c,
-          ]),
+          Scale<Note>([.c, .d.flat, .e, .f, .g, .a.flat, .b, .c]),
         );
         expect(
           ScalePattern.doubleHarmonicMajor.on(Note.f.sharp),
-          Scale([
-            Note.f.sharp,
-            Note.g,
-            Note.a.sharp,
-            Note.b,
-            Note.c.sharp,
-            Note.d,
-            Note.e.sharp,
-            Note.f.sharp,
+          Scale<Note>([
+            .f.sharp,
+            .g,
+            .a.sharp,
+            .b,
+            .c.sharp,
+            .d,
+            .e.sharp,
+            .f.sharp,
           ]),
         );
       });
@@ -426,24 +359,8 @@ void main() {
         expect(
           ScalePattern.melodicMinor.mirrored,
           const ScalePattern(
-            [
-              Interval.M2,
-              Interval.M2,
-              Interval.m2,
-              Interval.M2,
-              Interval.M2,
-              Interval.m2,
-              Interval.M2,
-            ],
-            [
-              Interval.M2,
-              Interval.m2,
-              Interval.M2,
-              Interval.M2,
-              Interval.M2,
-              Interval.M2,
-              Interval.m2,
-            ],
+            [.M2, .M2, .m2, .M2, .M2, .m2, .M2],
+            [.M2, .m2, .M2, .M2, .M2, .M2, .m2],
           ),
         );
       });
@@ -453,41 +370,44 @@ void main() {
       test(
         'returns the ChordPattern for each scale degree of this ScalePattern',
         () {
-          expect(ScalePattern.major.degreePatterns, const [
-            ChordPattern.majorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.diminishedTriad,
+          expect(ScalePattern.major.degreePatterns, const <ChordPattern>[
+            .majorTriad,
+            .minorTriad,
+            .minorTriad,
+            .majorTriad,
+            .majorTriad,
+            .minorTriad,
+            .diminishedTriad,
           ]);
-          expect(ScalePattern.naturalMinor.degreePatterns, const [
-            ChordPattern.minorTriad,
-            ChordPattern.diminishedTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.majorTriad,
+          expect(ScalePattern.naturalMinor.degreePatterns, const <ChordPattern>[
+            .minorTriad,
+            .diminishedTriad,
+            .majorTriad,
+            .minorTriad,
+            .minorTriad,
+            .majorTriad,
+            .majorTriad,
           ]);
-          expect(ScalePattern.harmonicMinor.degreePatterns, const [
-            ChordPattern.minorTriad,
-            ChordPattern.diminishedTriad,
-            ChordPattern.augmentedTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.diminishedTriad,
-          ]);
-          expect(ScalePattern.melodicMinor.degreePatterns, const [
-            ChordPattern.minorTriad,
-            ChordPattern.minorTriad,
-            ChordPattern.augmentedTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.majorTriad,
-            ChordPattern.diminishedTriad,
-            ChordPattern.diminishedTriad,
+          expect(
+            ScalePattern.harmonicMinor.degreePatterns,
+            const <ChordPattern>[
+              .minorTriad,
+              .diminishedTriad,
+              .augmentedTriad,
+              .minorTriad,
+              .majorTriad,
+              .majorTriad,
+              .diminishedTriad,
+            ],
+          );
+          expect(ScalePattern.melodicMinor.degreePatterns, const <ChordPattern>[
+            .minorTriad,
+            .minorTriad,
+            .augmentedTriad,
+            .majorTriad,
+            .majorTriad,
+            .diminishedTriad,
+            .diminishedTriad,
           ]);
         },
       );
@@ -497,71 +417,68 @@ void main() {
       test(
         'returns the ChordPattern for the ScaleDegree of this ScalePattern',
         () {
+          expect(ScalePattern.major.degreePattern(.i), ChordPattern.majorTriad);
           expect(
-            ScalePattern.major.degreePattern(ScaleDegree.i),
+            ScalePattern.major.degreePattern(.neapolitanSixth),
             ChordPattern.majorTriad,
           );
           expect(
-            ScalePattern.major.degreePattern(ScaleDegree.neapolitanSixth),
-            ChordPattern.majorTriad,
-          );
-          expect(
-            ScalePattern.major.degreePattern(ScaleDegree.iv.minor),
+            ScalePattern.major.degreePattern(.iv.minor),
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.major.degreePattern(ScaleDegree.vi),
+            ScalePattern.major.degreePattern(.vi),
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.major.degreePattern(ScaleDegree.vii),
+            ScalePattern.major.degreePattern(.vii),
             ChordPattern.diminishedTriad,
           );
 
           expect(
-            ScalePattern.naturalMinor.degreePattern(ScaleDegree.i),
+            ScalePattern.naturalMinor.degreePattern(.i),
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.naturalMinor.degreePattern(ScaleDegree.ii),
+            ScalePattern.naturalMinor.degreePattern(.ii),
             ChordPattern.diminishedTriad,
           );
           expect(
-            ScalePattern.naturalMinor.degreePattern(ScaleDegree.v),
+            ScalePattern.naturalMinor.degreePattern(.v),
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.naturalMinor.degreePattern(ScaleDegree.v.major),
+            ScalePattern.naturalMinor.degreePattern(.v.major),
             ChordPattern.majorTriad,
           );
           expect(
-            ScalePattern.naturalMinor.degreePattern(ScaleDegree.vii),
+            ScalePattern.naturalMinor.degreePattern(.vii),
             ChordPattern.majorTriad,
           );
 
           expect(
-            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.ii),
+            ScalePattern.harmonicMinor.degreePattern(.ii),
             ChordPattern.diminishedTriad,
           );
           expect(
-            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.iii),
+            ScalePattern.harmonicMinor.degreePattern(.iii),
             ChordPattern.augmentedTriad,
           );
           expect(
-            ScalePattern.harmonicMinor.degreePattern(ScaleDegree.v),
+            ScalePattern.harmonicMinor.degreePattern(.v),
             ChordPattern.majorTriad,
           );
 
           expect(
-            ScalePattern.melodicMinor.degreePattern(ScaleDegree.ii),
+            ScalePattern.melodicMinor.degreePattern(.ii),
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.melodicMinor.degreePattern(ScaleDegree.iii),
+            ScalePattern.melodicMinor.degreePattern(.iii),
             ChordPattern.augmentedTriad,
           );
           expect(
-            ScalePattern.melodicMinor.degreePattern(ScaleDegree.v),
+            ScalePattern.melodicMinor.degreePattern(.v),
             ChordPattern.majorTriad,
           );
         },
@@ -570,10 +487,7 @@ void main() {
 
     group('.exclude()', () {
       test('returns a new ScalePattern excluding intervals', () {
-        expect(
-          ScalePattern.major.exclude({Interval.m2}),
-          ScalePattern.majorPentatonic,
-        );
+        expect(ScalePattern.major.exclude({.m2}), ScalePattern.majorPentatonic);
       });
     });
 
@@ -582,12 +496,10 @@ void main() {
           'other', () {
         expect(
           const ScalePattern([
-            Interval.m2,
-            Interval.m3,
-            Interval.M2,
-          ]).isEnharmonicWith(
-            const ScalePattern([Interval.m2, Interval.A2, Interval.d3]),
-          ),
+            .m2,
+            .m3,
+            .M2,
+          ]).isEnharmonicWith(const ScalePattern([.m2, .A2, .d3])),
           isTrue,
         );
       });
@@ -655,56 +567,37 @@ void main() {
 
     group('operator ==()', () {
       test('returns true when other is enharmonic', () {
-        expect(
-          const ScalePattern([Interval.A4]),
-          const ScalePattern([Interval.d5]),
-        );
+        expect(const ScalePattern([.A4]), const ScalePattern([.d5]));
       });
     });
 
     group('.hashCode', () {
       test('ignores equal ScalePattern instances in a Set', () {
-        final collection = {
-          const ScalePattern([Interval.A4]),
-          const ScalePattern([Interval.d5]),
-          ScalePattern.major,
-          ScalePattern.aeolian,
+        final collection = <ScalePattern>{
+          const ScalePattern([.A4]),
+          const ScalePattern([.d5]),
+          .major,
+          .aeolian,
           // ignore: equal_elements_in_set test
-          ScalePattern.naturalMinor,
+          .naturalMinor,
           // ignore: equal_elements_in_set test
-          ScalePattern.ionian,
-          ScalePattern.mixolydian,
-          ScalePattern.wholeTone,
+          .ionian,
+          .mixolydian,
+          .wholeTone,
           // Melodic minor scale (ascending only)
-          const ScalePattern([
-            Interval.M2,
-            Interval.m2,
-            Interval.M2,
-            Interval.M2,
-            Interval.M2,
-            Interval.M2,
-            Interval.m2,
-          ]),
-          ScalePattern.melodicMinor,
+          const ScalePattern([.M2, .m2, .M2, .M2, .M2, .M2, .m2]),
+          .melodicMinor,
         };
         collection.addAll(collection);
-        expect(collection.toList(), const [
-          ScalePattern([Interval.A4]),
-          ScalePattern.major,
-          ScalePattern.aeolian,
-          ScalePattern.mixolydian,
-          ScalePattern.wholeTone,
+        expect(collection.toList(), const <ScalePattern>[
+          ScalePattern([.A4]),
+          .major,
+          .aeolian,
+          .mixolydian,
+          .wholeTone,
           // Melodic minor scale (ascending only)
-          ScalePattern([
-            Interval.M2,
-            Interval.m2,
-            Interval.M2,
-            Interval.M2,
-            Interval.M2,
-            Interval.M2,
-            Interval.m2,
-          ]),
-          ScalePattern.melodicMinor,
+          ScalePattern([.M2, .m2, .M2, .M2, .M2, .M2, .m2]),
+          .melodicMinor,
         ]);
       });
     });

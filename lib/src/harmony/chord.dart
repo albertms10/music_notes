@@ -5,6 +5,7 @@ import 'package:meta/meta.dart' show immutable;
 import '../chordable.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
+import '../interval/size.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'chord_pattern.dart';
@@ -35,9 +36,9 @@ class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// const Chord([Note.a, Note.c, Note.e]).pattern == ChordPattern.minorTriad
-  /// const Chord([Note.g, Note.b, Note.d, Note.f, Note.a]).pattern
-  ///   == ChordPattern.majorTriad.add7().add9()
+  /// const Chord<Note>([.a, .c, .e]).pattern == .minorTriad
+  /// const Chord<Note>([.g, .b, .d, .f, .a]).pattern
+  ///   == .majorTriad.add7().add9()
   /// ```
   ChordPattern get pattern =>
       // The pattern is calculated based on the intervals between the notes
@@ -45,13 +46,13 @@ class Chord<T extends Scalable<T>>
       // compound intervals (e.g., [Interval.M9]) from simple intervals
       // (e.g., [Interval.M2]) in chords where distance is not explicit
       // (so, [Note] based chords rather than [Pitch] based).
-      ChordPattern.fromIntervalSteps(_items.intervalSteps);
+      .fromIntervalSteps(_items.intervalSteps);
 
   /// The modifier [T]s from the root note.
   ///
   /// Example:
   /// ```dart
-  /// Note.a.majorTriad.add7().add9().modifiers == const [Note.g, Note.b]
+  /// Note.a.majorTriad.add7().add9().modifiers == const <Note>[.g, .b]
   /// ```
   List<T> get modifiers => _items.skip(3).toList(growable: false);
 
@@ -60,7 +61,7 @@ class Chord<T extends Scalable<T>>
   /// Example:
   /// ```dart
   /// Note.c.majorTriad.add7().diminished
-  ///   == Chord([Note.c, Note.e.flat, Note.g.flat, Note.b.flat])
+  ///   == Chord<Note>([.c, .e.flat, .g.flat, .b.flat])
   /// ```
   @override
   Chord<T> get diminished => pattern.diminished.on(root);
@@ -69,8 +70,7 @@ class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.majorTriad.add7().minor
-  ///   == Chord([Note.c, Note.e.flat, Note.g, Note.b.flat])
+  /// Note.c.majorTriad.add7().minor == Chord<Note>([.c, .e.flat, .g, .b.flat])
   /// ```
   @override
   Chord<T> get minor => pattern.minor.on(root);
@@ -79,8 +79,7 @@ class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.minorTriad.add7().major
-  ///   == Chord([Note.c, Note.e, Note.g, Note.b.flat])
+  /// Note.c.minorTriad.add7().major == Chord<Note>([.c, .e, .g, .b.flat])
   /// ```
   @override
   Chord<T> get major => pattern.major.on(root);
@@ -90,30 +89,29 @@ class Chord<T extends Scalable<T>>
   /// Example:
   /// ```dart
   /// Note.c.majorTriad.add7().augmented
-  ///   == Chord([Note.c, Note.e, Note.g.sharp, Note.b.flat])
+  ///   == Chord<Note>([.c, .e, .g.sharp, .b.flat])
   /// ```
   @override
   Chord<T> get augmented => pattern.augmented.on(root);
 
   /// Returns this [Chord] adding [interval].
   @override
-  Chord<T> add(Interval interval, {Set<int>? replaceSizes}) =>
+  Chord<T> add(Interval interval, {Set<Size>? replaceSizes}) =>
       pattern.add(interval, replaceSizes: replaceSizes).on(root);
 
   /// Transposes this [Chord] by [interval].
   ///
   /// Example:
   /// ```dart
-  /// const Chord([Note.a, Note.c, Note.e]).transposeBy(Interval.m3)
-  ///   == Chord([Note.c, Note.e.flat, Note.g])
+  /// const Chord<Note>([.a, .c, .e]).transposeBy(.m3)
+  ///   == Chord<Note>([.c, .e.flat, .g])
   ///
-  /// ChordPattern.majorTriad.on(Note.g.inOctave(4))
-  ///   .transposeBy(Interval.M3)
-  ///     == Chord([
-  ///          Note.b.inOctave(4),
-  ///          Note.d.sharp.inOctave(5),
-  ///          Note.f.sharp.inOctave(5)
-  ///        ])
+  /// ChordPattern.majorTriad.on(Note.g.inOctave(4)).transposeBy(.M3)
+  ///   == Chord([
+  ///        Note.b.inOctave(4),
+  ///        Note.d.sharp.inOctave(5),
+  ///        Note.f.sharp.inOctave(5)
+  ///      ])
   /// ```
   @override
   Chord<T> transposeBy(Interval interval) =>

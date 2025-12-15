@@ -1,5 +1,5 @@
 import 'note/accidental.dart';
-import 'note/base_note.dart';
+import 'note/note_name.dart';
 import 'scalable.dart';
 
 /// A mixin for anything that can be respelled.
@@ -17,11 +17,11 @@ mixin Respellable<T> {
 
 /// A mixin for a [Scalable] that can be respelled.
 mixin RespellableScalable<T extends Scalable<T>> on Respellable<T> {
-  /// This [T] respelled by [baseNote] while keeping the same number of
+  /// This [T] respelled by [noteName] while keeping the same number of
   /// semitones.
-  T respellByBaseNote(BaseNote baseNote);
+  T respellByNoteName(NoteName noteName);
 
-  /// This [T] respelled by [BaseNote.ordinal] distance while keeping
+  /// This [T] respelled by [NoteName.ordinal] distance while keeping
   /// the same number of semitones.
   T respellByOrdinalDistance(int distance);
 
@@ -40,5 +40,5 @@ mixin RespellableScalable<T extends Scalable<T>> on Respellable<T> {
   /// This [T] with the simplest [Accidental] spelling while keeping
   /// the same number of semitones.
   @override
-  T get respelledSimple => respellByAccidental(Accidental.natural);
+  T get respelledSimple => respellByAccidental(.natural);
 }

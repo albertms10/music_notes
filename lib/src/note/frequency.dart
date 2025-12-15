@@ -1,3 +1,4 @@
+import '../notation_system.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
@@ -17,11 +18,17 @@ extension type const Frequency._(num hertz) implements num {
   /// Creates a new [Frequency] instance from [hertz].
   const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive.');
 
-  /// The symbol for the Hertz unit.
-  static const hertzUnitSymbol = 'Hz';
-
   /// The standard reference [Frequency].
   static const reference = Frequency(440);
+
+  /// The chain of [Parser]s used to parse a [Frequency].
+  static const parsers = [FrequencySINotation()];
+
+  /// Parses [source] as a [Frequency].
+  factory Frequency.parse(
+    String source, {
+    List<Parser<Frequency>> chain = parsers,
+  }) => chain.parse(source);
 
   /// Whether this [Frequency] is inside the [HearingRange.human].
   ///
@@ -57,8 +64,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   ClosestPitch closestPitch({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) {
     final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
@@ -82,7 +89,7 @@ extension type const Frequency._(num hertz) implements num {
 
     return ClosestPitch(
       isCloserToUpwardsSpelling ? closestPitch.respelledUpwards : closestPitch,
-      cents: Cent.fromRatio(hertz / closestPitchFrequency),
+      cents: .fromRatio(hertz / closestPitchFrequency),
     );
   }
 
@@ -91,7 +98,7 @@ extension type const Frequency._(num hertz) implements num {
   /// See [Change of pitch with change of temperature](https://sengpielaudio.com/calculator-pitchchange.htm).
   ///
   /// ![Effect of a Local Temperature Change in an Organ Pipe](https://sengpielaudio.com/TonhoehenaenderungDurchTemperaturaenderung.gif)
-  Frequency at(Celsius temperature, [Celsius reference = Celsius.reference]) =>
+  Frequency at(Celsius temperature, [Celsius reference = .reference]) =>
       Frequency(hertz * temperature.ratio(reference));
 
   /// The harmonic at [index] from this [Frequency], including negative
@@ -138,5 +145,31 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(440).format() == '440 Hz'
   /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
-  String format() => '$hertz $hertzUnitSymbol';
+  String format({
+    Formatter<Frequency> formatter = const FrequencySINotation(),
+  }) => formatter.format(this);
+}
+
+/// The [NotationSystem] for SI-notated [Frequency].
+class FrequencySINotation extends NotationSystem<Frequency> {
+  /// Creates a new [FrequencySINotation].
+  const FrequencySINotation();
+
+  /// The symbol for the Hertz unit.
+  static const _hertzUnitSymbol = 'Hz';
+
+  /// The [RegExp] pattern for parsing [Frequency].
+  static final _regExp = RegExp(
+    '(?<frequency>\\d+(\\.\\d+)?)(?:\\s*$_hertzUnitSymbol)?',
+  );
+
+  @override
+  RegExp get regExp => _regExp;
+
+  @override
+  String format(Frequency frequency) => '${frequency.hertz} $_hertzUnitSymbol';
+
+  @override
+  Frequency parseMatch(RegExpMatch match) =>
+      Frequency(.parse(match.namedGroup('frequency')!));
 }

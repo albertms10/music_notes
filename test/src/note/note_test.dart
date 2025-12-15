@@ -81,6 +81,16 @@ void main() {
           expect(() => Note.parse('X', chain: chain), throwsFormatException);
           expect(() => Note.parse('cs', chain: chain), throwsFormatException);
           expect(() => Note.parse('aes', chain: chain), throwsFormatException);
+          expect(
+            () => Note.parse('bisis', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Note.parse('Bis', chain: chain), throwsFormatException);
+          expect(() => Note.parse('hes', chain: chain), throwsFormatException);
+          expect(
+            () => Note.parse('Heses', chain: chain),
+            throwsFormatException,
+          );
         });
 
         test('parses source as a Note', () {
@@ -89,7 +99,10 @@ void main() {
           expect(Note.parse('Des', chain: chain), Note.d.flat);
           expect(Note.parse('geses', chain: chain), Note.g.flat.flat);
           expect(Note.parse('H', chain: chain), Note.b);
+          expect(Note.parse('hisis', chain: chain), Note.b.sharp.sharp);
           expect(Note.parse('His', chain: chain), Note.b.sharp);
+          expect(Note.parse('bes', chain: chain), Note.b.flat.flat);
+          expect(Note.parse('Beses', chain: chain), Note.b.flat.flat.flat);
           expect(Note.parse('As', chain: chain), Note.a.flat);
           expect(Note.parse('ais', chain: chain), Note.a.sharp);
           expect(Note.parse('Es', chain: chain), Note.e.flat);
@@ -173,10 +186,7 @@ void main() {
           expect(Note.parse('Sol bemolle'), Note.g.flat);
           expect(Note.parse('mi naturale'), Note.e);
           expect(Note.parse('La doppio bemolle'), Note.a.flat.flat);
-          expect(
-            Note.parse('Fa triplo diesis'),
-            Note.f.sharp.sharp.sharp,
-          );
+          expect(Note.parse('Fa triplo diesis'), Note.f.sharp.sharp.sharp);
         });
       });
 
@@ -266,32 +276,23 @@ void main() {
 
     group('.sharp', () {
       test('returns this Note sharpened by 1 semitone', () {
-        expect(Note.f.sharp, const Note(BaseNote.f, Accidental.sharp));
-        expect(Note.a.sharp, const Note(BaseNote.a, Accidental.sharp));
-        expect(Note.e.sharp, const Note(BaseNote.e, Accidental.sharp));
+        expect(Note.f.sharp, const Note(.f, .sharp));
+        expect(Note.a.sharp, const Note(.a, .sharp));
+        expect(Note.e.sharp, const Note(.e, .sharp));
         expect(Note.b.flat.sharp, Note.b);
-        expect(
-          Note.g.sharp.sharp,
-          const Note(BaseNote.g, Accidental.doubleSharp),
-        );
-        expect(
-          Note.c.sharp.sharp.sharp,
-          const Note(BaseNote.c, Accidental.tripleSharp),
-        );
+        expect(Note.g.sharp.sharp, const Note(.g, .doubleSharp));
+        expect(Note.c.sharp.sharp.sharp, const Note(.c, .tripleSharp));
       });
     });
 
     group('.flat', () {
       test('returns this Note flattened by 1 semitone', () {
-        expect(Note.e.flat, const Note(BaseNote.e, Accidental.flat));
-        expect(Note.a.flat, const Note(BaseNote.a, Accidental.flat));
-        expect(Note.d.flat, const Note(BaseNote.d, Accidental.flat));
+        expect(Note.e.flat, const Note(.e, .flat));
+        expect(Note.a.flat, const Note(.a, .flat));
+        expect(Note.d.flat, const Note(.d, .flat));
         expect(Note.g.flat.sharp, Note.g);
-        expect(Note.e.flat.flat, const Note(BaseNote.e, Accidental.doubleFlat));
-        expect(
-          Note.c.flat.flat.flat,
-          const Note(BaseNote.c, Accidental.tripleFlat),
-        );
+        expect(Note.e.flat.flat, const Note(.e, .doubleFlat));
+        expect(Note.c.flat.flat.flat, const Note(.c, .tripleFlat));
       });
     });
 
@@ -306,44 +307,38 @@ void main() {
 
     group('.major', () {
       test('returns the major Key from this Note', () {
-        expect(Note.c.major, const Key(Note.c, TonalMode.major));
-        expect(Note.a.major, const Key(Note.a, TonalMode.major));
-        expect(Note.b.flat.major, Key(Note.b.flat, TonalMode.major));
-        expect(Note.c.sharp.major, Key(Note.c.sharp, TonalMode.major));
+        expect(Note.c.major, const Key(.c, .major));
+        expect(Note.a.major, const Key(.a, .major));
+        expect(Note.b.flat.major, Key(.b.flat, .major));
+        expect(Note.c.sharp.major, Key(.c.sharp, .major));
       });
     });
 
     group('.minor', () {
       test('returns the minor Key from this Note', () {
-        expect(Note.c.minor, const Key(Note.c, TonalMode.minor));
-        expect(Note.e.minor, const Key(Note.e, TonalMode.minor));
-        expect(Note.a.flat.minor, Key(Note.a.flat, TonalMode.minor));
-        expect(Note.d.sharp.minor, Key(Note.d.sharp, TonalMode.minor));
+        expect(Note.c.minor, const Key(.c, .minor));
+        expect(Note.e.minor, const Key(.e, .minor));
+        expect(Note.a.flat.minor, Key(.a.flat, .minor));
+        expect(Note.d.sharp.minor, Key(.d.sharp, .minor));
       });
     });
 
     group('.augmentedTriad', () {
       test('returns the augmented triad on this Note', () {
-        expect(Note.c.augmentedTriad, Chord([Note.c, Note.e, Note.g.sharp]));
-        expect(
-          Note.a.augmentedTriad,
-          Chord([Note.a, Note.c.sharp, Note.e.sharp]),
-        );
+        expect(Note.c.augmentedTriad, Chord<Note>([.c, .e, .g.sharp]));
+        expect(Note.a.augmentedTriad, Chord<Note>([.a, .c.sharp, .e.sharp]));
         expect(
           Note.b.augmentedTriad,
-          Chord([Note.b, Note.d.sharp, Note.f.sharp.sharp]),
+          Chord<Note>([.b, .d.sharp, .f.sharp.sharp]),
         );
       });
     });
 
     group('.majorTriad', () {
       test('returns the major triad on this Note', () {
-        expect(Note.c.majorTriad, const Chord([Note.c, Note.e, Note.g]));
-        expect(
-          Note.e.flat.majorTriad,
-          Chord([Note.e.flat, Note.g, Note.b.flat]),
-        );
-        expect(Note.b.majorTriad, Chord([Note.b, Note.d.sharp, Note.f.sharp]));
+        expect(Note.c.majorTriad, const Chord<Note>([.c, .e, .g]));
+        expect(Note.e.flat.majorTriad, Chord<Note>([.e.flat, .g, .b.flat]));
+        expect(Note.b.majorTriad, Chord<Note>([.b, .d.sharp, .f.sharp]));
       });
     });
 
@@ -351,37 +346,34 @@ void main() {
       test('returns the minor triad on this Note', () {
         expect(
           Note.d.flat.minorTriad,
-          Chord([Note.d.flat, Note.f.flat, Note.a.flat]),
+          Chord<Note>([.d.flat, .f.flat, .a.flat]),
         );
-        expect(
-          Note.g.sharp.minorTriad,
-          Chord([Note.g.sharp, Note.b, Note.d.sharp]),
-        );
-        expect(Note.a.minorTriad, const Chord([Note.a, Note.c, Note.e]));
+        expect(Note.g.sharp.minorTriad, Chord<Note>([.g.sharp, .b, .d.sharp]));
+        expect(Note.a.minorTriad, const Chord<Note>([.a, .c, .e]));
       });
     });
 
     group('.diminishedTriad', () {
       test('returns the diminished triad on this Note', () {
-        expect(Note.e.diminishedTriad, Chord([Note.e, Note.g, Note.b.flat]));
+        expect(Note.e.diminishedTriad, Chord<Note>([.e, .g, .b.flat]));
         expect(
           Note.g.flat.diminishedTriad,
-          Chord([Note.g.flat, Note.b.flat.flat, Note.d.flat.flat]),
+          Chord<Note>([.g.flat, .b.flat.flat, .d.flat.flat]),
         );
-        expect(Note.b.diminishedTriad, const Chord([Note.b, Note.d, Note.f]));
+        expect(Note.b.diminishedTriad, const Chord<Note>([.b, .d, .f]));
       });
     });
 
-    group('.respellByBaseNote()', () {
-      test('returns this Note respelled by BaseNote', () {
-        expect(Note.c.sharp.respellByBaseNote(BaseNote.d), Note.d.flat);
-        expect(Note.e.flat.respellByBaseNote(BaseNote.d), Note.d.sharp);
-        expect(Note.e.sharp.respellByBaseNote(BaseNote.f), Note.f);
-        expect(Note.f.flat.respellByBaseNote(BaseNote.e), Note.e);
-        expect(Note.c.respellByBaseNote(BaseNote.b), Note.b.sharp);
-        expect(Note.c.respellByBaseNote(BaseNote.d), Note.d.flat.flat);
-        expect(Note.b.respellByBaseNote(BaseNote.c), Note.c.flat);
-        expect(Note.b.respellByBaseNote(BaseNote.a), Note.a.sharp.sharp);
+    group('.respellByNoteName()', () {
+      test('returns this Note respelled by NoteName', () {
+        expect(Note.c.sharp.respellByNoteName(.d), Note.d.flat);
+        expect(Note.e.flat.respellByNoteName(.d), Note.d.sharp);
+        expect(Note.e.sharp.respellByNoteName(.f), Note.f);
+        expect(Note.f.flat.respellByNoteName(.e), Note.e);
+        expect(Note.c.respellByNoteName(.b), Note.b.sharp);
+        expect(Note.c.respellByNoteName(.d), Note.d.flat.flat);
+        expect(Note.b.respellByNoteName(.c), Note.c.flat);
+        expect(Note.b.respellByNoteName(.a), Note.a.sharp.sharp);
       });
     });
 
@@ -397,19 +389,19 @@ void main() {
 
         expect(
           Note.f.respellByOrdinalDistance(2),
-          const Note(BaseNote.a, Accidental(-4)),
+          const Note(.a, Accidental(-4)),
         );
         expect(
           Note.f.respellByOrdinalDistance(3),
-          const Note(BaseNote.b, Accidental(-6)),
+          const Note(.b, Accidental(-6)),
         );
         expect(
           Note.f.respellByOrdinalDistance(4),
-          const Note(BaseNote.c, Accidental(5)),
+          const Note(.c, Accidental(5)),
         );
         expect(
           Note.f.respellByOrdinalDistance(-3),
-          const Note(BaseNote.c, Accidental(5)),
+          const Note(.c, Accidental(5)),
         );
       });
     });
@@ -436,59 +428,35 @@ void main() {
 
     group('.respellByAccidental()', () {
       test('returns this Note respelled by Accidental', () {
-        expect(Note.a.sharp.respellByAccidental(Accidental.flat), Note.b.flat);
-        expect(Note.g.flat.respellByAccidental(Accidental.sharp), Note.f.sharp);
-        expect(Note.c.flat.respellByAccidental(Accidental.natural), Note.b);
-        expect(Note.b.sharp.respellByAccidental(Accidental.natural), Note.c);
-        expect(Note.f.flat.respellByAccidental(Accidental.natural), Note.e);
-        expect(Note.e.sharp.respellByAccidental(Accidental.natural), Note.f);
-        expect(
-          Note.f.respellByAccidental(Accidental.doubleFlat),
-          Note.g.flat.flat,
-        );
-        expect(
-          Note.a.respellByAccidental(Accidental.doubleSharp),
-          Note.g.sharp.sharp,
-        );
+        expect(Note.a.sharp.respellByAccidental(.flat), Note.b.flat);
+        expect(Note.g.flat.respellByAccidental(.sharp), Note.f.sharp);
+        expect(Note.c.flat.respellByAccidental(.natural), Note.b);
+        expect(Note.b.sharp.respellByAccidental(.natural), Note.c);
+        expect(Note.f.flat.respellByAccidental(.natural), Note.e);
+        expect(Note.e.sharp.respellByAccidental(.natural), Note.f);
+        expect(Note.f.respellByAccidental(.doubleFlat), Note.g.flat.flat);
+        expect(Note.a.respellByAccidental(.doubleSharp), Note.g.sharp.sharp);
       });
 
       test('returns the next closest spelling when no possible respelling', () {
+        expect(Note.d.flat.respellByAccidental(.natural), Note.d.flat);
+        expect(Note.a.sharp.respellByAccidental(.natural), Note.a.sharp);
         expect(
-          Note.d.flat.respellByAccidental(Accidental.natural),
-          Note.d.flat,
-        );
-        expect(
-          Note.a.sharp.respellByAccidental(Accidental.natural),
-          Note.a.sharp,
-        );
-        expect(
-          Note.b.flat.flat.flat.respellByAccidental(Accidental.natural),
+          Note.b.flat.flat.flat.respellByAccidental(.natural),
           Note.a.flat,
         );
-        expect(
-          Note.b.sharp.sharp.respellByAccidental(Accidental.natural),
-          Note.c.sharp,
-        );
+        expect(Note.b.sharp.sharp.respellByAccidental(.natural), Note.c.sharp);
 
+        expect(Note.d.respellByAccidental(.sharp), Note.c.sharp.sharp);
+        expect(Note.d.respellByAccidental(.flat), Note.e.flat.flat);
+        expect(Note.e.respellByAccidental(.doubleFlat), Note.g.flat.flat.flat);
         expect(
-          Note.d.respellByAccidental(Accidental.sharp),
-          Note.c.sharp.sharp,
-        );
-        expect(Note.d.respellByAccidental(Accidental.flat), Note.e.flat.flat);
-        expect(
-          Note.e.respellByAccidental(Accidental.doubleFlat),
-          Note.g.flat.flat.flat,
-        );
-        expect(
-          Note.f.respellByAccidental(Accidental.doubleSharp),
+          Note.f.respellByAccidental(.doubleSharp),
           Note.d.sharp.sharp.sharp,
         );
+        expect(Note.b.respellByAccidental(.doubleFlat), Note.d.flat.flat.flat);
         expect(
-          Note.b.respellByAccidental(Accidental.doubleFlat),
-          Note.d.flat.flat.flat,
-        );
-        expect(
-          Note.c.respellByAccidental(Accidental.doubleSharp),
+          Note.c.respellByAccidental(.doubleSharp),
           Note.a.sharp.sharp.sharp,
         );
       });
@@ -530,87 +498,72 @@ void main() {
     group('.splitCircleOfFifths', () {
       test('returns the split circle of fifths from this Note', () {
         var (:up, :down) = Note.c.splitCircleOfFifths;
-        expect(up.take(6), [
-          Note.g,
-          Note.d,
-          Note.a,
-          Note.e,
-          Note.b,
-          Note.f.sharp,
-        ]);
-        expect(down.take(6), [
-          Note.f,
-          Note.b.flat,
-          Note.e.flat,
-          Note.a.flat,
-          Note.d.flat,
-          Note.g.flat,
+        expect(up.take(6), <Note>[.g, .d, .a, .e, .b, .f.sharp]);
+        expect(down.take(6), <Note>[
+          .f,
+          .b.flat,
+          .e.flat,
+          .a.flat,
+          .d.flat,
+          .g.flat,
         ]);
 
         (:up, :down) = Note.a.splitCircleOfFifths;
-        expect(up.take(7), [
-          Note.e,
-          Note.b,
-          Note.f.sharp,
-          Note.c.sharp,
-          Note.g.sharp,
-          Note.d.sharp,
-          Note.a.sharp,
+        expect(up.take(7), <Note>[
+          .e,
+          .b,
+          .f.sharp,
+          .c.sharp,
+          .g.sharp,
+          .d.sharp,
+          .a.sharp,
         ]);
-        expect(down.take(7), [
-          Note.d,
-          Note.g,
-          Note.c,
-          Note.f,
-          Note.b.flat,
-          Note.e.flat,
-          Note.a.flat,
-        ]);
+        expect(down.take(7), <Note>[.d, .g, .c, .f, .b.flat, .e.flat, .a.flat]);
       });
     });
 
     group('.circleOfFifths()', () {
       test('returns the continuous circle of fifths from this Note', () {
-        expect(Note.c.circleOfFifths(), [
-          Note.g.flat,
-          Note.d.flat,
-          Note.a.flat,
-          Note.e.flat,
-          Note.b.flat,
-          Note.f,
-          Note.c,
-          Note.g,
-          Note.d,
-          Note.a,
-          Note.e,
-          Note.b,
-          Note.f.sharp,
+        expect(Note.c.circleOfFifths(), <Note>[
+          .g.flat,
+          .d.flat,
+          .a.flat,
+          .e.flat,
+          .b.flat,
+          .f,
+          .c,
+          .g,
+          .d,
+          .a,
+          .e,
+          .b,
+          .f.sharp,
         ]);
-        expect(Note.a.circleOfFifths(distance: 7), [
-          Note.a.flat,
-          Note.e.flat,
-          Note.b.flat,
-          Note.f,
-          Note.c,
-          Note.g,
-          Note.d,
-          Note.a,
-          Note.e,
-          Note.b,
-          Note.f.sharp,
-          Note.c.sharp,
-          Note.g.sharp,
-          Note.d.sharp,
-          Note.a.sharp,
+        expect(Note.a.circleOfFifths(distance: 7), <Note>[
+          .a.flat,
+          .e.flat,
+          .b.flat,
+          .f,
+          .c,
+          .g,
+          .d,
+          .a,
+          .e,
+          .b,
+          .f.sharp,
+          .c.sharp,
+          .g.sharp,
+          .d.sharp,
+          .a.sharp,
         ]);
-        expect(Note.e.flat.circleOfFifths(distance: 3), [
-          Note.g.flat,
-          Note.d.flat,
-          Note.a.flat,
-          Note.e.flat,
-          Note.b.flat,
-          Note.f,
-          Note.c,
+        expect(Note.e.flat.circleOfFifths(distance: 3), <Note>[
+          .g.flat,
+          .d.flat,
+          .a.flat,
+          .e.flat,
+          .b.flat,
+          .f,
+          .c,
         ]);
         expect(
           Note.c.circleOfFifths(distance: 3),
@@ -663,175 +616,175 @@ void main() {
 
     group('.fifthsDistanceWith()', () {
       test('returns the fifths distance between this Note and other', () {
-        expect(Note.c.fifthsDistanceWith(Note.c.flat.flat), -14);
-        expect(Note.c.fifthsDistanceWith(Note.g.flat.flat), -13);
-        expect(Note.c.fifthsDistanceWith(Note.d.flat.flat), -12);
-        expect(Note.c.fifthsDistanceWith(Note.a.flat.flat), -11);
-        expect(Note.c.fifthsDistanceWith(Note.e.flat.flat), -10);
-        expect(Note.c.fifthsDistanceWith(Note.b.flat.flat), -9);
-        expect(Note.c.fifthsDistanceWith(Note.f.flat), -8);
-        expect(Note.c.fifthsDistanceWith(Note.c.flat), -7);
-        expect(Note.c.fifthsDistanceWith(Note.g.flat), -6);
-        expect(Note.c.fifthsDistanceWith(Note.d.flat), -5);
-        expect(Note.c.fifthsDistanceWith(Note.a.flat), -4);
-        expect(Note.c.fifthsDistanceWith(Note.e.flat), -3);
-        expect(Note.c.fifthsDistanceWith(Note.b.flat), -2);
-        expect(Note.c.fifthsDistanceWith(Note.f), -1);
-        expect(Note.c.fifthsDistanceWith(Note.c), 0);
-        expect(Note.c.fifthsDistanceWith(Note.g), 1);
-        expect(Note.c.fifthsDistanceWith(Note.d), 2);
-        expect(Note.c.fifthsDistanceWith(Note.a), 3);
-        expect(Note.c.fifthsDistanceWith(Note.e), 4);
-        expect(Note.c.fifthsDistanceWith(Note.b), 5);
-        expect(Note.c.fifthsDistanceWith(Note.f.sharp), 6);
-        expect(Note.c.fifthsDistanceWith(Note.c.sharp), 7);
-        expect(Note.c.fifthsDistanceWith(Note.g.sharp), 8);
-        expect(Note.c.fifthsDistanceWith(Note.d.sharp), 9);
-        expect(Note.c.fifthsDistanceWith(Note.a.sharp), 10);
-        expect(Note.c.fifthsDistanceWith(Note.e.sharp), 11);
-        expect(Note.c.fifthsDistanceWith(Note.b.sharp), 12);
-        expect(Note.c.fifthsDistanceWith(Note.f.sharp.sharp), 13);
-        expect(Note.c.fifthsDistanceWith(Note.c.sharp.sharp), 14);
+        expect(Note.c.fifthsDistanceWith(.c.flat.flat), -14);
+        expect(Note.c.fifthsDistanceWith(.g.flat.flat), -13);
+        expect(Note.c.fifthsDistanceWith(.d.flat.flat), -12);
+        expect(Note.c.fifthsDistanceWith(.a.flat.flat), -11);
+        expect(Note.c.fifthsDistanceWith(.e.flat.flat), -10);
+        expect(Note.c.fifthsDistanceWith(.b.flat.flat), -9);
+        expect(Note.c.fifthsDistanceWith(.f.flat), -8);
+        expect(Note.c.fifthsDistanceWith(.c.flat), -7);
+        expect(Note.c.fifthsDistanceWith(.g.flat), -6);
+        expect(Note.c.fifthsDistanceWith(.d.flat), -5);
+        expect(Note.c.fifthsDistanceWith(.a.flat), -4);
+        expect(Note.c.fifthsDistanceWith(.e.flat), -3);
+        expect(Note.c.fifthsDistanceWith(.b.flat), -2);
+        expect(Note.c.fifthsDistanceWith(.f), -1);
+        expect(Note.c.fifthsDistanceWith(.c), 0);
+        expect(Note.c.fifthsDistanceWith(.g), 1);
+        expect(Note.c.fifthsDistanceWith(.d), 2);
+        expect(Note.c.fifthsDistanceWith(.a), 3);
+        expect(Note.c.fifthsDistanceWith(.e), 4);
+        expect(Note.c.fifthsDistanceWith(.b), 5);
+        expect(Note.c.fifthsDistanceWith(.f.sharp), 6);
+        expect(Note.c.fifthsDistanceWith(.c.sharp), 7);
+        expect(Note.c.fifthsDistanceWith(.g.sharp), 8);
+        expect(Note.c.fifthsDistanceWith(.d.sharp), 9);
+        expect(Note.c.fifthsDistanceWith(.a.sharp), 10);
+        expect(Note.c.fifthsDistanceWith(.e.sharp), 11);
+        expect(Note.c.fifthsDistanceWith(.b.sharp), 12);
+        expect(Note.c.fifthsDistanceWith(.f.sharp.sharp), 13);
+        expect(Note.c.fifthsDistanceWith(.c.sharp.sharp), 14);
 
-        expect(Note.a.flat.fifthsDistanceWith(Note.d.flat), -1);
-        expect(Note.a.flat.fifthsDistanceWith(Note.e.flat), 1);
-        expect(Note.a.flat.fifthsDistanceWith(Note.d), 6);
-        expect(Note.a.flat.fifthsDistanceWith(Note.c.sharp), 11);
+        expect(Note.a.flat.fifthsDistanceWith(.d.flat), -1);
+        expect(Note.a.flat.fifthsDistanceWith(.e.flat), 1);
+        expect(Note.a.flat.fifthsDistanceWith(.d), 6);
+        expect(Note.a.flat.fifthsDistanceWith(.c.sharp), 11);
 
-        expect(Note.f.sharp.fifthsDistanceWith(Note.d.sharp.sharp), 10);
-        expect(Note.f.sharp.fifthsDistanceWith(Note.f), -7);
-        expect(Note.f.sharp.fifthsDistanceWith(Note.d.flat), -11);
-        expect(Note.f.sharp.fifthsDistanceWith(Note.g.flat.flat), -19);
+        expect(Note.f.sharp.fifthsDistanceWith(.d.sharp.sharp), 10);
+        expect(Note.f.sharp.fifthsDistanceWith(.f), -7);
+        expect(Note.f.sharp.fifthsDistanceWith(.d.flat), -11);
+        expect(Note.f.sharp.fifthsDistanceWith(.g.flat.flat), -19);
       });
     });
 
     group('.interval()', () {
       test('returns the Interval between this Note and other', () {
-        expect(Note.c.interval(Note.c), Interval.P1);
-        expect(Note.c.interval(Note.c.sharp), Interval.A1);
-        expect(Note.f.flat.interval(Note.f), Interval.A1);
+        expect(Note.c.interval(.c), Interval.P1);
+        expect(Note.c.interval(.c.sharp), Interval.A1);
+        expect(Note.f.flat.interval(.f), Interval.A1);
 
-        expect(Note.b.sharp.interval(Note.c), Interval.d2);
-        expect(Note.c.interval(Note.d.flat.flat), Interval.d2);
-        expect(Note.f.flat.interval(Note.g.flat.flat), Interval.m2);
-        expect(Note.c.interval(Note.d.flat), Interval.m2);
-        expect(Note.c.interval(Note.d), Interval.M2);
-        expect(Note.c.interval(Note.d.sharp), Interval.A2);
+        expect(Note.b.sharp.interval(.c), Interval.d2);
+        expect(Note.c.interval(.d.flat.flat), Interval.d2);
+        expect(Note.f.flat.interval(.g.flat.flat), Interval.m2);
+        expect(Note.c.interval(.d.flat), Interval.m2);
+        expect(Note.c.interval(.d), Interval.M2);
+        expect(Note.c.interval(.d.sharp), Interval.A2);
 
-        expect(Note.c.interval(Note.e.flat.flat), Interval.d3);
-        expect(Note.c.interval(Note.e.flat), Interval.m3);
-        expect(Note.c.interval(Note.e), Interval.M3);
-        expect(Note.g.interval(Note.b), Interval.M3);
-        expect(Note.b.flat.interval(Note.d), Interval.M3);
-        expect(Note.c.interval(Note.e.sharp), Interval.A3);
+        expect(Note.c.interval(.e.flat.flat), Interval.d3);
+        expect(Note.c.interval(.e.flat), Interval.m3);
+        expect(Note.c.interval(.e), Interval.M3);
+        expect(Note.g.interval(.b), Interval.M3);
+        expect(Note.b.flat.interval(.d), Interval.M3);
+        expect(Note.c.interval(.e.sharp), Interval.A3);
 
-        expect(Note.c.interval(Note.f.flat), Interval.d4);
-        expect(Note.c.interval(Note.f), Interval.P4);
-        expect(Note.g.sharp.interval(Note.c.sharp), Interval.P4);
-        expect(Note.a.flat.interval(Note.d), Interval.A4);
-        expect(Note.c.interval(Note.f.sharp), Interval.A4);
+        expect(Note.c.interval(.f.flat), Interval.d4);
+        expect(Note.c.interval(.f), Interval.P4);
+        expect(Note.g.sharp.interval(.c.sharp), Interval.P4);
+        expect(Note.a.flat.interval(.d), Interval.A4);
+        expect(Note.c.interval(.f.sharp), Interval.A4);
 
-        expect(Note.c.interval(Note.g.flat), Interval.d5);
-        expect(Note.c.interval(Note.g), Interval.P5);
-        expect(Note.c.interval(Note.g.sharp), Interval.A5);
+        expect(Note.c.interval(.g.flat), Interval.d5);
+        expect(Note.c.interval(.g), Interval.P5);
+        expect(Note.c.interval(.g.sharp), Interval.A5);
 
-        expect(Note.c.interval(Note.a.flat.flat), Interval.d6);
-        expect(Note.c.interval(Note.a.flat), Interval.m6);
-        expect(Note.c.interval(Note.a), Interval.M6);
-        expect(Note.c.interval(Note.a.sharp), Interval.A6);
+        expect(Note.c.interval(.a.flat.flat), Interval.d6);
+        expect(Note.c.interval(.a.flat), Interval.m6);
+        expect(Note.c.interval(.a), Interval.M6);
+        expect(Note.c.interval(.a.sharp), Interval.A6);
 
-        expect(Note.c.interval(Note.b.flat.flat), Interval.d7);
-        expect(Note.c.interval(Note.b.flat), Interval.m7);
-        expect(Note.c.interval(Note.b), Interval.M7);
-        expect(Note.b.interval(Note.a.sharp), Interval.M7);
+        expect(Note.c.interval(.b.flat.flat), Interval.d7);
+        expect(Note.c.interval(.b.flat), Interval.m7);
+        expect(Note.c.interval(.b), Interval.M7);
+        expect(Note.b.interval(.a.sharp), Interval.M7);
 
-        expect(skip: true, Note.c.interval(Note.b.sharp), Interval.A7);
+        expect(skip: true, Note.c.interval(.b.sharp), Interval.A7);
       });
     });
 
     group('.transposeBy()', () {
       test('transposes this Note by Interval', () {
-        expect(Note.c.transposeBy(Interval.d1), Note.c.flat);
+        expect(Note.c.transposeBy(.d1), Note.c.flat);
         expect(Note.c.transposeBy(-Interval.d1), Note.c.sharp);
-        expect(Note.c.transposeBy(Interval.P1), Note.c);
+        expect(Note.c.transposeBy(.P1), Note.c);
         expect(Note.c.transposeBy(-Interval.P1), Note.c);
-        expect(Note.c.transposeBy(Interval.A1), Note.c.sharp);
+        expect(Note.c.transposeBy(.A1), Note.c.sharp);
         expect(Note.c.transposeBy(-Interval.A1), Note.c.flat);
 
-        expect(Note.c.transposeBy(Interval.d2), Note.d.flat.flat);
+        expect(Note.c.transposeBy(.d2), Note.d.flat.flat);
         expect(Note.c.transposeBy(-Interval.d2), Note.b.sharp);
-        expect(Note.c.transposeBy(Interval.m2), Note.d.flat);
+        expect(Note.c.transposeBy(.m2), Note.d.flat);
         expect(Note.c.transposeBy(-Interval.m2), Note.b);
-        expect(Note.c.transposeBy(Interval.M2), Note.d);
+        expect(Note.c.transposeBy(.M2), Note.d);
         expect(Note.c.transposeBy(-Interval.M2), Note.b.flat);
-        expect(Note.c.transposeBy(Interval.A2), Note.d.sharp);
+        expect(Note.c.transposeBy(.A2), Note.d.sharp);
         expect(Note.c.transposeBy(-Interval.A2), Note.b.flat.flat);
 
-        expect(Note.e.transposeBy(Interval.m3), Note.g);
+        expect(Note.e.transposeBy(.m3), Note.g);
         expect(Note.e.transposeBy(-Interval.m3), Note.c.sharp);
-        expect(Note.e.transposeBy(Interval.M3), Note.g.sharp);
+        expect(Note.e.transposeBy(.M3), Note.g.sharp);
         expect(Note.e.transposeBy(-Interval.M3), Note.c);
-        expect(Note.a.flat.transposeBy(Interval.m3), Note.c.flat);
+        expect(Note.a.flat.transposeBy(.m3), Note.c.flat);
         expect(Note.a.flat.transposeBy(-Interval.m3), Note.f);
-        expect(Note.a.flat.transposeBy(Interval.M3), Note.c);
+        expect(Note.a.flat.transposeBy(.M3), Note.c);
         expect(Note.a.flat.transposeBy(-Interval.M3), Note.f.flat);
 
-        expect(Note.f.transposeBy(Interval.d4), Note.b.flat.flat);
+        expect(Note.f.transposeBy(.d4), Note.b.flat.flat);
         expect(Note.f.transposeBy(-Interval.d4), Note.c.sharp);
-        expect(Note.f.transposeBy(Interval.P4), Note.b.flat);
+        expect(Note.f.transposeBy(.P4), Note.b.flat);
         expect(Note.f.transposeBy(-Interval.P4), Note.c);
-        expect(Note.f.transposeBy(Interval.A4), Note.b);
+        expect(Note.f.transposeBy(.A4), Note.b);
         expect(Note.f.transposeBy(-Interval.A4), Note.c.flat);
-        expect(Note.a.transposeBy(Interval.d4), Note.d.flat);
+        expect(Note.a.transposeBy(.d4), Note.d.flat);
         expect(Note.a.transposeBy(-Interval.d4), Note.e.sharp);
-        expect(Note.a.transposeBy(Interval.P4), Note.d);
+        expect(Note.a.transposeBy(.P4), Note.d);
         expect(Note.a.transposeBy(-Interval.P4), Note.e);
-        expect(Note.a.transposeBy(Interval.A4), Note.d.sharp);
+        expect(Note.a.transposeBy(.A4), Note.d.sharp);
         expect(Note.a.transposeBy(-Interval.A4), Note.e.flat);
 
-        expect(Note.d.transposeBy(Interval.d5), Note.a.flat);
+        expect(Note.d.transposeBy(.d5), Note.a.flat);
         expect(Note.d.transposeBy(-Interval.d5), Note.g.sharp);
-        expect(Note.d.transposeBy(Interval.P5), Note.a);
+        expect(Note.d.transposeBy(.P5), Note.a);
         expect(Note.d.transposeBy(-Interval.P5), Note.g);
-        expect(Note.d.transposeBy(Interval.A5), Note.a.sharp);
+        expect(Note.d.transposeBy(.A5), Note.a.sharp);
         expect(Note.d.transposeBy(-Interval.A5), Note.g.flat);
 
-        expect(Note.d.transposeBy(Interval.m6), Note.b.flat);
+        expect(Note.d.transposeBy(.m6), Note.b.flat);
         expect(Note.d.transposeBy(-Interval.m6), Note.f.sharp);
-        expect(Note.d.transposeBy(Interval.M6), Note.b);
+        expect(Note.d.transposeBy(.M6), Note.b);
         expect(Note.d.transposeBy(-Interval.M6), Note.f);
-        expect(Note.f.sharp.transposeBy(Interval.m6), Note.d);
+        expect(Note.f.sharp.transposeBy(.m6), Note.d);
         expect(Note.f.sharp.transposeBy(-Interval.m6), Note.a.sharp);
-        expect(Note.f.sharp.transposeBy(Interval.M6), Note.d.sharp);
+        expect(Note.f.sharp.transposeBy(.M6), Note.d.sharp);
         expect(Note.f.sharp.transposeBy(-Interval.M6), Note.a);
 
-        expect(Note.c.transposeBy(Interval.m7), Note.b.flat);
+        expect(Note.c.transposeBy(.m7), Note.b.flat);
         expect(Note.c.transposeBy(-Interval.m7), Note.d);
-        expect(Note.c.transposeBy(Interval.M7), Note.b);
+        expect(Note.c.transposeBy(.M7), Note.b);
         expect(Note.c.transposeBy(-Interval.M7), Note.d.flat);
-        expect(Note.c.transposeBy(Interval.A7), Note.b.sharp);
+        expect(Note.c.transposeBy(.A7), Note.b.sharp);
         expect(Note.c.transposeBy(-Interval.A7), Note.d.flat.flat);
 
-        expect(Note.c.transposeBy(Interval.d8), Note.c.flat);
-        expect(Note.c.transposeBy(Interval.P8), Note.c);
-        expect(Note.c.transposeBy(Interval.A8), Note.c.sharp);
+        expect(Note.c.transposeBy(.d8), Note.c.flat);
+        expect(Note.c.transposeBy(.P8), Note.c);
+        expect(Note.c.transposeBy(.A8), Note.c.sharp);
 
-        expect(Note.c.transposeBy(Interval.m9), Note.d.flat);
-        expect(Note.c.transposeBy(Interval.M9), Note.d);
+        expect(Note.c.transposeBy(.m9), Note.d.flat);
+        expect(Note.c.transposeBy(.M9), Note.d);
 
-        expect(Note.c.transposeBy(Interval.d11), Note.f.flat);
-        expect(Note.c.transposeBy(Interval.P11), Note.f);
-        expect(Note.c.transposeBy(Interval.A11), Note.f.sharp);
+        expect(Note.c.transposeBy(.d11), Note.f.flat);
+        expect(Note.c.transposeBy(.P11), Note.f);
+        expect(Note.c.transposeBy(.A11), Note.f.sharp);
 
-        expect(Note.c.transposeBy(Interval.m13), Note.a.flat);
-        expect(Note.c.transposeBy(Interval.M13), Note.a);
+        expect(Note.c.transposeBy(.m13), Note.a.flat);
+        expect(Note.c.transposeBy(.M13), Note.a);
 
-        expect(Note.c.transposeBy(const Interval.perfect(Size(15))), Note.c);
-        expect(Note.c.transposeBy(const Interval.perfect(Size(22))), Note.c);
-        expect(Note.c.transposeBy(const Interval.perfect(Size(29))), Note.c);
+        expect(Note.c.transposeBy(const .perfect(Size(15))), Note.c);
+        expect(Note.c.transposeBy(const .perfect(Size(22))), Note.c);
+        expect(Note.c.transposeBy(const .perfect(Size(29))), Note.c);
         expect(Note.c.transposeBy(const ImperfectSize(30).minor), Note.d.flat);
         expect(Note.c.transposeBy(const ImperfectSize(30).major), Note.d);
-        expect(Note.c.transposeBy(const Interval.perfect(Size(32))), Note.f);
+        expect(Note.c.transposeBy(const .perfect(Size(32))), Note.f);
         expect(
           Note.c.transposeBy(const PerfectSize(32).augmented),
           Note.f.sharp,
@@ -855,56 +808,56 @@ void main() {
 
     group('.hashCode', () {
       test('ignores equal Note instances in a Set', () {
-        final collection = {Note.c, Note.a.flat, Note.g.sharp};
+        final collection = <Note>{.c, .a.flat, .g.sharp};
         collection.addAll(collection);
-        expect(collection.toList(), [Note.c, Note.a.flat, Note.g.sharp]);
+        expect(collection.toList(), <Note>[.c, .a.flat, .g.sharp]);
       });
     });
 
     group('.compareTo()', () {
       test('sorts Notes in a collection', () {
         final orderedSet = SplayTreeSet<Note>.of({
-          Note.a.flat,
-          Note.c,
-          Note.e.flat,
-          Note.d,
-          Note.d.sharp,
-          Note.g.flat,
-          Note.c.flat,
-          Note.g,
-          Note.g.sharp,
-          Note.b.sharp,
+          .a.flat,
+          .c,
+          .e.flat,
+          .d,
+          .d.sharp,
+          .g.flat,
+          .c.flat,
+          .g,
+          .g.sharp,
+          .b.sharp,
         });
-        expect(orderedSet.toList(), [
-          Note.c.flat,
-          Note.c,
-          Note.d,
-          Note.d.sharp,
-          Note.e.flat,
-          Note.g.flat,
-          Note.g,
-          Note.g.sharp,
-          Note.a.flat,
-          Note.b.sharp,
+        expect(orderedSet.toList(), <Note>[
+          .c.flat,
+          .c,
+          .d,
+          .d.sharp,
+          .e.flat,
+          .g.flat,
+          .g,
+          .g.sharp,
+          .a.flat,
+          .b.sharp,
         ]);
       });
 
       test('sorts Notes in a collection by fifths distance', () {
         final orderedSet = SplayTreeSet<Note>.of({
-          Note.d,
-          Note.a.flat,
-          Note.c,
-          Note.b.flat,
-          Note.g.sharp,
-          Note.b.sharp,
+          .d,
+          .a.flat,
+          .c,
+          .b.flat,
+          .g.sharp,
+          .b.sharp,
         }, Note.compareByFifthsDistance);
-        expect(orderedSet.toList(), [
-          Note.a.flat,
-          Note.b.flat,
-          Note.c,
-          Note.d,
-          Note.g.sharp,
-          Note.b.sharp,
+        expect(orderedSet.toList(), <Note>[
+          .a.flat,
+          .b.flat,
+          .c,
+          .d,
+          .g.sharp,
+          .b.sharp,
         ]);
       });
     });
@@ -914,11 +867,11 @@ void main() {
     group('.flat', () {
       test('flattens all notes in this list', () {
         expect(const <Note>[].flat, const <Note>[]);
-        expect([Note.a, Note.b.flat, Note.c.sharp, Note.d.sharp.sharp].flat, [
-          Note.a.flat,
-          Note.b.flat.flat,
-          Note.c,
-          Note.d.sharp,
+        expect(<Note>[.a, .b.flat, .c.sharp, .d.sharp.sharp].flat, <Note>[
+          .a.flat,
+          .b.flat.flat,
+          .c,
+          .d.sharp,
         ]);
       });
     });
@@ -926,11 +879,11 @@ void main() {
     group('.sharp', () {
       test('sharpens all notes in this list', () {
         expect(const <Note>[].sharp, const <Note>[]);
-        expect([Note.g, Note.b.flat, Note.a.sharp, Note.b.flat.flat].sharp, [
-          Note.g.sharp,
-          Note.b,
-          Note.a.sharp.sharp,
-          Note.b.flat,
+        expect(<Note>[.g, .b.flat, .a.sharp, .b.flat.flat].sharp, <Note>[
+          .g.sharp,
+          .b,
+          .a.sharp.sharp,
+          .b.flat,
         ]);
       });
     });
@@ -938,11 +891,11 @@ void main() {
     group('.natural', () {
       test('makes all notes in this list natural', () {
         expect(const <Note>[].natural, const <Note>[]);
-        expect([Note.a, Note.b.flat, Note.c.sharp, Note.f.flat.flat].natural, [
-          Note.a,
-          Note.b,
-          Note.c,
-          Note.f,
+        expect(<Note>[.a, .b.flat, .c.sharp, .f.flat.flat].natural, <Note>[
+          .a,
+          .b,
+          .c,
+          .f,
         ]);
       });
     });
@@ -953,19 +906,19 @@ void main() {
 
         expect([Note.f.sharp].inOctave(5), [Note.f.sharp.inOctave(5)]);
 
-        expect(const [Note.c, Note.e, Note.g].inOctave(4), [
+        expect(const <Note>[.c, .e, .g].inOctave(4), [
           Note.c.inOctave(4),
           Note.e.inOctave(4),
           Note.g.inOctave(4),
         ]);
 
-        expect([Note.d.flat, Note.f.sharp, Note.b].inOctave(2), [
+        expect(<Note>[.d.flat, .f.sharp, .b].inOctave(2), [
           Note.d.flat.inOctave(2),
           Note.f.sharp.inOctave(2),
           Note.b.inOctave(2),
         ]);
 
-        expect([Note.a.sharp, Note.c.sharp, Note.e.flat].inOctave(-1), [
+        expect(<Note>[.a.sharp, .c.sharp, .e.flat].inOctave(-1), [
           Note.a.sharp.inOctave(-1),
           Note.c.sharp.inOctave(-1),
           Note.e.flat.inOctave(-1),

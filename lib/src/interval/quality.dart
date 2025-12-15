@@ -81,6 +81,9 @@ final class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
+  /// The chain of [Parser]s used to parse a [PerfectQuality].
+  static const parsers = [PerfectQualityNotation()];
+
   /// Parse [source] as a [PerfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [PerfectQuality], a
@@ -88,13 +91,13 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.parse('P') == PerfectQuality.perfect
-  /// PerfectQuality.parse('dd') == PerfectQuality.doublyDiminished
+  /// PerfectQuality.parse('P') == .perfect
+  /// PerfectQuality.parse('dd') == .doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    List<Parser<PerfectQuality>> chain = const [PerfectQualityNotation()],
+    List<Parser<PerfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [PerfectQuality].
@@ -103,8 +106,8 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.inversion == PerfectQuality.perfect
-  /// PerfectQuality.augmented.inversion == PerfectQuality.diminished
+  /// PerfectQuality.perfect.inversion == .perfect
+  /// PerfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   PerfectQuality get inversion => PerfectQuality(-semitones);
@@ -173,6 +176,9 @@ final class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
+  /// The chain of [Parser]s used to parse an [ImperfectQuality].
+  static const parsers = [ImperfectQualityNotation()];
+
   /// Parse [source] as a [ImperfectQuality] and return its value.
   ///
   /// If the [source] string does not contain a valid [ImperfectQuality], a
@@ -180,13 +186,13 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.parse('m') == ImperfectQuality.minor
-  /// ImperfectQuality.parse('A') == ImperfectQuality.augmented
+  /// ImperfectQuality.parse('m') == .minor
+  /// ImperfectQuality.parse('A') == .augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    List<Parser<ImperfectQuality>> chain = const [ImperfectQualityNotation()],
+    List<Parser<ImperfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [ImperfectQuality].
@@ -195,8 +201,8 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.inversion == ImperfectQuality.major
-  /// ImperfectQuality.augmented.inversion == ImperfectQuality.diminished
+  /// ImperfectQuality.minor.inversion == .major
+  /// ImperfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   ImperfectQuality get inversion => ImperfectQuality(1 - semitones);
@@ -259,9 +265,9 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 
   @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
-    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
     0 => _perfectSymbol,
-    _ => _augmentedSymbol * quality.semitones,
+    final semitones => _augmentedSymbol * semitones,
   };
 
   @override
@@ -270,7 +276,7 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 
     return switch (quality[0]) {
       _diminishedSymbol => PerfectQuality(-quality.length),
-      _perfectSymbol => PerfectQuality.perfect,
+      _perfectSymbol => .perfect,
       _ /* _augmentedSymbol */ => PerfectQuality(quality.length),
     };
   }
@@ -303,10 +309,10 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
 
   @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
-    < 0 => _diminishedSymbol * quality.semitones.abs(),
+    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
     0 => _minorSymbol,
     1 => _majorSymbol,
-    _ => _augmentedSymbol * (quality.semitones - 1),
+    final semitones => _augmentedSymbol * (semitones - 1),
   };
 
   @override
@@ -315,8 +321,8 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
 
     return switch (quality[0]) {
       _diminishedSymbol => ImperfectQuality(-quality.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
+      _minorSymbol => .minor,
+      _majorSymbol => .major,
       _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
     };
   }

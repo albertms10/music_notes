@@ -9,8 +9,8 @@ import '../notation_system.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
-import 'base_note.dart';
 import 'note.dart';
+import 'note_name.dart';
 import 'pitch.dart';
 
 /// A set of all pitches that are a whole number of octaves apart, sharing the
@@ -69,6 +69,12 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
+  /// The chain of [Parser]s used to parse a [PitchClass].
+  static const parsers = [
+    EnharmonicSpellingsPitchClassNotation(),
+    IntegerPitchClassNotation(),
+  ];
+
   /// Parse [source] as a [PitchClass] and return its value.
   ///
   /// If the [source] string does not contain a valid [PitchClass], a
@@ -76,17 +82,14 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.parse('{C#|Db}') == PitchClass.cSharp
-  /// PitchClass.parse('5') == PitchClass.f
-  /// PitchClass.parse('t') == PitchClass.aSharp
+  /// PitchClass.parse('{C#|Db}') == .cSharp
+  /// PitchClass.parse('5') == .f
+  /// PitchClass.parse('t') == .aSharp
   /// PitchClass.parse('z') // throws a FormatException
   /// ```
   factory PitchClass.parse(
     String source, {
-    List<Parser<PitchClass>> chain = const [
-      EnharmonicSpellingsPitchClassNotation(),
-      IntegerPitchClassNotation(),
-    ],
+    List<Parser<PitchClass>> chain = parsers,
   }) => chain.parse(source);
 
   /// The different spellings at [distance] sharing the same number of
@@ -95,16 +98,15 @@ final class PitchClass extends Scalable<PitchClass>
   /// Example:
   /// ```dart
   /// PitchClass.g.spellings() == {Note.g}
-  /// PitchClass.dSharp.spellings() == {Note.d.sharp, Note.e.flat}
-  /// PitchClass.b.spellings(distance: 1)
-  ///   == {Note.a.sharp.sharp, Note.b, Note.c.flat}
+  /// PitchClass.dSharp.spellings() == <Note>{.d.sharp, .e.flat}
+  /// PitchClass.b.spellings(distance: 1) == <Note>{.a.sharp.sharp, .b, .c.flat}
   /// ```
   Set<Note> spellings({int distance = 0}) {
     assert(distance >= 0, 'Distance must be greater or equal than zero.');
-    final baseNote = BaseNote.fromSemitones(semitones);
+    final noteName = NoteName.fromSemitones(semitones);
 
-    if (baseNote != null) {
-      final note = Note(baseNote);
+    if (noteName != null) {
+      final note = Note(noteName);
 
       return SplayTreeSet<Note>.of({
         note,
@@ -115,14 +117,8 @@ final class PitchClass extends Scalable<PitchClass>
       }, Note.compareByClosestDistance);
     }
 
-    final aboveNote = Note(
-      BaseNote.fromSemitones(semitones - 1)!,
-      Accidental.sharp,
-    );
-    final belowNote = Note(
-      BaseNote.fromSemitones(semitones + 1)!,
-      Accidental.flat,
-    );
+    final aboveNote = Note(.fromSemitones(semitones - 1)!, .sharp);
+    final belowNote = Note(.fromSemitones(semitones + 1)!, .flat);
 
     return SplayTreeSet<Note>.of({
       aboveNote,
@@ -141,9 +137,9 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.d.resolveSpelling() == Note.d
-  /// PitchClass.fSharp.resolveSpelling(Accidental.flat) == Note.g.flat
-  /// PitchClass.cSharp.resolveSpelling(Accidental.natural) // throws
+  /// PitchClass.d.resolveSpelling() == .d
+  /// PitchClass.fSharp.resolveSpelling(.flat) == .g.flat
+  /// PitchClass.cSharp.resolveSpelling(.natural) // throws
   /// ```
   Note resolveSpelling([Accidental? withAccidental]) {
     final matchedNote = spellings(
@@ -176,10 +172,9 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.d.resolveClosestSpelling() == Note.d
-  /// PitchClass.gSharp.resolveClosestSpelling(Accidental.flat)
-  ///   == Note.a.flat
-  /// PitchClass.cSharp.resolveClosestSpelling(Accidental.natural) == null
+  /// PitchClass.d.resolveClosestSpelling() == .d
+  /// PitchClass.gSharp.resolveClosestSpelling(.flat) == .a.flat
+  /// PitchClass.cSharp.resolveClosestSpelling(.natural) == null
   /// ```
   Note resolveClosestSpelling([Accidental? preferredAccidental]) {
     try {
@@ -194,8 +189,8 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.c.transposeBy(Interval.tritone) == PitchClass.fSharp
-  /// PitchClass.a.transposeBy(-Interval.M2) == PitchClass.g
+  /// PitchClass.c.transposeBy(.tritone) == .fSharp
+  /// PitchClass.a.transposeBy(-Interval.M2) == .g
   /// ```
   @override
   // TODO(albertms10): expect [IntervalClass]. See #248.
@@ -207,8 +202,8 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.c.interval(PitchClass.e) == Interval.M3
-  /// PitchClass.gSharp.interval(PitchClass.d) == Interval.A4
+  /// PitchClass.c.interval(.e) == .M3
+  /// PitchClass.gSharp.interval(.d) == .A4
   /// ```
   @override
   // TODO(albertms10): return [IntervalClass]. See #248.
@@ -224,9 +219,9 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.g.difference(PitchClass.a) == 2
-  /// PitchClass.dSharp.difference(PitchClass.c) == -3
-  /// PitchClass.c.difference(PitchClass.fSharp) == -6
+  /// PitchClass.g.difference(.a) == 2
+  /// PitchClass.dSharp.difference(.c) == -3
+  /// PitchClass.c.difference(.fSharp) == -6
   /// ```
   @override
   int difference(PitchClass other) => super.difference(other);
@@ -245,12 +240,12 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.cSharp * 7 == PitchClass.g
-  /// PitchClass.d * 7 == PitchClass.d
+  /// PitchClass.cSharp * 7 == .g
+  /// PitchClass.d * 7 == .d
   /// // observe one semitone upwards results in ascending fifths G -> D.
   ///
-  /// PitchClass.cSharp * 5 == PitchClass.f
-  /// PitchClass.d * 5 == PitchClass.aSharp
+  /// PitchClass.cSharp * 5 == .f
+  /// PitchClass.d * 5 == .aSharp
   /// // observe one semitone upwards results in ascending fourths F -> B-flat.
   /// ```
   ///
@@ -370,6 +365,6 @@ final class IntegerPitchClassNotation extends NotationSystem<PitchClass> {
       PitchClass(switch (match.namedGroup('pitchClass')!) {
         't' => 10,
         'e' => 11,
-        final semitones => int.parse(semitones),
+        final semitones => .parse(semitones),
       });
 }

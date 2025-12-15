@@ -17,10 +17,10 @@ import '../tuning/temperature.dart';
 import '../tuning/tuning_fork.dart';
 import '../tuning/tuning_system.dart';
 import 'accidental.dart';
-import 'base_note.dart';
 import 'closest_pitch.dart';
 import 'frequency.dart';
 import 'note.dart';
+import 'note_name.dart';
 import 'pitch_class.dart';
 
 /// A note in the octave range.
@@ -45,10 +45,21 @@ final class Pitch extends Scalable<Pitch>
   const Pitch(this.note, {required this.octave});
 
   /// The reference [Pitch].
-  static const reference = Pitch(Note.a, octave: referenceOctave);
+  static const reference = Pitch(.a, octave: referenceOctave);
 
   /// The reference octave.
   static const referenceOctave = 4;
+
+  /// The chain of [Parser]s used to parse a [Pitch].
+  static const parsers = [
+    ScientificPitchNotation.english,
+    ScientificPitchNotation.german,
+    ScientificPitchNotation.romance,
+    HelmholtzPitchNotation.english,
+    HelmholtzPitchNotation.german,
+    HelmholtzPitchNotation.numbered(),
+    HelmholtzPitchNotation.romance,
+  ];
 
   /// Parse [source] as a [Pitch] and return its value.
   ///
@@ -61,17 +72,8 @@ final class Pitch extends Scalable<Pitch>
   /// Pitch.parse("c'") == Note.c.inOctave(4)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory Pitch.parse(
-    String source, {
-    List<Parser<Pitch>> chain = const [
-      ScientificPitchNotation.english,
-      ScientificPitchNotation.german,
-      ScientificPitchNotation.romance,
-      HelmholtzPitchNotation.english,
-      HelmholtzPitchNotation.german,
-      HelmholtzPitchNotation.romance,
-    ],
-  }) => chain.parse(source);
+  factory Pitch.parse(String source, {List<Parser<Pitch>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Changes the octave of this [Pitch].
   ///
@@ -105,13 +107,13 @@ final class Pitch extends Scalable<Pitch>
   @override
   int get semitones => note.semitones + octave * chromaticDivisions;
 
-  static const _lowerMidiPitch = Pitch(Note.c, octave: -1);
-  static const _higherMidiPitch = Pitch(Note.g, octave: 9);
+  static const _lowerMidiPitch = Pitch(.c, octave: -1);
+  static const _higherMidiPitch = Pitch(.g, octave: 9);
 
   /// The MIDI number (an integer from 0 to 127) of this [Pitch],
   /// or `null` for pitches out of the MIDI range.
   ///
-  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI) and
+  /// See [MIDI](https://en.wikipedia.org/wiki/MIDI#Messages) and
   /// [Musical note](https://en.wikipedia.org/wiki/Musical_note#Scientific_versus_Helmholtz_pitch_notation).
   ///
   /// Example:
@@ -218,21 +220,18 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   Chord<Pitch> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// This [Pitch] respelled by [baseNote] while keeping the
+  /// This [Pitch] respelled by [noteName] while keeping the
   /// same number of [semitones].
   ///
   /// Example:
   /// ```dart
-  /// Note.b.sharp.inOctave(4).respellByBaseNote(BaseNote.c)
-  ///   == Note.c.inOctave(5)
-  /// Note.f.inOctave(5).respellByBaseNote(BaseNote.e)
-  ///   == Note.e.sharp.inOctave(5)
-  /// Note.g.inOctave(3).respellByBaseNote(BaseNote.a)
-  ///   == Note.a.flat.flat.inOctave(3)
+  /// Note.b.sharp.inOctave(4).respellByNoteName(.c) == Note.c.inOctave(5)
+  /// Note.f.inOctave(5).respellByNoteName(.e) == Note.e.sharp.inOctave(5)
+  /// Note.g.inOctave(3).respellByNoteName(.a) == Note.a.flat.flat.inOctave(3)
   /// ```
   @override
-  Pitch respellByBaseNote(BaseNote baseNote) {
-    final respelledNote = note.respellByBaseNote(baseNote);
+  Pitch respellByNoteName(NoteName noteName) {
+    final respelledNote = note.respellByNoteName(noteName);
 
     return Pitch(
       respelledNote,
@@ -242,7 +241,7 @@ final class Pitch extends Scalable<Pitch>
     );
   }
 
-  /// This [Pitch] respelled by [BaseNote.ordinal] distance while keeping the
+  /// This [Pitch] respelled by [NoteName.ordinal] distance while keeping the
   /// same number of [semitones].
   ///
   /// Example:
@@ -254,7 +253,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   Pitch respellByOrdinalDistance(int distance) =>
-      respellByBaseNote(BaseNote.fromOrdinal(note.baseNote.ordinal + distance));
+      respellByNoteName(.fromOrdinal(note.noteName.ordinal + distance));
 
   /// This [Pitch] respelled upwards while keeping the same number of
   /// [semitones].
@@ -286,11 +285,11 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.e.flat.inOctave(4).respellByAccidental(Accidental.sharp)
+  /// Note.e.flat.inOctave(4).respellByAccidental(.sharp)
   ///   == Note.d.sharp.inOctave(4)
-  /// Note.b.inOctave(4).respellByAccidental(Accidental.flat)
+  /// Note.b.inOctave(4).respellByAccidental(.flat)
   ///   == Note.c.flat.inOctave(5)
-  /// Note.g.inOctave(4).respellByAccidental(Accidental.sharp)
+  /// Note.g.inOctave(4).respellByAccidental(.sharp)
   ///   == Note.f.sharp.sharp.inOctave(4)
   /// ```
   @override
@@ -333,7 +332,7 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).transposeBy(Interval.P5) == Note.d.inOctave(5)
+  /// Note.g.inOctave(4).transposeBy(.P5) == Note.d.inOctave(5)
   /// Note.d.flat.inOctave(2).transposeBy(-Interval.M2)
   ///   == Note.c.flat.inOctave(2)
   /// ```
@@ -356,16 +355,16 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == Interval.P5
-  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == Interval.A4
+  /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == .P5
+  /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == .A4
   /// Note.c.inOctave(5).interval(Note.b.inOctave(4)) == -Interval.m2
   /// ```
   @override
   Interval interval(Pitch other) {
-    final ordinalDelta = other.note.baseNote.ordinal - note.baseNote.ordinal;
+    final ordinalDelta = other.note.noteName.ordinal - note.noteName.ordinal;
     final sizeDelta = ordinalDelta + 7 * (other.octave - octave);
 
-    return Interval.fromSizeAndSemitones(
+    return .fromSizeAndSemitones(
       Size(sizeDelta.abs() + 1),
       difference(other).abs(),
     ).descending(sizeDelta < 0);
@@ -385,7 +384,7 @@ final class Pitch extends Scalable<Pitch>
   /// ) == const Frequency(464.04)
   ///
   /// Note.a.inOctave(4).frequency(
-  ///   tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
+  ///   tuningSystem: const EqualTemperament.edo12(fork: .c256),
   /// ) == const Frequency(430.54)
   ///
   /// Note.a.inOctave(4).frequency(temperature: const Celsius(18))
@@ -403,8 +402,8 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) => Frequency(
     tuningSystem.fork.frequency * tuningSystem.ratio(this),
   ).at(temperature, referenceTemperature);
@@ -413,8 +412,8 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Pitch.reference.at(const Frequency(440)) == TuningFork.a440
-  /// Note.c.inOctave(4).at(const Frequency(256)) == TuningFork.c256
+  /// Pitch.reference.at(const Frequency(440)) == .a440
+  /// Note.c.inOctave(4).at(const Frequency(256)) == .c256
   /// ```
   TuningFork at(Frequency frequency) => TuningFork(this, frequency);
 
@@ -430,8 +429,8 @@ final class Pitch extends Scalable<Pitch>
   Iterable<ClosestPitch> harmonics({
     bool undertone = false,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) =>
       frequency(
             tuningSystem: tuningSystem,
@@ -547,7 +546,7 @@ final class ScientificPitchNotation extends NotationSystem<Pitch> {
   @override
   Pitch parseMatch(RegExpMatch match) => Pitch(
     noteNotation.parseMatch(match),
-    octave: int.parse(match.namedGroup('octave')!.toNegativeAscii()),
+    octave: .parse(match.namedGroup('octave')!.toNegativeAscii()),
   );
 }
 
@@ -558,18 +557,30 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;
 
+  /// Whether to use numbers instead of prime symbols.
+  final bool _useNumbers;
+
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;
 
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
     this.noteNotation = const EnglishNoteNotation.symbol(),
-  }) : _useAscii = false;
+  }) : _useNumbers = false,
+       _useAscii = false;
 
   /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
   const HelmholtzPitchNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : _useAscii = true;
+  }) : _useNumbers = false,
+       _useAscii = true;
+
+  /// Creates a new [HelmholtzPitchNotation] using numbers instead of prime
+  /// symbols.
+  const HelmholtzPitchNotation.numbered({
+    this.noteNotation = const GermanNoteNotation(),
+  }) : _useNumbers = true,
+       _useAscii = false;
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -604,65 +615,81 @@ final class HelmholtzPitchNotation extends NotationSystem<Pitch> {
     _subPrimeAscii,
   ];
 
-  static const _middleOctave = 3;
+  static const _middleOctave = Pitch.referenceOctave - 1;
 
   static String _symbols(int n) => switch (n) {
     4 => _superQuadruplePrime,
     3 => _superTriplePrime,
     2 => _superDoublePrime,
-    < 0 => _subPrime * n.abs(),
-    _ => _superPrime * n,
+    < 0 && final n => _subPrime * n.abs(),
+    final n => _superPrime * n,
   };
 
   static String _asciiSymbols(int n) => switch (n) {
-    < 0 => _subPrimeAscii * n.abs(),
-    _ => _superPrimeAscii * n,
+    < 0 && final n => _subPrimeAscii * n.abs(),
+    final n => _superPrimeAscii * n,
   };
+
+  static String _numbered(int n) => n == 0 ? '' : '${n.abs()}';
 
   @override
   String format(Pitch pitch) {
     final note = noteNotation.format(pitch.note);
-    final symbols = _useAscii ? _asciiSymbols : _symbols;
+    final symbols = _useNumbers
+        ? _numbered
+        : _useAscii
+        ? _asciiSymbols
+        : _symbols;
 
     return switch (pitch.octave) {
-      >= _middleOctave => '${note.toLowerCase()}${symbols(pitch.octave - 3)}',
-      _ => '$note${symbols(pitch.octave - 2)}',
+      >= _middleOctave && final octave =>
+        '${note.toLowerCase()}${symbols(octave - 3)}',
+      final octave => '$note${symbols(octave - 2)}',
     };
   }
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp?.pattern}'
-    '(?<primes>${[
+    '((?<primes>${[
       ..._compoundPrimeSymbols,
       for (final symbol in _primeSymbols) '$symbol+',
-    ].join('|')})?',
+    ].join('|')})|'
+    r'(?<numbers>[1-9]\d*))?',
     caseSensitive: false,
   );
 
+  int _octaveFromNumbers(int numbers, bool isBass) =>
+      isBass ? 2 - numbers : numbers + 3;
+
+  int? _octaveFromPrimes(List<String>? primes, bool isBass) => isBass
+      ? switch (primes?.first) {
+          '' || null => _middleOctave - 1,
+          _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
+          _ => null,
+        }
+      : switch (primes?.first) {
+          '' || null => _middleOctave,
+          _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
+          _superDoublePrime => _middleOctave + 2,
+          _superTriplePrime => _middleOctave + 3,
+          _superQuadruplePrime => _middleOctave + 4,
+          _ => null,
+        };
+
   @override
   Pitch parseMatch(RegExpMatch match) {
-    final baseNote = match.namedGroup('baseNote')!;
-    final primes = match.namedGroup('primes')?.split('');
-    final octave = baseNote[0].isUpperCase
-        ? switch (primes?.first) {
-            '' || null => _middleOctave - 1,
-            _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
-            _ => null,
-          }
-        : switch (primes?.first) {
-            '' || null => _middleOctave,
-            _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
-            _superDoublePrime => _middleOctave + 2,
-            _superTriplePrime => _middleOctave + 3,
-            _superQuadruplePrime => _middleOctave + 4,
-            _ => null,
-          };
-    if (octave == null) {
-      throw FormatException('Invalid Pitch', match[0], baseNote.length);
-    }
+    final noteName = match.namedGroup('noteName')!;
+    final textualNumbers = match.namedGroup('numbers');
+    final isBass = noteName[0].isUpperCase;
 
-    return Pitch(noteNotation.parseMatch(match), octave: octave);
+    return Pitch(
+      noteNotation.parseMatch(match),
+      octave: textualNumbers != null
+          ? _octaveFromNumbers(int.parse(textualNumbers), isBass)
+          : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
+                (throw FormatException('Invalid Pitch', match[0])),
+    );
   }
 }
 

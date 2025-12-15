@@ -19,16 +19,25 @@ class TuningFork {
 
   /// The [A440 (pitch standard)](https://en.wikipedia.org/wiki/A440_(pitch_standard))
   /// tuning fork.
-  static const a440 = TuningFork(Pitch.reference, Frequency.reference);
+  static const a440 = TuningFork(.reference, .reference);
 
   /// The A432 tuning fork.
-  static const a432 = TuningFork(Pitch.reference, Frequency(432));
+  static const a432 = TuningFork(.reference, Frequency(432));
 
   /// The A415 tuning fork.
-  static const a415 = TuningFork(Pitch.reference, Frequency(415));
+  static const a415 = TuningFork(.reference, Frequency(415));
 
   /// The C256 tuning fork.
-  static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
+  static const c256 = TuningFork(Pitch(.c, octave: 4), Frequency(256));
+
+  /// The chain of [Parser]s used to parse a [TuningFork].
+  static const parsers = [
+    CompactTuningForkNotation(),
+    ScientificTuningForkNotation.english,
+    ScientificTuningForkNotation.englishHelmholtz,
+    ScientificTuningForkNotation.german,
+    ScientificTuningForkNotation.germanHelmholtz,
+  ];
 
   /// Parse [source] as a [TuningFork] and return its value.
   ///
@@ -37,16 +46,13 @@ class TuningFork {
   ///
   /// Example:
   /// ```dart
-  /// TuningFork.parse('A440') == TuningFork.a440
-  /// TuningFork.parse('C = 256') == TuningFork.c256
+  /// TuningFork.parse('A440') == .a440
+  /// TuningFork.parse('C = 256') == .c256
   /// TuningFork.parse('z') // throws a FormatException
   /// ```
   factory TuningFork.parse(
     String source, {
-    List<Parser<TuningFork>> chain = const [
-      CompactTuningForkNotation(),
-      ScientificTuningForkNotation(),
-    ],
+    List<Parser<TuningFork>> chain = parsers,
   }) => chain.parse(source);
 
   /// The string representation of this [TuningFork] based on [formatter].
@@ -54,7 +60,7 @@ class TuningFork {
   /// Example:
   /// ```dart
   /// TuningFork.a440.toString() == 'A440'
-  /// TuningFork.a432.toString(formatter: ScientificTuningForkNotation())
+  /// TuningFork.a432.toString(formatter: ScientificTuningForkNotation.english)
   ///   == 'A4 = 432 Hz'
   /// ```
   @override
@@ -77,12 +83,16 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
   /// The [NotationSystem] for [Note].
   final NotationSystem<Note> noteNotation;
 
+  /// The [NotationSystem] for [Frequency].
+  final NotationSystem<Frequency> frequencyNotation;
+
   /// The reference octave.
   final int referenceOctave;
 
   /// Creates a new [CompactTuningForkNotation].
   const CompactTuningForkNotation({
     this.noteNotation = const EnglishNoteNotation.symbol(),
+    this.frequencyNotation = const FrequencySINotation(),
     this.referenceOctave = Pitch.referenceOctave,
   });
 
@@ -98,8 +108,7 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
   @override
   RegExp get regExp => RegExp(
     '(?!.*=)${noteNotation.regExp?.pattern}'
-    r'(?<octave>-?\d\s+)?\s*(?<frequency>\d+(\.\d+)?)'
-    '(\\s*${Frequency.hertzUnitSymbol})?',
+    '(?<octave>-?\\d\\s+)?\\s*${frequencyNotation.regExp?.pattern}',
     caseSensitive: false,
   );
 
@@ -110,7 +119,7 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
 
     return TuningFork(
       noteNotation.parseMatch(match).inOctave(octave),
-      Frequency(double.parse(match.namedGroup('frequency')!)),
+      frequencyNotation.parseMatch(match),
     );
   }
 }
@@ -120,27 +129,50 @@ final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
   /// The [NotationSystem] for [Pitch].
   final NotationSystem<Pitch> pitchNotation;
 
+  /// The [NotationSystem] for [Frequency].
+  final NotationSystem<Frequency> frequencyNotation;
+
   /// Creates a new [ScientificTuningForkNotation].
   const ScientificTuningForkNotation({
     this.pitchNotation = ScientificPitchNotation.english,
+    this.frequencyNotation = const FrequencySINotation(),
   });
+
+  /// The [EnglishNoteNotation] variant of this [ScientificTuningForkNotation].
+  static const english = ScientificTuningForkNotation();
+
+  /// The [GermanNoteNotation] variant of this [ScientificTuningForkNotation].
+  static const german = ScientificTuningForkNotation(
+    pitchNotation: ScientificPitchNotation.german,
+  );
+
+  /// The [HelmholtzPitchNotation.english] variant of this
+  /// [ScientificTuningForkNotation].
+  static const englishHelmholtz = ScientificTuningForkNotation(
+    pitchNotation: HelmholtzPitchNotation.english,
+  );
+
+  /// The [HelmholtzPitchNotation.german] variant of this
+  /// [ScientificTuningForkNotation].
+  static const germanHelmholtz = ScientificTuningForkNotation(
+    pitchNotation: HelmholtzPitchNotation.german,
+  );
 
   @override
   String format(TuningFork tuningFork) =>
       '${pitchNotation.format(tuningFork.pitch)}'
-      ' = ${tuningFork.frequency.format()}';
+      ' = ${frequencyNotation.format(tuningFork.frequency)}';
 
   @override
   RegExp get regExp => RegExp(
-    '${pitchNotation.regExp?.pattern}'
-    r'\s*=\s*(?<frequency>\d+(\.\d+)?)'
-    '(?:\\s*${Frequency.hertzUnitSymbol})?',
+    '${pitchNotation.regExp?.pattern}\\s*=\\s*'
+    '${frequencyNotation.regExp?.pattern}',
     caseSensitive: false,
   );
 
   @override
   TuningFork parseMatch(RegExpMatch match) => TuningFork(
     pitchNotation.parseMatch(match),
-    Frequency(double.parse(match.namedGroup('frequency')!)),
+    frequencyNotation.parseMatch(match),
   );
 }

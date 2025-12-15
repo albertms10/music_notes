@@ -27,6 +27,9 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
+  /// The chain of [Parser]s used to parse a [ClosestPitch].
+  static const parsers = [StandardClosestPitchNotation()];
+
   /// Parse [source] as a [ClosestPitch] and return its value.
   ///
   /// If the [source] string does not contain a valid [ClosestPitch], a
@@ -41,7 +44,7 @@ class ClosestPitch {
   /// ```
   factory ClosestPitch.parse(
     String source, {
-    List<Parser<ClosestPitch>> chain = const [StandardClosestPitchNotation()],
+    List<Parser<ClosestPitch>> chain = parsers,
   }) => chain.parse(source);
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
@@ -53,8 +56,8 @@ class ClosestPitch {
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) => Frequency(
     pitch.frequency(
           tuningSystem: tuningSystem,
@@ -93,7 +96,7 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4+8') + const Cent(12) == ClosestPitch.parse('A4+20')
+  /// ClosestPitch.parse('A4+8') + const Cent(12) == .parse('A4+20')
   /// ```
   ClosestPitch operator +(Cent cents) =>
       ClosestPitch(pitch, cents: Cent(this.cents + cents));
@@ -102,7 +105,7 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4+8') - const Cent(12) == ClosestPitch.parse('A4-4')
+  /// ClosestPitch.parse('A4+8') - const Cent(12) == .parse('A4-4')
   /// ```
   ClosestPitch operator -(Cent cents) =>
       ClosestPitch(pitch, cents: Cent(this.cents - cents));
@@ -143,7 +146,7 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
   @override
   ClosestPitch parseMatch(RegExpMatch match) => ClosestPitch(
     pitchNotation.parseMatch(match),
-    cents: Cent(num.parse(match.namedGroup('cents')?.toNegativeAscii() ?? '0')),
+    cents: Cent(.parse(match.namedGroup('cents')?.toNegativeAscii() ?? '0')),
   );
 
   @override

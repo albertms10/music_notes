@@ -69,156 +69,185 @@ void main() {
     });
 
     group('HelmholtzPitchNotation', () {
+      const english = HelmholtzPitchNotation.english;
+      const german = HelmholtzPitchNotation.german;
+      const romance = HelmholtzPitchNotation.romance;
+      const ascii = HelmholtzPitchNotation.ascii();
+      const numbered = HelmholtzPitchNotation.numbered();
+      const chain = [english, german, romance, ascii, numbered];
+
       group('.parse()', () {
         test('throws a FormatException when source is invalid', () {
-          expect(() => Pitch.parse('x'), throwsFormatException);
-          expect(() => Pitch.parse('aa'), throwsFormatException);
-          expect(() => Pitch.parse('re,'), throwsFormatException);
-          expect(() => Pitch.parse("A,'"), throwsFormatException);
-          expect(() => Pitch.parse("A'"), throwsFormatException);
-          expect(() => Pitch.parse("Sol'"), throwsFormatException);
-          expect(() => Pitch.parse('bb,'), throwsFormatException);
-          expect(() => Pitch.parse("F#'"), throwsFormatException);
-          expect(() => Pitch.parse("g''h"), throwsFormatException);
-          expect(() => Pitch.parse('C,d'), throwsFormatException);
-          expect(() => Pitch.parse("d′'"), throwsFormatException);
-          expect(() => Pitch.parse('f″″'), throwsFormatException);
+          expect(() => Pitch.parse('x', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('aa', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('re,', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse("A,'", chain: chain), throwsFormatException);
+          expect(() => Pitch.parse("A'", chain: chain), throwsFormatException);
+          expect(
+            () => Pitch.parse("Sol'", chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Pitch.parse('bb,', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse("F#'", chain: chain), throwsFormatException);
+          expect(
+            () => Pitch.parse("g''h", chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Pitch.parse('C,d', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse("d′'", chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('f″″', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('e-2', chain: chain), throwsFormatException);
+          expect(
+            () => Pitch.parse('Dis-2', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Pitch.parse('2H', chain: chain), throwsFormatException);
+          expect(
+            () => Pitch.parse('2fis', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => Pitch.parse('-2ais', chain: chain),
+            throwsFormatException,
+          );
+          expect(
+            () => Pitch.parse('-1Ges', chain: chain),
+            throwsFormatException,
+          );
+          expect(() => Pitch.parse('0A', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('0b', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('F0', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('g0', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse('h00', chain: chain), throwsFormatException);
+          expect(() => Pitch.parse("g1'", chain: chain), throwsFormatException);
+          expect(
+            () => Pitch.parse("ais'1", chain: chain),
+            throwsFormatException,
+          );
         });
 
         test('parses source as a Pitch', () {
-          expect(Pitch.parse('Do͵͵͵'), Note.c.inOctave(-1));
-          expect(Pitch.parse('C͵͵͵'), Note.c.inOctave(-1));
-          expect(Pitch.parse('Cis,,'), Note.c.sharp.inOctave(0));
-          expect(Pitch.parse('C,,'), Note.c.inOctave(0));
-          expect(Pitch.parse('Gb,'), Note.g.flat.inOctave(1));
-          expect(Pitch.parse('A'), Note.a.inOctave(2));
-          expect(Pitch.parse('As'), Note.a.flat.inOctave(2));
-          expect(Pitch.parse('Ais'), Note.a.sharp.inOctave(2));
-          expect(Pitch.parse('H'), Note.b.inOctave(2));
-          expect(Pitch.parse('Si'), Note.b.inOctave(2));
-          expect(Pitch.parse('h'), Note.b.inOctave(3));
-          expect(Pitch.parse('his'), Note.b.sharp.inOctave(3));
-          expect(Pitch.parse('sol'), Note.g.inOctave(3));
-          expect(Pitch.parse('f'), Note.f.inOctave(3));
-          expect(Pitch.parse('fis'), Note.f.sharp.inOctave(3));
-          expect(Pitch.parse("d#'"), Note.d.sharp.inOctave(4));
-          expect(Pitch.parse("fa#'"), Note.f.sharp.inOctave(4));
-          expect(Pitch.parse("es''"), Note.e.flat.inOctave(5));
-          expect(Pitch.parse("ebb''"), Note.e.flat.flat.inOctave(5));
-          expect(Pitch.parse('b#′′'), Note.b.sharp.inOctave(5));
-          expect(Pitch.parse('gx‴'), Note.g.sharp.sharp.inOctave(6));
-          expect(Pitch.parse('gisis‴'), Note.g.sharp.sharp.inOctave(6));
+          expect(Pitch.parse('Do͵͵͵', chain: chain), Note.c.inOctave(-1));
+          expect(Pitch.parse('C͵͵͵', chain: chain), Note.c.inOctave(-1));
+          expect(Pitch.parse('Cis,,', chain: chain), Note.c.sharp.inOctave(0));
+          expect(Pitch.parse('C,,', chain: chain), Note.c.inOctave(0));
+          expect(Pitch.parse('Gb,', chain: chain), Note.g.flat.inOctave(1));
+          expect(Pitch.parse('A', chain: chain), Note.a.inOctave(2));
+          expect(Pitch.parse('As', chain: chain), Note.a.flat.inOctave(2));
+          expect(Pitch.parse('Ais', chain: chain), Note.a.sharp.inOctave(2));
+          expect(Pitch.parse('H', chain: chain), Note.b.inOctave(2));
+          expect(Pitch.parse('Si', chain: chain), Note.b.inOctave(2));
+          expect(Pitch.parse('h', chain: chain), Note.b.inOctave(3));
+          expect(Pitch.parse('his', chain: chain), Note.b.sharp.inOctave(3));
+          expect(Pitch.parse('sol', chain: chain), Note.g.inOctave(3));
+          expect(Pitch.parse('f', chain: chain), Note.f.inOctave(3));
+          expect(Pitch.parse('fis', chain: chain), Note.f.sharp.inOctave(3));
+          expect(Pitch.parse("d#'", chain: chain), Note.d.sharp.inOctave(4));
+          expect(Pitch.parse("fa#'", chain: chain), Note.f.sharp.inOctave(4));
+          expect(Pitch.parse("es''", chain: chain), Note.e.flat.inOctave(5));
+          expect(
+            Pitch.parse("ebb''", chain: chain),
+            Note.e.flat.flat.inOctave(5),
+          );
+          expect(Pitch.parse('b#′′', chain: chain), Note.b.sharp.inOctave(5));
+          expect(
+            Pitch.parse('gx‴', chain: chain),
+            Note.g.sharp.sharp.inOctave(6),
+          );
+          expect(
+            Pitch.parse('gisis‴', chain: chain),
+            Note.g.sharp.sharp.inOctave(6),
+          );
+          const chain2 = [numbered];
+          expect(
+            Pitch.parse('Ais10', chain: chain2),
+            Note.a.sharp.inOctave(-8),
+          );
+          expect(Pitch.parse('Gis3', chain: chain2), Note.g.sharp.inOctave(-1));
+          expect(Pitch.parse('Des2', chain: chain2), Note.d.flat.inOctave(0));
+          expect(Pitch.parse('B1', chain: chain2), Note.b.flat.inOctave(1));
+          expect(Pitch.parse('H', chain: chain2), Note.b.inOctave(2));
+          expect(Pitch.parse('a', chain: chain2), Note.a.inOctave(3));
+          expect(Pitch.parse('c1', chain: chain2), Note.c.inOctave(4));
+          expect(Pitch.parse('cis1', chain: chain2), Note.c.sharp.inOctave(4));
+          expect(Pitch.parse('a1', chain: chain2), Note.a.inOctave(4));
+          expect(Pitch.parse('as2', chain: chain2), Note.a.flat.inOctave(5));
+          expect(Pitch.parse('e3', chain: chain2), Note.e.inOctave(6));
+          expect(
+            Pitch.parse('fis10', chain: chain2),
+            Note.f.sharp.inOctave(13),
+          );
 
           final pitch = Note.a.sharp.inOctave(7);
-          expect(
-            Pitch.parse(
-              pitch.toString(formatter: HelmholtzPitchNotation.english),
-            ),
-            pitch,
-          );
+          expect(Pitch.parse(pitch.toString(formatter: english)), pitch);
         });
       });
 
       group('.toString()', () {
         test('returns the English Helmholtz string representation', () {
-          const formatter = HelmholtzPitchNotation.english;
-
           expect(
-            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            Note.g.sharp.inOctave(-1).toString(formatter: english),
             'G♯͵͵͵',
           );
-          expect(Note.d.inOctave(0).toString(formatter: formatter), 'D͵͵');
-          expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'B♭͵');
-          expect(Note.g.inOctave(2).toString(formatter: formatter), 'G');
-          expect(Note.a.inOctave(3).toString(formatter: formatter), 'a');
-          expect(Note.c.inOctave(4).toString(formatter: formatter), 'c′');
+          expect(Note.d.inOctave(0).toString(formatter: english), 'D͵͵');
+          expect(Note.b.flat.inOctave(1).toString(formatter: english), 'B♭͵');
+          expect(Note.g.inOctave(2).toString(formatter: english), 'G');
+          expect(Note.a.inOctave(3).toString(formatter: english), 'a');
+          expect(Note.c.inOctave(4).toString(formatter: english), 'c′');
+          expect(Note.c.sharp.inOctave(4).toString(formatter: english), 'c♯′');
+          expect(Note.a.inOctave(4).toString(formatter: english), 'a′');
+          expect(Note.f.sharp.inOctave(5).toString(formatter: english), 'f♯″');
+          expect(Note.e.inOctave(7).toString(formatter: english), 'e⁗');
           expect(
-            Note.c.sharp.inOctave(4).toString(formatter: formatter),
-            'c♯′',
-          );
-          expect(Note.a.inOctave(4).toString(formatter: formatter), 'a′');
-          expect(
-            Note.f.sharp.inOctave(5).toString(formatter: formatter),
-            'f♯″',
-          );
-          expect(Note.e.inOctave(7).toString(formatter: formatter), 'e⁗');
-          expect(
-            Note.b.flat.inOctave(8).toString(formatter: formatter),
+            Note.b.flat.inOctave(8).toString(formatter: english),
             'b♭′′′′′',
           );
         });
 
         test('returns the German Helmholtz string representation', () {
-          const formatter = HelmholtzPitchNotation.german;
-
           expect(
-            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            Note.g.sharp.inOctave(-1).toString(formatter: german),
             'Gis͵͵͵',
           );
-          expect(
-            Note.d.flat.inOctave(0).toString(formatter: formatter),
-            'Des͵͵',
-          );
-          expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'B͵');
-          expect(Note.g.inOctave(2).toString(formatter: formatter), 'G');
-          expect(Note.a.inOctave(3).toString(formatter: formatter), 'a');
-          expect(Note.c.inOctave(4).toString(formatter: formatter), 'c′');
-          expect(
-            Note.c.sharp.inOctave(4).toString(formatter: formatter),
-            'cis′',
-          );
-          expect(Note.a.inOctave(4).toString(formatter: formatter), 'a′');
-          expect(Note.a.flat.inOctave(5).toString(formatter: formatter), 'as″');
-          expect(Note.e.inOctave(7).toString(formatter: formatter), 'e⁗');
+          expect(Note.d.flat.inOctave(0).toString(formatter: german), 'Des͵͵');
+          expect(Note.b.flat.inOctave(1).toString(formatter: german), 'B͵');
+          expect(Note.g.inOctave(2).toString(formatter: german), 'G');
+          expect(Note.a.inOctave(3).toString(formatter: german), 'a');
+          expect(Note.c.inOctave(4).toString(formatter: german), 'c′');
+          expect(Note.c.sharp.inOctave(4).toString(formatter: german), 'cis′');
+          expect(Note.a.inOctave(4).toString(formatter: german), 'a′');
+          expect(Note.a.flat.inOctave(5).toString(formatter: german), 'as″');
+          expect(Note.e.inOctave(7).toString(formatter: german), 'e⁗');
         });
 
         test('returns the Romance Helmholtz string representation', () {
-          const formatter = HelmholtzPitchNotation.romance;
-
           expect(
-            Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+            Note.g.sharp.inOctave(-1).toString(formatter: romance),
             'Sol♯͵͵͵',
           );
-          expect(
-            Note.d.flat.inOctave(0).toString(formatter: formatter),
-            'Re♭͵͵',
-          );
-          expect(
-            Note.b.flat.inOctave(1).toString(formatter: formatter),
-            'Si♭͵',
-          );
-          expect(Note.g.inOctave(2).toString(formatter: formatter), 'Sol');
-          expect(Note.a.inOctave(3).toString(formatter: formatter), 'la');
-          expect(Note.c.inOctave(4).toString(formatter: formatter), 'do′');
-          expect(
-            Note.c.sharp.inOctave(4).toString(formatter: formatter),
-            'do♯′',
-          );
-          expect(Note.a.inOctave(4).toString(formatter: formatter), 'la′');
-          expect(
-            Note.a.flat.inOctave(5).toString(formatter: formatter),
-            'la♭″',
-          );
-          expect(Note.e.inOctave(6).toString(formatter: formatter), 'mi‴');
+          expect(Note.d.flat.inOctave(0).toString(formatter: romance), 'Re♭͵͵');
+          expect(Note.b.flat.inOctave(1).toString(formatter: romance), 'Si♭͵');
+          expect(Note.g.inOctave(2).toString(formatter: romance), 'Sol');
+          expect(Note.a.inOctave(3).toString(formatter: romance), 'la');
+          expect(Note.c.inOctave(4).toString(formatter: romance), 'do′');
+          expect(Note.c.sharp.inOctave(4).toString(formatter: romance), 'do♯′');
+          expect(Note.a.inOctave(4).toString(formatter: romance), 'la′');
+          expect(Note.a.flat.inOctave(5).toString(formatter: romance), 'la♭″');
+          expect(Note.e.inOctave(6).toString(formatter: romance), 'mi‴');
         });
 
         test('returns the ASCII Helmholtz string representation', () {
-          const english = HelmholtzPitchNotation.ascii();
-
           expect(
-            Note.g.sharp.inOctave(-1).toString(formatter: english),
+            Note.g.sharp.inOctave(-1).toString(formatter: ascii),
             'G#,,,',
           );
-          expect(Note.a.flat.inOctave(1).toString(formatter: english), 'Ab,');
-          expect(Note.g.inOctave(2).toString(formatter: english), 'G');
-          expect(Note.c.inOctave(4).toString(formatter: english), "c'");
+          expect(Note.a.flat.inOctave(1).toString(formatter: ascii), 'Ab,');
+          expect(Note.g.inOctave(2).toString(formatter: ascii), 'G');
+          expect(Note.c.inOctave(4).toString(formatter: ascii), "c'");
+          expect(Note.f.sharp.inOctave(5).toString(formatter: ascii), "f#''");
+          expect(Note.e.inOctave(7).toString(formatter: ascii), "e''''");
           expect(
-            Note.f.sharp.inOctave(5).toString(formatter: english),
-            "f#''",
-          );
-          expect(Note.e.inOctave(7).toString(formatter: english), "e''''");
-          expect(
-            Note.b.flat.inOctave(8).toString(formatter: english),
+            Note.b.flat.inOctave(8).toString(formatter: ascii),
             "bb'''''",
           );
 
@@ -241,6 +270,33 @@ void main() {
           expect(
             Note.b.flat.inOctave(8).toString(formatter: romance),
             "sib'''''",
+          );
+        });
+
+        test('returns the numbered German Helmholtz string representation', () {
+          expect(
+            Note.a.sharp.inOctave(-8).toString(formatter: numbered),
+            'Ais10',
+          );
+          expect(
+            Note.g.sharp.inOctave(-1).toString(formatter: numbered),
+            'Gis3',
+          );
+          expect(Note.d.flat.inOctave(0).toString(formatter: numbered), 'Des2');
+          expect(Note.b.flat.inOctave(1).toString(formatter: numbered), 'B1');
+          expect(Note.b.inOctave(2).toString(formatter: numbered), 'H');
+          expect(Note.a.inOctave(3).toString(formatter: numbered), 'a');
+          expect(Note.c.inOctave(4).toString(formatter: numbered), 'c1');
+          expect(
+            Note.c.sharp.inOctave(4).toString(formatter: numbered),
+            'cis1',
+          );
+          expect(Note.a.inOctave(4).toString(formatter: numbered), 'a1');
+          expect(Note.a.flat.inOctave(5).toString(formatter: numbered), 'as2');
+          expect(Note.e.inOctave(6).toString(formatter: numbered), 'e3');
+          expect(
+            Note.f.sharp.inOctave(13).toString(formatter: numbered),
+            'fis10',
           );
         });
       });
@@ -559,38 +615,38 @@ void main() {
       });
     });
 
-    group('.respellByBaseNote()', () {
-      test('returns this Pitch respelled by BaseNote', () {
+    group('.respellByNoteName()', () {
+      test('returns this Pitch respelled by NoteName', () {
         expect(
-          Note.c.sharp.inOctave(4).respellByBaseNote(BaseNote.d),
+          Note.c.sharp.inOctave(4).respellByNoteName(.d),
           Note.d.flat.inOctave(4),
         );
         expect(
-          Note.e.flat.inOctave(3).respellByBaseNote(BaseNote.d),
+          Note.e.flat.inOctave(3).respellByNoteName(.d),
           Note.d.sharp.inOctave(3),
         );
         expect(
-          Note.e.sharp.inOctave(6).respellByBaseNote(BaseNote.f),
+          Note.e.sharp.inOctave(6).respellByNoteName(.f),
           Note.f.inOctave(6),
         );
         expect(
-          Note.f.flat.inOctave(4).respellByBaseNote(BaseNote.e),
+          Note.f.flat.inOctave(4).respellByNoteName(.e),
           Note.e.inOctave(4),
         );
         expect(
-          Note.c.inOctave(4).respellByBaseNote(BaseNote.b),
+          Note.c.inOctave(4).respellByNoteName(.b),
           Note.b.sharp.inOctave(3),
         );
         expect(
-          Note.c.inOctave(5).respellByBaseNote(BaseNote.d),
+          Note.c.inOctave(5).respellByNoteName(.d),
           Note.d.flat.flat.inOctave(5),
         );
         expect(
-          Note.b.inOctave(4).respellByBaseNote(BaseNote.c),
+          Note.b.inOctave(4).respellByNoteName(.c),
           Note.c.flat.inOctave(5),
         );
         expect(
-          Note.b.inOctave(4).respellByBaseNote(BaseNote.a),
+          Note.b.inOctave(4).respellByNoteName(.a),
           Note.a.sharp.sharp.inOctave(4),
         );
       });
@@ -641,19 +697,19 @@ void main() {
 
         expect(
           Note.f.inOctave(4).respellByOrdinalDistance(2),
-          const Note(BaseNote.a, Accidental(-4)).inOctave(4),
+          const Note(.a, Accidental(-4)).inOctave(4),
         );
         expect(
           Note.g.inOctave(4).respellByOrdinalDistance(3),
-          const Note(BaseNote.c, Accidental(-5)).inOctave(5),
+          const Note(.c, Accidental(-5)).inOctave(5),
         );
         expect(
           Note.f.inOctave(4).respellByOrdinalDistance(4),
-          const Note(BaseNote.c, Accidental(5)).inOctave(4),
+          const Note(.c, Accidental(5)).inOctave(4),
         );
         expect(
           Note.d.inOctave(4).respellByOrdinalDistance(-3),
-          const Note(BaseNote.a, Accidental(5)).inOctave(3),
+          const Note(.a, Accidental(5)).inOctave(3),
         );
       });
     });
@@ -702,87 +758,83 @@ void main() {
     group('.respellByAccidental()', () {
       test('returns this Pitch respelled by Accidental', () {
         expect(
-          Note.a.sharp.inOctave(4).respellByAccidental(Accidental.flat),
+          Note.a.sharp.inOctave(4).respellByAccidental(.flat),
           Note.b.flat.inOctave(4),
         );
         expect(
-          Note.g.flat.inOctave(3).respellByAccidental(Accidental.sharp),
+          Note.g.flat.inOctave(3).respellByAccidental(.sharp),
           Note.f.sharp.inOctave(3),
         );
         expect(
-          Note.c.flat.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.c.flat.inOctave(2).respellByAccidental(.natural),
           Note.b.inOctave(1),
         );
         expect(
-          Note.b.sharp.inOctave(5).respellByAccidental(Accidental.natural),
+          Note.b.sharp.inOctave(5).respellByAccidental(.natural),
           Note.c.inOctave(6),
         );
         expect(
-          Note.f.flat.inOctave(7).respellByAccidental(Accidental.natural),
+          Note.f.flat.inOctave(7).respellByAccidental(.natural),
           Note.e.inOctave(7),
         );
         expect(
-          Note.e.sharp.inOctave(4).respellByAccidental(Accidental.natural),
+          Note.e.sharp.inOctave(4).respellByAccidental(.natural),
           Note.f.inOctave(4),
         );
         expect(
-          Note.f.inOctave(4).respellByAccidental(Accidental.doubleFlat),
+          Note.f.inOctave(4).respellByAccidental(.doubleFlat),
           Note.g.flat.flat.inOctave(4),
         );
         expect(
-          Note.a.inOctave(3).respellByAccidental(Accidental.doubleSharp),
+          Note.a.inOctave(3).respellByAccidental(.doubleSharp),
           Note.g.sharp.sharp.inOctave(3),
         );
       });
 
       test('returns the next closest spelling when no possible respelling', () {
         expect(
-          Note.d.flat.inOctave(3).respellByAccidental(Accidental.natural),
+          Note.d.flat.inOctave(3).respellByAccidental(.natural),
           Note.d.flat.inOctave(3),
         );
         expect(
-          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2).respellByAccidental(.natural),
           Note.g.sharp.inOctave(2),
         );
         expect(
-          Note.e.flat.flat.flat
-              .inOctave(5)
-              .respellByAccidental(Accidental.natural),
+          Note.e.flat.flat.flat.inOctave(5).respellByAccidental(.natural),
           Note.d.flat.inOctave(5),
         );
         expect(
-          Note.e.sharp.sharp
-              .inOctave(-1)
-              .respellByAccidental(Accidental.natural),
+          Note.e.sharp.sharp.inOctave(-1).respellByAccidental(.natural),
           Note.f.sharp.inOctave(-1),
         );
 
         expect(
-          Note.g.sharp.inOctave(2).respellByAccidental(Accidental.natural),
+          Note.g.sharp.inOctave(2).respellByAccidental(.natural),
           Note.g.sharp.inOctave(2),
         );
         expect(
-          Note.d.inOctave(4).respellByAccidental(Accidental.sharp),
+          Note.d.inOctave(4).respellByAccidental(.sharp),
           Note.c.sharp.sharp.inOctave(4),
         );
         expect(
-          Note.d.inOctave(2).respellByAccidental(Accidental.flat),
+          Note.d.inOctave(2).respellByAccidental(.flat),
           Note.e.flat.flat.inOctave(2),
         );
         expect(
-          Note.e.inOctave(3).respellByAccidental(Accidental.doubleFlat),
+          Note.e.inOctave(3).respellByAccidental(.doubleFlat),
           Note.g.flat.flat.flat.inOctave(3),
         );
         expect(
-          Note.f.inOctave(-1).respellByAccidental(Accidental.doubleSharp),
+          Note.f.inOctave(-1).respellByAccidental(.doubleSharp),
           Note.d.sharp.sharp.sharp.inOctave(-1),
         );
         expect(
-          Note.b.inOctave(0).respellByAccidental(Accidental.doubleFlat),
+          Note.b.inOctave(0).respellByAccidental(.doubleFlat),
           Note.d.flat.flat.flat.inOctave(1),
         );
         expect(
-          Note.c.inOctave(7).respellByAccidental(Accidental.doubleSharp),
+          Note.c.inOctave(7).respellByAccidental(.doubleSharp),
           Note.a.sharp.sharp.sharp.inOctave(6),
         );
       });
@@ -959,30 +1011,24 @@ void main() {
 
     group('.transposeBy()', () {
       test('transposes this Pitch by Interval', () {
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.d1),
-          Note.c.flat.inOctave(4),
-        );
+        expect(Note.c.inOctave(4).transposeBy(.d1), Note.c.flat.inOctave(4));
         expect(
           Note.c.inOctave(4).transposeBy(-Interval.d1),
           Note.c.sharp.inOctave(4),
         );
-        expect(Note.c.inOctave(3).transposeBy(Interval.P1), Note.c.inOctave(3));
+        expect(Note.c.inOctave(3).transposeBy(.P1), Note.c.inOctave(3));
         expect(
           Note.c.inOctave(3).transposeBy(-Interval.P1),
           Note.c.inOctave(3),
         );
-        expect(
-          Note.c.inOctave(5).transposeBy(Interval.A1),
-          Note.c.sharp.inOctave(5),
-        );
+        expect(Note.c.inOctave(5).transposeBy(.A1), Note.c.sharp.inOctave(5));
         expect(
           Note.c.inOctave(5).transposeBy(-Interval.A1),
           Note.c.flat.inOctave(5),
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(Interval.d2),
+          Note.c.inOctave(4).transposeBy(.d2),
           Note.d.flat.flat.inOctave(4),
         );
         expect(
@@ -993,155 +1039,113 @@ void main() {
           Note.c.flat.inOctave(4).transposeBy(-Interval.d2),
           Note.b.inOctave(3),
         );
-        expect(
-          Note.c.inOctave(6).transposeBy(Interval.m2),
-          Note.d.flat.inOctave(6),
-        );
+        expect(Note.c.inOctave(6).transposeBy(.m2), Note.d.flat.inOctave(6));
         expect(
           Note.c.inOctave(6).transposeBy(-Interval.m2),
           Note.b.inOctave(5),
         );
-        expect(
-          Note.c.inOctave(-1).transposeBy(Interval.M2),
-          Note.d.inOctave(-1),
-        );
+        expect(Note.c.inOctave(-1).transposeBy(.M2), Note.d.inOctave(-1));
         expect(
           Note.c.inOctave(-1).transposeBy(-Interval.M2),
           Note.b.flat.inOctave(-2),
         );
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.A2),
-          Note.d.sharp.inOctave(4),
-        );
+        expect(Note.c.inOctave(4).transposeBy(.A2), Note.d.sharp.inOctave(4));
         expect(
           Note.c.inOctave(4).transposeBy(-Interval.A2),
           Note.b.flat.flat.inOctave(3),
         );
 
-        expect(Note.e.inOctave(2).transposeBy(Interval.m3), Note.g.inOctave(2));
+        expect(Note.e.inOctave(2).transposeBy(.m3), Note.g.inOctave(2));
         expect(
           Note.e.inOctave(2).transposeBy(-Interval.m3),
           Note.c.sharp.inOctave(2),
         );
-        expect(
-          Note.e.inOctave(4).transposeBy(Interval.M3),
-          Note.g.sharp.inOctave(4),
-        );
+        expect(Note.e.inOctave(4).transposeBy(.M3), Note.g.sharp.inOctave(4));
         expect(
           Note.e.inOctave(4).transposeBy(-Interval.M3),
           Note.c.inOctave(4),
         );
         expect(
-          Note.a.flat.inOctave(4).transposeBy(Interval.m3),
+          Note.a.flat.inOctave(4).transposeBy(.m3),
           Note.c.flat.inOctave(5),
         );
         expect(
           Note.a.flat.inOctave(4).transposeBy(-Interval.m3),
           Note.f.inOctave(4),
         );
-        expect(
-          Note.a.flat.inOctave(4).transposeBy(Interval.M3),
-          Note.c.inOctave(5),
-        );
+        expect(Note.a.flat.inOctave(4).transposeBy(.M3), Note.c.inOctave(5));
         expect(
           Note.a.flat.inOctave(4).transposeBy(-Interval.M3),
           Note.f.flat.inOctave(4),
         );
 
         expect(
-          Note.f.inOctave(4).transposeBy(Interval.d4),
+          Note.f.inOctave(4).transposeBy(.d4),
           Note.b.flat.flat.inOctave(4),
         );
         expect(
           Note.f.inOctave(4).transposeBy(-Interval.d4),
           Note.c.sharp.inOctave(4),
         );
-        expect(
-          Note.f.inOctave(3).transposeBy(Interval.P4),
-          Note.b.flat.inOctave(3),
-        );
+        expect(Note.f.inOctave(3).transposeBy(.P4), Note.b.flat.inOctave(3));
         expect(
           Note.f.inOctave(3).transposeBy(-Interval.P4),
           Note.c.inOctave(3),
         );
-        expect(Note.f.inOctave(4).transposeBy(Interval.A4), Note.b.inOctave(4));
+        expect(Note.f.inOctave(4).transposeBy(.A4), Note.b.inOctave(4));
         expect(
           Note.f.inOctave(4).transposeBy(-Interval.A4),
           Note.c.flat.inOctave(4),
         );
-        expect(
-          Note.a.inOctave(6).transposeBy(Interval.d4),
-          Note.d.flat.inOctave(7),
-        );
+        expect(Note.a.inOctave(6).transposeBy(.d4), Note.d.flat.inOctave(7));
         expect(
           Note.a.inOctave(6).transposeBy(-Interval.d4),
           Note.e.sharp.inOctave(6),
         );
-        expect(
-          Note.a.inOctave(-2).transposeBy(Interval.P4),
-          Note.d.inOctave(-1),
-        );
+        expect(Note.a.inOctave(-2).transposeBy(.P4), Note.d.inOctave(-1));
         expect(
           Note.a.inOctave(-2).transposeBy(-Interval.P4),
           Note.e.inOctave(-2),
         );
-        expect(
-          Note.a.inOctave(7).transposeBy(Interval.A4),
-          Note.d.sharp.inOctave(8),
-        );
+        expect(Note.a.inOctave(7).transposeBy(.A4), Note.d.sharp.inOctave(8));
         expect(
           Note.a.inOctave(7).transposeBy(-Interval.A4),
           Note.e.flat.inOctave(7),
         );
 
-        expect(
-          Note.d.inOctave(4).transposeBy(Interval.d5),
-          Note.a.flat.inOctave(4),
-        );
+        expect(Note.d.inOctave(4).transposeBy(.d5), Note.a.flat.inOctave(4));
         expect(
           Note.d.inOctave(4).transposeBy(-Interval.d5),
           Note.g.sharp.inOctave(3),
         );
-        expect(Note.d.inOctave(1).transposeBy(Interval.P5), Note.a.inOctave(1));
+        expect(Note.d.inOctave(1).transposeBy(.P5), Note.a.inOctave(1));
         expect(
           Note.d.inOctave(1).transposeBy(-Interval.P5),
           Note.g.inOctave(0),
         );
-        expect(
-          Note.d.inOctave(2).transposeBy(Interval.A5),
-          Note.a.sharp.inOctave(2),
-        );
+        expect(Note.d.inOctave(2).transposeBy(.A5), Note.a.sharp.inOctave(2));
         expect(
           Note.d.inOctave(2).transposeBy(-Interval.A5),
           Note.g.flat.inOctave(1),
         );
 
-        expect(
-          Note.d.inOctave(4).transposeBy(Interval.m6),
-          Note.b.flat.inOctave(4),
-        );
+        expect(Note.d.inOctave(4).transposeBy(.m6), Note.b.flat.inOctave(4));
         expect(
           Note.d.inOctave(4).transposeBy(-Interval.m6),
           Note.f.sharp.inOctave(3),
         );
-        expect(
-          Note.d.inOctave(-2).transposeBy(Interval.M6),
-          Note.b.inOctave(-2),
-        );
+        expect(Note.d.inOctave(-2).transposeBy(.M6), Note.b.inOctave(-2));
         expect(
           Note.d.inOctave(-2).transposeBy(-Interval.M6),
           Note.f.inOctave(-3),
         );
-        expect(
-          Note.f.sharp.inOctave(4).transposeBy(Interval.m6),
-          Note.d.inOctave(5),
-        );
+        expect(Note.f.sharp.inOctave(4).transposeBy(.m6), Note.d.inOctave(5));
         expect(
           Note.f.sharp.inOctave(4).transposeBy(-Interval.m6),
           Note.a.sharp.inOctave(3),
         );
         expect(
-          Note.f.sharp.inOctave(-1).transposeBy(Interval.M6),
+          Note.f.sharp.inOctave(-1).transposeBy(.M6),
           Note.d.sharp.inOctave(0),
         );
         expect(
@@ -1149,78 +1153,48 @@ void main() {
           Note.a.inOctave(-2),
         );
 
-        expect(
-          Note.c.inOctave(0).transposeBy(Interval.m7),
-          Note.b.flat.inOctave(0),
-        );
+        expect(Note.c.inOctave(0).transposeBy(.m7), Note.b.flat.inOctave(0));
         expect(
           Note.c.inOctave(0).transposeBy(-Interval.m7),
           Note.d.inOctave(-1),
         );
-        expect(Note.c.inOctave(4).transposeBy(Interval.M7), Note.b.inOctave(4));
+        expect(Note.c.inOctave(4).transposeBy(.M7), Note.b.inOctave(4));
         expect(
           Note.c.inOctave(4).transposeBy(-Interval.M7),
           Note.d.flat.inOctave(3),
         );
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.A7),
-          Note.b.sharp.inOctave(4),
-        );
+        expect(Note.c.inOctave(4).transposeBy(.A7), Note.b.sharp.inOctave(4));
         expect(
           Note.c.inOctave(4).transposeBy(-Interval.A7),
           Note.d.flat.flat.inOctave(3),
         );
 
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.d8),
-          Note.c.flat.inOctave(5),
-        );
-        expect(Note.c.inOctave(4).transposeBy(Interval.P8), Note.c.inOctave(5));
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.A8),
-          Note.c.sharp.inOctave(5),
-        );
+        expect(Note.c.inOctave(4).transposeBy(.d8), Note.c.flat.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.P8), Note.c.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.A8), Note.c.sharp.inOctave(5));
+
+        expect(Note.c.inOctave(4).transposeBy(.m9), Note.d.flat.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.M9), Note.d.inOctave(5));
+
+        expect(Note.c.inOctave(4).transposeBy(.d11), Note.f.flat.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.P11), Note.f.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.A11), Note.f.sharp.inOctave(5));
+
+        expect(Note.c.inOctave(4).transposeBy(.m13), Note.a.flat.inOctave(5));
+        expect(Note.c.inOctave(4).transposeBy(.M13), Note.a.inOctave(5));
 
         expect(
-          Note.c.inOctave(4).transposeBy(Interval.m9),
-          Note.d.flat.inOctave(5),
-        );
-        expect(Note.c.inOctave(4).transposeBy(Interval.M9), Note.d.inOctave(5));
-
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.d11),
-          Note.f.flat.inOctave(5),
-        );
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.P11),
-          Note.f.inOctave(5),
-        );
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.A11),
-          Note.f.sharp.inOctave(5),
-        );
-
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.m13),
-          Note.a.flat.inOctave(5),
-        );
-        expect(
-          Note.c.inOctave(4).transposeBy(Interval.M13),
-          Note.a.inOctave(5),
-        );
-
-        expect(
-          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(15))),
+          Note.c.inOctave(4).transposeBy(const .perfect(Size(15))),
           Note.c.inOctave(6),
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(22))),
+          Note.c.inOctave(4).transposeBy(const .perfect(Size(22))),
           Note.c.inOctave(7),
         );
 
         expect(
-          Note.c.inOctave(4).transposeBy(const Interval.perfect(Size(29))),
+          Note.c.inOctave(4).transposeBy(const .perfect(Size(29))),
           Note.c.inOctave(8),
         );
       });
@@ -1347,7 +1321,7 @@ void main() {
 
       test('returns the Frequency of this Pitch at 438 Hz', () {
         const tuningSystem = EqualTemperament.edo12(
-          fork: TuningFork(Pitch.reference, Frequency(438)),
+          fork: TuningFork(.reference, Frequency(438)),
         );
         expect(
           Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
@@ -1420,7 +1394,7 @@ void main() {
       });
 
       test('returns the Frequency of this Pitch from 256 Hz (C4)', () {
-        const tuningSystem = EqualTemperament.edo12(fork: TuningFork.c256);
+        const tuningSystem = EqualTemperament.edo12(fork: .c256);
         expect(
           Note.c.inOctave(4).frequency(tuningSystem: tuningSystem),
           const Frequency(256),
@@ -1445,7 +1419,7 @@ void main() {
               .inOctave(1)
               .harmonics(
                 tuningSystem: const EqualTemperament.edo12(
-                  fork: TuningFork(Pitch.reference, Frequency(438)),
+                  fork: TuningFork(.reference, Frequency(438)),
                 ),
               )
               .take(16)
@@ -1459,9 +1433,7 @@ void main() {
           Note.c
               .inOctave(1)
               .harmonics(
-                tuningSystem: const EqualTemperament.edo12(
-                  fork: TuningFork.c256,
-                ),
+                tuningSystem: const EqualTemperament.edo12(fork: .c256),
               )
               .take(16)
               .toSet()
@@ -1560,19 +1532,15 @@ void main() {
     group('.hashCode', () {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
-        expect(
-          // ignore: prefer_const_constructors test
-          Pitch(Note.a, octave: 3).hashCode,
-          // ignore: prefer_const_constructors test
-          Pitch(Note.a, octave: 3).hashCode,
-        );
+        // ignore: prefer_const_constructors test
+        expect(Pitch(.a, octave: 3).hashCode, Pitch(.a, octave: 3).hashCode);
       });
 
       test('returns different hashCodes for different Pitches', () {
         expect(Note.c.inOctave(4).hashCode, isNot(Note.c.inOctave(5).hashCode));
         expect(
-          const Pitch(Note.a, octave: 3).hashCode,
-          isNot(const Pitch(Note.b, octave: 3).hashCode),
+          const Pitch(.a, octave: 3).hashCode,
+          isNot(const Pitch(.b, octave: 3).hashCode),
         );
         expect(Note.d.inOctave(6).hashCode, isNot(Note.c.inOctave(5).hashCode));
       });

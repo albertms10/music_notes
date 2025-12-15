@@ -1,9 +1,8 @@
+import '../notation_system.dart';
 import '../note/pitch.dart';
+import '../range.dart';
 import '../scalable.dart';
 import './iterable_extension.dart';
-
-/// A representation of a range between `from` and `to`.
-typedef Range<E> = ({E from, E to});
 
 /// A Range record extension.
 extension RangeExtension<E> on Range<E> {
@@ -54,7 +53,7 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// Example:
   /// ```dart
   /// (from: Note.c, to: Note.e.flat).explode()
-  ///   == const [Note.c, Note.d.flat, Note.d, Note.e.flat]
+  ///   == <Note>[.c, .d.flat, .d, .e.flat]
   /// ```
   /// ---
   /// See also:
@@ -68,14 +67,53 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
 
 /// A compressed range extension.
 extension RangeIterableExtension<E> on Iterable<Range<E>> {
+  /// Parses [source] as a compressed range list.
+  ///
+  /// Example:
+  /// ```dart
+  /// RangeIterableExtension.parse('C–E♭, G♯–B', chain: Note.parsers) == [
+  ///   (from: Note.c, to: Note.e.flat),
+  ///   (from: Note.g.sharp, to: Note.b),
+  /// ]
+  /// ```
+  static List<Range<E>> parse<E>(
+    String source, {
+    String rangeSeparator = '–',
+    String nonConsecutiveSeparator = ', ',
+    List<Parser<E>>? chain,
+  }) => source
+      .split(nonConsecutiveSeparator)
+      .map((range) {
+        final List(:first, :last) = range.split(rangeSeparator);
+        final from = first.trim();
+        final to = last.trim();
+
+        return (
+          from: (chain?.parse(from) ?? from) as E,
+          to: (chain?.parse(to) ?? to) as E,
+        );
+      })
+      .toList(growable: false);
+
   /// Formats this compressed range list into a readable string representation.
+  ///
+  /// The function expects the given [E] type to have a proper implementation
+  /// of `operator ==`.
+  ///
+  /// Example:
+  /// ```dart
+  /// [
+  ///   (from: Note.c, to: Note.e.flat),
+  ///   (from: Note.g.sharp, to: Note.b),
+  /// ].format() == 'C–E♭, G♯–B'
+  /// ```
   String format({
     String rangeSeparator = '–',
     String nonConsecutiveSeparator = ', ',
-    String Function(E)? toString,
+    Formatter<E>? formatter,
   }) => map(
     (range) => [range.from, if (range.from != range.to) range.to]
-        .map((item) => toString?.call(item) ?? item.toString())
+        .map(formatter?.format ?? (element) => element.toString())
         .join(rangeSeparator),
   ).join(nonConsecutiveSeparator);
 }

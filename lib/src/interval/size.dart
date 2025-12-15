@@ -64,11 +64,12 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
+  /// The chain of [Parser]s used to parse a [Size].
+  static const parsers = [SizeNotation()];
+
   /// Parses [source] as a [Size].
-  factory Size.parse(
-    String source, {
-    List<Parser<Size>> chain = const [SizeNotation()],
-  }) => chain.parse(source);
+  factory Size.parse(String source, {List<Parser<Size>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {
@@ -97,8 +98,8 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.fromSemitones(8) == Size.sixth
-  /// Size.fromSemitones(0) == Size.unison
+  /// Size.fromSemitones(8) == .sixth
+  /// Size.fromSemitones(0) == .unison
   /// Size.fromSemitones(-12) == -Size.octave
   /// Size.fromSemitones(4) == null
   /// ```
@@ -109,7 +110,7 @@ extension type const Size._(int size) implements int {
         ?.key;
     if (matchingSize == null) return null;
 
-    return Size._scaleToSemitones(matchingSize, semitones);
+    return ._scaleToSemitones(matchingSize, semitones);
   }
 
   /// The [Size] that is nearest, truncating towards zero, to the given
@@ -121,7 +122,7 @@ extension type const Size._(int size) implements int {
       (entry) => (normalizedSemitones - entry.value).abs(),
     )!;
 
-    return Size._scaleToSemitones(closest, semitones);
+    return ._scaleToSemitones(closest, semitones);
   }
 
   /// The number of semitones of this [Size] as in [_sizeToSemitones].
@@ -147,26 +148,25 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.second.diminished == Interval.d2
-  /// Size.fifth.diminished == Interval.d5
+  /// Size.second.diminished == .d2
+  /// Size.fifth.diminished == .d5
   /// (-Size.seventh).diminished == -Interval.d7
   /// ```
   Interval get diminished => isPerfect
-      ? Interval.perfect(this, PerfectQuality.diminished)
-      : Interval.imperfect(this, ImperfectQuality.diminished);
+      ? Interval.perfect(this, .diminished)
+      : Interval.imperfect(this, .diminished);
 
   /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
   /// from this [Size].
   ///
   /// Example:
   /// ```dart
-  /// Size.third.augmented == Interval.A3
-  /// Size.fourth.augmented == Interval.A4
+  /// Size.third.augmented == .A3
+  /// Size.fourth.augmented == .A4
   /// (-Size.sixth).augmented == -Interval.A6
   /// ```
-  Interval get augmented => isPerfect
-      ? Interval.perfect(this, PerfectQuality.augmented)
-      : Interval.imperfect(this, ImperfectQuality.augmented);
+  Interval get augmented =>
+      isPerfect ? .perfect(this, .augmented) : .imperfect(this, .augmented);
 
   static int _inversion(Size size) {
     final diff = 9 - size.simple.size.abs();
@@ -180,9 +180,9 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.third.inversion == Size.sixth
-  /// Size.fourth.inversion == Size.fifth
-  /// Size.seventh.inversion == Size.second
+  /// Size.third.inversion == .sixth
+  /// Size.fourth.inversion == .fifth
+  /// Size.seventh.inversion == .second
   /// (-Size.unison).inversion == -Size.octave
   /// ```
   ///
@@ -191,8 +191,8 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.ninth.inversion == Size.seventh
-  /// Size.eleventh.inversion == Size.fifth
+  /// Size.ninth.inversion == .seventh
+  /// Size.eleventh.inversion == .fifth
   /// ```
   Size get inversion => Size(_inversion(this));
 
@@ -203,9 +203,9 @@ extension type const Size._(int size) implements int {
   ///
   /// Example:
   /// ```dart
-  /// Size.thirteenth.simple == Size.sixth
+  /// Size.thirteenth.simple == .sixth
   /// (-Size.ninth).simple == -Size.second
-  /// Size.octave.simple == Size.octave
+  /// Size.octave.simple == .octave
   /// const Size(-22).simple == -Size.octave
   /// ```
   Size get simple => Size(_simple(this));
@@ -291,7 +291,7 @@ extension type const Size._(int size) implements int {
   /// Example:
   /// ```dart
   /// -Size.fifth == const Size(-5)
-  /// -const Size(-7) == Size.seventh
+  /// -const Size(-7) == .seventh
   /// ```
   @redeclare
   Size operator -() => Size(-size);
@@ -311,11 +311,11 @@ extension type const PerfectSize._(int size) implements Size {
   ///
   /// Example:
   /// ```dart
-  /// Size.unison.perfect == Interval.P1
-  /// Size.fourth.perfect == Interval.P4
+  /// Size.unison.perfect == .P1
+  /// Size.fourth.perfect == .P4
   /// (-Size.fifth).perfect == -Interval.P5
   /// ```
-  Interval get perfect => Interval.perfect(this);
+  Interval get perfect => .perfect(this);
 
   @redeclare
   PerfectSize get inversion => PerfectSize(Size._inversion(this));
@@ -328,7 +328,7 @@ extension type const PerfectSize._(int size) implements Size {
   /// Example:
   /// ```dart
   /// -Size.fifth == const Size(-5)
-  /// -const Size(-8) == Size.octave
+  /// -const Size(-8) == .octave
   /// ```
   @redeclare
   PerfectSize operator -() => PerfectSize(-size);
@@ -348,21 +348,21 @@ extension type const ImperfectSize._(int size) implements Size {
   ///
   /// Example:
   /// ```dart
-  /// Size.second.major == Interval.M2
-  /// Size.sixth.major == Interval.M6
+  /// Size.second.major == .M2
+  /// Size.sixth.major == .M6
   /// (-Size.ninth).major == -Interval.M9
   /// ```
-  Interval get major => Interval.imperfect(this, ImperfectQuality.major);
+  Interval get major => .imperfect(this, .major);
 
   /// The [ImperfectQuality.minor] interval from this [ImperfectSize].
   ///
   /// Example:
   /// ```dart
-  /// Size.third.minor == Interval.m3
-  /// Size.seventh.minor == Interval.m7
+  /// Size.third.minor == .m3
+  /// Size.seventh.minor == .m7
   /// (-Size.sixth).minor == -Interval.m6
   /// ```
-  Interval get minor => Interval.imperfect(this, ImperfectQuality.minor);
+  Interval get minor => .imperfect(this, .minor);
 
   @redeclare
   ImperfectSize get inversion => ImperfectSize(Size._inversion(this));
@@ -375,7 +375,7 @@ extension type const ImperfectSize._(int size) implements Size {
   /// Example:
   /// ```dart
   /// -Size.third == const Size(-3)
-  /// -const Size(-7) == Size.seventh
+  /// -const Size(-7) == .seventh
   /// ```
   @redeclare
   ImperfectSize operator -() => ImperfectSize(-size);
@@ -395,6 +395,5 @@ final class SizeNotation extends NotationSystem<Size> {
   RegExp get regExp => _regExp;
 
   @override
-  Size parseMatch(RegExpMatch match) =>
-      Size(int.parse(match.namedGroup('size')!));
+  Size parseMatch(RegExpMatch match) => Size(.parse(match.namedGroup('size')!));
 }

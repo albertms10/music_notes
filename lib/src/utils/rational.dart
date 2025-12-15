@@ -43,21 +43,19 @@ final class Rational implements Comparable<Rational> {
     }
 
     final integer = int.parse(match.namedGroup('integer')!);
-    if (match.namedGroup('numerator') == null) {
-      return Rational.fromMixed(integer);
-    }
+    if (match.namedGroup('numerator') == null) return .fromMixed(integer);
 
     final numerator = int.parse(match.namedGroup('numerator')!);
     final denominator = int.parse(match.namedGroup('denominator')!);
 
-    return Rational.fromMixed(integer, numerator, denominator);
+    return .fromMixed(integer, numerator, denominator);
   }
 
   /// Creates a new [Rational] from [number] and [tolerance].
   factory Rational.fromDouble(double number, {int tolerance = 100}) {
     assert(!tolerance.isNegative, 'Tolerance must be positive.');
 
-    if (number == 0) return Rational.zero;
+    if (number == 0) return .zero;
 
     final sign = number.nonZeroSign;
     final absNumber = number.abs();

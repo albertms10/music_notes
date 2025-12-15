@@ -37,10 +37,11 @@ sealed class Mode implements Enum, Comparable<Mode> {
 /// Modes of a tonal system.
 enum TonalMode implements Mode {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
-  major(ScalePattern.major, brightness: 2),
+  major(.major, brightness: 2),
 
   /// See [Minor mode](https://en.wikipedia.org/wiki/Minor_mode).
-  minor(ScalePattern.naturalMinor, brightness: -1);
+  minor(.naturalMinor, brightness: -1)
+  ;
 
   @override
   final ScalePattern scale;
@@ -50,26 +51,29 @@ enum TonalMode implements Mode {
 
   const TonalMode(this.scale, {required this.brightness});
 
+  /// The chain of [Parser]s used to parse a [TonalMode].
+  static const parsers = [
+    EnglishTonalModeNotation(),
+    GermanTonalModeNotation(),
+    RomanceTonalModeNotation(),
+  ];
+
   /// Parse [source] as a [TonalMode] and return its value.
   factory TonalMode.parse(
     String source, {
-    List<Parser<TonalMode>> chain = const [
-      EnglishTonalModeNotation(),
-      GermanTonalModeNotation(),
-      RomanceTonalModeNotation(),
-    ],
+    List<Parser<TonalMode>> chain = parsers,
   }) => chain.parse(source);
 
   /// The parallel (opposite) of this [TonalMode].
   ///
   /// Example:
   /// ```dart
-  /// TonalMode.major.parallel == TonalMode.minor
-  /// TonalMode.minor.parallel == TonalMode.major
+  /// TonalMode.major.parallel == .minor
+  /// TonalMode.minor.parallel == .major
   /// ```
   TonalMode get parallel => switch (this) {
-    TonalMode.major => TonalMode.minor,
-    TonalMode.minor => TonalMode.major,
+    .major => .minor,
+    .minor => .major,
   };
 
   /// The string representation of this [TonalMode] based on [formatter].
@@ -92,8 +96,8 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => _major,
-    TonalMode.minor => _minor,
+    .major => _major,
+    .minor => _minor,
   };
 
   static final RegExp _regExp = RegExp(
@@ -107,8 +111,8 @@ final class EnglishTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parseMatch(RegExpMatch match) =>
       switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => TonalMode.major,
-        _ /* _minor */ => TonalMode.minor,
+        _major => .major,
+        _ /* _minor */ => .minor,
       };
 }
 
@@ -122,8 +126,8 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => _major,
-    TonalMode.minor => _minor,
+    .major => _major,
+    .minor => _minor,
   }.toUpperFirst();
 
   static final RegExp _regExp = RegExp(
@@ -137,8 +141,8 @@ final class GermanTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parseMatch(RegExpMatch match) =>
       switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => TonalMode.major,
-        _ /* _minor */ => TonalMode.minor,
+        _major => .major,
+        _ /* _minor */ => .minor,
       };
 }
 
@@ -152,8 +156,8 @@ final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
 
   @override
   String format(TonalMode tonalMode) => switch (tonalMode) {
-    TonalMode.major => _major,
-    TonalMode.minor => _minor,
+    .major => _major,
+    .minor => _minor,
   };
 
   static final RegExp _regExp = RegExp(
@@ -167,33 +171,34 @@ final class RomanceTonalModeNotation extends NotationSystem<TonalMode> {
   @override
   TonalMode parseMatch(RegExpMatch match) =>
       switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => TonalMode.major,
-        _ /* _minor */ => TonalMode.minor,
+        _major => .major,
+        _ /* _minor */ => .minor,
       };
 }
 
 /// Modes of a modal system.
 enum ModalMode implements Mode {
   /// See [Lydian mode](https://en.wikipedia.org/wiki/Lydian_mode).
-  lydian(ScalePattern.lydian, brightness: 3),
+  lydian(.lydian, brightness: 3),
 
   /// See [Ionian mode](https://en.wikipedia.org/wiki/Ionian_mode).
-  ionian(ScalePattern.ionian, brightness: 2),
+  ionian(.ionian, brightness: 2),
 
   /// See [Mixolydian mode](https://en.wikipedia.org/wiki/Mixolydian_mode).
-  mixolydian(ScalePattern.mixolydian, brightness: 1),
+  mixolydian(.mixolydian, brightness: 1),
 
   /// See [Dorian mode](https://en.wikipedia.org/wiki/Dorian_mode).
-  dorian(ScalePattern.dorian, brightness: 0),
+  dorian(.dorian, brightness: 0),
 
   /// See [Aeolian mode](https://en.wikipedia.org/wiki/Aeolian_mode).
-  aeolian(ScalePattern.aeolian, brightness: -1),
+  aeolian(.aeolian, brightness: -1),
 
   /// See [Phrygian mode](https://en.wikipedia.org/wiki/Phrygian_mode).
-  phrygian(ScalePattern.phrygian, brightness: -2),
+  phrygian(.phrygian, brightness: -2),
 
   /// See [Locrian mode](https://en.wikipedia.org/wiki/Locrian_mode).
-  locrian(ScalePattern.locrian, brightness: -3);
+  locrian(.locrian, brightness: -3)
+  ;
 
   @override
   final ScalePattern scale;
@@ -210,9 +215,9 @@ enum ModalMode implements Mode {
   ///
   /// Example:
   /// ```dart
-  /// ModalMode.dorian.mirrored == ModalMode.dorian
-  /// ModalMode.ionian.mirrored == ModalMode.phrygian
-  /// ModalMode.aeolian.mirrored == ModalMode.mixolydian
+  /// ModalMode.dorian.mirrored == .dorian
+  /// ModalMode.ionian.mirrored == .phrygian
+  /// ModalMode.aeolian.mirrored == .mixolydian
   /// ```
   ModalMode get mirrored =>
       values.firstWhere((mode) => mode.brightness == -brightness);

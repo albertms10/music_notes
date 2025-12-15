@@ -41,10 +41,7 @@ void main() {
           expect(ScaleDegree.i.toString(), 'I');
           expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
           expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
-          expect(
-            const ScaleDegree(4, quality: ImperfectQuality.minor).toString(),
-            'iv',
-          );
+          expect(const ScaleDegree(4, quality: .minor).toString(), 'iv');
           expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
           expect(ScaleDegree.vii.toString(), 'VII');
         });
@@ -108,35 +105,29 @@ void main() {
 
     group('.major', () {
       test('returns this ScaleDegree as major', () {
-        expect(
-          ScaleDegree.ii.major,
-          const ScaleDegree(2, quality: ImperfectQuality.major),
-        );
+        expect(ScaleDegree.ii.major, const ScaleDegree(2, quality: .major));
         expect(
           ScaleDegree.vi.minor.major,
-          const ScaleDegree(6, quality: ImperfectQuality.major),
+          const ScaleDegree(6, quality: .major),
         );
       });
     });
 
     group('.minor', () {
       test('returns this ScaleDegree as minor', () {
-        expect(
-          ScaleDegree.ii.minor,
-          const ScaleDegree(2, quality: ImperfectQuality.minor),
-        );
+        expect(ScaleDegree.ii.minor, const ScaleDegree(2, quality: .minor));
         expect(
           ScaleDegree.neapolitanSixth.minor,
           const ScaleDegree(
             2,
-            quality: ImperfectQuality.minor,
+            quality: .minor,
             inversion: 1,
             semitonesDelta: -1,
           ),
         );
         expect(
           ScaleDegree.iv.major.minor,
-          const ScaleDegree(4, quality: ImperfectQuality.minor),
+          const ScaleDegree(4, quality: .minor),
         );
       });
     });
@@ -166,14 +157,14 @@ void main() {
           // ignore: prefer_const_constructors test
           ScaleDegree(
             2,
-            quality: ImperfectQuality.major,
+            quality: .major,
             inversion: 1,
             semitonesDelta: -1,
           ).hashCode,
           // ignore: prefer_const_constructors test
           ScaleDegree(
             2,
-            quality: ImperfectQuality.major,
+            quality: .major,
             inversion: 1,
             semitonesDelta: -1,
           ).hashCode,
@@ -189,17 +180,17 @@ void main() {
       });
 
       test('ignores equal ScaleDegree instances in a Set', () {
-        final collection = {
-          ScaleDegree.i,
-          ScaleDegree.neapolitanSixth,
-          ScaleDegree.iii,
+        final collection = <ScaleDegree>{
+          .i,
+          .neapolitanSixth,
+          .iii,
           const ScaleDegree(6, inversion: 1, semitonesDelta: -1),
         };
         collection.addAll(collection);
-        expect(collection.toList(), const [
-          ScaleDegree.i,
-          ScaleDegree.neapolitanSixth,
-          ScaleDegree.iii,
+        expect(collection.toList(), const <ScaleDegree>[
+          .i,
+          .neapolitanSixth,
+          .iii,
           ScaleDegree(6, inversion: 1, semitonesDelta: -1),
         ]);
       });
@@ -207,29 +198,25 @@ void main() {
 
     group('.compareTo()', () {
       test('sorts ScaleDegrees in a collection', () {
-        final orderedSet = SplayTreeSet.of({
+        final orderedSet = SplayTreeSet<ScaleDegree>.of({
           const ScaleDegree(2, inversion: 2, semitonesDelta: -1),
-          ScaleDegree.vii,
-          ScaleDegree.ii,
-          ScaleDegree.neapolitanSixth,
-          ScaleDegree.i,
-          const ScaleDegree(2, quality: ImperfectQuality.major),
-          const ScaleDegree(2, quality: ImperfectQuality.minor),
-          const ScaleDegree(
-            2,
-            quality: ImperfectQuality.major,
-            semitonesDelta: 1,
-          ),
+          .vii,
+          .ii,
+          .neapolitanSixth,
+          .i,
+          const ScaleDegree(2, quality: .major),
+          const ScaleDegree(2, quality: .minor),
+          const ScaleDegree(2, quality: .major, semitonesDelta: 1),
         });
-        expect(orderedSet.toList(), const [
-          ScaleDegree.i,
-          ScaleDegree.neapolitanSixth,
+        expect(orderedSet.toList(), const <ScaleDegree>[
+          .i,
+          .neapolitanSixth,
           ScaleDegree(2, inversion: 2, semitonesDelta: -1),
-          ScaleDegree(2, quality: ImperfectQuality.minor),
-          ScaleDegree(2, quality: ImperfectQuality.major),
-          ScaleDegree.ii,
-          ScaleDegree(2, quality: ImperfectQuality.major, semitonesDelta: 1),
-          ScaleDegree.vii,
+          ScaleDegree(2, quality: .minor),
+          ScaleDegree(2, quality: .major),
+          .ii,
+          ScaleDegree(2, quality: .major, semitonesDelta: 1),
+          .vii,
         ]);
       });
     });

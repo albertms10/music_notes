@@ -16,7 +16,7 @@ abstract class Scalable<T extends Scalable<T>>
 
   /// Predicate to transpose this [Scalable] by ascending chromatic motion.
   static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
-      scalable.transposeBy(Interval.m2).respelledSimple;
+      scalable.transposeBy(.m2).respelledSimple;
 
   /// Enharmonic [Comparator] for [Scalable].
   static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
@@ -26,9 +26,9 @@ abstract class Scalable<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(4).toClass() == PitchClass.c
-  /// Note.e.sharp.inOctave(2).toClass() == PitchClass.f
-  /// Note.c.flat.flat.inOctave(5).toClass() == PitchClass.aSharp
+  /// Note.c.inOctave(4).toClass() == .c
+  /// Note.e.sharp.inOctave(2).toClass() == .f
+  /// Note.c.flat.flat.inOctave(5).toClass() == .aSharp
   /// ```
   @override
   PitchClass toClass() => PitchClass(semitones);
@@ -52,7 +52,7 @@ extension NoteIterable on Iterable<Note> {
   Iterable<Interval> get closestSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       final interval = elementAt(i).interval(elementAt(i + 1));
-      yield interval >= Interval.P5 ? interval + -Interval.m6 : interval;
+      yield interval >= .P5 ? interval + -Interval.m6 : interval;
     }
   }
 
@@ -62,8 +62,8 @@ extension NoteIterable on Iterable<Note> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c, Note.d, Note.e, Note.f.sharp].isStepwise == true
-  /// const [Note.c, Note.e, Note.g, Note.a].isStepwise == false
+  /// <Note>[.c, .d, .e, .f.sharp].isStepwise == true
+  /// const <Note>[.c, .e, .g, .a].isStepwise == false
   /// ```
   bool get isStepwise =>
       closestSteps.every((interval) => interval.size.abs() <= Size.second);
@@ -91,8 +91,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.d, Note.e, Note.e.flat, Note.d].inOctave(4).isStepwise == true
-  /// const [Note.c, Note.e, Note.g, Note.a].inOctave(3).isStepwise == false
+  /// <Note>[.d, .e, .e.flat, .d].inOctave(4).isStepwise == true
+  /// const <Note>[.c, .e, .g, .a].inOctave(3).isStepwise == false
   /// ```
   bool get isStepwise =>
       intervalSteps.every((interval) => interval.size.abs() <= Size.second);
@@ -109,8 +109,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// ({Note.b, Note.a.sharp, Note.d}).inversion.toSet()
-  ///   == {Note.b, Note.c, Note.g.sharp}
+  /// <Note>{.b, .a.sharp, .d}.inversion.toSet() == <Note>{.b, .c, .g.sharp}
   /// ```
   Iterable<T> get inversion sync* {
     if (isEmpty) return;
@@ -129,8 +128,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// ({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet()
-  ///   == {PitchClass.fSharp, PitchClass.g, PitchClass.dSharp}
+  /// <PitchClass>{.dSharp, .g, .fSharp}).retrograde.toSet()
+  ///   == <PitchClass>{.fSharp, .g, .dSharp}
   /// ```
   Iterable<T> get retrograde => toList(growable: false).reversed;
 
@@ -139,12 +138,11 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
-  ///   .numericRepresentation().toSet() == const {0, 11, 3}
+  /// <PitchClass>{.b, .aSharp, .d}.numericRepresentation().toSet()
+  ///   == const {0, 11, 3}
   ///
-  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d})
-  ///   .numericRepresentation(reference: PitchClass.g).toSet()
-  ///     == const {4, 3, 7}
+  /// <PitchClass>{.b, .aSharp, .d}.numericRepresentation(reference: .g).toSet()
+  ///   == const {4, 3, 7}
   /// ```
   Iterable<int> numericRepresentation({T? reference}) => map(
     (scalable) =>
@@ -155,8 +153,8 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///
   /// Example:
   /// ```dart
-  /// ({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
-  ///   .deltaNumericRepresentation.toList() == const [0, -1, 4, 2]
+  /// <PitchClass>{.b, .aSharp, .d, .e}.deltaNumericRepresentation.toList()
+  ///   == const [0, -1, 4, 2]
   /// ```
   Iterable<int> get deltaNumericRepresentation sync* {
     if (isEmpty) return;

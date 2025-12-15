@@ -175,14 +175,8 @@ void main() {
             Note.a.flat.major.toString(formatter: textual),
             'La bemolle maggiore',
           );
-          expect(
-            Note.a.flat.major.toString(formatter: symbol),
-            'La♭ maggiore',
-          );
-          expect(
-            Note.f.sharp.minor.toString(formatter: symbol),
-            'Fa♯ minore',
-          );
+          expect(Note.a.flat.major.toString(formatter: symbol), 'La♭ maggiore');
+          expect(Note.f.sharp.minor.toString(formatter: symbol), 'Fa♯ minore');
           expect(
             Note.g.sharp.sharp.major.toString(formatter: symbol),
             'Sol𝄪 maggiore',
@@ -224,50 +218,26 @@ void main() {
         expect(Note.c.major.signature, KeySignature.empty);
         expect(Note.a.minor.signature, KeySignature.empty);
 
-        expect(Note.g.major.signature, KeySignature([Note.f.sharp]));
-        expect(Note.e.minor.signature, KeySignature([Note.f.sharp]));
-        expect(Note.f.major.signature, KeySignature([Note.b.flat]));
-        expect(Note.d.minor.signature, KeySignature([Note.b.flat]));
+        expect(Note.g.major.signature, KeySignature([.f.sharp]));
+        expect(Note.e.minor.signature, KeySignature([.f.sharp]));
+        expect(Note.f.major.signature, KeySignature([.b.flat]));
+        expect(Note.d.minor.signature, KeySignature([.b.flat]));
 
         expect(
           Note.b.major.signature,
-          KeySignature([
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-          ]),
+          KeySignature([.f.sharp, .c.sharp, .g.sharp, .d.sharp, .a.sharp]),
         );
         expect(
           Note.g.sharp.minor.signature,
-          KeySignature([
-            Note.f.sharp,
-            Note.c.sharp,
-            Note.g.sharp,
-            Note.d.sharp,
-            Note.a.sharp,
-          ]),
+          KeySignature([.f.sharp, .c.sharp, .g.sharp, .d.sharp, .a.sharp]),
         );
         expect(
           Note.d.flat.major.signature,
-          KeySignature([
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-          ]),
+          KeySignature([.b.flat, .e.flat, .a.flat, .d.flat, .g.flat]),
         );
         expect(
           Note.b.flat.minor.signature,
-          KeySignature([
-            Note.b.flat,
-            Note.e.flat,
-            Note.a.flat,
-            Note.d.flat,
-            Note.g.flat,
-          ]),
+          KeySignature([.b.flat, .e.flat, .a.flat, .d.flat, .g.flat]),
         );
       });
     });
@@ -294,29 +264,11 @@ void main() {
       test('returns the scale notes of this Key', () {
         expect(
           Note.d.major.scale,
-          Scale([
-            Note.d,
-            Note.e,
-            Note.f.sharp,
-            Note.g,
-            Note.a,
-            Note.b,
-            Note.c.sharp,
-            Note.d,
-          ]),
+          Scale<Note>([.d, .e, .f.sharp, .g, .a, .b, .c.sharp, .d]),
         );
         expect(
           Note.c.minor.scale,
-          Scale([
-            Note.c,
-            Note.d,
-            Note.e.flat,
-            Note.f,
-            Note.g,
-            Note.a.flat,
-            Note.b.flat,
-            Note.c,
-          ]),
+          Scale<Note>([.c, .d, .e.flat, .f, .g, .a.flat, .b.flat, .c]),
         );
       });
     });
