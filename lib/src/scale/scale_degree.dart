@@ -3,7 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../harmony/chord.dart';
 import '../interval/quality.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import 'scale.dart';
 
@@ -231,25 +231,6 @@ final class StandardScaleDegreeNotation
 
   static const _inversions = ['6', '64'];
 
-  @override
-  String format(ScaleDegree scaleDegree) {
-    final buffer = StringBuffer()
-      ..writeAll([
-        if (scaleDegree.semitonesDelta != 0)
-          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
-        if (scaleDegree.quality case ImperfectQuality(
-          :final semitones,
-        ) when semitones <= 0)
-          scaleDegree.romanNumeral.toLowerCase()
-        else
-          scaleDegree.romanNumeral,
-        if (scaleDegree.inversion != 0)
-          _inversions.elementAtOrNull(scaleDegree.inversion - 1) ?? '',
-      ]);
-
-    return buffer.toString();
-  }
-
   static final _regExp = RegExp(
     '(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
     '(?<romanNumeral>${ScaleDegree._romanNumerals.join('|')})'
@@ -274,5 +255,24 @@ final class StandardScaleDegreeNotation
       quality: numeral.isUpperCase ? .major : .minor,
       semitonesDelta: accidental.semitones,
     );
+  }
+
+  @override
+  String format(ScaleDegree scaleDegree) {
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
+        if (scaleDegree.quality case ImperfectQuality(
+          :final semitones,
+        ) when semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        if (scaleDegree.inversion != 0)
+          _inversions.elementAtOrNull(scaleDegree.inversion - 1) ?? '',
+      ]);
+
+    return buffer.toString();
   }
 }

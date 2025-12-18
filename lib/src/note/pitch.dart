@@ -7,7 +7,7 @@ import '../harmony/chord.dart';
 import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../interval/size.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../tuning/cent.dart';
@@ -540,15 +540,15 @@ final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
   );
 
   @override
-  String format(Pitch pitch) =>
-      '${noteNotation.format(pitch.note)}'
-      '${_useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
-
-  @override
   Pitch parseMatch(RegExpMatch match) => Pitch(
     noteNotation.parseMatch(match),
     octave: .parse(match.namedGroup('octave')!.toNegativeAscii()),
   );
+
+  @override
+  String format(Pitch pitch) =>
+      '${noteNotation.format(pitch.note)}'
+      '${_useAscii ? pitch.octave : pitch.octave.toNegativeUnicode()}';
 }
 
 /// The Helmholtz [Pitch] notation formatter.
@@ -609,6 +609,7 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
     _superTriplePrime,
     _superQuadruplePrime,
   ];
+
   static const _primeSymbols = [
     _superPrime,
     _superPrimeAscii,
@@ -617,37 +618,6 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   ];
 
   static const _middleOctave = Pitch.referenceOctave - 1;
-
-  static String _symbols(int n) => switch (n) {
-    4 => _superQuadruplePrime,
-    3 => _superTriplePrime,
-    2 => _superDoublePrime,
-    < 0 && final n => _subPrime * n.abs(),
-    final n => _superPrime * n,
-  };
-
-  static String _asciiSymbols(int n) => switch (n) {
-    < 0 && final n => _subPrimeAscii * n.abs(),
-    final n => _superPrimeAscii * n,
-  };
-
-  static String _numbered(int n) => n == 0 ? '' : '${n.abs()}';
-
-  @override
-  String format(Pitch pitch) {
-    final note = noteNotation.format(pitch.note);
-    final symbols = _useNumbers
-        ? _numbered
-        : _useAscii
-        ? _asciiSymbols
-        : _symbols;
-
-    return switch (pitch.octave) {
-      >= _middleOctave && final octave =>
-        '${note.toLowerCase()}${symbols(octave - 3)}',
-      final octave => '$note${symbols(octave - 2)}',
-    };
-  }
 
   @override
   RegExp get regExp => RegExp(
@@ -691,6 +661,37 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
           : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
                 (throw FormatException('Invalid Pitch', match[0])),
     );
+  }
+
+  static String _symbols(int n) => switch (n) {
+    4 => _superQuadruplePrime,
+    3 => _superTriplePrime,
+    2 => _superDoublePrime,
+    < 0 && final n => _subPrime * n.abs(),
+    final n => _superPrime * n,
+  };
+
+  static String _asciiSymbols(int n) => switch (n) {
+    < 0 && final n => _subPrimeAscii * n.abs(),
+    final n => _superPrimeAscii * n,
+  };
+
+  static String _numbered(int n) => n == 0 ? '' : '${n.abs()}';
+
+  @override
+  String format(Pitch pitch) {
+    final note = noteNotation.format(pitch.note);
+    final symbols = _useNumbers
+        ? _numbered
+        : _useAscii
+        ? _asciiSymbols
+        : _symbols;
+
+    return switch (pitch.octave) {
+      >= _middleOctave && final octave =>
+        '${note.toLowerCase()}${symbols(octave - 3)}',
+      final octave => '$note${symbols(octave - 2)}',
+    };
   }
 }
 
