@@ -289,60 +289,6 @@ void main() {
       });
     });
 
-    group('.parse()', () {
-      test('throws a FormatException when source is invalid', () {
-        expect(() => Interval.parse('x'), throwsFormatException);
-        expect(() => Interval.parse('x4'), throwsFormatException);
-        expect(() => Interval.parse('x6'), throwsFormatException);
-        expect(() => Interval.parse('M+6'), throwsFormatException);
-        expect(() => Interval.parse('P--6'), throwsFormatException);
-        expect(() => Interval.parse('P6'), throwsFormatException);
-        expect(() => Interval.parse('P- 2'), throwsFormatException);
-        expect(() => Interval.parse('m4'), throwsFormatException);
-        expect(() => Interval.parse('p5'), throwsFormatException);
-        expect(() => Interval.parse('a2'), throwsFormatException);
-        expect(() => Interval.parse('D3'), throwsFormatException);
-      });
-
-      test('parses source as an Interval', () {
-        expect(
-          Interval.parse('AA4'),
-          const Interval.perfect(.fourth, .doublyAugmented),
-        );
-        expect(Interval.parse('A5'), Interval.A5);
-        expect(Interval.parse('A-1'), -Interval.A1);
-        expect(Interval.parse('P1'), Interval.P1);
-        expect(Interval.parse('P22'), const Interval.perfect(Size(22)));
-        expect(Interval.parse('d5'), Interval.d5);
-        expect(Interval.parse('d 5'), Interval.d5);
-        expect(Interval.parse('d-5'), -Interval.d5);
-        expect(
-          Interval.parse('dd8'),
-          const Interval.perfect(.octave, .doublyDiminished),
-        );
-        expect(
-          Interval.parse('dd-8'),
-          -const Interval.perfect(.octave, .doublyDiminished),
-        );
-
-        expect(
-          Interval.parse('AA3'),
-          const Interval.imperfect(.third, .doublyAugmented),
-        );
-        expect(Interval.parse('A6'), Interval.A6);
-        expect(Interval.parse('M3'), Interval.M3);
-        expect(Interval.parse('M-3'), -Interval.M3);
-        expect(Interval.parse('M16'), const ImperfectSize(16).major);
-        expect(Interval.parse('m2'), Interval.m2);
-        expect(Interval.parse('m -2'), -Interval.m2);
-        expect(Interval.parse('d7'), Interval.d7);
-        expect(
-          Interval.parse('dd9'),
-          const Interval.imperfect(.ninth, .doublyDiminished),
-        );
-      });
-    });
-
     group('.semitones', () {
       test('returns the number of semitones of this Interval', () {
         expect(Interval.d1.semitones, -1);
@@ -1002,6 +948,77 @@ void main() {
       );
     });
 
+    group('.hashCode', () {
+      test('ignores equal Interval instances in a Set', () {
+        final collection = <Interval>{.M2, .d3, .P4};
+        collection.addAll(collection);
+        expect(collection.toList(), const <Interval>[.M2, .d3, .P4]);
+      });
+    });
+
+    group('.compareTo()', () {
+      test('sorts Intervals in a collection', () {
+        final orderedSet = SplayTreeSet<Interval>.of({.m2, .P8, .d3, .P1, .A1});
+        expect(orderedSet.toList(), const <Interval>[.P1, .A1, .m2, .d3, .P8]);
+      });
+    });
+  });
+
+  group('IntervalNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => Interval.parse('x'), throwsFormatException);
+        expect(() => Interval.parse('x4'), throwsFormatException);
+        expect(() => Interval.parse('x6'), throwsFormatException);
+        expect(() => Interval.parse('M+6'), throwsFormatException);
+        expect(() => Interval.parse('P--6'), throwsFormatException);
+        expect(() => Interval.parse('P6'), throwsFormatException);
+        expect(() => Interval.parse('P- 2'), throwsFormatException);
+        expect(() => Interval.parse('m4'), throwsFormatException);
+        expect(() => Interval.parse('p5'), throwsFormatException);
+        expect(() => Interval.parse('a2'), throwsFormatException);
+        expect(() => Interval.parse('D3'), throwsFormatException);
+      });
+
+      test('parses source as an Interval', () {
+        expect(
+          Interval.parse('AA4'),
+          const Interval.perfect(.fourth, .doublyAugmented),
+        );
+        expect(Interval.parse('A5'), Interval.A5);
+        expect(Interval.parse('A-1'), -Interval.A1);
+        expect(Interval.parse('P1'), Interval.P1);
+        expect(Interval.parse('P22'), const Interval.perfect(Size(22)));
+        expect(Interval.parse('d5'), Interval.d5);
+        expect(Interval.parse('d 5'), Interval.d5);
+        expect(Interval.parse('d-5'), -Interval.d5);
+        expect(
+          Interval.parse('dd8'),
+          const Interval.perfect(.octave, .doublyDiminished),
+        );
+        expect(
+          Interval.parse('dd-8'),
+          -const Interval.perfect(.octave, .doublyDiminished),
+        );
+
+        expect(
+          Interval.parse('AA3'),
+          const Interval.imperfect(.third, .doublyAugmented),
+        );
+        expect(Interval.parse('A6'), Interval.A6);
+        expect(Interval.parse('M3'), Interval.M3);
+        expect(Interval.parse('M-3'), -Interval.M3);
+        expect(Interval.parse('M16'), const ImperfectSize(16).major);
+        expect(Interval.parse('m2'), Interval.m2);
+        expect(Interval.parse('m -2'), -Interval.m2);
+        expect(Interval.parse('d7'), Interval.d7);
+        expect(
+          Interval.parse('dd9'),
+          const Interval.imperfect(.ninth, .doublyDiminished),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this Interval', () {
         expect(Interval.M2.toString(), 'M2');
@@ -1026,21 +1043,6 @@ void main() {
           const Interval.imperfect(.tenth, ImperfectQuality(6)).toString(),
           'AAAAA10 (AAAAA3)',
         );
-      });
-    });
-
-    group('.hashCode', () {
-      test('ignores equal Interval instances in a Set', () {
-        final collection = <Interval>{.M2, .d3, .P4};
-        collection.addAll(collection);
-        expect(collection.toList(), const <Interval>[.M2, .d3, .P4]);
-      });
-    });
-
-    group('.compareTo()', () {
-      test('sorts Intervals in a collection', () {
-        final orderedSet = SplayTreeSet<Interval>.of({.m2, .P8, .d3, .P1, .A1});
-        expect(orderedSet.toList(), const <Interval>[.P1, .A1, .m2, .d3, .P8]);
       });
     });
   });
