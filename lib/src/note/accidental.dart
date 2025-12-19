@@ -224,8 +224,8 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
 
   @override
   String format(Accidental accidental) {
-    if (!showNatural && accidental.isNatural) return '';
-    if (accidental.semitones == 0) {
+    if (accidental.isNatural) {
+      if (!showNatural) return '';
       return _useAscii ? _naturalSymbolAscii : _naturalSymbol;
     }
 
@@ -240,7 +240,7 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
     final singleAccidentals = accidentalSymbol * (absSemitones % 2);
     final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
 
-    return singleAccidentals + doubleAccidentals;
+    return doubleAccidentals + singleAccidentals;
   }
 
   static int _semitonesFromSymbol(String symbol) => switch (symbol) {

@@ -14,11 +14,15 @@ void main() {
 
         test('parses source as an Accidental', () {
           expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
+          expect(Accidental.parse('𝄪𝄪♯'), const Accidental(5));
           expect(Accidental.parse('#xx'), const Accidental(5));
+          expect(Accidental.parse('xx#'), const Accidental(5));
           expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
           expect(Accidental.parse('xx'), const Accidental(4));
           expect(Accidental.parse('♯𝄪'), Accidental.tripleSharp);
+          expect(Accidental.parse('𝄪♯'), Accidental.tripleSharp);
           expect(Accidental.parse('#x'), Accidental.tripleSharp);
+          expect(Accidental.parse('x#'), Accidental.tripleSharp);
           expect(Accidental.parse('𝄪'), Accidental.doubleSharp);
           expect(Accidental.parse('x'), Accidental.doubleSharp);
           expect(Accidental.parse('♯'), Accidental.sharp);
@@ -34,27 +38,29 @@ void main() {
           expect(Accidental.parse('𝄫'), Accidental.doubleFlat);
           expect(Accidental.parse('bb'), Accidental.doubleFlat);
           expect(Accidental.parse('♭𝄫'), Accidental.tripleFlat);
+          expect(Accidental.parse('𝄫♭'), Accidental.tripleFlat);
           expect(Accidental.parse('bbb'), Accidental.tripleFlat);
           expect(Accidental.parse('𝄫𝄫'), const Accidental(-4));
           expect(Accidental.parse('bbbb'), const Accidental(-4));
           expect(Accidental.parse('♭𝄫𝄫'), const Accidental(-5));
+          expect(Accidental.parse('𝄫𝄫♭'), const Accidental(-5));
           expect(Accidental.parse('bbbbb'), const Accidental(-5));
         });
       });
 
       group('.toString()', () {
         test('returns the string representation of this Accidental', () {
-          expect(const Accidental(5).toString(), '♯𝄪𝄪');
+          expect(const Accidental(5).toString(), '𝄪𝄪♯');
           expect(const Accidental(4).toString(), '𝄪𝄪');
-          expect(Accidental.tripleSharp.toString(), '♯𝄪');
+          expect(Accidental.tripleSharp.toString(), '𝄪♯');
           expect(Accidental.doubleSharp.toString(), '𝄪');
           expect(Accidental.sharp.toString(), '♯');
           expect(Accidental.natural.toString(), '♮');
           expect(Accidental.flat.toString(), '♭');
           expect(Accidental.doubleFlat.toString(), '𝄫');
-          expect(Accidental.tripleFlat.toString(), '♭𝄫');
+          expect(Accidental.tripleFlat.toString(), '𝄫♭');
           expect(const Accidental(-4).toString(), '𝄫𝄫');
-          expect(const Accidental(-5).toString(), '♭𝄫𝄫');
+          expect(const Accidental(-5).toString(), '𝄫𝄫♭');
 
           const hideNatural = SymbolAccidentalNotation(showNatural: false);
           expect(Accidental.sharp.toString(formatter: hideNatural), '♯');
@@ -64,9 +70,9 @@ void main() {
 
         test('returns the ASCII string representation of this Accidental', () {
           const formatter = SymbolAccidentalNotation.ascii();
-          expect(const Accidental(5).toString(formatter: formatter), '#xx');
+          expect(const Accidental(5).toString(formatter: formatter), 'xx#');
           expect(const Accidental(4).toString(formatter: formatter), 'xx');
-          expect(Accidental.tripleSharp.toString(formatter: formatter), '#x');
+          expect(Accidental.tripleSharp.toString(formatter: formatter), 'x#');
           expect(Accidental.doubleSharp.toString(formatter: formatter), 'x');
           expect(Accidental.sharp.toString(formatter: formatter), '#');
           expect(Accidental.natural.toString(formatter: formatter), 'n');
