@@ -3,7 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../harmony/chord.dart';
 import '../interval/quality.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import 'scale.dart';
 
@@ -44,7 +44,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// The neapolitan sixth [ScaleDegree].
   static const neapolitanSixth = ScaleDegree(
     2,
-    quality: ImperfectQuality.major,
+    quality: .major,
     inversion: 1,
     semitonesDelta: -1,
   );
@@ -64,7 +64,7 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// The VII [ScaleDegree].
   static const vii = ScaleDegree(7);
 
-  /// The chain of [Parser]s used to parse a [ScaleDegree].
+  /// The chain of [StringParser]s used to parse a [ScaleDegree].
   static const parsers = [StandardScaleDegreeNotation()];
 
   /// Parse [source] as a [ScaleDegree] and return its value.
@@ -74,14 +74,14 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.parse('I') == ScaleDegree.i.major
-  /// ScaleDegree.parse('bII6') == ScaleDegree.neapolitanSixth
-  /// ScaleDegree.parse('vi') == ScaleDegree.vi.minor
+  /// ScaleDegree.parse('I') == .i.major
+  /// ScaleDegree.parse('bII6') == .neapolitanSixth
+  /// ScaleDegree.parse('vi') == .vi.minor
   /// ScaleDegree.parse('z') // throws a FormatException
   /// ```
   factory ScaleDegree.parse(
     String source, {
-    List<Parser<ScaleDegree>> chain = parsers,
+    List<StringParser<ScaleDegree>> chain = parsers,
   }) => chain.parse(source);
 
   /// Whether this [ScaleDegree] is raised.
@@ -131,27 +131,25 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.ii.major
-  ///   == const ScaleDegree(2, quality: ImperfectQuality.major)
+  /// ScaleDegree.ii.major == const ScaleDegree(2, quality: .major)
   /// ```
-  ScaleDegree get major => copyWith(quality: ImperfectQuality.major);
+  ScaleDegree get major => copyWith(quality: .major);
 
   /// This [ScaleDegree] as [ImperfectQuality.minor].
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.v.minor
-  ///   == const ScaleDegree(5, quality: ImperfectQuality.minor)
+  /// ScaleDegree.v.minor == const ScaleDegree(5, quality: .minor)
   /// ```
-  ScaleDegree get minor => copyWith(quality: ImperfectQuality.minor);
+  ScaleDegree get minor => copyWith(quality: .minor);
 
   /// Creates a new [ScaleDegree] from this one by updating individual
   /// properties.
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.i.copyWith(inversion: 2) == ScaleDegree.i.inverted.inverted
-  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == ScaleDegree.vi.lowered
+  /// ScaleDegree.i.copyWith(inversion: 2) == .i.inverted.inverted
+  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == .vi.lowered
   /// ```
   ScaleDegree copyWith({
     int? ordinal,
@@ -188,7 +186,8 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   /// ```
   @override
   String toString({
-    Formatter<ScaleDegree> formatter = const StandardScaleDegreeNotation(),
+    StringFormatter<ScaleDegree> formatter =
+        const StandardScaleDegreeNotation(),
   }) => formatter.format(this);
 
   @override
@@ -220,9 +219,10 @@ class ScaleDegree implements Comparable<ScaleDegree> {
 }
 
 /// The standard [ScaleDegree] notation formatter.
-final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
-  /// The [NotationSystem] for [Accidental].
-  final NotationSystem<Accidental> accidentalNotation;
+final class StandardScaleDegreeNotation
+    extends StringNotationSystem<ScaleDegree> {
+  /// The [StringNotationSystem] for [Accidental].
+  final StringNotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [StandardScaleDegreeNotation].
   const StandardScaleDegreeNotation({
@@ -230,25 +230,6 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
   });
 
   static const _inversions = ['6', '64'];
-
-  @override
-  String format(ScaleDegree scaleDegree) {
-    final buffer = StringBuffer()
-      ..writeAll([
-        if (scaleDegree.semitonesDelta != 0)
-          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
-        if (scaleDegree.quality case ImperfectQuality(
-          :final semitones,
-        ) when semitones <= 0)
-          scaleDegree.romanNumeral.toLowerCase()
-        else
-          scaleDegree.romanNumeral,
-        if (scaleDegree.inversion != 0)
-          _inversions.elementAtOrNull(scaleDegree.inversion - 1) ?? '',
-      ]);
-
-    return buffer.toString();
-  }
 
   static final _regExp = RegExp(
     '(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
@@ -271,10 +252,27 @@ final class StandardScaleDegreeNotation extends NotationSystem<ScaleDegree> {
     return ScaleDegree(
       ScaleDegree._romanNumerals.indexOf(numeral.toLowerCase()) + 1,
       inversion: _inversions.indexOf(match.namedGroup('inversion') ?? '') + 1,
-      quality: numeral.isUpperCase
-          ? ImperfectQuality.major
-          : ImperfectQuality.minor,
+      quality: numeral.isUpperCase ? .major : .minor,
       semitonesDelta: accidental.semitones,
     );
+  }
+
+  @override
+  String format(ScaleDegree scaleDegree) {
+    final buffer = StringBuffer()
+      ..writeAll([
+        if (scaleDegree.semitonesDelta != 0)
+          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
+        if (scaleDegree.quality case ImperfectQuality(
+          :final semitones,
+        ) when semitones <= 0)
+          scaleDegree.romanNumeral.toLowerCase()
+        else
+          scaleDegree.romanNumeral,
+        if (scaleDegree.inversion != 0)
+          _inversions.elementAtOrNull(scaleDegree.inversion - 1) ?? '',
+      ]);
+
+    return buffer.toString();
   }
 }

@@ -22,46 +22,46 @@ void main() {
         );
         expect(const (from: Note.c, to: Note.c).explode(), const <Note>[]);
         expect((from: Note.c, to: Note.d.flat).explode(), const [Note.c]);
-        expect(const (from: Note.c, to: Note.b).explode(), [
-          Note.c,
-          Note.d.flat,
-          Note.d,
-          Note.e.flat,
-          Note.e,
-          Note.f,
-          Note.g.flat,
-          Note.g,
-          Note.a.flat,
-          Note.a,
-          Note.b.flat,
+        expect(const (from: Note.c, to: Note.b).explode(), <Note>[
+          .c,
+          .d.flat,
+          .d,
+          .e.flat,
+          .e,
+          .f,
+          .g.flat,
+          .g,
+          .a.flat,
+          .a,
+          .b.flat,
         ]);
         expect(
           (from: Note.e, to: Note.e.flat).explode(
             nextValue: (note) => note.transposeBy(Interval.A1).respelledSimple,
           ),
-          [
-            Note.e,
-            Note.f,
-            Note.f.sharp,
-            Note.g,
-            Note.g.sharp,
-            Note.a,
-            Note.a.sharp,
-            Note.b,
-            Note.c,
-            Note.c.sharp,
-            Note.d,
+          <Note>[
+            .e,
+            .f,
+            .f.sharp,
+            .g,
+            .g.sharp,
+            .a,
+            .a.sharp,
+            .b,
+            .c,
+            .c.sharp,
+            .d,
           ],
         );
-        expect((from: Note.b, to: Note.c.sharp).explode(), const [
-          Note.b,
-          Note.c,
+        expect((from: Note.b, to: Note.c.sharp).explode(), const <Note>[
+          .b,
+          .c,
         ]);
         expect(
           const (from: Note.c, to: Note.b).explode(
             nextValue: (note) => note.transposeBy(Interval.M2).respelledSimple,
           ),
-          [Note.c, Note.d, Note.e, Note.f.sharp, Note.g.sharp, Note.a.sharp],
+          <Note>[.c, .d, .e, .f.sharp, .g.sharp, .a.sharp],
         );
 
         expect((from: Note.c.inOctave(3), to: Note.g.inOctave(5)).explode(), [
@@ -105,7 +105,7 @@ void main() {
             from: Note.c,
             to: Note.a,
           ).explode(nextValue: (note) => note.transposeBy(Interval.P4)),
-          const [Note.c, Note.f],
+          const <Note>[.c, .f],
         );
         expect(
           skip:
@@ -123,14 +123,12 @@ void main() {
   group('RangeIterableExtension', () {
     group('.parse()', () {
       test('parses source as a compressed range list.', () {
-        expect(
-          RangeIterableExtension.parse('C', chain: Note.parsers),
-          const [(from: Note.c, to: Note.c)],
-        );
-        expect(
-          RangeIterableExtension.parse('A♯–D♭', chain: Note.parsers),
-          [(from: Note.a.sharp, to: Note.d.flat)],
-        );
+        expect(RangeIterableExtension.parse('C', chain: Note.parsers), const [
+          (from: Note.c, to: Note.c),
+        ]);
+        expect(RangeIterableExtension.parse('A♯–D♭', chain: Note.parsers), [
+          (from: Note.a.sharp, to: Note.d.flat),
+        ]);
         expect(
           RangeIterableExtension.parse(
             'C-D# | F#-Ab | Bb',

@@ -3,115 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('ClosestPitch', () {
-    group('StandardClosestPitchNotation', () {
-      group('.parse()', () {
-        test('throws a FormatException when source is invalid', () {
-          expect(() => ClosestPitch.parse('invalid'), throwsFormatException);
-          expect(() => ClosestPitch.parse('A4+'), throwsFormatException);
-          expect(() => ClosestPitch.parse('G3?'), throwsFormatException);
-          expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
-        });
-
-        test('parses source as a ClosestPitch', () {
-          expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
-          expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
-          expect(
-            ClosestPitch.parse('G−0−0.0'),
-            ClosestPitch(Note.g.inOctave(0)),
-          );
-          expect(
-            ClosestPitch.parse('Db-2'),
-            ClosestPitch(Note.d.flat.inOctave(-2)),
-          );
-          expect(
-            ClosestPitch.parse('G3+6'),
-            ClosestPitch(Note.g.inOctave(3), cents: const Cent(6)),
-          );
-          expect(
-            ClosestPitch.parse('E♭5−14.6'),
-            ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(-14.6)),
-          );
-          expect(
-            ClosestPitch.parse('F#-1+45.3'),
-            ClosestPitch(Note.f.sharp.inOctave(-1), cents: const Cent(45.3)),
-          );
-          expect(
-            ClosestPitch.parse('Abb-3-5.97'),
-            ClosestPitch(
-              Note.a.flat.flat.inOctave(-3),
-              cents: const Cent(-5.97),
-            ),
-          );
-          expect(
-            ClosestPitch.parse('Cx2+36.23912'),
-            ClosestPitch(
-              Note.c.sharp.sharp.inOctave(2),
-              cents: const Cent(36.23912),
-            ),
-          );
-        });
-      });
-
-      group('.toString()', () {
-        test('returns the string representation of this ClosestPitch', () {
-          expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3');
-          expect(
-            ClosestPitch(
-              Note.f.sharp.inOctave(6),
-              cents: const Cent(0.4),
-            ).toString(),
-            'F♯6',
-          );
-          expect(
-            ClosestPitch(
-              Note.a.inOctave(4),
-              cents: const Cent(3.456),
-            ).toString(),
-            'A4+3',
-          );
-          expect(
-            ClosestPitch(
-              Note.d.flat.inOctave(3),
-              cents: const Cent(-28.6),
-            ).toString(),
-            'D♭3−29',
-          );
-        });
-
-        test(
-          'returns the ASCII string representation of this ClosestPitch',
-          () {
-            const formatter = StandardClosestPitchNotation.ascii();
-            expect(
-              ClosestPitch(Note.a.inOctave(-3)).toString(formatter: formatter),
-              'A-3',
-            );
-            expect(
-              ClosestPitch(
-                Note.f.sharp.inOctave(6),
-                cents: const Cent(0.4),
-              ).toString(formatter: formatter),
-              'F#6',
-            );
-            expect(
-              ClosestPitch(
-                Note.a.inOctave(4),
-                cents: const Cent(3.456),
-              ).toString(formatter: formatter),
-              'A4+3',
-            );
-            expect(
-              ClosestPitch(
-                Note.d.flat.inOctave(3),
-                cents: const Cent(-28.6),
-              ).toString(formatter: formatter),
-              'Db3-29',
-            );
-          },
-        );
-      });
-    });
-
     group('.frequency()', () {
       test('returns the Frequency of this ClosestPitch', () {
         expect(
@@ -246,6 +137,137 @@ void main() {
           ClosestPitch(Note.c.inOctave(3), cents: const Cent(2)),
         ]);
       });
+    });
+  });
+
+  group('StandardClosestPitchNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => ClosestPitch.parse('invalid'), throwsFormatException);
+        expect(() => ClosestPitch.parse('A4+'), throwsFormatException);
+        expect(() => ClosestPitch.parse('G3?'), throwsFormatException);
+        expect(() => ClosestPitch.parse('B5-?'), throwsFormatException);
+      });
+
+      test('parses source as a ClosestPitch', () {
+        expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
+        expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
+        expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
+        expect(ClosestPitch.parse('C0-00'), ClosestPitch(Note.c.inOctave(0)));
+        expect(ClosestPitch.parse('C0±0'), ClosestPitch(Note.c.inOctave(0)));
+        expect(
+          ClosestPitch.parse('G−0−0.0'),
+          ClosestPitch(Note.g.inOctave(0)),
+        );
+        expect(
+          ClosestPitch.parse('Db-2'),
+          ClosestPitch(Note.d.flat.inOctave(-2)),
+        );
+        expect(
+          ClosestPitch.parse('G3+6'),
+          ClosestPitch(Note.g.inOctave(3), cents: const Cent(6)),
+        );
+        expect(
+          ClosestPitch.parse('E♭5−14.6'),
+          ClosestPitch(Note.e.flat.inOctave(5), cents: const Cent(-14.6)),
+        );
+        expect(
+          ClosestPitch.parse('F#-1+45.3'),
+          ClosestPitch(Note.f.sharp.inOctave(-1), cents: const Cent(45.3)),
+        );
+        expect(
+          ClosestPitch.parse('Abb-3-5.97'),
+          ClosestPitch(
+            Note.a.flat.flat.inOctave(-3),
+            cents: const Cent(-5.97),
+          ),
+        );
+        expect(
+          ClosestPitch.parse('Cx2+36.23912'),
+          ClosestPitch(
+            Note.c.sharp.sharp.inOctave(2),
+            cents: const Cent(36.23912),
+          ),
+        );
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the string representation of this ClosestPitch', () {
+        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3±0');
+        expect(
+          ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.4),
+          ).toString(),
+          'F♯6±0',
+        );
+        expect(
+          ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.4),
+          ).toString(
+            formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+          ),
+          'F♯6+0.4',
+        );
+        expect(
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.546)).toString(),
+          'A4+4',
+        );
+        expect(
+          ClosestPitch(
+            Note.a.inOctave(4),
+            cents: const Cent(3.546),
+          ).toString(
+            formatter: const StandardClosestPitchNotation(fractionDigits: 2),
+          ),
+          'A4+3.55',
+        );
+        expect(
+          ClosestPitch(
+            Note.d.flat.inOctave(3),
+            cents: const Cent(-28.6),
+          ).toString(),
+          'D♭3−29',
+        );
+      });
+
+      test(
+        'returns the ASCII string representation of this ClosestPitch',
+        () {
+          const formatter = StandardClosestPitchNotation.ascii();
+          expect(
+            ClosestPitch(Note.a.inOctave(-3)).toString(formatter: formatter),
+            'A-3+0',
+          );
+          expect(
+            ClosestPitch(
+              Note.f.sharp.inOctave(6),
+              cents: const Cent(0.4),
+            ).toString(formatter: formatter),
+            'F#6+0',
+          );
+          expect(
+            ClosestPitch(
+              Note.a.inOctave(4),
+              cents: const Cent(3.456),
+            ).toString(
+              formatter: const StandardClosestPitchNotation.ascii(
+                fractionDigits: 3,
+              ),
+            ),
+            'A4+3.456',
+          );
+          expect(
+            ClosestPitch(
+              Note.d.flat.inOctave(3),
+              cents: const Cent(-28.6),
+            ).toString(formatter: formatter),
+            'Db3-29',
+          );
+        },
+      );
     });
   });
 }

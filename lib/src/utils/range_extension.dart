@@ -1,4 +1,4 @@
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
@@ -53,7 +53,7 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   /// Example:
   /// ```dart
   /// (from: Note.c, to: Note.e.flat).explode()
-  ///   == const [Note.c, Note.d.flat, Note.d, Note.e.flat]
+  ///   == <Note>[.c, .d.flat, .d, .e.flat]
   /// ```
   /// ---
   /// See also:
@@ -80,7 +80,7 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
     String source, {
     String rangeSeparator = '–',
     String nonConsecutiveSeparator = ', ',
-    List<Parser<E>>? chain,
+    List<StringParser<E>>? chain,
   }) => source
       .split(nonConsecutiveSeparator)
       .map((range) {
@@ -110,7 +110,7 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
   String format({
     String rangeSeparator = '–',
     String nonConsecutiveSeparator = ', ',
-    Formatter<E>? formatter,
+    StringFormatter<E>? formatter,
   }) => map(
     (range) => [range.from, if (range.from != range.to) range.to]
         .map(formatter?.format ?? (element) => element.toString())

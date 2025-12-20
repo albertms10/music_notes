@@ -6,7 +6,6 @@ import '../interval/interval.dart';
 import '../note/pitch.dart';
 import 'cent.dart';
 import 'equal_temperament.dart';
-import 'tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// A representation of a just tuning formatter.
@@ -19,7 +18,7 @@ import 'tuning_system.dart';
 @immutable
 sealed class JustIntonation extends TuningSystem {
   /// Creates a new [JustIntonation] from [fork].
-  const JustIntonation({super.fork = TuningFork.c256});
+  const JustIntonation({super.fork = .c256});
 
   /// The ratio of an ascending [Interval.P5].
   static const ascendingFifthRatio = 3 / 2;
@@ -32,7 +31,7 @@ sealed class JustIntonation extends TuningSystem {
   static const syntonicComma = (81 / 64) / (5 / 4);
 
   @override
-  Cent get generator => Cent.fromRatio(ascendingFifthRatio);
+  Cent get generator => .fromRatio(ascendingFifthRatio);
 }
 
 /// A representation of the three-limit (a.k.a. Pythagorean) tuning formatter.

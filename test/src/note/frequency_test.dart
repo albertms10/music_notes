@@ -3,29 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Frequency', () {
-    group('FrequencySINotation', () {
-      group('.parse()', () {
-        test('throws a FormatException when source is invalid', () {
-          expect(() => Frequency.parse('A4'), throwsFormatException);
-          expect(() => Frequency.parse('-0 Hz'), throwsFormatException);
-          expect(() => Frequency.parse('-1'), throwsFormatException);
-          expect(() => Frequency.parse('-440 Hz'), throwsFormatException);
-          expect(() => Frequency.parse('440 kHz'), throwsFormatException);
-          expect(() => Frequency.parse('z'), throwsFormatException);
-        });
-
-        test('parses source as a Frequency', () {
-          expect(Frequency.parse('440'), const Frequency(440));
-          expect(Frequency.parse('440 Hz'), const Frequency(440));
-          expect(Frequency.parse('415.3 Hz'), const Frequency(415.3));
-          expect(Frequency.parse('15.356 Hz'), const Frequency(15.356));
-          expect(Frequency.parse('256 Hz'), const Frequency(256));
-          expect(Frequency.parse('32 Hz'), const Frequency(32));
-          expect(Frequency.parse('0 Hz'), const Frequency(0));
-        });
-      });
-    });
-
     group('constructor', () {
       test('throws an assertion error when arguments are incorrect', () {
         expect(() => Frequency(-0.1), throwsA(isA<AssertionError>()));
@@ -63,7 +40,7 @@ void main() {
 
         expect(
           const Frequency(440).closestPitch(
-            tuningSystem: const EqualTemperament.edo12(fork: TuningFork.a415),
+            tuningSystem: const EqualTemperament.edo12(fork: .a415),
           ),
           Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
         );
@@ -173,6 +150,29 @@ void main() {
           Frequency(480),
           Frequency(512),
         });
+      });
+    });
+  });
+
+  group('FrequencySINotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => Frequency.parse('A4'), throwsFormatException);
+        expect(() => Frequency.parse('-0 Hz'), throwsFormatException);
+        expect(() => Frequency.parse('-1'), throwsFormatException);
+        expect(() => Frequency.parse('-440 Hz'), throwsFormatException);
+        expect(() => Frequency.parse('440 kHz'), throwsFormatException);
+        expect(() => Frequency.parse('z'), throwsFormatException);
+      });
+
+      test('parses source as a Frequency', () {
+        expect(Frequency.parse('440'), const Frequency(440));
+        expect(Frequency.parse('440 Hz'), const Frequency(440));
+        expect(Frequency.parse('415.3 Hz'), const Frequency(415.3));
+        expect(Frequency.parse('15.356 Hz'), const Frequency(15.356));
+        expect(Frequency.parse('256 Hz'), const Frequency(256));
+        expect(Frequency.parse('32 Hz'), const Frequency(32));
+        expect(Frequency.parse('0 Hz'), const Frequency(0));
       });
     });
 

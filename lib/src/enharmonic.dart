@@ -32,15 +32,13 @@ extension EnharmonicIterable<C> on Iterable<Enharmonic<C>> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c.sharp, Note.f, Note.a.flat]
-  ///   .isEnharmonicWith([Note.d.flat, Note.e.sharp, Note.g.sharp])
-  ///     == true
+  /// <Note>[.c.sharp, .f, .a.flat]
+  ///   .isEnharmonicWith(<Note>[.d.flat, .e.sharp, .g.sharp]) == true
   ///
   /// [Note.d.sharp].isEnharmonicWith([Note.a.flat]) == false
   ///
-  /// const [Interval.m2, Interval.m3, Interval.M2]
-  ///   .isEnharmonicWith(const [Interval.m2, Interval.A2, Interval.d3])
-  ///     == true
+  /// const <Interval>[.m2, .m3, .M2]
+  ///   .isEnharmonicWith(const <Interval>[.m2, .A2, .d3]) == true
   ///
   /// const [Interval.m2].isEnharmonicWith(const [Interval.P4]) == false
   /// ```

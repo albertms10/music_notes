@@ -7,7 +7,6 @@ import '../harmony/chord.dart';
 import '../harmony/harmonic_function.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
-import '../interval/size.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'scale_degree.dart';
@@ -55,8 +54,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// const Scale([Note.c, Note.d, Note.e, Note.f, Note.g, Note.a, Note.b,
-  ///   Note.c]) == ScalePattern.major
+  /// const Scale<Note>([.c, .d, .e, .f, .g, .a, .b, .c]) == .major
   /// ```
   ScalePattern get pattern => ScalePattern(
     _degrees.intervalSteps.toList(growable: false),
@@ -68,8 +66,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Example:
   /// ```dart
   /// ScalePattern.aeolian.on(Note.a).reversed
-  ///   == Scale([Note.a, Note.g, Note.f, Note.e, Note.d, Note.c, Note.b,
-  ///        Note.a])
+  ///   == Scale<Note>([.a, .g, .f, .e, .d, .c, .b, .a])
   /// ```
   Scale<T> get reversed =>
       Scale(descendingDegrees, _descendingDegrees != null ? _degrees : null);
@@ -96,17 +93,17 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale.degree(ScaleDegree.ii.lowered) == Note.d.flat
-  /// Note.c.minor.scale.degree(ScaleDegree.v) == Note.g
-  /// Note.a.flat.major.scale.degree(ScaleDegree.vi) == Note.f
+  /// Note.c.major.scale.degree(.ii.lowered) == .d.flat
+  /// Note.c.minor.scale.degree(.v) == .g
+  /// Note.a.flat.major.scale.degree(.vi) == .f
   /// ```
   T degree(ScaleDegree scaleDegree) {
     final scalable = _degrees[scaleDegree.ordinal - 1];
     if (scaleDegree.semitonesDelta == 0) return scalable;
 
     return scalable.transposeBy(
-      Interval.perfect(
-        Size.unison,
+      .perfect(
+        .unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
       ).descending(scaleDegree.semitonesDelta.isNegative),
     );
@@ -116,8 +113,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.major.scale.degreeChord(ScaleDegree.vi) == Note.b.minorTriad
-  /// Note.d.minor.scale.degreeChord(ScaleDegree.ii) == Note.d.diminishedTriad
+  /// Note.g.major.scale.degreeChord(.vi) == Note.b.minorTriad
+  /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
   /// ```
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
       pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
@@ -126,12 +123,10 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.g.major.scale.functionChord(
-  ///   HarmonicFunction.dominantV / HarmonicFunction.dominantV,
-  /// ) == Note.a.majorTriad
-  /// Note.b.flat.minor.scale.functionChord(
-  ///   HarmonicFunction.ii / HarmonicFunction.dominantV,
-  /// ) == Note.g.minorTriad
+  /// Note.g.major.scale.functionChord(HarmonicFunction.dominantV / .dominantV)
+  ///   == Note.a.majorTriad
+  /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
+  ///   == Note.g.minorTriad
   /// ```
   Chord<T> functionChord(HarmonicFunction harmonicFunction) => harmonicFunction
       .scaleDegrees
@@ -152,9 +147,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// const Scale([Note.c, Note.d, Note.f, Note.g])
-  ///   .isEnharmonicWith(Scale([Note.b.sharp, Note.d, Note.e.sharp, Note.g]))
-  ///     == true
+  /// const Scale<Note>([.c, .d, .f, .g])
+  ///   .isEnharmonicWith(Scale<Note>([.b.sharp, .d, .e.sharp, .g])) == true
   /// ```
   bool isEnharmonicWith(Scale<T> other) =>
       _degrees.isEnharmonicWith(other._degrees) &&
@@ -166,7 +160,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale.transposeBy(Interval.m3) == Note.e.flat.major.scale
+  /// Note.c.major.scale.transposeBy(.m3) == Note.e.flat.major.scale
   /// Note.f.sharp.minor.scale.transposeBy(-Interval.A4) == Note.c.minor.scale
   /// ```
   @override

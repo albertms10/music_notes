@@ -1,8 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../interval/interval.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
 import '../scale/scale.dart';
@@ -29,7 +28,7 @@ final class Key implements Comparable<Key> {
   /// Creates a new [Key] from [note] and [mode].
   const Key(this.note, this.mode);
 
-  /// The chain of [Parser]s used to parse a [Key].
+  /// The chain of [StringParser]s used to parse a [Key].
   static const parsers = [
     EnglishKeyNotation(),
     EnglishKeyNotation.symbol(),
@@ -49,7 +48,7 @@ final class Key implements Comparable<Key> {
   /// Key.parse('f# minor') == Note.f.sharp.minor
   /// Key.parse('z') // throws a FormatException
   /// ```
-  factory Key.parse(String source, {List<Parser<Key>> chain = parsers}) =>
+  factory Key.parse(String source, {List<StringParser<Key>> chain = parsers}) =>
       chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].
@@ -59,10 +58,8 @@ final class Key implements Comparable<Key> {
   /// Note.d.minor.relative == Note.f.major
   /// Note.b.flat.major.relative == Note.g.minor
   /// ```
-  Key get relative => Key(
-    note.transposeBy(Interval.m3.descending(mode == TonalMode.major)),
-    mode.parallel,
-  );
+  Key get relative =>
+      Key(note.transposeBy(.m3.descending(mode == .major)), mode.parallel);
 
   /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///
@@ -79,11 +76,11 @@ final class Key implements Comparable<Key> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.signature == KeySignature.empty
-  /// Note.a.major.signature == KeySignature.fromDistance(3)
-  /// Note.g.flat.major.signature == KeySignature.fromDistance(-6)
+  /// Note.c.major.signature == .empty
+  /// Note.a.major.signature == .fromDistance(3)
+  /// Note.g.flat.major.signature == .fromDistance(-6)
   /// ```
-  KeySignature get signature => KeySignature.fromDistance(
+  KeySignature get signature => .fromDistance(
     KeySignature.empty.keys[mode]!.note.fifthsDistanceWith(note),
   );
 
@@ -104,11 +101,8 @@ final class Key implements Comparable<Key> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale == const Scale([Note.c, Note.d, Note.e, Note.f, Note.g,
-  ///   Note.a, Note.b, Note.c])
-  ///
-  /// Note.e.minor.scale == Scale([Note.e, Note.f.sharp, Note.g, Note.a, Note.b,
-  ///   Note.d, Note.d, Note.e])
+  /// Note.c.major.scale == const Scale<Note>([.c, .d, .e, .f, .g, .a, .b, .c])
+  /// Note.e.minor.scale == Scale<Note>([.e, .f.sharp, .g, .a, .b, .d, .d, .e])
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
@@ -129,7 +123,7 @@ final class Key implements Comparable<Key> {
   /// ```
   @override
   String toString({
-    Formatter<Key> formatter = const EnglishKeyNotation.symbol(),
+    StringFormatter<Key> formatter = const EnglishKeyNotation.symbol(),
   }) => formatter.format(this);
 
   @override
@@ -147,7 +141,7 @@ final class Key implements Comparable<Key> {
 }
 
 /// The English notation system for [Key].
-final class EnglishKeyNotation extends NotationSystem<Key> {
+final class EnglishKeyNotation extends StringNotationSystem<Key> {
   /// The [EnglishNoteNotation] used to format the [Key.note].
   final EnglishNoteNotation noteNotation;
 
@@ -167,10 +161,6 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
   });
 
   @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
     caseSensitive: false,
@@ -179,10 +169,14 @@ final class EnglishKeyNotation extends NotationSystem<Key> {
   @override
   Key parseMatch(RegExpMatch match) =>
       Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 }
 
 /// The German notation system for [Key].
-final class GermanKeyNotation extends NotationSystem<Key> {
+final class GermanKeyNotation extends StringNotationSystem<Key> {
   /// The [GermanNoteNotation] used to format the [Key.note].
   final GermanNoteNotation noteNotation;
 
@@ -196,18 +190,6 @@ final class GermanKeyNotation extends NotationSystem<Key> {
   });
 
   @override
-  String format(Key key) {
-    final note = noteNotation.format(key.note);
-    final mode = tonalModeNotation.format(key.mode).toLowerCase();
-    final casedNote = switch (key.mode) {
-      TonalMode.major => note,
-      TonalMode.minor => note.toLowerCase(),
-    };
-
-    return '$casedNote-$mode';
-  }
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}-${tonalModeNotation.regExp.pattern}',
     caseSensitive: false,
@@ -216,10 +198,22 @@ final class GermanKeyNotation extends NotationSystem<Key> {
   @override
   Key parseMatch(RegExpMatch match) =>
       Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
+  String format(Key key) {
+    final note = noteNotation.format(key.note);
+    final mode = tonalModeNotation.format(key.mode).toLowerCase();
+    final casedNote = switch (key.mode) {
+      .major => note,
+      .minor => note.toLowerCase(),
+    };
+
+    return '$casedNote-$mode';
+  }
 }
 
 /// The Romance notation system for [Key].
-final class RomanceKeyNotation extends NotationSystem<Key> {
+final class RomanceKeyNotation extends StringNotationSystem<Key> {
   /// The [RomanceNoteNotation] used to format the [Key.note].
   final RomanceNoteNotation noteNotation;
 
@@ -239,10 +233,6 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   });
 
   @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
     caseSensitive: false,
@@ -251,4 +241,8 @@ final class RomanceKeyNotation extends NotationSystem<Key> {
   @override
   Key parseMatch(RegExpMatch match) =>
       Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 }

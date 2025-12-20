@@ -40,5 +40,5 @@ mixin RespellableScalable<T extends Scalable<T>> on Respellable<T> {
   /// This [T] with the simplest [Accidental] spelling while keeping
   /// the same number of semitones.
   @override
-  T get respelledSimple => respellByAccidental(Accidental.natural);
+  T get respelledSimple => respellByAccidental(.natural);
 }

@@ -31,11 +31,11 @@ For more detailed usage instructions and examples, please refer to the
 
 ### Notes
 
-Define a `Note` from a `NoteName` and an `Accidental`, or using their
+Define a `Note` from a `NoteName` (`.a` to `.g`) and an `Accidental`, or using their
 shorthand static constants:
 
 ```dart
-const Note(NoteName.e, Accidental.flat); // E♭
+const Note(.e, .flat); // E♭
 Note.c; // C
 Note.d; // D
 Note.f; // F
@@ -79,26 +79,26 @@ Pitch.parse('Eb3'); // E♭3
 Get their difference in semitones:
 
 ```dart
-NoteName.c.difference(NoteName.e); // 4
-NoteName.a.difference(NoteName.e); // -5
-NoteName.a.positiveDifference(NoteName.e); // 7
+NoteName.c.difference(.e); // 4
+NoteName.a.difference(.e); // -5
+NoteName.a.positiveDifference(.e); // 7
 
-Note.c.difference(Note.e.flat); // 3
-Pitch.parse('C').difference(Pitch.parse("c''''")); // 60
+Note.c.difference(.e.flat); // 3
+Pitch.parse('C').difference(.parse("c''''")); // 60
 ```
 
 Transpose them:
 
 ```dart
 Note.g.flat.transposeBy(-Interval.m3); // E♭
-Note.b.inOctave(3).transposeBy(Interval.P5); // F♯4
+Note.b.inOctave(3).transposeBy(.P5); // F♯4
 ```
 
 Respell them by any criteria:
 
 ```dart
-Note.c.sharp.respellByNoteName(NoteName.d); // D♭
-Note.e.flat.respellByAccidental(Accidental.sharp); // D♯
+Note.c.sharp.respellByNoteName(.d); // D♭
+Note.e.flat.respellByAccidental(.sharp); // D♯
 Note.g.flat.inOctave(3).respellByOrdinalDistance(-1); // F♯3
 
 Note.g.sharp.respelledUpwards; // A♭
@@ -164,7 +164,7 @@ PitchClass.aSharp.toString(formatter: const IntegerPitchClassNotation()); // t
 Create an `Interval`:
 
 ```dart
-const Interval.imperfect(Size.tenth, ImperfectQuality.major); // M10
+const Interval.imperfect(.tenth, .major); // M10
 Interval.d5; // d5
 Size.sixth.augmented; // A6
 Size.eleventh.simple.perfect; // P4
@@ -209,27 +209,27 @@ Interval.M7.isDissonant; // true
 Respell an `Interval` by size:
 
 ```dart
-Interval.A4.respellBySize(Size.fifth); // d5
-Interval.d3.respellBySize(Size.second); // M2
+Interval.A4.respellBySize(.fifth); // d5
+Interval.d3.respellBySize(.second); // M2
 ```
 
 Calculate the `Interval` between two notes:
 
 ```dart
-Note.c.interval(Note.g); // P5
-Note.d.interval(Note.f.sharp).inversion; // m6
+Note.c.interval(.g); // P5
+Note.d.interval(.f.sharp).inversion; // m6
 
-NoteName.d.intervalSize(NoteName.f); // 3
-NoteName.a.intervalSize(NoteName.e); // 5
+NoteName.d.intervalSize(.f); // 3
+NoteName.a.intervalSize(.e); // 5
 ```
 
 Know the intervallic distance between two notes:
 
 ```dart
-Interval.P5.circleDistance(from: Note.c, to: Note.d);
-// (2, notes: [Note.c, Note.g, Note.d])
-Interval.P4.circleDistance(from: Note.b.flat, to: Note.d);
-// (-4, notes: [Note.b.flat, Note.f, Note.d, Note.g, Note.d])
+Interval.P5.circleDistance<Note>(from: .c, to: .d);
+// (2, notes: [C, G, D])
+Interval.P4.circleDistance<Note>(from: .b.flat, to: .d);
+// (-4, notes: [B♭, F, D, G, D])
 ```
 
 And even explore the circle of fifths or any circle of intervals
@@ -247,8 +247,8 @@ Note.c.splitCircleOfFifths.up.take(8).toList();
 Note.d.circleOfFifthsDistance; // 2
 Note.a.flat.circleOfFifthsDistance; // -4
 
-Note.c.fifthsDistanceWith(Note.e.flat); // -3
-Note.b.fifthsDistanceWith(Note.f.sharp); // 1
+Note.c.fifthsDistanceWith(.e.flat); // -3
+Note.b.fifthsDistanceWith(.f.sharp); // 1
 ```
 
 Know whether two `Interval`s are enharmonically equivalent:
@@ -270,20 +270,20 @@ Interval.P8.toClass(); // {P1}
 Compare two `Interval`s based on their semitones:
 
 ```dart
-Interval.m3 < Interval.P5; // true
-Interval.m7 <= Interval.P5; // false
--Interval.P4 > Interval.M3; // true
+Interval.m3 < .P5; // true
+Interval.m7 <= .P5; // false
+-Interval.P4 > .M3; // true
 ```
 
 Add, subtract and multiply `Interval`s and `IntervalClass`es:
 
 ```dart
-Interval.m2 + Interval.M2; // m3
-Interval.M2 + Interval.P4; // P5
+Interval.m2 + .M2; // m3
+Interval.M2 + .P4; // P5
 
-IntervalClass.tritone + IntervalClass.M2; // {M3|d4}
-IntervalClass.M3 + IntervalClass.P4; // {m3}
-IntervalClass.P4 - IntervalClass.m3; // {M2|d3}
+IntervalClass.tritone + .M2; // {M3|d4}
+IntervalClass.M3 + .P4; // {m3}
+IntervalClass.P4 - .m3; // {M2|d3}
 
 IntervalClass.P4 * -1; // {P4}
 IntervalClass.M2 * 0; // {P1}
@@ -306,15 +306,16 @@ IntervalClass.tritone.toString(); // {A4|d5}
 Create a `Key` or get it from a given `Note`:
 
 ```dart
-const Key(Note.e, TonalMode.minor); // E minor
+const Key(.e, .minor); // E minor
 Note.a.flat.major; // A♭ major
 ```
 
 Know its `KeySignature`:
 
 ```dart
-Note.d.major.signature; // 2 (F♯ C♯)
-Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+Note.d.major.signature; // {D major, B minor} +2 fifths (F♯ C♯)
+Note.e.flat.minor.signature;
+// {G♭ major, E♭ minor} −6 fifths (B♭ E♭ A♭ D♭ G♭ C♭)
 ```
 
 Whether it is theoretical:
@@ -347,23 +348,24 @@ Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
 Create a `KeySignature`:
 
 ```dart
-KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
-KeySignature([Note.b.flat, Note.e.flat]); // -2 (B♭ E♭)
-KeySignature([Note.g.sharp, Note.a.sharp]); // null (G♯ A♯)
+KeySignature.fromDistance(4); // {E major, C♯ minor} +4 fifths (F♯ C♯ G♯ D♯)
+KeySignature([.b.flat, .e.flat]); // {B♭ major, G minor} −2 fifths (B♭ E♭)
+KeySignature([.g.sharp, .a.sharp]); // Non-canonical (G♯ A♯)
 ```
 
 Increment them by sharps or flats:
 
 ```dart
-KeySignature.fromDistance(-4).incrementBy(-1); // -3 (B♭ E♭ A♭)
-KeySignature([Note.f.sharp, Note.c.sharp]).incrementBy(3);
-// 5 (F♯ C♯ G♯ D♯ A♯)
+KeySignature.fromDistance(-4).incrementBy(-1);
+// {E♭ major, C minor} −3 fifths (B♭ E♭ A♭)
+KeySignature([.f.sharp, .c.sharp]).incrementBy(3);
+// {B major, G♯ minor} +5 fifths (F♯ C♯ G♯ D♯ A♯)
 ```
 
 And know its `Key`s:
 
 ```dart
-KeySignature([Note.f.sharp]).keys[TonalMode.major]; // G major
+KeySignature([.f.sharp]).keys[TonalMode.major]; // G major
 KeySignature.empty.keys[TonalMode.minor]; // A minor
 ```
 
@@ -371,7 +373,7 @@ Non-canonical key signatures are also supported, although they
 return `null` when asked about their fifths distance or keys:
 
 ```dart
-KeySignature([Note.a.flat])
+KeySignature([.a.flat])
   ..isCanonical // false
   ..distance // null
   ..keys; // <TonalMode, Key>{}
@@ -422,28 +424,28 @@ Note.d.minor.scale; // D Natural minor (aeolian) (D E F G A B♭ C D)
 Even experiment with any `ScaleDegree` or `HarmonicFunction`:
 
 ```dart
-ScalePattern.lydian.on(Note.e).degree(ScaleDegree.iv); // A♯
+ScalePattern.lydian.on(Note.e).degree(.iv); // A♯
 Note.c.major.scale.functionChord(
-  HarmonicFunction.dominantV / HarmonicFunction.dominantV,
-); // D maj. (D F♯ A)
+  HarmonicFunction.dominantV / .dominantV,
+); // D
 ```
 
 Rearrange any collection of `Note`s, `Pitch`es or `PitchClass`es
 as `inversion` or `retrograde`:
 
 ```dart
-({Note.b, Note.a.sharp, Note.d}).inversion.toSet(); // {B, C, G♯}
-({PitchClass.dSharp, PitchClass.g, PitchClass.fSharp}).retrograde.toSet();
+<Note>{.b, .a.sharp, .d}.inversion.toSet(); // {B, C, G♯}
+<PitchClass>{.dSharp, .g, .fSharp}.retrograde.toSet();
 // {{F♯|G♭}, {G}, {D♯|E♭}}
 ```
 
 Or know its numeric representation:
 
 ```dart
-({PitchClass.b, PitchClass.aSharp, PitchClass.d, PitchClass.e})
+<PitchClass>{.b, .aSharp, .d, .e}
   ..numericRepresentation()
       .toSet() // {0, 11, 3, 5}
-  ..numericRepresentation(reference: PitchClass.d)
+  ..numericRepresentation(reference: .d)
       .toSet() // {9, 8, 0, 2}
   ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 ```
@@ -453,25 +455,24 @@ Or know its numeric representation:
 Create a `Chord` from a series of `Note`s or a `ChordPattern`:
 
 ```dart
-Chord([Note.a, Note.c.sharp, Note.e]); // A maj. (A C♯ E)
-ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
-// D♯ aug. (D♯ F𝄪 A𝄪 G♯ B♯)
+Chord<Note>([.a, .c.sharp, .e]); // A
+ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp); // D♯+11 13
 ```
 
 Or build it on top of a `Note`:
 
 ```dart
-Note.f.minorTriad.add7().add9(ImperfectQuality.minor);
-// F min. (F A♭ C E♭ G♭)
-Note.e.flat.diminishedTriad.add7().transposeBy(Interval.m2);
-// F♭ dim. (F♭ A𝄫 C𝄫 E𝄫)
+Note.f.minorTriad.add7().add9(.minor);
+// F-7 ♭9
+Note.e.flat.diminishedTriad.add7().transposeBy(.m2);
+// F♭ø
 ```
 
 Or modify its root triad:
 
 ```dart
-Note.g.minorTriad.major; // G maj. (G B D)
-Note.f.sharp.majorTriad.add9().diminished; // F♯ dim. (F♯ A C G♯)
+Note.g.minorTriad.major; // G
+Note.f.sharp.majorTriad.add9().diminished; // F♯dim
 ```
 
 ### Frequencies
@@ -499,7 +500,7 @@ And use it in a `TuningSystem`:
 Note.b.flat
     .inOctave(4)
     .frequency(
-      tuningSystem: const EqualTemperament.edo12(fork: TuningFork.c256),
+      tuningSystem: const EqualTemperament.edo12(fork: .c256),
     ); // 456.1401436878537
 ```
 
@@ -513,33 +514,35 @@ const Frequency(440).at(const Celsius(24)); // 443.07602679871826
 Get the closest `Pitch` from a given `Frequency`:
 
 ```dart
-const Frequency(432).closestPitch(); // A4-32
+const Frequency(432).closestPitch(); // A4−32
 const Frequency(314).closestPitch(); // E♭4+16
-const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
+const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4−12
 ```
 
 And combining both `frequency` and `closestPitch` methods,
 the harmonic series of a given `Pitch`:
 
 ```dart
-Note.c.inOctave(1).harmonics(upToIndex: 15);
-// {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
-// E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
+Note.c.inOctave(1).harmonics().take(16).toSet();
+// {C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0,
+// D4+4, E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}
 ```
 
 Create a `ClosestPitch` by adding or subtracting `Cent`s to a `Pitch`:
 
 ```dart
 Note.f.sharp.inOctave(4) + const Cent(16); // F♯4+16
-Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5-8
+Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5−8
 ```
 
 Or parse a `ClosestPitch` from a string:
 
 ```dart
-ClosestPitch.parse('A4'); // A4
-ClosestPitch.parse('A4+12.6'); // A4+13
-ClosestPitch.parse('E♭3-28'); // E♭3-28
+ClosestPitch.parse('A4'); // A4±0
+ClosestPitch.parse('E♭3-28'); // E♭3−28
+ClosestPitch.parse('A4+12.6').toString(
+  formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+); // A4+12.6
 ```
 
 ### In a nutshell
@@ -548,24 +551,25 @@ ClosestPitch.parse('E♭3-28'); // E♭3-28
 ScalePattern
     .lydian // Lydian (M2 M2 M2 m2 M2 M2 m2)
     .on(Note.parse('a')) // A Lydian (A B C♯ D♯ E F♯ G♯ A)
-    .transposeBy(Interval.M2) // B Lydian (B C♯ D♯ E♯ F♯ G♯ A♯ B)
-    .degree(ScaleDegree.iii) // D♯
+    .transposeBy(.M2) // B Lydian (B C♯ D♯ E♯ F♯ G♯ A♯ B)
+    .degree(.iii) // D♯
     .respelledUpwards // E♭
     .major // E♭ major
     .relative // C minor
     .scale // C Natural minor (aeolian) (C D E♭ F G A♭ B♭ C)
-    .degreeChord(ScaleDegree.v) // G min. (G B♭ D)
-    .add9(); // G min. (G B♭ D A)
+    .degreeChord(.v) // G-
+    .add9(); // G-9
 ```
 
 ## Similar projects in other languages
 
-- **Mingus** [Python](https://github.com/bspaans/python-mingus)
-- **Modest** [Lua](https://github.com/esbudylin/modest)
-- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
-- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
-- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
-- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
+- `mingus` [Python](https://github.com/bspaans/python-mingus)
+- `modest` [Lua](https://github.com/esbudylin/modest)
+- `music21` [Python](https://github.com/cuthbertLab/music21)
+- `sharp11` [JavaScript](https://github.com/jsrmath/sharp11)
+- `teoria` [JavaScript](https://github.com/saebekassebil/teoria)
+- `tonal` [JavaScript](https://github.com/tonaljs/tonal)
+- `tonic` [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 

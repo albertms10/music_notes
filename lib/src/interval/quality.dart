@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
@@ -81,7 +81,7 @@ final class PerfectQuality extends Quality {
   /// A triply augmented [PerfectQuality].
   static const triplyAugmented = PerfectQuality(3);
 
-  /// The chain of [Parser]s used to parse a [PerfectQuality].
+  /// The chain of [StringParser]s used to parse a [PerfectQuality].
   static const parsers = [PerfectQualityNotation()];
 
   /// Parse [source] as a [PerfectQuality] and return its value.
@@ -91,13 +91,13 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.parse('P') == PerfectQuality.perfect
-  /// PerfectQuality.parse('dd') == PerfectQuality.doublyDiminished
+  /// PerfectQuality.parse('P') == .perfect
+  /// PerfectQuality.parse('dd') == .doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
   factory PerfectQuality.parse(
     String source, {
-    List<Parser<PerfectQuality>> chain = parsers,
+    List<StringParser<PerfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [PerfectQuality].
@@ -106,8 +106,8 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.inversion == PerfectQuality.perfect
-  /// PerfectQuality.augmented.inversion == PerfectQuality.diminished
+  /// PerfectQuality.perfect.inversion == .perfect
+  /// PerfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   PerfectQuality get inversion => PerfectQuality(-semitones);
@@ -133,7 +133,7 @@ final class PerfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    Formatter<PerfectQuality> formatter = const PerfectQualityNotation(),
+    StringFormatter<PerfectQuality> formatter = const PerfectQualityNotation(),
   }) => formatter.format(this);
 
   @override
@@ -176,7 +176,7 @@ final class ImperfectQuality extends Quality {
   /// A triply augmented [ImperfectQuality].
   static const triplyAugmented = ImperfectQuality(4);
 
-  /// The chain of [Parser]s used to parse an [ImperfectQuality].
+  /// The chain of [StringParser]s used to parse an [ImperfectQuality].
   static const parsers = [ImperfectQualityNotation()];
 
   /// Parse [source] as a [ImperfectQuality] and return its value.
@@ -186,13 +186,13 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.parse('m') == ImperfectQuality.minor
-  /// ImperfectQuality.parse('A') == ImperfectQuality.augmented
+  /// ImperfectQuality.parse('m') == .minor
+  /// ImperfectQuality.parse('A') == .augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
   factory ImperfectQuality.parse(
     String source, {
-    List<Parser<ImperfectQuality>> chain = parsers,
+    List<StringParser<ImperfectQuality>> chain = parsers,
   }) => chain.parse(source);
 
   /// The inversion of this [ImperfectQuality].
@@ -201,8 +201,8 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.inversion == ImperfectQuality.major
-  /// ImperfectQuality.augmented.inversion == ImperfectQuality.diminished
+  /// ImperfectQuality.minor.inversion == .major
+  /// ImperfectQuality.augmented.inversion == .diminished
   /// ```
   @override
   ImperfectQuality get inversion => ImperfectQuality(1 - semitones);
@@ -233,7 +233,8 @@ final class ImperfectQuality extends Quality {
   /// ```
   @override
   String toString({
-    Formatter<ImperfectQuality> formatter = const ImperfectQualityNotation(),
+    StringFormatter<ImperfectQuality> formatter =
+        const ImperfectQualityNotation(),
   }) => formatter.format(this);
 
   @override
@@ -243,7 +244,8 @@ final class ImperfectQuality extends Quality {
 }
 
 /// A notation system for [PerfectQuality].
-final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
+final class PerfectQualityNotation
+    extends StringNotationSystem<PerfectQuality> {
   /// Creates a new [PerfectQualityNotation].
   const PerfectQualityNotation();
 
@@ -276,14 +278,15 @@ final class PerfectQualityNotation extends NotationSystem<PerfectQuality> {
 
     return switch (quality[0]) {
       _diminishedSymbol => PerfectQuality(-quality.length),
-      _perfectSymbol => PerfectQuality.perfect,
+      _perfectSymbol => .perfect,
       _ /* _augmentedSymbol */ => PerfectQuality(quality.length),
     };
   }
 }
 
 /// A notation system for [ImperfectQuality].
-final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
+final class ImperfectQualityNotation
+    extends StringNotationSystem<ImperfectQuality> {
   /// Creates a new [ImperfectQualityNotation].
   const ImperfectQualityNotation();
 
@@ -308,22 +311,22 @@ final class ImperfectQualityNotation extends NotationSystem<ImperfectQuality> {
   RegExp get regExp => _regExp;
 
   @override
+  ImperfectQuality parseMatch(RegExpMatch match) {
+    final quality = match.namedGroup('quality')!;
+
+    return switch (quality[0]) {
+      _diminishedSymbol => ImperfectQuality(-quality.length),
+      _minorSymbol => .minor,
+      _majorSymbol => .major,
+      _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
+    };
+  }
+
+  @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
     < 0 && final semitones => _diminishedSymbol * semitones.abs(),
     0 => _minorSymbol,
     1 => _majorSymbol,
     final semitones => _augmentedSymbol * (semitones - 1),
   };
-
-  @override
-  ImperfectQuality parseMatch(RegExpMatch match) {
-    final quality = match.namedGroup('quality')!;
-
-    return switch (quality[0]) {
-      _diminishedSymbol => ImperfectQuality(-quality.length),
-      _minorSymbol => ImperfectQuality.minor,
-      _majorSymbol => ImperfectQuality.major,
-      _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
-    };
-  }
 }

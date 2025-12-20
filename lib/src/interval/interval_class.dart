@@ -72,11 +72,11 @@ final class IntervalClass
   /// Example:
   /// ```dart
   /// IntervalClass.m2.spellings() == {Interval.m2}
-  /// IntervalClass.tritone.spellings() == {Interval.A4, Interval.d5}
-  /// IntervalClass.m3.spellings(distance: 1) == {
-  ///     Interval.A2,
-  ///     Interval.m3,
-  ///     const Interval.perfect(4, PerfectQuality.doublyDiminished)
+  /// IntervalClass.tritone.spellings() == <Interval>{.A4, .d5}
+  /// IntervalClass.m3.spellings(distance: 1) == <Interval>{
+  ///     .A2,
+  ///     .m3,
+  ///     const .perfect(.fourth, .doublyDiminished)
   ///   }
   /// ```
   Set<Interval> spellings({int distance = 0}) {
@@ -85,14 +85,11 @@ final class IntervalClass
 
     if (size != null) {
       return SplayTreeSet<Interval>.of({
-        Interval.fromSizeAndSemitones(size, semitones),
+        .fromSizeAndSemitones(size, semitones),
         for (var i = 1; i <= distance; i++) ...[
           if (size.incrementBy(-i) != 0)
-            Interval.fromSizeAndSemitones(
-              Size(size.incrementBy(-i)),
-              semitones,
-            ),
-          Interval.fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
+            .fromSizeAndSemitones(Size(size.incrementBy(-i)), semitones),
+          .fromSizeAndSemitones(Size(size.incrementBy(i)), semitones),
         ],
       });
     }
@@ -101,12 +98,12 @@ final class IntervalClass
 
     return SplayTreeSet<Interval>.of({
       for (var i = 1; i <= distanceClamp; i++) ...[
-        Interval.fromSizeAndSemitones(
-          Size.fromSemitones(semitones.incrementBy(-i))!,
+        .fromSizeAndSemitones(
+          .fromSemitones(semitones.incrementBy(-i))!,
           semitones,
         ),
-        Interval.fromSizeAndSemitones(
-          Size.fromSemitones(semitones.incrementBy(i))!,
+        .fromSizeAndSemitones(
+          .fromSemitones(semitones.incrementBy(i))!,
           semitones,
         ),
       ],
@@ -118,10 +115,10 @@ final class IntervalClass
   ///
   /// Example:
   /// ```dart
-  /// IntervalClass.m3.resolveClosestSpelling() == Interval.m3
-  /// IntervalClass.tritone.resolveClosestSpelling() == Interval.A4
+  /// IntervalClass.m3.resolveClosestSpelling() == .m3
+  /// IntervalClass.tritone.resolveClosestSpelling() == .A4
   /// IntervalClass.tritone.resolveClosestSpelling(PerfectQuality.diminished)
-  ///   == Interval.d5
+  ///   == .d5
   /// ```
   Interval resolveClosestSpelling([Quality? preferredQuality]) {
     if (preferredQuality != null) {
@@ -144,9 +141,9 @@ final class IntervalClass
   ///
   /// Example:
   /// ```dart
-  /// IntervalClass.m3 + IntervalClass.m3 == IntervalClass.tritone
-  /// IntervalClass.tritone + IntervalClass.M2 == IntervalClass.M3
-  /// IntervalClass.M3 + IntervalClass.P4 == IntervalClass.m3
+  /// IntervalClass.m3 + IntervalClass.m3 == .tritone
+  /// IntervalClass.tritone + IntervalClass.M2 == .M3
+  /// IntervalClass.M3 + IntervalClass.P4 == .m3
   /// ```
   IntervalClass operator +(IntervalClass other) =>
       IntervalClass(semitones + other.semitones);
@@ -155,9 +152,9 @@ final class IntervalClass
   ///
   /// Example:
   /// ```dart
-  /// IntervalClass.P4 - IntervalClass.m3 == IntervalClass.M2
-  /// IntervalClass.m3 - IntervalClass.tritone == IntervalClass.m3
-  /// IntervalClass.P1 - IntervalClass.m2 == IntervalClass.m2
+  /// IntervalClass.P4 - IntervalClass.m3 == .M2
+  /// IntervalClass.m3 - IntervalClass.tritone == .m3
+  /// IntervalClass.P1 - IntervalClass.m2 == .m2
   /// ```
   IntervalClass operator -(IntervalClass other) =>
       IntervalClass(semitones - other.semitones);
@@ -166,9 +163,9 @@ final class IntervalClass
   ///
   /// Example:
   /// ```dart
-  /// IntervalClass.P4 * -1 == IntervalClass.P4
-  /// IntervalClass.M2 * 0 == IntervalClass.P1
-  /// IntervalClass.m3 * 2 == IntervalClass.tritone
+  /// IntervalClass.P4 * -1 == .P4
+  /// IntervalClass.M2 * 0 == .P1
+  /// IntervalClass.m3 * 2 == .tritone
   /// ```
   IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 

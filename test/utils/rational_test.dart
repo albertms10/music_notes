@@ -145,13 +145,13 @@ void main() {
     group('.compareTo()', () {
       test('sorts Ratios in a collection', () {
         final orderedSet = SplayTreeSet<Rational>.of({
-          Rational.zero,
+          .zero,
           const Rational.fromMixed(1, 2, 2),
           const Rational.fromMixed(0, 7, 2),
           const Rational.fromMixed(0, 1, 9),
         });
-        expect(orderedSet.toList(), const [
-          Rational.zero,
+        expect(orderedSet.toList(), const <Rational>[
+          .zero,
           Rational.fromMixed(0, 1, 9),
           Rational.fromMixed(1, 2, 2),
           Rational.fromMixed(0, 7, 2),

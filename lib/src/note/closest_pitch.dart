@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
@@ -27,7 +27,7 @@ class ClosestPitch {
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
-  /// The chain of [Parser]s used to parse a [ClosestPitch].
+  /// The chain of [StringParser]s used to parse a [ClosestPitch].
   static const parsers = [StandardClosestPitchNotation()];
 
   /// Parse [source] as a [ClosestPitch] and return its value.
@@ -44,7 +44,7 @@ class ClosestPitch {
   /// ```
   factory ClosestPitch.parse(
     String source, {
-    List<Parser<ClosestPitch>> chain = parsers,
+    List<StringParser<ClosestPitch>> chain = parsers,
   }) => chain.parse(source);
 
   /// The [Frequency] of this [ClosestPitch] from [tuningSystem] and
@@ -56,8 +56,8 @@ class ClosestPitch {
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = Celsius.reference,
-    Celsius referenceTemperature = Celsius.reference,
+    Celsius temperature = .reference,
+    Celsius referenceTemperature = .reference,
   }) => Frequency(
     pitch.frequency(
           tuningSystem: tuningSystem,
@@ -89,14 +89,15 @@ class ClosestPitch {
   /// ```
   @override
   String toString({
-    Formatter<ClosestPitch> formatter = const StandardClosestPitchNotation(),
+    StringFormatter<ClosestPitch> formatter =
+        const StandardClosestPitchNotation(),
   }) => formatter.format(this);
 
   /// Adds [cents] to this [ClosestPitch].
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4+8') + const Cent(12) == ClosestPitch.parse('A4+20')
+  /// ClosestPitch.parse('A4+8') + const Cent(12) == .parse('A4+20')
   /// ```
   ClosestPitch operator +(Cent cents) =>
       ClosestPitch(pitch, cents: Cent(this.cents + cents));
@@ -105,7 +106,7 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4+8') - const Cent(12) == ClosestPitch.parse('A4-4')
+  /// ClosestPitch.parse('A4+8') - const Cent(12) == .parse('A4-4')
   /// ```
   ClosestPitch operator -(Cent cents) =>
       ClosestPitch(pitch, cents: Cent(this.cents - cents));
@@ -118,10 +119,13 @@ class ClosestPitch {
   int get hashCode => Object.hash(pitch, cents);
 }
 
-/// The [NotationSystem] for standard [ClosestPitch].
-class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
-  /// The [NotationSystem] for [Pitch] notation.
-  final NotationSystem<Pitch> pitchNotation;
+/// The [StringNotationSystem] for standard [ClosestPitch].
+class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
+  /// The [StringNotationSystem] for [Pitch] notation.
+  final StringNotationSystem<Pitch> pitchNotation;
+
+  /// The number of fraction digits to use when formatting cents.
+  final int fractionDigits;
 
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;
@@ -129,32 +133,36 @@ class StandardClosestPitchNotation extends NotationSystem<ClosestPitch> {
   /// Creates a new [StandardClosestPitchNotation].
   const StandardClosestPitchNotation({
     this.pitchNotation = ScientificPitchNotation.english,
+    this.fractionDigits = 0,
   }) : _useAscii = false;
 
   /// Creates a new [StandardClosestPitchNotation] using ASCII characters.
   const StandardClosestPitchNotation.ascii({
     this.pitchNotation = const ScientificPitchNotation.ascii(),
+    this.fractionDigits = 0,
   }) : _useAscii = true;
 
   @override
   RegExp get regExp => RegExp(
     '${pitchNotation.regExp?.pattern}\\s*'
-    '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?',
+    '(?<cents>[+-${NumExtension.minusSign}${NumExtension.plusMinusSign}]\\d+(?:\\.\\d+)?)?',
     caseSensitive: false,
   );
 
   @override
   ClosestPitch parseMatch(RegExpMatch match) => ClosestPitch(
     pitchNotation.parseMatch(match),
-    cents: Cent(num.parse(match.namedGroup('cents')?.toNegativeAscii() ?? '0')),
+    cents: Cent(.parse(match.namedGroup('cents')?.toAscii() ?? '0')),
   );
 
   @override
   String format(ClosestPitch closestPitch) {
-    final roundedCents = closestPitch.cents.round();
     final pitch = pitchNotation.format(closestPitch.pitch);
-    if (roundedCents == 0) return pitch;
+    final cents = closestPitch.cents.toDeltaString(
+      useAscii: _useAscii,
+      fractionDigits: fractionDigits,
+    );
 
-    return '$pitch${roundedCents.toDeltaString(useAscii: _useAscii)}';
+    return '$pitch$cents';
   }
 }

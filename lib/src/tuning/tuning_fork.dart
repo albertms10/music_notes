@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/frequency.dart';
 import '../note/note.dart';
 import '../note/pitch.dart';
@@ -19,18 +19,18 @@ class TuningFork {
 
   /// The [A440 (pitch standard)](https://en.wikipedia.org/wiki/A440_(pitch_standard))
   /// tuning fork.
-  static const a440 = TuningFork(Pitch.reference, Frequency.reference);
+  static const a440 = TuningFork(.reference, .reference);
 
   /// The A432 tuning fork.
-  static const a432 = TuningFork(Pitch.reference, Frequency(432));
+  static const a432 = TuningFork(.reference, Frequency(432));
 
   /// The A415 tuning fork.
-  static const a415 = TuningFork(Pitch.reference, Frequency(415));
+  static const a415 = TuningFork(.reference, Frequency(415));
 
   /// The C256 tuning fork.
-  static const c256 = TuningFork(Pitch(Note.c, octave: 4), Frequency(256));
+  static const c256 = TuningFork(Pitch(.c, octave: 4), Frequency(256));
 
-  /// The chain of [Parser]s used to parse a [TuningFork].
+  /// The chain of [StringParser]s used to parse a [TuningFork].
   static const parsers = [
     CompactTuningForkNotation(),
     ScientificTuningForkNotation.english,
@@ -46,13 +46,13 @@ class TuningFork {
   ///
   /// Example:
   /// ```dart
-  /// TuningFork.parse('A440') == TuningFork.a440
-  /// TuningFork.parse('C = 256') == TuningFork.c256
+  /// TuningFork.parse('A440') == .a440
+  /// TuningFork.parse('C = 256') == .c256
   /// TuningFork.parse('z') // throws a FormatException
   /// ```
   factory TuningFork.parse(
     String source, {
-    List<Parser<TuningFork>> chain = parsers,
+    List<StringParser<TuningFork>> chain = parsers,
   }) => chain.parse(source);
 
   /// The string representation of this [TuningFork] based on [formatter].
@@ -65,7 +65,7 @@ class TuningFork {
   /// ```
   @override
   String toString({
-    Formatter<TuningFork> formatter = const CompactTuningForkNotation(),
+    StringFormatter<TuningFork> formatter = const CompactTuningForkNotation(),
   }) => formatter.format(this);
 
   @override
@@ -78,13 +78,13 @@ class TuningFork {
   int get hashCode => Object.hash(pitch, frequency);
 }
 
-/// The [NotationSystem] for compact [TuningFork].
-final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
-  /// The [NotationSystem] for [Note].
-  final NotationSystem<Note> noteNotation;
+/// The [StringNotationSystem] for compact [TuningFork].
+final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
+  /// The [StringNotationSystem] for [Note].
+  final StringNotationSystem<Note> noteNotation;
 
-  /// The [NotationSystem] for [Frequency].
-  final NotationSystem<Frequency> frequencyNotation;
+  /// The [StringNotationSystem] for [Frequency].
+  final StringNotationSystem<Frequency> frequencyNotation;
 
   /// The reference octave.
   final int referenceOctave;
@@ -95,15 +95,6 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
     this.frequencyNotation = const FrequencySINotation(),
     this.referenceOctave = Pitch.referenceOctave,
   });
-
-  @override
-  String format(TuningFork tuningFork) {
-    final pitch = tuningFork.pitch.octave == referenceOctave
-        ? '${tuningFork.pitch.note}'
-        : '${tuningFork.pitch} ';
-
-    return '$pitch${tuningFork.frequency}';
-  }
 
   @override
   RegExp get regExp => RegExp(
@@ -122,15 +113,25 @@ final class CompactTuningForkNotation extends NotationSystem<TuningFork> {
       frequencyNotation.parseMatch(match),
     );
   }
+
+  @override
+  String format(TuningFork tuningFork) {
+    final pitch = tuningFork.pitch.octave == referenceOctave
+        ? '${tuningFork.pitch.note}'
+        : '${tuningFork.pitch} ';
+
+    return '$pitch${tuningFork.frequency}';
+  }
 }
 
 /// The scientific [TuningFork] notation formatter.
-final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
-  /// The [NotationSystem] for [Pitch].
-  final NotationSystem<Pitch> pitchNotation;
+final class ScientificTuningForkNotation
+    extends StringNotationSystem<TuningFork> {
+  /// The [StringNotationSystem] for [Pitch].
+  final StringNotationSystem<Pitch> pitchNotation;
 
-  /// The [NotationSystem] for [Frequency].
-  final NotationSystem<Frequency> frequencyNotation;
+  /// The [StringNotationSystem] for [Frequency].
+  final StringNotationSystem<Frequency> frequencyNotation;
 
   /// Creates a new [ScientificTuningForkNotation].
   const ScientificTuningForkNotation({
@@ -159,11 +160,6 @@ final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
   );
 
   @override
-  String format(TuningFork tuningFork) =>
-      '${pitchNotation.format(tuningFork.pitch)}'
-      ' = ${frequencyNotation.format(tuningFork.frequency)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${pitchNotation.regExp?.pattern}\\s*=\\s*'
     '${frequencyNotation.regExp?.pattern}',
@@ -175,4 +171,9 @@ final class ScientificTuningForkNotation extends NotationSystem<TuningFork> {
     pitchNotation.parseMatch(match),
     frequencyNotation.parseMatch(match),
   );
+
+  @override
+  String format(TuningFork tuningFork) =>
+      '${pitchNotation.format(tuningFork.pitch)}'
+      ' = ${frequencyNotation.format(tuningFork.frequency)}';
 }
