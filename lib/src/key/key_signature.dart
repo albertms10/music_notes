@@ -173,8 +173,11 @@ final class KeySignature implements Comparable<KeySignature> {
 
   @override
   String toString() =>
-      '$distance '
-      '(${_notes.map(EnglishNoteNotation.showNatural.format).join(' ')})';
+      '${isCanonical ? '${keys.values.toSet()} '
+                '${distance?.toDeltaString()} fifths' : 'Non-canonical'} '
+      '(${_notes.isEmpty ? 'empty' : _notes.map(
+              EnglishNoteNotation.showNatural.format,
+            ).join(' ')})';
 
   /// The consecutive union of two [KeySignature]s (as if divided by a barline),
   /// including cancellation [Accidental.natural]s when needed.
