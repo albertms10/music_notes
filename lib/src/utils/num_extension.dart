@@ -26,10 +26,10 @@ extension NumExtension on num {
   /// ```
   String toDeltaString({bool useAscii = false, int? fractionDigits}) {
     final formatted = _formatted(fractionDigits);
+    if (isNegative) return useAscii ? '-$formatted' : '$minusSign$formatted';
     if (double.tryParse(formatted)?.abs() == 0) {
       return useAscii ? '$plusSign$formatted' : '$plusMinusSign$formatted';
     }
-    if (isNegative) return useAscii ? '-$formatted' : '$minusSign$formatted';
 
     return '$plusSign$formatted';
   }
