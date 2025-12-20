@@ -226,58 +226,112 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the string representation of this KeySignature', () {
+      test('returns the string representation of a canonical KeySignature', () {
         expect(
           KeySignature.fromDistance(-10).toString(),
-          '-10 (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫 E𝄫 A𝄫)',
+          '{E𝄫 major, C♭ minor} −10 fifths (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫 E𝄫 A𝄫)',
         );
         expect(
           KeySignature.fromDistance(-8).toString(),
-          '-8 (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫)',
+          '{F♭ major, D♭ minor} −8 fifths (B♭ E♭ A♭ D♭ G♭ C♭ F♭ B𝄫)',
         );
         expect(
           KeySignature.fromDistance(-7).toString(),
-          '-7 (B♭ E♭ A♭ D♭ G♭ C♭ F♭)',
+          '{C♭ major, A♭ minor} −7 fifths (B♭ E♭ A♭ D♭ G♭ C♭ F♭)',
         );
         expect(
           KeySignature.fromDistance(-6).toString(),
-          '-6 (B♭ E♭ A♭ D♭ G♭ C♭)',
+          '{G♭ major, E♭ minor} −6 fifths (B♭ E♭ A♭ D♭ G♭ C♭)',
         );
-        expect(KeySignature.fromDistance(-5).toString(), '-5 (B♭ E♭ A♭ D♭ G♭)');
-        expect(KeySignature.fromDistance(-4).toString(), '-4 (B♭ E♭ A♭ D♭)');
-        expect(KeySignature.fromDistance(-3).toString(), '-3 (B♭ E♭ A♭)');
-        expect(KeySignature.fromDistance(-2).toString(), '-2 (B♭ E♭)');
-        expect(KeySignature.fromDistance(-1).toString(), '-1 (B♭)');
-        expect(KeySignature.empty.toString(), '0 ()');
-        expect(KeySignature.fromDistance(1).toString(), '1 (F♯)');
-        expect(KeySignature.fromDistance(2).toString(), '2 (F♯ C♯)');
-        expect(KeySignature.fromDistance(3).toString(), '3 (F♯ C♯ G♯)');
-        expect(KeySignature.fromDistance(4).toString(), '4 (F♯ C♯ G♯ D♯)');
-        expect(KeySignature.fromDistance(5).toString(), '5 (F♯ C♯ G♯ D♯ A♯)');
+        expect(
+          KeySignature.fromDistance(-5).toString(),
+          '{D♭ major, B♭ minor} −5 fifths (B♭ E♭ A♭ D♭ G♭)',
+        );
+        expect(
+          KeySignature.fromDistance(-4).toString(),
+          '{A♭ major, F minor} −4 fifths (B♭ E♭ A♭ D♭)',
+        );
+        expect(
+          KeySignature.fromDistance(-3).toString(),
+          '{E♭ major, C minor} −3 fifths (B♭ E♭ A♭)',
+        );
+        expect(
+          KeySignature.fromDistance(-2).toString(),
+          '{B♭ major, G minor} −2 fifths (B♭ E♭)',
+        );
+        expect(
+          KeySignature.fromDistance(-1).toString(),
+          '{F major, D minor} −1 fifths (B♭)',
+        );
+        expect(
+          KeySignature.empty.toString(),
+          '{C major, A minor} ±0 fifths (empty)',
+        );
+        expect(
+          KeySignature.fromDistance(1).toString(),
+          '{G major, E minor} +1 fifths (F♯)',
+        );
+        expect(
+          KeySignature.fromDistance(2).toString(),
+          '{D major, B minor} +2 fifths (F♯ C♯)',
+        );
+        expect(
+          KeySignature.fromDistance(3).toString(),
+          '{A major, F♯ minor} +3 fifths (F♯ C♯ G♯)',
+        );
+        expect(
+          KeySignature.fromDistance(4).toString(),
+          '{E major, C♯ minor} +4 fifths (F♯ C♯ G♯ D♯)',
+        );
+        expect(
+          KeySignature.fromDistance(5).toString(),
+          '{B major, G♯ minor} +5 fifths (F♯ C♯ G♯ D♯ A♯)',
+        );
         expect(
           KeySignature.fromDistance(6).toString(),
-          '6 (F♯ C♯ G♯ D♯ A♯ E♯)',
+          '{F♯ major, D♯ minor} +6 fifths (F♯ C♯ G♯ D♯ A♯ E♯)',
         );
         expect(
           KeySignature.fromDistance(7).toString(),
-          '7 (F♯ C♯ G♯ D♯ A♯ E♯ B♯)',
+          '{C♯ major, A♯ minor} +7 fifths (F♯ C♯ G♯ D♯ A♯ E♯ B♯)',
         );
         expect(
           KeySignature.fromDistance(8).toString(),
-          '8 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪)',
+          '{G♯ major, E♯ minor} +8 fifths (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪)',
         );
         expect(
           KeySignature.fromDistance(10).toString(),
-          '10 (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪 C𝄪 G𝄪)',
+          '{A♯ major, F𝄪 minor} +10 fifths (F♯ C♯ G♯ D♯ A♯ E♯ B♯ F𝄪 C𝄪 G𝄪)',
         );
 
-        expect(const KeySignature([.b]).toString(), '0 (B♮)');
-        expect(const KeySignature([.f, .c]).toString(), '0 (F♮ C♮)');
+        expect(
+          const KeySignature([.b]).toString(),
+          '{C major, A minor} ±0 fifths (B♮)',
+        );
+        expect(
+          const KeySignature([.f, .c]).toString(),
+          '{C major, A minor} ±0 fifths (F♮ C♮)',
+        );
+        expect(
+          KeySignature([.b, .f.sharp, .c.sharp]).toString(),
+          '{D major, B minor} +2 fifths (B♮ F♯ C♯)',
+        );
         expect(
           KeySignature([.f, .c, .g, .b.flat, .e.flat]).toString(),
-          '-2 (F♮ C♮ G♮ B♭ E♭)',
+          '{B♭ major, G minor} −2 fifths (F♮ C♮ G♮ B♭ E♭)',
         );
       });
+
+      test(
+        'returns the string representation of a non-canonical '
+        'KeySignature',
+        () {
+          expect(
+            KeySignature([.a.flat, .f.sharp]).toString(),
+            'Non-canonical (A♭ F♯)',
+          );
+        },
+      );
     });
 
     group('operator |()', () {

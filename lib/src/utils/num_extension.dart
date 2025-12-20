@@ -6,18 +6,24 @@ extension NumExtension on num {
   /// The Unicode minus sign.
   static const minusSign = '−';
 
+  /// The Unicode plus-minus sign.
+  static const plusMinusSign = '±';
+
   /// The delta string representation of this [num]
   /// (showing always the positive sign).
   ///
   /// Example:
   /// ```dart
   /// 1.1.toDeltaString() == '+1.1'
-  /// 0.toDeltaString() == '+0'
-  /// (-5).toDeltaString() == '-5'
+  /// 0.toDeltaString() == '±0'
+  /// (-5).toDeltaString() == '−5'
+  /// (-5).toDeltaString(useAscii) == '-5'
   /// ```
-  String toDeltaString({bool useAscii = false}) => isNegative
-      ? (useAscii ? '$this' : toNegativeUnicode())
-      : '$plusSign$this';
+  String toDeltaString({bool useAscii = false}) => switch (this) {
+    < 0 => (useAscii ? '$this' : toNegativeUnicode()),
+    > 0 => '$plusSign$this',
+    _ /* == 0 */ => (useAscii ? '$plusSign$this' : '$plusMinusSign$this'),
+  };
 
   /// The negative Unicode representation of this [num].
   ///

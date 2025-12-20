@@ -46,35 +46,6 @@ void main() {
       });
     });
 
-    group('.parse()', () {
-      test('parses source as a ChordPattern', () {
-        expect(ChordPattern.parse('+'), ChordPattern.augmentedTriad);
-        expect(ChordPattern.parse(''), ChordPattern.majorTriad);
-        expect(ChordPattern.parse('-'), ChordPattern.minorTriad);
-        expect(ChordPattern.parse('dim'), ChordPattern.diminishedTriad);
-
-        expect(ChordPattern.parse('7'), ChordPattern.majorTriad.add7());
-        expect(
-          ChordPattern.parse('maj7'),
-          ChordPattern.majorTriad.add7(.major),
-        );
-        expect(ChordPattern.parse('-7'), ChordPattern.minorTriad.add7());
-        expect(
-          ChordPattern.parse('- maj7'),
-          ChordPattern.minorTriad.add7(.major),
-        );
-        expect(
-          ChordPattern.parse('-maj7'),
-          ChordPattern.minorTriad.add7(.major),
-        );
-        expect(ChordPattern.parse('ø'), ChordPattern.diminishedTriad.add7());
-        expect(ChordPattern.parse('sus2'), const ChordPattern([.M2, .P5]));
-        expect(ChordPattern.parse('sus4'), const ChordPattern([.P4, .P5]));
-        expect(ChordPattern.parse(' SuS2 '), const ChordPattern([.M2, .P5]));
-        expect(ChordPattern.parse(' sus4 '), const ChordPattern([.P4, .P5]));
-      });
-    });
-
     group('.on()', () {
       test('returns the Chord built on Scalable', () {
         expect(
@@ -419,6 +390,55 @@ void main() {
       });
     });
 
+    group('.hashCode', () {
+      test('ignores equal ChordPattern instances in a Set', () {
+        final collection = <ChordPattern>{
+          .augmentedTriad,
+          .majorTriad,
+          .minorTriad,
+          .diminishedTriad,
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), <ChordPattern>[
+          .augmentedTriad,
+          .majorTriad,
+          .minorTriad,
+          .diminishedTriad,
+        ]);
+      });
+    });
+  });
+
+  group('ChordPatternNotation', () {
+    group('.parse()', () {
+      test('parses source as a ChordPattern', () {
+        expect(ChordPattern.parse('+'), ChordPattern.augmentedTriad);
+        expect(ChordPattern.parse(''), ChordPattern.majorTriad);
+        expect(ChordPattern.parse('-'), ChordPattern.minorTriad);
+        expect(ChordPattern.parse('dim'), ChordPattern.diminishedTriad);
+
+        expect(ChordPattern.parse('7'), ChordPattern.majorTriad.add7());
+        expect(
+          ChordPattern.parse('maj7'),
+          ChordPattern.majorTriad.add7(.major),
+        );
+        expect(ChordPattern.parse('-7'), ChordPattern.minorTriad.add7());
+        expect(
+          ChordPattern.parse('- maj7'),
+          ChordPattern.minorTriad.add7(.major),
+        );
+        expect(
+          ChordPattern.parse('-maj7'),
+          ChordPattern.minorTriad.add7(.major),
+        );
+        expect(ChordPattern.parse('ø'), ChordPattern.diminishedTriad.add7());
+        expect(ChordPattern.parse('sus2'), const ChordPattern([.M2, .P5]));
+        expect(ChordPattern.parse('sus4'), const ChordPattern([.P4, .P5]));
+        expect(ChordPattern.parse(' SuS2 '), const ChordPattern([.M2, .P5]));
+        expect(ChordPattern.parse(' sus4 '), const ChordPattern([.P4, .P5]));
+      });
+    });
+
     group('.toString()', () {
       test('returns the string representation of this ChordPattern', () {
         expect(ChordPattern.augmentedTriad.toString(), '+');
@@ -434,7 +454,10 @@ void main() {
         expect(ChordPattern.minorTriad.add13().toString(), '-13');
         expect(ChordPattern.minorTriad.add7(.major).toString(), '-maj7');
         expect(ChordPattern.diminishedTriad.add7().toString(), 'ø');
-        expect(ChordPattern.diminishedTriad.add7(.diminished).toString(), 'º');
+        expect(
+          ChordPattern.diminishedTriad.add7(.diminished).toString(),
+          'º',
+        );
 
         expect(ChordPattern.majorTriad.sus2().toString(), 'sus2');
         expect(ChordPattern.majorTriad.sus4().toString(), 'sus4');
@@ -467,24 +490,6 @@ void main() {
         expect(ChordPattern.majorTriad.add13(.minor).toString(), '♭13');
         expect(ChordPattern.majorTriad.add13().toString(), '13');
         expect(ChordPattern.majorTriad.add13(.augmented).toString(), '♯13');
-      });
-    });
-
-    group('.hashCode', () {
-      test('ignores equal ChordPattern instances in a Set', () {
-        final collection = <ChordPattern>{
-          .augmentedTriad,
-          .majorTriad,
-          .minorTriad,
-          .diminishedTriad,
-        };
-        collection.addAll(collection);
-        expect(collection.toList(), <ChordPattern>[
-          .augmentedTriad,
-          .majorTriad,
-          .minorTriad,
-          .diminishedTriad,
-        ]);
       });
     });
   });

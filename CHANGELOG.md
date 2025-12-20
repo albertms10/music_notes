@@ -1,3 +1,42 @@
+## 0.24.0
+
+- build(pubspec): 🚚 bump Dart SDK 3.9 [#644](https://github.com/albertms10/music_notes/pull/644)
+- refactor(base_note): ♻️ extract constant values and reuse base note lists [#649](https://github.com/albertms10/music_notes/pull/649)
+- refactor(hearing_range): ♻️ rewrite as an extension of `Range<E>` [#650](https://github.com/albertms10/music_notes/pull/650)
+- refactor: ♻️ extract `_parsers` default value static constant for all `.parse` factory methods [#651](https://github.com/albertms10/music_notes/pull/651)
+- feat(tuning_fork): ✨ allow Helmholtz for the scientific notation and rewrite `Frequency` notation system [#652](https://github.com/albertms10/music_notes/pull/652)
+- refactor!(note_name): 💥 rename `BaseNote` → `NoteName` [#653](https://github.com/albertms10/music_notes/pull/653)
+- refactor: ♻️ scope `switch` case variables [#654](https://github.com/albertms10/music_notes/pull/654)
+- refactor(range_extension): ♻️ rewrite `toString` parameter in favor of `formatter` [#655](https://github.com/albertms10/music_notes/pull/655)
+- refactor: ♻️ make `chainParsers` a public static constant [#656](https://github.com/albertms10/music_notes/pull/656)
+- feat(range_extension): ✨ add `RangeIterableExtension.parse` method [#657](https://github.com/albertms10/music_notes/pull/657)
+- build(pubspec): 🚚 bump Dart SDK 3.10 and use dot shorthands [#666](https://github.com/albertms10/music_notes/pull/666)
+- refactor(note): ♻️ rewrite `GermanNoteNotation.parse` method [#669](https://github.com/albertms10/music_notes/pull/669)
+- feat(pitch): ✨ add support for numbered Helmholtz pitch notation [#670](https://github.com/albertms10/music_notes/pull/670)
+- test(pitch): 🧪 add test case for repeated zeros in numbered Helmholtz notation [#671](https://github.com/albertms10/music_notes/pull/671)
+- refactor(notation_system): ♻️ split string match responsibilities from `NotationSystem` [#675](https://github.com/albertms10/music_notes/pull/675)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump github/codeql-action from 3.30.1 to 3.30.3 in the minor-actions-dependencies group [#645](https://github.com/albertms10/music_notes/pull/645)
+- chore(deps): ⬆️ bump very_good_analysis from 9.0.0 to 10.0.0 [#646](https://github.com/albertms10/music_notes/pull/646)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#647](https://github.com/albertms10/music_notes/pull/647)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#648](https://github.com/albertms10/music_notes/pull/648)
+- chore(deps): ⬆️ bump github/codeql-action from 3.30.6 to 4.30.8 [#658](https://github.com/albertms10/music_notes/pull/658)
+- chore(deps): ⬆️ bump github/codeql-action from 4.30.8 to 4.30.9 in the minor-actions-dependencies group [#660](https://github.com/albertms10/music_notes/pull/660)
+- chore(deps): ⬆️ bump github/codeql-action from 4.30.9 to 4.31.0 in the minor-actions-dependencies group [#662](https://github.com/albertms10/music_notes/pull/662)
+- chore(deps): ⬆️ bump actions/upload-artifact from 4.6.2 to 5.0.0 [#661](https://github.com/albertms10/music_notes/pull/661)
+- chore(deps): ⬆️ bump github/codeql-action from 4.31.0 to 4.31.2 in the minor-actions-dependencies group [#663](https://github.com/albertms10/music_notes/pull/663)
+- chore(deps): ⬆️ bump actions/checkout from 5.0.0 to 6.0.0 [#665](https://github.com/albertms10/music_notes/pull/665)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#664](https://github.com/albertms10/music_notes/pull/664)
+- chore(deps): ⬆️ bump github/codeql-action from 4.31.4 to 4.31.5 in the minor-actions-dependencies group [#667](https://github.com/albertms10/music_notes/pull/667)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#668](https://github.com/albertms10/music_notes/pull/668)
+- chore(deps): ⬆️ bump actions/cache from 4.3.0 to 5.0.1 [#673](https://github.com/albertms10/music_notes/pull/673)
+- chore(deps): ⬆️ bump github/codeql-action from 4.31.7 to 4.31.8 in the minor-actions-dependencies group [#672](https://github.com/albertms10/music_notes/pull/672)
+- chore(deps): ⬆️ bump actions/upload-artifact from 5.0.0 to 6.0.0 [#674](https://github.com/albertms10/music_notes/pull/674)
+
+**Full Changelog**: [`v0.23.0...v0.24.0`](https://github.com/albertms10/music_notes/compare/v0.23.0...v0.24.0)
+
 ## 0.23.0
 
 - build(pubspec): 🚚 bump Dart SDK 3.8 [#603](https://github.com/albertms10/music_notes/pull/603)

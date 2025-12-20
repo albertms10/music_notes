@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import 'note.dart';
 
 /// An accidental.
@@ -181,15 +181,24 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   /// [Accidental.natural] symbol.
   final bool showNatural;
 
+  /// Whether to place larger accidentals (double sharps/flats) before smaller
+  /// ones.
+  final bool largerFirst;
+
   /// Whether to use ASCII symbols instead of Unicode symbols.
   final bool _useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
-  const SymbolAccidentalNotation({this.showNatural = true}) : _useAscii = false;
+  const SymbolAccidentalNotation({
+    this.showNatural = true,
+    this.largerFirst = false,
+  }) : _useAscii = false;
 
   /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
-  const SymbolAccidentalNotation.ascii({this.showNatural = true})
-    : _useAscii = true;
+  const SymbolAccidentalNotation.ascii({
+    this.showNatural = true,
+    this.largerFirst = false,
+  }) : _useAscii = true;
 
   static const _doubleSharpSymbol = '𝄪';
   static const _doubleSharpSymbolAscii = 'x';
@@ -222,27 +231,6 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   @override
   RegExp get regExp => _regExp;
 
-  @override
-  String format(Accidental accidental) {
-    if (!showNatural && accidental.isNatural) return '';
-    if (accidental.semitones == 0) {
-      return _useAscii ? _naturalSymbolAscii : _naturalSymbol;
-    }
-
-    final accidentalSymbol = accidental.semitones.isNegative
-        ? (_useAscii ? _flatSymbolAscii : _flatSymbol)
-        : (_useAscii ? _sharpSymbolAscii : _sharpSymbol);
-    final doubleAccidentalSymbol = accidental.semitones.isNegative
-        ? (_useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
-        : (_useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
-
-    final absSemitones = accidental.semitones.abs();
-    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
-    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
-
-    return singleAccidentals + doubleAccidentals;
-  }
-
   static int _semitonesFromSymbol(String symbol) => switch (symbol) {
     _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,
     _sharpSymbol || _sharpSymbolAscii => 1,
@@ -261,6 +249,29 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
     );
 
     return Accidental(semitones);
+  }
+
+  @override
+  String format(Accidental accidental) {
+    if (accidental.isNatural) {
+      if (!showNatural) return '';
+      return _useAscii ? _naturalSymbolAscii : _naturalSymbol;
+    }
+
+    final accidentalSymbol = accidental.semitones.isNegative
+        ? (_useAscii ? _flatSymbolAscii : _flatSymbol)
+        : (_useAscii ? _sharpSymbolAscii : _sharpSymbol);
+    final doubleAccidentalSymbol = accidental.semitones.isNegative
+        ? (_useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
+        : (_useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
+
+    final absSemitones = accidental.semitones.abs();
+    final fragments = [
+      accidentalSymbol * (absSemitones % 2),
+      doubleAccidentalSymbol * (absSemitones ~/ 2),
+    ];
+
+    return largerFirst ? fragments.reversed.join() : fragments.join();
   }
 }
 
@@ -290,19 +301,6 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   RegExp get regExp => _regExp;
 
   @override
-  String format(Accidental accidental) => switch (accidental.semitones) {
-    3 => '$_triple $_sharp',
-    2 => '$_double $_sharp',
-    1 => _sharp,
-    0 => showNatural ? _natural : '',
-    -1 => _flat,
-    -2 => '$_double $_flat',
-    -3 => '$_triple $_flat',
-    > 3 && final semitones => '$_times$semitones $_sharp',
-    final semitones => '$_times${semitones.abs()} $_flat',
-  };
-
-  @override
   Accidental parseMatch(RegExpMatch match) {
     final accidental = match.namedGroup('accidental')?.toLowerCase();
     if (accidental == null || accidental == _natural) return .natural;
@@ -317,6 +315,19 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
         ? Accidental(semitones)
         : Accidental(-semitones);
   }
+
+  @override
+  String format(Accidental accidental) => switch (accidental.semitones) {
+    3 => '$_triple $_sharp',
+    2 => '$_double $_sharp',
+    1 => _sharp,
+    0 => showNatural ? _natural : '',
+    -1 => _flat,
+    -2 => '$_double $_flat',
+    -3 => '$_triple $_flat',
+    > 3 && final semitones => '$_times$semitones $_sharp',
+    final semitones => '$_times${semitones.abs()} $_flat',
+  };
 }
 
 /// The German notation system for [Accidental].
@@ -336,10 +347,6 @@ final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
   RegExp get regExp => _regExp;
 
   @override
-  String format(Accidental accidental) =>
-      (accidental.isFlat ? _flat : _sharp) * accidental.semitones.abs();
-
-  @override
   Accidental parseMatch(RegExpMatch match) {
     final accidental = match.namedGroup('accidental');
     if (accidental == null) return .natural;
@@ -350,6 +357,10 @@ final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
         ? Accidental(semitones)
         : Accidental(-semitones);
   }
+
+  @override
+  String format(Accidental accidental) =>
+      (accidental.isFlat ? _flat : _sharp) * accidental.semitones.abs();
 }
 
 /// The Romance notation system for [Accidental].
@@ -378,19 +389,6 @@ final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
   RegExp get regExp => _regExp;
 
   @override
-  String format(Accidental accidental) => switch (accidental.semitones) {
-    3 => '$_triple $_sharp',
-    2 => '$_double $_sharp',
-    1 => _sharp,
-    0 => showNatural ? _natural : '',
-    -1 => _flat,
-    -2 => '$_double $_flat',
-    -3 => '$_triple $_flat',
-    > 3 && final semitones => '$_times$semitones $_sharp',
-    final semitones => '$_times${semitones.abs()} $_flat',
-  };
-
-  @override
   Accidental parseMatch(RegExpMatch match) {
     final accidental = match.namedGroup('accidental')?.toLowerCase();
     if (accidental == null || accidental == _natural) return .natural;
@@ -405,4 +403,17 @@ final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
         ? Accidental(semitones)
         : Accidental(-semitones);
   }
+
+  @override
+  String format(Accidental accidental) => switch (accidental.semitones) {
+    3 => '$_triple $_sharp',
+    2 => '$_double $_sharp',
+    1 => _sharp,
+    0 => showNatural ? _natural : '',
+    -1 => _flat,
+    -2 => '$_double $_flat',
+    -3 => '$_triple $_flat',
+    > 3 && final semitones => '$_times$semitones $_sharp',
+    final semitones => '$_times${semitones.abs()} $_flat',
+  };
 }

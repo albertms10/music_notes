@@ -3,20 +3,13 @@
 /// An abstract representation of a notation system for parsing
 /// and formatting [I].
 ///
-/// The [format] and [parse] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
+/// The [parse] and [format] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
 /// of each other:
 /// the output of [format] should be a valid argument for [parse], and
 /// `parse(format(value))` should return a value equal to the original value.
-abstract class NotationSystem<I, O> implements Formatter<I, O>, Parser<O, I> {
+abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
   /// Creates a new formatter.
   const NotationSystem();
-
-  /// Formats this [I].
-  ///
-  /// The output of this method should be accepted by [parse] to reconstruct
-  /// the original value.
-  @override
-  O format(I value);
 
   /// Parses [source] as [I].
   ///
@@ -27,6 +20,13 @@ abstract class NotationSystem<I, O> implements Formatter<I, O>, Parser<O, I> {
   /// should be thrown.
   @override
   I parse(O source);
+
+  /// Formats this [I].
+  ///
+  /// The output of this method should be accepted by [parse] to reconstruct
+  /// the original value.
+  @override
+  O format(I value);
 }
 
 /// An abstract representation of a notation system for parsing
@@ -35,13 +35,6 @@ abstract class StringNotationSystem<V> extends NotationSystem<V, String>
     implements StringFormatter<V>, StringParser<V> {
   /// Creates a new formatter.
   const StringNotationSystem();
-
-  /// Formats this [V].
-  ///
-  /// The output of this method should be accepted by [parse] to reconstruct
-  /// the original value.
-  @override
-  String format(V value);
 
   @override
   RegExp? get regExp => null;
@@ -71,16 +64,14 @@ abstract class StringNotationSystem<V> extends NotationSystem<V, String>
   V parseMatch(RegExpMatch match) => throw UnimplementedError(
     'parseMatch is not implemented for $runtimeType.',
   );
-}
 
-/// An abstract representation of a formatter for [V].
-abstract interface class Formatter<V, O> {
   /// Formats this [V].
-  O format(V value);
+  ///
+  /// The output of this method should be accepted by [parse] to reconstruct
+  /// the original value.
+  @override
+  String format(V value);
 }
-
-/// An abstract representation of a string formatter for [V].
-abstract interface class StringFormatter<V> extends Formatter<V, String> {}
 
 /// An abstract representation of a parser for [V].
 abstract interface class Parser<I, V> {
@@ -114,3 +105,12 @@ extension StringParserChain<V> on List<StringParser<V>> {
     throw FormatException('End of parser chain: invalid $V', source);
   }
 }
+
+/// An abstract representation of a formatter for [V].
+abstract interface class Formatter<V, O> {
+  /// Formats this [V].
+  O format(V value);
+}
+
+/// An abstract representation of a string formatter for [V].
+abstract interface class StringFormatter<V> extends Formatter<V, String> {}

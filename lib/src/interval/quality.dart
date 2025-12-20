@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import 'interval.dart';
 
 /// Further description of an [Interval] size that distinguishes intervals of
@@ -311,14 +311,6 @@ final class ImperfectQualityNotation
   RegExp get regExp => _regExp;
 
   @override
-  String format(ImperfectQuality quality) => switch (quality.semitones) {
-    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
-    0 => _minorSymbol,
-    1 => _majorSymbol,
-    final semitones => _augmentedSymbol * (semitones - 1),
-  };
-
-  @override
   ImperfectQuality parseMatch(RegExpMatch match) {
     final quality = match.namedGroup('quality')!;
 
@@ -329,4 +321,12 @@ final class ImperfectQualityNotation
       _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
     };
   }
+
+  @override
+  String format(ImperfectQuality quality) => switch (quality.semitones) {
+    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
+    0 => _minorSymbol,
+    1 => _majorSymbol,
+    final semitones => _augmentedSymbol * (semitones - 1),
+  };
 }

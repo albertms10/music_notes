@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
 import '../scale/scale.dart';
@@ -161,10 +161,6 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   });
 
   @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
     caseSensitive: false,
@@ -173,6 +169,10 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   @override
   Key parseMatch(RegExpMatch match) =>
       Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 }
 
 /// The German notation system for [Key].
@@ -190,6 +190,16 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
   });
 
   @override
+  RegExp get regExp => RegExp(
+    '${noteNotation.regExp.pattern}-${tonalModeNotation.regExp.pattern}',
+    caseSensitive: false,
+  );
+
+  @override
+  Key parseMatch(RegExpMatch match) =>
+      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
   String format(Key key) {
     final note = noteNotation.format(key.note);
     final mode = tonalModeNotation.format(key.mode).toLowerCase();
@@ -200,16 +210,6 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
 
     return '$casedNote-$mode';
   }
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}-${tonalModeNotation.regExp.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Key parseMatch(RegExpMatch match) =>
-      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
 }
 
 /// The Romance notation system for [Key].
@@ -233,10 +233,6 @@ final class RomanceKeyNotation extends StringNotationSystem<Key> {
   });
 
   @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
     caseSensitive: false,
@@ -245,4 +241,8 @@ final class RomanceKeyNotation extends StringNotationSystem<Key> {
   @override
   Key parseMatch(RegExpMatch match) =>
       Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+
+  @override
+  String format(Key key) =>
+      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 }
