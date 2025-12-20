@@ -270,20 +270,20 @@ void main() {
   const Frequency(440).at(const Celsius(18)); // 438.4619866006409
   const Frequency(440).at(const Celsius(24)); // 443.07602679871826
 
-  const Frequency(432).closestPitch(); // A4-32
+  const Frequency(432).closestPitch(); // A4−32
   const Frequency(314).closestPitch(); // E♭4+16
-  const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4-12
+  const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4−12
 
   Note.c.inOctave(1).harmonics().take(16).toSet();
-  // {C1, C2, G2+2, C3, E3-14, G3+2, A♯3-31, C4, D4+4,
-  // E4-14, F♯4-49, G4+2, A♭4+41, A♯4-31, B4-12, C5}
+  // {C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0,
+  // D4+4, E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}
 
   Note.f.sharp.inOctave(4) + const Cent(16); // F♯4+16
-  Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5-8
+  Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5−8
 
   ClosestPitch.parse('A4'); // A4
   ClosestPitch.parse('A4+12.6'); // A4+13
-  ClosestPitch.parse('E♭3-28'); // E♭3-28
+  ClosestPitch.parse('E♭3-28'); // E♭3−28
 
   // In a nutshell
   ScalePattern
