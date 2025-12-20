@@ -170,8 +170,9 @@ void main() {
   const Key(.e, .minor); // E minor
   Note.a.flat.major; // A♭ major
 
-  Note.d.major.signature; // 2 (F♯ C♯)
-  Note.e.flat.minor.signature; // -6 (B♭ E♭ A♭ D♭ G♭ C♭)
+  Note.d.major.signature; // {D major, B minor} +2 fifths (F♯ C♯)
+  Note.e.flat.minor.signature;
+  // {G♭ major, E♭ minor} −6 fifths (B♭ E♭ A♭ D♭ G♭ C♭)
 
   Note.e.major.isTheoretical; // false
   Note.a.flat.minor.isTheoretical; // true
@@ -187,13 +188,14 @@ void main() {
   Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
 
   // Key signatures
-  KeySignature.fromDistance(4); // 4 (F♯ C♯ G♯ D♯)
-  KeySignature([.b.flat, .e.flat]); // -2 (B♭ E♭)
-  KeySignature([.g.sharp, .a.sharp]); // null (G♯ A♯)
+  KeySignature.fromDistance(4); // {E major, C♯ minor} +4 fifths (F♯ C♯ G♯ D♯)
+  KeySignature([.b.flat, .e.flat]); // {B♭ major, G minor} −2 fifths (B♭ E♭)
+  KeySignature([.g.sharp, .a.sharp]); // Non-canonical (G♯ A♯)
 
-  KeySignature.fromDistance(-4).incrementBy(-1); // -3 (B♭ E♭ A♭)
+  KeySignature.fromDistance(-4).incrementBy(-1);
+  // {E♭ major, C minor} −3 fifths (B♭ E♭ A♭)
   KeySignature([.f.sharp, .c.sharp]).incrementBy(3);
-  // 5 (F♯ C♯ G♯ D♯ A♯)
+  // {B major, G♯ minor} +5 fifths (F♯ C♯ G♯ D♯ A♯)
 
   KeySignature([.f.sharp]).keys[TonalMode.major]; // G major
   KeySignature.empty.keys[TonalMode.minor]; // A minor
