@@ -483,6 +483,7 @@ final class EnglishNoteNotation extends NoteNotation {
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
+      largerFirst: true,
     ),
   });
 
@@ -492,13 +493,14 @@ final class EnglishNoteNotation extends NoteNotation {
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
+           largerFirst: true,
          ),
        );
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = EnglishNoteNotation.symbol(
-    accidentalNotation: SymbolAccidentalNotation(),
+    accidentalNotation: SymbolAccidentalNotation(largerFirst: true),
   );
 
   /// Whether to use symbolic representation for [Accidental].

@@ -122,11 +122,15 @@ void main() {
 
       test('parses source as an Accidental', () {
         expect(Accidental.parse('♯𝄪𝄪'), const Accidental(5));
+        expect(Accidental.parse('𝄪𝄪♯'), const Accidental(5));
         expect(Accidental.parse('#xx'), const Accidental(5));
+        expect(Accidental.parse('xx#'), const Accidental(5));
         expect(Accidental.parse('𝄪𝄪'), const Accidental(4));
         expect(Accidental.parse('xx'), const Accidental(4));
         expect(Accidental.parse('♯𝄪'), Accidental.tripleSharp);
+        expect(Accidental.parse('𝄪♯'), Accidental.tripleSharp);
         expect(Accidental.parse('#x'), Accidental.tripleSharp);
+        expect(Accidental.parse('x#'), Accidental.tripleSharp);
         expect(Accidental.parse('𝄪'), Accidental.doubleSharp);
         expect(Accidental.parse('x'), Accidental.doubleSharp);
         expect(Accidental.parse('♯'), Accidental.sharp);
@@ -168,6 +172,11 @@ void main() {
         expect(Accidental.sharp.toString(formatter: hideNatural), '♯');
         expect(Accidental.natural.toString(formatter: hideNatural), '');
         expect(Accidental.flat.toString(formatter: hideNatural), '♭');
+
+        const largerFirst = SymbolAccidentalNotation(largerFirst: true);
+        expect(Accidental.tripleSharp.toString(formatter: largerFirst), '𝄪♯');
+        expect(Accidental.doubleFlat.toString(formatter: largerFirst), '𝄫');
+        expect(const Accidental(-5).toString(formatter: largerFirst), '𝄫𝄫♭');
       });
 
       test('returns the ASCII string representation of this Accidental', () {
@@ -190,6 +199,11 @@ void main() {
         expect(Accidental.sharp.toString(formatter: hideNatural), '#');
         expect(Accidental.natural.toString(formatter: hideNatural), '');
         expect(Accidental.flat.toString(formatter: hideNatural), 'b');
+
+        const largerFirst = SymbolAccidentalNotation.ascii(largerFirst: true);
+        expect(Accidental.tripleSharp.toString(formatter: largerFirst), 'x#');
+        expect(Accidental.doubleSharp.toString(formatter: largerFirst), 'x');
+        expect(Accidental.tripleFlat.toString(formatter: largerFirst), 'bbb');
       });
     });
   });
