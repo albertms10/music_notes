@@ -6,7 +6,7 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/note.dart';
 import '../respellable.dart';
 import '../scalable.dart';
@@ -515,20 +515,6 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
   });
 
   @override
-  String format(Interval interval) {
-    final quality = switch (interval.quality) {
-      final PerfectQuality quality => perfectQualityNotation.format(quality),
-      final ImperfectQuality quality => imperfectQualityNotation.format(
-        quality,
-      ),
-    };
-    final naming = '$quality${sizeNotation.format(interval.size)}';
-    if (!interval.isCompound) return naming;
-
-    return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
-  }
-
-  @override
   RegExp get regExp =>
       // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
       //  named capture groups are supported.
@@ -549,5 +535,19 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
     }
 
     return Interval._(size, parser.parseMatch(match));
+  }
+
+  @override
+  String format(Interval interval) {
+    final quality = switch (interval.quality) {
+      final PerfectQuality quality => perfectQualityNotation.format(quality),
+      final ImperfectQuality quality => imperfectQualityNotation.format(
+        quality,
+      ),
+    };
+    final naming = '$quality${sizeNotation.format(interval.size)}';
+    if (!interval.isCompound) return naming;
+
+    return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
 }

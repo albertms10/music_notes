@@ -13,7 +13,7 @@ export 'src/interval/size.dart';
 export 'src/key/key.dart';
 export 'src/key/key_signature.dart';
 export 'src/key/mode.dart';
-export 'src/notation_system.dart';
+export 'src/notation/notation_system.dart';
 export 'src/note/accidental.dart';
 export 'src/note/closest_pitch.dart';
 export 'src/note/frequency.dart';

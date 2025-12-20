@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
