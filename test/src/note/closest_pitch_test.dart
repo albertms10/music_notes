@@ -204,10 +204,25 @@ void main() {
         );
         expect(
           ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.4),
+          ).toString(
+            formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+          ),
+          'F♯6+0.4',
+        );
+        expect(
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.546)).toString(),
+          'A4+4',
+        );
+        expect(
+          ClosestPitch(
             Note.a.inOctave(4),
-            cents: const Cent(3.456),
-          ).toString(),
-          'A4+3',
+            cents: const Cent(3.546),
+          ).toString(
+            formatter: const StandardClosestPitchNotation(fractionDigits: 2),
+          ),
+          'A4+3.55',
         );
         expect(
           ClosestPitch(
@@ -237,8 +252,12 @@ void main() {
             ClosestPitch(
               Note.a.inOctave(4),
               cents: const Cent(3.456),
-            ).toString(formatter: formatter),
-            'A4+3',
+            ).toString(
+              formatter: const StandardClosestPitchNotation.ascii(
+                fractionDigits: 3,
+              ),
+            ),
+            'A4+3.456',
           );
           expect(
             ClosestPitch(

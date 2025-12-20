@@ -9,6 +9,10 @@ extension NumExtension on num {
   /// The Unicode plus-minus sign.
   static const plusMinusSign = '±';
 
+  String _formatted([int? fractionDigits]) => fractionDigits == null
+      ? abs().toString()
+      : abs().toStringAsFixed(fractionDigits);
+
   /// The delta string representation of this [num]
   /// (showing always the positive sign).
   ///
@@ -17,13 +21,18 @@ extension NumExtension on num {
   /// 1.1.toDeltaString() == '+1.1'
   /// 0.toDeltaString() == '±0'
   /// (-5).toDeltaString() == '−5'
-  /// (-5).toDeltaString(useAscii) == '-5'
+  /// (-5).toDeltaString(useAscii: true) == '-5'
+  /// (-10.27).toDeltaString(fractionDigits: 1) == '−10.3'
   /// ```
-  String toDeltaString({bool useAscii = false}) => switch (this) {
-    < 0 => (useAscii ? '$this' : toNegativeUnicode()),
-    > 0 => '$plusSign$this',
-    _ /* == 0 */ => (useAscii ? '$plusSign$this' : '$plusMinusSign$this'),
-  };
+  String toDeltaString({bool useAscii = false, int? fractionDigits}) {
+    final formatted = _formatted(fractionDigits);
+    if (double.tryParse(formatted)?.abs() == 0) {
+      return useAscii ? '$plusSign$formatted' : '$plusMinusSign$formatted';
+    }
+    if (isNegative) return useAscii ? '-$formatted' : '$minusSign$formatted';
+
+    return '$plusSign$formatted';
+  }
 
   /// The negative Unicode representation of this [num].
   ///
@@ -32,8 +41,11 @@ extension NumExtension on num {
   /// 1.1.toNegativeUnicode() == '1.1'
   /// 0.toNegativeUnicode() == '0'
   /// (-5).toNegativeUnicode() == '−5'
+  /// (-10.27).toNegativeUnicode(1) == '−10.3'
   /// ```
-  String toNegativeUnicode() => isNegative ? '$minusSign${-this}' : '$this';
+  String toNegativeUnicode([int? fractionDigits]) => isNegative
+      ? '$minusSign${_formatted(fractionDigits)}'
+      : _formatted(fractionDigits);
 
   /// The sign of this integer.
   ///

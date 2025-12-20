@@ -124,17 +124,22 @@ class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
   /// The [StringNotationSystem] for [Pitch] notation.
   final StringNotationSystem<Pitch> pitchNotation;
 
+  /// The number of fraction digits to use when formatting cents.
+  final int fractionDigits;
+
   /// Whether to use ASCII characters instead of Unicode characters.
   final bool _useAscii;
 
   /// Creates a new [StandardClosestPitchNotation].
   const StandardClosestPitchNotation({
     this.pitchNotation = ScientificPitchNotation.english,
+    this.fractionDigits = 0,
   }) : _useAscii = false;
 
   /// Creates a new [StandardClosestPitchNotation] using ASCII characters.
   const StandardClosestPitchNotation.ascii({
     this.pitchNotation = const ScientificPitchNotation.ascii(),
+    this.fractionDigits = 0,
   }) : _useAscii = true;
 
   @override
@@ -152,9 +157,12 @@ class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
 
   @override
   String format(ClosestPitch closestPitch) {
-    final roundedCents = closestPitch.cents.round();
     final pitch = pitchNotation.format(closestPitch.pitch);
+    final cents = closestPitch.cents.toDeltaString(
+      useAscii: _useAscii,
+      fractionDigits: fractionDigits,
+    );
 
-    return '$pitch${roundedCents.toDeltaString(useAscii: _useAscii)}';
+    return '$pitch$cents';
   }
 }

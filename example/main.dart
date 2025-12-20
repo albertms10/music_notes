@@ -284,8 +284,10 @@ void main() {
   Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5−8
 
   ClosestPitch.parse('A4'); // A4
-  ClosestPitch.parse('A4+12.6'); // A4+13
   ClosestPitch.parse('E♭3-28'); // E♭3−28
+  ClosestPitch.parse('A4+12.6').toString(
+    formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+  ); // A4+12.6
 
   // In a nutshell
   ScalePattern
