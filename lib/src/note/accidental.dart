@@ -181,15 +181,24 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   /// [Accidental.natural] symbol.
   final bool showNatural;
 
+  /// Whether to place larger accidentals (double sharps/flats) before smaller
+  /// ones.
+  final bool largerFirst;
+
   /// Whether to use ASCII symbols instead of Unicode symbols.
   final bool _useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
-  const SymbolAccidentalNotation({this.showNatural = true}) : _useAscii = false;
+  const SymbolAccidentalNotation({
+    this.showNatural = true,
+    this.largerFirst = false,
+  }) : _useAscii = false;
 
   /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
-  const SymbolAccidentalNotation.ascii({this.showNatural = true})
-    : _useAscii = true;
+  const SymbolAccidentalNotation.ascii({
+    this.showNatural = true,
+    this.largerFirst = false,
+  }) : _useAscii = true;
 
   static const _doubleSharpSymbol = '𝄪';
   static const _doubleSharpSymbolAscii = 'x';
@@ -257,10 +266,12 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
         : (_useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
 
     final absSemitones = accidental.semitones.abs();
-    final singleAccidentals = accidentalSymbol * (absSemitones % 2);
-    final doubleAccidentals = doubleAccidentalSymbol * (absSemitones ~/ 2);
+    final fragments = [
+      accidentalSymbol * (absSemitones % 2),
+      doubleAccidentalSymbol * (absSemitones ~/ 2),
+    ];
 
-    return doubleAccidentals + singleAccidentals;
+    return largerFirst ? fragments.reversed.join() : fragments.join();
   }
 }
 
