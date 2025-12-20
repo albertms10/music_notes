@@ -1,4 +1,4 @@
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';

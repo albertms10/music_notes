@@ -2,7 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension, minBy;
 import 'package:meta/meta.dart' show redeclare;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../tuning/equal_temperament.dart';
 import 'interval.dart';
 import 'quality.dart';
@@ -388,9 +388,6 @@ final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
   const SizeNotation();
 
-  @override
-  String format(Size size) => '$size';
-
   static final _regExp = RegExp(r'(?<size>-?\d+)');
 
   @override
@@ -398,4 +395,7 @@ final class SizeNotation extends StringNotationSystem<Size> {
 
   @override
   Size parseMatch(RegExpMatch match) => Size(.parse(match.namedGroup('size')!));
+
+  @override
+  String format(Size size) => '$size';
 }

@@ -3,84 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('Size', () {
-    group('SizeNotation', () {
-      group('.parse()', () {
-        test('parses source as a Size', () {
-          expect(Size.parse('1'), Size.unison);
-          expect(Size.parse('2'), Size.second);
-          expect(Size.parse('3'), Size.third);
-          expect(Size.parse('4'), Size.fourth);
-          expect(Size.parse('5'), Size.fifth);
-          expect(Size.parse('6'), Size.sixth);
-          expect(Size.parse('7'), Size.seventh);
-          expect(Size.parse('8'), Size.octave);
-          expect(Size.parse('9'), Size.ninth);
-          expect(Size.parse('10'), Size.tenth);
-          expect(Size.parse('11'), Size.eleventh);
-          expect(Size.parse('12'), Size.twelfth);
-          expect(Size.parse('13'), Size.thirteenth);
-          expect(Size.parse('14'), const Size(14));
-          expect(Size.parse('15'), const Size(15));
-          expect(Size.parse('22'), const Size(22));
-
-          expect(Size.parse('-1'), -Size.unison);
-          expect(Size.parse('-2'), -Size.second);
-          expect(Size.parse('-3'), -Size.third);
-          expect(Size.parse('-4'), -Size.fourth);
-          expect(Size.parse('-5'), -Size.fifth);
-          expect(Size.parse('-6'), -Size.sixth);
-          expect(Size.parse('-7'), -Size.seventh);
-          expect(Size.parse('-8'), -Size.octave);
-          expect(Size.parse('-9'), -Size.ninth);
-          expect(Size.parse('-10'), -Size.tenth);
-          expect(Size.parse('-11'), -Size.eleventh);
-          expect(Size.parse('-12'), -Size.twelfth);
-          expect(Size.parse('-13'), -Size.thirteenth);
-          expect(Size.parse('-14'), const Size(-14));
-          expect(Size.parse('-15'), const Size(-15));
-          expect(Size.parse('-22'), const Size(-22));
-        });
-      });
-
-      group('.format()', () {
-        test('returns the string representation of this Size', () {
-          expect(Size.unison.format(), '1');
-          expect(Size.second.format(), '2');
-          expect(Size.third.format(), '3');
-          expect(Size.fourth.format(), '4');
-          expect(Size.fifth.format(), '5');
-          expect(Size.sixth.format(), '6');
-          expect(Size.seventh.format(), '7');
-          expect(Size.octave.format(), '8');
-          expect(Size.ninth.format(), '9');
-          expect(Size.tenth.format(), '10');
-          expect(Size.eleventh.format(), '11');
-          expect(Size.twelfth.format(), '12');
-          expect(Size.thirteenth.format(), '13');
-          expect(const Size(14).format(), '14');
-          expect(const Size(15).format(), '15');
-          expect(const Size(22).format(), '22');
-
-          expect((-Size.unison).format(), '-1');
-          expect((-Size.second).format(), '-2');
-          expect((-Size.third).format(), '-3');
-          expect((-Size.fourth).format(), '-4');
-          expect((-Size.fifth).format(), '-5');
-          expect((-Size.sixth).format(), '-6');
-          expect((-Size.seventh).format(), '-7');
-          expect((-Size.octave).format(), '-8');
-          expect((-Size.ninth).format(), '-9');
-          expect((-Size.tenth).format(), '-10');
-          expect((-Size.eleventh).format(), '-11');
-          expect((-Size.twelfth).format(), '-12');
-          expect((-Size.thirteenth).format(), '-13');
-          expect(const Size(-14).format(), '-14');
-          expect(const Size(-15).format(), '-15');
-          expect(const Size(-22).format(), '-22');
-        });
-      });
-    });
-
     group('constructor', () {
       test('asserts the size argument is correct', () {
         expect(const Size(3), Size.third);
@@ -381,6 +303,84 @@ void main() {
         expect(const Size(41).simple, Size.sixth);
         expect(const Size(42).simple, Size.seventh);
         expect(const Size(43).simple, Size.octave);
+      });
+    });
+  });
+
+  group('SizeNotation', () {
+    group('.parse()', () {
+      test('parses source as a Size', () {
+        expect(Size.parse('1'), Size.unison);
+        expect(Size.parse('2'), Size.second);
+        expect(Size.parse('3'), Size.third);
+        expect(Size.parse('4'), Size.fourth);
+        expect(Size.parse('5'), Size.fifth);
+        expect(Size.parse('6'), Size.sixth);
+        expect(Size.parse('7'), Size.seventh);
+        expect(Size.parse('8'), Size.octave);
+        expect(Size.parse('9'), Size.ninth);
+        expect(Size.parse('10'), Size.tenth);
+        expect(Size.parse('11'), Size.eleventh);
+        expect(Size.parse('12'), Size.twelfth);
+        expect(Size.parse('13'), Size.thirteenth);
+        expect(Size.parse('14'), const Size(14));
+        expect(Size.parse('15'), const Size(15));
+        expect(Size.parse('22'), const Size(22));
+
+        expect(Size.parse('-1'), -Size.unison);
+        expect(Size.parse('-2'), -Size.second);
+        expect(Size.parse('-3'), -Size.third);
+        expect(Size.parse('-4'), -Size.fourth);
+        expect(Size.parse('-5'), -Size.fifth);
+        expect(Size.parse('-6'), -Size.sixth);
+        expect(Size.parse('-7'), -Size.seventh);
+        expect(Size.parse('-8'), -Size.octave);
+        expect(Size.parse('-9'), -Size.ninth);
+        expect(Size.parse('-10'), -Size.tenth);
+        expect(Size.parse('-11'), -Size.eleventh);
+        expect(Size.parse('-12'), -Size.twelfth);
+        expect(Size.parse('-13'), -Size.thirteenth);
+        expect(Size.parse('-14'), const Size(-14));
+        expect(Size.parse('-15'), const Size(-15));
+        expect(Size.parse('-22'), const Size(-22));
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Size', () {
+        expect(Size.unison.format(), '1');
+        expect(Size.second.format(), '2');
+        expect(Size.third.format(), '3');
+        expect(Size.fourth.format(), '4');
+        expect(Size.fifth.format(), '5');
+        expect(Size.sixth.format(), '6');
+        expect(Size.seventh.format(), '7');
+        expect(Size.octave.format(), '8');
+        expect(Size.ninth.format(), '9');
+        expect(Size.tenth.format(), '10');
+        expect(Size.eleventh.format(), '11');
+        expect(Size.twelfth.format(), '12');
+        expect(Size.thirteenth.format(), '13');
+        expect(const Size(14).format(), '14');
+        expect(const Size(15).format(), '15');
+        expect(const Size(22).format(), '22');
+
+        expect((-Size.unison).format(), '-1');
+        expect((-Size.second).format(), '-2');
+        expect((-Size.third).format(), '-3');
+        expect((-Size.fourth).format(), '-4');
+        expect((-Size.fifth).format(), '-5');
+        expect((-Size.sixth).format(), '-6');
+        expect((-Size.seventh).format(), '-7');
+        expect((-Size.octave).format(), '-8');
+        expect((-Size.ninth).format(), '-9');
+        expect((-Size.tenth).format(), '-10');
+        expect((-Size.eleventh).format(), '-11');
+        expect((-Size.twelfth).format(), '-12');
+        expect((-Size.thirteenth).format(), '-13');
+        expect(const Size(-14).format(), '-14');
+        expect(const Size(-15).format(), '-15');
+        expect(const Size(-22).format(), '-22');
       });
     });
   });

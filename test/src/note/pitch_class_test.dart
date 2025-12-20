@@ -14,97 +14,6 @@ void main() {
       });
     });
 
-    group('EnharmonicSpellingsPitchClassNotation', () {
-      group('.parse()', () {
-        test('throws a FormatException when source is invalid', () {
-          expect(() => PitchClass.parse(''), throwsFormatException);
-          expect(() => PitchClass.parse('D'), throwsFormatException);
-          expect(() => PitchClass.parse('z'), throwsFormatException);
-          expect(() => PitchClass.parse('{}'), throwsFormatException);
-          expect(() => PitchClass.parse('{z}'), throwsFormatException);
-        });
-
-        test('parses source as a PitchClass', () {
-          expect(PitchClass.parse('{C}'), PitchClass.c);
-          expect(PitchClass.parse('{c}'), PitchClass.c);
-          expect(PitchClass.parse('{b#}'), PitchClass.c);
-          expect(PitchClass.parse('{C♯|D♭}'), PitchClass.cSharp);
-          expect(PitchClass.parse('{D♯|E♭}'), PitchClass.dSharp);
-          expect(PitchClass.parse('{d♯}'), PitchClass.dSharp);
-          expect(PitchClass.parse('{E}'), PitchClass.e);
-          expect(PitchClass.parse('{F}'), PitchClass.f);
-          expect(PitchClass.parse('{F#|Gb}'), PitchClass.fSharp);
-          expect(PitchClass.parse('{G}'), PitchClass.g);
-          expect(PitchClass.parse('{ab}'), PitchClass.gSharp);
-          expect(PitchClass.parse('{G♯|A♭}'), PitchClass.gSharp);
-          expect(PitchClass.parse('{A}'), PitchClass.a);
-          expect(PitchClass.parse('{A♯|B♭}'), PitchClass.aSharp);
-          expect(PitchClass.parse('{B}'), PitchClass.b);
-        });
-      });
-
-      group('.toString()', () {
-        test('returns the string representation of this PitchClass', () {
-          expect(PitchClass.c.toString(), '{C}');
-          expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
-          expect(PitchClass.d.toString(), '{D}');
-          expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
-          expect(PitchClass.e.toString(), '{E}');
-          expect(PitchClass.f.toString(), '{F}');
-          expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
-          expect(PitchClass.g.toString(), '{G}');
-          expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
-          expect(PitchClass.a.toString(), '{A}');
-          expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
-          expect(PitchClass.b.toString(), '{B}');
-        });
-      });
-    });
-
-    group('IntegerPitchClassNotation', () {
-      group('.parse()', () {
-        test('throws a FormatException when source is invalid', () {
-          expect(() => PitchClass.parse(''), throwsFormatException);
-          expect(() => PitchClass.parse('z'), throwsFormatException);
-          expect(() => PitchClass.parse('{}'), throwsFormatException);
-          expect(() => PitchClass.parse('T'), throwsFormatException);
-        });
-
-        test('parses source as a PitchClass', () {
-          expect(PitchClass.parse('0'), PitchClass.c);
-          expect(PitchClass.parse('1'), PitchClass.cSharp);
-          expect(PitchClass.parse('2'), PitchClass.d);
-          expect(PitchClass.parse('3'), PitchClass.dSharp);
-          expect(PitchClass.parse('4'), PitchClass.e);
-          expect(PitchClass.parse('5'), PitchClass.f);
-          expect(PitchClass.parse('6'), PitchClass.fSharp);
-          expect(PitchClass.parse('7'), PitchClass.g);
-          expect(PitchClass.parse('8'), PitchClass.gSharp);
-          expect(PitchClass.parse('9'), PitchClass.a);
-          expect(PitchClass.parse('t'), PitchClass.aSharp);
-          expect(PitchClass.parse('e'), PitchClass.b);
-        });
-      });
-
-      group('.toString()', () {
-        test('returns the string representation of this PitchClass', () {
-          const formatter = IntegerPitchClassNotation();
-          expect(PitchClass.c.toString(formatter: formatter), '0');
-          expect(PitchClass.cSharp.toString(formatter: formatter), '1');
-          expect(PitchClass.d.toString(formatter: formatter), '2');
-          expect(PitchClass.dSharp.toString(formatter: formatter), '3');
-          expect(PitchClass.e.toString(formatter: formatter), '4');
-          expect(PitchClass.f.toString(formatter: formatter), '5');
-          expect(PitchClass.fSharp.toString(formatter: formatter), '6');
-          expect(PitchClass.g.toString(formatter: formatter), '7');
-          expect(PitchClass.gSharp.toString(formatter: formatter), '8');
-          expect(PitchClass.a.toString(formatter: formatter), '9');
-          expect(PitchClass.aSharp.toString(formatter: formatter), 't');
-          expect(PitchClass.b.toString(formatter: formatter), 'e');
-        });
-      });
-    });
-
     group('.spellings()', () {
       test('returns the correct Note spellings for this PitchClass', () {
         expect(PitchClass.c.spellings(), {Note.c});
@@ -415,6 +324,97 @@ void main() {
       test('sorts PitchClasses in a collection', () {
         final orderedSet = SplayTreeSet<PitchClass>.of({.fSharp, .c, .d});
         expect(orderedSet.toList(), const <PitchClass>[.c, .d, .fSharp]);
+      });
+    });
+  });
+
+  group('EnharmonicSpellingsPitchClassNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => PitchClass.parse(''), throwsFormatException);
+        expect(() => PitchClass.parse('D'), throwsFormatException);
+        expect(() => PitchClass.parse('z'), throwsFormatException);
+        expect(() => PitchClass.parse('{}'), throwsFormatException);
+        expect(() => PitchClass.parse('{z}'), throwsFormatException);
+      });
+
+      test('parses source as a PitchClass', () {
+        expect(PitchClass.parse('{C}'), PitchClass.c);
+        expect(PitchClass.parse('{c}'), PitchClass.c);
+        expect(PitchClass.parse('{b#}'), PitchClass.c);
+        expect(PitchClass.parse('{C♯|D♭}'), PitchClass.cSharp);
+        expect(PitchClass.parse('{D♯|E♭}'), PitchClass.dSharp);
+        expect(PitchClass.parse('{d♯}'), PitchClass.dSharp);
+        expect(PitchClass.parse('{E}'), PitchClass.e);
+        expect(PitchClass.parse('{F}'), PitchClass.f);
+        expect(PitchClass.parse('{F#|Gb}'), PitchClass.fSharp);
+        expect(PitchClass.parse('{G}'), PitchClass.g);
+        expect(PitchClass.parse('{ab}'), PitchClass.gSharp);
+        expect(PitchClass.parse('{G♯|A♭}'), PitchClass.gSharp);
+        expect(PitchClass.parse('{A}'), PitchClass.a);
+        expect(PitchClass.parse('{A♯|B♭}'), PitchClass.aSharp);
+        expect(PitchClass.parse('{B}'), PitchClass.b);
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the string representation of this PitchClass', () {
+        expect(PitchClass.c.toString(), '{C}');
+        expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
+        expect(PitchClass.d.toString(), '{D}');
+        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
+        expect(PitchClass.e.toString(), '{E}');
+        expect(PitchClass.f.toString(), '{F}');
+        expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
+        expect(PitchClass.g.toString(), '{G}');
+        expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
+        expect(PitchClass.a.toString(), '{A}');
+        expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
+        expect(PitchClass.b.toString(), '{B}');
+      });
+    });
+  });
+
+  group('IntegerPitchClassNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => PitchClass.parse(''), throwsFormatException);
+        expect(() => PitchClass.parse('z'), throwsFormatException);
+        expect(() => PitchClass.parse('{}'), throwsFormatException);
+        expect(() => PitchClass.parse('T'), throwsFormatException);
+      });
+
+      test('parses source as a PitchClass', () {
+        expect(PitchClass.parse('0'), PitchClass.c);
+        expect(PitchClass.parse('1'), PitchClass.cSharp);
+        expect(PitchClass.parse('2'), PitchClass.d);
+        expect(PitchClass.parse('3'), PitchClass.dSharp);
+        expect(PitchClass.parse('4'), PitchClass.e);
+        expect(PitchClass.parse('5'), PitchClass.f);
+        expect(PitchClass.parse('6'), PitchClass.fSharp);
+        expect(PitchClass.parse('7'), PitchClass.g);
+        expect(PitchClass.parse('8'), PitchClass.gSharp);
+        expect(PitchClass.parse('9'), PitchClass.a);
+        expect(PitchClass.parse('t'), PitchClass.aSharp);
+        expect(PitchClass.parse('e'), PitchClass.b);
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the string representation of this PitchClass', () {
+        const formatter = IntegerPitchClassNotation();
+        expect(PitchClass.c.toString(formatter: formatter), '0');
+        expect(PitchClass.cSharp.toString(formatter: formatter), '1');
+        expect(PitchClass.d.toString(formatter: formatter), '2');
+        expect(PitchClass.dSharp.toString(formatter: formatter), '3');
+        expect(PitchClass.e.toString(formatter: formatter), '4');
+        expect(PitchClass.f.toString(formatter: formatter), '5');
+        expect(PitchClass.fSharp.toString(formatter: formatter), '6');
+        expect(PitchClass.g.toString(formatter: formatter), '7');
+        expect(PitchClass.gSharp.toString(formatter: formatter), '8');
+        expect(PitchClass.a.toString(formatter: formatter), '9');
+        expect(PitchClass.aSharp.toString(formatter: formatter), 't');
+        expect(PitchClass.b.toString(formatter: formatter), 'e');
       });
     });
   });
