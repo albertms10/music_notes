@@ -547,7 +547,7 @@ final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
   @override
   Pitch parseMatch(RegExpMatch match) => Pitch(
     noteNotation.parseMatch(match),
-    octave: .parse(match.namedGroup('octave')!.toNegativeAscii()),
+    octave: .parse(match.namedGroup('octave')!.toAscii()),
   );
 }
 

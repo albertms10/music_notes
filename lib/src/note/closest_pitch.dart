@@ -140,21 +140,20 @@ class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
   @override
   RegExp get regExp => RegExp(
     '${pitchNotation.regExp?.pattern}\\s*'
-    '(?<cents>[+-${NumExtension.minusSign}]\\d+(?:\\.\\d+)?)?',
+    '(?<cents>[+-${NumExtension.minusSign}${NumExtension.plusMinusSign}]\\d+(?:\\.\\d+)?)?',
     caseSensitive: false,
   );
 
   @override
   ClosestPitch parseMatch(RegExpMatch match) => ClosestPitch(
     pitchNotation.parseMatch(match),
-    cents: Cent(.parse(match.namedGroup('cents')?.toNegativeAscii() ?? '0')),
+    cents: Cent(.parse(match.namedGroup('cents')?.toAscii() ?? '0')),
   );
 
   @override
   String format(ClosestPitch closestPitch) {
     final roundedCents = closestPitch.cents.round();
     final pitch = pitchNotation.format(closestPitch.pitch);
-    if (roundedCents == 0) return pitch;
 
     return '$pitch${roundedCents.toDeltaString(useAscii: _useAscii)}';
   }

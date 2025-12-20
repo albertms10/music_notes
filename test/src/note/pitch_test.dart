@@ -1309,8 +1309,8 @@ void main() {
       test('returns the ClosestPitch set of harmonic series', () {
         expect(
           Note.c.inOctave(1).harmonics().take(16).toSet().toString(),
-          '{C1, C2, G2+2, C3, E3−14, G3+2, A♯3−31, C4, D4+4, '
-          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5}',
+          '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
+          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}',
         );
 
         expect(
@@ -1324,8 +1324,8 @@ void main() {
               .take(16)
               .toSet()
               .toString(),
-          '{C1, C2, G2+2, C3, E3−14, G3+2, A♯3−31, C4, D4+4, '
-          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5}',
+          '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
+          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}',
         );
 
         expect(
@@ -1337,8 +1337,8 @@ void main() {
               .take(16)
               .toSet()
               .toString(),
-          '{C1, C2, G2+2, C3, E3−14, G3+2, A♯3−31, C4, D4+4, '
-          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5}',
+          '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
+          'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}',
         );
 
         expect(

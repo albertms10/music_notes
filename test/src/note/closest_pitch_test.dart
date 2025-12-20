@@ -15,6 +15,9 @@ void main() {
         test('parses source as a ClosestPitch', () {
           expect(ClosestPitch.parse('A4'), ClosestPitch(Note.a.inOctave(4)));
           expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
+          expect(ClosestPitch.parse('C0-00'), ClosestPitch(Note.c.inOctave(0)));
+          expect(ClosestPitch.parse('C0±0'), ClosestPitch(Note.c.inOctave(0)));
+          expect(ClosestPitch.parse('C0+0'), ClosestPitch(Note.c.inOctave(0)));
           expect(
             ClosestPitch.parse('G−0−0.0'),
             ClosestPitch(Note.g.inOctave(0)),
@@ -54,13 +57,13 @@ void main() {
 
       group('.toString()', () {
         test('returns the string representation of this ClosestPitch', () {
-          expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3');
+          expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3±0');
           expect(
             ClosestPitch(
               Note.f.sharp.inOctave(6),
               cents: const Cent(0.4),
             ).toString(),
-            'F♯6',
+            'F♯6±0',
           );
           expect(
             ClosestPitch(
@@ -84,14 +87,14 @@ void main() {
             const formatter = StandardClosestPitchNotation.ascii();
             expect(
               ClosestPitch(Note.a.inOctave(-3)).toString(formatter: formatter),
-              'A-3',
+              'A-3+0',
             );
             expect(
               ClosestPitch(
                 Note.f.sharp.inOctave(6),
                 cents: const Cent(0.4),
               ).toString(formatter: formatter),
-              'F#6',
+              'F#6+0',
             );
             expect(
               ClosestPitch(
