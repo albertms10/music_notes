@@ -563,12 +563,13 @@ ScalePattern
 
 ## Similar projects in other languages
 
-- **Mingus** [Python](https://github.com/bspaans/python-mingus)
-- **Modest** [Lua](https://github.com/esbudylin/modest)
-- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
-- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
-- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
-- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
+- `mingus` [Python](https://github.com/bspaans/python-mingus)
+- `modest` [Lua](https://github.com/esbudylin/modest)
+- `music21` [Python](https://github.com/cuthbertLab/music21)
+- `sharp11` [JavaScript](https://github.com/jsrmath/sharp11)
+- `teoria` [JavaScript](https://github.com/saebekassebil/teoria)
+- `tonal` [JavaScript](https://github.com/tonaljs/tonal)
+- `tonic` [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 
