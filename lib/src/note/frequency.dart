@@ -1,4 +1,4 @@
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../tuning/cent.dart';
 import '../tuning/equal_temperament.dart';
 import '../tuning/temperature.dart';
@@ -167,9 +167,9 @@ class FrequencySINotation extends StringNotationSystem<Frequency> {
   RegExp get regExp => _regExp;
 
   @override
-  String format(Frequency frequency) => '${frequency.hertz} $_hertzUnitSymbol';
-
-  @override
   Frequency parseMatch(RegExpMatch match) =>
       Frequency(.parse(match.namedGroup('frequency')!));
+
+  @override
+  String format(Frequency frequency) => '${frequency.hertz} $_hertzUnitSymbol';
 }

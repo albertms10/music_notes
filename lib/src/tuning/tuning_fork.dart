@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/frequency.dart';
 import '../note/note.dart';
 import '../note/pitch.dart';
@@ -97,15 +97,6 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
   });
 
   @override
-  String format(TuningFork tuningFork) {
-    final pitch = tuningFork.pitch.octave == referenceOctave
-        ? '${tuningFork.pitch.note}'
-        : '${tuningFork.pitch} ';
-
-    return '$pitch${tuningFork.frequency}';
-  }
-
-  @override
   RegExp get regExp => RegExp(
     '(?!.*=)${noteNotation.regExp?.pattern}'
     '(?<octave>-?\\d\\s+)?\\s*${frequencyNotation.regExp?.pattern}',
@@ -121,6 +112,15 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
       noteNotation.parseMatch(match).inOctave(octave),
       frequencyNotation.parseMatch(match),
     );
+  }
+
+  @override
+  String format(TuningFork tuningFork) {
+    final pitch = tuningFork.pitch.octave == referenceOctave
+        ? '${tuningFork.pitch.note}'
+        : '${tuningFork.pitch} ';
+
+    return '$pitch${tuningFork.frequency}';
   }
 }
 
@@ -160,11 +160,6 @@ final class ScientificTuningForkNotation
   );
 
   @override
-  String format(TuningFork tuningFork) =>
-      '${pitchNotation.format(tuningFork.pitch)}'
-      ' = ${frequencyNotation.format(tuningFork.frequency)}';
-
-  @override
   RegExp get regExp => RegExp(
     '${pitchNotation.regExp?.pattern}\\s*=\\s*'
     '${frequencyNotation.regExp?.pattern}',
@@ -176,4 +171,9 @@ final class ScientificTuningForkNotation
     pitchNotation.parseMatch(match),
     frequencyNotation.parseMatch(match),
   );
+
+  @override
+  String format(TuningFork tuningFork) =>
+      '${pitchNotation.format(tuningFork.pitch)}'
+      ' = ${frequencyNotation.format(tuningFork.frequency)}';
 }

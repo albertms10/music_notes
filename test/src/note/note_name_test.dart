@@ -5,146 +5,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('NoteName', () {
-    group('EnglishNoteNameNotation', () {
-      group('.parse()', () {
-        test('throws a FormatException when source is invalid', () {
-          expect(() => NoteName.parse('x'), throwsFormatException);
-          expect(
-            () => NoteName.parse('H', chain: [const EnglishNoteNameNotation()]),
-            throwsFormatException,
-          );
-          expect(() => NoteName.parse('X'), throwsFormatException);
-          expect(() => NoteName.parse(''), throwsFormatException);
-          expect(() => NoteName.parse('AB'), throwsFormatException);
-        });
-
-        test('parses source as a NoteName', () {
-          expect(NoteName.parse('a'), NoteName.a);
-          expect(NoteName.parse('b'), NoteName.b);
-          expect(NoteName.parse('c'), NoteName.c);
-          expect(NoteName.parse('d'), NoteName.d);
-          expect(NoteName.parse('e'), NoteName.e);
-          expect(NoteName.parse('f'), NoteName.f);
-          expect(NoteName.parse('g'), NoteName.g);
-
-          expect(NoteName.parse('A'), NoteName.a);
-          expect(NoteName.parse('B'), NoteName.b);
-          expect(NoteName.parse('C'), NoteName.c);
-          expect(NoteName.parse('D'), NoteName.d);
-          expect(NoteName.parse('E'), NoteName.e);
-          expect(NoteName.parse('F'), NoteName.f);
-          expect(NoteName.parse('G'), NoteName.g);
-        });
-
-        test('.toString() and .parse() are inverses', () {
-          for (final noteName in NoteName.values) {
-            expect(noteName, NoteName.parse(noteName.toString()));
-          }
-        });
-      });
-    });
-
-    group('GermanNoteNameNotation', () {
-      group('.parse()', () {
-        const chain = [GermanNoteNameNotation()];
-
-        test('throws a FormatException when source is invalid', () {
-          expect(
-            () => NoteName.parse('X', chain: chain),
-            throwsFormatException,
-          );
-          expect(() => NoteName.parse('', chain: chain), throwsFormatException);
-          expect(
-            () => NoteName.parse('AH', chain: chain),
-            throwsFormatException,
-          );
-        });
-
-        test('parses source as a NoteName', () {
-          expect(NoteName.parse('A', chain: chain), NoteName.a);
-          expect(NoteName.parse('B', chain: chain), NoteName.b);
-          expect(NoteName.parse('C', chain: chain), NoteName.c);
-          expect(NoteName.parse('D', chain: chain), NoteName.d);
-          expect(NoteName.parse('E', chain: chain), NoteName.e);
-          expect(NoteName.parse('F', chain: chain), NoteName.f);
-          expect(NoteName.parse('G', chain: chain), NoteName.g);
-          expect(NoteName.parse('H', chain: chain), NoteName.b);
-
-          expect(NoteName.parse('h', chain: chain), NoteName.b);
-          expect(NoteName.parse('a', chain: chain), NoteName.a);
-        });
-
-        test('.toString() and .parse() are inverses', () {
-          for (final noteName in NoteName.values) {
-            expect(
-              noteName,
-              NoteName.parse(
-                noteName.toString(formatter: const GermanNoteNameNotation()),
-                chain: chain,
-              ),
-            );
-          }
-        });
-      });
-    });
-
-    group('RomanceNoteNameNotation', () {
-      group('.parse()', () {
-        const chain = [RomanceNoteNameNotation()];
-
-        test('throws a FormatException when source is invalid', () {
-          expect(
-            () => NoteName.parse('X', chain: chain),
-            throwsFormatException,
-          );
-          expect(() => NoteName.parse('', chain: chain), throwsFormatException);
-          expect(
-            () => NoteName.parse('A', chain: chain),
-            throwsFormatException,
-          );
-          expect(
-            () => NoteName.parse('DoRe', chain: chain),
-            throwsFormatException,
-          );
-          expect(
-            () => const RomanceNoteNameNotation().parse('x'),
-            throwsFormatException,
-          );
-        });
-
-        test('parses source as a NoteName', () {
-          expect(NoteName.parse('Do', chain: chain), NoteName.c);
-          expect(NoteName.parse('Re', chain: chain), NoteName.d);
-          expect(NoteName.parse('Mi', chain: chain), NoteName.e);
-          expect(NoteName.parse('Fa', chain: chain), NoteName.f);
-          expect(NoteName.parse('Sol', chain: chain), NoteName.g);
-          expect(NoteName.parse('La', chain: chain), NoteName.a);
-          expect(NoteName.parse('Si', chain: chain), NoteName.b);
-
-          expect(NoteName.parse('do', chain: chain), NoteName.c);
-          expect(NoteName.parse('DO', chain: chain), NoteName.c);
-          expect(NoteName.parse('re', chain: chain), NoteName.d);
-          expect(NoteName.parse('mi', chain: chain), NoteName.e);
-          expect(NoteName.parse('fa', chain: chain), NoteName.f);
-          expect(NoteName.parse('sol', chain: chain), NoteName.g);
-          expect(NoteName.parse('la', chain: chain), NoteName.a);
-          expect(NoteName.parse('si', chain: chain), NoteName.b);
-        });
-
-        test('.toString() and .parse() are inverses', () {
-          for (final noteName in NoteName.values) {
-            expect(
-              noteName,
-              NoteName.parse(
-                noteName.toString(formatter: const RomanceNoteNameNotation()),
-                chain: chain,
-              ),
-            );
-          }
-        });
-      });
-    });
-
     group('.intervalSize()', () {
       test('returns the Interval size between this NoteName and other', () {
         expect(NoteName.c.intervalSize(.c), 1);
@@ -241,6 +101,146 @@ void main() {
           .a,
         });
         expect(orderedSet.toList(), <NoteName>[.c, .d, .e, .f, .g, .a, .b]);
+      });
+    });
+  });
+
+  group('EnglishNoteNameNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => NoteName.parse('x'), throwsFormatException);
+        expect(
+          () => NoteName.parse('H', chain: [const EnglishNoteNameNotation()]),
+          throwsFormatException,
+        );
+        expect(() => NoteName.parse('X'), throwsFormatException);
+        expect(() => NoteName.parse(''), throwsFormatException);
+        expect(() => NoteName.parse('AB'), throwsFormatException);
+      });
+
+      test('parses source as a NoteName', () {
+        expect(NoteName.parse('a'), NoteName.a);
+        expect(NoteName.parse('b'), NoteName.b);
+        expect(NoteName.parse('c'), NoteName.c);
+        expect(NoteName.parse('d'), NoteName.d);
+        expect(NoteName.parse('e'), NoteName.e);
+        expect(NoteName.parse('f'), NoteName.f);
+        expect(NoteName.parse('g'), NoteName.g);
+
+        expect(NoteName.parse('A'), NoteName.a);
+        expect(NoteName.parse('B'), NoteName.b);
+        expect(NoteName.parse('C'), NoteName.c);
+        expect(NoteName.parse('D'), NoteName.d);
+        expect(NoteName.parse('E'), NoteName.e);
+        expect(NoteName.parse('F'), NoteName.f);
+        expect(NoteName.parse('G'), NoteName.g);
+      });
+
+      test('.toString() and .parse() are inverses', () {
+        for (final noteName in NoteName.values) {
+          expect(noteName, NoteName.parse(noteName.toString()));
+        }
+      });
+    });
+  });
+
+  group('GermanNoteNameNotation', () {
+    group('.parse()', () {
+      const chain = [GermanNoteNameNotation()];
+
+      test('throws a FormatException when source is invalid', () {
+        expect(
+          () => NoteName.parse('X', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => NoteName.parse('', chain: chain), throwsFormatException);
+        expect(
+          () => NoteName.parse('AH', chain: chain),
+          throwsFormatException,
+        );
+      });
+
+      test('parses source as a NoteName', () {
+        expect(NoteName.parse('A', chain: chain), NoteName.a);
+        expect(NoteName.parse('B', chain: chain), NoteName.b);
+        expect(NoteName.parse('C', chain: chain), NoteName.c);
+        expect(NoteName.parse('D', chain: chain), NoteName.d);
+        expect(NoteName.parse('E', chain: chain), NoteName.e);
+        expect(NoteName.parse('F', chain: chain), NoteName.f);
+        expect(NoteName.parse('G', chain: chain), NoteName.g);
+        expect(NoteName.parse('H', chain: chain), NoteName.b);
+
+        expect(NoteName.parse('h', chain: chain), NoteName.b);
+        expect(NoteName.parse('a', chain: chain), NoteName.a);
+      });
+
+      test('.toString() and .parse() are inverses', () {
+        for (final noteName in NoteName.values) {
+          expect(
+            noteName,
+            NoteName.parse(
+              noteName.toString(formatter: const GermanNoteNameNotation()),
+              chain: chain,
+            ),
+          );
+        }
+      });
+    });
+  });
+
+  group('RomanceNoteNameNotation', () {
+    group('.parse()', () {
+      const chain = [RomanceNoteNameNotation()];
+
+      test('throws a FormatException when source is invalid', () {
+        expect(
+          () => NoteName.parse('X', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => NoteName.parse('', chain: chain), throwsFormatException);
+        expect(
+          () => NoteName.parse('A', chain: chain),
+          throwsFormatException,
+        );
+        expect(
+          () => NoteName.parse('DoRe', chain: chain),
+          throwsFormatException,
+        );
+        expect(
+          () => const RomanceNoteNameNotation().parse('x'),
+          throwsFormatException,
+        );
+      });
+
+      test('parses source as a NoteName', () {
+        expect(NoteName.parse('Do', chain: chain), NoteName.c);
+        expect(NoteName.parse('Re', chain: chain), NoteName.d);
+        expect(NoteName.parse('Mi', chain: chain), NoteName.e);
+        expect(NoteName.parse('Fa', chain: chain), NoteName.f);
+        expect(NoteName.parse('Sol', chain: chain), NoteName.g);
+        expect(NoteName.parse('La', chain: chain), NoteName.a);
+        expect(NoteName.parse('Si', chain: chain), NoteName.b);
+
+        expect(NoteName.parse('do', chain: chain), NoteName.c);
+        expect(NoteName.parse('DO', chain: chain), NoteName.c);
+        expect(NoteName.parse('re', chain: chain), NoteName.d);
+        expect(NoteName.parse('mi', chain: chain), NoteName.e);
+        expect(NoteName.parse('fa', chain: chain), NoteName.f);
+        expect(NoteName.parse('sol', chain: chain), NoteName.g);
+        expect(NoteName.parse('la', chain: chain), NoteName.a);
+        expect(NoteName.parse('si', chain: chain), NoteName.b);
+      });
+
+      test('.toString() and .parse() are inverses', () {
+        for (final noteName in NoteName.values) {
+          expect(
+            noteName,
+            NoteName.parse(
+              noteName.toString(formatter: const RomanceNoteNameNotation()),
+              chain: chain,
+            ),
+          );
+        }
       });
     });
   });

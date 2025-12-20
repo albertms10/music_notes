@@ -2,7 +2,7 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:music_notes/utils.dart';
 
 import '../interval/size.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../tuning/equal_temperament.dart';
 import 'note.dart';
 
@@ -198,14 +198,14 @@ final class EnglishNoteNameNotation extends StringNotationSystem<NoteName> {
   );
 
   @override
-  String format(NoteName noteName) => noteName.name.toUpperCase();
-
-  @override
   RegExp get regExp => _regExp;
 
   @override
   NoteName parseMatch(RegExpMatch match) =>
       .values.byName(match.namedGroup('noteName')!.toLowerCase());
+
+  @override
+  String format(NoteName noteName) => noteName.name.toUpperCase();
 }
 
 /// The German notation system for [NoteName].
@@ -226,12 +226,6 @@ final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
   );
 
   @override
-  String format(NoteName noteName) => switch (noteName) {
-    .b => _altB,
-    NoteName(:final name) => name,
-  }.toUpperCase();
-
-  @override
   RegExp get regExp => _regExp;
 
   @override
@@ -240,15 +234,18 @@ final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
         _altB => .b,
         final name => .values.byName(name),
       };
+
+  @override
+  String format(NoteName noteName) => switch (noteName) {
+    .b => _altB,
+    NoteName(:final name) => name,
+  }.toUpperCase();
 }
 
 /// The Romance notation system for [NoteName].
 final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [RomanceNoteNameNotation].
   const RomanceNoteNameNotation();
-
-  @override
-  String format(NoteName noteName) => _noteNames[noteName]!;
 
   static final _noteNames = <NoteName, String>{
     .c: 'Do',
@@ -276,4 +273,7 @@ final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
         .firstWhere((entry) => entry.value.toLowerCase() == name)
         .key;
   }
+
+  @override
+  String format(NoteName noteName) => _noteNames[noteName]!;
 }

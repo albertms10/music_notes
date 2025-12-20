@@ -6,7 +6,7 @@ import '../chordable.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../interval/size.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../scalable.dart';
 import 'chord.dart';
@@ -255,6 +255,43 @@ final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
   static const _sus = 'sus';
 
   @override
+  ChordPattern parse(String source) {
+    var s = source.replaceAll(' ', '').toLowerCase();
+
+    if (s == _halfDiminished) return .diminishedTriad.add7();
+
+    ChordPattern triad;
+    if (s.startsWith(_diminishedTriad)) {
+      triad = .diminishedTriad;
+      s = s.substring(3);
+    } else if (s.startsWith(_augmentedTriad)) {
+      triad = .augmentedTriad;
+      s = s.substring(1);
+    } else if (s.startsWith(_minorTriad)) {
+      triad = .minorTriad;
+      s = s.substring(1);
+    } else {
+      triad = .majorTriad;
+    }
+
+    if (s.startsWith('$_majorSeventh${Size.seventh}')) {
+      return triad.add7(.major);
+    } else if (s.startsWith('${Size.seventh}')) {
+      return triad.add7();
+    }
+
+    if (s.contains('$_sus${Size.second}')) {
+      triad = const ChordPattern([.M2, .P5]);
+      s = s.replaceAll('$_sus${Size.second}', '');
+    } else if (s.contains('$_sus${Size.fourth}')) {
+      triad = const ChordPattern([.P4, .P5]);
+      s = s.replaceAll('$_sus${Size.fourth}', '');
+    }
+
+    return triad;
+  }
+
+  @override
   String format(ChordPattern chordPattern) {
     final buffer = StringBuffer();
 
@@ -301,42 +338,5 @@ final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
     buffer.writeAll(intervals, ' ');
 
     return buffer.toString();
-  }
-
-  @override
-  ChordPattern parse(String source) {
-    var s = source.replaceAll(' ', '').toLowerCase();
-
-    if (s == _halfDiminished) return .diminishedTriad.add7();
-
-    ChordPattern triad;
-    if (s.startsWith(_diminishedTriad)) {
-      triad = .diminishedTriad;
-      s = s.substring(3);
-    } else if (s.startsWith(_augmentedTriad)) {
-      triad = .augmentedTriad;
-      s = s.substring(1);
-    } else if (s.startsWith(_minorTriad)) {
-      triad = .minorTriad;
-      s = s.substring(1);
-    } else {
-      triad = .majorTriad;
-    }
-
-    if (s.startsWith('$_majorSeventh${Size.seventh}')) {
-      return triad.add7(.major);
-    } else if (s.startsWith('${Size.seventh}')) {
-      return triad.add7();
-    }
-
-    if (s.contains('$_sus${Size.second}')) {
-      triad = const ChordPattern([.M2, .P5]);
-      s = s.replaceAll('$_sus${Size.second}', '');
-    } else if (s.contains('$_sus${Size.fourth}')) {
-      triad = const ChordPattern([.P4, .P5]);
-      s = s.replaceAll('$_sus${Size.fourth}', '');
-    }
-
-    return triad;
   }
 }

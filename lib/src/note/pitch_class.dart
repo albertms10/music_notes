@@ -5,7 +5,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../interval/interval.dart';
 import '../interval/interval_class.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'accidental.dart';
@@ -322,10 +322,6 @@ final class EnharmonicSpellingsPitchClassNotation
   });
 
   @override
-  String format(PitchClass pitchClass) =>
-      '{${pitchClass.spellings().join('|')}}';
-
-  @override
   RegExp get regExp => RegExp(
     r'(?:\{|\|)'
     '${noteNotation.regExp?.pattern}'
@@ -339,6 +335,10 @@ final class EnharmonicSpellingsPitchClassNotation
 
     return PitchClass(semitones);
   }
+
+  @override
+  String format(PitchClass pitchClass) =>
+      '{${pitchClass.spellings().join('|')}}';
 }
 
 /// The [StringNotationSystem] for integer [PitchClass].
@@ -347,13 +347,6 @@ final class EnharmonicSpellingsPitchClassNotation
 final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
   const IntegerPitchClassNotation();
-
-  @override
-  String format(PitchClass pitchClass) => switch (pitchClass.semitones) {
-    10 => 't',
-    11 => 'e',
-    final semitones => '$semitones',
-  };
 
   static final _regExp = RegExp('(?<pitchClass>[0-9et])');
 
@@ -367,4 +360,11 @@ final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
         'e' => 11,
         final semitones => .parse(semitones),
       });
+
+  @override
+  String format(PitchClass pitchClass) => switch (pitchClass.semitones) {
+    10 => 't',
+    11 => 'e',
+    final semitones => '$semitones',
+  };
 }
