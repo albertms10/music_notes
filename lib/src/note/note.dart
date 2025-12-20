@@ -6,7 +6,7 @@ import '../harmony/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../key/key.dart';
 import '../key/key_signature.dart';
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
@@ -483,6 +483,7 @@ final class EnglishNoteNotation extends NoteNotation {
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
+      largerFirst: true,
     ),
   });
 
@@ -492,26 +493,18 @@ final class EnglishNoteNotation extends NoteNotation {
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation.ascii(
            showNatural: false,
+           largerFirst: true,
          ),
        );
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.
   static const showNatural = EnglishNoteNotation.symbol(
-    accidentalNotation: SymbolAccidentalNotation(),
+    accidentalNotation: SymbolAccidentalNotation(largerFirst: true),
   );
 
   /// Whether to use symbolic representation for [Accidental].
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
-
-  @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : '-'}$accidental';
-  }
 
   @override
   RegExp get regExp => RegExp(
@@ -525,6 +518,15 @@ final class EnglishNoteNotation extends NoteNotation {
     noteNameNotation.parseMatch(match),
     accidentalNotation.parseMatch(match),
   );
+
+  @override
+  String format(Note note) {
+    final noteName = noteNameNotation.format(note.noteName);
+    final accidental = accidentalNotation.format(note.accidental);
+    if (accidental.isEmpty) return noteName;
+
+    return '$noteName${_isSymbol ? '' : '-'}$accidental';
+  }
 }
 
 /// The German alphabetic notation system for [Note].
@@ -536,19 +538,6 @@ final class GermanNoteNotation extends NoteNotation {
     super.noteNameNotation = const GermanNoteNameNotation(),
     super.accidentalNotation = const GermanAccidentalNotation(),
   });
-
-  @override
-  String format(Note note) => switch (note) {
-    Note(noteName: .b, accidental: .flat) => 'B',
-
-    Note(noteName: .a || .e, :final accidental) && Note(:final noteName)
-        when accidental.isFlat =>
-      noteNameNotation.format(noteName) +
-          accidentalNotation.format(accidental).substring(1),
-
-    Note(:final noteName, :final accidental) =>
-      noteNameNotation.format(noteName) + accidentalNotation.format(accidental),
-  };
 
   @override
   RegExp get regExp => RegExp(
@@ -578,6 +567,19 @@ final class GermanNoteNotation extends NoteNotation {
 
     return Note(noteNameNotation.parseMatch(match), accidental);
   }
+
+  @override
+  String format(Note note) => switch (note) {
+    Note(noteName: .b, accidental: .flat) => 'B',
+
+    Note(noteName: .a || .e, :final accidental) && Note(:final noteName)
+        when accidental.isFlat =>
+      noteNameNotation.format(noteName) +
+          accidentalNotation.format(accidental).substring(1),
+
+    Note(:final noteName, :final accidental) =>
+      noteNameNotation.format(noteName) + accidentalNotation.format(accidental),
+  };
 }
 
 /// The Romance alphabetic notation system for [Note].
@@ -616,15 +618,6 @@ final class RomanceNoteNotation extends NoteNotation {
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : ' '}$accidental';
-  }
-
-  @override
   RegExp get regExp => RegExp(
     '${noteNameNotation.regExp?.pattern}\\s*'
     '${accidentalNotation.regExp?.pattern}',
@@ -636,6 +629,15 @@ final class RomanceNoteNotation extends NoteNotation {
     noteNameNotation.parseMatch(match),
     accidentalNotation.parseMatch(match),
   );
+
+  @override
+  String format(Note note) {
+    final noteName = noteNameNotation.format(note.noteName);
+    final accidental = accidentalNotation.format(note.accidental);
+    if (accidental.isEmpty) return noteName;
+
+    return '$noteName${_isSymbol ? '' : ' '}$accidental';
+  }
 }
 
 /// A list of notes extension.

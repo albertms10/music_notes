@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation_system.dart';
+import '../notation/notation_system.dart';
 import '../scale/scale_pattern.dart';
 import 'key.dart';
 
@@ -94,12 +94,6 @@ final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
   static const _major = 'major';
   static const _minor = 'minor';
 
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  };
-
   static final RegExp _regExp = RegExp(
     '(?<mode>$_major|$_minor)',
     caseSensitive: false,
@@ -114,6 +108,12 @@ final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
         _major => .major,
         _ /* _minor */ => .minor,
       };
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    .major => _major,
+    .minor => _minor,
+  };
 }
 
 /// The German notation system for [TonalMode].
@@ -124,12 +124,6 @@ final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
   static const _major = 'dur';
   static const _minor = 'moll';
 
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  }.toUpperFirst();
-
   static final RegExp _regExp = RegExp(
     '(?<mode>$_major|$_minor)',
     caseSensitive: false,
@@ -144,6 +138,12 @@ final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
         _major => .major,
         _ /* _minor */ => .minor,
       };
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    .major => _major,
+    .minor => _minor,
+  }.toUpperFirst();
 }
 
 /// The Romance notation system for [TonalMode].
@@ -154,12 +154,6 @@ final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
   static const _major = 'maggiore';
   static const _minor = 'minore';
 
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  };
-
   static final RegExp _regExp = RegExp(
     '(?<mode>$_major|$_minor)',
     caseSensitive: false,
@@ -174,6 +168,12 @@ final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
         _major => .major,
         _ /* _minor */ => .minor,
       };
+
+  @override
+  String format(TonalMode tonalMode) => switch (tonalMode) {
+    .major => _major,
+    .minor => _minor,
+  };
 }
 
 /// Modes of a modal system.
