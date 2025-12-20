@@ -30,8 +30,11 @@ extension StringExtension on String {
   ///
   /// Example:
   /// ```dart
-  /// '1'.toNegativeAscii() == '1'
-  /// '−5'.toNegativeAscii() == '-5'
+  /// '1'.toAscii() == '1'
+  /// '−5'.toAscii() == '-5'
   /// ```
-  String toNegativeAscii() => replaceFirst(NumExtension.minusSign, '-');
+  // ignore: unnecessary_this for improved code formatting.
+  String toAscii() => this
+      .replaceFirst(NumExtension.minusSign, '-')
+      .replaceFirst(NumExtension.plusMinusSign, '+');
 }
