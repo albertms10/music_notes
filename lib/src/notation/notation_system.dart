@@ -1,37 +1,37 @@
 // ignore_for_file: one_member_abstracts - Code reusability
 
 /// An abstract representation of a notation system for parsing
-/// and formatting [O].
+/// and formatting [I].
 ///
 /// The [parse] and [format] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
 /// of each other:
 /// the output of [format] should be a valid argument for [parse], and
 /// `parse(format(value))` should return a value equal to the original value.
-abstract class NotationSystem<I, O> implements Parser<I, O>, Formatter<O, I> {
+abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
   /// Creates a new formatter.
   const NotationSystem();
 
-  /// Parses [source] as [O].
+  /// Parses [source] as [I].
   ///
   /// The input [source] should typically be produced by [format], ensuring
   /// that `parse(format(value)) == value`.
   ///
-  /// If the [source] string does not contain a valid [O], a [FormatException]
+  /// If the [source] string does not contain a valid [I], a [FormatException]
   /// should be thrown.
   @override
-  O parse(I source);
+  I parse(O source);
 
-  /// Formats this [O].
+  /// Formats this [I].
   ///
   /// The output of this method should be accepted by [parse] to reconstruct
   /// the original value.
   @override
-  I format(O value);
+  O format(I value);
 }
 
 /// An abstract representation of a notation system for parsing
 /// and formatting [V] from and to a string.
-abstract class StringNotationSystem<V> extends NotationSystem<String, V>
+abstract class StringNotationSystem<V> extends NotationSystem<V, String>
     implements StringFormatter<V>, StringParser<V> {
   /// Creates a new formatter.
   const StringNotationSystem();
