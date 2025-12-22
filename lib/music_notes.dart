@@ -3,6 +3,8 @@
 library;
 
 export 'src/chordable.dart';
+export 'src/comparators.dart';
+export 'src/enharmonic.dart';
 export 'src/harmony/chord.dart';
 export 'src/harmony/chord_pattern.dart';
 export 'src/harmony/harmonic_function.dart';
@@ -24,6 +26,7 @@ export 'src/note/note_name.dart';
 export 'src/note/pitch.dart';
 export 'src/note/pitch_class.dart';
 export 'src/range.dart';
+export 'src/respellable.dart';
 export 'src/scalable.dart';
 export 'src/scale/scale.dart';
 export 'src/scale/scale_degree.dart';

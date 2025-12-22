@@ -538,9 +538,11 @@ Note.g.flat.inOctave(5) - const Cent(8.236); // G♭5−8
 Or parse a `ClosestPitch` from a string:
 
 ```dart
-ClosestPitch.parse('A4'); // A4
-ClosestPitch.parse('A4+12.6'); // A4+13
+ClosestPitch.parse('A4'); // A4±0
 ClosestPitch.parse('E♭3-28'); // E♭3−28
+ClosestPitch.parse('A4+12.6').toString(
+  formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+); // A4+12.6
 ```
 
 ### In a nutshell
@@ -561,12 +563,13 @@ ScalePattern
 
 ## Similar projects in other languages
 
-- **Mingus** [Python](https://github.com/bspaans/python-mingus)
-- **Modest** [Lua](https://github.com/esbudylin/modest)
-- **Sharp11** [JavaScript](https://github.com/jsrmath/sharp11)
-- **Teoria** [JavaScript](https://github.com/saebekassebil/teoria)
-- **Tonal** [JavaScript](https://github.com/tonaljs/tonal)
-- **Tonic** [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
+- `mingus` [Python](https://github.com/bspaans/python-mingus)
+- `modest` [Lua](https://github.com/esbudylin/modest)
+- `music21` [Python](https://github.com/cuthbertLab/music21)
+- `sharp11` [JavaScript](https://github.com/jsrmath/sharp11)
+- `teoria` [JavaScript](https://github.com/saebekassebil/teoria)
+- `tonal` [JavaScript](https://github.com/tonaljs/tonal)
+- `tonic` [JavaScript](https://github.com/osteele/tonic.ts) | [Dart](https://github.com/osteele/dart-tonic)
 
 ## Contributing
 
