@@ -6,6 +6,19 @@ import 'package:xml/xml.dart' show XmlParserException;
 
 void main() {
   group('Pitch', () {
+    group('.fromMidi()', () {
+      test('throws an ArgumentError if the MIDI number is out of range', () {
+        expect(() => Pitch.fromMidi(-1), throwsArgumentError);
+        expect(() => Pitch.fromMidi(128), throwsArgumentError);
+      });
+
+      test('creates a new Pitch from the given MIDI number', () {
+        expect(Pitch.fromMidi(0), Note.c.inOctave(-1));
+        expect(Pitch.fromMidi(61), Note.c.sharp.inOctave(4));
+        expect(Pitch.fromMidi(127), Note.g.inOctave(9));
+      });
+    });
+
     group('.inOctave()', () {
       test('changes the octave of each Pitch in this list', () {
         expect(const <Pitch>[].inOctave(2), const <Pitch>[]);
