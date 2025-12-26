@@ -76,6 +76,25 @@ final class Pitch extends Scalable<Pitch>
     List<StringParser<Pitch>> chain = parsers,
   }) => chain.parse(source);
 
+  /// Create a [Pitch] from a MIDI number.
+  ///
+  /// Example:
+  /// ```dart
+  /// Pitch.fromMidi(69) == Note.a.inOctave(4)
+  /// Pitch.fromMidi(72) == Note.c.inOctave(5)
+  /// Pitch.fromMidi(127) // throws an ArgumentError
+  /// ```
+  factory Pitch.fromMidi(int midiNumber) {
+    if (midiNumber < 0 || midiNumber > 127) {
+      throw ArgumentError('MIDI number must be between 0 and 127');
+    }
+
+    return Pitch(
+      PitchClass(midiNumber).resolveClosestSpelling(),
+      octave: Pitch.octaveFromSemitones(midiNumber - chromaticDivisions),
+    );
+  }
+
   /// Changes the octave of this [Pitch].
   ///
   /// Example:
