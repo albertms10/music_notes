@@ -2,6 +2,7 @@ import 'dart:collection' show SplayTreeSet;
 
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
+import 'package:xml/xml.dart' show XmlParserException;
 
 void main() {
   group('Pitch', () {
@@ -1495,6 +1496,106 @@ void main() {
         expect(
           Note.f.sharp.inOctave(13).toString(formatter: numbered),
           'fis10',
+        );
+      });
+    });
+  });
+
+  group('MusicXmlPitchNotation', () {
+    const formatter = StringXmlNotationSystem(MusicXmlPitchNotation());
+    const chain = [formatter];
+
+    group('.parse()', () {
+      test('throws ArgumentError when source is invalid', () {
+        expect(() => Pitch.parse('', chain: chain), throwsArgumentError);
+        expect(
+          () => Pitch.parse('x', chain: chain),
+          throwsA(isA<XmlParserException>()),
+        );
+        expect(
+          () => Pitch.parse('<note></note>', chain: chain),
+          throwsArgumentError,
+        );
+        expect(
+          () => Pitch.parse('<pitch></pitch>', chain: chain),
+          throwsArgumentError,
+        );
+        expect(
+          () => Pitch.parse('''
+              <pitch>
+                <step>C</step>
+              </pitch>
+            ''', chain: chain),
+          throwsArgumentError,
+        );
+        expect(
+          () => Pitch.parse('''
+              <pitch>
+                <octave>4</octave>
+              </pitch>
+            ''', chain: chain),
+          throwsArgumentError,
+        );
+      });
+
+      test('parses source as a Pitch', () {
+        expect(
+          Pitch.parse(
+            '<pitch><step>C</step><alter>-1</alter><octave>4</octave></pitch>',
+            chain: chain,
+          ),
+          Note.c.flat.inOctave(4),
+        );
+        expect(
+          Pitch.parse('''
+              <pitch>
+                <step>D</step>
+                <octave>3</octave>
+              </pitch>
+            ''', chain: chain),
+          Note.d.inOctave(3),
+        );
+        expect(
+          Pitch.parse('''
+              <pitch>
+                <step> F</step>
+                <alter>  1</alter>
+                <octave>5 </octave>
+              </pitch>
+            ''', chain: chain),
+          Note.f.sharp.inOctave(5),
+        );
+      });
+    });
+
+    group('.format()', () {
+      test('returns the MusicXML string representation of this Pitch', () {
+        expect(
+          Note.c.flat.inOctave(4).toString(formatter: formatter),
+          '''
+<pitch>
+  <step>C</step>
+  <alter>-1</alter>
+  <octave>4</octave>
+</pitch>''',
+        );
+        expect(
+          Note.d.inOctave(3).toString(formatter: formatter),
+          '''
+<pitch>
+  <step>D</step>
+  <alter>0</alter>
+  <octave>3</octave>
+</pitch>''',
+        );
+        expect(
+          Note.f.sharp.inOctave(5).toString(formatter: formatter),
+          '''
+<pitch>
+  <step>F</step>
+  <alter>1</alter>
+  <octave>5</octave>
+</pitch>''',
         );
       });
     });
