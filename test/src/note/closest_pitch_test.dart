@@ -205,11 +205,18 @@ void main() {
         expect(
           ClosestPitch(
             Note.f.sharp.inOctave(6),
-            cents: const Cent(0.4),
+            cents: const Cent(0.45),
           ).toString(
             formatter: const StandardClosestPitchNotation(fractionDigits: 1),
           ),
-          'F♯6+0.4',
+          'F♯6+0.5',
+        );
+        expect(
+          ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.14927345512),
+          ).toString(formatter: StandardClosestPitchNotation.noRound),
+          'F♯6+0.14927345512',
         );
         expect(
           ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.546)).toString(),

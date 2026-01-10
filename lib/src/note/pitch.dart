@@ -86,7 +86,7 @@ final class Pitch extends Scalable<Pitch>
   /// Pitch.fromMidi(127) // throws an ArgumentError
   /// ```
   factory Pitch.fromMidi(int midiNumber) {
-    if (midiNumber < 0 || midiNumber > 127) {
+    if (midiNumber case < 0 || > 127) {
       throw ArgumentError('MIDI number must be between 0 and 127');
     }
 
