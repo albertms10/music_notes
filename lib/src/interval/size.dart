@@ -154,9 +154,8 @@ extension type const Size._(int size) implements int {
   /// Size.fifth.diminished == .d5
   /// (-Size.seventh).diminished == -Interval.d7
   /// ```
-  Interval get diminished => isPerfect
-      ? Interval.perfect(this, .diminished)
-      : Interval.imperfect(this, .diminished);
+  Interval get diminished =>
+      isPerfect ? .perfect(this, .diminished) : .imperfect(this, .diminished);
 
   /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
   /// from this [Size].
