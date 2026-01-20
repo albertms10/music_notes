@@ -5,6 +5,13 @@ import 'package:test/test.dart';
 
 void main() {
   group('EqualTemperament', () {
+    group('.edo()', () {
+      test('creates a new EqualTemperament from octave divisions', () {
+        expect(EqualTemperament.edo(12), const EqualTemperament.edo12());
+        expect(EqualTemperament.edo(19), const EqualTemperament.edo19());
+      });
+    });
+
     group('.steps', () {
       test('returns an unmodifiable collection', () {
         expect(
