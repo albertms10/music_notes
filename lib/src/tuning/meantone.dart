@@ -27,16 +27,25 @@ class Meantone extends JustIntonation {
 
   /// Return the cents offset relative to equal temperament
   num centsOffset(Pitch pitch) {
-    final equalCents =
-        fork.pitch.interval(pitch).semitones * Cent.divisionsPerSemitone;
-    final actualCents = Cent.fromRatio(ratio(pitch)).value;
+    final equalCents = Cent(
+      fork.pitch.interval(pitch).semitones * Cent.divisionsPerSemitone,
+    );
+    final actualCents = Cent.fromRatio(ratio(pitch));
 
-    return actualCents - equalCents;
+    return _normalizeCents(Cent(actualCents - equalCents));
+  }
+
+  num _normalizeCents(Cent cents) {
+    var normalized = cents % Cent.octave;
+    if (normalized > Cent.octave / 2) normalized -= Cent.octave;
+    if (normalized < -Cent.octave / 2) normalized += Cent.octave;
+
+    return normalized;
   }
 
   /// Fifth adjustment in cents: -(m / n) * comma
   double get _perFifthAdjustment =>
-      -JustIntonation.syntonicComma * rational.toDouble();
+      -Cent.fromRatio(JustIntonation.syntonicCommaRatio) * rational.toDouble();
 
   @override
   num ratio(Pitch pitch) => Cent(

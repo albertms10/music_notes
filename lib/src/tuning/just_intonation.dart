@@ -24,7 +24,7 @@ abstract class JustIntonation extends TuningSystem {
 
   /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma)
   /// (a.k.a. Didymean comma).
-  static const syntonicComma = (81 / 64) / (5 / 4);
+  static const syntonicCommaRatio = (81 / 64) / (5 / 4);
 
   /// The number of [Cent] for the generator at [Interval.P5].
   ///

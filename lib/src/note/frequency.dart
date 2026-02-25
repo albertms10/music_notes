@@ -70,7 +70,9 @@ extension type const Frequency._(num hertz) implements num {
     final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
     );
-    final semitones = tuningSystem.fork.pitch.semitones + (cents / 100).round();
+    final semitones =
+        tuningSystem.fork.pitch.semitones +
+        (cents / Cent.divisionsPerSemitone).round();
 
     final closestPitch = PitchClass(
       semitones,
