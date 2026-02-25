@@ -98,11 +98,18 @@ abstract interface class StringParser<V> extends Parser<String, V> {
 /// A [StringParser] chain.
 extension StringParserChain<V> on List<StringParser<V>> {
   /// Parses [source] from this chain of [StringParser]s.
-  V parse(String source) {
+  V parse(String source) =>
+      firstMatchingParser(source)?.parse(source) ??
+      (throw FormatException('End of parser chain: invalid $V', source));
+
+  /// Returns the first [StringParser] in this chain that matches [source],
+  /// or `null` if none match.
+  StringParser<V>? firstMatchingParser(String source) {
     for (final parser in this) {
-      if (parser.matches(source)) return parser.parse(source);
+      if (parser.matches(source)) return parser;
     }
-    throw FormatException('End of parser chain: invalid $V', source);
+
+    return null;
   }
 }
 
