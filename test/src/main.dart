@@ -8,6 +8,7 @@ import 'interval/size_test.dart' as size_test;
 import 'key/key_signature_test.dart' as key_signature_test;
 import 'key/key_test.dart' as key_test;
 import 'key/mode_test.dart' as mode_test;
+import 'notation/notation_system_test.dart' as notation_system_test;
 import 'note/accidental_test.dart' as accidental_test;
 import 'note/closest_pitch_test.dart' as closest_pitch_test;
 import 'note/frequency_test.dart' as frequency_test;
@@ -48,6 +49,7 @@ void main() {
   key_signature_test.main();
   mode_test.main();
   key_test.main();
+  notation_system_test.main();
   cent_test.main();
   equal_temperament_test.main();
   just_intonation_test.main();

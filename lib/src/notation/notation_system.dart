@@ -104,6 +104,15 @@ extension StringParserChain<V> on List<StringParser<V>> {
     }
     throw FormatException('End of parser chain: invalid $V', source);
   }
+
+  /// Returns whether [source] is matched by any parser in this chain of
+  /// [StringParser]s.
+  bool matches(String source) {
+    for (final parser in this) {
+      if (parser.matches(source)) return true;
+    }
+    return false;
+  }
 }
 
 /// An abstract representation of a formatter for [V].
