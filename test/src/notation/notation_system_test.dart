@@ -3,12 +3,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('NotationSystem', () {
-    group('.matches()', () {
-      test('returns whether source is matched by any parser in the chain', () {
+    group('.firstMatchingParser()', () {
+      test('returns the first parser in the chain that matches source', () {
         const chain = [EnglishNoteNotation(), GermanNoteNotation()];
-        expect(chain.matches('C'), isTrue);
-        expect(chain.matches('h'), isTrue);
-        expect(chain.matches('Do'), isFalse);
+        expect(chain.firstMatchingParser('C'), const EnglishNoteNotation());
+        expect(chain.firstMatchingParser('h'), const GermanNoteNotation());
+        expect(chain.firstMatchingParser('Do'), isNull);
       });
     });
   });
