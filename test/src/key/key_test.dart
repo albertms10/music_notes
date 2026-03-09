@@ -183,18 +183,18 @@ void main() {
       });
 
       test('parses source as a Key', () {
-        expect(Key.parse('C-dur', chain: chain), Note.c.major);
+        expect(Key.parse('C-Dur', chain: chain), Note.c.major);
         expect(Key.parse('B-dur', chain: chain), Note.b.flat.major);
         expect(Key.parse('b-dur', chain: chain), Note.b.flat.major);
-        expect(Key.parse('H-moll', chain: chain), Note.b.minor);
+        expect(Key.parse('H-Moll', chain: chain), Note.b.minor);
         expect(Key.parse('D-dur', chain: chain), Note.d.major);
         expect(
           Key.parse('Gisis-dur', chain: chain),
           Note.g.sharp.sharp.major,
         );
-        expect(Key.parse('a-moll', chain: chain), Note.a.minor);
-        expect(Key.parse('as-moll', chain: chain), Note.a.flat.minor);
-        expect(Key.parse('d-moll', chain: chain), Note.d.minor);
+        expect(Key.parse('a-Moll', chain: chain), Note.a.minor);
+        expect(Key.parse('As-moll', chain: chain), Note.a.flat.minor);
+        expect(Key.parse('d-Moll', chain: chain), Note.d.minor);
       });
 
       test('.toString() and .parse() are inverses', () {
@@ -216,17 +216,17 @@ void main() {
 
     group('.toString()', () {
       test('returns the string representation of this Key', () {
-        expect(Note.c.major.toString(formatter: formatter), 'C-dur');
-        expect(Note.d.minor.toString(formatter: formatter), 'd-moll');
-        expect(Note.a.flat.major.toString(formatter: formatter), 'As-dur');
-        expect(Note.f.sharp.minor.toString(formatter: formatter), 'fis-moll');
+        expect(Note.c.major.toString(formatter: formatter), 'C-Dur');
+        expect(Note.d.minor.toString(formatter: formatter), 'd-Moll');
+        expect(Note.a.flat.major.toString(formatter: formatter), 'As-Dur');
+        expect(Note.f.sharp.minor.toString(formatter: formatter), 'fis-Moll');
         expect(
           Note.g.sharp.sharp.major.toString(formatter: formatter),
-          'Gisis-dur',
+          'Gisis-Dur',
         );
         expect(
           Note.e.flat.flat.minor.toString(formatter: formatter),
-          'eses-moll',
+          'eses-Moll',
         );
       });
     });
