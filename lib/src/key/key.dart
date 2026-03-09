@@ -118,8 +118,8 @@ final class Key implements Comparable<Key> {
   /// Note.f.sharp.minor.toString(formatter: romance) == 'Fa♯ minore'
   ///
   /// const german = GermanKeyNotation();
-  /// Note.e.flat.major.toString(formatter: german) == 'Es-dur'
-  /// Note.g.sharp.minor.toString(formatter: german) == 'gis-moll'
+  /// Note.e.flat.major.toString(formatter: german) == 'Es-Dur'
+  /// Note.g.sharp.minor.toString(formatter: german) == 'gis-Moll'
   /// ```
   @override
   String toString({
@@ -202,7 +202,7 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
   @override
   String format(Key key) {
     final note = noteNotation.format(key.note);
-    final mode = tonalModeNotation.format(key.mode).toLowerCase();
+    final mode = tonalModeNotation.format(key.mode);
     final casedNote = switch (key.mode) {
       .major => note,
       .minor => note.toLowerCase(),

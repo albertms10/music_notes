@@ -340,7 +340,7 @@ Represent it using any notation formatter:
 ```dart
 Note.d.flat.major.toString(); // D♭ major
 Note.c.major.toString(formatter: const RomanceKeyNotation()); // Do maggiore
-Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
+Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-Moll
 ```
 
 ### Key signatures
