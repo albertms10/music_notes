@@ -358,6 +358,31 @@ void main() {
       });
     });
 
+    group('.direction', () {
+      test('returns the direction of this Interval as a sign of size', () {
+        expect(Interval.m3.direction, 1);
+        expect((-Interval.P5).direction, -1);
+      });
+    });
+
+    group('.ascending', () {
+      test('returns the ascending Interval', () {
+        expect(Interval.M2.ascending, Interval.M2);
+        expect(Interval.m3.ascending, Interval.m3);
+        expect((-Interval.m6).ascending, Interval.m6);
+        expect((-Interval.P8).ascending, Interval.P8);
+      });
+    });
+
+    group('.descending', () {
+      test('returns the descending Interval', () {
+        expect(Interval.M2.descending, -Interval.M2);
+        expect(Interval.m3.descending, -Interval.m3);
+        expect((-Interval.m6).descending, -Interval.m6);
+        expect((-Interval.P8).descending, -Interval.P8);
+      });
+    });
+
     group('.isDescending', () {
       test('returns whether this Interval is descending', () {
         expect(Interval.m3.isDescending, isFalse);
