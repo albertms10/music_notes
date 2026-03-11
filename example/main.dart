@@ -89,7 +89,9 @@ void main() {
   Interval.parse('AA6'); // AA6
 
   -Interval.m7; // m-7
-  Interval.M3.withDescending(true); // M-3
+  (-Interval.P5).direction; // -1
+  Interval.M3.descending; // M-3
+  (-Interval.P4).ascending; // P4
   (-Interval.P4).withDescending(false); // P4
 
   Interval.m3.inversion; // M6

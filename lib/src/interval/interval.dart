@@ -221,6 +221,33 @@ final class Interval
   @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
+  /// The direction of this [Interval] as a sign of [size].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.M2.direction == 1
+  /// (-Interval.P4).direction == -1
+  /// ```
+  int get direction => size.sign;
+
+  /// The ascending version of this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// (-Interval.m2).ascending == .m2
+  /// Interval.M3.ascending == .M3
+  /// ```
+  Interval get ascending => isDescending ? Interval._(-size, quality) : this;
+
+  /// The descending version of this [Interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.M3.descending == -Interval.M3
+  /// (-Interval.m2).descending == -Interval.m2
+  /// ```
+  Interval get descending => isDescending ? this : Interval._(-size, quality);
+
   /// Whether this [Interval] is descending.
   ///
   /// Example:
@@ -231,7 +258,8 @@ final class Interval
   /// ```
   bool get isDescending => size.isNegative;
 
-  /// Returns a copy of this [Interval] based on [isDescending].
+  /// Returns the ascending or descending version of this [Interval]
+  /// based on [isDescending].
   ///
   /// Example:
   /// ```dart
@@ -240,9 +268,9 @@ final class Interval
   /// (-Interval.P5).withDescending(true) == -Interval.P5
   /// (-Interval.M7).withDescending(false) == .M7
   /// ```
-  // ignore: avoid_positional_boolean_parameters
+  // ignore: avoid_positional_boolean_parameters for conciseness
   Interval withDescending(bool isDescending) =>
-      ._(Size(size * (this.isDescending == isDescending ? 1 : -1)), quality);
+      isDescending ? descending : ascending;
 
   /// The inversion of this [Interval], regardless of its direction (ascending
   /// or descending).
