@@ -235,13 +235,13 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.m2.descending() == -Interval.m2
-  /// Interval.M3.descending(false) == .M3
-  /// (-Interval.P5).descending() == -Interval.P5
-  /// (-Interval.M7).descending(false) == .M7
+  /// Interval.m2.withDescending(true) == -Interval.m2
+  /// Interval.M3.withDescending(false) == .M3
+  /// (-Interval.P5).withDescending(true) == -Interval.P5
+  /// (-Interval.M7).withDescending(false) == .M7
   /// ```
   // ignore: avoid_positional_boolean_parameters
-  Interval descending([bool isDescending = true]) =>
+  Interval withDescending(bool isDescending) =>
       ._(Size(size * (this.isDescending == isDescending ? 1 : -1)), quality);
 
   /// The inversion of this [Interval], regardless of its direction (ascending

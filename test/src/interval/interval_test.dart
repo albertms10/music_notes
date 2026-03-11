@@ -371,26 +371,12 @@ void main() {
       });
     });
 
-    group('.descending()', () {
+    group('.withDescending()', () {
       test('returns the descending Interval based on isDescending', () {
-        expect(Interval.M2.descending(), -Interval.M2);
-        expect(Interval.m3.descending(false), Interval.m3);
-        expect((-Interval.m6).descending(false), Interval.m6);
-        expect((-Interval.P8).descending(), -Interval.P8);
-      });
-
-      test('returns a copy of this Interval based on isDescending', () {
-        const ascendingInterval = Interval.P4;
-        expect(
-          identical(ascendingInterval.descending(), ascendingInterval),
-          isFalse,
-        );
-
-        final descendingInterval = -Interval.m3;
-        expect(
-          identical(descendingInterval.descending(), descendingInterval),
-          isFalse,
-        );
+        expect(Interval.M2.withDescending(true), -Interval.M2);
+        expect(Interval.m3.withDescending(false), Interval.m3);
+        expect((-Interval.m6).withDescending(false), Interval.m6);
+        expect((-Interval.P8).withDescending(true), -Interval.P8);
       });
     });
 

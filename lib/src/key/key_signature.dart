@@ -54,7 +54,7 @@ final class KeySignature implements Comparable<KeySignature> {
 
     return KeySignature(
       Interval.P5
-          .descending(distance.isNegative)
+          .withDescending(distance.isNegative)
           .circleFrom(firstNote)
           .take(distance.abs())
           .toList(growable: false),
@@ -104,7 +104,7 @@ final class KeySignature implements Comparable<KeySignature> {
         ? _firstCanonicalFlatNote
         : _firstCanonicalSharpNote;
     final circle = Interval.P5
-        .descending(apparentDistance.isNegative)
+        .withDescending(apparentDistance.isNegative)
         .circleFrom(apparentFirstNote)
         .take(apparentDistance.abs());
 
@@ -143,7 +143,7 @@ final class KeySignature implements Comparable<KeySignature> {
     if (distance == null) return const {};
 
     final Note(:major) = Interval.P5
-        .descending(distance.isNegative)
+        .withDescending(distance.isNegative)
         .circleFrom(Note.c)
         .elementAt(distance.abs());
 

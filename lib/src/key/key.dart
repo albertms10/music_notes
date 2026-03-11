@@ -59,7 +59,7 @@ final class Key implements Comparable<Key> {
   /// Note.b.flat.major.relative == Note.g.minor
   /// ```
   Key get relative =>
-      Key(note.transposeBy(.m3.descending(mode == .major)), mode.parallel);
+      Key(note.transposeBy(.m3.withDescending(mode == .major)), mode.parallel);
 
   /// The [TonalMode.major] or [TonalMode.minor] parallel [Key] of this [Key].
   ///

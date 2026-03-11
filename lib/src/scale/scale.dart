@@ -105,7 +105,7 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       .perfect(
         .unison,
         PerfectQuality(scaleDegree.semitonesDelta.abs()),
-      ).descending(scaleDegree.semitonesDelta.isNegative),
+      ).withDescending(scaleDegree.semitonesDelta.isNegative),
     );
   }
 
