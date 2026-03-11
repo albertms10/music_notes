@@ -388,7 +388,7 @@ final class Pitch extends Scalable<Pitch>
     return .fromSizeAndSemitones(
       Size(sizeDelta.abs() + 1),
       difference(other).abs(),
-    ).withDescending(sizeDelta < 0);
+    ).withDescending(sizeDelta.isNegative);
   }
 
   /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
