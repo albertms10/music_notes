@@ -14,6 +14,26 @@ import 'interval_class.dart';
 import 'quality.dart';
 import 'size.dart';
 
+final class _PerfectInterval extends Interval {
+  const _PerfectInterval(Size size, [PerfectQuality quality = .perfect])
+    // Copied from [Interval.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
+        'Interval must be perfect.',
+      ),
+      super._(size, quality);
+}
+
+final class _ImperfectInterval extends Interval {
+  const _ImperfectInterval(Size size, ImperfectQuality quality)
+    // Copied from [Interval.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
+        'Interval must be imperfect.',
+      ),
+      super._(size, quality);
+}
+
 /// Distance between two notes.
 ///
 /// ---
@@ -154,29 +174,18 @@ final class Interval
   static const A13 = Interval.imperfect(.thirteenth, .augmented);
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
-  const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
-    // Copied from [.isPerfect] to allow const.
-    : assert(
-        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
-        'Interval must be perfect.',
-      );
+  const factory Interval.perfect(Size size, [PerfectQuality quality]) =
+      _PerfectInterval;
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
-  const Interval.imperfect(this.size, ImperfectQuality this.quality)
-    // Copied from [.isPerfect] to allow const.
-    : assert(
-        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
-        'Interval must be imperfect.',
-      );
+  const factory Interval.imperfect(Size size, ImperfectQuality quality) =
+      _ImperfectInterval;
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
-  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) {
-    final qualityConstructor = size.isPerfect
-        ? PerfectQuality.new
-        : ImperfectQuality.new;
-
-    return ._(size, qualityConstructor(semitones));
-  }
+  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) =>
+      size.isPerfect
+      ? .perfect(size, PerfectQuality(semitones))
+      : .imperfect(size, ImperfectQuality(semitones));
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
   factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
@@ -237,7 +246,7 @@ final class Interval
   /// (-Interval.m2).ascending == .m2
   /// Interval.M3.ascending == .M3
   /// ```
-  Interval get ascending => isDescending ? Interval._(-size, quality) : this;
+  Interval get ascending => isDescending ? ._(-size, quality) : this;
 
   /// The descending version of this [Interval].
   ///
@@ -246,7 +255,7 @@ final class Interval
   /// Interval.M3.descending == -Interval.M3
   /// (-Interval.m2).descending == -Interval.m2
   /// ```
-  Interval get descending => isDescending ? this : Interval._(-size, quality);
+  Interval get descending => isDescending ? this : ._(-size, quality);
 
   /// Whether this [Interval] is descending.
   ///
