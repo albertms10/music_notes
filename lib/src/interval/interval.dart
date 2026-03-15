@@ -571,7 +571,7 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
       throw FormatException('Invalid Quality', quality, 0);
     }
 
-    return Interval._(size, parser.parseMatch(match));
+    return ._(size, parser.parseMatch(match));
   }
 
   @override
