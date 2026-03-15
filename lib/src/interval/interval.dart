@@ -170,13 +170,10 @@ final class Interval
       );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
-  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) {
-    final qualityConstructor = size.isPerfect
-        ? PerfectQuality.new
-        : ImperfectQuality.new;
-
-    return ._(size, qualityConstructor(semitones));
-  }
+  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) =>
+      size.isPerfect
+      ? .perfect(size, PerfectQuality(semitones))
+      : .imperfect(size, ImperfectQuality(semitones));
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
   factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
@@ -237,7 +234,7 @@ final class Interval
   /// (-Interval.m2).ascending == .m2
   /// Interval.M3.ascending == .M3
   /// ```
-  Interval get ascending => isDescending ? Interval._(-size, quality) : this;
+  Interval get ascending => isDescending ? ._(-size, quality) : this;
 
   /// The descending version of this [Interval].
   ///
@@ -246,7 +243,7 @@ final class Interval
   /// Interval.M3.descending == -Interval.M3
   /// (-Interval.m2).descending == -Interval.m2
   /// ```
-  Interval get descending => isDescending ? this : Interval._(-size, quality);
+  Interval get descending => isDescending ? this : ._(-size, quality);
 
   /// Whether this [Interval] is descending.
   ///
@@ -562,7 +559,7 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
       throw FormatException('Invalid Quality', quality, 0);
     }
 
-    return Interval._(size, parser.parseMatch(match));
+    return ._(size, parser.parseMatch(match));
   }
 
   @override
