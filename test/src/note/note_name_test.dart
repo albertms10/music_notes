@@ -136,9 +136,9 @@ void main() {
         expect(NoteName.parse('G'), NoteName.g);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         for (final noteName in NoteName.values) {
-          expect(noteName, NoteName.parse(noteName.toString()));
+          expect(noteName, NoteName.parse(noteName.format()));
         }
       });
     });
@@ -174,12 +174,12 @@ void main() {
         expect(NoteName.parse('a', chain: chain), NoteName.a);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         for (final noteName in NoteName.values) {
           expect(
             noteName,
             NoteName.parse(
-              noteName.toString(formatter: const GermanNoteNameNotation()),
+              noteName.format(const GermanNoteNameNotation()),
               chain: chain,
             ),
           );
@@ -231,12 +231,12 @@ void main() {
         expect(NoteName.parse('si', chain: chain), NoteName.b);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         for (final noteName in NoteName.values) {
           expect(
             noteName,
             NoteName.parse(
-              noteName.toString(formatter: const RomanceNoteNameNotation()),
+              noteName.format(const RomanceNoteNameNotation()),
               chain: chain,
             ),
           );

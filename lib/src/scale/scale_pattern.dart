@@ -393,10 +393,11 @@ final class ScalePattern {
   @override
   String toString() {
     final descendingSteps = _descendingIntervalSteps != null
-        ? ', ${_descendingIntervalSteps.join(' ')}'
+        ? ', ${_descendingIntervalSteps.map((i) => i.format()).join(' ')}'
         : '';
 
-    return '$name (${_intervalSteps.join(' ')}$descendingSteps)';
+    return '$name (${_intervalSteps.map((i) => i.format()).join(' ')}'
+        '$descendingSteps)';
   }
 
   @override

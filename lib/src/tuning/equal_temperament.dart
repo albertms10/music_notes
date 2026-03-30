@@ -80,7 +80,7 @@ class EqualTemperament extends TuningSystem {
   Cent get generator => cents.closestTo(referenceGeneratorCents);
 
   @override
-  String toString() => 'EDO $edo (${_steps.join(' ')}) at $fork';
+  String toString() => 'EDO $edo (${_steps.join(' ')}) at ${fork.format()}';
 
   @override
   bool operator ==(Object other) =>

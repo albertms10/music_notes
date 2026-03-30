@@ -10,7 +10,8 @@ import 'note.dart';
 /// See also:
 /// * [Note].
 @immutable
-final class Accidental implements Comparable<Accidental> {
+final class Accidental
+    implements Comparable<Accidental>, Formattable<Accidental> {
   /// The number of semitones above or below the natural note.
   ///
   /// - `> 0` for sharps.
@@ -131,9 +132,12 @@ final class Accidental implements Comparable<Accidental> {
 
   /// The string representation of this [Accidental] based on [formatter].
   @override
-  String toString({
+  String format([
     StringFormatter<Accidental> formatter = const SymbolAccidentalNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(semitones: $semitones)';
 
   @override
   bool operator ==(Object other) =>

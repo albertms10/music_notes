@@ -29,14 +29,14 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this HarmonicFunction', () {
-        expect(HarmonicFunction.i.toString(), 'I');
-        expect(HarmonicFunction.vii.toString(), 'VII');
-        expect((HarmonicFunction.dominantV / .dominantV).toString(), 'V/V');
+        expect(HarmonicFunction.i.format(), 'I');
+        expect(HarmonicFunction.vii.format(), 'VII');
+        expect((HarmonicFunction.dominantV / .dominantV).format(), 'V/V');
         expect(
           (HarmonicFunction([.iv.minor]) / .neapolitanSixth / .dominantV)
-              .toString(),
+              .format(),
           'iv/♭II6/V',
         );
       });

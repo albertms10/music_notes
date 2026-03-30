@@ -154,56 +154,56 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Accidental', () {
-        expect(const Accidental(5).toString(), '♯𝄪𝄪');
-        expect(const Accidental(4).toString(), '𝄪𝄪');
-        expect(Accidental.tripleSharp.toString(), '♯𝄪');
-        expect(Accidental.doubleSharp.toString(), '𝄪');
-        expect(Accidental.sharp.toString(), '♯');
-        expect(Accidental.natural.toString(), '♮');
-        expect(Accidental.flat.toString(), '♭');
-        expect(Accidental.doubleFlat.toString(), '𝄫');
-        expect(Accidental.tripleFlat.toString(), '♭𝄫');
-        expect(const Accidental(-4).toString(), '𝄫𝄫');
-        expect(const Accidental(-5).toString(), '♭𝄫𝄫');
+        expect(const Accidental(5).format(), '♯𝄪𝄪');
+        expect(const Accidental(4).format(), '𝄪𝄪');
+        expect(Accidental.tripleSharp.format(), '♯𝄪');
+        expect(Accidental.doubleSharp.format(), '𝄪');
+        expect(Accidental.sharp.format(), '♯');
+        expect(Accidental.natural.format(), '♮');
+        expect(Accidental.flat.format(), '♭');
+        expect(Accidental.doubleFlat.format(), '𝄫');
+        expect(Accidental.tripleFlat.format(), '♭𝄫');
+        expect(const Accidental(-4).format(), '𝄫𝄫');
+        expect(const Accidental(-5).format(), '♭𝄫𝄫');
 
         const hideNatural = SymbolAccidentalNotation(showNatural: false);
-        expect(Accidental.sharp.toString(formatter: hideNatural), '♯');
-        expect(Accidental.natural.toString(formatter: hideNatural), '');
-        expect(Accidental.flat.toString(formatter: hideNatural), '♭');
+        expect(Accidental.sharp.format(hideNatural), '♯');
+        expect(Accidental.natural.format(hideNatural), '');
+        expect(Accidental.flat.format(hideNatural), '♭');
 
         const largerFirst = SymbolAccidentalNotation(largerFirst: true);
-        expect(Accidental.tripleSharp.toString(formatter: largerFirst), '𝄪♯');
-        expect(Accidental.doubleFlat.toString(formatter: largerFirst), '𝄫');
-        expect(const Accidental(-5).toString(formatter: largerFirst), '𝄫𝄫♭');
+        expect(Accidental.tripleSharp.format(largerFirst), '𝄪♯');
+        expect(Accidental.doubleFlat.format(largerFirst), '𝄫');
+        expect(const Accidental(-5).format(largerFirst), '𝄫𝄫♭');
       });
 
       test('returns the ASCII string representation of this Accidental', () {
         const formatter = SymbolAccidentalNotation.ascii();
-        expect(const Accidental(5).toString(formatter: formatter), '#xx');
-        expect(const Accidental(4).toString(formatter: formatter), 'xx');
-        expect(Accidental.tripleSharp.toString(formatter: formatter), '#x');
-        expect(Accidental.doubleSharp.toString(formatter: formatter), 'x');
-        expect(Accidental.sharp.toString(formatter: formatter), '#');
-        expect(Accidental.natural.toString(formatter: formatter), 'n');
-        expect(Accidental.flat.toString(formatter: formatter), 'b');
-        expect(Accidental.doubleFlat.toString(formatter: formatter), 'bb');
-        expect(Accidental.tripleFlat.toString(formatter: formatter), 'bbb');
-        expect(const Accidental(-4).toString(formatter: formatter), 'bbbb');
-        expect(const Accidental(-5).toString(formatter: formatter), 'bbbbb');
+        expect(const Accidental(5).format(formatter), '#xx');
+        expect(const Accidental(4).format(formatter), 'xx');
+        expect(Accidental.tripleSharp.format(formatter), '#x');
+        expect(Accidental.doubleSharp.format(formatter), 'x');
+        expect(Accidental.sharp.format(formatter), '#');
+        expect(Accidental.natural.format(formatter), 'n');
+        expect(Accidental.flat.format(formatter), 'b');
+        expect(Accidental.doubleFlat.format(formatter), 'bb');
+        expect(Accidental.tripleFlat.format(formatter), 'bbb');
+        expect(const Accidental(-4).format(formatter), 'bbbb');
+        expect(const Accidental(-5).format(formatter), 'bbbbb');
 
         const hideNatural = SymbolAccidentalNotation.ascii(
           showNatural: false,
         );
-        expect(Accidental.sharp.toString(formatter: hideNatural), '#');
-        expect(Accidental.natural.toString(formatter: hideNatural), '');
-        expect(Accidental.flat.toString(formatter: hideNatural), 'b');
+        expect(Accidental.sharp.format(hideNatural), '#');
+        expect(Accidental.natural.format(hideNatural), '');
+        expect(Accidental.flat.format(hideNatural), 'b');
 
         const largerFirst = SymbolAccidentalNotation.ascii(largerFirst: true);
-        expect(Accidental.tripleSharp.toString(formatter: largerFirst), 'x#');
-        expect(Accidental.doubleSharp.toString(formatter: largerFirst), 'x');
-        expect(Accidental.tripleFlat.toString(formatter: largerFirst), 'bbb');
+        expect(Accidental.tripleSharp.format(largerFirst), 'x#');
+        expect(Accidental.doubleSharp.format(largerFirst), 'x');
+        expect(Accidental.tripleFlat.format(largerFirst), 'bbb');
       });
     });
   });
@@ -227,42 +227,42 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Accidental', () {
         const formatter = EnglishAccidentalNotation();
 
         expect(
-          const Accidental(4).toString(formatter: formatter),
+          const Accidental(4).format(formatter),
           '×4 sharp',
         );
         expect(
-          Accidental.tripleSharp.toString(formatter: formatter),
+          Accidental.tripleSharp.format(formatter),
           'triple sharp',
         );
         expect(
-          Accidental.doubleSharp.toString(formatter: formatter),
+          Accidental.doubleSharp.format(formatter),
           'double sharp',
         );
-        expect(Accidental.sharp.toString(formatter: formatter), 'sharp');
-        expect(Accidental.natural.toString(formatter: formatter), 'natural');
-        expect(Accidental.flat.toString(formatter: formatter), 'flat');
+        expect(Accidental.sharp.format(formatter), 'sharp');
+        expect(Accidental.natural.format(formatter), 'natural');
+        expect(Accidental.flat.format(formatter), 'flat');
         expect(
-          Accidental.doubleFlat.toString(formatter: formatter),
+          Accidental.doubleFlat.format(formatter),
           'double flat',
         );
         expect(
-          Accidental.tripleFlat.toString(formatter: formatter),
+          Accidental.tripleFlat.format(formatter),
           'triple flat',
         );
         expect(
-          const Accidental(-4).toString(formatter: formatter),
+          const Accidental(-4).format(formatter),
           '×4 flat',
         );
 
         const hideNatural = EnglishAccidentalNotation(showNatural: false);
-        expect(Accidental.sharp.toString(formatter: hideNatural), 'sharp');
-        expect(Accidental.natural.toString(formatter: hideNatural), '');
-        expect(Accidental.flat.toString(formatter: hideNatural), 'flat');
+        expect(Accidental.sharp.format(hideNatural), 'sharp');
+        expect(Accidental.natural.format(hideNatural), '');
+        expect(Accidental.flat.format(hideNatural), 'flat');
       });
     });
   });
@@ -286,29 +286,29 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Accidental', () {
         const formatter = GermanAccidentalNotation();
 
         expect(
-          const Accidental(4).toString(formatter: formatter),
+          const Accidental(4).format(formatter),
           'isisisis',
         );
         expect(
-          Accidental.tripleSharp.toString(formatter: formatter),
+          Accidental.tripleSharp.format(formatter),
           'isisis',
         );
-        expect(Accidental.doubleSharp.toString(formatter: formatter), 'isis');
-        expect(Accidental.sharp.toString(formatter: formatter), 'is');
-        expect(Accidental.natural.toString(formatter: formatter), '');
-        expect(Accidental.flat.toString(formatter: formatter), 'es');
-        expect(Accidental.doubleFlat.toString(formatter: formatter), 'eses');
+        expect(Accidental.doubleSharp.format(formatter), 'isis');
+        expect(Accidental.sharp.format(formatter), 'is');
+        expect(Accidental.natural.format(formatter), '');
+        expect(Accidental.flat.format(formatter), 'es');
+        expect(Accidental.doubleFlat.format(formatter), 'eses');
         expect(
-          Accidental.tripleFlat.toString(formatter: formatter),
+          Accidental.tripleFlat.format(formatter),
           'eseses',
         );
         expect(
-          const Accidental(-4).toString(formatter: formatter),
+          const Accidental(-4).format(formatter),
           'eseseses',
         );
       });
@@ -334,42 +334,42 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Accidental', () {
         const formatter = RomanceAccidentalNotation();
 
         expect(
-          const Accidental(4).toString(formatter: formatter),
+          const Accidental(4).format(formatter),
           '×4 diesis',
         );
         expect(
-          Accidental.tripleSharp.toString(formatter: formatter),
+          Accidental.tripleSharp.format(formatter),
           'triplo diesis',
         );
         expect(
-          Accidental.doubleSharp.toString(formatter: formatter),
+          Accidental.doubleSharp.format(formatter),
           'doppio diesis',
         );
-        expect(Accidental.sharp.toString(formatter: formatter), 'diesis');
-        expect(Accidental.natural.toString(formatter: formatter), 'naturale');
-        expect(Accidental.flat.toString(formatter: formatter), 'bemolle');
+        expect(Accidental.sharp.format(formatter), 'diesis');
+        expect(Accidental.natural.format(formatter), 'naturale');
+        expect(Accidental.flat.format(formatter), 'bemolle');
         expect(
-          Accidental.doubleFlat.toString(formatter: formatter),
+          Accidental.doubleFlat.format(formatter),
           'doppio bemolle',
         );
         expect(
-          Accidental.tripleFlat.toString(formatter: formatter),
+          Accidental.tripleFlat.format(formatter),
           'triplo bemolle',
         );
         expect(
-          const Accidental(-4).toString(formatter: formatter),
+          const Accidental(-4).format(formatter),
           '×4 bemolle',
         );
 
         const hideNatural = RomanceAccidentalNotation(showNatural: false);
-        expect(Accidental.sharp.toString(formatter: hideNatural), 'diesis');
-        expect(Accidental.natural.toString(formatter: hideNatural), '');
-        expect(Accidental.flat.toString(formatter: hideNatural), 'bemolle');
+        expect(Accidental.sharp.format(hideNatural), 'diesis');
+        expect(Accidental.natural.format(hideNatural), '');
+        expect(Accidental.flat.format(hideNatural), 'bemolle');
       });
     });
   });

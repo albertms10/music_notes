@@ -132,15 +132,15 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns a string representation of this PerfectQuality', () {
-        expect(PerfectQuality.triplyDiminished.toString(), 'ddd');
-        expect(PerfectQuality.doublyDiminished.toString(), 'dd');
-        expect(PerfectQuality.diminished.toString(), 'd');
-        expect(PerfectQuality.perfect.toString(), 'P');
-        expect(PerfectQuality.augmented.toString(), 'A');
-        expect(PerfectQuality.doublyAugmented.toString(), 'AA');
-        expect(PerfectQuality.triplyAugmented.toString(), 'AAA');
+        expect(PerfectQuality.triplyDiminished.format(), 'ddd');
+        expect(PerfectQuality.doublyDiminished.format(), 'dd');
+        expect(PerfectQuality.diminished.format(), 'd');
+        expect(PerfectQuality.perfect.format(), 'P');
+        expect(PerfectQuality.augmented.format(), 'A');
+        expect(PerfectQuality.doublyAugmented.format(), 'AA');
+        expect(PerfectQuality.triplyAugmented.format(), 'AAA');
       });
     });
   });
@@ -177,16 +177,16 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns a string representation of this ImperfectQuality', () {
-        expect(ImperfectQuality.triplyDiminished.toString(), 'ddd');
-        expect(ImperfectQuality.doublyDiminished.toString(), 'dd');
-        expect(ImperfectQuality.diminished.toString(), 'd');
-        expect(ImperfectQuality.minor.toString(), 'm');
-        expect(ImperfectQuality.major.toString(), 'M');
-        expect(ImperfectQuality.augmented.toString(), 'A');
-        expect(ImperfectQuality.doublyAugmented.toString(), 'AA');
-        expect(ImperfectQuality.triplyAugmented.toString(), 'AAA');
+        expect(ImperfectQuality.triplyDiminished.format(), 'ddd');
+        expect(ImperfectQuality.doublyDiminished.format(), 'dd');
+        expect(ImperfectQuality.diminished.format(), 'd');
+        expect(ImperfectQuality.minor.format(), 'm');
+        expect(ImperfectQuality.major.format(), 'M');
+        expect(ImperfectQuality.augmented.format(), 'A');
+        expect(ImperfectQuality.doublyAugmented.format(), 'AA');
+        expect(ImperfectQuality.triplyAugmented.format(), 'AAA');
       });
     });
   });

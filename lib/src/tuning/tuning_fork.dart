@@ -7,7 +7,7 @@ import '../note/pitch.dart';
 
 /// The representation of a tuning fork.
 @immutable
-class TuningFork {
+class TuningFork implements Formattable<TuningFork> {
   /// The reference [Pitch] of this tuning fork.
   final Pitch pitch;
 
@@ -59,14 +59,17 @@ class TuningFork {
   ///
   /// Example:
   /// ```dart
-  /// TuningFork.a440.toString() == 'A440'
-  /// TuningFork.a432.toString(formatter: ScientificTuningForkNotation.english)
+  /// TuningFork.a440.format() == 'A440'
+  /// TuningFork.a432.format(ScientificTuningForkNotation.english)
   ///   == 'A4 = 432 Hz'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<TuningFork> formatter = const CompactTuningForkNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(pitch: $pitch, frequency: $frequency)';
 
   @override
   bool operator ==(Object other) =>
@@ -117,8 +120,8 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
   @override
   String format(TuningFork tuningFork) {
     final pitch = tuningFork.pitch.octave == referenceOctave
-        ? '${tuningFork.pitch.note}'
-        : '${tuningFork.pitch} ';
+        ? tuningFork.pitch.note.format()
+        : '${tuningFork.pitch.format()} ';
 
     return '$pitch${tuningFork.frequency}';
   }

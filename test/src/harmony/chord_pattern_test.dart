@@ -439,57 +439,57 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this ChordPattern', () {
-        expect(ChordPattern.augmentedTriad.toString(), '+');
-        expect(ChordPattern.majorTriad.toString(), '');
-        expect(ChordPattern.minorTriad.toString(), '-');
-        expect(ChordPattern.diminishedTriad.toString(), 'dim');
+        expect(ChordPattern.augmentedTriad.format(), '+');
+        expect(ChordPattern.majorTriad.format(), '');
+        expect(ChordPattern.minorTriad.format(), '-');
+        expect(ChordPattern.diminishedTriad.format(), 'dim');
 
-        expect(ChordPattern.majorTriad.add7().toString(), '7');
-        expect(ChordPattern.majorTriad.add7(.major).toString(), 'maj7');
-        expect(ChordPattern.minorTriad.add7().toString(), '-7');
-        expect(ChordPattern.minorTriad.add9().toString(), '-9');
-        expect(ChordPattern.minorTriad.add11().toString(), '-11');
-        expect(ChordPattern.minorTriad.add13().toString(), '-13');
-        expect(ChordPattern.minorTriad.add7(.major).toString(), '-maj7');
-        expect(ChordPattern.diminishedTriad.add7().toString(), 'ø');
+        expect(ChordPattern.majorTriad.add7().format(), '7');
+        expect(ChordPattern.majorTriad.add7(.major).format(), 'maj7');
+        expect(ChordPattern.minorTriad.add7().format(), '-7');
+        expect(ChordPattern.minorTriad.add9().format(), '-9');
+        expect(ChordPattern.minorTriad.add11().format(), '-11');
+        expect(ChordPattern.minorTriad.add13().format(), '-13');
+        expect(ChordPattern.minorTriad.add7(.major).format(), '-maj7');
+        expect(ChordPattern.diminishedTriad.add7().format(), 'ø');
         expect(
-          ChordPattern.diminishedTriad.add7(.diminished).toString(),
+          ChordPattern.diminishedTriad.add7(.diminished).format(),
           'º',
         );
 
-        expect(ChordPattern.majorTriad.sus2().toString(), 'sus2');
-        expect(ChordPattern.majorTriad.sus4().toString(), 'sus4');
-        expect(ChordPattern.minorTriad.sus2().add7().toString(), 'sus27');
-        expect(ChordPattern.minorTriad.sus4().add7().toString(), 'sus47');
-        expect(ChordPattern.majorTriad.add6().toString(), '6');
-        expect(ChordPattern.minorTriad.add6().toString(), '-6');
-        expect(ChordPattern.majorTriad.add7().add9().toString(), '7 9');
-        expect(ChordPattern.minorTriad.add7().add9().toString(), '-7 9');
-        expect(ChordPattern.minorTriad.add7().add9().toString(), '-7 9');
+        expect(ChordPattern.majorTriad.sus2().format(), 'sus2');
+        expect(ChordPattern.majorTriad.sus4().format(), 'sus4');
+        expect(ChordPattern.minorTriad.sus2().add7().format(), 'sus27');
+        expect(ChordPattern.minorTriad.sus4().add7().format(), 'sus47');
+        expect(ChordPattern.majorTriad.add6().format(), '6');
+        expect(ChordPattern.minorTriad.add6().format(), '-6');
+        expect(ChordPattern.majorTriad.add7().add9().format(), '7 9');
+        expect(ChordPattern.minorTriad.add7().add9().format(), '-7 9');
+        expect(ChordPattern.minorTriad.add7().add9().format(), '-7 9');
         expect(
-          ChordPattern.majorTriad.add7(.major).add9().toString(),
+          ChordPattern.majorTriad.add7(.major).add9().format(),
           'maj7 9',
         );
 
-        expect(ChordPattern.majorTriad.add9(.diminished).toString(), '𝄫9');
-        expect(ChordPattern.majorTriad.add9(.minor).toString(), '♭9');
-        expect(ChordPattern.majorTriad.add9().toString(), '9');
-        expect(ChordPattern.majorTriad.add9(.augmented).toString(), '♯9');
+        expect(ChordPattern.majorTriad.add9(.diminished).format(), '𝄫9');
+        expect(ChordPattern.majorTriad.add9(.minor).format(), '♭9');
+        expect(ChordPattern.majorTriad.add9().format(), '9');
+        expect(ChordPattern.majorTriad.add9(.augmented).format(), '♯9');
 
-        expect(ChordPattern.majorTriad.add11(.diminished).toString(), '♭11');
-        expect(ChordPattern.majorTriad.add11().toString(), '11');
-        expect(ChordPattern.majorTriad.add11(.augmented).toString(), '♯11');
+        expect(ChordPattern.majorTriad.add11(.diminished).format(), '♭11');
+        expect(ChordPattern.majorTriad.add11().format(), '11');
+        expect(ChordPattern.majorTriad.add11(.augmented).format(), '♯11');
         expect(
-          ChordPattern.majorTriad.add11(.doublyAugmented).toString(),
+          ChordPattern.majorTriad.add11(.doublyAugmented).format(),
           '𝄪11',
         );
 
-        expect(ChordPattern.majorTriad.add13(.diminished).toString(), '𝄫13');
-        expect(ChordPattern.majorTriad.add13(.minor).toString(), '♭13');
-        expect(ChordPattern.majorTriad.add13().toString(), '13');
-        expect(ChordPattern.majorTriad.add13(.augmented).toString(), '♯13');
+        expect(ChordPattern.majorTriad.add13(.diminished).format(), '𝄫13');
+        expect(ChordPattern.majorTriad.add13(.minor).format(), '♭13');
+        expect(ChordPattern.majorTriad.add13().format(), '13');
+        expect(ChordPattern.majorTriad.add13(.augmented).format(), '♯13');
       });
     });
   });

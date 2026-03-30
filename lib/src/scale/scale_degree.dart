@@ -13,7 +13,7 @@ import 'scale.dart';
 /// See also:
 /// * [Scale].
 @immutable
-class ScaleDegree implements Comparable<ScaleDegree> {
+class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
 
@@ -180,15 +180,20 @@ class ScaleDegree implements Comparable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.iii.toString() == 'III'
-  /// ScaleDegree.vi.minor.lowered.toString() == '♭vi'
-  /// ScaleDegree.neapolitanSixth.toString() == '♭II6'
+  /// ScaleDegree.iii.format() == 'III'
+  /// ScaleDegree.vi.minor.lowered.format() == '♭vi'
+  /// ScaleDegree.neapolitanSixth.format() == '♭II6'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<ScaleDegree> formatter =
         const StandardScaleDegreeNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() =>
+      '$runtimeType(ordinal: $ordinal, quality: $quality, '
+      'inversion: $inversion, semitonesDelta: $semitonesDelta)';
 
   @override
   bool operator ==(Object other) =>

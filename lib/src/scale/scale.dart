@@ -170,10 +170,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   );
 
   @override
-  String toString() =>
-      '${_degrees.first} ${pattern.name} (${_degrees.join(' ')}'
-      '${_descendingDegrees != null ? ', '
-                '${_descendingDegrees.join(' ')}' : ''})';
+  String toString() {
+    final scale = _degrees.map((s) => s.format()).join(' ');
+    final descendingScale = _descendingDegrees != null
+        ? ', ${_descendingDegrees.map((s) => s.format()).join(' ')}'
+        : '';
+
+    return '${_degrees.first.format()} ${pattern.name} '
+        '($scale$descendingScale)';
+  }
 
   @override
   bool operator ==(Object other) =>
