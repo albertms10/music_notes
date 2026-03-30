@@ -27,5 +27,6 @@ analyzer:
   errors:
     # Style decisions
     always_use_package_imports: ignore
+    no_runtimetype_tostring: ignore
     sort_constructors_first: ignore
     specify_nonobvious_property_types: ignore

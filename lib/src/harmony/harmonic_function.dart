@@ -2,6 +2,7 @@ import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../notation/notation_system.dart';
 import '../scale/scale.dart';
 import '../scale/scale_degree.dart';
 
@@ -12,7 +13,7 @@ import '../scale/scale_degree.dart';
 /// * [Scale].
 /// * [ScaleDegree].
 @immutable
-class HarmonicFunction {
+class HarmonicFunction implements Formattable<HarmonicFunction> {
   final List<ScaleDegree> _scaleDegrees;
 
   /// The scale degrees that define this [HarmonicFunction].
@@ -49,12 +50,14 @@ class HarmonicFunction {
   ///
   /// Example:
   /// ```dart
-  /// (HarmonicFunction.ii / .dominantV).toString() == 'II/V'
-  /// (HarmonicFunction.neapolitanSixth / .iv).toString()
-  ///   == '♭II6/IV'
+  /// (HarmonicFunction.ii / .dominantV).format() == 'II/V'
+  /// (HarmonicFunction.neapolitanSixth / .iv).format() == '♭II6/IV'
   /// ```
   @override
-  String toString() => _scaleDegrees.join('/');
+  String format() => _scaleDegrees.map((d) => d.format()).join('/');
+
+  @override
+  String toString() => '$runtimeType(scaleDegrees: $scaleDegrees)';
 
   /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
   /// [other].

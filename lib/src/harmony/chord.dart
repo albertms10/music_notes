@@ -6,6 +6,7 @@ import '../chordable.dart';
 import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../interval/size.dart';
+import '../notation/notation_system.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import 'chord_pattern.dart';
@@ -20,7 +21,7 @@ import 'chord_pattern.dart';
 @immutable
 class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
-    implements Transposable<Chord<T>> {
+    implements Transposable<Chord<T>>, Formattable<Chord<T>> {
   final List<T> _items;
 
   /// The [Scalable] items this [Chord] is built of.
@@ -118,7 +119,10 @@ class Chord<T extends Scalable<T>>
       Chord(_items.transposeBy(interval).toList(growable: false));
 
   @override
-  String toString() => '$root$pattern';
+  String format() => '${root.format()}${pattern.format()}';
+
+  @override
+  String toString() => '$runtimeType(items: $items)';
 
   @override
   bool operator ==(Object other) =>

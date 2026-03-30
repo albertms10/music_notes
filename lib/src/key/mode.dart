@@ -35,7 +35,7 @@ sealed class Mode implements Enum, Comparable<Mode> {
 }
 
 /// Modes of a tonal system.
-enum TonalMode implements Mode {
+enum TonalMode implements Mode, Formattable<TonalMode> {
   /// See [Major mode](https://en.wikipedia.org/wiki/Major_mode).
   major(.major, brightness: 2),
 
@@ -78,9 +78,9 @@ enum TonalMode implements Mode {
 
   /// The string representation of this [TonalMode] based on [formatter].
   @override
-  String toString({
+  String format([
     StringFormatter<TonalMode> formatter = const EnglishTonalModeNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);

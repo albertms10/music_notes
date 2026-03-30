@@ -26,7 +26,7 @@ import 'pitch.dart';
 @immutable
 final class Note extends Scalable<Note>
     with RespellableScalable<Note>
-    implements Comparable<Note> {
+    implements Comparable<Note>, Formattable<Note> {
   /// The name that defines this [Note].
   final NoteName noteName;
 
@@ -430,15 +430,18 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.toString() == 'D♭'
-  /// Note.d.flat.toString(formatter: const GermanNoteNotation()) == 'Des'
-  /// Note.d.flat.toString(formatter: const RomanceNoteNotation.symbol())
-  ///   == 'Re♭'
+  /// Note.d.flat.format() == 'D♭'
+  /// Note.d.flat.format(const GermanNoteNotation()) == 'Des'
+  /// Note.d.flat.format(const RomanceNoteNotation.symbol()) == 'Re♭'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() =>
+      '$runtimeType(noteName: $noteName, accidental: $accidental)';
 
   @override
   bool operator ==(Object other) =>

@@ -329,7 +329,7 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('throws UnimplementedError when not implemented', () {
         expect(
           () => const ChordPatternNotation().parseMatch(
@@ -340,10 +340,10 @@ void main() {
       });
 
       test('returns the string representation of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.d).toString(), 'D');
-        expect(Chord<Note>([.g.sharp, .b, .d.sharp]).toString(), 'G♯-');
+        expect(ChordPattern.majorTriad.on(Note.d).format(), 'D');
+        expect(Chord<Note>([.g.sharp, .b, .d.sharp]).format(), 'G♯-');
         expect(
-          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).toString(),
+          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).format(),
           'C3+7',
         );
       });

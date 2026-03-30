@@ -18,7 +18,9 @@ import 'chord.dart';
 /// * [Chord].
 /// * [Interval].
 @immutable
-class ChordPattern with Chordable<ChordPattern> {
+class ChordPattern
+    with Chordable<ChordPattern>
+    implements Formattable<ChordPattern> {
   final List<Interval> _intervals;
 
   /// The intervals from the root note.
@@ -218,9 +220,12 @@ class ChordPattern with Chordable<ChordPattern> {
       intervals.firstWhereOrNull((interval) => interval.size == size);
 
   @override
-  String toString({
+  String format([
     StringFormatter<ChordPattern> formatter = const ChordPatternNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(semitones: $intervals)';
 
   @override
   bool operator ==(Object other) =>

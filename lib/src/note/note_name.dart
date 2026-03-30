@@ -11,7 +11,7 @@ import 'note.dart';
 /// ---
 /// See also:
 /// * [Note].
-enum NoteName implements Comparable<NoteName> {
+enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// Note name C.
   c(0),
 
@@ -172,9 +172,9 @@ enum NoteName implements Comparable<NoteName> {
 
   /// The string representation of this [NoteName] based on [formatter].
   @override
-  String toString({
+  String format([
     StringFormatter<NoteName> formatter = const EnglishNoteNameNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
 
   @override
   int compareTo(NoteName other) => semitones.compareTo(other.semitones);

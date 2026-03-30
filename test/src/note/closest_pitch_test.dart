@@ -31,17 +31,17 @@ void main() {
 
     group('.respelledSimple', () {
       test('returns the simplest spelling for this ClosestPitch', () {
-        expect(ClosestPitch.parse('A4+36').respelledSimple.toString(), 'A4+36');
+        expect(ClosestPitch.parse('A4+36').respelledSimple.format(), 'A4+36');
         expect(
-          ClosestPitch.parse('C#2+16').respelledSimple.toString(),
+          ClosestPitch.parse('C#2+16').respelledSimple.format(),
           'D♭2+16',
         );
         expect(
-          ClosestPitch.parse('Bb3+68').respelledSimple.toString(),
+          ClosestPitch.parse('Bb3+68').respelledSimple.format(),
           'B3−32',
         );
         expect(
-          ClosestPitch.parse('F#5-152').respelledSimple.toString(),
+          ClosestPitch.parse('F#5-152').respelledSimple.format(),
           'E5+48',
         );
       });
@@ -192,50 +192,46 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this ClosestPitch', () {
-        expect(ClosestPitch(Note.a.inOctave(-3)).toString(), 'A−3±0');
+        expect(ClosestPitch(Note.a.inOctave(-3)).format(), 'A−3±0');
         expect(
           ClosestPitch(
             Note.f.sharp.inOctave(6),
             cents: const Cent(0.4),
-          ).toString(),
+          ).format(),
           'F♯6±0',
         );
         expect(
           ClosestPitch(
             Note.f.sharp.inOctave(6),
             cents: const Cent(0.45),
-          ).toString(
-            formatter: const StandardClosestPitchNotation(fractionDigits: 1),
-          ),
+          ).format(const StandardClosestPitchNotation(fractionDigits: 1)),
           'F♯6+0.5',
         );
         expect(
           ClosestPitch(
             Note.f.sharp.inOctave(6),
             cents: const Cent(0.14927345512),
-          ).toString(formatter: StandardClosestPitchNotation.noRound),
+          ).format(StandardClosestPitchNotation.noRound),
           'F♯6+0.14927345512',
         );
         expect(
-          ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.546)).toString(),
+          ClosestPitch(Note.a.inOctave(4), cents: const Cent(3.546)).format(),
           'A4+4',
         );
         expect(
           ClosestPitch(
             Note.a.inOctave(4),
             cents: const Cent(3.546),
-          ).toString(
-            formatter: const StandardClosestPitchNotation(fractionDigits: 2),
-          ),
+          ).format(const StandardClosestPitchNotation(fractionDigits: 2)),
           'A4+3.55',
         );
         expect(
           ClosestPitch(
             Note.d.flat.inOctave(3),
             cents: const Cent(-28.6),
-          ).toString(),
+          ).format(),
           'D♭3−29',
         );
       });
@@ -245,24 +241,22 @@ void main() {
         () {
           const formatter = StandardClosestPitchNotation.ascii();
           expect(
-            ClosestPitch(Note.a.inOctave(-3)).toString(formatter: formatter),
+            ClosestPitch(Note.a.inOctave(-3)).format(formatter),
             'A-3+0',
           );
           expect(
             ClosestPitch(
               Note.f.sharp.inOctave(6),
               cents: const Cent(0.4),
-            ).toString(formatter: formatter),
+            ).format(formatter),
             'F#6+0',
           );
           expect(
             ClosestPitch(
               Note.a.inOctave(4),
               cents: const Cent(3.456),
-            ).toString(
-              formatter: const StandardClosestPitchNotation.ascii(
-                fractionDigits: 3,
-              ),
+            ).format(
+              const StandardClosestPitchNotation.ascii(fractionDigits: 3),
             ),
             'A4+3.456',
           );
@@ -270,7 +264,7 @@ void main() {
             ClosestPitch(
               Note.d.flat.inOctave(3),
               cents: const Cent(-28.6),
-            ).toString(formatter: formatter),
+            ).format(formatter),
             'Db3-29',
           );
         },

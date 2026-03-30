@@ -173,7 +173,7 @@ final class KeySignature implements Comparable<KeySignature> {
 
   @override
   String toString() =>
-      '${isCanonical ? '${keys.values.toSet()} '
+      '${isCanonical ? '${keys.values.map((key) => key.format()).toSet()} '
                 '${distance?.toDeltaString()} fifths' : 'Non-canonical'} '
       '(${_notes.isEmpty ? 'empty' : _notes.map(
               EnglishNoteNotation.showNatural.format,
