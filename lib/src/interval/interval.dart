@@ -14,6 +14,26 @@ import 'interval_class.dart';
 import 'quality.dart';
 import 'size.dart';
 
+final class _PerfectInterval extends Interval {
+  const _PerfectInterval(Size size, [PerfectQuality quality = .perfect])
+    // Copied from [Interval.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
+        'Interval must be perfect.',
+      ),
+      super._(size, quality);
+}
+
+final class _ImperfectInterval extends Interval {
+  const _ImperfectInterval(Size size, ImperfectQuality quality)
+    // Copied from [Interval.isPerfect] to allow const.
+    : assert(
+        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
+        'Interval must be imperfect.',
+      ),
+      super._(size, quality);
+}
+
 /// Distance between two notes.
 ///
 /// ---
@@ -154,20 +174,12 @@ final class Interval
   static const A13 = Interval.imperfect(.thirteenth, .augmented);
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
-  const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
-    // Copied from [.isPerfect] to allow const.
-    : assert(
-        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
-        'Interval must be perfect.',
-      );
+  const factory Interval.perfect(Size size, [PerfectQuality quality]) =
+      _PerfectInterval;
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
-  const Interval.imperfect(this.size, ImperfectQuality this.quality)
-    // Copied from [.isPerfect] to allow const.
-    : assert(
-        ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
-        'Interval must be imperfect.',
-      );
+  const factory Interval.imperfect(Size size, ImperfectQuality quality) =
+      _ImperfectInterval;
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
   factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) =>
