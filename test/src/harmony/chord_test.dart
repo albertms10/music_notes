@@ -62,6 +62,14 @@ void main() {
           Chord<Note>([.c, .d.sharp, .f.sharp, .a]).normalized,
           Chord<Note>([.d.sharp, .f.sharp, .a, .c]),
         );
+        expect(
+          Note.f.augmentedTriad.add7().add9().normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Note.a.flat.majorTriad.add7().add9().normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat]),
+        );
       });
     });
 
@@ -383,6 +391,11 @@ void main() {
           ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).toString(),
           'C3+7',
         );
+        expect(
+          Note.a.flat.majorTriad.add7().add9().toString(),
+          'A♭7 9',
+        );
+        expect(Note.a.minorTriad.add7().add9().minor.toString(), 'A-7 9');
       });
     });
 
