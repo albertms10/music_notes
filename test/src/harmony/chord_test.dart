@@ -28,6 +28,43 @@ void main() {
       });
     });
 
+    group('.normalized', () {
+      test('returns the normalized version of this Chord', () {
+        expect(
+          const Chord<Note>([.c, .e, .g, .c]).normalized,
+          const Chord<Note>([.c, .e, .g]),
+        );
+        expect(
+          const Chord<Note>([.e, .c, .g]).normalized,
+          const Chord<Note>([.c, .e, .g]),
+        );
+        expect(
+          Chord<Note>([.b.flat, .c, .g, .e]).normalized,
+          Chord<Note>([.c, .e, .g, .b.flat]),
+        );
+        expect(
+          Chord<Note>([.b.flat, .c, .g, .f]).normalized,
+          Chord<Note>([.c, .f, .g, .b.flat]),
+        );
+        expect(
+          Chord<Note>([.a, .c, .f.sharp, .e.flat]).normalized,
+          Chord<Note>([.f.sharp, .a, .c, .e.flat]),
+        );
+        expect(
+          Chord<Note>([.a, .c, .g.flat, .e.flat]).normalized,
+          Chord<Note>([.a, .c, .e.flat, .g.flat]),
+        );
+        expect(
+          Chord<Note>([.b.flat.flat, .c, .g.flat, .e.flat]).normalized,
+          Chord<Note>([.c, .e.flat, .g.flat, .b.flat.flat]),
+        );
+        expect(
+          Chord<Note>([.c, .d.sharp, .f.sharp, .a]).normalized,
+          Chord<Note>([.d.sharp, .f.sharp, .a, .c]),
+        );
+      });
+    });
+
     group('.pattern', () {
       test('returns the ChordPattern for this Chord', () {
         expect(

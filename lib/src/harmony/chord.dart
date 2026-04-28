@@ -8,6 +8,7 @@ import '../interval/quality.dart';
 import '../interval/size.dart';
 import '../scalable.dart';
 import '../transposable.dart';
+import '../tuning/equal_temperament.dart';
 import 'chord_pattern.dart';
 
 /// A musical chord.
@@ -29,8 +30,64 @@ class Chord<T extends Scalable<T>>
   /// Creates a new [Chord] from [_items].
   const Chord(this._items);
 
+  /// The bass [Scalable] of this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord<Note>([.c, .e, .g]).bass == .c
+  /// const Chord<Note>([.e, .g, .c]).bass == .e
+  /// const Chord<Note>([.g, .c, .e]).bass == .g
+  /// ```
+  T get bass => _items.first;
+
   /// The root [Scalable] of this [Chord].
-  T get root => _items.first;
+  /// Example:
+  /// ```dart
+  ///
+  /// const Chord<Note>([.c, .e, .g]).root == .c
+  /// const Chord<Note>([.e, .g, .c]).root == .c
+  /// const Chord<Note>([.g, .c, .e]).root == .c
+  /// ```
+  T get root => normalized._items.first;
+
+  /// The normalized version of this [Chord], in root position with enharmonic
+  /// duplicates removed.
+  ///
+  /// Example:
+  /// ```dart
+  /// Chord<Note>([.c, .e, .g, .c]).normalized
+  ///   == const Chord<Note>([.c, .e, .g])
+  /// Chord<Note>([.e, .c, .g]).normalized == const Chord<Note>([.c, .e, .g])
+  /// Chord<Note>([.b.flat, .c, .g, .e]).normalized
+  ///   == Chord<Note>([.c, .e, .g, .b.flat])
+  /// Chord<Note>([.a, .c, .f.sharp, .e.flat]).normalized
+  ///   == Chord<Note>([.f.sharp, .a, .c, .e.flat])
+  /// ```
+  Chord<T> get normalized {
+    if (_items.isEmpty) return Chord(const []);
+
+    // 1. Remove enharmonic duplicates, keeping the first encountered spelling.
+    final unique = <T>[];
+    for (final item in _items) {
+      if (!unique.any((u) => u.isEnharmonicWith(item))) unique.add(item);
+    }
+
+    if (unique.length == 1) return Chord(unique);
+
+    // 2. Sort by pitch class (0–11) for a stable rotation base.
+    final sorted = [...unique]
+      ..sort(
+        (a, b) => (a.semitones % chromaticDivisions).compareTo(
+          b.semitones % chromaticDivisions,
+        ),
+      );
+
+    // 3. Delegate root detection and interval normalization to ChordPattern,
+    //    then rebuild on the detected root note.
+    final (:pattern, :rootIndex) = Chord(sorted).pattern.normalizedWithRoot;
+
+    return pattern.on(sorted[rootIndex]);
+  }
 
   /// The [ChordPattern] for this [Chord].
   ///
@@ -55,6 +112,16 @@ class Chord<T extends Scalable<T>>
   /// Note.a.majorTriad.add7().add9().modifiers == const <Note>[.g, .b]
   /// ```
   List<T> get modifiers => _items.skip(3).toList(growable: false);
+
+  /// The next inversion of this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.inverted == Chord<Note>([.e, .g, .c])
+  /// Note.c.majorTriad.inverted.inverted == Chord<Note>([.g, .c, .e])
+  /// ```
+  Chord<T> get inverted =>
+      Chord(_items.skip(1).followedBy([_items.first]).toList(growable: false));
 
   /// This [Chord] with an [ImperfectQuality.diminished] root triad.
   ///

@@ -9,6 +9,7 @@ import '../interval/size.dart';
 import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../scalable.dart';
+import '../tuning/equal_temperament.dart';
 import 'chord.dart';
 
 /// A musical chord pattern.
@@ -86,6 +87,88 @@ class ChordPattern with Chordable<ChordPattern> {
     String source, {
     List<StringParser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
+
+  /// The normalized version of this [ChordPattern], in root position with
+  /// duplicate sizes removed, along with the index of the detected root within
+  /// the sorted pitch-class sequence.
+  ///
+  /// The root is detected as the rotation whose upward stacking yields the
+  /// smallest total semitone span.
+  ({ChordPattern pattern, int rootIndex}) get normalizedWithRoot {
+    if (_intervals.isEmpty) {
+      return (pattern: const ChordPattern([]), rootIndex: 0);
+    }
+
+    // 1. Deduplicate by size, keeping the last interval for a given size
+    //    (matching the behavior of [add], which replaces an existing size).
+    final seen = <Size>{};
+    final deduped = _intervals.reversed
+        .where((interval) => seen.add(interval.size))
+        .toList(growable: false)
+        .reversed
+        .toList(growable: false);
+
+    final seenPitchClasses = {0};
+    final uniquePitchClasses = deduped
+        .where(
+          (interval) =>
+              seenPitchClasses.add(interval.semitones % chromaticDivisions),
+        )
+        .toList(growable: false);
+
+    // 2. Build the list of pitch-class semitone gaps between consecutive notes
+    //    when stacked upward, including the wrap-around gap back to the root.
+    //    e.g. [M3, P5] → pitch classes [0, 4, 7] → gaps [4, 3, 5]
+    final semitones = [
+      0,
+      ...uniquePitchClasses.map(
+        (interval) => interval.semitones % chromaticDivisions,
+      ),
+    ];
+    final n = semitones.length;
+    final gaps = List<int>.generate(n, (i) {
+      final curr = semitones[i];
+      final next = semitones[(i + 1) % n];
+      return (next - curr + chromaticDivisions) % chromaticDivisions;
+    });
+
+    // 3. Try every rotation of the gaps. The rotation with the minimum total
+    //    span (sum of all gaps except the last wrap-around one) is root
+    //    position. Equivalently, root position puts the largest gap last.
+    //    The span of a rotation is chromaticDivisions minus its wrap gap.
+    var bestRootIndex = 0;
+    var bestSpan = chromaticDivisions - gaps[n - 1];
+
+    for (var i = 1; i < n; i++) {
+      // Rotating by i means gap[i-1] becomes the new wrap-around gap.
+      final span = chromaticDivisions - gaps[i - 1];
+      if (span < bestSpan) {
+        bestSpan = span;
+        bestRootIndex = i;
+      }
+    }
+
+    // 4. Rebuild cumulative intervals from the detected root rotation.
+    var cumulative = 0;
+    final rootedIntervals = List<Interval>.generate(n - 1, (i) {
+      final gapIndex = (bestRootIndex + i) % n;
+      cumulative += gaps[gapIndex];
+      return Interval.fromSemitones(cumulative);
+    });
+
+    return (pattern: ChordPattern(rootedIntervals), rootIndex: bestRootIndex);
+  }
+
+  /// The normalized version of this [ChordPattern], in root position with
+  /// duplicate sizes removed.
+  ///
+  /// Example:
+  /// ```dart
+  /// const ChordPattern([.M3, .P5, .P8]).normalized == .majorTriad
+  /// const ChordPattern([.m3, .M6]).normalized == .majorTriad
+  /// const ChordPattern([.P4, .m6]).normalized == .majorTriad
+  /// ```
+  ChordPattern get normalized => normalizedWithRoot.pattern;
 
   /// The [Chord] built on top of [scalable].
   ///
