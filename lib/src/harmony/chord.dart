@@ -66,15 +66,15 @@ class Chord<T extends Scalable<T>>
   Chord<T> get normalized {
     if (_items.isEmpty) return Chord(const []);
 
-    // 1. Remove enharmonic duplicates, keeping the first encountered spelling.
-    final unique = <T>[];
-    for (final item in _items) {
-      if (!unique.any((u) => u.isEnharmonicWith(item))) unique.add(item);
-    }
+    final seenPitchClasses = <int>{};
+    final unique = _items
+        .where(
+          (item) => seenPitchClasses.add(item.semitones % chromaticDivisions),
+        )
+        .toList(growable: false);
 
     if (unique.length == 1) return Chord(unique);
 
-    // 2. Sort by pitch class (0–11) for a stable rotation base.
     final sorted = [...unique]
       ..sort(
         (a, b) => (a.semitones % chromaticDivisions).compareTo(
@@ -82,8 +82,6 @@ class Chord<T extends Scalable<T>>
         ),
       );
 
-    // 3. Delegate root detection and interval normalization to ChordPattern,
-    //    then rebuild on the detected root note.
     final (:pattern, :rootIndex) = Chord(sorted).pattern.normalizedWithRoot;
 
     return pattern.on(sorted[rootIndex]);

@@ -1,3 +1,5 @@
+import 'dart:math' show max;
+
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
@@ -99,64 +101,41 @@ class ChordPattern with Chordable<ChordPattern> {
       return (pattern: const ChordPattern([]), rootIndex: 0);
     }
 
-    // 1. Deduplicate by size, keeping the last interval for a given size
-    //    (matching the behavior of [add], which replaces an existing size).
-    final seen = <Size>{};
-    final deduped = _intervals.reversed
-        .where((interval) => seen.add(interval.size))
+    final seenSizes = <Size>{};
+    final bySize = _intervals.reversed
+        .where((interval) => seenSizes.add(interval.size))
         .toList(growable: false)
         .reversed
         .toList(growable: false);
 
     final seenPitchClasses = {0};
-    final uniquePitchClasses = deduped
-        .where(
-          (interval) =>
-              seenPitchClasses.add(interval.semitones % chromaticDivisions),
-        )
-        .toList(growable: false);
-
-    // 2. Build the list of pitch-class semitone gaps between consecutive notes
-    //    when stacked upward, including the wrap-around gap back to the root.
-    //    e.g. [M3, P5] → pitch classes [0, 4, 7] → gaps [4, 3, 5]
-    final semitones = [
+    final pitchClasses = [
       0,
-      ...uniquePitchClasses.map(
-        (interval) => interval.semitones % chromaticDivisions,
-      ),
+      ...bySize
+          .where(
+            (interval) =>
+                seenPitchClasses.add(interval.semitones % chromaticDivisions),
+          )
+          .map((interval) => interval.semitones % chromaticDivisions),
     ];
-    final n = semitones.length;
+
+    final n = pitchClasses.length;
     final gaps = List<int>.generate(n, (i) {
-      final curr = semitones[i];
-      final next = semitones[(i + 1) % n];
-      return (next - curr + chromaticDivisions) % chromaticDivisions;
+      final current = pitchClasses[i];
+      final next = pitchClasses[(i + 1) % n];
+      return (next - current + chromaticDivisions) % chromaticDivisions;
     });
 
-    // 3. Try every rotation of the gaps. The rotation with the minimum total
-    //    span (sum of all gaps except the last wrap-around one) is root
-    //    position. Equivalently, root position puts the largest gap last.
-    //    The span of a rotation is chromaticDivisions minus its wrap gap.
-    var bestRootIndex = 0;
-    var bestSpan = chromaticDivisions - gaps[n - 1];
+    final wrapGapIndex = gaps.indexOf(gaps.reduce(max));
+    final rootIndex = (wrapGapIndex + 1) % n;
 
-    for (var i = 1; i < n; i++) {
-      // Rotating by i means gap[i-1] becomes the new wrap-around gap.
-      final span = chromaticDivisions - gaps[i - 1];
-      if (span < bestSpan) {
-        bestSpan = span;
-        bestRootIndex = i;
-      }
-    }
-
-    // 4. Rebuild cumulative intervals from the detected root rotation.
     var cumulative = 0;
     final rootedIntervals = List<Interval>.generate(n - 1, (i) {
-      final gapIndex = (bestRootIndex + i) % n;
-      cumulative += gaps[gapIndex];
+      cumulative += gaps[(rootIndex + i) % n];
       return Interval.fromSemitones(cumulative);
     });
 
-    return (pattern: ChordPattern(rootedIntervals), rootIndex: bestRootIndex);
+    return (pattern: ChordPattern(rootedIntervals), rootIndex: rootIndex);
   }
 
   /// The normalized version of this [ChordPattern], in root position with
