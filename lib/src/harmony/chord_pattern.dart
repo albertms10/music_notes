@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
 
 import '../chordable.dart';
 import '../interval/interval.dart';
@@ -225,7 +226,7 @@ class ChordPattern
   ]) => formatter.format(this);
 
   @override
-  String toString() => '$runtimeType(intervals: $intervals)';
+  String toString() => '$runtimeType(intervals: ${intervals.prettyToString()})';
 
   @override
   bool operator ==(Object other) =>

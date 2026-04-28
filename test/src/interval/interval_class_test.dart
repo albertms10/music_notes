@@ -117,6 +117,19 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this IntervalClass',
+        () {
+          expect(IntervalClass.P1.toString(), 'IntervalClass(semitones: 0)');
+          expect(
+            IntervalClass.tritone.toString(),
+            'IntervalClass(semitones: 6)',
+          );
+        },
+      );
+    });
+
     group('.hashCode', () {
       test('ignores equal IntervalClass instances in a Set', () {
         final collection = <Interval>{.P1, .M3};

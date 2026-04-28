@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
 
 import '../chordable.dart';
 import '../interval/interval.dart';
@@ -122,7 +123,7 @@ class Chord<T extends Scalable<T>>
   String format() => '${root.format()}${pattern.format()}';
 
   @override
-  String toString() => '$runtimeType(items: $items)';
+  String toString() => '$runtimeType(items: ${items.prettyToString()})';
 
   @override
   bool operator ==(Object other) =>

@@ -43,22 +43,26 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the string representation of this ChordPattern', () {
-        expect(
-          HarmonicFunction.neapolitanSixth.toString(),
-          'HarmonicFunction(scaleDegrees: '
-          '[ScaleDegree(ordinal: 2, quality: ImperfectQuality(semitones: 1), '
-          'inversion: 1, semitonesDelta: -1)])',
-        );
-        expect(
-          (HarmonicFunction.dominantV / .dominantV).toString(),
-          'HarmonicFunction(scaleDegrees: '
-          '[ScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), '
-          'inversion: 0, semitonesDelta: 0), '
-          'ScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), '
-          'inversion: 0, semitonesDelta: 0)])',
-        );
-      });
+      test(
+        'returns the verbose string representation of this HarmonicFunction',
+        () {
+          expect(
+            HarmonicFunction.neapolitanSixth.toString(),
+            '''
+HarmonicFunction(scaleDegrees: [
+\tScaleDegree(ordinal: 2, quality: ImperfectQuality(semitones: 1), inversion: 1, semitonesDelta: -1)
+])''',
+          );
+          expect(
+            (HarmonicFunction.dominantV / .dominantV).toString(),
+            '''
+HarmonicFunction(scaleDegrees: [
+\tScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), inversion: 0, semitonesDelta: 0),
+\tScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), inversion: 0, semitonesDelta: 0)
+])''',
+          );
+        },
+      );
     });
 
     group('.hashCode', () {

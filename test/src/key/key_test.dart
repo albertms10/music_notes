@@ -85,6 +85,21 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Key', () {
+        expect(
+          Note.a.major.toString(),
+          '''
+Key(note: Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), mode: TonalMode.major)''',
+        );
+        expect(
+          Note.g.sharp.minor.toString(),
+          '''
+Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode: TonalMode.minor)''',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Key instances in a Set', () {
         final collection = {

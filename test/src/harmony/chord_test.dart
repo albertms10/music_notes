@@ -350,21 +350,25 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the string representation of this ChordPattern', () {
+      test('returns the verbose string representation of this Chord', () {
         expect(
           ChordPattern.majorTriad.on(Note.c).toString(),
-          'Chord<Note>(items: '
-          '[Note(noteName: NoteName.c, accidental: Accidental(semitones: 0)), '
-          'Note(noteName: NoteName.e, accidental: Accidental(semitones: 0)), '
-          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 0))])',
+          '''
+Chord<Note>(items: [
+\tNote(noteName: NoteName.c, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.e, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.g, accidental: Accidental(semitones: 0))
+])''',
         );
         expect(
           ChordPattern.minorTriad.add9().on(Note.f.sharp).toString(),
-          'Chord<Note>(items: '
-          '[Note(noteName: NoteName.f, accidental: Accidental(semitones: 1)), '
-          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), '
-          'Note(noteName: NoteName.c, accidental: Accidental(semitones: 1)), '
-          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 1))])',
+          '''
+Chord<Note>(items: [
+\tNote(noteName: NoteName.f, accidental: Accidental(semitones: 1)),
+\tNote(noteName: NoteName.a, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.c, accidental: Accidental(semitones: 1)),
+\tNote(noteName: NoteName.g, accidental: Accidental(semitones: 1))
+])''',
         );
       });
     });

@@ -58,6 +58,9 @@ extension IterableExtension<E> on Iterable<E> {
     required E Function(E current) nextValue,
     required Comparator<E> compare,
   }) => _compact(nextValue: nextValue, compare: compare);
+
+  /// Returns a pretty string representation of this [Iterable].
+  String prettyToString() => '[\n\t${join(',\n\t')}\n]';
 }
 
 /// A num Iterable extension.

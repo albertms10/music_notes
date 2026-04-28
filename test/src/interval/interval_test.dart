@@ -822,6 +822,19 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Interval', () {
+        expect(
+          Interval.P1.toString(),
+          'Interval(size: 1, quality: PerfectQuality(semitones: 0))',
+        );
+        expect(
+          Interval.m3.toString(),
+          'Interval(size: 3, quality: ImperfectQuality(semitones: 0))',
+        );
+      });
+    });
+
     group('operator +()', () {
       test('adds other to this Interval', () {
         expect(Interval.P1 + .P1, Interval.P1);

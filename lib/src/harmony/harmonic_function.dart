@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
 
 import '../notation/notation_system.dart';
 import '../scale/scale.dart';
@@ -57,7 +58,8 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   String format() => _scaleDegrees.map((d) => d.format()).join('/');
 
   @override
-  String toString() => '$runtimeType(scaleDegrees: $scaleDegrees)';
+  String toString() =>
+      '$runtimeType(scaleDegrees: ${scaleDegrees.prettyToString()})';
 
   /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
   /// [other].

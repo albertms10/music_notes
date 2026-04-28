@@ -61,6 +61,19 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Quality', () {
+        expect(
+          PerfectQuality.perfect.toString(),
+          'PerfectQuality(semitones: 0)',
+        );
+        expect(
+          ImperfectQuality.major.toString(),
+          'ImperfectQuality(semitones: 1)',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Quality instances in a Set', () {
         final collection = {
