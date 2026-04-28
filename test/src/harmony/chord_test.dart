@@ -38,6 +38,7 @@ void main() {
           const Chord<Note>([.e, .c, .g]).normalized,
           const Chord<Note>([.c, .e, .g]),
         );
+
         expect(
           Chord<Note>([.b.flat, .c, .g, .e]).normalized,
           Chord<Note>([.c, .e, .g, .b.flat]),
@@ -46,6 +47,7 @@ void main() {
           Chord<Note>([.b.flat, .c, .g, .f]).normalized,
           Chord<Note>([.c, .f, .g, .b.flat]),
         );
+
         expect(
           Chord<Note>([.a, .c, .f.sharp, .e.flat]).normalized,
           Chord<Note>([.f.sharp, .a, .c, .e.flat]),
@@ -62,13 +64,184 @@ void main() {
           Chord<Note>([.c, .d.sharp, .f.sharp, .a]).normalized,
           Chord<Note>([.d.sharp, .f.sharp, .a, .c]),
         );
+
         expect(
           Note.f.augmentedTriad.add7().add9().normalized,
           Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
         );
         expect(
-          Note.a.flat.majorTriad.add7().add9().normalized,
-          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat]),
+          Chord<Note>([.a, .c.sharp, .e.flat, .f, .g]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Chord<Note>([.c.sharp, .e.flat, .f, .g, .a]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Chord<Note>([.e.flat, .f, .g, .a, .c.sharp]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+
+        expect(
+          Note.a.flat.majorTriad.add7().add9().add11().normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .c,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .d.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+
+        expect(
+          Note.d.sharp.minorTriad.add7(.major).add9(.minor).add11().normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .g.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
         );
       });
     });

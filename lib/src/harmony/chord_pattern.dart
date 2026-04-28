@@ -11,6 +11,7 @@ import '../note/accidental.dart';
 import '../scalable.dart';
 import '../tuning/equal_temperament.dart';
 import 'chord.dart';
+import 'chord_normalization.dart';
 
 /// A musical chord pattern.
 ///
@@ -122,32 +123,6 @@ class ChordPattern with Chordable<ChordPattern> {
       return (pattern: const ChordPattern([]), rootIndex: 0);
     }
 
-    int templatePriority(int firstSize) => switch (firstSize) {
-      3 => 0,
-      2 || 4 => 1,
-      _ => 2,
-    };
-
-    int templateSize(int firstSize, int index) =>
-        index == 0 ? firstSize : 5 + (index - 1) * 2;
-
-    int simpleDistance(int a, int b) {
-      final diff = (a - b).abs();
-      return diff < 7 - diff ? diff : 7 - diff;
-    }
-
-    int qualityPenalty(Interval interval) {
-      final options = switch (interval.size.simple.abs()) {
-        3 || 2 || 6 => const [0, 1],
-        5 || 4 || 7 => const [-1, 0, 1],
-        _ => const [0],
-      };
-
-      return options
-          .map((value) => (interval.quality.semitones - value).abs())
-          .reduce((a, b) => a < b ? a : b);
-    }
-
     ({
       ChordPattern pattern,
       int sizePenalty,
@@ -156,96 +131,22 @@ class ChordPattern with Chordable<ChordPattern> {
       int span,
     })
     buildCandidate(int rootIndex) {
-      final relativeSemitones = List<int>.generate(n - 1, (i) {
+      final relativeIntervals = List<Interval>.generate(n - 1, (i) {
         final pitchClass = pitchClasses[(rootIndex + i + 1) % n];
-        return (pitchClass - pitchClasses[rootIndex] + chromaticDivisions) %
-            chromaticDivisions;
-      });
-
-      ({
-        ChordPattern pattern,
-        int sizePenalty,
-        int qualityPenalty,
-        int templatePriority,
-        int span,
-      })?
-      bestTemplate;
-
-      for (final firstSize in const [3, 2, 4]) {
-        final remaining = [...relativeSemitones];
-        final intervals = <Interval>[];
-        var sizePenalty = 0;
-        var totalQualityPenalty = 0;
-
-        for (var i = 0; i < relativeSemitones.length; i++) {
-          final targetSize = templateSize(firstSize, i);
-          final targetSimple = Size(targetSize).simple.abs();
-
-          remaining.sort((a, b) {
-            final promotedA = Interval.fromSizeAndSemitones(
-              Size(targetSize),
-              a + ((targetSize - 1) ~/ 7) * chromaticDivisions,
-            );
-            final promotedB = Interval.fromSizeAndSemitones(
-              Size(targetSize),
-              b + ((targetSize - 1) ~/ 7) * chromaticDivisions,
-            );
-            final distanceA = simpleDistance(
-              Interval.fromSemitones(a).size.simple.abs(),
-              targetSimple,
-            );
-            final distanceB = simpleDistance(
-              Interval.fromSemitones(b).size.simple.abs(),
-              targetSimple,
-            );
-
-            if (distanceA != distanceB) return distanceA.compareTo(distanceB);
-
-            final qualityA = qualityPenalty(promotedA);
-            final qualityB = qualityPenalty(promotedB);
-            if (qualityA != qualityB) return qualityA.compareTo(qualityB);
-
-            return promotedA.semitones.compareTo(promotedB.semitones);
-          });
-
-          final chosen = remaining.removeAt(0);
-          final promoted = Interval.fromSizeAndSemitones(
-            Size(targetSize),
-            chosen + ((targetSize - 1) ~/ 7) * chromaticDivisions,
-          );
-
-          sizePenalty += simpleDistance(
-            Interval.fromSemitones(chosen).size.simple.abs(),
-            targetSimple,
-          );
-          totalQualityPenalty += qualityPenalty(promoted);
-          intervals.add(promoted);
-        }
-
-        final candidate = (
-          pattern: ChordPattern(intervals),
-          sizePenalty: sizePenalty,
-          qualityPenalty: totalQualityPenalty,
-          templatePriority: templatePriority(firstSize),
-          span: intervals.lastOrNull?.semitones ?? 0,
+        return Interval.fromSemitones(
+          (pitchClass - pitchClasses[rootIndex] + chromaticDivisions) %
+              chromaticDivisions,
         );
+      });
+      final normalized = normalizeIntervalsByTemplate(relativeIntervals);
 
-        if (bestTemplate == null ||
-            candidate.sizePenalty < bestTemplate.sizePenalty ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty < bestTemplate.qualityPenalty) ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty == bestTemplate.qualityPenalty &&
-                candidate.templatePriority < bestTemplate.templatePriority) ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty == bestTemplate.qualityPenalty &&
-                candidate.templatePriority == bestTemplate.templatePriority &&
-                candidate.span < bestTemplate.span)) {
-          bestTemplate = candidate;
-        }
-      }
-
-      return bestTemplate!;
+      return (
+        pattern: ChordPattern(normalized.intervals),
+        sizePenalty: normalized.sizePenalty,
+        qualityPenalty: normalized.qualityPenalty,
+        templatePriority: normalized.templatePriority,
+        span: normalized.span,
+      );
     }
 
     var bestRootIndex = 0;
@@ -253,16 +154,16 @@ class ChordPattern with Chordable<ChordPattern> {
 
     for (var rootIndex = 1; rootIndex < n; rootIndex++) {
       final candidate = buildCandidate(rootIndex);
-      if (candidate.sizePenalty < best.sizePenalty ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty < best.qualityPenalty) ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty == best.qualityPenalty &&
-              candidate.templatePriority < best.templatePriority) ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty == best.qualityPenalty &&
-              candidate.templatePriority == best.templatePriority &&
-              candidate.span < best.span)) {
+      if (isBetterNormalizationScore(
+        sizePenalty: candidate.sizePenalty,
+        qualityPenalty: candidate.qualityPenalty,
+        templatePriority: candidate.templatePriority,
+        span: candidate.span,
+        bestSizePenalty: best.sizePenalty,
+        bestQualityPenalty: best.qualityPenalty,
+        bestTemplatePriority: best.templatePriority,
+        bestSpan: best.span,
+      )) {
         bestRootIndex = rootIndex;
         best = candidate;
       }

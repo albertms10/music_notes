@@ -9,6 +9,7 @@ import '../interval/size.dart';
 import '../scalable.dart';
 import '../transposable.dart';
 import '../tuning/equal_temperament.dart';
+import 'chord_normalization.dart';
 import 'chord_pattern.dart';
 
 /// A musical chord.
@@ -75,32 +76,6 @@ class Chord<T extends Scalable<T>>
 
     if (unique.length == 1) return Chord(unique);
 
-    int templatePriority(int firstSize) => switch (firstSize) {
-      3 => 0,
-      2 || 4 => 1,
-      _ => 2,
-    };
-
-    int templateSize(int firstSize, int index) =>
-        index == 0 ? firstSize : 5 + (index - 1) * 2;
-
-    int simpleDistance(int a, int b) {
-      final diff = (a - b).abs();
-      return diff < 7 - diff ? diff : 7 - diff;
-    }
-
-    int qualityPenalty(Interval interval) {
-      final options = switch (interval.size.simple.abs()) {
-        3 || 2 || 6 => const [0, 1],
-        5 || 4 || 7 => const [-1, 0, 1],
-        _ => const [0],
-      };
-
-      return options
-          .map((value) => (interval.quality.semitones - value).abs())
-          .reduce((a, b) => a < b ? a : b);
-    }
-
     ({
       Chord<T> chord,
       int sizePenalty,
@@ -112,111 +87,36 @@ class Chord<T extends Scalable<T>>
           .where((item) => item != root)
           .map((item) => (item: item, interval: root.interval(item)))
           .toList(growable: false);
+      final normalized = normalizeIntervalsByTemplate(
+        pairs.map((pair) => pair.interval).toList(growable: false),
+      );
 
-      ({
-        Chord<T> chord,
-        int sizePenalty,
-        int qualityPenalty,
-        int templatePriority,
-        int span,
-      })? bestTemplate;
-
-      for (final firstSize in const [3, 2, 4]) {
-        final remaining = [...pairs];
-        final orderedItems = <T>[root];
-        final orderedIntervals = <Interval>[];
-        var sizePenalty = 0;
-        var totalQualityPenalty = 0;
-
-        for (var i = 0; i < pairs.length; i++) {
-          final targetSize = templateSize(firstSize, i);
-          final targetSimple = Size(targetSize).simple.abs();
-
-          remaining.sort((a, b) {
-            final promotedA = Interval.fromSizeAndSemitones(
-              Size(targetSize),
-              (a.interval.semitones % chromaticDivisions) +
-                  ((targetSize - 1) ~/ 7) * chromaticDivisions,
-            );
-            final promotedB = Interval.fromSizeAndSemitones(
-              Size(targetSize),
-              (b.interval.semitones % chromaticDivisions) +
-                  ((targetSize - 1) ~/ 7) * chromaticDivisions,
-            );
-            final distanceA = simpleDistance(
-              a.interval.size.simple.abs(),
-              targetSimple,
-            );
-            final distanceB = simpleDistance(
-              b.interval.size.simple.abs(),
-              targetSimple,
-            );
-
-            if (distanceA != distanceB) return distanceA.compareTo(distanceB);
-
-            final qualityA = qualityPenalty(promotedA);
-            final qualityB = qualityPenalty(promotedB);
-            if (qualityA != qualityB) return qualityA.compareTo(qualityB);
-
-            return promotedA.semitones.compareTo(promotedB.semitones);
-          });
-
-          final chosen = remaining.removeAt(0);
-          final promoted = Interval.fromSizeAndSemitones(
-            Size(targetSize),
-            (chosen.interval.semitones % chromaticDivisions) +
-                ((targetSize - 1) ~/ 7) * chromaticDivisions,
-          );
-
-          sizePenalty += simpleDistance(
-            chosen.interval.size.simple.abs(),
-            targetSimple,
-          );
-          totalQualityPenalty += qualityPenalty(promoted);
-          orderedItems.add(chosen.item);
-          orderedIntervals.add(promoted);
-        }
-
-        final candidate = (
-          chord: Chord(orderedItems),
-          sizePenalty: sizePenalty,
-          qualityPenalty: totalQualityPenalty,
-          templatePriority: templatePriority(firstSize),
-          span: orderedIntervals.lastOrNull?.semitones ?? 0,
-        );
-
-        if (bestTemplate == null ||
-            candidate.sizePenalty < bestTemplate.sizePenalty ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty < bestTemplate.qualityPenalty) ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty == bestTemplate.qualityPenalty &&
-                candidate.templatePriority < bestTemplate.templatePriority) ||
-            (candidate.sizePenalty == bestTemplate.sizePenalty &&
-                candidate.qualityPenalty == bestTemplate.qualityPenalty &&
-                candidate.templatePriority == bestTemplate.templatePriority &&
-                candidate.span < bestTemplate.span)) {
-          bestTemplate = candidate;
-        }
-      }
-
-      return bestTemplate!;
+      return (
+        chord: Chord([
+          root,
+          ...normalized.order.map((index) => pairs[index].item),
+        ]),
+        sizePenalty: normalized.sizePenalty,
+        qualityPenalty: normalized.qualityPenalty,
+        templatePriority: normalized.templatePriority,
+        span: normalized.span,
+      );
     }
 
     var best = buildCandidate(unique.first);
 
     for (final root in unique.skip(1)) {
       final candidate = buildCandidate(root);
-      if (candidate.sizePenalty < best.sizePenalty ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty < best.qualityPenalty) ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty == best.qualityPenalty &&
-              candidate.templatePriority < best.templatePriority) ||
-          (candidate.sizePenalty == best.sizePenalty &&
-              candidate.qualityPenalty == best.qualityPenalty &&
-              candidate.templatePriority == best.templatePriority &&
-              candidate.span < best.span)) {
+      if (isBetterNormalizationScore(
+        sizePenalty: candidate.sizePenalty,
+        qualityPenalty: candidate.qualityPenalty,
+        templatePriority: candidate.templatePriority,
+        span: candidate.span,
+        bestSizePenalty: best.sizePenalty,
+        bestQualityPenalty: best.qualityPenalty,
+        bestTemplatePriority: best.templatePriority,
+        bestSpan: best.span,
+      )) {
         best = candidate;
       }
     }
