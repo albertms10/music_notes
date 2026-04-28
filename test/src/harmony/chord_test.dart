@@ -246,6 +246,45 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('returns the inverted version of this Chord', () {
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.items,
+          const Chord<Note>([.e, .g, .c]).items,
+        );
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.inverted,
+          const Chord<Note>([.g, .c, .e]),
+        );
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.inverted.inverted,
+          const Chord<Note>([.c, .e, .g]),
+        );
+
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted,
+          Chord<Note>([.e, .g, .b.flat, .c]),
+        );
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted.inverted,
+          Chord<Note>([.g, .b.flat, .c, .e]),
+        );
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted.inverted.inverted,
+          Chord<Note>([.b.flat, .c, .e, .g]),
+        );
+        expect(
+          Chord<Note>([
+            .c,
+            .e,
+            .g,
+            .b.flat,
+          ]).inverted.inverted.inverted.inverted,
+          Chord<Note>([.c, .e, .g, .b.flat]),
+        );
+      });
+    });
+
     group('.pattern', () {
       test('returns the ChordPattern for this Chord', () {
         expect(

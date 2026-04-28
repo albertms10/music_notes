@@ -82,7 +82,8 @@ class Chord<T extends Scalable<T>>
       int qualityPenalty,
       int templatePriority,
       int span,
-    }) buildCandidate(T root) {
+    })
+    buildCandidate(T root) {
       final pairs = unique
           .where((item) => item != root)
           .map((item) => (item: item, interval: root.interval(item)))
