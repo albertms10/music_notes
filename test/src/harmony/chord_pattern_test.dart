@@ -390,6 +390,24 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the string representation of this ChordPattern', () {
+        expect(
+          ChordPattern.majorTriad.toString(),
+          'ChordPattern(intervals: '
+          '[Interval(size: 3, quality: ImperfectQuality(semitones: 1)), '
+          'Interval(size: 5, quality: PerfectQuality(semitones: 0))])',
+        );
+        expect(
+          ChordPattern.minorTriad.add7(.major).toString(),
+          'ChordPattern(intervals: '
+          '[Interval(size: 3, quality: ImperfectQuality(semitones: 0)), '
+          'Interval(size: 5, quality: PerfectQuality(semitones: 0)), '
+          'Interval(size: 7, quality: ImperfectQuality(semitones: 1))])',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal ChordPattern instances in a Set', () {
         final collection = <ChordPattern>{

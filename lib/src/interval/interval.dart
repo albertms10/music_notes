@@ -451,7 +451,7 @@ final class Interval
   ]) => formatter.format(this);
 
   @override
-  String toString() => '$runtimeType(size: $semitones, quality: $quality)';
+  String toString() => '$runtimeType(size: $size, quality: $quality)';
 
   /// Adds [other] to this [Interval].
   ///

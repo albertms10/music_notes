@@ -225,7 +225,7 @@ class ChordPattern
   ]) => formatter.format(this);
 
   @override
-  String toString() => '$runtimeType(semitones: $intervals)';
+  String toString() => '$runtimeType(intervals: $intervals)';
 
   @override
   bool operator ==(Object other) =>

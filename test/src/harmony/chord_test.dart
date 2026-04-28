@@ -349,6 +349,26 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the string representation of this ChordPattern', () {
+        expect(
+          ChordPattern.majorTriad.on(Note.c).toString(),
+          'Chord<Note>(items: '
+          '[Note(noteName: NoteName.c, accidental: Accidental(semitones: 0)), '
+          'Note(noteName: NoteName.e, accidental: Accidental(semitones: 0)), '
+          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 0))])',
+        );
+        expect(
+          ChordPattern.minorTriad.add9().on(Note.f.sharp).toString(),
+          'Chord<Note>(items: '
+          '[Note(noteName: NoteName.f, accidental: Accidental(semitones: 1)), '
+          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), '
+          'Note(noteName: NoteName.c, accidental: Accidental(semitones: 1)), '
+          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 1))])',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Chord instances in a Set', () {
         final collection = {
