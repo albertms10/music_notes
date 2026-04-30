@@ -101,9 +101,9 @@ void main() {
             'octave: 2), cents: 14.5)',
           );
           expect(
-            ClosestPitch(Note.d.flat.inOctave(4)).toString(),
+            ClosestPitch(Note.d.inOctave(4)).toString(),
             'ClosestPitch(pitch: Pitch(note: '
-            'Note(noteName: NoteName.d, accidental: Accidental(semitones: -1)), '
+            'Note(noteName: NoteName.d, accidental: Accidental(semitones: 0)), '
             'octave: 4), cents: 0)',
           );
         },
