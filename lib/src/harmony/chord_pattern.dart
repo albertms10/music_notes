@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart'
     show IterableExtension, ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
 
 import '../chordable.dart';
 import '../interval/interval.dart';
@@ -18,7 +19,9 @@ import 'chord.dart';
 /// * [Chord].
 /// * [Interval].
 @immutable
-class ChordPattern with Chordable<ChordPattern> {
+class ChordPattern
+    with Chordable<ChordPattern>
+    implements Formattable<ChordPattern> {
   final List<Interval> _intervals;
 
   /// The intervals from the root note.
@@ -218,9 +221,12 @@ class ChordPattern with Chordable<ChordPattern> {
       intervals.firstWhereOrNull((interval) => interval.size == size);
 
   @override
-  String toString({
+  String format([
     StringFormatter<ChordPattern> formatter = const ChordPatternNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(intervals: ${intervals.prettyToString()})';
 
   @override
   bool operator ==(Object other) =>

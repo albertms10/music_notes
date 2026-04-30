@@ -70,7 +70,7 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this EqualTemperament', () {
         expect(
           const EqualTemperament.edo12().toString(),

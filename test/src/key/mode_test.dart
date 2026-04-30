@@ -63,10 +63,10 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this TonalMode', () {
-        expect(TonalMode.major.toString(), 'major');
-        expect(TonalMode.minor.toString(), 'minor');
+        expect(TonalMode.major.format(), 'major');
+        expect(TonalMode.minor.format(), 'minor');
       });
     });
   });
@@ -95,10 +95,10 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this TonalMode', () {
-        expect(TonalMode.major.toString(formatter: formatter), 'Dur');
-        expect(TonalMode.minor.toString(formatter: formatter), 'Moll');
+        expect(TonalMode.major.format(formatter), 'Dur');
+        expect(TonalMode.minor.format(formatter), 'Moll');
       });
     });
   });
@@ -127,10 +127,10 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this TonalMode', () {
-        expect(TonalMode.major.toString(formatter: formatter), 'maggiore');
-        expect(TonalMode.minor.toString(formatter: formatter), 'minore');
+        expect(TonalMode.major.format(formatter), 'maggiore');
+        expect(TonalMode.minor.format(formatter), 'minore');
       });
     });
   });

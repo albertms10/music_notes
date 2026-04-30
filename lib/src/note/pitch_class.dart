@@ -23,7 +23,7 @@ import 'pitch.dart';
 /// * [Pitch].
 @immutable
 final class PitchClass extends Scalable<PitchClass>
-    implements Comparable<PitchClass> {
+    implements Comparable<PitchClass>, Formattable<PitchClass> {
   /// The number of semitones (chroma) that represent this [PitchClass].
   ///
   /// See [Chroma feature](https://en.wikipedia.org/wiki/Chroma_feature).
@@ -281,21 +281,24 @@ final class PitchClass extends Scalable<PitchClass>
   ///
   /// Example:
   /// ```dart
-  /// PitchClass.c.toString() == '{C}'
-  /// PitchClass.g.toString() == '{G}'
-  /// PitchClass.dSharp.toString() == '{D♯|E♭}'
+  /// PitchClass.c.format() == '{C}'
+  /// PitchClass.g.format() == '{G}'
+  /// PitchClass.dSharp.format() == '{D♯|E♭}'
   ///
   /// const integer = IntegerPitchClassNotation();
-  /// PitchClass.c.toString(formatter: integer) == '0'
-  /// PitchClass.f.toString(formatter: integer) == '5'
-  /// PitchClass.aSharp.toString(formatter: integer) == 't'
-  /// PitchClass.b.toString(formatter: integer) == 'e'
+  /// PitchClass.c.format(integer) == '0'
+  /// PitchClass.f.format(integer) == '5'
+  /// PitchClass.aSharp.format(integer) == 't'
+  /// PitchClass.b.format(integer) == 'e'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<PitchClass> formatter =
         const EnharmonicSpellingsPitchClassNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(semitones: $semitones)';
 
   @override
   bool operator ==(Object other) =>
@@ -338,7 +341,7 @@ final class EnharmonicSpellingsPitchClassNotation
 
   @override
   String format(PitchClass pitchClass) =>
-      '{${pitchClass.spellings().join('|')}}';
+      '{${pitchClass.spellings().map((note) => note.format()).join('|')}}';
 }
 
 /// The [StringNotationSystem] for integer [PitchClass].

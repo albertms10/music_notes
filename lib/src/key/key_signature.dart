@@ -9,6 +9,7 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
+import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../note/note.dart';
 import 'key.dart';
@@ -21,7 +22,8 @@ import 'mode.dart';
 /// * [Note].
 /// * [Key].
 @immutable
-final class KeySignature implements Comparable<KeySignature> {
+final class KeySignature
+    implements Comparable<KeySignature>, Formattable<KeySignature> {
   final List<Note> _notes;
 
   /// The set of [Note] that define this [KeySignature], which may include
@@ -172,12 +174,15 @@ final class KeySignature implements Comparable<KeySignature> {
   }
 
   @override
-  String toString() =>
-      '${isCanonical ? '${keys.values.toSet()} '
+  String format() =>
+      '${isCanonical ? '${keys.values.map((key) => key.format()).toSet()} '
                 '${distance?.toDeltaString()} fifths' : 'Non-canonical'} '
       '(${_notes.isEmpty ? 'empty' : _notes.map(
               EnglishNoteNotation.showNatural.format,
             ).join(' ')})';
+
+  @override
+  String toString() => '$runtimeType(notes: ${_notes.prettyToString()})';
 
   /// The consecutive union of two [KeySignature]s (as if divided by a barline),
   /// including cancellation [Accidental.natural]s when needed.

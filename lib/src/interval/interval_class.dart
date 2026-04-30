@@ -8,6 +8,7 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
+import '../notation/notation_system.dart';
 import '../note/pitch_class.dart';
 import '../tuning/equal_temperament.dart';
 import 'interval.dart';
@@ -28,7 +29,7 @@ import 'size.dart';
 @immutable
 final class IntervalClass
     with Comparators<IntervalClass>
-    implements Comparable<IntervalClass> {
+    implements Comparable<IntervalClass>, Formattable<IntervalClass> {
   /// The distance in semitones that defines this [IntervalClass].
   final int semitones;
 
@@ -173,12 +174,16 @@ final class IntervalClass
   ///
   /// Example:
   /// ```dart
-  /// IntervalClass.M2.toString() == '{M2|d3}'
-  /// IntervalClass.P4.toString() == '{P4}'
-  /// IntervalClass.tritone.toString() == '{A4|d5}'
+  /// IntervalClass.M2.format() == '{M2|d3}'
+  /// IntervalClass.P4.format() == '{P4}'
+  /// IntervalClass.tritone.format() == '{A4|d5}'
   /// ```
   @override
-  String toString() => '{${spellings().join('|')}}';
+  String format() =>
+      '{${spellings().map((interval) => interval.format()).join('|')}}';
+
+  @override
+  String toString() => '$runtimeType(semitones: $semitones)';
 
   @override
   bool operator ==(Object other) =>

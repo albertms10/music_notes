@@ -312,6 +312,13 @@ void main() {
       );
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this PitchClass', () {
+        expect(PitchClass.c.toString(), 'PitchClass(semitones: 0)');
+        expect(PitchClass.gSharp.toString(), 'PitchClass(semitones: 8)');
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal PitchClass instances in a Set', () {
         final collection = <PitchClass>{.f, .aSharp};
@@ -357,20 +364,20 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this PitchClass', () {
-        expect(PitchClass.c.toString(), '{C}');
-        expect(PitchClass.cSharp.toString(), '{C♯|D♭}');
-        expect(PitchClass.d.toString(), '{D}');
-        expect(PitchClass.dSharp.toString(), '{D♯|E♭}');
-        expect(PitchClass.e.toString(), '{E}');
-        expect(PitchClass.f.toString(), '{F}');
-        expect(PitchClass.fSharp.toString(), '{F♯|G♭}');
-        expect(PitchClass.g.toString(), '{G}');
-        expect(PitchClass.gSharp.toString(), '{G♯|A♭}');
-        expect(PitchClass.a.toString(), '{A}');
-        expect(PitchClass.aSharp.toString(), '{A♯|B♭}');
-        expect(PitchClass.b.toString(), '{B}');
+        expect(PitchClass.c.format(), '{C}');
+        expect(PitchClass.cSharp.format(), '{C♯|D♭}');
+        expect(PitchClass.d.format(), '{D}');
+        expect(PitchClass.dSharp.format(), '{D♯|E♭}');
+        expect(PitchClass.e.format(), '{E}');
+        expect(PitchClass.f.format(), '{F}');
+        expect(PitchClass.fSharp.format(), '{F♯|G♭}');
+        expect(PitchClass.g.format(), '{G}');
+        expect(PitchClass.gSharp.format(), '{G♯|A♭}');
+        expect(PitchClass.a.format(), '{A}');
+        expect(PitchClass.aSharp.format(), '{A♯|B♭}');
+        expect(PitchClass.b.format(), '{B}');
       });
     });
   });
@@ -400,21 +407,21 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this PitchClass', () {
         const formatter = IntegerPitchClassNotation();
-        expect(PitchClass.c.toString(formatter: formatter), '0');
-        expect(PitchClass.cSharp.toString(formatter: formatter), '1');
-        expect(PitchClass.d.toString(formatter: formatter), '2');
-        expect(PitchClass.dSharp.toString(formatter: formatter), '3');
-        expect(PitchClass.e.toString(formatter: formatter), '4');
-        expect(PitchClass.f.toString(formatter: formatter), '5');
-        expect(PitchClass.fSharp.toString(formatter: formatter), '6');
-        expect(PitchClass.g.toString(formatter: formatter), '7');
-        expect(PitchClass.gSharp.toString(formatter: formatter), '8');
-        expect(PitchClass.a.toString(formatter: formatter), '9');
-        expect(PitchClass.aSharp.toString(formatter: formatter), 't');
-        expect(PitchClass.b.toString(formatter: formatter), 'e');
+        expect(PitchClass.c.format(formatter), '0');
+        expect(PitchClass.cSharp.format(formatter), '1');
+        expect(PitchClass.d.format(formatter), '2');
+        expect(PitchClass.dSharp.format(formatter), '3');
+        expect(PitchClass.e.format(formatter), '4');
+        expect(PitchClass.f.format(formatter), '5');
+        expect(PitchClass.fSharp.format(formatter), '6');
+        expect(PitchClass.g.format(formatter), '7');
+        expect(PitchClass.gSharp.format(formatter), '8');
+        expect(PitchClass.a.format(formatter), '9');
+        expect(PitchClass.aSharp.format(formatter), 't');
+        expect(PitchClass.b.format(formatter), 'e');
       });
     });
   });

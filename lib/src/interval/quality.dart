@@ -51,7 +51,8 @@ sealed class Quality implements Comparable<Quality> {
 }
 
 /// Quality corresponding to an [Interval.perfect].
-final class PerfectQuality extends Quality {
+final class PerfectQuality extends Quality
+    implements Formattable<PerfectQuality> {
   /// Delta semitones from the [Interval], starting at 0 for the [perfect]
   /// quality.
   @override
@@ -127,14 +128,17 @@ final class PerfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// PerfectQuality.perfect.toString() == 'P'
-  /// PerfectQuality.diminished.toString() == 'd'
-  /// PerfectQuality.doublyAugmented.toString() == 'AA'
+  /// PerfectQuality.perfect.format() == 'P'
+  /// PerfectQuality.diminished.format() == 'd'
+  /// PerfectQuality.doublyAugmented.format() == 'AA'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<PerfectQuality> formatter = const PerfectQualityNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(semitones: $semitones)';
 
   @override
   // Overridden hashCode already present in the super class.
@@ -143,7 +147,8 @@ final class PerfectQuality extends Quality {
 }
 
 /// Quality corresponding to an [Interval.imperfect].
-final class ImperfectQuality extends Quality {
+final class ImperfectQuality extends Quality
+    implements Formattable<ImperfectQuality> {
   /// Delta semitones from the [Interval], starting at 0 for the [minor]
   /// quality.
   @override
@@ -227,15 +232,18 @@ final class ImperfectQuality extends Quality {
   ///
   /// Example:
   /// ```dart
-  /// ImperfectQuality.minor.toString() == 'm'
-  /// ImperfectQuality.major.toString() == 'M'
-  /// ImperfectQuality.triplyDiminished.toString() == 'ddd'
+  /// ImperfectQuality.minor.format() == 'm'
+  /// ImperfectQuality.major.format() == 'M'
+  /// ImperfectQuality.triplyDiminished.format() == 'ddd'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<ImperfectQuality> formatter =
         const ImperfectQualityNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(semitones: $semitones)';
 
   @override
   // Overridden hashCode already present in the super class.

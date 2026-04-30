@@ -18,7 +18,7 @@ import 'mode.dart';
 /// * [Mode].
 /// * [KeySignature].
 @immutable
-final class Key implements Comparable<Key> {
+final class Key implements Comparable<Key>, Formattable<Key> {
   /// The tonal center representing this [Key].
   final Note note;
 
@@ -110,21 +110,24 @@ final class Key implements Comparable<Key> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.minor.toString() == 'C minor'
-  /// Note.e.flat.major.toString() == 'E♭ major'
+  /// Note.c.minor.format() == 'C minor'
+  /// Note.e.flat.major.format() == 'E♭ major'
   ///
   /// const romance = RomanceKeyNotation.symbol();
-  /// Note.c.major.toString(formatter: romance) == 'Do maggiore'
-  /// Note.f.sharp.minor.toString(formatter: romance) == 'Fa♯ minore'
+  /// Note.c.major.format(romance) == 'Do maggiore'
+  /// Note.f.sharp.minor.format(romance) == 'Fa♯ minore'
   ///
   /// const german = GermanKeyNotation();
-  /// Note.e.flat.major.toString(formatter: german) == 'Es-Dur'
-  /// Note.g.sharp.minor.toString(formatter: german) == 'gis-Moll'
+  /// Note.e.flat.major.format(german) == 'Es-Dur'
+  /// Note.g.sharp.minor.format(german) == 'gis-Moll'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<Key> formatter = const EnglishKeyNotation.symbol(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(note: $note, mode: $mode)';
 
   @override
   bool operator ==(Object other) =>
