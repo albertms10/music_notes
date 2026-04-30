@@ -2,6 +2,28 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('TuningFork', () {
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this TuningFork',
+        () {
+          expect(
+            Note.a.sharp.inOctave(4).at(const Frequency(440)).toString(),
+            'TuningFork(pitch: Pitch(note: '
+            'Note(noteName: NoteName.a, accidental: Accidental(semitones: 1)), '
+            'octave: 4), frequency: 440)',
+          );
+          expect(
+            Note.c.inOctave(3).at(const Frequency(256.5)).toString(),
+            'TuningFork(pitch: Pitch(note: '
+            'Note(noteName: NoteName.c, accidental: Accidental(semitones: 0)), '
+            'octave: 3), frequency: 256.5)',
+          );
+        },
+      );
+    });
+  });
+
   group('CompactTuningForkNotation', () {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {

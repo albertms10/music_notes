@@ -585,6 +585,23 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Note', () {
+        expect(
+          Note.f.sharp.toString(),
+          'Note(noteName: NoteName.f, accidental: Accidental(semitones: 1))',
+        );
+        expect(
+          Note.g.toString(),
+          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 0))',
+        );
+        expect(
+          Note.d.flat.flat.toString(),
+          'Note(noteName: NoteName.d, accidental: Accidental(semitones: -2))',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Note instances in a Set', () {
         final collection = <Note>{.c, .a.flat, .g.sharp};

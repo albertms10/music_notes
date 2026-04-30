@@ -192,8 +192,8 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
 
   @override
   String toString() =>
-      '$runtimeType(ordinal: $ordinal, quality: $quality, '
-      'inversion: $inversion, semitonesDelta: $semitonesDelta)';
+      '$runtimeType(ordinal: $ordinal, inversion: $inversion, '
+      'quality: $quality, semitonesDelta: $semitonesDelta)';
 
   @override
   bool operator ==(Object other) =>

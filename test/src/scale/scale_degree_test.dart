@@ -121,6 +121,24 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this ScaleDegree',
+        () {
+          expect(
+            ScaleDegree.iii.toString(),
+            'ScaleDegree(ordinal: 3, inversion: 0, quality: null, '
+            'semitonesDelta: 0)',
+          );
+          expect(
+            ScaleDegree.neapolitanSixth.toString(),
+            'ScaleDegree(ordinal: 2, inversion: 1, '
+            'quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)',
+          );
+        },
+      );
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal ScaleDegrees', () {
         // ignore: prefer_const_constructors test

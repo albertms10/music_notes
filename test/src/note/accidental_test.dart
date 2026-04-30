@@ -89,6 +89,14 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Accidental', () {
+        expect(Accidental.sharp.toString(), 'Accidental(semitones: 1)');
+        expect(Accidental.natural.toString(), 'Accidental(semitones: 0)');
+        expect(Accidental.doubleFlat.toString(), 'Accidental(semitones: -2)');
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Accidental instances in a Set', () {
         final collection = <Accidental>{.natural, .flat};

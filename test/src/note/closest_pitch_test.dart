@@ -87,6 +87,29 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this ClosestPitch',
+        () {
+          expect(
+            ClosestPitch(
+              Note.g.sharp.inOctave(2),
+              cents: const Cent(14.5),
+            ).toString(),
+            'ClosestPitch(pitch: Pitch(note: '
+            'Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), '
+            'octave: 2), cents: 14.5)',
+          );
+          expect(
+            ClosestPitch(Note.d.flat.inOctave(4)).toString(),
+            'ClosestPitch(pitch: Pitch(note: '
+            'Note(noteName: NoteName.d, accidental: Accidental(semitones: -1)), '
+            'octave: 4), cents: 0)',
+          );
+        },
+      );
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal ClosestPitches', () {
         expect(

@@ -312,6 +312,13 @@ void main() {
       );
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this PitchClass', () {
+        expect(PitchClass.c.toString(), 'PitchClass(semitones: 0)');
+        expect(PitchClass.gSharp.toString(), 'PitchClass(semitones: 8)');
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal PitchClass instances in a Set', () {
         final collection = <PitchClass>{.f, .aSharp};

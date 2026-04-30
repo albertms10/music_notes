@@ -50,15 +50,15 @@ void main() {
             HarmonicFunction.neapolitanSixth.toString(),
             '''
 HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 2, quality: ImperfectQuality(semitones: 1), inversion: 1, semitonesDelta: -1)
+\tScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)
 ])''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
 HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), inversion: 0, semitonesDelta: 0),
-\tScaleDegree(ordinal: 5, quality: ImperfectQuality(semitones: 1), inversion: 0, semitonesDelta: 0)
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0),
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0)
 ])''',
           );
         },

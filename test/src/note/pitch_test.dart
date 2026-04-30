@@ -1155,6 +1155,23 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Pitch', () {
+        expect(
+          Note.a.sharp.inOctave(4).toString(),
+          'Pitch(note: '
+          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 1)), '
+          'octave: 4)',
+        );
+        expect(
+          Note.a.inOctave(-1).toString(),
+          'Pitch(note: '
+          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), '
+          'octave: -1)',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal Pitches', () {
         expect(Note.c.inOctave(4).hashCode, Note.c.inOctave(4).hashCode);
