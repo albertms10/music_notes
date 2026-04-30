@@ -335,23 +335,26 @@ void main() {
     });
 
     group('.toString()', () {
-      test('returns the verbose string representation of this KeySignature', () {
-        expect(
-          KeySignature([.f.sharp, .c.sharp]).toString(),
-          '''
+      test(
+        'returns the verbose string representation of this KeySignature',
+        () {
+          expect(
+            KeySignature([.f.sharp, .c.sharp]).toString(),
+            '''
 KeySignature(notes: [
 \tNote(noteName: NoteName.f, accidental: Accidental(semitones: 1)),
 \tNote(noteName: NoteName.c, accidental: Accidental(semitones: 1))
 ])''',
-        );
-        expect(
-          KeySignature([.b.flat]).toString(),
-          '''
+          );
+          expect(
+            KeySignature([.b.flat]).toString(),
+            '''
 KeySignature(notes: [
 \tNote(noteName: NoteName.b, accidental: Accidental(semitones: -1))
 ])''',
-        );
-      });
+          );
+        },
+      );
     });
 
     group('operator |()', () {
