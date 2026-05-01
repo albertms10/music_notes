@@ -822,6 +822,19 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Interval', () {
+        expect(
+          Interval.P1.toString(),
+          'Interval(size: 1, quality: PerfectQuality(semitones: 0))',
+        );
+        expect(
+          Interval.m3.toString(),
+          'Interval(size: 3, quality: ImperfectQuality(semitones: 0))',
+        );
+      });
+    });
+
     group('operator +()', () {
       test('adds other to this Interval', () {
         expect(Interval.P1 + .P1, Interval.P1);
@@ -1030,28 +1043,28 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Interval', () {
-        expect(Interval.M2.toString(), 'M2');
-        expect((-Interval.m3).toString(), 'm-3');
-        expect(Interval.A4.toString(), 'A4');
-        expect((-Interval.P5).toString(), 'P-5');
-        expect(Interval.d7.toString(), 'd7');
-        expect((-Interval.d8).toString(), 'd-8');
-        expect(Interval.M9.toString(), 'M9 (M2)');
-        expect((-Size.tenth).minor.toString(), 'm-10 (m-3)');
-        expect(Interval.A11.toString(), 'A11 (A4)');
-        expect(const ImperfectSize(-14).major.toString(), 'M-14 (M-7)');
-        expect(const Interval.perfect(Size(15)).toString(), 'P15 (P8)');
-        expect(const Size(-16).diminished.toString(), 'd-16 (d-2)');
-        expect(const Interval.perfect(Size(22)).toString(), 'P22 (P8)');
+        expect(Interval.M2.format(), 'M2');
+        expect((-Interval.m3).format(), 'm-3');
+        expect(Interval.A4.format(), 'A4');
+        expect((-Interval.P5).format(), 'P-5');
+        expect(Interval.d7.format(), 'd7');
+        expect((-Interval.d8).format(), 'd-8');
+        expect(Interval.M9.format(), 'M9 (M2)');
+        expect((-Size.tenth).minor.format(), 'm-10 (m-3)');
+        expect(Interval.A11.format(), 'A11 (A4)');
+        expect(const ImperfectSize(-14).major.format(), 'M-14 (M-7)');
+        expect(const Interval.perfect(Size(15)).format(), 'P15 (P8)');
+        expect(const Size(-16).diminished.format(), 'd-16 (d-2)');
+        expect(const Interval.perfect(Size(22)).format(), 'P22 (P8)');
 
         expect(
-          const Interval.perfect(.fifth, PerfectQuality(-4)).toString(),
+          const Interval.perfect(.fifth, PerfectQuality(-4)).format(),
           'dddd5',
         );
         expect(
-          const Interval.imperfect(.tenth, ImperfectQuality(6)).toString(),
+          const Interval.imperfect(.tenth, ImperfectQuality(6)).format(),
           'AAAAA10 (AAAAA3)',
         );
       });

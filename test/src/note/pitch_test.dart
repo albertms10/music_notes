@@ -1026,7 +1026,13 @@ void main() {
     group('.harmonics()', () {
       test('returns the ClosestPitch set of harmonic series', () {
         expect(
-          Note.c.inOctave(1).harmonics().take(16).toSet().toString(),
+          Note.c
+              .inOctave(1)
+              .harmonics()
+              .take(16)
+              .map((closestPitch) => closestPitch.format())
+              .toSet()
+              .toString(),
           '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
           'E4−14, F♯4−49, G4+2, A♭4+41, A♯4−31, B4−12, C5±0}',
         );
@@ -1040,6 +1046,7 @@ void main() {
                 ),
               )
               .take(16)
+              .map((closestPitch) => closestPitch.format())
               .toSet()
               .toString(),
           '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
@@ -1053,6 +1060,7 @@ void main() {
                 tuningSystem: const EqualTemperament.edo12(fork: .c256),
               )
               .take(16)
+              .map((closestPitch) => closestPitch.format())
               .toSet()
               .toString(),
           '{C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0, D4+4, '
@@ -1064,6 +1072,7 @@ void main() {
               .inOctave(1)
               .harmonics(temperature: const Celsius(18))
               .take(16)
+              .map((closestPitch) => closestPitch.format())
               .toSet()
               .toString(),
           '{C1+6, C2+6, G2+8, C3+6, E3−8, G3+8, A♯3−25, C4+6, D4+10, '
@@ -1143,6 +1152,23 @@ void main() {
 
         expect(Note.a.flat.inOctave(3) >= Note.a.flat.inOctave(4), isFalse);
         expect(Note.f.inOctave(4) >= Note.a.inOctave(4), isFalse);
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the verbose string representation of this Pitch', () {
+        expect(
+          Note.a.sharp.inOctave(4).toString(),
+          'Pitch(note: '
+          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 1)), '
+          'octave: 4)',
+        );
+        expect(
+          Note.a.inOctave(-1).toString(),
+          'Pitch(note: '
+          'Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), '
+          'octave: -1)',
+        );
       });
     });
 
@@ -1229,38 +1255,38 @@ void main() {
         expect(Pitch.parse('G♯−1'), Note.g.sharp.inOctave(-1));
 
         final pitch = Note.b.flat.flat.inOctave(-2);
-        expect(Pitch.parse(pitch.toString()), pitch);
+        expect(Pitch.parse(pitch.format()), pitch);
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Pitch', () {
-        expect(Note.g.sharp.inOctave(-1).toString(), 'G♯−1');
-        expect(Note.d.inOctave(0).toString(), 'D0');
-        expect(Note.b.flat.inOctave(1).toString(), 'B♭1');
-        expect(Note.g.inOctave(2).toString(), 'G2');
-        expect(Note.a.inOctave(3).toString(), 'A3');
-        expect(Note.c.inOctave(4).toString(), 'C4');
-        expect(Note.c.sharp.inOctave(4).toString(), 'C♯4');
-        expect(Note.a.inOctave(4).toString(), 'A4');
-        expect(Note.f.sharp.inOctave(5).toString(), 'F♯5');
-        expect(Note.e.inOctave(7).toString(), 'E7');
+        expect(Note.g.sharp.inOctave(-1).format(), 'G♯−1');
+        expect(Note.d.inOctave(0).format(), 'D0');
+        expect(Note.b.flat.inOctave(1).format(), 'B♭1');
+        expect(Note.g.inOctave(2).format(), 'G2');
+        expect(Note.a.inOctave(3).format(), 'A3');
+        expect(Note.c.inOctave(4).format(), 'C4');
+        expect(Note.c.sharp.inOctave(4).format(), 'C♯4');
+        expect(Note.a.inOctave(4).format(), 'A4');
+        expect(Note.f.sharp.inOctave(5).format(), 'F♯5');
+        expect(Note.e.inOctave(7).format(), 'E7');
       });
 
       test('returns the ASCII scientific string representation', () {
         const formatter = ScientificPitchNotation.ascii();
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: formatter),
+          Note.g.sharp.inOctave(-1).format(formatter),
           'G#-1',
         );
-        expect(Note.d.inOctave(0).toString(formatter: formatter), 'D0');
-        expect(Note.b.flat.inOctave(1).toString(formatter: formatter), 'Bb1');
+        expect(Note.d.inOctave(0).format(formatter), 'D0');
+        expect(Note.b.flat.inOctave(1).format(formatter), 'Bb1');
         expect(
-          Note.c.sharp.inOctave(4).toString(formatter: formatter),
+          Note.c.sharp.inOctave(4).format(formatter),
           'C#4',
         );
         expect(
-          Note.f.sharp.inOctave(5).toString(formatter: formatter),
+          Note.f.sharp.inOctave(5).format(formatter),
           'F#5',
         );
       });
@@ -1378,75 +1404,75 @@ void main() {
         );
 
         final pitch = Note.a.sharp.inOctave(7);
-        expect(Pitch.parse(pitch.toString(formatter: english)), pitch);
+        expect(Pitch.parse(pitch.format(english)), pitch);
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the English Helmholtz string representation', () {
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: english),
+          Note.g.sharp.inOctave(-1).format(english),
           'G♯͵͵͵',
         );
-        expect(Note.d.inOctave(0).toString(formatter: english), 'D͵͵');
-        expect(Note.b.flat.inOctave(1).toString(formatter: english), 'B♭͵');
-        expect(Note.g.inOctave(2).toString(formatter: english), 'G');
-        expect(Note.a.inOctave(3).toString(formatter: english), 'a');
-        expect(Note.c.inOctave(4).toString(formatter: english), 'c′');
-        expect(Note.c.sharp.inOctave(4).toString(formatter: english), 'c♯′');
-        expect(Note.a.inOctave(4).toString(formatter: english), 'a′');
-        expect(Note.f.sharp.inOctave(5).toString(formatter: english), 'f♯″');
-        expect(Note.e.inOctave(7).toString(formatter: english), 'e⁗');
+        expect(Note.d.inOctave(0).format(english), 'D͵͵');
+        expect(Note.b.flat.inOctave(1).format(english), 'B♭͵');
+        expect(Note.g.inOctave(2).format(english), 'G');
+        expect(Note.a.inOctave(3).format(english), 'a');
+        expect(Note.c.inOctave(4).format(english), 'c′');
+        expect(Note.c.sharp.inOctave(4).format(english), 'c♯′');
+        expect(Note.a.inOctave(4).format(english), 'a′');
+        expect(Note.f.sharp.inOctave(5).format(english), 'f♯″');
+        expect(Note.e.inOctave(7).format(english), 'e⁗');
         expect(
-          Note.b.flat.inOctave(8).toString(formatter: english),
+          Note.b.flat.inOctave(8).format(english),
           'b♭′′′′′',
         );
       });
 
       test('returns the German Helmholtz string representation', () {
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: german),
+          Note.g.sharp.inOctave(-1).format(german),
           'Gis͵͵͵',
         );
-        expect(Note.d.flat.inOctave(0).toString(formatter: german), 'Des͵͵');
-        expect(Note.b.flat.inOctave(1).toString(formatter: german), 'B͵');
-        expect(Note.g.inOctave(2).toString(formatter: german), 'G');
-        expect(Note.a.inOctave(3).toString(formatter: german), 'a');
-        expect(Note.c.inOctave(4).toString(formatter: german), 'c′');
-        expect(Note.c.sharp.inOctave(4).toString(formatter: german), 'cis′');
-        expect(Note.a.inOctave(4).toString(formatter: german), 'a′');
-        expect(Note.a.flat.inOctave(5).toString(formatter: german), 'as″');
-        expect(Note.e.inOctave(7).toString(formatter: german), 'e⁗');
+        expect(Note.d.flat.inOctave(0).format(german), 'Des͵͵');
+        expect(Note.b.flat.inOctave(1).format(german), 'B͵');
+        expect(Note.g.inOctave(2).format(german), 'G');
+        expect(Note.a.inOctave(3).format(german), 'a');
+        expect(Note.c.inOctave(4).format(german), 'c′');
+        expect(Note.c.sharp.inOctave(4).format(german), 'cis′');
+        expect(Note.a.inOctave(4).format(german), 'a′');
+        expect(Note.a.flat.inOctave(5).format(german), 'as″');
+        expect(Note.e.inOctave(7).format(german), 'e⁗');
       });
 
       test('returns the Romance Helmholtz string representation', () {
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: romance),
+          Note.g.sharp.inOctave(-1).format(romance),
           'Sol♯͵͵͵',
         );
-        expect(Note.d.flat.inOctave(0).toString(formatter: romance), 'Re♭͵͵');
-        expect(Note.b.flat.inOctave(1).toString(formatter: romance), 'Si♭͵');
-        expect(Note.g.inOctave(2).toString(formatter: romance), 'Sol');
-        expect(Note.a.inOctave(3).toString(formatter: romance), 'la');
-        expect(Note.c.inOctave(4).toString(formatter: romance), 'do′');
-        expect(Note.c.sharp.inOctave(4).toString(formatter: romance), 'do♯′');
-        expect(Note.a.inOctave(4).toString(formatter: romance), 'la′');
-        expect(Note.a.flat.inOctave(5).toString(formatter: romance), 'la♭″');
-        expect(Note.e.inOctave(6).toString(formatter: romance), 'mi‴');
+        expect(Note.d.flat.inOctave(0).format(romance), 'Re♭͵͵');
+        expect(Note.b.flat.inOctave(1).format(romance), 'Si♭͵');
+        expect(Note.g.inOctave(2).format(romance), 'Sol');
+        expect(Note.a.inOctave(3).format(romance), 'la');
+        expect(Note.c.inOctave(4).format(romance), 'do′');
+        expect(Note.c.sharp.inOctave(4).format(romance), 'do♯′');
+        expect(Note.a.inOctave(4).format(romance), 'la′');
+        expect(Note.a.flat.inOctave(5).format(romance), 'la♭″');
+        expect(Note.e.inOctave(6).format(romance), 'mi‴');
       });
 
       test('returns the ASCII Helmholtz string representation', () {
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: ascii),
+          Note.g.sharp.inOctave(-1).format(ascii),
           'G#,,,',
         );
-        expect(Note.a.flat.inOctave(1).toString(formatter: ascii), 'Ab,');
-        expect(Note.g.inOctave(2).toString(formatter: ascii), 'G');
-        expect(Note.c.inOctave(4).toString(formatter: ascii), "c'");
-        expect(Note.f.sharp.inOctave(5).toString(formatter: ascii), "f#''");
-        expect(Note.e.inOctave(7).toString(formatter: ascii), "e''''");
+        expect(Note.a.flat.inOctave(1).format(ascii), 'Ab,');
+        expect(Note.g.inOctave(2).format(ascii), 'G');
+        expect(Note.c.inOctave(4).format(ascii), "c'");
+        expect(Note.f.sharp.inOctave(5).format(ascii), "f#''");
+        expect(Note.e.inOctave(7).format(ascii), "e''''");
         expect(
-          Note.b.flat.inOctave(8).toString(formatter: ascii),
+          Note.b.flat.inOctave(8).format(ascii),
           "bb'''''",
         );
 
@@ -1455,46 +1481,46 @@ void main() {
         );
 
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: romance),
+          Note.g.sharp.inOctave(-1).format(romance),
           'Sol#,,,',
         );
-        expect(Note.a.flat.inOctave(1).toString(formatter: romance), 'Lab,');
-        expect(Note.g.inOctave(2).toString(formatter: romance), 'Sol');
-        expect(Note.c.inOctave(4).toString(formatter: romance), "do'");
+        expect(Note.a.flat.inOctave(1).format(romance), 'Lab,');
+        expect(Note.g.inOctave(2).format(romance), 'Sol');
+        expect(Note.c.inOctave(4).format(romance), "do'");
         expect(
-          Note.f.sharp.inOctave(5).toString(formatter: romance),
+          Note.f.sharp.inOctave(5).format(romance),
           "fa#''",
         );
-        expect(Note.e.inOctave(7).toString(formatter: romance), "mi''''");
+        expect(Note.e.inOctave(7).format(romance), "mi''''");
         expect(
-          Note.b.flat.inOctave(8).toString(formatter: romance),
+          Note.b.flat.inOctave(8).format(romance),
           "sib'''''",
         );
       });
 
       test('returns the numbered German Helmholtz string representation', () {
         expect(
-          Note.a.sharp.inOctave(-8).toString(formatter: numbered),
+          Note.a.sharp.inOctave(-8).format(numbered),
           'Ais10',
         );
         expect(
-          Note.g.sharp.inOctave(-1).toString(formatter: numbered),
+          Note.g.sharp.inOctave(-1).format(numbered),
           'Gis3',
         );
-        expect(Note.d.flat.inOctave(0).toString(formatter: numbered), 'Des2');
-        expect(Note.b.flat.inOctave(1).toString(formatter: numbered), 'B1');
-        expect(Note.b.inOctave(2).toString(formatter: numbered), 'H');
-        expect(Note.a.inOctave(3).toString(formatter: numbered), 'a');
-        expect(Note.c.inOctave(4).toString(formatter: numbered), 'c1');
+        expect(Note.d.flat.inOctave(0).format(numbered), 'Des2');
+        expect(Note.b.flat.inOctave(1).format(numbered), 'B1');
+        expect(Note.b.inOctave(2).format(numbered), 'H');
+        expect(Note.a.inOctave(3).format(numbered), 'a');
+        expect(Note.c.inOctave(4).format(numbered), 'c1');
         expect(
-          Note.c.sharp.inOctave(4).toString(formatter: numbered),
+          Note.c.sharp.inOctave(4).format(numbered),
           'cis1',
         );
-        expect(Note.a.inOctave(4).toString(formatter: numbered), 'a1');
-        expect(Note.a.flat.inOctave(5).toString(formatter: numbered), 'as2');
-        expect(Note.e.inOctave(6).toString(formatter: numbered), 'e3');
+        expect(Note.a.inOctave(4).format(numbered), 'a1');
+        expect(Note.a.flat.inOctave(5).format(numbered), 'as2');
+        expect(Note.e.inOctave(6).format(numbered), 'e3');
         expect(
-          Note.f.sharp.inOctave(13).toString(formatter: numbered),
+          Note.f.sharp.inOctave(13).format(numbered),
           'fis10',
         );
       });
@@ -1571,7 +1597,7 @@ void main() {
     group('.format()', () {
       test('returns the MusicXML string representation of this Pitch', () {
         expect(
-          Note.c.flat.inOctave(4).toString(formatter: formatter),
+          Note.c.flat.inOctave(4).format(formatter),
           '''
 <pitch>
   <step>C</step>
@@ -1580,7 +1606,7 @@ void main() {
 </pitch>''',
         );
         expect(
-          Note.d.inOctave(3).toString(formatter: formatter),
+          Note.d.inOctave(3).format(formatter),
           '''
 <pitch>
   <step>D</step>
@@ -1589,7 +1615,7 @@ void main() {
 </pitch>''',
         );
         expect(
-          Note.f.sharp.inOctave(5).toString(formatter: formatter),
+          Note.f.sharp.inOctave(5).format(formatter),
           '''
 <pitch>
   <step>F</step>

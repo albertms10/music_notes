@@ -121,3 +121,9 @@ abstract interface class Formatter<V, O> {
 
 /// An abstract representation of a string formatter for [V].
 abstract interface class StringFormatter<V> extends Formatter<V, String> {}
+
+/// A value that can be formatted using a [Formatter].
+abstract class Formattable<V> {
+  /// Formats this [V].
+  String format();
+}

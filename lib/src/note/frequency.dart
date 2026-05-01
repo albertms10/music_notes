@@ -145,9 +145,9 @@ extension type const Frequency._(num hertz) implements num {
   /// const Frequency(440).format() == '440 Hz'
   /// const Frequency(466.16).format() == '466.16 Hz'
   /// ```
-  String format({
+  String format([
     StringFormatter<Frequency> formatter = const FrequencySINotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
 }
 
 /// The [StringNotationSystem] for SI-notated [Frequency].

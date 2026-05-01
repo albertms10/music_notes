@@ -586,7 +586,7 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('throws UnimplementedError when not implemented', () {
         expect(
           () => const ChordPatternNotation().parseMatch(
@@ -597,10 +597,10 @@ void main() {
       });
 
       test('returns the string representation of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.d).toString(), 'D');
-        expect(Chord<Note>([.g.sharp, .b, .d.sharp]).toString(), 'G♯-');
+        expect(ChordPattern.majorTriad.on(Note.d).format(), 'D');
+        expect(Chord<Note>([.g.sharp, .b, .d.sharp]).format(), 'G♯-');
         expect(
-          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).toString(),
+          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).format(),
           'C3+7',
         );
         expect(
@@ -608,6 +608,30 @@ void main() {
           'A♭7 9',
         );
         expect(Note.a.minorTriad.add7().add9().toString(), 'A-7 9');
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the verbose string representation of this Chord', () {
+        expect(
+          ChordPattern.majorTriad.on(Note.c).toString(),
+          '''
+Chord<Note>(items: [
+\tNote(noteName: NoteName.c, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.e, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.g, accidental: Accidental(semitones: 0))
+])''',
+        );
+        expect(
+          ChordPattern.minorTriad.add9().on(Note.f.sharp).toString(),
+          '''
+Chord<Note>(items: [
+\tNote(noteName: NoteName.f, accidental: Accidental(semitones: 1)),
+\tNote(noteName: NoteName.a, accidental: Accidental(semitones: 0)),
+\tNote(noteName: NoteName.c, accidental: Accidental(semitones: 1)),
+\tNote(noteName: NoteName.g, accidental: Accidental(semitones: 1))
+])''',
+        );
       });
     });
 

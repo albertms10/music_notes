@@ -29,17 +29,40 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this HarmonicFunction', () {
-        expect(HarmonicFunction.i.toString(), 'I');
-        expect(HarmonicFunction.vii.toString(), 'VII');
-        expect((HarmonicFunction.dominantV / .dominantV).toString(), 'V/V');
+        expect(HarmonicFunction.i.format(), 'I');
+        expect(HarmonicFunction.vii.format(), 'VII');
+        expect((HarmonicFunction.dominantV / .dominantV).format(), 'V/V');
         expect(
           (HarmonicFunction([.iv.minor]) / .neapolitanSixth / .dominantV)
-              .toString(),
+              .format(),
           'iv/♭II6/V',
         );
       });
+    });
+
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this HarmonicFunction',
+        () {
+          expect(
+            HarmonicFunction.neapolitanSixth.toString(),
+            '''
+HarmonicFunction(scaleDegrees: [
+\tScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)
+])''',
+          );
+          expect(
+            (HarmonicFunction.dominantV / .dominantV).toString(),
+            '''
+HarmonicFunction(scaleDegrees: [
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0),
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0)
+])''',
+          );
+        },
+      );
     });
 
     group('.hashCode', () {

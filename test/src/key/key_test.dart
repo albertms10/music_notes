@@ -85,6 +85,21 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test('returns the verbose string representation of this Key', () {
+        expect(
+          Note.a.major.toString(),
+          '''
+Key(note: Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), mode: TonalMode.major)''',
+        );
+        expect(
+          Note.g.sharp.minor.toString(),
+          '''
+Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode: TonalMode.minor)''',
+        );
+      });
+    });
+
     group('.hashCode', () {
       test('ignores equal Key instances in a Set', () {
         final collection = {
@@ -141,7 +156,7 @@ void main() {
         expect(Key.parse('C♯ minor'), Note.c.sharp.minor);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         final testKeys = [
           Note.c.major,
           Note.a.minor,
@@ -150,19 +165,19 @@ void main() {
         ];
 
         for (final key in testKeys) {
-          expect(key, Key.parse(key.toString()));
+          expect(key, Key.parse(key.format()));
         }
       });
     });
 
-    group('.toString() ', () {
+    group('.format() ', () {
       test('returns the string representation of this Key', () {
-        expect(Note.c.major.toString(), 'C major');
-        expect(Note.d.minor.toString(), 'D minor');
-        expect(Note.a.flat.major.toString(), 'A♭ major');
-        expect(Note.f.sharp.minor.toString(), 'F♯ minor');
-        expect(Note.g.sharp.sharp.major.toString(), 'G𝄪 major');
-        expect(Note.e.flat.flat.minor.toString(), 'E𝄫 minor');
+        expect(Note.c.major.format(), 'C major');
+        expect(Note.d.minor.format(), 'D minor');
+        expect(Note.a.flat.major.format(), 'A♭ major');
+        expect(Note.f.sharp.minor.format(), 'F♯ minor');
+        expect(Note.g.sharp.sharp.major.format(), 'G𝄪 major');
+        expect(Note.e.flat.flat.minor.format(), 'E𝄫 minor');
       });
     });
   });
@@ -197,7 +212,7 @@ void main() {
         expect(Key.parse('d-Moll', chain: chain), Note.d.minor);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         final testKeys = [
           Note.c.major,
           Note.a.minor,
@@ -208,24 +223,24 @@ void main() {
         for (final key in testKeys) {
           expect(
             key,
-            Key.parse(key.toString(formatter: formatter), chain: chain),
+            Key.parse(key.format(formatter), chain: chain),
           );
         }
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Key', () {
-        expect(Note.c.major.toString(formatter: formatter), 'C-Dur');
-        expect(Note.d.minor.toString(formatter: formatter), 'd-Moll');
-        expect(Note.a.flat.major.toString(formatter: formatter), 'As-Dur');
-        expect(Note.f.sharp.minor.toString(formatter: formatter), 'fis-Moll');
+        expect(Note.c.major.format(formatter), 'C-Dur');
+        expect(Note.d.minor.format(formatter), 'd-Moll');
+        expect(Note.a.flat.major.format(formatter), 'As-Dur');
+        expect(Note.f.sharp.minor.format(formatter), 'fis-Moll');
         expect(
-          Note.g.sharp.sharp.major.toString(formatter: formatter),
+          Note.g.sharp.sharp.major.format(formatter),
           'Gisis-Dur',
         );
         expect(
-          Note.e.flat.flat.minor.toString(formatter: formatter),
+          Note.e.flat.flat.minor.format(formatter),
           'eses-Moll',
         );
       });
@@ -268,7 +283,7 @@ void main() {
         expect(Key.parse('Re minore', chain: chain), Note.d.minor);
       });
 
-      test('.toString() and .parse() are inverses', () {
+      test('.format() and .parse() are inverses', () {
         final testKeys = [
           Note.c.major,
           Note.a.minor,
@@ -279,32 +294,32 @@ void main() {
         for (final key in testKeys) {
           expect(
             key,
-            Key.parse(key.toString(formatter: symbol), chain: chain),
+            Key.parse(key.format(symbol), chain: chain),
           );
         }
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this Key', () {
-        expect(Note.c.major.toString(formatter: symbol), 'Do maggiore');
-        expect(Note.d.minor.toString(formatter: symbol), 'Re minore');
+        expect(Note.c.major.format(symbol), 'Do maggiore');
+        expect(Note.d.minor.format(symbol), 'Re minore');
         expect(
-          Note.a.flat.major.toString(formatter: textual),
+          Note.a.flat.major.format(textual),
           'La bemolle maggiore',
         );
-        expect(Note.a.flat.major.toString(formatter: symbol), 'La♭ maggiore');
-        expect(Note.f.sharp.minor.toString(formatter: symbol), 'Fa♯ minore');
+        expect(Note.a.flat.major.format(symbol), 'La♭ maggiore');
+        expect(Note.f.sharp.minor.format(symbol), 'Fa♯ minore');
         expect(
-          Note.g.sharp.sharp.major.toString(formatter: symbol),
+          Note.g.sharp.sharp.major.format(symbol),
           'Sol𝄪 maggiore',
         );
         expect(
-          Note.a.sharp.sharp.major.toString(formatter: textual),
+          Note.a.sharp.sharp.major.format(textual),
           'La doppio diesis maggiore',
         );
         expect(
-          Note.e.flat.flat.minor.toString(formatter: symbol),
+          Note.e.flat.flat.minor.format(symbol),
           'Mi𝄫 minore',
         );
       });

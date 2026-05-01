@@ -23,7 +23,7 @@ import 'size.dart';
 @immutable
 final class Interval
     with Enharmonic<IntervalClass>, Comparators<Interval>, Respellable<Interval>
-    implements Comparable<Interval> {
+    implements Comparable<Interval>, Formattable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final Size size;
@@ -441,14 +441,17 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.M3.toString() == 'M3'
-  /// (-Interval.d5).toString() == 'd-5'
-  /// .twelfth.perfect.toString() == 'P12 (P5)'
+  /// Interval.M3.format() == 'M3'
+  /// (-Interval.d5).format() == 'd-5'
+  /// .twelfth.perfect.format() == 'P12 (P5)'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<Interval> formatter = const IntervalNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(size: $size, quality: $quality)';
 
   /// Adds [other] to this [Interval].
   ///

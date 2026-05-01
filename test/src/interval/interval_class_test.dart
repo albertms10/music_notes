@@ -108,13 +108,26 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns a string representation of this IntervalClass', () {
-        expect(IntervalClass.P1.toString(), '{P1}');
-        expect(IntervalClass.m2.toString(), '{m2}');
-        expect(IntervalClass.M3.toString(), '{M3|d4}');
-        expect(IntervalClass.tritone.toString(), '{A4|d5}');
+        expect(IntervalClass.P1.format(), '{P1}');
+        expect(IntervalClass.m2.format(), '{m2}');
+        expect(IntervalClass.M3.format(), '{M3|d4}');
+        expect(IntervalClass.tritone.format(), '{A4|d5}');
       });
+    });
+
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this IntervalClass',
+        () {
+          expect(IntervalClass.P1.toString(), 'IntervalClass(semitones: 0)');
+          expect(
+            IntervalClass.tritone.toString(),
+            'IntervalClass(semitones: 6)',
+          );
+        },
+      );
     });
 
     group('.hashCode', () {

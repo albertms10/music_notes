@@ -1,3 +1,41 @@
+## 0.25.0
+
+- refactor: ♻️ consistently reorder `NotationSystem.parse` and `.format` methods [#676](https://github.com/albertms10/music_notes/pull/676)
+- feat!(accidental): 💥 change directionality of accidentals in `SymbolAccidentalNotation` [#677](https://github.com/albertms10/music_notes/pull/677)
+- feat(closest_pitch): ✨ make zero-cents pitch explicit [#679](https://github.com/albertms10/music_notes/pull/679)
+- feat(key_signature): ✨ output more detailed `toString` [#678](https://github.com/albertms10/music_notes/pull/678)
+- feat(closest_pitch): ✨ allow specifying the `fractionDigits` in `StandardClosestPitchNotation` [#680](https://github.com/albertms10/music_notes/pull/680)
+- refactor(music_notes): ♻️ export missing library files [#681](https://github.com/albertms10/music_notes/pull/681)
+- refactor(notation_system): ♻️ swap more natural type parameters order [#683](https://github.com/albertms10/music_notes/pull/683)
+- feat(pitch): ✨ add `.fromMidi` factory constructor [#684](https://github.com/albertms10/music_notes/pull/684)
+- refactor(pitch): ♻️ use case pattern to check for MIDI number range [#685](https://github.com/albertms10/music_notes/pull/685)
+- feat(closest_pitch): ✨ allow passing `null` to disable rounding in `StandardClosestPitchNotation` [#686](https://github.com/albertms10/music_notes/pull/686)
+- feat(pitch): ✨ add MusicXML notation system parser and formatter [#642](https://github.com/albertms10/music_notes/pull/642)
+- feat(notation_system): ✨ add `StringParserChain.firstMatchingParser` extension method [#694](https://github.com/albertms10/music_notes/pull/694)
+- fix(key): ⌨️ use standard capitalized `TonalMode` in `GermanKeyNotation` [#697](https://github.com/albertms10/music_notes/pull/697)
+- refactor!(interval): 💥 rename `withDescending` method [#698](https://github.com/albertms10/music_notes/pull/698)
+- feat(interval): ✨ add convenient `ascending`, `descending` and `direction` getters [#699](https://github.com/albertms10/music_notes/pull/699)
+- refactor(interval): ♻️ simplify `fromSizeAndQualitySemitones` factory constructor [#702](https://github.com/albertms10/music_notes/pull/702)
+- refactor!: 💥 rewrite `toString` into a more succinct `format` method [#705](https://github.com/albertms10/music_notes/pull/705)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump github/codeql-action from 4.31.8 to 4.31.9 in the minor-actions-dependencies group [#682](https://github.com/albertms10/music_notes/pull/682)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#687](https://github.com/albertms10/music_notes/pull/687)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#688](https://github.com/albertms10/music_notes/pull/688)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#689](https://github.com/albertms10/music_notes/pull/689)
+- chore(deps): ⬆️ bump github/codeql-action from 4.32.0 to 4.32.2 in the minor-actions-dependencies group [#691](https://github.com/albertms10/music_notes/pull/691)
+- chore(deps): ⬆️ bump github/codeql-action from 4.32.2 to 4.32.3 in the minor-actions-dependencies group [#692](https://github.com/albertms10/music_notes/pull/692)
+- chore(deps): ⬆️ bump github/codeql-action from 4.32.3 to 4.32.4 in the minor-actions-dependencies group [#693](https://github.com/albertms10/music_notes/pull/693)
+- chore(deps): ⬆️ bump actions/upload-artifact from 6.0.0 to 7.0.0 [#695](https://github.com/albertms10/music_notes/pull/695)
+- chore(deps): ⬆️ bump github/codeql-action from 4.32.4 to 4.32.6 in the minor-actions-dependencies group [#696](https://github.com/albertms10/music_notes/pull/696)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#703](https://github.com/albertms10/music_notes/pull/703)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#704](https://github.com/albertms10/music_notes/pull/704)
+- chore(deps): ⬆️ bump actions/upload-artifact from 7.0.0 to 7.0.1 in the minor-actions-dependencies group [#706](https://github.com/albertms10/music_notes/pull/706)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#707](https://github.com/albertms10/music_notes/pull/707)
+
+**Full Changelog**: [`v0.24.0...v0.25.0`](https://github.com/albertms10/music_notes/compare/v0.24.0...v0.25.0)
+
 ## 0.24.0
 
 - build(pubspec): 🚚 bump Dart SDK 3.9 [#644](https://github.com/albertms10/music_notes/pull/644)

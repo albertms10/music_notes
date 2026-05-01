@@ -34,7 +34,7 @@ import 'pitch_class.dart';
 @immutable
 final class Pitch extends Scalable<Pitch>
     with Comparators<Pitch>, RespellableScalable<Pitch>
-    implements Comparable<Pitch> {
+    implements Comparable<Pitch>, Formattable<Pitch> {
   /// The note inside the octave.
   final Note note;
 
@@ -473,26 +473,29 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.inOctave(4).toString() == 'C4'
-  /// Note.a.inOctave(3).toString() == 'A3'
-  /// Note.b.flat.inOctave(1).toString() == 'B♭1'
+  /// Note.c.inOctave(4).format() == 'C4'
+  /// Note.a.inOctave(3).format() == 'A3'
+  /// Note.b.flat.inOctave(1).format() == 'B♭1'
   ///
   /// const helmholtz = HelmholtzPitchNotation.english;
-  /// Note.c.inOctave(4).toString(formatter: helmholtz) == 'c′'
-  /// Note.a.inOctave(3).toString(formatter: helmholtz) == 'a'
-  /// Note.b.flat.inOctave(1).toString(formatter: helmholtz) == 'B♭͵'
+  /// Note.c.inOctave(4).format(helmholtz) == 'c′'
+  /// Note.a.inOctave(3).format(helmholtz) == 'a'
+  /// Note.b.flat.inOctave(1).format(helmholtz) == 'B♭͵'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<Pitch> formatter = ScientificPitchNotation.english,
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(note: $note, octave: $octave)';
 
   /// Returns the [ClosestPitch] with [cents] added to this [Pitch].
   ///
   /// Example:
   /// ```dart
-  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).toString() == 'F♯4+4'
-  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).toString() == 'E♭3-28'
+  /// (Note.f.sharp.inOctave(4) + const Cent(4.1)).format() == 'F♯4+4'
+  /// (Note.e.flat.inOctave(3) + const Cent(-27.8)).format() == 'E♭3-28'
   /// ```
   ClosestPitch operator +(Cent cents) => ClosestPitch(this, cents: cents);
 
@@ -500,8 +503,8 @@ final class Pitch extends Scalable<Pitch>
   ///
   /// Example:
   /// ```dart
-  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).toString() == 'G♭5-16'
-  /// (Note.c.inOctave(4) - const Cent(-6)).toString() == 'C4+6'
+  /// (Note.g.flat.inOctave(5) - const Cent(16.01)).format() == 'G♭5-16'
+  /// (Note.c.inOctave(4) - const Cent(-6)).format() == 'C4+6'
   /// ```
   ClosestPitch operator -(Cent cents) => ClosestPitch(this, cents: -cents);
 

@@ -121,6 +121,24 @@ void main() {
       });
     });
 
+    group('.toString()', () {
+      test(
+        'returns the verbose string representation of this ScaleDegree',
+        () {
+          expect(
+            ScaleDegree.iii.toString(),
+            'ScaleDegree(ordinal: 3, inversion: 0, quality: null, '
+            'semitonesDelta: 0)',
+          );
+          expect(
+            ScaleDegree.neapolitanSixth.toString(),
+            'ScaleDegree(ordinal: 2, inversion: 1, '
+            'quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)',
+          );
+        },
+      );
+    });
+
     group('.hashCode', () {
       test('returns the same hashCode for equal ScaleDegrees', () {
         // ignore: prefer_const_constructors test
@@ -210,14 +228,14 @@ void main() {
       });
     });
 
-    group('.toString()', () {
+    group('.format()', () {
       test('returns the string representation of this ScaleDegree', () {
-        expect(ScaleDegree.i.toString(), 'I');
-        expect(ScaleDegree.neapolitanSixth.toString(), '♭II6');
-        expect(const ScaleDegree(3, inversion: 2).toString(), 'III64');
-        expect(const ScaleDegree(4, quality: .minor).toString(), 'iv');
-        expect(const ScaleDegree(6, semitonesDelta: 1).toString(), '♯VI');
-        expect(ScaleDegree.vii.toString(), 'VII');
+        expect(ScaleDegree.i.format(), 'I');
+        expect(ScaleDegree.neapolitanSixth.format(), '♭II6');
+        expect(const ScaleDegree(3, inversion: 2).format(), 'III64');
+        expect(const ScaleDegree(4, quality: .minor).format(), 'iv');
+        expect(const ScaleDegree(6, semitonesDelta: 1).format(), '♯VI');
+        expect(ScaleDegree.vii.format(), 'VII');
       });
     });
   });

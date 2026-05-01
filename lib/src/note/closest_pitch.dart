@@ -17,7 +17,7 @@ import 'pitch.dart';
 /// * [Cent].
 /// * [Frequency].
 @immutable
-class ClosestPitch {
+class ClosestPitch implements Formattable<ClosestPitch> {
   /// The [Pitch] closest to the original [Frequency].
   final Pitch pitch;
 
@@ -71,10 +71,10 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// ClosestPitch.parse('A4+36').respelledSimple.toString() == 'A4+36'
-  /// ClosestPitch.parse('C#2+16').respelledSimple.toString() == 'D♭2+16'
-  /// ClosestPitch.parse('Bb3+67').respelledSimple.toString() == 'B3-32'
-  /// ClosestPitch.parse('F#5-152').respelledSimple.toString() == 'E5+48'
+  /// ClosestPitch.parse('A4+36').respelledSimple.format() == 'A4+36'
+  /// ClosestPitch.parse('C#2+16').respelledSimple.format() == 'D♭2+16'
+  /// ClosestPitch.parse('Bb3+67').respelledSimple.format() == 'B3-32'
+  /// ClosestPitch.parse('F#5-152').respelledSimple.format() == 'E5+48'
   /// ```
   ClosestPitch get respelledSimple => frequency().closestPitch();
 
@@ -82,16 +82,19 @@ class ClosestPitch {
   ///
   /// Example:
   /// ```dart
-  /// const Frequency(440).closestPitch().toString() == 'A4'
-  /// const Frequency(228.9).closestPitch().toString() == 'A♯3-31'
-  /// (Note.g.inOctave(2) + const Cent(2)).toString() == 'G2+2'
-  /// (Note.e.flat.inOctave(3) - const Cent(14.6)).toString() == 'E♭3-15'
+  /// const Frequency(440).closestPitch().format() == 'A4'
+  /// const Frequency(228.9).closestPitch().format() == 'A♯3-31'
+  /// (Note.g.inOctave(2) + const Cent(2)).format() == 'G2+2'
+  /// (Note.e.flat.inOctave(3) - const Cent(14.6)).format() == 'E♭3-15'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<ClosestPitch> formatter =
         const StandardClosestPitchNotation(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(pitch: $pitch, cents: $cents)';
 
   /// Adds [cents] to this [ClosestPitch].
   ///

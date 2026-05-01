@@ -283,8 +283,8 @@ extension type const Size._(int size) implements int {
     return false;
   }
 
-  /// This [Size] formatted as a string.
-  String format({StringFormatter<Size> formatter = const SizeNotation()}) =>
+  /// The string representation of this [Size] based on [formatter].
+  String format([StringFormatter<Size> formatter = const SizeNotation()]) =>
       formatter.format(this);
 
   /// The negation of this [Size].
