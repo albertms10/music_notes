@@ -607,7 +607,7 @@ void main() {
           Note.a.flat.majorTriad.add7().add9().toString(),
           'A♭7 9',
         );
-        expect(Note.a.minorTriad.add7().add9().minor.toString(), 'A-7 9');
+        expect(Note.a.minorTriad.add7().add9().toString(), 'A-7 9');
       });
     });
 
