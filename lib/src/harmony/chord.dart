@@ -8,9 +8,9 @@ import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../interval/size.dart';
 import '../notation/notation_system.dart';
+import '../note/pitch_class.dart';
 import '../scalable.dart';
 import '../transposable.dart';
-import '../tuning/equal_temperament.dart';
 import 'chord_normalization.dart';
 import 'chord_pattern.dart';
 
@@ -69,11 +69,9 @@ class Chord<T extends Scalable<T>>
   Chord<T> get normalized {
     if (_items.isEmpty) return Chord(const []);
 
-    final seenPitchClasses = <int>{};
+    final seenPitchClasses = <PitchClass>{};
     final unique = _items
-        .where(
-          (item) => seenPitchClasses.add(item.semitones % chromaticDivisions),
-        )
+        .where((item) => seenPitchClasses.add(PitchClass(item.semitones)))
         .toList(growable: false);
 
     if (unique.length == 1) return Chord(unique);
