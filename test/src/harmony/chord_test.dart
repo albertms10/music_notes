@@ -603,11 +603,8 @@ void main() {
           ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).format(),
           'C3+7',
         );
-        expect(
-          Note.a.flat.majorTriad.add7().add9().toString(),
-          'A♭7 9',
-        );
-        expect(Note.a.minorTriad.add7().add9().toString(), 'A-7 9');
+        expect(Note.a.flat.majorTriad.add7().add9().format(), 'A♭7 9');
+        expect(Note.a.minorTriad.add7().add9().format(), 'A-7 9');
       });
     });
 
