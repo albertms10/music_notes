@@ -8,8 +8,10 @@ import '../interval/interval.dart';
 import '../interval/quality.dart';
 import '../interval/size.dart';
 import '../notation/notation_system.dart';
+import '../note/pitch_class.dart';
 import '../scalable.dart';
 import '../transposable.dart';
+import 'chord_normalization.dart';
 import 'chord_pattern.dart';
 
 /// A musical chord.
@@ -31,8 +33,97 @@ class Chord<T extends Scalable<T>>
   /// Creates a new [Chord] from [_items].
   const Chord(this._items);
 
+  /// The bass [Scalable] of this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord<Note>([.c, .e, .g]).bass == .c
+  /// const Chord<Note>([.e, .g, .c]).bass == .e
+  /// const Chord<Note>([.g, .c, .e]).bass == .g
+  /// ```
+  T get bass => _items.first;
+
   /// The root [Scalable] of this [Chord].
-  T get root => _items.first;
+  /// Example:
+  /// ```dart
+  ///
+  /// const Chord<Note>([.c, .e, .g]).root == .c
+  /// const Chord<Note>([.e, .g, .c]).root == .c
+  /// const Chord<Note>([.g, .c, .e]).root == .c
+  /// ```
+  T get root => normalized._items.first;
+
+  /// The normalized version of this [Chord], in root position with enharmonic
+  /// duplicates removed.
+  ///
+  /// Example:
+  /// ```dart
+  /// Chord<Note>([.c, .e, .g, .c]).normalized
+  ///   == const Chord<Note>([.c, .e, .g])
+  /// Chord<Note>([.e, .c, .g]).normalized == const Chord<Note>([.c, .e, .g])
+  /// Chord<Note>([.b.flat, .c, .g, .e]).normalized
+  ///   == Chord<Note>([.c, .e, .g, .b.flat])
+  /// Chord<Note>([.a, .c, .f.sharp, .e.flat]).normalized
+  ///   == Chord<Note>([.f.sharp, .a, .c, .e.flat])
+  /// ```
+  Chord<T> get normalized {
+    if (_items.isEmpty) return Chord(const []);
+
+    final seenPitchClasses = <PitchClass>{};
+    final unique = _items
+        .where((item) => seenPitchClasses.add(item.toClass()))
+        .toList(growable: false);
+
+    if (unique.length == 1) return Chord(unique);
+
+    ({
+      Chord<T> chord,
+      int sizePenalty,
+      int qualityPenalty,
+      int templatePriority,
+      int span,
+    })
+    buildCandidate(T root) {
+      final pairs = unique
+          .where((item) => item != root)
+          .map((item) => (item: item, interval: root.interval(item)))
+          .toList(growable: false);
+      final normalized = normalizeIntervalsByTemplate(
+        pairs.map((pair) => pair.interval).toList(growable: false),
+      );
+
+      return (
+        chord: Chord([
+          root,
+          ...normalized.order.map((index) => pairs[index].item),
+        ]),
+        sizePenalty: normalized.sizePenalty,
+        qualityPenalty: normalized.qualityPenalty,
+        templatePriority: normalized.templatePriority,
+        span: normalized.span,
+      );
+    }
+
+    var best = buildCandidate(unique.first);
+
+    for (final root in unique.skip(1)) {
+      final candidate = buildCandidate(root);
+      if (isBetterNormalizationScore(
+        sizePenalty: candidate.sizePenalty,
+        qualityPenalty: candidate.qualityPenalty,
+        templatePriority: candidate.templatePriority,
+        span: candidate.span,
+        bestSizePenalty: best.sizePenalty,
+        bestQualityPenalty: best.qualityPenalty,
+        bestTemplatePriority: best.templatePriority,
+        bestSpan: best.span,
+      )) {
+        best = candidate;
+      }
+    }
+
+    return best.chord;
+  }
 
   /// The [ChordPattern] for this [Chord].
   ///
@@ -57,6 +148,16 @@ class Chord<T extends Scalable<T>>
   /// Note.a.majorTriad.add7().add9().modifiers == const <Note>[.g, .b]
   /// ```
   List<T> get modifiers => _items.skip(3).toList(growable: false);
+
+  /// The next inversion of this [Chord].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.majorTriad.inverted == Chord<Note>([.e, .g, .c])
+  /// Note.c.majorTriad.inverted.inverted == Chord<Note>([.g, .c, .e])
+  /// ```
+  Chord<T> get inverted =>
+      Chord(_items.skip(1).followedBy([_items.first]).toList(growable: false));
 
   /// This [Chord] with an [ImperfectQuality.diminished] root triad.
   ///
@@ -99,7 +200,7 @@ class Chord<T extends Scalable<T>>
   /// Returns this [Chord] adding [interval].
   @override
   Chord<T> add(Interval interval, {Set<Size>? replaceSizes}) =>
-      pattern.add(interval, replaceSizes: replaceSizes).on(root);
+      pattern.add(interval, replaceSizes: replaceSizes).on(bass);
 
   /// Transposes this [Chord] by [interval].
   ///

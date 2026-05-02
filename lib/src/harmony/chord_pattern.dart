@@ -10,7 +10,9 @@ import '../interval/size.dart';
 import '../notation/notation_system.dart';
 import '../note/accidental.dart';
 import '../scalable.dart';
+import '../tuning/equal_temperament.dart';
 import 'chord.dart';
+import 'chord_normalization.dart';
 
 /// A musical chord pattern.
 ///
@@ -89,6 +91,100 @@ class ChordPattern
     String source, {
     List<StringParser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
+
+  /// The normalized version of this [ChordPattern], in root position with
+  /// duplicate sizes removed, along with the index of the detected root within
+  /// the sorted pitch-class sequence.
+  ///
+  /// The root is detected as the rotation whose upward stacking yields the
+  /// smallest total semitone span.
+  ({ChordPattern pattern, int rootIndex}) get normalizedWithRoot {
+    if (_intervals.isEmpty) {
+      return (pattern: const ChordPattern([]), rootIndex: 0);
+    }
+
+    final seenSizes = <Size>{};
+    final bySize = _intervals.reversed
+        .where((interval) => seenSizes.add(interval.size))
+        .toList(growable: false)
+        .reversed
+        .toList(growable: false);
+
+    final seenPitchClasses = {0};
+    final pitchClasses = [
+      0,
+      ...bySize
+          .where(
+            (interval) =>
+                seenPitchClasses.add(interval.semitones % chromaticDivisions),
+          )
+          .map((interval) => interval.semitones % chromaticDivisions),
+    ];
+
+    final n = pitchClasses.length;
+    if (n == 1) {
+      return (pattern: const ChordPattern([]), rootIndex: 0);
+    }
+
+    ({
+      ChordPattern pattern,
+      int sizePenalty,
+      int qualityPenalty,
+      int templatePriority,
+      int span,
+    })
+    buildCandidate(int rootIndex) {
+      final relativeIntervals = List<Interval>.generate(n - 1, (i) {
+        final pitchClass = pitchClasses[(rootIndex + i + 1) % n];
+        return Interval.fromSemitones(
+          (pitchClass - pitchClasses[rootIndex] + chromaticDivisions) %
+              chromaticDivisions,
+        );
+      });
+      final normalized = normalizeIntervalsByTemplate(relativeIntervals);
+
+      return (
+        pattern: ChordPattern(normalized.intervals),
+        sizePenalty: normalized.sizePenalty,
+        qualityPenalty: normalized.qualityPenalty,
+        templatePriority: normalized.templatePriority,
+        span: normalized.span,
+      );
+    }
+
+    var bestRootIndex = 0;
+    var best = buildCandidate(0);
+
+    for (var rootIndex = 1; rootIndex < n; rootIndex++) {
+      final candidate = buildCandidate(rootIndex);
+      if (isBetterNormalizationScore(
+        sizePenalty: candidate.sizePenalty,
+        qualityPenalty: candidate.qualityPenalty,
+        templatePriority: candidate.templatePriority,
+        span: candidate.span,
+        bestSizePenalty: best.sizePenalty,
+        bestQualityPenalty: best.qualityPenalty,
+        bestTemplatePriority: best.templatePriority,
+        bestSpan: best.span,
+      )) {
+        bestRootIndex = rootIndex;
+        best = candidate;
+      }
+    }
+
+    return (pattern: best.pattern, rootIndex: bestRootIndex);
+  }
+
+  /// The normalized version of this [ChordPattern], in root position with
+  /// duplicate sizes removed.
+  ///
+  /// Example:
+  /// ```dart
+  /// const ChordPattern([.M3, .P5, .P8]).normalized == .majorTriad
+  /// const ChordPattern([.m3, .M6]).normalized == .majorTriad
+  /// const ChordPattern([.P4, .m6]).normalized == .majorTriad
+  /// ```
+  ChordPattern get normalized => normalizedWithRoot.pattern;
 
   /// The [Chord] built on top of [scalable].
   ///

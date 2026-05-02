@@ -14,6 +14,27 @@ void main() {
       });
     });
 
+    group('.normalized', () {
+      test('returns the normalized version of this ChordPattern', () {
+        expect(
+          const ChordPattern([.P1, .M3, .P5, .P8]).normalized,
+          ChordPattern.majorTriad,
+        );
+        expect(
+          const ChordPattern([.P4, .M6]).normalized,
+          ChordPattern.majorTriad,
+        );
+        expect(
+          const ChordPattern([.m3, .m6]).normalized,
+          ChordPattern.majorTriad,
+        );
+        expect(
+          const ChordPattern([.m3, .P5, .m7]).normalized,
+          const ChordPattern([.m3, .P5, .m7]),
+        );
+      });
+    });
+
     group('.fromIntervalSteps()', () {
       test('creates a new ChordPattern from interval steps', () {
         expect(
