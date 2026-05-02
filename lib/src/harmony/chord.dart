@@ -71,7 +71,7 @@ class Chord<T extends Scalable<T>>
 
     final seenPitchClasses = <PitchClass>{};
     final unique = _items
-        .where((item) => seenPitchClasses.add(PitchClass(item.semitones)))
+        .where((item) => seenPitchClasses.add(item.toClass()))
         .toList(growable: false);
 
     if (unique.length == 1) return Chord(unique);
