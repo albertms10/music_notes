@@ -254,87 +254,92 @@ final class ImperfectQuality extends Quality
 /// A notation system for [PerfectQuality].
 final class PerfectQualityNotation
     extends StringNotationSystem<PerfectQuality> {
-  /// Creates a new [PerfectQualityNotation].
-  const PerfectQualityNotation();
-
   /// The symbol for a diminished [PerfectQuality].
-  static const _diminishedSymbol = 'd';
+  final String diminishedSymbol;
 
   /// The symbol for a [PerfectQuality].
-  static const _perfectSymbol = 'P';
+  final String perfectSymbol;
 
   /// The symbol for an augmented [PerfectQuality].
-  static const _augmentedSymbol = 'A';
+  final String augmentedSymbol;
 
-  static final _regExp = RegExp(
-    '(?<quality>$_diminishedSymbol+|$_perfectSymbol|$_augmentedSymbol+)',
+  /// Creates a new [PerfectQualityNotation].
+  const PerfectQualityNotation({
+    this.diminishedSymbol = 'd',
+    this.perfectSymbol = 'P',
+    this.augmentedSymbol = 'A',
+  });
+
+  @override
+  RegExp get regExp => RegExp(
+    '(?<quality>$diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)',
   );
 
   @override
-  RegExp get regExp => _regExp;
-
-  @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
-    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
-    0 => _perfectSymbol,
-    final semitones => _augmentedSymbol * semitones,
+    < 0 && final semitones => diminishedSymbol * semitones.abs(),
+    0 => perfectSymbol,
+    final semitones => augmentedSymbol * semitones,
   };
 
   @override
   PerfectQuality parseMatch(RegExpMatch match) {
     final quality = match.namedGroup('quality')!;
+    final firstChar = quality[0];
 
-    return switch (quality[0]) {
-      _diminishedSymbol => PerfectQuality(-quality.length),
-      _perfectSymbol => .perfect,
-      _ /* _augmentedSymbol */ => PerfectQuality(quality.length),
-    };
+    if (firstChar == diminishedSymbol) return PerfectQuality(-quality.length);
+    if (firstChar == augmentedSymbol) return PerfectQuality(quality.length);
+
+    return .perfect;
   }
 }
 
 /// A notation system for [ImperfectQuality].
 final class ImperfectQualityNotation
     extends StringNotationSystem<ImperfectQuality> {
-  /// Creates a new [ImperfectQualityNotation].
-  const ImperfectQualityNotation();
-
   /// The symbol for a diminished [ImperfectQuality].
-  static const _diminishedSymbol = 'd';
+  final String diminishedSymbol;
 
   /// The symbol for an augmented [ImperfectQuality].
-  static const _augmentedSymbol = 'A';
+  final String augmentedSymbol;
 
   /// The symbol for a minor [ImperfectQuality].
-  static const _minorSymbol = 'm';
+  final String minorSymbol;
 
   /// The symbol for a major [ImperfectQuality].
-  static const _majorSymbol = 'M';
+  final String majorSymbol;
 
-  static final _regExp = RegExp(
-    '(?<quality>$_diminishedSymbol+|$_minorSymbol|'
-    '$_majorSymbol|$_augmentedSymbol+)',
-  );
+  /// Creates a new [ImperfectQualityNotation].
+  const ImperfectQualityNotation({
+    this.diminishedSymbol = 'd',
+    this.minorSymbol = 'm',
+    this.majorSymbol = 'M',
+    this.augmentedSymbol = 'A',
+  });
 
   @override
-  RegExp get regExp => _regExp;
+  RegExp get regExp => RegExp(
+    '(?<quality>$diminishedSymbol+|$minorSymbol|$majorSymbol'
+    '|$augmentedSymbol+)',
+  );
 
   @override
   ImperfectQuality parseMatch(RegExpMatch match) {
     final quality = match.namedGroup('quality')!;
+    final firstChar = quality[0];
 
-    return switch (quality[0]) {
-      _diminishedSymbol => ImperfectQuality(-quality.length),
-      _minorSymbol => .minor,
-      _majorSymbol => .major,
-      _ /* _augmentedSymbol */ => ImperfectQuality(quality.length + 1),
-    };
+    if (firstChar == diminishedSymbol) return ImperfectQuality(-quality.length);
+    if (firstChar == minorSymbol) return .minor;
+    if (firstChar == majorSymbol) return .major;
+
+    return ImperfectQuality(quality.length + 1);
   }
 
   @override
   String format(ImperfectQuality quality) => switch (quality.semitones) {
-    < 0 && final semitones => _diminishedSymbol * semitones.abs(),
-    0 => _minorSymbol,
-    1 => _majorSymbol,
-    final semitones => _augmentedSymbol * (semitones - 1),
+    < 0 && final semitones => diminishedSymbol * semitones.abs(),
+    0 => minorSymbol,
+    1 => majorSymbol,
+    final semitones => augmentedSymbol * (semitones - 1),
   };
 }

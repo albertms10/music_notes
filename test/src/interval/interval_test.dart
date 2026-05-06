@@ -988,7 +988,7 @@ void main() {
     });
   });
 
-  group('IntervalNotation', () {
+  group('StandardIntervalNotation', () {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => Interval.parse('x'), throwsFormatException);
@@ -1066,6 +1066,93 @@ void main() {
         expect(
           const Interval.imperfect(.tenth, ImperfectQuality(6)).format(),
           'AAAAA10 (AAAAA3)',
+        );
+      });
+    });
+  });
+
+  group('GermanIntervalNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => Interval.parse('x'), throwsFormatException);
+        expect(() => Interval.parse('x4'), throwsFormatException);
+        expect(() => Interval.parse('rr6'), throwsFormatException);
+        expect(() => Interval.parse('g+6'), throwsFormatException);
+        expect(() => Interval.parse('G6'), throwsFormatException);
+        expect(() => Interval.parse('R--6'), throwsFormatException);
+        expect(() => Interval.parse('r6'), throwsFormatException);
+        expect(() => Interval.parse('u6'), throwsFormatException);
+        expect(() => Interval.parse('K2'), throwsFormatException);
+        expect(() => Interval.parse('k5'), throwsFormatException);
+        expect(() => Interval.parse('R5'), throwsFormatException);
+        expect(() => Interval.parse('G8'), throwsFormatException);
+        expect(() => Interval.parse('r- 2'), throwsFormatException);
+      });
+
+      test('parses source as an Interval', () {
+        expect(
+          Interval.parse('üü4'),
+          const Interval.perfect(.fourth, .doublyAugmented),
+        );
+        expect(Interval.parse('ü5'), Interval.A5);
+        expect(Interval.parse('ü-1'), -Interval.A1);
+        expect(Interval.parse('r1'), Interval.P1);
+        expect(Interval.parse('r22'), const Interval.perfect(Size(22)));
+        expect(Interval.parse('v5'), Interval.d5);
+        expect(Interval.parse('v 5'), Interval.d5);
+        expect(Interval.parse('v-5'), -Interval.d5);
+        expect(
+          Interval.parse('vv8'),
+          const Interval.perfect(.octave, .doublyDiminished),
+        );
+        expect(
+          Interval.parse('vv-8'),
+          -const Interval.perfect(.octave, .doublyDiminished),
+        );
+
+        expect(
+          Interval.parse('üü3'),
+          const Interval.imperfect(.third, .doublyAugmented),
+        );
+        expect(Interval.parse('ü6'), Interval.A6);
+        expect(Interval.parse('g3'), Interval.M3);
+        expect(Interval.parse('g-3'), -Interval.M3);
+        expect(Interval.parse('g16'), const ImperfectSize(16).major);
+        expect(Interval.parse('k2'), Interval.m2);
+        expect(Interval.parse('k -2'), -Interval.m2);
+        expect(Interval.parse('v7'), Interval.d7);
+        expect(
+          Interval.parse('vv9'),
+          const Interval.imperfect(.ninth, .doublyDiminished),
+        );
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Interval', () {
+        const formatter = GermanIntervalNotation();
+
+        expect(Interval.M2.format(formatter), 'g2');
+        expect((-Interval.m3).format(formatter), 'k-3');
+        expect(Interval.A4.format(formatter), 'ü4');
+        expect((-Interval.P5).format(formatter), 'r-5');
+        expect(Interval.d7.format(formatter), 'v7');
+        expect((-Interval.d8).format(formatter), 'v-8');
+        expect(Interval.M9.format(formatter), 'g9 (g2)');
+        expect((-Size.tenth).minor.format(formatter), 'k-10 (k-3)');
+        expect(Interval.A11.format(formatter), 'ü11 (ü4)');
+        expect(const ImperfectSize(-14).major.format(formatter), 'g-14 (g-7)');
+        expect(const Interval.perfect(Size(15)).format(formatter), 'r15 (r8)');
+        expect(const Size(-16).diminished.format(formatter), 'v-16 (v-2)');
+        expect(const Interval.perfect(Size(22)).format(formatter), 'r22 (r8)');
+
+        expect(
+          const Interval.perfect(.fifth, PerfectQuality(-4)).format(formatter),
+          'vvvv5',
+        );
+        expect(
+          const Interval.imperfect(.tenth, .new(6)).format(formatter),
+          'üüüüü10 (üüüüü3)',
         );
       });
     });
