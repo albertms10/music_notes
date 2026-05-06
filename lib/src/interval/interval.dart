@@ -188,7 +188,7 @@ final class Interval
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
   /// The chain of [StringParser]s used to parse an [Interval].
-  static const parsers = [IntervalNotation()];
+  static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -447,7 +447,7 @@ final class Interval
   /// ```
   @override
   String format([
-    StringFormatter<Interval> formatter = const IntervalNotation(),
+    StringFormatter<Interval> formatter = const StandardIntervalNotation(),
   ]) => formatter.format(this);
 
   @override
@@ -524,8 +524,8 @@ extension IntervalIterable on Iterable<Interval> {
   }
 }
 
-/// A notation system for [Interval].
-final class IntervalNotation extends StringNotationSystem<Interval> {
+/// A standard notation system for [Interval].
+final class StandardIntervalNotation extends StringNotationSystem<Interval> {
   /// The [SizeNotation].
   final SizeNotation sizeNotation;
 
@@ -535,8 +535,8 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
   /// The [ImperfectQualityNotation].
   final ImperfectQualityNotation imperfectQualityNotation;
 
-  /// Creates a new [IntervalNotation].
-  const IntervalNotation({
+  /// Creates a new [StandardIntervalNotation].
+  const StandardIntervalNotation({
     this.sizeNotation = const SizeNotation(),
     this.perfectQualityNotation = const PerfectQualityNotation(),
     this.imperfectQualityNotation = const ImperfectQualityNotation(),
@@ -547,7 +547,7 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
       // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
       //  named capture groups are supported.
       //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>\\w+?)\\s*${sizeNotation.regExp.pattern}');
+      RegExp('(?<quality>d+|P|m|M|A+?)\\s*${sizeNotation.regExp.pattern}');
 
   @override
   Interval parseMatch(RegExpMatch match) {
@@ -578,4 +578,29 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
 
     return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
+}
+
+/// The German notation system for [Interval].
+final class GermanIntervalNotation extends StandardIntervalNotation {
+  /// Creates a new [GermanIntervalNotation].
+  const GermanIntervalNotation({
+    super.perfectQualityNotation = const PerfectQualityNotation(
+      diminishedSymbol: 'v',
+      perfectSymbol: 'r',
+      augmentedSymbol: 'ü',
+    ),
+    super.imperfectQualityNotation = const ImperfectQualityNotation(
+      diminishedSymbol: 'v',
+      minorSymbol: 'k',
+      majorSymbol: 'g',
+      augmentedSymbol: 'ü',
+    ),
+  });
+
+  @override
+  RegExp get regExp =>
+      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
+      //  named capture groups are supported.
+      //  See https://github.com/dart-lang/sdk/issues/61337.
+      RegExp('(?<quality>v+|r|k|g|ü+?)\\s*${sizeNotation.regExp.pattern}');
 }
