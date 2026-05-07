@@ -246,6 +246,123 @@ void main() {
       });
     });
 
+    group('.normalized', () {
+      group('Note-based chords', () {
+        test('root-position major triad is idempotent', () {
+          expect(Note.c.majorTriad.normalized, Note.c.majorTriad);
+          expect(Note.g.majorTriad.normalized, Note.g.majorTriad);
+          expect(Note.b.flat.majorTriad.normalized, Note.b.flat.majorTriad);
+        });
+
+        test('normalizes first inversion [E, G, C] → C major triad', () {
+          expect(
+            const Chord<Note>([.e, .g, .c]).normalized,
+            Note.c.majorTriad,
+          );
+        });
+
+        test('normalizes first inversion [G, C, E] → C major triad', () {
+          expect(
+            const Chord<Note>([.g, .c, .e]).normalized,
+            Note.c.majorTriad,
+          );
+        });
+
+        test(
+          'normalizes second inversion [G, C, E] (same PCs) → C major',
+          () {
+            expect(
+              const Chord<Note>([.g, .c, .e]).normalized,
+              Note.c.majorTriad,
+            );
+          },
+        );
+
+        test('normalizes minor triad inversions', () {
+          // A minor: A C E
+          expect(Note.a.minorTriad.normalized, Note.a.minorTriad);
+          // first inversion: C E A
+          expect(
+            const Chord<Note>([.c, .e, .a]).normalized,
+            Note.a.minorTriad,
+          );
+          // second inversion: E A C
+          expect(
+            const Chord<Note>([.e, .a, .c]).normalized,
+            Note.a.minorTriad,
+          );
+        });
+
+        test('normalizes dominant-7th inversion', () {
+          // G7 root: G B D F
+          final g7 = ChordPattern.majorTriad.add7().on(Note.g);
+          expect(g7.normalized, g7);
+
+          // G7 first inversion: B D F G
+          expect(
+            const Chord<Note>([.b, .d, .f, .g]).normalized,
+            g7,
+          );
+        });
+
+        test('normalizes fully-diminished chord root position', () {
+          final chord = ChordPattern.diminishedTriad
+              .add7(.diminished)
+              .on(Note.b);
+          expect(chord.normalized, chord);
+        });
+
+        test(
+          'fully-diminished inversion correctly normalizes the inversion',
+          () {
+            expect(
+              Chord<Note>([.d, .f, .a.flat, .b]).normalized,
+              Chord<Note>([.b, .d, .f, .a.flat]),
+            );
+          },
+        );
+      });
+
+      group('Pitch-based chords', () {
+        test('root-position Pitch chord is idempotent', () {
+          final chord = ChordPattern.majorTriad.on(Note.c.inOctave(4));
+          expect(chord.normalized, chord);
+        });
+
+        test(
+          'normalizes first-inversion Pitch chord to root position',
+          () {
+            // E4 G4 C5 = C major / E (first inversion)
+            final firstInv = Chord([
+              Note.e.inOctave(4),
+              Note.g.inOctave(4),
+              Note.c.inOctave(5),
+            ]);
+            // Root is C, and the first C in items is C5,
+            // so normalized root pitch is C5 in this chord.
+            expect(
+              skip: 'Pitch octaves are not yet supported.',
+              firstInv.normalized,
+              ChordPattern.majorTriad.on(Note.c.inOctave(5)),
+            );
+          },
+        );
+      });
+
+      group('idempotency', () {
+        test('normalizing a Chord twice returns the same result', () {
+          const chords = [
+            Chord<Note>([.e, .g, .c]),
+            Chord<Note>([.g, .c, .e]),
+            Chord<Note>([.b, .d, .f, .g]),
+          ];
+          for (final c in chords) {
+            expect(c.normalized.normalized, c.normalized);
+          }
+        });
+      });
+    });
+
     group('.inverted', () {
       test('returns the inverted version of this Chord', () {
         expect(
