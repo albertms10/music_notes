@@ -132,6 +132,18 @@ final class Interval
   /// An augmented ninth [Interval].
   static const A9 = Interval.imperfect(.ninth, .augmented);
 
+  /// A diminished tenth [Interval].
+  static const d10 = Interval.imperfect(.tenth, .diminished);
+
+  /// A minor tenth [Interval].
+  static const m10 = Interval.imperfect(.tenth, .minor);
+
+  /// A major tenth [Interval].
+  static const M10 = Interval.imperfect(.tenth, .major);
+
+  /// An augmented tenth [Interval].
+  static const A10 = Interval.imperfect(.tenth, .augmented);
+
   /// A diminished eleventh [Interval].
   static const d11 = Interval.perfect(.eleventh, .diminished);
 
@@ -140,6 +152,15 @@ final class Interval
 
   /// An augmented eleventh [Interval].
   static const A11 = Interval.perfect(.eleventh, .augmented);
+
+  /// A diminished twelfth [Interval].
+  static const d12 = Interval.perfect(.twelfth, .diminished);
+
+  /// A perfect twelfth [Interval].
+  static const P12 = Interval.perfect(.twelfth);
+
+  /// An augmented twelfth [Interval].
+  static const A12 = Interval.perfect(.twelfth, .augmented);
 
   /// A diminished thirteenth [Interval].
   static const d13 = Interval.imperfect(.thirteenth, .diminished);
