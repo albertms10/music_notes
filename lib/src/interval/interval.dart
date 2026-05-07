@@ -132,6 +132,18 @@ final class Interval
   /// An augmented ninth [Interval].
   static const A9 = Interval.imperfect(.ninth, .augmented);
 
+  /// A diminished tenth [Interval].
+  static const d10 = Interval.imperfect(.tenth, .diminished);
+
+  /// A minor tenth [Interval].
+  static const m10 = Interval.imperfect(.tenth, .minor);
+
+  /// A major tenth [Interval].
+  static const M10 = Interval.imperfect(.tenth, .major);
+
+  /// An augmented tenth [Interval].
+  static const A10 = Interval.imperfect(.tenth, .augmented);
+
   /// A diminished eleventh [Interval].
   static const d11 = Interval.perfect(.eleventh, .diminished);
 
@@ -140,6 +152,15 @@ final class Interval
 
   /// An augmented eleventh [Interval].
   static const A11 = Interval.perfect(.eleventh, .augmented);
+
+  /// A diminished twelfth [Interval].
+  static const d12 = Interval.perfect(.twelfth, .diminished);
+
+  /// A perfect twelfth [Interval].
+  static const P12 = Interval.perfect(.twelfth);
+
+  /// An augmented twelfth [Interval].
+  static const A12 = Interval.perfect(.twelfth, .augmented);
 
   /// A diminished thirteenth [Interval].
   static const d13 = Interval.imperfect(.thirteenth, .diminished);
@@ -155,16 +176,49 @@ final class Interval
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // This operation uses a bitmask implementation, modified to be allowed
+        // in a const context:
+        //
+        // ```dart
+        // ((1 << (abs() % 7)) & 50) != 0
+        // ```
+        //
+        // This is equivalent to the more readable pattern in [Size.isPerfect].
+        //
+        // In the bitmask, each bit represents a [Size] within the octave cycle
+        // (modulo 7). Perfect intervals occur at positions:
+        //
+        // - 1 for [Size.unison],
+        // - 4 for [Size.fourth], and
+        // - 5 for [Size.fifth].
+        //
+        // The number 50 (which is `0b0110010` in binary) has bits set at these
+        // positions:
+        //
+        // ```
+        //  2^ 6 5 4 3 2 1 0
+        //     -------------
+        //     0 1 1 0 0 1 0
+        //       ^ ^     ^
+        // ```
+        //
+        // - `abs() % 7` computes the [Size] modulo 7, mapping it to its
+        //   position within the octave cycle.
+        // - `1 <<` creates a bitmask with a single bit set at the position
+        //   corresponding to the [Size].
+        // - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this
+        //   bit corresponds to a perfect interval size.
+        // - The expression `!= 0` returns `true` if the result is non-zero
+        //   (e.g., the [Size] is perfect) and `false` otherwise.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
         'Interval must be perfect.',
       );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // See [Interval.perfect] for an explanation of this bitmask operation.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
         'Interval must be imperfect.',
       );
@@ -188,7 +242,7 @@ final class Interval
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
   /// The chain of [StringParser]s used to parse an [Interval].
-  static const parsers = [IntervalNotation()];
+  static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -447,7 +501,7 @@ final class Interval
   /// ```
   @override
   String format([
-    StringFormatter<Interval> formatter = const IntervalNotation(),
+    StringFormatter<Interval> formatter = const StandardIntervalNotation(),
   ]) => formatter.format(this);
 
   @override
@@ -524,8 +578,8 @@ extension IntervalIterable on Iterable<Interval> {
   }
 }
 
-/// A notation system for [Interval].
-final class IntervalNotation extends StringNotationSystem<Interval> {
+/// A standard notation system for [Interval].
+final class StandardIntervalNotation extends StringNotationSystem<Interval> {
   /// The [SizeNotation].
   final SizeNotation sizeNotation;
 
@@ -535,8 +589,8 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
   /// The [ImperfectQualityNotation].
   final ImperfectQualityNotation imperfectQualityNotation;
 
-  /// Creates a new [IntervalNotation].
-  const IntervalNotation({
+  /// Creates a new [StandardIntervalNotation].
+  const StandardIntervalNotation({
     this.sizeNotation = const SizeNotation(),
     this.perfectQualityNotation = const PerfectQualityNotation(),
     this.imperfectQualityNotation = const ImperfectQualityNotation(),
@@ -547,7 +601,7 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
       // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
       //  named capture groups are supported.
       //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>\\w+?)\\s*${sizeNotation.regExp.pattern}');
+      RegExp('(?<quality>d+|P|m|M|A+?)\\s*${sizeNotation.regExp.pattern}');
 
   @override
   Interval parseMatch(RegExpMatch match) {
@@ -578,4 +632,29 @@ final class IntervalNotation extends StringNotationSystem<Interval> {
 
     return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
+}
+
+/// The German notation system for [Interval].
+final class GermanIntervalNotation extends StandardIntervalNotation {
+  /// Creates a new [GermanIntervalNotation].
+  const GermanIntervalNotation({
+    super.perfectQualityNotation = const PerfectQualityNotation(
+      diminishedSymbol: 'v',
+      perfectSymbol: 'r',
+      augmentedSymbol: 'ü',
+    ),
+    super.imperfectQualityNotation = const ImperfectQualityNotation(
+      diminishedSymbol: 'v',
+      minorSymbol: 'k',
+      majorSymbol: 'g',
+      augmentedSymbol: 'ü',
+    ),
+  });
+
+  @override
+  RegExp get regExp =>
+      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
+      //  named capture groups are supported.
+      //  See https://github.com/dart-lang/sdk/issues/61337.
+      RegExp('(?<quality>v+|r|k|g|ü+?)\\s*${sizeNotation.regExp.pattern}');
 }

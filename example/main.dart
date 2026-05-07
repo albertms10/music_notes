@@ -1,5 +1,6 @@
 // For documentation purposes.
 // ignore_for_file: unnecessary_statements, cascade_invocations
+// ignore_for_file: use_named_constants
 
 import 'package:music_notes/music_notes.dart';
 
