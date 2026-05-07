@@ -442,8 +442,8 @@ extension _BinarySequence on int {
   ///
   /// Example:
   /// ```dart
-  /// 1010.b.setBit(0) == 1011.b // 11
-  /// 1010.b.setBit(2) == 1110.b // 14
+  /// 1010.b.setBitAt(0) == 1011.b // 11
+  /// 1010.b.setBitAt(2) == 1110.b // 14
   /// ```
   int setBitAt(int index) => this | (1 << index);
 }
