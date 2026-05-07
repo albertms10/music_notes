@@ -155,16 +155,49 @@ final class Interval
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // This operation uses a bitmask implementation, modified to be allowed
+        // in a const context:
+        //
+        // ```dart
+        // ((1 << (abs() % 7)) & 50) != 0
+        // ```
+        //
+        // This is equivalent to the more readable pattern in [Size.isPerfect].
+        //
+        // In the bitmask, each bit represents a [Size] within the octave cycle
+        // (modulo 7). Perfect intervals occur at positions:
+        //
+        // - 1 for [Size.unison],
+        // - 4 for [Size.fourth], and
+        // - 5 for [Size.fifth].
+        //
+        // The number 50 (which is `0b0110010` in binary) has bits set at these
+        // positions:
+        //
+        // ```
+        //  2^ 6 5 4 3 2 1 0
+        //     -------------
+        //     0 1 1 0 0 1 0
+        //       ^ ^     ^
+        // ```
+        //
+        // - `abs() % 7` computes the [Size] modulo 7, mapping it to its
+        //   position within the octave cycle.
+        // - `1 <<` creates a bitmask with a single bit set at the position
+        //   corresponding to the [Size].
+        // - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this
+        //   bit corresponds to a perfect interval size.
+        // - The expression `!= 0` returns `true` if the result is non-zero
+        //   (e.g., the [Size] is perfect) and `false` otherwise.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
         'Interval must be perfect.',
       );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // See [Interval.perfect] for an explanation of this bitmask operation.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
         'Interval must be imperfect.',
       );
