@@ -142,7 +142,7 @@ extension type const Size._(int size) implements int {
     final absSimple = simple.abs();
     final octaves = (abs() - absSimple) ~/ 7;
 
-    return (_sizeToSemitones[absSimple]! + octaves * 12) * sign;
+    return (_sizeToSemitones[absSimple]! + octaves * chromaticDivisions) * sign;
   }
 
   /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
