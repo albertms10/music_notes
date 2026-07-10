@@ -28,6 +28,380 @@ void main() {
       });
     });
 
+    group('.normalized', () {
+      test('returns the normalized version of this Chord', () {
+        expect(
+          const Chord<Note>([.c, .e, .g, .c]).normalized,
+          const Chord<Note>([.c, .e, .g]),
+        );
+        expect(
+          const Chord<Note>([.e, .c, .g]).normalized,
+          const Chord<Note>([.c, .e, .g]),
+        );
+
+        expect(
+          Chord<Note>([.b.flat, .c, .g, .e]).normalized,
+          Chord<Note>([.c, .e, .g, .b.flat]),
+        );
+        expect(
+          Chord<Note>([.b.flat, .c, .g, .f]).normalized,
+          Chord<Note>([.c, .f, .g, .b.flat]),
+        );
+
+        expect(
+          Chord<Note>([.a, .c, .f.sharp, .e.flat]).normalized,
+          Chord<Note>([.f.sharp, .a, .c, .e.flat]),
+        );
+        expect(
+          Chord<Note>([.a, .c, .g.flat, .e.flat]).normalized,
+          Chord<Note>([.a, .c, .e.flat, .g.flat]),
+        );
+        expect(
+          Chord<Note>([.b.flat.flat, .c, .g.flat, .e.flat]).normalized,
+          Chord<Note>([.c, .e.flat, .g.flat, .b.flat.flat]),
+        );
+        expect(
+          Chord<Note>([.c, .d.sharp, .f.sharp, .a]).normalized,
+          Chord<Note>([.d.sharp, .f.sharp, .a, .c]),
+        );
+
+        expect(
+          Note.f.augmentedTriad.add7().add9().normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Chord<Note>([.a, .c.sharp, .e.flat, .f, .g]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Chord<Note>([.c.sharp, .e.flat, .f, .g, .a]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          Chord<Note>([.e.flat, .f, .g, .a, .c.sharp]).normalized,
+          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+
+        expect(
+          Note.a.flat.majorTriad.add7().add9().add11().normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .c,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .d.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          Chord<Note>([
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+          ]).normalized,
+          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+
+        expect(
+          Note.d.sharp.minorTriad.add7(.major).add9(.minor).add11().normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .g.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          Chord<Note>([
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+          ]).normalized,
+          Chord<Note>([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+      });
+    });
+
+    group('.normalized', () {
+      group('Note-based chords', () {
+        test('root-position major triad is idempotent', () {
+          expect(Note.c.majorTriad.normalized, Note.c.majorTriad);
+          expect(Note.g.majorTriad.normalized, Note.g.majorTriad);
+          expect(Note.b.flat.majorTriad.normalized, Note.b.flat.majorTriad);
+        });
+
+        test('normalizes first inversion [E, G, C] → C major triad', () {
+          expect(
+            const Chord<Note>([.e, .g, .c]).normalized,
+            Note.c.majorTriad,
+          );
+        });
+
+        test('normalizes first inversion [G, C, E] → C major triad', () {
+          expect(
+            const Chord<Note>([.g, .c, .e]).normalized,
+            Note.c.majorTriad,
+          );
+        });
+
+        test(
+          'normalizes second inversion [G, C, E] (same PCs) → C major',
+          () {
+            expect(
+              const Chord<Note>([.g, .c, .e]).normalized,
+              Note.c.majorTriad,
+            );
+          },
+        );
+
+        test('normalizes minor triad inversions', () {
+          // A minor: A C E
+          expect(Note.a.minorTriad.normalized, Note.a.minorTriad);
+          // first inversion: C E A
+          expect(
+            const Chord<Note>([.c, .e, .a]).normalized,
+            Note.a.minorTriad,
+          );
+          // second inversion: E A C
+          expect(
+            const Chord<Note>([.e, .a, .c]).normalized,
+            Note.a.minorTriad,
+          );
+        });
+
+        test('normalizes dominant-7th inversion', () {
+          // G7 root: G B D F
+          final g7 = ChordPattern.majorTriad.add7().on(Note.g);
+          expect(g7.normalized, g7);
+
+          // G7 first inversion: B D F G
+          expect(
+            const Chord<Note>([.b, .d, .f, .g]).normalized,
+            g7,
+          );
+        });
+
+        test('normalizes fully-diminished chord root position', () {
+          final chord = ChordPattern.diminishedTriad
+              .add7(.diminished)
+              .on(Note.b);
+          expect(chord.normalized, chord);
+        });
+
+        test(
+          'fully-diminished inversion correctly normalizes the inversion',
+          () {
+            expect(
+              Chord<Note>([.d, .f, .a.flat, .b]).normalized,
+              Chord<Note>([.b, .d, .f, .a.flat]),
+            );
+          },
+        );
+      });
+
+      group('Pitch-based chords', () {
+        test('root-position Pitch chord is idempotent', () {
+          final chord = ChordPattern.majorTriad.on(Note.c.inOctave(4));
+          expect(chord.normalized, chord);
+        });
+
+        test(
+          'normalizes first-inversion Pitch chord to root position',
+          () {
+            // E4 G4 C5 = C major / E (first inversion)
+            final firstInv = Chord([
+              Note.e.inOctave(4),
+              Note.g.inOctave(4),
+              Note.c.inOctave(5),
+            ]);
+            // Root is C, and the first C in items is C5,
+            // so normalized root pitch is C5 in this chord.
+            expect(
+              skip: 'Pitch octaves are not yet supported.',
+              firstInv.normalized,
+              ChordPattern.majorTriad.on(Note.c.inOctave(5)),
+            );
+          },
+        );
+      });
+
+      group('idempotency', () {
+        test('normalizing a Chord twice returns the same result', () {
+          const chords = [
+            Chord<Note>([.e, .g, .c]),
+            Chord<Note>([.g, .c, .e]),
+            Chord<Note>([.b, .d, .f, .g]),
+          ];
+          for (final c in chords) {
+            expect(c.normalized.normalized, c.normalized);
+          }
+        });
+      });
+    });
+
+    group('.inverted', () {
+      test('returns the inverted version of this Chord', () {
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.items,
+          const Chord<Note>([.e, .g, .c]).items,
+        );
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.inverted,
+          const Chord<Note>([.g, .c, .e]),
+        );
+        expect(
+          const Chord<Note>([.c, .e, .g]).inverted.inverted.inverted,
+          const Chord<Note>([.c, .e, .g]),
+        );
+
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted,
+          Chord<Note>([.e, .g, .b.flat, .c]),
+        );
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted.inverted,
+          Chord<Note>([.g, .b.flat, .c, .e]),
+        );
+        expect(
+          Chord<Note>([.c, .e, .g, .b.flat]).inverted.inverted.inverted,
+          Chord<Note>([.b.flat, .c, .e, .g]),
+        );
+        expect(
+          Chord<Note>([
+            .c,
+            .e,
+            .g,
+            .b.flat,
+          ]).inverted.inverted.inverted.inverted,
+          Chord<Note>([.c, .e, .g, .b.flat]),
+        );
+      });
+    });
+
     group('.pattern', () {
       test('returns the ChordPattern for this Chord', () {
         expect(
@@ -346,6 +720,8 @@ void main() {
           ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).format(),
           'C3+7',
         );
+        expect(Note.a.flat.majorTriad.add7().add9().format(), 'A♭7 9');
+        expect(Note.a.minorTriad.add7().add9().format(), 'A-7 9');
       });
     });
 
