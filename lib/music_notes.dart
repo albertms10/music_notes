@@ -35,6 +35,8 @@ export 'src/transposable.dart';
 export 'src/tuning/cent.dart';
 export 'src/tuning/equal_temperament.dart';
 export 'src/tuning/just_intonation.dart';
+export 'src/tuning/meantone.dart';
+export 'src/tuning/pythagorean.dart';
 export 'src/tuning/temperature.dart';
 export 'src/tuning/tuning_fork.dart';
 export 'src/tuning/tuning_system.dart';
