@@ -2,6 +2,7 @@
 /// working with music theory concepts.
 library;
 
+export 'src/analysis/analysis.dart';
 export 'src/chordable.dart';
 export 'src/comparators.dart';
 export 'src/enharmonic.dart';
