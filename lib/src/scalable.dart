@@ -1,12 +1,12 @@
 import 'enharmonic.dart';
 import 'interval/interval.dart';
-import 'interval/size.dart';
-import 'notation/notation_system.dart';
+import 'notation_system/notation_system.dart';
 import 'note/note.dart';
-import 'note/pitch_class.dart';
+import 'pitch_class/pitch_class.dart';
 import 'respellable.dart';
+import 'size/size.dart';
 import 'transposable.dart';
-import 'tuning/equal_temperament.dart';
+import 'tuning_system/equal_temperament.dart';
 
 /// An interface for items that can form scales.
 abstract class Scalable<T extends Scalable<T>>

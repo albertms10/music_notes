@@ -2,15 +2,15 @@ import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../chord/chord.dart';
 import '../enharmonic.dart';
-import '../harmony/chord.dart';
-import '../harmony/harmonic_function.dart';
+import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
-import '../interval/quality.dart';
+import '../quality/quality.dart';
 import '../scalable.dart';
+import '../scale_degree/scale_degree.dart';
+import '../scale_pattern/scale_pattern.dart';
 import '../transposable.dart';
-import 'scale_degree.dart';
-import 'scale_pattern.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///

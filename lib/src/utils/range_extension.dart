@@ -1,5 +1,5 @@
-import '../notation/notation_system.dart';
-import '../note/pitch.dart';
+import '../notation_system/notation_system.dart';
+import '../pitch/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
 import './iterable_extension.dart';

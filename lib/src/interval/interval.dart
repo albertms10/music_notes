@@ -6,13 +6,15 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
-import '../notation/notation_system.dart';
+import '../interval_class/interval_class.dart';
+import '../notation_system/notation_system.dart';
 import '../note/note.dart';
+import '../quality/quality.dart';
 import '../respellable.dart';
 import '../scalable.dart';
-import 'interval_class.dart';
-import 'quality.dart';
-import 'size.dart';
+import '../size/size.dart';
+import 'german_interval_notation.dart';
+import 'standard_interval_notation.dart';
 
 /// Distance between two notes.
 ///
@@ -576,85 +578,4 @@ extension IntervalIterable on Iterable<Interval> {
       previous = interval;
     }
   }
-}
-
-/// A standard notation system for [Interval].
-final class StandardIntervalNotation extends StringNotationSystem<Interval> {
-  /// The [SizeNotation].
-  final SizeNotation sizeNotation;
-
-  /// The [PerfectQualityNotation].
-  final PerfectQualityNotation perfectQualityNotation;
-
-  /// The [ImperfectQualityNotation].
-  final ImperfectQualityNotation imperfectQualityNotation;
-
-  /// Creates a new [StandardIntervalNotation].
-  const StandardIntervalNotation({
-    this.sizeNotation = const SizeNotation(),
-    this.perfectQualityNotation = const PerfectQualityNotation(),
-    this.imperfectQualityNotation = const ImperfectQualityNotation(),
-  });
-
-  @override
-  RegExp get regExp =>
-      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
-      //  named capture groups are supported.
-      //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>d+|P|m|M|A+?)\\s*${sizeNotation.regExp.pattern}');
-
-  @override
-  Interval parseMatch(RegExpMatch match) {
-    final size = sizeNotation.parseMatch(match);
-    // ignore: omit_local_variable_types False positive (?)
-    final StringParser<Quality> parser = size.isPerfect
-        ? perfectQualityNotation
-        : imperfectQualityNotation;
-
-    final quality = match.namedGroup('quality')!;
-    if (!parser.matches(quality)) {
-      throw FormatException('Invalid Quality', quality, 0);
-    }
-
-    return ._(size, parser.parseMatch(match));
-  }
-
-  @override
-  String format(Interval interval) {
-    final quality = switch (interval.quality) {
-      final PerfectQuality quality => perfectQualityNotation.format(quality),
-      final ImperfectQuality quality => imperfectQualityNotation.format(
-        quality,
-      ),
-    };
-    final naming = '$quality${sizeNotation.format(interval.size)}';
-    if (!interval.isCompound) return naming;
-
-    return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
-  }
-}
-
-/// The German notation system for [Interval].
-final class GermanIntervalNotation extends StandardIntervalNotation {
-  /// Creates a new [GermanIntervalNotation].
-  const GermanIntervalNotation({
-    super.perfectQualityNotation = const PerfectQualityNotation(
-      diminishedSymbol: 'v',
-      perfectSymbol: 'r',
-      augmentedSymbol: 'ü',
-    ),
-    super.imperfectQualityNotation = const ImperfectQualityNotation(
-      diminishedSymbol: 'v',
-      minorSymbol: 'k',
-      majorSymbol: 'g',
-      augmentedSymbol: 'ü',
-    ),
-  });
-
-  @override
-  RegExp get regExp =>
-      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
-      //  named capture groups are supported.
-      //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>v+|r|k|g|ü+?)\\s*${sizeNotation.regExp.pattern}');
 }

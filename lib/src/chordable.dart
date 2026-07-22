@@ -1,7 +1,7 @@
-import 'harmony/chord.dart';
+import 'chord/chord.dart';
 import 'interval/interval.dart';
-import 'interval/quality.dart';
-import 'interval/size.dart';
+import 'quality/quality.dart';
+import 'size/size.dart';
 
 /// A mixin for items that can form chords.
 ///
