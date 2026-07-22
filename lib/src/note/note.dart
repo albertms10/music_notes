@@ -1,18 +1,21 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../harmony/chord.dart';
-import '../harmony/chord_pattern.dart';
+import '../accidental/accidental.dart';
+import '../chord/chord.dart';
+import '../chord_pattern/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../key/key.dart';
-import '../key/key_signature.dart';
-import '../notation/notation_system.dart';
+import '../key_signature/key_signature.dart';
+import '../notation_system/notation_system.dart';
+import '../note_name/note_name.dart';
+import '../pitch/pitch.dart';
 import '../respellable.dart';
 import '../scalable.dart';
-import '../tuning/equal_temperament.dart';
-import 'accidental.dart';
-import 'note_name.dart';
-import 'pitch.dart';
+import '../tuning_system/equal_temperament.dart';
+import 'english_note_notation.dart';
+import 'german_note_notation.dart';
+import 'romance_note_notation.dart';
 
 /// A musical note.
 ///
@@ -454,193 +457,6 @@ final class Note extends Scalable<Note>
 
   @override
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
-}
-
-/// The abstract [StringNotationSystem] for [Note].
-abstract class NoteNotation extends StringNotationSystem<Note> {
-  /// The [NoteName] notation system used to format the [Note.noteName].
-  final StringNotationSystem<NoteName> noteNameNotation;
-
-  /// The [Accidental] notation system used to format the [Note.accidental].
-  final StringNotationSystem<Accidental> accidentalNotation;
-
-  /// Creates a new [NoteNotation].
-  const NoteNotation({
-    this.noteNameNotation = const EnglishNoteNameNotation(),
-    this.accidentalNotation = const SymbolAccidentalNotation(),
-  });
-}
-
-/// The English notation system for [Note].
-final class EnglishNoteNotation extends NoteNotation {
-  /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-    super.accidentalNotation = const EnglishAccidentalNotation(
-      showNatural: false,
-    ),
-  });
-
-  /// Creates a new symbolic [EnglishNoteNotation].
-  const EnglishNoteNotation.symbol({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-    super.accidentalNotation = const SymbolAccidentalNotation(
-      showNatural: false,
-      largerFirst: true,
-    ),
-  });
-
-  /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
-  const EnglishNoteNotation.ascii({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-           largerFirst: true,
-         ),
-       );
-
-  /// The [EnglishNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
-  static const showNatural = EnglishNoteNotation.symbol(
-    accidentalNotation: SymbolAccidentalNotation(largerFirst: true),
-  );
-
-  /// Whether to use symbolic representation for [Accidental].
-  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) => Note(
-    noteNameNotation.parseMatch(match),
-    accidentalNotation.parseMatch(match),
-  );
-
-  @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : '-'}$accidental';
-  }
-}
-
-/// The German alphabetic notation system for [Note].
-///
-/// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
-final class GermanNoteNotation extends NoteNotation {
-  /// Creates a new [GermanNoteNotation].
-  const GermanNoteNotation({
-    super.noteNameNotation = const GermanNoteNameNotation(),
-    super.accidentalNotation = const GermanAccidentalNotation(),
-  });
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) {
-    final noteName = match.namedGroup('noteName')!;
-    final textualAccidental = match.namedGroup('accidental') ?? '';
-    final accidental = accidentalNotation.parseMatch(match);
-    switch (noteName.toLowerCase()) {
-      case 'b' when accidental.isSharp:
-        throw FormatException('Invalid Note', match);
-      case 'b':
-        return Note(.b, accidental - 1);
-      case 'h' when accidental.isFlat:
-        throw FormatException('Invalid Note', match);
-      case 'a' || 'e':
-        if (textualAccidental.startsWith('e')) {
-          throw FormatException('Invalid Note', match);
-        }
-      case _ when textualAccidental.startsWith('s'):
-        throw FormatException('Invalid Note', match);
-    }
-
-    return Note(noteNameNotation.parseMatch(match), accidental);
-  }
-
-  @override
-  String format(Note note) => switch (note) {
-    Note(noteName: .b, accidental: .flat) => 'B',
-
-    Note(noteName: .a || .e, :final accidental) && Note(:final noteName)
-        when accidental.isFlat =>
-      noteNameNotation.format(noteName) +
-          accidentalNotation.format(accidental).substring(1),
-
-    Note(:final noteName, :final accidental) =>
-      noteNameNotation.format(noteName) + accidentalNotation.format(accidental),
-  };
-}
-
-/// The Romance alphabetic notation system for [Note].
-final class RomanceNoteNotation extends NoteNotation {
-  /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-    super.accidentalNotation = const RomanceAccidentalNotation(
-      showNatural: false,
-    ),
-  });
-
-  /// Creates a new symbolic [RomanceNoteNotation].
-  const RomanceNoteNotation.symbol({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
-       );
-
-  /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
-  const RomanceNoteNotation.ascii({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-         ),
-       );
-
-  /// The [RomanceNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
-  static const showNatural = RomanceNoteNotation(
-    accidentalNotation: SymbolAccidentalNotation(),
-  );
-
-  /// Whether to use symbolic representation for [Accidental].
-  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}\\s*'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) => Note(
-    noteNameNotation.parseMatch(match),
-    accidentalNotation.parseMatch(match),
-  );
-
-  @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : ' '}$accidental';
-  }
 }
 
 /// A list of notes extension.

@@ -1,12 +1,15 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../notation/notation_system.dart';
-import '../note/accidental.dart';
+import '../accidental/accidental.dart';
+import '../key_signature/key_signature.dart';
+import '../mode/mode.dart';
+import '../notation_system/notation_system.dart';
 import '../note/note.dart';
 import '../scale/scale.dart';
-import 'key_signature.dart';
-import 'mode.dart';
+import 'english_key_notation.dart';
+import 'german_key_notation.dart';
+import 'romance_key_notation.dart';
 
 /// A musical key or tonality.
 ///
@@ -141,111 +144,4 @@ final class Key implements Comparable<Key>, Formattable<Key> {
     () => note.compareTo(other.note),
     () => mode.name.compareTo(other.mode.name),
   ]);
-}
-
-/// The English notation system for [Key].
-final class EnglishKeyNotation extends StringNotationSystem<Key> {
-  /// The [EnglishNoteNotation] used to format the [Key.note].
-  final EnglishNoteNotation noteNotation;
-
-  /// The [EnglishTonalModeNotation] used to format the [Key.mode].
-  final EnglishTonalModeNotation tonalModeNotation;
-
-  /// Creates a new [EnglishKeyNotation].
-  const EnglishKeyNotation({
-    this.noteNotation = const EnglishNoteNotation(),
-    this.tonalModeNotation = const EnglishTonalModeNotation(),
-  });
-
-  /// Creates a new symbolic [EnglishKeyNotation].
-  const EnglishKeyNotation.symbol({
-    this.noteNotation = const EnglishNoteNotation.symbol(),
-    this.tonalModeNotation = const EnglishTonalModeNotation(),
-  });
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Key parseMatch(RegExpMatch match) =>
-      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
-
-  @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
-}
-
-/// The German notation system for [Key].
-final class GermanKeyNotation extends StringNotationSystem<Key> {
-  /// The [GermanNoteNotation] used to format the [Key.note].
-  final GermanNoteNotation noteNotation;
-
-  /// The [GermanTonalModeNotation] used to format the [Key.mode].
-  final GermanTonalModeNotation tonalModeNotation;
-
-  /// Creates a new [GermanKeyNotation].
-  const GermanKeyNotation({
-    this.noteNotation = const GermanNoteNotation(),
-    this.tonalModeNotation = const GermanTonalModeNotation(),
-  });
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}-${tonalModeNotation.regExp.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Key parseMatch(RegExpMatch match) =>
-      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
-
-  @override
-  String format(Key key) {
-    final note = noteNotation.format(key.note);
-    final mode = tonalModeNotation.format(key.mode);
-    final casedNote = switch (key.mode) {
-      .major => note,
-      .minor => note.toLowerCase(),
-    };
-
-    return '$casedNote-$mode';
-  }
-}
-
-/// The Romance notation system for [Key].
-final class RomanceKeyNotation extends StringNotationSystem<Key> {
-  /// The [RomanceNoteNotation] used to format the [Key.note].
-  final RomanceNoteNotation noteNotation;
-
-  /// The [RomanceTonalModeNotation] used to format the [Key.mode].
-  final RomanceTonalModeNotation tonalModeNotation;
-
-  /// Creates a new [RomanceKeyNotation].
-  const RomanceKeyNotation({
-    this.noteNotation = const RomanceNoteNotation(),
-    this.tonalModeNotation = const RomanceTonalModeNotation(),
-  });
-
-  /// Creates a new symbolic [RomanceKeyNotation].
-  const RomanceKeyNotation.symbol({
-    this.noteNotation = const RomanceNoteNotation.symbol(),
-    this.tonalModeNotation = const RomanceTonalModeNotation(),
-  });
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Key parseMatch(RegExpMatch match) =>
-      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
-
-  @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
 }
