@@ -195,7 +195,7 @@ void main() {
     });
   });
 
-  group('StandardScaleDegreeNotation', () {
+  group('RomanScaleDegreeNotation', () {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => ScaleDegree.parse(''), throwsFormatException);
@@ -218,6 +218,7 @@ void main() {
         expect(const ScaleDegree(3, inversion: 2).format(), 'III64');
         expect(const ScaleDegree(4, quality: .minor).format(), 'iv');
         expect(const ScaleDegree(6, semitonesDelta: 1).format(), '♯VI');
+        expect(const ScaleDegree(10, semitonesDelta: -2).format(), '𝄫10');
         expect(ScaleDegree.vii.format(), 'VII');
       });
     });
