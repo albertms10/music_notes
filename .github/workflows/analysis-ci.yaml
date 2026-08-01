@@ -51,7 +51,10 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Run tests
+      - name: Run web tests
+        run: dart test -p chrome test/main.dart
+
+      - name: Run native tests and coverage
         run: |
           dart pub global activate coverage
           dart test test/main.dart --coverage=coverage
