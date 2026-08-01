@@ -100,7 +100,8 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// ScaleDegree.vi.isLowered == false
   /// ScaleDegree.neapolitanSixth.isLowered == true
   /// ```
-  bool get isLowered => semitonesDelta.isNegative;
+  // using < 0 instead of isNegative to avoid -0 being treated as negative
+  bool get isLowered => semitonesDelta < 0;
 
   /// This [ScaleDegree] raised by 1 semitone.
   ///

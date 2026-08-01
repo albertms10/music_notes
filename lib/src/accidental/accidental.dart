@@ -80,7 +80,8 @@ final class Accidental
   /// Accidental.sharp.isFlat == false
   /// Accidental.natural.isFlat == false
   /// ```
-  bool get isFlat => semitones.isNegative;
+  // using < 0 instead of isNegative to avoid -0 being treated as negative
+  bool get isFlat => semitones < 0;
 
   /// Whether this [Accidental] is natural (♮).
   ///
