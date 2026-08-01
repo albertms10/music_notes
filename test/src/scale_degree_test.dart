@@ -32,6 +32,8 @@ void main() {
       test('returns whether this ScaleDegree is lowered', () {
         expect(ScaleDegree.iv.isLowered, isFalse);
         expect(ScaleDegree.neapolitanSixth.isLowered, isTrue);
+        // ignore: avoid_redundant_argument_values testing for the web
+        expect(const ScaleDegree(10, semitonesDelta: -0).isLowered, isFalse);
         expect(const ScaleDegree(6, semitonesDelta: 1).isLowered, isFalse);
       });
     });

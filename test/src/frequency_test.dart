@@ -93,6 +93,7 @@ void main() {
         expect(const Frequency(880).harmonic(-3), const Frequency(220));
         expect(const Frequency(440).harmonic(-1), const Frequency(220));
         expect(const Frequency(110).harmonic(0), const Frequency(110));
+        expect(const Frequency(110).harmonic(-0), const Frequency(110));
         expect(const Frequency(256).harmonic(1), const Frequency(512));
         expect(const Frequency(32).harmonic(4), const Frequency(160));
       });

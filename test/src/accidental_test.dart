@@ -10,6 +10,8 @@ void main() {
         expect(Accidental.doubleSharp.isFlat, isFalse);
         expect(Accidental.sharp.isFlat, isFalse);
         expect(Accidental.natural.isFlat, isFalse);
+        // ignore: use_named_constants testing for the web
+        expect(const Accidental(-0).isFlat, isFalse);
         expect(Accidental.flat.isFlat, isTrue);
         expect(Accidental.doubleFlat.isFlat, isTrue);
       });

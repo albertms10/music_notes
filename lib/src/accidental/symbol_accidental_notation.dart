@@ -92,10 +92,10 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
       return _useAscii ? _naturalSymbolAscii : _naturalSymbol;
     }
 
-    final accidentalSymbol = accidental.semitones.isNegative
+    final accidentalSymbol = accidental.isFlat
         ? (_useAscii ? _flatSymbolAscii : _flatSymbol)
         : (_useAscii ? _sharpSymbolAscii : _sharpSymbol);
-    final doubleAccidentalSymbol = accidental.semitones.isNegative
+    final doubleAccidentalSymbol = accidental.isFlat
         ? (_useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
         : (_useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
 

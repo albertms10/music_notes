@@ -232,11 +232,15 @@ final class Interval
       : .imperfect(size, ImperfectQuality(semitones));
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
-  factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
-      .fromSizeAndQualitySemitones(
-        size,
-        semitones * size.sign - size.semitones.abs(),
-      );
+  factory Interval.fromSizeAndSemitones(
+    Size size,
+    int semitones,
+  ) => .fromSizeAndQualitySemitones(
+    size,
+    // adding 0 to prevent -0 from being treated as negative,
+    // which would cause the quality to be inverted
+    (semitones + 0) * size.sign - size.semitones.abs(),
+  );
 
   /// Creates a new [Interval] from the given distance in [semitones].
   /// The size is inferred.
