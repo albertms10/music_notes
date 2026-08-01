@@ -1,3 +1,32 @@
+## 0.26.0
+
+- feat(interval): ✨ add support for `GermanIntervalNotation` [#712](https://github.com/albertms10/music_notes/pull/712)
+- refactor(interval): ♻️ rewrite `isPerfect` with the more readable pattern expression [#713](https://github.com/albertms10/music_notes/pull/713)
+- refactor(size): ♻️ use `chromaticDivisions` in `semitones` getter [#714](https://github.com/albertms10/music_notes/pull/714)
+- feat(interval): ✨ add static constants for tenth and twelfth [#715](https://github.com/albertms10/music_notes/pull/715)
+- docs(scale_pattern): 📖 update `setBitAt` method name in example [#716](https://github.com/albertms10/music_notes/pull/716)
+- refactor(src): ♻️ restructure model in clearer directories [#726](https://github.com/albertms10/music_notes/pull/726)
+- test(scale_degree): 🧪 add missing test case for roman numerals [#727](https://github.com/albertms10/music_notes/pull/727)
+- refactor(scalable): ♻️ move `NoteIterable` to `note.dart` and clarify override decision [#728](https://github.com/albertms10/music_notes/pull/728)
+- fix: 🐛 update comparisons to handle -0 correctly in both native and web environments [#730](https://github.com/albertms10/music_notes/pull/730)
+- refactor(xml_notation_system): 🔥 temporarily revert the support for the initial MusicXML notation [#731](https://github.com/albertms10/music_notes/pull/731)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump github/codeql-action from 4.35.2 to 4.35.3 in the minor-actions-dependencies group [#711](https://github.com/albertms10/music_notes/pull/711)
+- chore(deps): ⬆️ bump github/codeql-action from 4.35.3 to 4.35.4 in the minor-actions-dependencies group [#717](https://github.com/albertms10/music_notes/pull/717)
+- chore(deps): ⬆️ bump github/codeql-action from 4.35.4 to 4.35.5 in the minor-actions-dependencies group [#718](https://github.com/albertms10/music_notes/pull/718)
+- chore(deps): ⬆️ bump github/codeql-action from 4.35.5 to 4.36.0 in the minor-actions-dependencies group [#719](https://github.com/albertms10/music_notes/pull/719)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#720](https://github.com/albertms10/music_notes/pull/720)
+- chore(deps): ⬆️ bump actions/checkout from 6.0.3 to 7.0.0 [#721](https://github.com/albertms10/music_notes/pull/721)
+- chore(deps): ⬆️ bump actions/cache from 5.0.5 to 6.1.0 [#722](https://github.com/albertms10/music_notes/pull/722)
+- chore(deps): ⬆️ bump github/codeql-action/upload-sarif from 4.36.2 to 4.36.3 in the minor-actions-dependencies group [#723](https://github.com/albertms10/music_notes/pull/723)
+- chore(deps): ⬆️ bump github/codeql-action/upload-sarif from 4.36.3 to 4.37.0 in the minor-actions-dependencies group [#724](https://github.com/albertms10/music_notes/pull/724)
+- chore(deps): ⬆️ bump github/codeql-action/upload-sarif from 4.37.0 to 4.37.1 in the minor-actions-dependencies group [#725](https://github.com/albertms10/music_notes/pull/725)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 3 updates [#729](https://github.com/albertms10/music_notes/pull/729)
+
+**Full Changelog**: [`v0.25.0...v0.26.0`](https://github.com/albertms10/music_notes/compare/v0.25.0...v0.26.0)
+
 ## 0.25.0
 
 - refactor: ♻️ consistently reorder `NotationSystem.parse` and `.format` methods [#676](https://github.com/albertms10/music_notes/pull/676)
