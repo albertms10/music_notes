@@ -139,12 +139,17 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   });
 
   group('EnglishKeyNotation', () {
-    const formatter = EnglishKeyNotation();
-    const chain = [formatter];
+    const textual = EnglishKeyNotation();
+    const symbol = EnglishKeyNotation.symbol();
+    const short = EnglishKeyNotation.short();
+    const chain = [textual, symbol, short];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => Key.parse('C', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('C', chain: const [textual]),
+          throwsFormatException,
+        );
         expect(() => Key.parse('major', chain: chain), throwsFormatException);
         expect(
           () => Key.parse('C major minor', chain: chain),
@@ -154,12 +159,18 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
       });
 
       test('parses source as a Key', () {
+        expect(Key.parse('A'), Note.a.major);
+        expect(Key.parse('d'), Note.d.minor);
+        expect(Key.parse('f#'), Note.f.sharp.minor);
+        expect(Key.parse('bb'), Note.b.flat.minor);
         expect(Key.parse('C major'), Note.c.major);
         expect(Key.parse('D major'), Note.d.major);
-        expect(Key.parse('F♯ major'), Note.f.sharp.major);
+        expect(Key.parse('f♯ major'), Note.f.sharp.major);
         expect(Key.parse('A minor'), Note.a.minor);
-        expect(Key.parse('D minor'), Note.d.minor);
+        expect(Key.parse('G-flat major'), Note.g.flat.major);
+        expect(Key.parse('d minor'), Note.d.minor);
         expect(Key.parse('C♯ minor'), Note.c.sharp.minor);
+        expect(Key.parse('C-double-sharp minor'), Note.c.sharp.sharp.minor);
       });
 
       test('.format() and .parse() are inverses', () {
@@ -184,6 +195,23 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         expect(Note.f.sharp.minor.format(), 'F♯ minor');
         expect(Note.g.sharp.sharp.major.format(), 'G𝄪 major');
         expect(Note.e.flat.flat.minor.format(), 'E𝄫 minor');
+
+        expect(Note.c.major.format(textual), 'C major');
+        expect(Note.d.minor.format(textual), 'D minor');
+        expect(Note.a.flat.major.format(textual), 'A-flat major');
+        expect(Note.f.sharp.minor.format(textual), 'F-sharp minor');
+        expect(
+          Note.g.sharp.sharp.major.format(textual),
+          'G-double-sharp major',
+        );
+        expect(Note.e.flat.flat.minor.format(textual), 'E-double-flat minor');
+
+        expect(Note.c.major.format(short), 'C');
+        expect(Note.d.minor.format(short), 'd');
+        expect(Note.a.flat.major.format(short), 'A♭');
+        expect(Note.f.sharp.minor.format(short), 'f♯');
+        expect(Note.g.sharp.sharp.major.format(short), 'G𝄪');
+        expect(Note.e.flat.flat.minor.format(short), 'e𝄫');
       });
     });
   });
@@ -195,6 +223,10 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
+        expect(
+          () => Key.parse('C', chain: const [formatter]),
+          throwsFormatException,
+        );
         expect(() => Key.parse('dur', chain: chain), throwsFormatException);
         expect(
           () => Key.parse('C-dur-moll', chain: chain),
@@ -264,11 +296,15 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   group('RomanceKeyNotation', () {
     const textual = RomanceKeyNotation();
     const symbol = RomanceKeyNotation.symbol();
-    const chain = [textual, symbol];
+    const short = RomanceKeyNotation.short();
+    const chain = [textual, symbol, short];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => Key.parse('Do', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('Do', chain: const [textual]),
+          throwsFormatException,
+        );
         expect(
           () => Key.parse('maggiore', chain: chain),
           throwsFormatException,
@@ -281,6 +317,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
       });
 
       test('parses source as a Key', () {
+        expect(Key.parse('Do', chain: chain), Note.c.major);
         expect(Key.parse('Do maggiore', chain: chain), Note.c.major);
         expect(Key.parse('Sol# maggiore', chain: chain), Note.g.sharp.major);
         expect(
@@ -288,13 +325,18 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
           Note.f.sharp.minor,
         );
         expect(Key.parse('Re maggiore', chain: chain), Note.d.major);
-        expect(Key.parse('Lab minore', chain: chain), Note.a.flat.minor);
+        expect(Key.parse('La♭ minore', chain: chain), Note.a.flat.minor);
         expect(
           Key.parse('La bemolle minore', chain: chain),
           Note.a.flat.minor,
         );
         expect(Key.parse('La minore', chain: chain), Note.a.minor);
         expect(Key.parse('Re minore', chain: chain), Note.d.minor);
+
+        expect(Key.parse('Re', chain: chain), Note.d.major);
+        expect(Key.parse('do', chain: chain), Note.c.minor);
+        expect(Key.parse('la#', chain: chain), Note.a.sharp.minor);
+        expect(Key.parse('Mib', chain: chain), Note.e.flat.major);
       });
 
       test('.format() and .parse() are inverses', () {
@@ -336,6 +378,11 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
           Note.e.flat.flat.minor.format(symbol),
           'Mi𝄫 minore',
         );
+
+        expect(Note.c.major.format(short), 'Do');
+        expect(Note.b.minor.format(short), 'si');
+        expect(Note.a.sharp.major.format(short), 'La♯');
+        expect(Note.e.flat.minor.format(short), 'mi♭');
       });
     });
   });
