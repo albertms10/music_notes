@@ -681,10 +681,10 @@ void main() {
         expect(Note.parse('e#x'), Note.e.sharp.sharp.sharp);
 
         expect(Note.parse('d-sharp'), Note.d.sharp);
-        expect(Note.parse('g flat'), Note.g.flat);
-        expect(Note.parse('E natural'), Note.e);
-        expect(Note.parse('A-double flat'), Note.a.flat.flat);
-        expect(Note.parse('F-triple sharp'), Note.f.sharp.sharp.sharp);
+        expect(Note.parse('g-flat'), Note.g.flat);
+        expect(Note.parse('E-natural'), Note.e);
+        expect(Note.parse('A-double-flat'), Note.a.flat.flat);
+        expect(Note.parse('F-triple-sharp'), Note.f.sharp.sharp.sharp);
       });
     });
 
@@ -711,15 +711,15 @@ void main() {
         expect(Note.d.flat.format(textual), 'D-flat');
         expect(
           Note.b.flat.flat.format(textual),
-          'B-double flat',
+          'B-double-flat',
         );
         expect(
           Note.f.sharp.sharp.format(textual),
-          'F-double sharp',
+          'F-double-sharp',
         );
         expect(
           Note.g.sharp.sharp.sharp.format(textual),
-          'G-triple sharp',
+          'G-triple-sharp',
         );
       });
     });
