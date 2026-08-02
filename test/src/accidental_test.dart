@@ -37,22 +37,6 @@ void main() {
       });
     });
 
-    group('.name', () {
-      test('returns the name of this Accidental', () {
-        expect(const Accidental(8).name, '×8 sharp');
-        expect(const Accidental(4).name, '×4 sharp');
-        expect(Accidental.tripleSharp.name, 'Triple sharp');
-        expect(Accidental.doubleSharp.name, 'Double sharp');
-        expect(Accidental.sharp.name, 'Sharp');
-        expect(Accidental.natural.name, 'Natural');
-        expect(Accidental.flat.name, 'Flat');
-        expect(Accidental.doubleFlat.name, 'Double flat');
-        expect(Accidental.tripleFlat.name, 'Triple flat');
-        expect(const Accidental(-5).name, '×5 flat');
-        expect(const Accidental(-7).name, '×7 flat');
-      });
-    });
-
     group('.incrementBy()', () {
       test('returns the incremented Accidental', () {
         expect(Accidental.flat.incrementBy(-2), Accidental.sharp);

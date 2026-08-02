@@ -104,26 +104,6 @@ final class Accidental
   /// ```
   bool get isSharp => semitones > 0;
 
-  /// The name of this [Accidental].
-  ///
-  /// Example:
-  /// ```dart
-  /// Accidental.sharp.name == 'Sharp'
-  /// Accidental.doubleFlat.name == 'Double flat'
-  /// Accidental.natural.name == 'Natural'
-  /// ```
-  String get name => switch (semitones) {
-    3 => 'Triple sharp',
-    2 => 'Double sharp',
-    1 => 'Sharp',
-    0 => 'Natural',
-    -1 => 'Flat',
-    -2 => 'Double flat',
-    -3 => 'Triple flat',
-    > 3 && final semitones => '×$semitones sharp',
-    final semitones => '×${semitones.abs()} flat',
-  };
-
   /// This [Accidental] incremented by [semitones].
   ///
   /// Example:
