@@ -1,3 +1,5 @@
+import 'package:music_notes/utils.dart';
+
 import '../mode/mode.dart';
 import '../notation_system/notation_system.dart';
 import '../note/english_note_notation.dart';
@@ -11,29 +13,61 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   /// The [EnglishTonalModeNotation] used to format the [Key.mode].
   final EnglishTonalModeNotation tonalModeNotation;
 
+  /// Whether to show the [Key.mode] in the formatted string.
+  final bool _showMode;
+
   /// Creates a new [EnglishKeyNotation].
   const EnglishKeyNotation({
     this.noteNotation = const EnglishNoteNotation(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
-  });
+  }) : _showMode = true;
 
   /// Creates a new symbolic [EnglishKeyNotation].
   const EnglishKeyNotation.symbol({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
-  });
+  }) : _showMode = true;
+
+  /// Creates a new symbolic [EnglishKeyNotation] using ASCII characters.
+  const EnglishKeyNotation.ascii({
+    this.noteNotation = const EnglishNoteNotation.ascii(),
+    this.tonalModeNotation = const EnglishTonalModeNotation(),
+  }) : _showMode = false;
+
+  /// Creates a new symbolic [EnglishKeyNotation] without showing the mode.
+  const EnglishKeyNotation.short({
+    this.noteNotation = const EnglishNoteNotation.symbol(),
+    this.tonalModeNotation = const EnglishTonalModeNotation(),
+  }) : _showMode = false;
 
   @override
   RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}\\s+${tonalModeNotation.regExp.pattern}',
+    '${noteNotation.regExp.pattern}(?:\\s+${tonalModeNotation.regExp.pattern})'
+    '${_showMode ? '' : '?'}',
     caseSensitive: false,
   );
 
   @override
-  Key parseMatch(RegExpMatch match) =>
-      Key(noteNotation.parseMatch(match), tonalModeNotation.parseMatch(match));
+  Key parseMatch(RegExpMatch match) {
+    final note = noteNotation.parseMatch(match);
+    if (match.namedGroup('mode') != null) {
+      return Key(note, tonalModeNotation.parseMatch(match));
+    }
+
+    return Key(
+      note,
+      match.namedGroup('noteName')![0].isUpperCase ? .major : .minor,
+    );
+  }
 
   @override
-  String format(Key key) =>
-      '${noteNotation.format(key.note)} ${tonalModeNotation.format(key.mode)}';
+  String format(Key key) {
+    final note = noteNotation.format(key.note);
+    if (_showMode) return '$note ${tonalModeNotation.format(key.mode)}';
+
+    return switch (key.mode) {
+      .major => note,
+      .minor => note.toLowerCase(),
+    };
+  }
 }

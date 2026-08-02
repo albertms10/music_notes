@@ -30,7 +30,8 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
 
   @override
   RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}(:?-${tonalModeNotation.regExp.pattern})?',
+    '${noteNotation.regExp.pattern}(:?-${tonalModeNotation.regExp.pattern})'
+    '${_showMode ? '' : '?'}',
     caseSensitive: false,
   );
 
