@@ -139,12 +139,18 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   });
 
   group('EnglishKeyNotation', () {
+    const formatter = EnglishKeyNotation();
+    const chain = [formatter];
+
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => Key.parse('C'), throwsFormatException);
-        expect(() => Key.parse('major'), throwsFormatException);
-        expect(() => Key.parse('C major minor'), throwsFormatException);
-        expect(() => Key.parse(''), throwsFormatException);
+        expect(() => Key.parse('C', chain: chain), throwsFormatException);
+        expect(() => Key.parse('major', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('C major minor', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('', chain: chain), throwsFormatException);
       });
 
       test('parses source as a Key', () {
@@ -184,11 +190,11 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
 
   group('GermanKeyNotation', () {
     const formatter = GermanKeyNotation();
-    const chain = [formatter];
+    const short = GermanKeyNotation.short();
+    const chain = [formatter, short];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => Key.parse('C', chain: chain), throwsFormatException);
         expect(() => Key.parse('dur', chain: chain), throwsFormatException);
         expect(
           () => Key.parse('C-dur-moll', chain: chain),
@@ -198,6 +204,11 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
       });
 
       test('parses source as a Key', () {
+        expect(Key.parse('C', chain: chain), Note.c.major);
+        expect(Key.parse('h', chain: chain), Note.b.minor);
+        expect(Key.parse('Ais', chain: chain), Note.a.sharp.major);
+        expect(Key.parse('des', chain: chain), Note.d.flat.minor);
+
         expect(Key.parse('C-Dur', chain: chain), Note.c.major);
         expect(Key.parse('B-dur', chain: chain), Note.b.flat.major);
         expect(Key.parse('b-dur', chain: chain), Note.b.flat.major);
@@ -231,6 +242,9 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
 
     group('.format()', () {
       test('returns the string representation of this Key', () {
+        expect(Note.c.sharp.major.format(short), 'Cis');
+        expect(Note.f.minor.format(short), 'f');
+
         expect(Note.c.major.format(formatter), 'C-Dur');
         expect(Note.d.minor.format(formatter), 'd-Moll');
         expect(Note.a.flat.major.format(formatter), 'As-Dur');
