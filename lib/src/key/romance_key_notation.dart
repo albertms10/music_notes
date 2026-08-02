@@ -14,36 +14,33 @@ final class RomanceKeyNotation extends StringNotationSystem<Key> {
   final RomanceTonalModeNotation tonalModeNotation;
 
   /// Whether to show the [Key.mode] in the formatted string.
-  final bool _showMode;
+  final bool showMode;
 
   /// Creates a new [RomanceKeyNotation].
   const RomanceKeyNotation({
     this.noteNotation = const RomanceNoteNotation(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
-  }) : _showMode = true;
+    this.showMode = true,
+  });
 
   /// Creates a new symbolic [RomanceKeyNotation].
   const RomanceKeyNotation.symbol({
     this.noteNotation = const RomanceNoteNotation.symbol(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
-  }) : _showMode = true;
+    this.showMode = true,
+  });
 
   /// Creates a new symbolic [RomanceKeyNotation] using ASCII characters.
   const RomanceKeyNotation.ascii({
     this.noteNotation = const RomanceNoteNotation.ascii(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
-  }) : _showMode = true;
-
-  /// Creates a new symbolic [RomanceKeyNotation] without showing the mode.
-  const RomanceKeyNotation.short({
-    this.noteNotation = const RomanceNoteNotation.symbol(),
-    this.tonalModeNotation = const RomanceTonalModeNotation(),
-  }) : _showMode = false;
+    this.showMode = true,
+  });
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}(?:\\s+${tonalModeNotation.regExp.pattern})'
-    '${_showMode ? '' : '?'}',
+    '${showMode ? '' : '?'}',
     caseSensitive: false,
   );
 
@@ -63,7 +60,7 @@ final class RomanceKeyNotation extends StringNotationSystem<Key> {
   @override
   String format(Key key) {
     final note = noteNotation.format(key.note);
-    if (_showMode) return '$note ${tonalModeNotation.format(key.mode)}';
+    if (showMode) return '$note ${tonalModeNotation.format(key.mode)}';
 
     return switch (key.mode) {
       .major => note,

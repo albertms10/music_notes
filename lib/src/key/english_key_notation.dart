@@ -14,36 +14,33 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   final EnglishTonalModeNotation tonalModeNotation;
 
   /// Whether to show the [Key.mode] in the formatted string.
-  final bool _showMode;
+  final bool showMode;
 
   /// Creates a new [EnglishKeyNotation].
   const EnglishKeyNotation({
     this.noteNotation = const EnglishNoteNotation(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
-  }) : _showMode = true;
+    this.showMode = true,
+  });
 
   /// Creates a new symbolic [EnglishKeyNotation].
   const EnglishKeyNotation.symbol({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
-  }) : _showMode = true;
+    this.showMode = true,
+  });
 
   /// Creates a new symbolic [EnglishKeyNotation] using ASCII characters.
   const EnglishKeyNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
-  }) : _showMode = false;
-
-  /// Creates a new symbolic [EnglishKeyNotation] without showing the mode.
-  const EnglishKeyNotation.short({
-    this.noteNotation = const EnglishNoteNotation.symbol(),
-    this.tonalModeNotation = const EnglishTonalModeNotation(),
-  }) : _showMode = false;
+    this.showMode = true,
+  });
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}(?:\\s+${tonalModeNotation.regExp.pattern})'
-    '${_showMode ? '' : '?'}',
+    '${showMode ? '' : '?'}',
     caseSensitive: false,
   );
 
@@ -63,7 +60,7 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   @override
   String format(Key key) {
     final note = noteNotation.format(key.note);
-    if (_showMode) return '$note ${tonalModeNotation.format(key.mode)}';
+    if (showMode) return '$note ${tonalModeNotation.format(key.mode)}';
 
     return switch (key.mode) {
       .major => note,
