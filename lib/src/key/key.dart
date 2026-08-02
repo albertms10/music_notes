@@ -35,14 +35,14 @@ final class Key implements Comparable<Key>, Formattable<Key> {
   static const parsers = [
     EnglishKeyNotation(),
     EnglishKeyNotation.symbol(),
+    EnglishKeyNotation.symbol(showMode: false),
     EnglishKeyNotation.ascii(),
-    EnglishKeyNotation.short(),
     GermanKeyNotation(),
-    GermanKeyNotation.short(),
+    GermanKeyNotation(showMode: false),
     RomanceKeyNotation(),
     RomanceKeyNotation.symbol(),
+    RomanceKeyNotation.symbol(showMode: false),
     RomanceKeyNotation.ascii(),
-    RomanceKeyNotation.short(),
   ];
 
   /// Parse [source] as a [Key] and return its value.

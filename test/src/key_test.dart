@@ -141,7 +141,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   group('EnglishKeyNotation', () {
     const textual = EnglishKeyNotation();
     const symbol = EnglishKeyNotation.symbol();
-    const short = EnglishKeyNotation.short();
+    const short = EnglishKeyNotation.symbol(showMode: false);
     const chain = [textual, symbol, short];
 
     group('.parse()', () {
@@ -161,8 +161,8 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
       test('parses source as a Key', () {
         expect(Key.parse('A'), Note.a.major);
         expect(Key.parse('d'), Note.d.minor);
-        expect(Key.parse('f#'), Note.f.sharp.minor);
-        expect(Key.parse('bb'), Note.b.flat.minor);
+        expect(Key.parse('f♯'), Note.f.sharp.minor);
+        expect(Key.parse('b♭'), Note.b.flat.minor);
         expect(Key.parse('C major'), Note.c.major);
         expect(Key.parse('D major'), Note.d.major);
         expect(Key.parse('f♯ major'), Note.f.sharp.major);
@@ -218,7 +218,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
 
   group('GermanKeyNotation', () {
     const formatter = GermanKeyNotation();
-    const short = GermanKeyNotation.short();
+    const short = GermanKeyNotation(showMode: false);
     const chain = [formatter, short];
 
     group('.parse()', () {
@@ -296,7 +296,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   group('RomanceKeyNotation', () {
     const textual = RomanceKeyNotation();
     const symbol = RomanceKeyNotation.symbol();
-    const short = RomanceKeyNotation.short();
+    const short = RomanceKeyNotation.symbol(showMode: false);
     const chain = [textual, symbol, short];
 
     group('.parse()', () {

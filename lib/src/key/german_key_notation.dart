@@ -14,24 +14,19 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
   final GermanTonalModeNotation tonalModeNotation;
 
   /// Whether to show the [Key.mode] in the formatted string.
-  final bool _showMode;
+  final bool showMode;
 
   /// Creates a new [GermanKeyNotation].
   const GermanKeyNotation({
     this.noteNotation = const GermanNoteNotation(),
     this.tonalModeNotation = const GermanTonalModeNotation(),
-  }) : _showMode = true;
-
-  /// Creates a new [GermanKeyNotation] without showing the mode.
-  const GermanKeyNotation.short({
-    this.noteNotation = const GermanNoteNotation(),
-    this.tonalModeNotation = const GermanTonalModeNotation(),
-  }) : _showMode = false;
+    this.showMode = true,
+  });
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp.pattern}(:?-${tonalModeNotation.regExp.pattern})'
-    '${_showMode ? '' : '?'}',
+    '${showMode ? '' : '?'}',
     caseSensitive: false,
   );
 
@@ -55,7 +50,7 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
       .major => note,
       .minor => note.toLowerCase(),
     };
-    if (!_showMode) return casedNote;
+    if (!showMode) return casedNote;
 
     final mode = tonalModeNotation.format(key.mode);
 
