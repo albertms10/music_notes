@@ -139,12 +139,18 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
   });
 
   group('EnglishKeyNotation', () {
+    const formatter = EnglishKeyNotation();
+    const chain = [formatter];
+
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => Key.parse('C'), throwsFormatException);
-        expect(() => Key.parse('major'), throwsFormatException);
-        expect(() => Key.parse('C major minor'), throwsFormatException);
-        expect(() => Key.parse(''), throwsFormatException);
+        expect(() => Key.parse('C', chain: chain), throwsFormatException);
+        expect(() => Key.parse('major', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('C major minor', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('', chain: chain), throwsFormatException);
       });
 
       test('parses source as a Key', () {
