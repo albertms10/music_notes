@@ -210,14 +210,19 @@ void main() {
       });
 
       test('parses source as an Accidental', () {
-        expect(Accidental.parse('triple sharp'), Accidental.tripleSharp);
-        expect(Accidental.parse('Double Sharp'), Accidental.doubleSharp);
+        expect(Accidental.parse('triple-sharp'), Accidental.tripleSharp);
+        expect(Accidental.parse('Double-Sharp'), Accidental.doubleSharp);
         expect(Accidental.parse('sharp'), Accidental.sharp);
         expect(Accidental.parse('natural'), Accidental.natural);
         expect(Accidental.parse(''), Accidental.natural);
         expect(Accidental.parse('flat'), Accidental.flat);
-        expect(Accidental.parse('double Flat'), Accidental.doubleFlat);
-        expect(Accidental.parse('Triple flat'), Accidental.tripleFlat);
+        expect(Accidental.parse('double-Flat'), Accidental.doubleFlat);
+
+        const parser = EnglishAccidentalNotation(separator: ' ');
+        expect(
+          Accidental.parse('triple Flat', chain: const [parser]),
+          Accidental.tripleFlat,
+        );
       });
     });
 
@@ -227,30 +232,30 @@ void main() {
 
         expect(
           const Accidental(4).format(formatter),
-          '×4 sharp',
+          '×4-sharp',
         );
         expect(
           Accidental.tripleSharp.format(formatter),
-          'triple sharp',
+          'triple-sharp',
         );
         expect(
           Accidental.doubleSharp.format(formatter),
-          'double sharp',
+          'double-sharp',
         );
         expect(Accidental.sharp.format(formatter), 'sharp');
         expect(Accidental.natural.format(formatter), 'natural');
         expect(Accidental.flat.format(formatter), 'flat');
         expect(
           Accidental.doubleFlat.format(formatter),
-          'double flat',
+          'double-flat',
         );
         expect(
           Accidental.tripleFlat.format(formatter),
-          'triple flat',
+          'triple-flat',
         );
         expect(
           const Accidental(-4).format(formatter),
-          '×4 flat',
+          '×4-flat',
         );
 
         const hideNatural = EnglishAccidentalNotation(showNatural: false);

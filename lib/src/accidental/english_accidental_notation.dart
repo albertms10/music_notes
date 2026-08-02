@@ -8,8 +8,15 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   /// [Accidental.natural] symbol.
   final bool showNatural;
 
+  /// The separator to use between compound accidentals
+  /// (e.g. "double-sharp" or "triple-flat").
+  final String separator;
+
   /// Creates a new [EnglishAccidentalNotation].
-  const EnglishAccidentalNotation({this.showNatural = true});
+  const EnglishAccidentalNotation({
+    this.showNatural = true,
+    this.separator = '-',
+  });
 
   static const _natural = 'natural';
   static const _flat = 'flat';
@@ -18,21 +25,19 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _triple = 'triple';
   static const _times = '×';
 
-  static final _regExp = RegExp(
-    '(?<accidental>(?:(?:$_double|$_triple)\\s*)?'
+  @override
+  RegExp get regExp => RegExp(
+    '(?<accidental>(?:(?:$_double|$_triple)[$separator]*)?'
     '(?:$_flat|$_sharp)|$_natural)?',
     caseSensitive: false,
   );
-
-  @override
-  RegExp get regExp => _regExp;
 
   @override
   Accidental parseMatch(RegExpMatch match) {
     final accidental = match.namedGroup('accidental')?.toLowerCase();
     if (accidental == null || accidental == _natural) return .natural;
 
-    final semitones = switch (accidental.split(' ').first) {
+    final semitones = switch (accidental.split(separator).first) {
       _double => 2,
       _triple => 3,
       _ => 1,
@@ -45,14 +50,14 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
 
   @override
   String format(Accidental accidental) => switch (accidental.semitones) {
-    3 => '$_triple $_sharp',
-    2 => '$_double $_sharp',
-    1 => _sharp,
-    0 => showNatural ? _natural : '',
-    -1 => _flat,
-    -2 => '$_double $_flat',
-    -3 => '$_triple $_flat',
-    > 3 && final semitones => '$_times$semitones $_sharp',
-    final semitones => '$_times${semitones.abs()} $_flat',
-  };
+    3 => const [_triple, _sharp],
+    2 => const [_double, _sharp],
+    1 => const [_sharp],
+    0 => showNatural ? const [_natural] : const [''],
+    -1 => const [_flat],
+    -2 => const [_double, _flat],
+    -3 => const [_triple, _flat],
+    > 3 && final semitones => ['$_times$semitones', _sharp],
+    final semitones => ['$_times${semitones.abs()}', _flat],
+  }.join(separator);
 }
