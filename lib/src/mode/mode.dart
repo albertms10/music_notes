@@ -27,6 +27,9 @@ sealed class Mode implements Enum, Comparable<Mode> {
   /// the brighter the scale.
   int get brightness;
 
+  /// The brightness distance between this [Mode] and [other].
+  int distanceWith(Mode other);
+
   /// [Comparator] for [Mode]s.
   static int compare(Mode a, Mode b) => compareMultiple([
     () => a.brightness.compareTo(b.brightness),
@@ -63,6 +66,15 @@ enum TonalMode implements Mode, Formattable<TonalMode> {
     String source, {
     List<StringParser<TonalMode>> chain = parsers,
   }) => chain.parse(source);
+
+  /// The brightness distance between this [Mode] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// TonalMode.major.distanceWith(TonalMode.minor) == -3
+  /// ```
+  @override
+  int distanceWith(Mode other) => other.brightness - brightness;
 
   /// The parallel (opposite) of this [TonalMode].
   ///
@@ -207,6 +219,15 @@ enum ModalMode implements Mode {
   final int brightness;
 
   const ModalMode(this.scale, {required this.brightness});
+
+  /// The brightness distance between this [Mode] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// ModalMode.phrygian.distanceWith(ModalMode.dorian) == 2
+  /// ```
+  @override
+  int distanceWith(Mode other) => other.brightness - brightness;
 
   /// The mirrored version of this [ModalMode].
   ///

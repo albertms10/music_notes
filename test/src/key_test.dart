@@ -85,6 +85,59 @@ void main() {
       });
     });
 
+    group('.relationshipWith()', () {
+      test('returns the relationship between this Key and other', () {
+        expect(
+          Note.c.major.relationshipWith(Note.c.major),
+          (distance: 0, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.f.major),
+          (distance: -1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.g.major),
+          (distance: 1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.f.minor),
+          (distance: -1, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.f.major),
+          (distance: -1, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.f.minor),
+          (distance: -1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.a.minor),
+          (distance: 3, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.a.major),
+          (distance: 3, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.e.flat.major),
+          (distance: -3, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.e.flat.major),
+          (distance: -3, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.e.flat.minor),
+          (distance: -3, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.e.flat.minor),
+          (distance: -3, relationship: KeyRelationship.direct),
+        );
+      });
+    });
+
     group('.toString()', () {
       test('returns the verbose string representation of this Key', () {
         expect(

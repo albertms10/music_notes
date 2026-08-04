@@ -5,6 +5,18 @@ import 'package:test/test.dart';
 
 void main() {
   group('Mode', () {
+    group('.distanceWith()', () {
+      test('returns the distance between this Mode and other', () {
+        expect(ModalMode.locrian.distanceWith(ModalMode.lydian), 6);
+        expect(ModalMode.dorian.distanceWith(ModalMode.mixolydian), 1);
+        expect(ModalMode.aeolian.distanceWith(ModalMode.phrygian), -1);
+
+        expect(TonalMode.major.distanceWith(TonalMode.minor), -3);
+        expect(TonalMode.major.distanceWith(ModalMode.aeolian), -3);
+        expect(ModalMode.lydian.distanceWith(TonalMode.major), -1);
+      });
+    });
+
     group('.compareTo', () {
       test('sorts Modes in a collection', () {
         final orderedSet = SplayTreeSet<Mode>.of({
