@@ -1,6 +1,6 @@
 import 'package:music_notes/utils.dart';
 
-import '../mode/mode.dart';
+import '../mode/german_tonal_mode_notation.dart';
 import '../notation_system/notation_system.dart';
 import '../note/german_note_notation.dart';
 import 'key.dart';

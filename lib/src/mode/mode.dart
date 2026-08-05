@@ -4,6 +4,9 @@ import 'package:music_notes/utils.dart';
 import '../key/key.dart';
 import '../notation_system/notation_system.dart';
 import '../scale_pattern/scale_pattern.dart';
+import 'english_tonal_mode_notation.dart';
+import 'german_tonal_mode_notation.dart';
+import 'romance_tonal_mode_notation.dart';
 
 /// A type of musical scale coupled with a set of characteristic melodic and
 /// harmonic behaviors.
@@ -96,96 +99,6 @@ enum TonalMode implements Mode, Formattable<TonalMode> {
 
   @override
   int compareTo(Mode other) => Mode.compare(this, other);
-}
-
-/// The English notation system for [TonalMode].
-final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
-  /// Creates a new [EnglishTonalModeNotation].
-  const EnglishTonalModeNotation();
-
-  static const _major = 'major';
-  static const _minor = 'minor';
-
-  static final RegExp _regExp = RegExp(
-    '(?<mode>$_major|$_minor)',
-    caseSensitive: false,
-  );
-
-  @override
-  RegExp get regExp => _regExp;
-
-  @override
-  TonalMode parseMatch(RegExpMatch match) =>
-      switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => .major,
-        _ /* _minor */ => .minor,
-      };
-
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  };
-}
-
-/// The German notation system for [TonalMode].
-final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
-  /// Creates a new [GermanTonalModeNotation].
-  const GermanTonalModeNotation();
-
-  static const _major = 'dur';
-  static const _minor = 'moll';
-
-  static final RegExp _regExp = RegExp(
-    '(?<mode>$_major|$_minor)',
-    caseSensitive: false,
-  );
-
-  @override
-  RegExp get regExp => _regExp;
-
-  @override
-  TonalMode parseMatch(RegExpMatch match) =>
-      switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => .major,
-        _ /* _minor */ => .minor,
-      };
-
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  }.toUpperFirst();
-}
-
-/// The Romance notation system for [TonalMode].
-final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
-  /// Creates a new [RomanceTonalModeNotation].
-  const RomanceTonalModeNotation();
-
-  static const _major = 'maggiore';
-  static const _minor = 'minore';
-
-  static final RegExp _regExp = RegExp(
-    '(?<mode>$_major|$_minor)',
-    caseSensitive: false,
-  );
-
-  @override
-  RegExp get regExp => _regExp;
-
-  @override
-  TonalMode parseMatch(RegExpMatch match) =>
-      switch (match.namedGroup('mode')?.toLowerCase()) {
-        _major => .major,
-        _ /* _minor */ => .minor,
-      };
-
-  @override
-  String format(TonalMode tonalMode) => switch (tonalMode) {
-    .major => _major,
-    .minor => _minor,
-  };
 }
 
 /// Modes of a modal system.
