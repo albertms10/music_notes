@@ -78,7 +78,11 @@ void main() {
       test('returns the HarmonicFunction relating this to other', () {
         expect(
           HarmonicFunction.dominantV / .dominantV,
-          HarmonicFunction(.v.major, tonicization: HarmonicFunction(.v.major)),
+          const HarmonicFunction(
+            .v,
+            pattern: .majorTriad,
+            tonicization: .dominantV,
+          ),
         );
         expect(
           HarmonicFunction.ii / .ii,
@@ -104,7 +108,9 @@ void main() {
         expect(HarmonicFunction.vii.format(), 'VII');
         expect((HarmonicFunction.dominantV / .dominantV).format(), 'V/V');
         expect(
-          (HarmonicFunction(.iv.minor) / .neapolitanSixth / .dominantV)
+          (const HarmonicFunction(.iv, pattern: .minorTriad) /
+                  .neapolitanSixth /
+                  .dominantV)
               .format(),
           'iv/♭II6/V',
         );
@@ -118,12 +124,12 @@ void main() {
           expect(
             HarmonicFunction.neapolitanSixth.toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: -1), tonicization: null)''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2), accidental: Accidental(semitones: -1), tonicization: null)''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: 0), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: 0), tonicization: null))''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5), accidental: Accidental(semitones: 0), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5), accidental: Accidental(semitones: 0), tonicization: null))''',
           );
         },
       );
@@ -139,15 +145,9 @@ HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: Imp
         );
         expect(
           // ignore: prefer_const_constructors test
-          HarmonicFunction(
-            // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1),
-          ).hashCode,
+          HarmonicFunction(ScaleDegree(2), pattern: .minorTriad).hashCode,
           // ignore: prefer_const_constructors test
-          HarmonicFunction(
-            // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1),
-          ).hashCode,
+          HarmonicFunction(ScaleDegree(2), pattern: .minorTriad).hashCode,
         );
       });
 

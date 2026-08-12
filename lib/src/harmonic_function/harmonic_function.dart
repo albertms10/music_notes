@@ -2,6 +2,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../accidental/accidental.dart';
 import '../accidental/symbol_accidental_notation.dart';
+import '../chord_pattern/chord_pattern.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
@@ -20,6 +21,9 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The chromatic alteration of this this [ScaleDegree].
   final Accidental accidental;
 
+  /// The [ChordPattern] built on top of [scaleDegree].
+  final ChordPattern? pattern;
+
   /// The tonicization of this [HarmonicFunction].
   ///
   /// See [Tonicization](https://en.wikipedia.org/wiki/Tonicization).
@@ -29,6 +33,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   const HarmonicFunction(
     this.scaleDegree, {
     this.accidental = .natural,
+    this.pattern,
     this.tonicization,
   });
 
@@ -40,8 +45,9 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
 
   /// A neapolitan sixth [HarmonicFunction].
   static const neapolitanSixth = HarmonicFunction(
-    ScaleDegree(2, quality: .major, inversion: 1),
+    .ii,
     accidental: .flat,
+    pattern: .new([.m3, .m6]),
   );
 
   /// A III degree [HarmonicFunction].
@@ -51,7 +57,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   static const iv = HarmonicFunction(.iv);
 
   /// A dominant V degree [HarmonicFunction].
-  static const dominantV = HarmonicFunction(ScaleDegree(5, quality: .major));
+  static const dominantV = HarmonicFunction(.v, pattern: .majorTriad);
 
   /// A VI degree [HarmonicFunction].
   static const vi = HarmonicFunction(.vi);
@@ -134,7 +140,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   @override
   String toString() =>
       '$runtimeType(scaleDegree: $scaleDegree, accidental: $accidental, '
-      'tonicization: $tonicization)';
+      'pattern: $pattern, tonicization: $tonicization)';
 
   /// Appends [harmonicFunction] as the [harmonicFunction] of this
   /// [HarmonicFunction].

@@ -1,9 +1,6 @@
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/utils.dart';
 
-import '../chord/chord.dart';
 import '../notation_system/notation_system.dart';
-import '../quality/quality.dart';
 import '../scale/scale.dart';
 import 'roman_scale_degree_notation.dart';
 
@@ -17,19 +14,9 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
 
-  /// The inversion of the [Chord] above this [ScaleDegree].
-  final int inversion;
-
-  /// The quality of the [Chord] above this [ScaleDegree].
-  final ImperfectQuality? quality;
-
   /// Creates a new [ScaleDegree].
-  const ScaleDegree(
-    this.ordinal, {
-    this.quality,
-    this.inversion = 0,
-  }) : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
-       assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
+  const ScaleDegree(this.ordinal)
+    : assert(ordinal > 0, 'Ordinal must be greater than zero.');
 
   /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);
@@ -62,57 +49,15 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.parse('I') == .i.major
-  /// ScaleDegree.parse('II6') == ii.major.inverted
-  /// ScaleDegree.parse('vi') == .vi.minor
+  /// ScaleDegree.parse('I') == .i
+  /// ScaleDegree.parse('ii') == .ii
+  /// ScaleDegree.parse('vi') == .vi
   /// ScaleDegree.parse('z') // throws a FormatException
   /// ```
   factory ScaleDegree.parse(
     String source, {
     List<StringParser<ScaleDegree>> chain = parsers,
   }) => chain.parse(source);
-
-  /// This [ScaleDegree] inverted.
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
-  /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
-  /// ```
-  ScaleDegree get inverted => copyWith(inversion: inversion + 1);
-
-  /// This [ScaleDegree] as [ImperfectQuality.major].
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.ii.major == const ScaleDegree(2, quality: .major)
-  /// ```
-  ScaleDegree get major => copyWith(quality: .major);
-
-  /// This [ScaleDegree] as [ImperfectQuality.minor].
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.v.minor == const ScaleDegree(5, quality: .minor)
-  /// ```
-  ScaleDegree get minor => copyWith(quality: .minor);
-
-  /// Creates a new [ScaleDegree] from this one by updating individual
-  /// properties.
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.i.copyWith(inversion: 2) == .i.inverted.inverted
-  /// ```
-  ScaleDegree copyWith({
-    int? ordinal,
-    ImperfectQuality? quality,
-    int? inversion,
-  }) => ScaleDegree(
-    ordinal ?? this.ordinal,
-    quality: quality ?? this.quality,
-    inversion: inversion ?? this.inversion,
-  );
 
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
@@ -126,32 +71,15 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   ]) => formatter.format(this);
 
   @override
-  String toString() =>
-      '$runtimeType(ordinal: $ordinal, inversion: $inversion, '
-      'quality: $quality)';
+  String toString() => '$runtimeType(ordinal: $ordinal)';
 
   @override
   bool operator ==(Object other) =>
-      other is ScaleDegree &&
-      ordinal == other.ordinal &&
-      inversion == other.inversion &&
-      quality == other.quality;
+      other is ScaleDegree && ordinal == other.ordinal;
 
   @override
-  int get hashCode => Object.hash(ordinal, inversion, quality);
+  int get hashCode => ordinal.hashCode;
 
   @override
-  int compareTo(ScaleDegree other) => compareMultiple([
-    () => ordinal.compareTo(other.ordinal),
-    () => inversion.compareTo(other.inversion),
-    () {
-      if (quality != null && other.quality != null) {
-        return quality!.compareTo(other.quality!);
-      }
-      if (quality != null) return -1;
-      if (other.quality != null) return 1;
-
-      return 0;
-    },
-  ]);
+  int compareTo(ScaleDegree other) => ordinal.compareTo(other.ordinal);
 }
