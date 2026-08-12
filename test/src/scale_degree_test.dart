@@ -24,7 +24,7 @@ void main() {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
         expect(ScaleDegree.neapolitanSixth.isRaised, isFalse);
-        expect(const ScaleDegree(3, semitonesDelta: 1).isRaised, isTrue);
+        expect(const ScaleDegree(3, accidental: .sharp).isRaised, isTrue);
       });
     });
 
@@ -32,18 +32,16 @@ void main() {
       test('returns whether this ScaleDegree is lowered', () {
         expect(ScaleDegree.iv.isLowered, isFalse);
         expect(ScaleDegree.neapolitanSixth.isLowered, isTrue);
-        // ignore: avoid_redundant_argument_values testing for the web
-        expect(const ScaleDegree(10, semitonesDelta: -0).isLowered, isFalse);
-        expect(const ScaleDegree(6, semitonesDelta: 1).isLowered, isFalse);
+        expect(const ScaleDegree(6, accidental: .sharp).isLowered, isFalse);
       });
     });
 
     group('.raised', () {
       test('returns this ScaleDegree raised by 1 semitone', () {
-        expect(ScaleDegree.vi.raised, const ScaleDegree(6, semitonesDelta: 1));
+        expect(ScaleDegree.vi.raised, const ScaleDegree(6, accidental: .sharp));
         expect(
           ScaleDegree.ii.raised.raised,
-          const ScaleDegree(2, semitonesDelta: 2),
+          const ScaleDegree(2, accidental: .doubleSharp),
         );
         expect(ScaleDegree.ii.raised.lowered, ScaleDegree.ii);
       });
@@ -53,11 +51,11 @@ void main() {
       test('returns this ScaleDegree lowered by 1 semitone', () {
         expect(
           ScaleDegree.ii.lowered,
-          const ScaleDegree(2, semitonesDelta: -1),
+          const ScaleDegree(2, accidental: .flat),
         );
         expect(
           ScaleDegree.vi.lowered.lowered,
-          const ScaleDegree(6, semitonesDelta: -2),
+          const ScaleDegree(6, accidental: .doubleFlat),
         );
         expect(ScaleDegree.iii.lowered.raised, ScaleDegree.iii);
       });
@@ -68,7 +66,7 @@ void main() {
         expect(ScaleDegree.ii.inverted, const ScaleDegree(2, inversion: 1));
         expect(
           ScaleDegree.vi.lowered.lowered.inverted.inverted,
-          const ScaleDegree(6, semitonesDelta: -2, inversion: 2),
+          const ScaleDegree(6, accidental: .doubleFlat, inversion: 2),
         );
         expect(
           ScaleDegree.iii.inverted.inverted.inverted,
@@ -96,7 +94,7 @@ void main() {
             2,
             quality: .minor,
             inversion: 1,
-            semitonesDelta: -1,
+            accidental: .flat,
           ),
         );
         expect(
@@ -113,12 +111,13 @@ void main() {
           expect(
             ScaleDegree.iii.toString(),
             'ScaleDegree(ordinal: 3, inversion: 0, quality: null, '
-            'semitonesDelta: 0)',
+            'accidental: Accidental(semitones: 0))',
           );
           expect(
             ScaleDegree.neapolitanSixth.toString(),
             'ScaleDegree(ordinal: 2, inversion: 1, '
-            'quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)',
+            'quality: ImperfectQuality(semitones: 1), '
+            'accidental: Accidental(semitones: -1))',
           );
         },
       );
@@ -134,14 +133,14 @@ void main() {
             2,
             quality: .major,
             inversion: 1,
-            semitonesDelta: -1,
+            accidental: .flat,
           ).hashCode,
           // ignore: prefer_const_constructors test
           ScaleDegree(
             2,
             quality: .major,
             inversion: 1,
-            semitonesDelta: -1,
+            accidental: .flat,
           ).hashCode,
         );
       });
@@ -159,14 +158,14 @@ void main() {
           .i,
           .neapolitanSixth,
           .iii,
-          const ScaleDegree(6, inversion: 1, semitonesDelta: -1),
+          const ScaleDegree(6, inversion: 1, accidental: .flat),
         };
         collection.addAll(collection);
         expect(collection.toList(), const <ScaleDegree>[
           .i,
           .neapolitanSixth,
           .iii,
-          ScaleDegree(6, inversion: 1, semitonesDelta: -1),
+          ScaleDegree(6, inversion: 1, accidental: .flat),
         ]);
       });
     });
@@ -174,23 +173,23 @@ void main() {
     group('.compareTo()', () {
       test('sorts ScaleDegrees in a collection', () {
         final orderedSet = SplayTreeSet<ScaleDegree>.of({
-          const ScaleDegree(2, inversion: 2, semitonesDelta: -1),
+          const ScaleDegree(2, inversion: 2, accidental: .flat),
           .vii,
           .ii,
           .neapolitanSixth,
           .i,
           const ScaleDegree(2, quality: .major),
           const ScaleDegree(2, quality: .minor),
-          const ScaleDegree(2, quality: .major, semitonesDelta: 1),
+          const ScaleDegree(2, quality: .major, accidental: .sharp),
         });
         expect(orderedSet.toList(), const <ScaleDegree>[
           .i,
           .neapolitanSixth,
-          ScaleDegree(2, inversion: 2, semitonesDelta: -1),
+          ScaleDegree(2, inversion: 2, accidental: .flat),
           ScaleDegree(2, quality: .minor),
           ScaleDegree(2, quality: .major),
           .ii,
-          ScaleDegree(2, quality: .major, semitonesDelta: 1),
+          ScaleDegree(2, quality: .major, accidental: .sharp),
           .vii,
         ]);
       });
@@ -219,8 +218,8 @@ void main() {
         expect(ScaleDegree.neapolitanSixth.format(), '♭II6');
         expect(const ScaleDegree(3, inversion: 2).format(), 'III64');
         expect(const ScaleDegree(4, quality: .minor).format(), 'iv');
-        expect(const ScaleDegree(6, semitonesDelta: 1).format(), '♯VI');
-        expect(const ScaleDegree(10, semitonesDelta: -2).format(), '𝄫10');
+        expect(const ScaleDegree(6, accidental: .sharp).format(), '♯VI');
+        expect(const ScaleDegree(10, accidental: .doubleFlat).format(), '𝄫10');
         expect(ScaleDegree.vii.format(), 'VII');
       });
     });
