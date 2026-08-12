@@ -75,7 +75,6 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// HarmonicFunction.vi.isLowered == false
   /// HarmonicFunction.neapolitanSixth.isLowered == true
   /// ```
-  // using < 0 instead of isNegative to avoid -0 being treated as negative
   bool get isLowered => accidental.isFlat;
 
   /// This [HarmonicFunction] raised by 1 semitone.
