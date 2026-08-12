@@ -1,5 +1,9 @@
 import 'package:collection/collection.dart'
-    show IterableExtension, ListEquality, UnmodifiableListView;
+    show
+        IterableComparableExtension,
+        IterableExtension,
+        ListEquality,
+        UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
@@ -151,6 +155,100 @@ class ChordPattern
   ///   == const <Interval>[.m7, .M9]
   /// ```
   List<Interval> get modifiers => _intervals.sublist(2);
+
+  /// The total number of notes in this [ChordPattern], including the root.
+  int get _noteCount => _intervals.length + 1;
+
+  /// [_intervals] sorted in ascending order.
+  ///
+  /// [ChordPattern]s built through the provided factories and [add] are
+  /// always kept sorted, but nothing prevents constructing one directly
+  /// from a literal in an arbitrary order (e.g. mirroring an open-position
+  /// keyboard disposition). Every inversion-related member reads from this
+  /// getter rather than [_intervals] so the result is unaffected by how
+  /// the pattern was built.
+  List<Interval> get _sortedIntervals => _intervals.sorted();
+
+  /// Whether [_sortedIntervals] forms an uninterrupted stack of thirds
+  /// above the root — 3rd, 5th, 7th, 9th, 11th, 13th, and so on — meaning
+  /// this [ChordPattern] is in root position.
+  bool get isRootPosition => _sortedIntervals.indexed.every(
+    (entry) => entry.$2.size == Size.third + 2 * entry.$1,
+  );
+
+  /// This [ChordPattern] rotated to its next inversion: the lowest
+  /// [Interval] is moved above the octave (becoming the new top note) and
+  /// every remaining [Interval] is re-expressed from that new bass.
+  ///
+  /// This is derived solely from the interval content of [_sortedIntervals]
+  /// — nothing about the resulting shape is hardcoded — so it holds for
+  /// triads, seventh chords, and extended (9th/11th/13th) chords alike.
+  ///
+  /// See [Inversion § Chords](https://en.wikipedia.org/wiki/Inversion_(music)#Chords).
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.inverted == const ChordPattern([.m3, .m6])
+  /// ChordPattern.majorTriad.inverted.inverted
+  ///   == const ChordPattern([.P4, .M6])
+  /// ChordPattern.majorTriad.add7().inverted
+  ///   == const ChordPattern([.m3, .d5, .m6])
+  /// ```
+  ChordPattern get inverted {
+    final sorted = _sortedIntervals;
+    if (sorted.isEmpty) return this;
+
+    // The closest note to the root becomes the new bass: every other note
+    // is re-measured from it, and the old root reappears above the octave.
+    final newBass = sorted.first;
+
+    // Re-sorted because, for extended chords, a compound interval (e.g. a
+    // 9th) can end up smaller than `P8 - newBass` once re-measured from the
+    // new bass, so simple append order no longer guarantees ascending order.
+    return ChordPattern(
+      [
+        for (final interval in sorted.skip(1)) interval - newBass,
+        Interval.P8 - newBass,
+      ]..sort(),
+    );
+  }
+
+  /// The inversion number of this [ChordPattern], calculated on demand from
+  /// [intervals] rather than kept as separate state.
+  ///
+  /// `0` is root position. `1` is the first inversion (the original root
+  /// is now the topmost note), `2` is the second inversion, and so on up
+  /// to `_noteCount - 1`.
+  ///
+  /// The result is obtained by repeatedly applying [inverted] until an
+  /// uninterrupted stack of thirds — i.e. root position, see
+  /// [isRootPosition] — is reached, then working back from how many
+  /// rotations that took. Since chord inversion is only a meaningful
+  /// concept for chords stacked in thirds, calling this on a non-tertian
+  /// [ChordPattern] (e.g. quartal or added-tone chords) throws a
+  /// [StateError].
+  ///
+  /// Example:
+  /// ```dart
+  /// const ChordPattern([.m3, .P5]).inversion == 0
+  /// ChordPattern.majorTriad.inverted.inversion == 1
+  /// ChordPattern.majorTriad.inverted.inverted.inversion == 2
+  /// ```
+  int get inversion {
+    final noteCount = _noteCount;
+    if (noteCount <= 1) return 0;
+
+    var pattern = this;
+    for (var rotations = 0; rotations < noteCount; rotations++) {
+      if (pattern.isRootPosition) return (noteCount - rotations) % noteCount;
+      pattern = pattern.inverted;
+    }
+
+    throw StateError(
+      'Cannot determine the inversion of a non-tertian ChordPattern '
+      '(intervals are not stacked in thirds): $this',
+    );
+  }
 
   /// This [ChordPattern] with an [ImperfectQuality.diminished] root triad.
   ///
