@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
 
+import '../accidental/accidental.dart';
+import '../accidental/symbol_accidental_notation.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
@@ -15,13 +17,20 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The [ScaleDegree] of this [HarmonicFunction].
   final ScaleDegree scaleDegree;
 
+  /// The chromatic alteration of this this [ScaleDegree].
+  final Accidental accidental;
+
   /// The tonicization of this [HarmonicFunction].
   ///
   /// See [Tonicization](https://en.wikipedia.org/wiki/Tonicization).
   final HarmonicFunction? tonicization;
 
   /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
-  const HarmonicFunction(this.scaleDegree, {this.tonicization});
+  const HarmonicFunction(
+    this.scaleDegree, {
+    this.accidental = .natural,
+    this.tonicization,
+  });
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction(.i);
@@ -30,7 +39,10 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   static const ii = HarmonicFunction(.ii);
 
   /// A neapolitan sixth [HarmonicFunction].
-  static const neapolitanSixth = HarmonicFunction(.neapolitanSixth);
+  static const neapolitanSixth = HarmonicFunction(
+    ScaleDegree(2, quality: .major, inversion: 1),
+    accidental: .flat,
+  );
 
   /// A III degree [HarmonicFunction].
   static const iii = HarmonicFunction(.iii);
@@ -47,6 +59,42 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// A VII degree [HarmonicFunction].
   static const vii = HarmonicFunction(.vii);
 
+  /// Whether this [HarmonicFunction] is raised.
+  ///
+  /// Example:
+  /// ```dart
+  /// HarmonicFunction.ii.raised.isRaised == true
+  /// HarmonicFunction.neapolitanSixth.isRaised == false
+  /// ```
+  bool get isRaised => accidental.isSharp;
+
+  /// Whether this [HarmonicFunction] is lowered.
+  ///
+  /// Example:
+  /// ```dart
+  /// HarmonicFunction.vi.isLowered == false
+  /// HarmonicFunction.neapolitanSixth.isLowered == true
+  /// ```
+  bool get isLowered => accidental.isFlat;
+
+  /// This [HarmonicFunction] raised by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// HarmonicFunction.vi.raised
+  ///   == const HarmonicFunction(.iv, accidental: .sharp)
+  /// ```
+  HarmonicFunction get raised => copyWith(accidental: accidental + 1);
+
+  /// This [HarmonicFunction] lowered by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// HarmonicFunction.ii.lowered
+  ///   == const HarmonicFunction(.ii, accidental: .flat)
+  /// ```
+  HarmonicFunction get lowered => copyWith(accidental: accidental - 1);
+
   /// Appends [harmonicFunction] as the [tonicization] of this
   /// [HarmonicFunction].
   ///
@@ -62,9 +110,11 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// properties.
   HarmonicFunction copyWith({
     ScaleDegree? scaleDegree,
+    Accidental? accidental,
     HarmonicFunction? tonicization,
   }) => HarmonicFunction(
     scaleDegree ?? this.scaleDegree,
+    accidental: accidental ?? this.accidental,
     tonicization: tonicization ?? this.tonicization,
   );
 
@@ -77,12 +127,14 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// ```
   @override
   String format() =>
+      '${accidental.format(const SymbolAccidentalNotation(showNatural: false))}'
       '${scaleDegree.format()}'
       '${tonicization == null ? '' : '/${tonicization?.format()}'}';
 
   @override
   String toString() =>
-      '$runtimeType(scaleDegree: $scaleDegree, tonicization: $tonicization)';
+      '$runtimeType(scaleDegree: $scaleDegree, accidental: $accidental, '
+      'tonicization: $tonicization)';
 
   /// Appends [harmonicFunction] as the [harmonicFunction] of this
   /// [HarmonicFunction].
