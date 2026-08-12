@@ -21,7 +21,6 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   static const _inversions = ['6', '64'];
 
   static final _regExp = RegExp(
-    '(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
     '(?<romanNumeral>${_romanNumerals.join('|')})'
     '(?<inversion>${_inversions.join('|')})?\$',
     caseSensitive: false,
@@ -44,17 +43,12 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
 
   @override
   ScaleDegree parseMatch(RegExpMatch match) {
-    final accidentalPart = match.namedGroup('accidental')!;
-    final accidental = accidentalPart.isNotEmpty
-        ? Accidental.parse(accidentalPart, chain: [accidentalNotation])
-        : Accidental.natural;
     final numeral = match.namedGroup('romanNumeral')!;
 
     return ScaleDegree(
       _romanNumerals.indexOf(numeral.toLowerCase()) + 1,
       inversion: _inversions.indexOf(match.namedGroup('inversion') ?? '') + 1,
       quality: numeral.isUpperCase ? .major : .minor,
-      accidental: accidental,
     );
   }
 
@@ -62,8 +56,6 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   String format(ScaleDegree scaleDegree) {
     final buffer = StringBuffer()
       ..writeAll([
-        if (!scaleDegree.accidental.isNatural)
-          accidentalNotation.format(scaleDegree.accidental),
         if (scaleDegree.quality case ImperfectQuality(
           :final semitones,
         ) when semitones <= 0)
