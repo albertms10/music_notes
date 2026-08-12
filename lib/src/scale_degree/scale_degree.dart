@@ -103,7 +103,6 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// Example:
   /// ```dart
   /// ScaleDegree.i.copyWith(inversion: 2) == .i.inverted.inverted
-  /// ScaleDegree.vi.copyWith(accidental: .flat) == .vi.lowered
   /// ```
   ScaleDegree copyWith({
     int? ordinal,
@@ -120,8 +119,6 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// Example:
   /// ```dart
   /// ScaleDegree.iii.format() == 'III'
-  /// ScaleDegree.vi.minor.lowered.format() == '♭vi'
-  /// ScaleDegree.neapolitanSixth.format() == '♭II6'
   /// ```
   @override
   String format([

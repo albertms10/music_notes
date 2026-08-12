@@ -92,8 +92,8 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale.degree(.ii.lowered) == .d.flat
-  /// Note.c.minor.scale.degree(.v) == .g
+  /// Note.c.major.scale.degree(.ii) == .d
+  /// Note.f.minor.scale.degree(.v) == .c
   /// Note.a.flat.major.scale.degree(.vi) == .f
   /// ```
   T degree(ScaleDegree scaleDegree) => _degrees[scaleDegree.ordinal - 1];
