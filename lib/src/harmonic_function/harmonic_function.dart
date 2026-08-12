@@ -16,6 +16,8 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   final ScaleDegree scaleDegree;
 
   /// The tonicization of this [HarmonicFunction].
+  ///
+  /// See [Tonicization](https://en.wikipedia.org/wiki/Tonicization).
   final HarmonicFunction? tonicization;
 
   /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
