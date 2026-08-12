@@ -50,15 +50,15 @@ void main() {
             HarmonicFunction.neapolitanSixth.toString(),
             '''
 HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), semitonesDelta: -1)
+\tScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: -1))
 ])''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
 HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0),
-\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), semitonesDelta: 0)
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)),
+\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0))
 ])''',
           );
         },
@@ -77,12 +77,12 @@ HarmonicFunction(scaleDegrees: [
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
             // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1, semitonesDelta: -1),
+            ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
           ]).hashCode,
           // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
           HarmonicFunction([
             // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1, semitonesDelta: -1),
+            ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
           ]).hashCode,
         );
       });

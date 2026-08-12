@@ -6,7 +6,6 @@ import '../chord/chord.dart';
 import '../enharmonic.dart';
 import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
-import '../quality/quality.dart';
 import '../scalable.dart';
 import '../scale_degree/scale_degree.dart';
 import '../scale_pattern/scale_pattern.dart';
@@ -98,14 +97,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(.vi) == .f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = _degrees[scaleDegree.ordinal - 1];
-    if (scaleDegree.semitonesDelta == 0) return scalable;
+    final ScaleDegree(:ordinal, :accidental) = scaleDegree;
+    final scalable = _degrees[ordinal - 1];
+    if (accidental.isNatural) return scalable;
 
     return scalable.transposeBy(
       .perfect(
         .unison,
-        PerfectQuality(scaleDegree.semitonesDelta.abs()),
-      ).withDescending(scaleDegree.semitonesDelta.isNegative),
+        .new(accidental.semitones.abs()),
+      ).withDescending(accidental.isFlat),
     );
   }
 

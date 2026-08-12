@@ -54,7 +54,7 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
       _romanNumerals.indexOf(numeral.toLowerCase()) + 1,
       inversion: _inversions.indexOf(match.namedGroup('inversion') ?? '') + 1,
       quality: numeral.isUpperCase ? .major : .minor,
-      semitonesDelta: accidental.semitones,
+      accidental: accidental,
     );
   }
 
@@ -62,8 +62,8 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   String format(ScaleDegree scaleDegree) {
     final buffer = StringBuffer()
       ..writeAll([
-        if (scaleDegree.semitonesDelta != 0)
-          accidentalNotation.format(Accidental(scaleDegree.semitonesDelta)),
+        if (!scaleDegree.accidental.isNatural)
+          accidentalNotation.format(scaleDegree.accidental),
         if (scaleDegree.quality case ImperfectQuality(
           :final semitones,
         ) when semitones <= 0)
