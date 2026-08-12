@@ -1,5 +1,10 @@
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/music_notes.dart';
+
+import '../accidental/accidental.dart';
+import '../accidental/symbol_accidental_notation.dart';
+import '../notation_system/notation_system.dart';
+import '../scale/scale.dart';
+import '../scale_degree/scale_degree.dart';
 
 /// A harmonic function.
 ///
