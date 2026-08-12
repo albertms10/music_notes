@@ -1,7 +1,4 @@
-import 'package:collection/collection.dart'
-    show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/utils.dart';
 
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
@@ -15,37 +12,59 @@ import '../scale_degree/scale_degree.dart';
 /// * [ScaleDegree].
 @immutable
 class HarmonicFunction implements Formattable<HarmonicFunction> {
-  final List<ScaleDegree> _scaleDegrees;
+  /// The [ScaleDegree] of this [HarmonicFunction].
+  final ScaleDegree scaleDegree;
 
-  /// The scale degrees that define this [HarmonicFunction].
-  List<ScaleDegree> get scaleDegrees => UnmodifiableListView(_scaleDegrees);
+  /// The tonicization of this [HarmonicFunction].
+  final HarmonicFunction? tonicization;
 
-  /// Creates a new [HarmonicFunction] from [_scaleDegrees].
-  const HarmonicFunction(this._scaleDegrees);
+  /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
+  const HarmonicFunction(this.scaleDegree, {this.tonicization});
 
   /// A I (tonic) degree [HarmonicFunction].
-  static const i = HarmonicFunction([.i]);
+  static const i = HarmonicFunction(.i);
 
   /// A II degree [HarmonicFunction].
-  static const ii = HarmonicFunction([.ii]);
+  static const ii = HarmonicFunction(.ii);
 
   /// A neapolitan sixth [HarmonicFunction].
-  static const neapolitanSixth = HarmonicFunction([.neapolitanSixth]);
+  static const neapolitanSixth = HarmonicFunction(.neapolitanSixth);
 
   /// A III degree [HarmonicFunction].
-  static const iii = HarmonicFunction([.iii]);
+  static const iii = HarmonicFunction(.iii);
 
   /// A IV degree [HarmonicFunction].
-  static const iv = HarmonicFunction([.iv]);
+  static const iv = HarmonicFunction(.iv);
 
   /// A dominant V degree [HarmonicFunction].
-  static const dominantV = HarmonicFunction([ScaleDegree(5, quality: .major)]);
+  static const dominantV = HarmonicFunction(ScaleDegree(5, quality: .major));
 
   /// A VI degree [HarmonicFunction].
-  static const vi = HarmonicFunction([.vi]);
+  static const vi = HarmonicFunction(.vi);
 
   /// A VII degree [HarmonicFunction].
-  static const vii = HarmonicFunction([.vii]);
+  static const vii = HarmonicFunction(.vii);
+
+  /// Appends [harmonicFunction] as the [tonicization] of this
+  /// [HarmonicFunction].
+  ///
+  /// Example:
+  /// ```dart
+  /// HarmonicFunction.v.on(.ii) == HarmonicFunction(.v, tonicization: .ii)
+  /// ```
+  HarmonicFunction on(HarmonicFunction harmonicFunction) => tonicization == null
+      ? copyWith(tonicization: harmonicFunction)
+      : copyWith(tonicization: tonicization!.on(harmonicFunction));
+
+  /// Creates a new [HarmonicFunction] from this one by updating individual
+  /// properties.
+  HarmonicFunction copyWith({
+    ScaleDegree? scaleDegree,
+    HarmonicFunction? tonicization,
+  }) => HarmonicFunction(
+    scaleDegree ?? this.scaleDegree,
+    tonicization: tonicization ?? this.tonicization,
+  );
 
   /// The string representation of this [HarmonicFunction].
   ///
@@ -55,31 +74,33 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// (HarmonicFunction.neapolitanSixth / .iv).format() == '♭II6/IV'
   /// ```
   @override
-  String format() => _scaleDegrees.map((d) => d.format()).join('/');
+  String format() =>
+      '${scaleDegree.format()}'
+      '${tonicization == null ? '' : '/${tonicization?.format()}'}';
 
   @override
   String toString() =>
-      '$runtimeType(scaleDegrees: ${scaleDegrees.prettyToString()})';
+      '$runtimeType(scaleDegree: $scaleDegree, tonicization: $tonicization)';
 
-  /// Returns a new [HarmonicFunction] relating this [HarmonicFunction] to
-  /// [other].
+  /// Appends [harmonicFunction] as the [harmonicFunction] of this
+  /// [HarmonicFunction].
+  ///
+  /// Alias of [on].
   ///
   /// Example:
   /// ```dart
   /// HarmonicFunction.dominantV / .dominantV / .dominantV
   ///   == HarmonicFunction([.v.major, .v.major, .v.major])
   /// ```
-  HarmonicFunction operator /(HarmonicFunction other) =>
-      HarmonicFunction([..._scaleDegrees, ...other._scaleDegrees]);
+  HarmonicFunction operator /(HarmonicFunction harmonicFunction) =>
+      on(harmonicFunction);
 
   @override
   bool operator ==(Object other) =>
       other is HarmonicFunction &&
-      const ListEquality<ScaleDegree>().equals(
-        _scaleDegrees,
-        other._scaleDegrees,
-      );
+      scaleDegree == other.scaleDegree &&
+      tonicization == other.tonicization;
 
   @override
-  int get hashCode => Object.hashAll(_scaleDegrees);
+  int get hashCode => Object.hash(scaleDegree, tonicization);
 }

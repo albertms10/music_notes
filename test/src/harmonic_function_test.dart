@@ -1,30 +1,49 @@
-import 'dart:collection' show UnmodifiableListView;
-
 import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('HarmonicFunction', () {
-    group('.scaleDegrees', () {
-      test('returns an unmodifiable collection', () {
-        expect(
-          HarmonicFunction.i.scaleDegrees,
-          isA<UnmodifiableListView<ScaleDegree>>(),
-        );
-      });
+    group('.copyWith()', () {
+      test(
+        'creates a new HarmonicFunction by updating individual properties',
+        () {
+          expect(HarmonicFunction.iv.copyWith(), HarmonicFunction.iv);
+          expect(
+            HarmonicFunction.i.copyWith(scaleDegree: .iii),
+            HarmonicFunction.iii,
+          );
+          expect(
+            HarmonicFunction.ii.copyWith(tonicization: .iii),
+            HarmonicFunction.ii / .iii,
+          );
+          expect(
+            HarmonicFunction.dominantV.on(.vi).copyWith(scaleDegree: .ii),
+            HarmonicFunction.ii / .vi,
+          );
+        },
+      );
     });
 
     group('operator /()', () {
       test('returns the HarmonicFunction relating this to other', () {
         expect(
           HarmonicFunction.dominantV / .dominantV,
-          HarmonicFunction([.v.major, .v.major]),
+          HarmonicFunction(.v.major, tonicization: HarmonicFunction(.v.major)),
         );
-        expect(HarmonicFunction.ii / .ii, const HarmonicFunction([.ii, .ii]));
-        expect(HarmonicFunction.vi / .iv, const HarmonicFunction([.vi, .iv]));
+        expect(
+          HarmonicFunction.ii / .ii,
+          const HarmonicFunction(.ii, tonicization: .ii),
+        );
+        expect(
+          HarmonicFunction.vi / .iv,
+          const HarmonicFunction(.vi, tonicization: .iv),
+        );
         expect(
           HarmonicFunction.i / .ii / .iii,
-          const HarmonicFunction([.i, .ii, .iii]),
+          const HarmonicFunction(
+            .i,
+            tonicization: HarmonicFunction(.ii, tonicization: .iii),
+          ),
         );
       });
     });
@@ -35,7 +54,7 @@ void main() {
         expect(HarmonicFunction.vii.format(), 'VII');
         expect((HarmonicFunction.dominantV / .dominantV).format(), 'V/V');
         expect(
-          (HarmonicFunction([.iv.minor]) / .neapolitanSixth / .dominantV)
+          (HarmonicFunction(.iv.minor) / .neapolitanSixth / .dominantV)
               .format(),
           'iv/♭II6/V',
         );
@@ -49,17 +68,12 @@ void main() {
           expect(
             HarmonicFunction.neapolitanSixth.toString(),
             '''
-HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: -1))
-])''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: -1)), tonicization: null)''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
-HarmonicFunction(scaleDegrees: [
-\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)),
-\tScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0))
-])''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)), tonicization: null))''',
           );
         },
       );
@@ -68,22 +82,22 @@ HarmonicFunction(scaleDegrees: [
     group('.hashCode', () {
       test('returns the same hashCode for equal HarmonicFunctions', () {
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([.i]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([.i]).hashCode,
+          // ignore: prefer_const_constructors test
+          HarmonicFunction(.i).hashCode,
+          // ignore: prefer_const_constructors test
+          HarmonicFunction(.i).hashCode,
         );
         expect(
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([
+          // ignore: prefer_const_constructors test
+          HarmonicFunction(
             // ignore: prefer_const_constructors test
             ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
-          ]).hashCode,
-          // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables test
-          HarmonicFunction([
+          ).hashCode,
+          // ignore: prefer_const_constructors test
+          HarmonicFunction(
             // ignore: prefer_const_constructors test
             ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
-          ]).hashCode,
+          ).hashCode,
         );
       });
 
@@ -93,7 +107,7 @@ HarmonicFunction(scaleDegrees: [
           isNot(HarmonicFunction.ii.hashCode),
         );
         expect(
-          const HarmonicFunction([.vi, .i]).hashCode,
+          const HarmonicFunction(.vi, tonicization: .i).hashCode,
           isNot(HarmonicFunction.vi.hashCode),
         );
       });
