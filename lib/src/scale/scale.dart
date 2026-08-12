@@ -128,18 +128,33 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
   ///   == Note.g.minorTriad
   /// ```
-  Chord<T> functionChord(HarmonicFunction harmonicFunction) => harmonicFunction
-      .scaleDegrees
-      .skip(1)
-      .toList(growable: false)
-      .reversed
-      .fold(
-        this,
-        (scale, scaleDegree) => ScalePattern.fromChordPattern(
-          scale.pattern.degreePattern(scaleDegree),
-        ).on(scale.degree(scaleDegree)),
-      )
-      .degreeChord(harmonicFunction.scaleDegrees.first);
+  Chord<T> functionChord(HarmonicFunction harmonicFunction) => scaleOf(
+    harmonicFunction.tonicization,
+  ).degreeChord(harmonicFunction.scaleDegree);
+
+  /// Returns the tonal scale established by [harmonicFunction] relative to this
+  /// [Scale].
+  ///
+  /// The tonicization chain is resolved recursively, with each harmonic
+  /// function establishing a new tonal context from its
+  /// [HarmonicFunction.scaleDegree].
+  /// If [harmonicFunction] is `null`, this scale is returned unchanged.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.scaleOf(.v) == Note.g.major.scale
+  /// Note.f.minor.scale.scaleOf(.iii) == Note.a.flat.major.scale
+  /// ```
+  Scale<T> scaleOf(HarmonicFunction? harmonicFunction) {
+    if (harmonicFunction == null) return this;
+
+    final HarmonicFunction(:scaleDegree, :tonicization) = harmonicFunction;
+    final scale = scaleOf(tonicization);
+
+    return ScalePattern.fromChordPattern(
+      scale.pattern.degreePattern(scaleDegree),
+    ).on(scale.degree(scaleDegree));
+  }
 
   /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
