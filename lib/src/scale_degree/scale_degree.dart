@@ -63,7 +63,7 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// Example:
   /// ```dart
   /// ScaleDegree.parse('I') == .i.major
-  /// ScaleDegree.parse('bII6') == .neapolitanSixth
+  /// ScaleDegree.parse('II6') == ii.major.inverted
   /// ScaleDegree.parse('vi') == .vi.minor
   /// ScaleDegree.parse('z') // throws a FormatException
   /// ```

@@ -32,7 +32,6 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   /// ```dart
   /// ScaleDegree.i.romanNumeral == 'I'
   /// ScaleDegree.vii.romanNumeral == 'VII'
-  /// ScaleDegree.neapolitanSixth.romanNumeral == 'II'
   /// ```
   String _romanNumeral(ScaleDegree scaleDegree) =>
       _romanNumerals.elementAtOrNull(scaleDegree.ordinal - 1)?.toUpperCase() ??
