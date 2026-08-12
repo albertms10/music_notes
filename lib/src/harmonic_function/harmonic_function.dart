@@ -3,7 +3,10 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../chord/chord.dart';
+import '../key/key.dart';
 import '../notation_system/notation_system.dart';
+import '../note/note.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
 
@@ -82,4 +85,27 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
 
   @override
   int get hashCode => Object.hashAll(_scaleDegrees);
+}
+
+/// A [HarmonicFunction] list extension.
+extension HarmonicFunctionList on List<HarmonicFunction> {
+  /// The [HarmonicProgression] on the given [key].
+  HarmonicProgression on(Key key) => HarmonicProgression(this, key: key);
+}
+
+/// A representation of a harmonic progression.
+class HarmonicProgression {
+  /// Creates a new [HarmonicProgression].
+  const HarmonicProgression(this.functions, {this.key = const Key(.c, .major)});
+
+  /// The list of [HarmonicFunction]s of this [HarmonicProgression].
+  final List<HarmonicFunction> functions;
+
+  /// The [Key] of this [HarmonicProgression].
+  final Key key;
+
+  /// The resolved [Chord]s of this [HarmonicProgression].
+  List<Chord<Note>> get chords => [
+    for (final function in functions) key.scale.functionChord(function),
+  ];
 }

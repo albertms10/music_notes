@@ -2,7 +2,7 @@ import 'package:music_notes/music_notes.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('NotationSystem', () {
+  group('StringParserChain', () {
     group('.firstMatchingParser()', () {
       test('returns the first parser in the chain that matches source', () {
         const chain = [EnglishNoteNotation(), GermanNoteNotation()];
