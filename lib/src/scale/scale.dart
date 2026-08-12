@@ -92,11 +92,22 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.c.major.scale.degree(.ii) == .d
-  /// Note.f.minor.scale.degree(.v) == .c
+  /// Note.c.major.scale.degree(.ii.lowered) == .d.flat
+  /// Note.c.minor.scale.degree(.v) == .g
   /// Note.a.flat.major.scale.degree(.vi) == .f
   /// ```
-  T degree(ScaleDegree scaleDegree) => _degrees[scaleDegree.ordinal - 1];
+  T degree(ScaleDegree scaleDegree) {
+    final ScaleDegree(:ordinal, :accidental) = scaleDegree;
+    final scalable = _degrees[ordinal - 1];
+    if (accidental.isNatural) return scalable;
+
+    return scalable.transposeBy(
+      .perfect(
+        .unison,
+        .new(accidental.semitones.abs()),
+      ).withDescending(accidental.isFlat),
+    );
+  }
 
   /// The [Chord] for the [scaleDegree] of this [Scale].
   ///

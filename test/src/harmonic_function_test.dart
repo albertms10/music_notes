@@ -3,56 +3,6 @@ import 'package:test/test.dart';
 
 void main() {
   group('HarmonicFunction', () {
-    group('.isRaised', () {
-      test('returns whether this HarmonicFunction is raised', () {
-        expect(HarmonicFunction.ii.isRaised, isFalse);
-        expect(HarmonicFunction.neapolitanSixth.isRaised, isFalse);
-        expect(
-          const HarmonicFunction(.iii, accidental: .sharp).isRaised,
-          isTrue,
-        );
-      });
-    });
-
-    group('.isLowered', () {
-      test('returns whether this HarmonicFunction is lowered', () {
-        expect(HarmonicFunction.iv.isLowered, isFalse);
-        expect(HarmonicFunction.neapolitanSixth.isLowered, isTrue);
-        expect(
-          const HarmonicFunction(.vi, accidental: .sharp).isLowered,
-          isFalse,
-        );
-      });
-    });
-
-    group('.raised', () {
-      test('returns this HarmonicFunction raised by 1 semitone', () {
-        expect(
-          HarmonicFunction.vi.raised,
-          const HarmonicFunction(.vi, accidental: .sharp),
-        );
-        expect(
-          HarmonicFunction.ii.raised.raised,
-          const HarmonicFunction(.ii, accidental: .doubleSharp),
-        );
-        expect(HarmonicFunction.ii.raised.lowered, HarmonicFunction.ii);
-      });
-    });
-
-    group('.lowered', () {
-      test('returns this HarmonicFunction lowered by 1 semitone', () {
-        expect(
-          HarmonicFunction.ii.lowered,
-          const HarmonicFunction(.ii, accidental: .flat),
-        );
-        expect(
-          HarmonicFunction.vi.lowered.lowered,
-          const HarmonicFunction(.vi, accidental: .doubleFlat),
-        );
-        expect(HarmonicFunction.iii.lowered.raised, HarmonicFunction.iii);
-      });
-    });
-
     group('.copyWith()', () {
       test(
         'creates a new HarmonicFunction by updating individual properties',
@@ -118,12 +68,12 @@ void main() {
           expect(
             HarmonicFunction.neapolitanSixth.toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: -1), tonicization: null)''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, inversion: 1, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: -1)), tonicization: null)''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: 0), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1)), accidental: Accidental(semitones: 0), tonicization: null))''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: ImperfectQuality(semitones: 1), accidental: Accidental(semitones: 0)), tonicization: null))''',
           );
         },
       );
@@ -141,12 +91,12 @@ HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, inversion: 0, quality: Imp
           // ignore: prefer_const_constructors test
           HarmonicFunction(
             // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1),
+            ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
           ).hashCode,
           // ignore: prefer_const_constructors test
           HarmonicFunction(
             // ignore: prefer_const_constructors test
-            ScaleDegree(2, quality: .major, inversion: 1),
+            ScaleDegree(2, quality: .major, inversion: 1, accidental: .flat),
           ).hashCode,
         );
       });

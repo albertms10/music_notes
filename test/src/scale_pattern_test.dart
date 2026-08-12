@@ -419,6 +419,10 @@ void main() {
         () {
           expect(ScalePattern.major.degreePattern(.i), ChordPattern.majorTriad);
           expect(
+            ScalePattern.major.degreePattern(.neapolitanSixth),
+            ChordPattern.majorTriad,
+          );
+          expect(
             ScalePattern.major.degreePattern(.iv.minor),
             ChordPattern.minorTriad,
           );
