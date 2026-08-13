@@ -231,7 +231,7 @@ Know the intervallic distance between two notes:
 Interval.P5.circleDistance<Note>(from: .c, to: .d);
 // (2, notes: [C, G, D])
 Interval.P4.circleDistance<Note>(from: .b.flat, to: .d);
-// (-4, notes: [B♭, F, D, G, D])
+// (-4, notes: [B♭, F, C, G, D])
 ```
 
 And even explore the circle of fifths or any circle of intervals
