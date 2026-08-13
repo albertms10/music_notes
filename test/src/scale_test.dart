@@ -100,6 +100,8 @@ void main() {
           Note.a,
         );
         expect(ScalePattern.melodicMinor.on(Note.a.flat).degree(.vi), Note.f);
+        expect(Note.c.major.scale.degree(.vi.lowered), Note.a.flat);
+        expect(Note.d.major.scale.degree(.iv.raised), Note.g.sharp);
       });
     });
 
@@ -114,6 +116,10 @@ void main() {
         expect(
           ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(.vi),
           Note.f.diminishedTriad,
+        );
+        expect(
+          Note.c.major.scale.degreeChord(.ii.lowered),
+          Note.d.flat.majorTriad,
         );
       });
     });

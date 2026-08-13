@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart' show immutable;
 
-import '../accidental/accidental.dart';
-import '../accidental/symbol_accidental_notation.dart';
 import '../chord_pattern/chord_pattern.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
@@ -18,9 +16,6 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The [ScaleDegree] of this [HarmonicFunction].
   final ScaleDegree scaleDegree;
 
-  /// The chromatic alteration of this this [ScaleDegree].
-  final Accidental accidental;
-
   /// The [ChordPattern] built on top of [scaleDegree].
   final ChordPattern? pattern;
 
@@ -30,12 +25,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   final HarmonicFunction? tonicization;
 
   /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
-  const HarmonicFunction(
-    this.scaleDegree, {
-    this.accidental = .natural,
-    this.pattern,
-    this.tonicization,
-  });
+  const HarmonicFunction(this.scaleDegree, {this.pattern, this.tonicization});
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction(.i);
@@ -45,8 +35,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
 
   /// A neapolitan sixth [HarmonicFunction].
   static const neapolitanSixth = HarmonicFunction(
-    .ii,
-    accidental: .flat,
+    ScaleDegree(2, accidental: .flat),
     pattern: .new([.m3, .m6]),
   );
 
@@ -65,42 +54,6 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// A VII degree [HarmonicFunction].
   static const vii = HarmonicFunction(.vii);
 
-  /// Whether this [HarmonicFunction] is raised.
-  ///
-  /// Example:
-  /// ```dart
-  /// HarmonicFunction.ii.raised.isRaised == true
-  /// HarmonicFunction.neapolitanSixth.isRaised == false
-  /// ```
-  bool get isRaised => accidental.isSharp;
-
-  /// Whether this [HarmonicFunction] is lowered.
-  ///
-  /// Example:
-  /// ```dart
-  /// HarmonicFunction.vi.isLowered == false
-  /// HarmonicFunction.neapolitanSixth.isLowered == true
-  /// ```
-  bool get isLowered => accidental.isFlat;
-
-  /// This [HarmonicFunction] raised by 1 semitone.
-  ///
-  /// Example:
-  /// ```dart
-  /// HarmonicFunction.vi.raised
-  ///   == const HarmonicFunction(.iv, accidental: .sharp)
-  /// ```
-  HarmonicFunction get raised => copyWith(accidental: accidental + 1);
-
-  /// This [HarmonicFunction] lowered by 1 semitone.
-  ///
-  /// Example:
-  /// ```dart
-  /// HarmonicFunction.ii.lowered
-  ///   == const HarmonicFunction(.ii, accidental: .flat)
-  /// ```
-  HarmonicFunction get lowered => copyWith(accidental: accidental - 1);
-
   /// Appends [harmonicFunction] as the [tonicization] of this
   /// [HarmonicFunction].
   ///
@@ -116,11 +69,9 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// properties.
   HarmonicFunction copyWith({
     ScaleDegree? scaleDegree,
-    Accidental? accidental,
     HarmonicFunction? tonicization,
   }) => HarmonicFunction(
     scaleDegree ?? this.scaleDegree,
-    accidental: accidental ?? this.accidental,
     tonicization: tonicization ?? this.tonicization,
   );
 
@@ -133,14 +84,13 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// ```
   @override
   String format() =>
-      '${accidental.format(const SymbolAccidentalNotation(showNatural: false))}'
       '${scaleDegree.format()}'
       '${tonicization == null ? '' : '/${tonicization?.format()}'}';
 
   @override
   String toString() =>
-      '$runtimeType(scaleDegree: $scaleDegree, accidental: $accidental, '
-      'pattern: $pattern, tonicization: $tonicization)';
+      '$runtimeType(scaleDegree: $scaleDegree, pattern: $pattern, '
+      'tonicization: $tonicization)';
 
   /// Appends [harmonicFunction] as the [harmonicFunction] of this
   /// [HarmonicFunction].
@@ -149,8 +99,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   ///
   /// Example:
   /// ```dart
-  /// HarmonicFunction.dominantV / .dominantV / .dominantV
-  ///   == HarmonicFunction([.v.major, .v.major, .v.major])
+  /// HarmonicFunction.ii / .iv == HarmonicFunction(.ii, tonicization: .iv)
   /// ```
   HarmonicFunction operator /(HarmonicFunction harmonicFunction) =>
       on(harmonicFunction);

@@ -16,8 +16,14 @@ void main() {
       test(
         'returns the verbose string representation of this ScaleDegree',
         () {
-          expect(ScaleDegree.iii.toString(), 'ScaleDegree(ordinal: 3)');
-          expect(ScaleDegree.vi.toString(), 'ScaleDegree(ordinal: 6)');
+          expect(
+            ScaleDegree.iii.toString(),
+            'ScaleDegree(ordinal: 3, accidental: Accidental(semitones: 0))',
+          );
+          expect(
+            ScaleDegree.vi.lowered.toString(),
+            'ScaleDegree(ordinal: 6, accidental: Accidental(semitones: -1))',
+          );
         },
       );
     });
@@ -28,9 +34,9 @@ void main() {
         expect(ScaleDegree(1).hashCode, ScaleDegree(1).hashCode);
         expect(
           // ignore: prefer_const_constructors test
-          ScaleDegree(2).hashCode,
+          ScaleDegree(2, accidental: .flat).hashCode,
           // ignore: prefer_const_constructors test
-          ScaleDegree(2).hashCode,
+          ScaleDegree(2, accidental: .flat).hashCode,
         );
       });
 
@@ -39,16 +45,29 @@ void main() {
       });
 
       test('ignores equal ScaleDegree instances in a Set', () {
-        final collection = <ScaleDegree>{.i, .iii, .vi};
+        final collection = <ScaleDegree>{
+          .i,
+          .iii,
+          const ScaleDegree(6, accidental: .flat),
+        };
         collection.addAll(collection);
-        expect(collection.toList(), const <ScaleDegree>[.i, .iii, .vi]);
+        expect(collection.toList(), const <ScaleDegree>[
+          .i,
+          .iii,
+          ScaleDegree(6, accidental: .flat),
+        ]);
       });
     });
 
     group('.compareTo()', () {
       test('sorts ScaleDegrees in a collection', () {
-        final orderedSet = SplayTreeSet<ScaleDegree>.of({.vii, .ii, .i});
-        expect(orderedSet.toList(), const <ScaleDegree>[.i, .ii, .vii]);
+        final orderedSet = SplayTreeSet<ScaleDegree>.of({
+          .vii,
+          .ii,
+          .ii.lowered,
+          .i,
+        });
+        expect(orderedSet.toList(), <ScaleDegree>[.i, .ii.lowered, .ii, .vii]);
       });
     });
   });
@@ -64,7 +83,7 @@ void main() {
 
       test('parses source as a ScaleDegree', () {
         expect(ScaleDegree.parse('I'), ScaleDegree.i);
-        expect(ScaleDegree.parse('ii'), ScaleDegree.ii);
+        expect(ScaleDegree.parse('bii'), ScaleDegree.ii.lowered);
         expect(ScaleDegree.parse('Vi'), ScaleDegree.vi);
       });
     });
@@ -72,7 +91,9 @@ void main() {
     group('.format()', () {
       test('returns the string representation of this ScaleDegree', () {
         expect(ScaleDegree.i.format(), 'I');
+        expect(ScaleDegree.vii.lowered.format(), '♭VII');
         expect(const ScaleDegree(10).format(), '10');
+        expect(const ScaleDegree(10).raised.format(), '♯10');
         expect(
           ScaleDegree.vii.format(
             const RomanScaleDegreeNotation(useUppercase: false),

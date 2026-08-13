@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
 
+import '../accidental/accidental.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
 import 'roman_scale_degree_notation.dart';
@@ -14,8 +16,11 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
 
+  /// The chromatic alteration of this this [ScaleDegree].
+  final Accidental accidental;
+
   /// Creates a new [ScaleDegree].
-  const ScaleDegree(this.ordinal)
+  const ScaleDegree(this.ordinal, {this.accidental = .natural})
     : assert(ordinal > 0, 'Ordinal must be greater than zero.');
 
   /// The I (tonic) [ScaleDegree].
@@ -59,11 +64,48 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
     List<StringParser<ScaleDegree>> chain = parsers,
   }) => chain.parse(source);
 
+  /// Whether this [ScaleDegree] is raised.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.ii.raised.isRaised == true
+  /// ScaleDegree.neapolitanSixth.isRaised == false
+  /// ```
+  bool get isRaised => accidental.isSharp;
+
+  /// Whether this [ScaleDegree] is lowered.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vi.isLowered == false
+  /// ScaleDegree.neapolitanSixth.isLowered == true
+  /// ```
+  // using < 0 instead of isNegative to avoid -0 being treated as negative
+  bool get isLowered => accidental.isFlat;
+
+  /// This [ScaleDegree] raised by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.vi.raised == const ScaleDegree(6, accidental: .sharp)
+  /// ```
+  ScaleDegree get raised => ScaleDegree(ordinal, accidental: accidental + 1);
+
+  /// This [ScaleDegree] lowered by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// ScaleDegree.ii.lowered == const ScaleDegree(2, accidental: .flat)
+  /// ```
+  ScaleDegree get lowered => ScaleDegree(ordinal, accidental: accidental - 1);
+
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
   /// Example:
   /// ```dart
   /// ScaleDegree.iii.format() == 'III'
+  /// ScaleDegree.iv.raised.format() == '♯IV'
+  /// ScaleDegree.vii.lowered.format() == '♭VII'
   /// ```
   @override
   String format([
@@ -71,15 +113,21 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   ]) => formatter.format(this);
 
   @override
-  String toString() => '$runtimeType(ordinal: $ordinal)';
+  String toString() =>
+      '$runtimeType(ordinal: $ordinal, accidental: $accidental)';
 
   @override
   bool operator ==(Object other) =>
-      other is ScaleDegree && ordinal == other.ordinal;
+      other is ScaleDegree &&
+      ordinal == other.ordinal &&
+      accidental == other.accidental;
 
   @override
-  int get hashCode => ordinal.hashCode;
+  int get hashCode => Object.hash(ordinal, accidental);
 
   @override
-  int compareTo(ScaleDegree other) => ordinal.compareTo(other.ordinal);
+  int compareTo(ScaleDegree other) => compareMultiple([
+    () => ordinal.compareTo(other.ordinal),
+    () => accidental.compareTo(other.accidental),
+  ]);
 }
