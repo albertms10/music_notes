@@ -9,21 +9,13 @@ void main() {
       test('throws an assertion error when arguments are incorrect', () {
         expect(() => ScaleDegree(-1), throwsA(isA<AssertionError>()));
         expect(() => ScaleDegree(0), throwsA(isA<AssertionError>()));
-        expect(
-          () => ScaleDegree(1, inversion: -1),
-          throwsA(isA<AssertionError>()),
-        );
-        expect(
-          () => ScaleDegree(-2, inversion: -3),
-          throwsA(isA<AssertionError>()),
-        );
       });
     });
 
     group('.isRaised', () {
       test('returns whether this ScaleDegree is raised', () {
         expect(ScaleDegree.ii.isRaised, isFalse);
-        expect(ScaleDegree.neapolitanSixth.isRaised, isFalse);
+        expect(ScaleDegree.vi.lowered.isRaised, isFalse);
         expect(const ScaleDegree(3, accidental: .sharp).isRaised, isTrue);
       });
     });
@@ -31,7 +23,7 @@ void main() {
     group('.isLowered', () {
       test('returns whether this ScaleDegree is lowered', () {
         expect(ScaleDegree.iv.isLowered, isFalse);
-        expect(ScaleDegree.neapolitanSixth.isLowered, isTrue);
+        expect(ScaleDegree.vi.raised.isLowered, isFalse);
         expect(const ScaleDegree(6, accidental: .sharp).isLowered, isFalse);
       });
     });
@@ -61,63 +53,17 @@ void main() {
       });
     });
 
-    group('.inverted', () {
-      test('returns this ScaleDegree inverted', () {
-        expect(ScaleDegree.ii.inverted, const ScaleDegree(2, inversion: 1));
-        expect(
-          ScaleDegree.vi.lowered.lowered.inverted.inverted,
-          const ScaleDegree(6, accidental: .doubleFlat, inversion: 2),
-        );
-        expect(
-          ScaleDegree.iii.inverted.inverted.inverted,
-          const ScaleDegree(3, inversion: 3),
-        );
-      });
-    });
-
-    group('.major', () {
-      test('returns this ScaleDegree as major', () {
-        expect(ScaleDegree.ii.major, const ScaleDegree(2, quality: .major));
-        expect(
-          ScaleDegree.vi.minor.major,
-          const ScaleDegree(6, quality: .major),
-        );
-      });
-    });
-
-    group('.minor', () {
-      test('returns this ScaleDegree as minor', () {
-        expect(ScaleDegree.ii.minor, const ScaleDegree(2, quality: .minor));
-        expect(
-          ScaleDegree.neapolitanSixth.minor,
-          const ScaleDegree(
-            2,
-            quality: .minor,
-            inversion: 1,
-            accidental: .flat,
-          ),
-        );
-        expect(
-          ScaleDegree.iv.major.minor,
-          const ScaleDegree(4, quality: .minor),
-        );
-      });
-    });
-
     group('.toString()', () {
       test(
         'returns the verbose string representation of this ScaleDegree',
         () {
           expect(
             ScaleDegree.iii.toString(),
-            'ScaleDegree(ordinal: 3, inversion: 0, quality: null, '
-            'accidental: Accidental(semitones: 0))',
+            'ScaleDegree(ordinal: 3, accidental: Accidental(semitones: 0))',
           );
           expect(
-            ScaleDegree.neapolitanSixth.toString(),
-            'ScaleDegree(ordinal: 2, inversion: 1, '
-            'quality: ImperfectQuality(semitones: 1), '
-            'accidental: Accidental(semitones: -1))',
+            ScaleDegree.vi.lowered.toString(),
+            'ScaleDegree(ordinal: 6, accidental: Accidental(semitones: -1))',
           );
         },
       );
@@ -129,43 +75,27 @@ void main() {
         expect(ScaleDegree(1).hashCode, ScaleDegree(1).hashCode);
         expect(
           // ignore: prefer_const_constructors test
-          ScaleDegree(
-            2,
-            quality: .major,
-            inversion: 1,
-            accidental: .flat,
-          ).hashCode,
+          ScaleDegree(2, accidental: .flat).hashCode,
           // ignore: prefer_const_constructors test
-          ScaleDegree(
-            2,
-            quality: .major,
-            inversion: 1,
-            accidental: .flat,
-          ).hashCode,
+          ScaleDegree(2, accidental: .flat).hashCode,
         );
       });
 
       test('returns different hashCodes for different ScaleDegrees', () {
         expect(ScaleDegree.i.hashCode, isNot(ScaleDegree.ii.hashCode));
-        expect(
-          const ScaleDegree(6, inversion: 1).hashCode,
-          isNot(ScaleDegree.vi.hashCode),
-        );
       });
 
       test('ignores equal ScaleDegree instances in a Set', () {
         final collection = <ScaleDegree>{
           .i,
-          .neapolitanSixth,
           .iii,
-          const ScaleDegree(6, inversion: 1, accidental: .flat),
+          const ScaleDegree(6, accidental: .flat),
         };
         collection.addAll(collection);
         expect(collection.toList(), const <ScaleDegree>[
           .i,
-          .neapolitanSixth,
           .iii,
-          ScaleDegree(6, inversion: 1, accidental: .flat),
+          ScaleDegree(6, accidental: .flat),
         ]);
       });
     });
@@ -173,25 +103,12 @@ void main() {
     group('.compareTo()', () {
       test('sorts ScaleDegrees in a collection', () {
         final orderedSet = SplayTreeSet<ScaleDegree>.of({
-          const ScaleDegree(2, inversion: 2, accidental: .flat),
           .vii,
           .ii,
-          .neapolitanSixth,
+          .ii.lowered,
           .i,
-          const ScaleDegree(2, quality: .major),
-          const ScaleDegree(2, quality: .minor),
-          const ScaleDegree(2, quality: .major, accidental: .sharp),
         });
-        expect(orderedSet.toList(), const <ScaleDegree>[
-          .i,
-          .neapolitanSixth,
-          ScaleDegree(2, inversion: 2, accidental: .flat),
-          ScaleDegree(2, quality: .minor),
-          ScaleDegree(2, quality: .major),
-          .ii,
-          ScaleDegree(2, quality: .major, accidental: .sharp),
-          .vii,
-        ]);
+        expect(orderedSet.toList(), <ScaleDegree>[.i, .ii.lowered, .ii, .vii]);
       });
     });
   });
@@ -206,21 +123,24 @@ void main() {
       });
 
       test('parses source as a ScaleDegree', () {
-        expect(ScaleDegree.parse('I'), ScaleDegree.i.major);
-        expect(ScaleDegree.parse('bII6'), ScaleDegree.neapolitanSixth);
-        expect(ScaleDegree.parse('vi'), ScaleDegree.vi.minor);
+        expect(ScaleDegree.parse('I'), ScaleDegree.i);
+        expect(ScaleDegree.parse('bii'), ScaleDegree.ii.lowered);
+        expect(ScaleDegree.parse('Vi'), ScaleDegree.vi);
       });
     });
 
     group('.format()', () {
       test('returns the string representation of this ScaleDegree', () {
         expect(ScaleDegree.i.format(), 'I');
-        expect(ScaleDegree.neapolitanSixth.format(), '♭II6');
-        expect(const ScaleDegree(3, inversion: 2).format(), 'III64');
-        expect(const ScaleDegree(4, quality: .minor).format(), 'iv');
-        expect(const ScaleDegree(6, accidental: .sharp).format(), '♯VI');
-        expect(const ScaleDegree(10, accidental: .doubleFlat).format(), '𝄫10');
-        expect(ScaleDegree.vii.format(), 'VII');
+        expect(ScaleDegree.vii.lowered.format(), '♭VII');
+        expect(const ScaleDegree(10).format(), '10');
+        expect(const ScaleDegree(10).raised.format(), '♯10');
+        expect(
+          ScaleDegree.vii.format(
+            const RomanScaleDegreeNotation(useUppercase: false),
+          ),
+          'vii',
+        );
       });
     });
   });

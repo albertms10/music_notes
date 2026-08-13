@@ -1,5 +1,7 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/src/harmonic_function/harmonic_function_notation.dart';
 
+import '../chord_pattern/chord_pattern.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
@@ -15,13 +17,16 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The [ScaleDegree] of this [HarmonicFunction].
   final ScaleDegree scaleDegree;
 
+  /// The [ChordPattern] built on top of [scaleDegree].
+  final ChordPattern? pattern;
+
   /// The tonicization of this [HarmonicFunction].
   ///
   /// See [Tonicization](https://en.wikipedia.org/wiki/Tonicization).
   final HarmonicFunction? tonicization;
 
   /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
-  const HarmonicFunction(this.scaleDegree, {this.tonicization});
+  const HarmonicFunction(this.scaleDegree, {this.pattern, this.tonicization});
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction(.i);
@@ -30,7 +35,10 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   static const ii = HarmonicFunction(.ii);
 
   /// A neapolitan sixth [HarmonicFunction].
-  static const neapolitanSixth = HarmonicFunction(.neapolitanSixth);
+  static const neapolitanSixth = HarmonicFunction(
+    ScaleDegree(2, accidental: .flat),
+    pattern: .new([.m3, .m6]),
+  );
 
   /// A III degree [HarmonicFunction].
   static const iii = HarmonicFunction(.iii);
@@ -39,7 +47,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   static const iv = HarmonicFunction(.iv);
 
   /// A dominant V degree [HarmonicFunction].
-  static const dominantV = HarmonicFunction(ScaleDegree(5, quality: .major));
+  static const dominantV = HarmonicFunction(.v, pattern: .majorTriad);
 
   /// A VI degree [HarmonicFunction].
   static const vi = HarmonicFunction(.vi);
@@ -62,9 +70,11 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// properties.
   HarmonicFunction copyWith({
     ScaleDegree? scaleDegree,
+    ChordPattern? pattern,
     HarmonicFunction? tonicization,
   }) => HarmonicFunction(
     scaleDegree ?? this.scaleDegree,
+    pattern: pattern ?? this.pattern,
     tonicization: tonicization ?? this.tonicization,
   );
 
@@ -76,13 +86,15 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// (HarmonicFunction.neapolitanSixth / .iv).format() == '♭II6/IV'
   /// ```
   @override
-  String format() =>
-      '${scaleDegree.format()}'
-      '${tonicization == null ? '' : '/${tonicization?.format()}'}';
+  String format([
+    StringFormatter<HarmonicFunction> formatter =
+        const HarmonicFunctionNotation(),
+  ]) => formatter.format(this);
 
   @override
   String toString() =>
-      '$runtimeType(scaleDegree: $scaleDegree, tonicization: $tonicization)';
+      '$runtimeType(scaleDegree: $scaleDegree, pattern: $pattern, '
+      'tonicization: $tonicization)';
 
   /// Appends [harmonicFunction] as the [harmonicFunction] of this
   /// [HarmonicFunction].
@@ -91,8 +103,7 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   ///
   /// Example:
   /// ```dart
-  /// HarmonicFunction.dominantV / .dominantV / .dominantV
-  ///   == HarmonicFunction([.v.major, .v.major, .v.major])
+  /// HarmonicFunction.ii / .iv == HarmonicFunction(.ii, tonicization: .iv)
   /// ```
   HarmonicFunction operator /(HarmonicFunction harmonicFunction) =>
       on(harmonicFunction);
