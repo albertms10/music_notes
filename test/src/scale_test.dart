@@ -100,6 +100,8 @@ void main() {
           Note.a,
         );
         expect(ScalePattern.melodicMinor.on(Note.a.flat).degree(.vi), Note.f);
+
+        expect(Note.c.major.scale.degree(.neapolitanSixth), Note.d.flat);
       });
     });
 
@@ -114,6 +116,12 @@ void main() {
         expect(
           ScalePattern.melodicMinor.on(Note.a.flat).degreeChord(.vi),
           Note.f.diminishedTriad,
+        );
+
+        expect(
+          Note.c.major.scale.degreeChord(.neapolitanSixth),
+          // TODO(albertms10): take the inversion into account.
+          Note.d.flat.majorTriad,
         );
       });
     });
