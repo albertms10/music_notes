@@ -3,6 +3,7 @@ import 'package:collection/collection.dart'
 import 'package:meta/meta.dart' show immutable;
 
 import '../chord/chord.dart';
+import '../chord_pattern/chord_pattern.dart';
 import '../enharmonic.dart';
 import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
@@ -115,9 +116,14 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```dart
   /// Note.g.major.scale.degreeChord(.vi) == Note.b.minorTriad
   /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
+  /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
   /// ```
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
-      pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
+      // TODO(albertms10): find a better way of handling altered scale degrees.
+      (scaleDegree.isLowered
+              ? ChordPattern.majorTriad
+              : pattern.degreePattern(scaleDegree))
+          .on(degree(scaleDegree));
 
   /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
@@ -148,11 +154,12 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> scaleOf(HarmonicFunction? harmonicFunction) {
     if (harmonicFunction == null) return this;
 
-    final HarmonicFunction(:scaleDegree, :tonicization) = harmonicFunction;
+    final HarmonicFunction(:scaleDegree, :pattern, :tonicization) =
+        harmonicFunction;
     final scale = scaleOf(tonicization);
 
     return ScalePattern.fromChordPattern(
-      scale.pattern.degreePattern(scaleDegree),
+      pattern ?? scale.pattern.degreePattern(scaleDegree),
     ).on(scale.degree(scaleDegree));
   }
 

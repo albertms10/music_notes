@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/src/harmonic_function/harmonic_function_notation.dart';
 
 import '../chord_pattern/chord_pattern.dart';
 import '../notation_system/notation_system.dart';
@@ -69,9 +70,11 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// properties.
   HarmonicFunction copyWith({
     ScaleDegree? scaleDegree,
+    ChordPattern? pattern,
     HarmonicFunction? tonicization,
   }) => HarmonicFunction(
     scaleDegree ?? this.scaleDegree,
+    pattern: pattern ?? this.pattern,
     tonicization: tonicization ?? this.tonicization,
   );
 
@@ -83,9 +86,10 @@ class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// (HarmonicFunction.neapolitanSixth / .iv).format() == '♭II6/IV'
   /// ```
   @override
-  String format() =>
-      '${scaleDegree.format()}'
-      '${tonicization == null ? '' : '/${tonicization?.format()}'}';
+  String format([
+    StringFormatter<HarmonicFunction> formatter =
+        const HarmonicFunctionNotation(),
+  ]) => formatter.format(this);
 
   @override
   String toString() =>

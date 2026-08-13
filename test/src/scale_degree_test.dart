@@ -12,6 +12,47 @@ void main() {
       });
     });
 
+    group('.isRaised', () {
+      test('returns whether this ScaleDegree is raised', () {
+        expect(ScaleDegree.ii.isRaised, isFalse);
+        expect(ScaleDegree.vi.lowered.isRaised, isFalse);
+        expect(const ScaleDegree(3, accidental: .sharp).isRaised, isTrue);
+      });
+    });
+
+    group('.isLowered', () {
+      test('returns whether this ScaleDegree is lowered', () {
+        expect(ScaleDegree.iv.isLowered, isFalse);
+        expect(ScaleDegree.vi.raised.isLowered, isFalse);
+        expect(const ScaleDegree(6, accidental: .sharp).isLowered, isFalse);
+      });
+    });
+
+    group('.raised', () {
+      test('returns this ScaleDegree raised by 1 semitone', () {
+        expect(ScaleDegree.vi.raised, const ScaleDegree(6, accidental: .sharp));
+        expect(
+          ScaleDegree.ii.raised.raised,
+          const ScaleDegree(2, accidental: .doubleSharp),
+        );
+        expect(ScaleDegree.ii.raised.lowered, ScaleDegree.ii);
+      });
+    });
+
+    group('.lowered', () {
+      test('returns this ScaleDegree lowered by 1 semitone', () {
+        expect(
+          ScaleDegree.ii.lowered,
+          const ScaleDegree(2, accidental: .flat),
+        );
+        expect(
+          ScaleDegree.vi.lowered.lowered,
+          const ScaleDegree(6, accidental: .doubleFlat),
+        );
+        expect(ScaleDegree.iii.lowered.raised, ScaleDegree.iii);
+      });
+    });
+
     group('.toString()', () {
       test(
         'returns the verbose string representation of this ScaleDegree',

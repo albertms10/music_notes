@@ -306,6 +306,7 @@ final class ScalePattern {
   /// ```dart
   /// ScalePattern.major.degreePattern(.i) == .majorTriad
   /// ScalePattern.major.degreePattern(.vii) == .diminishedTriad
+  /// ScalePattern.major.degreePattern(.ii.lowered) == .majorTriad
   /// ScalePattern.naturalMinor.degreePattern(.iv) == .minorTriad
   /// ```
   ChordPattern degreePattern(ScaleDegree scaleDegree) => .fromIntervalSteps([

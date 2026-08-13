@@ -74,12 +74,21 @@ void main() {
           expect(
             HarmonicFunction.neapolitanSixth.toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, accidental: Accidental(semitones: -1)), tonicization: null)''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, accidental: Accidental(semitones: -1)), pattern: ChordPattern(intervals: [
+\tInterval(size: 3, quality: ImperfectQuality(semitones: 0)),
+\tInterval(size: 6, quality: ImperfectQuality(semitones: 0))
+]), tonicization: null)''',
           );
           expect(
             (HarmonicFunction.dominantV / .dominantV).toString(),
             '''
-HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(semitones: 0)), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(semitones: 0)), tonicization: null))''',
+HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(semitones: 0)), pattern: ChordPattern(intervals: [
+\tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
+\tInterval(size: 5, quality: PerfectQuality(semitones: 0))
+]), tonicization: HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(semitones: 0)), pattern: ChordPattern(intervals: [
+\tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
+\tInterval(size: 5, quality: PerfectQuality(semitones: 0))
+]), tonicization: null))''',
           );
         },
       );

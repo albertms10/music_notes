@@ -20,6 +20,7 @@ export 'src/enharmonic.dart';
 export 'src/frequency/frequency.dart';
 export 'src/frequency/frequency_si_notation.dart';
 export 'src/harmonic_function/harmonic_function.dart';
+export 'src/harmonic_function/harmonic_function_notation.dart';
 export 'src/hearing_range/hearing_range.dart';
 export 'src/interval/german_interval_notation.dart';
 export 'src/interval/interval.dart';
