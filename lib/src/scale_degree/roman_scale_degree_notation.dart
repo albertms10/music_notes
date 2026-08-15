@@ -21,9 +21,13 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
 
   static const _romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
+  /// Whether to use symbolic representation for [Accidental].
+  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
+
   @override
   RegExp get regExp => RegExp(
     '${accidentalNotation.regExp?.pattern}'
+    '${_isSymbol ? '' : r'\s+'}'
     '(?<romanNumeral>${_romanNumerals.join('|')})\$',
     caseSensitive: false,
   );
@@ -41,6 +45,7 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
     final buffer = StringBuffer()
       ..writeAll([
         accidentalNotation.format(accidental),
+        if (!_isSymbol) ' ',
         if (numeral == null)
           ordinal
         else
