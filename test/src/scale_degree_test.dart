@@ -163,13 +163,13 @@ void main() {
     const chain = [formatter];
 
     group('.parse()', () {
-      test('throws a FormatException on an invalid source', () {
+      test('throws a FormatException when source is invalid', () {
         expect(() => ScaleDegree.parse('z'), throwsFormatException);
         expect(() => ScaleDegree.parse('0'), throwsFormatException);
         expect(() => ScaleDegree.parse(''), throwsFormatException);
       });
 
-      test('parses a natural ScaleDegree with caret', () {
+      test('parses source as a ScaleDegree', () {
         expect(ScaleDegree.parse('1̂'), ScaleDegree.i);
         expect(ScaleDegree.parse('7̂'), ScaleDegree.vii);
 
@@ -202,7 +202,7 @@ void main() {
     });
 
     group('.format()', () {
-      test('returns the caret notation for a natural ScaleDegree', () {
+      test('returns the string representation of this ScaleDegree', () {
         expect(ScaleDegree.i.format(formatter), '1̂');
         expect(ScaleDegree.iii.format(formatter), '3̂');
         expect(ScaleDegree.vii.format(formatter), '7̂');
