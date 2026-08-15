@@ -21,6 +21,7 @@ import '../size/size.dart';
 import '../tuning_fork/tuning_fork.dart';
 import '../tuning_system/equal_temperament.dart';
 import '../tuning_system/tuning_system.dart';
+import 'abc_pitch_notation.dart';
 import 'helmholtz_pitch_notation.dart';
 import 'scientific_pitch_notation.dart';
 
@@ -60,6 +61,7 @@ final class Pitch extends Scalable<Pitch>
     HelmholtzPitchNotation.german,
     HelmholtzPitchNotation.numbered(),
     HelmholtzPitchNotation.romance,
+    AbcPitchNotation(),
   ];
 
   /// Parse [source] as a [Pitch] and return its value.
@@ -71,6 +73,8 @@ final class Pitch extends Scalable<Pitch>
   /// ```dart
   /// Pitch.parse('F#3') == Note.f.sharp.inOctave(3)
   /// Pitch.parse("c'") == Note.c.inOctave(4)
+  /// Pitch.parse('^F,') == Note.f.sharp.inOctave(3)
+  /// Pitch.parse("_e'") == Note.e.flat.inOctave(6)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
   factory Pitch.parse(
@@ -482,6 +486,10 @@ final class Pitch extends Scalable<Pitch>
   /// Note.c.inOctave(4).format(helmholtz) == 'c′'
   /// Note.a.inOctave(3).format(helmholtz) == 'a'
   /// Note.b.flat.inOctave(1).format(helmholtz) == 'B♭͵'
+  ///
+  /// const abc = AbcPitchNotation();
+  /// Note.f.sharp.inOctave(3).format(abc) == '^F,'
+  /// Note.e.flat.inOctave(6).format(abc) == "_e'"
   /// ```
   @override
   String format([

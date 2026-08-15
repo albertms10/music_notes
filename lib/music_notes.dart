@@ -44,6 +44,7 @@ export 'src/note_name/english_note_name_notation.dart';
 export 'src/note_name/german_note_name_notation.dart';
 export 'src/note_name/note_name.dart';
 export 'src/note_name/romance_note_name_notation.dart';
+export 'src/pitch/abc_pitch_notation.dart';
 export 'src/pitch/helmholtz_pitch_notation.dart';
 export 'src/pitch/pitch.dart';
 export 'src/pitch/scientific_pitch_notation.dart';
