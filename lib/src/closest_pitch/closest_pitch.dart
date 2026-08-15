@@ -28,7 +28,10 @@ final class ClosestPitch implements Formattable<ClosestPitch> {
   const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
 
   /// The chain of [StringParser]s used to parse a [ClosestPitch].
-  static const parsers = [StandardClosestPitchNotation()];
+  static const parsers = [
+    StandardClosestPitchNotation(),
+    StandardClosestPitchNotation.ascii(),
+  ];
 
   /// Parse [source] as a [ClosestPitch] and return its value.
   ///

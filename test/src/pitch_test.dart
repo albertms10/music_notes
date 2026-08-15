@@ -1294,11 +1294,25 @@ void main() {
 
   group('HelmholtzPitchNotation', () {
     const english = HelmholtzPitchNotation.english;
+    const englishAscii = HelmholtzPitchNotation.ascii();
     const german = HelmholtzPitchNotation.german;
+    const germanAscii = HelmholtzPitchNotation.ascii(
+      noteNotation: GermanNoteNotation(),
+    );
     const romance = HelmholtzPitchNotation.romance;
-    const ascii = HelmholtzPitchNotation.ascii();
+    const romanceAscii = HelmholtzPitchNotation.ascii(
+      noteNotation: RomanceNoteNotation.ascii(),
+    );
     const numbered = HelmholtzPitchNotation.numbered();
-    const chain = [english, german, romance, ascii, numbered];
+    const chain = [
+      english,
+      englishAscii,
+      german,
+      germanAscii,
+      romance,
+      romanceAscii,
+      numbered,
+    ];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
@@ -1348,6 +1362,8 @@ void main() {
           () => Pitch.parse("ais'1", chain: chain),
           throwsFormatException,
         );
+        expect(() => Pitch.parse('b#′', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('gx‴', chain: chain), throwsFormatException);
       });
 
       test('parses source as a Pitch', () {
@@ -1373,9 +1389,9 @@ void main() {
           Pitch.parse("ebb''", chain: chain),
           Note.e.flat.flat.inOctave(5),
         );
-        expect(Pitch.parse('b#′′', chain: chain), Note.b.sharp.inOctave(5));
+        expect(Pitch.parse('b♯′′', chain: chain), Note.b.sharp.inOctave(5));
         expect(
-          Pitch.parse('gx‴', chain: chain),
+          Pitch.parse('g𝄪‴', chain: chain),
           Note.g.sharp.sharp.inOctave(6),
         );
         expect(
@@ -1462,16 +1478,16 @@ void main() {
 
       test('returns the ASCII Helmholtz string representation', () {
         expect(
-          Note.g.sharp.inOctave(-1).format(ascii),
+          Note.g.sharp.inOctave(-1).format(englishAscii),
           'G#,,,',
         );
-        expect(Note.a.flat.inOctave(1).format(ascii), 'Ab,');
-        expect(Note.g.inOctave(2).format(ascii), 'G');
-        expect(Note.c.inOctave(4).format(ascii), "c'");
-        expect(Note.f.sharp.inOctave(5).format(ascii), "f#''");
-        expect(Note.e.inOctave(7).format(ascii), "e''''");
+        expect(Note.a.flat.inOctave(1).format(englishAscii), 'Ab,');
+        expect(Note.g.inOctave(2).format(englishAscii), 'G');
+        expect(Note.c.inOctave(4).format(englishAscii), "c'");
+        expect(Note.f.sharp.inOctave(5).format(englishAscii), "f#''");
+        expect(Note.e.inOctave(7).format(englishAscii), "e''''");
         expect(
-          Note.b.flat.inOctave(8).format(ascii),
+          Note.b.flat.inOctave(8).format(englishAscii),
           "bb'''''",
         );
 

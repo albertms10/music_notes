@@ -65,9 +65,11 @@ final class Note extends Scalable<Note>
   static const parsers = [
     EnglishNoteNotation(),
     EnglishNoteNotation.symbol(),
+    EnglishNoteNotation.ascii(),
     GermanNoteNotation(),
     RomanceNoteNotation(),
     RomanceNoteNotation.symbol(),
+    RomanceNoteNotation.ascii(),
   ];
 
   /// Parse [source] as a [Note] and return its value.

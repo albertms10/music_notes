@@ -21,6 +21,12 @@ final class ScientificTuningForkNotation
     this.frequencyNotation = const FrequencySINotation(),
   });
 
+  /// Creates a new [ScientificTuningForkNotation] using ASCII symbols.
+  const ScientificTuningForkNotation.ascii({
+    this.pitchNotation = const ScientificPitchNotation.ascii(),
+    this.frequencyNotation = const FrequencySINotation(),
+  });
+
   /// The english variant of this [ScientificTuningForkNotation].
   static const english = ScientificTuningForkNotation();
 

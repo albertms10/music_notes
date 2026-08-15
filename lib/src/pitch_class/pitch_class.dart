@@ -74,6 +74,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// The chain of [StringParser]s used to parse a [PitchClass].
   static const parsers = [
     EnharmonicSpellingsPitchClassNotation(),
+    EnharmonicSpellingsPitchClassNotation.ascii(),
     IntegerPitchClassNotation(),
   ];
 

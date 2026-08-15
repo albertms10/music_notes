@@ -75,15 +75,14 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp?.pattern}'
-    '${useNumbers ? r'(?<numbers>[1-9]\d*)' : '(?<primes>${[
+    '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
             if (useAscii)
               for (final symbol in _asciiPrimeSymbols) '$symbol+'
-            else
-              [
-                ..._compoundPrimeSymbols,
-                for (final symbol in _primeSymbols) '$symbol+',
-              ],
-          ].join('|')})'}',
+            else ...[
+              ..._compoundPrimeSymbols,
+              for (final symbol in _primeSymbols) '$symbol+',
+            ],
+          ].join('|')})?'}',
     caseSensitive: false,
   );
 
@@ -108,13 +107,15 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   @override
   Pitch parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
-    final textualNumbers = match.namedGroup('numbers');
     final isBass = noteName[0].isUpperCase;
 
     return Pitch(
       noteNotation.parseMatch(match),
-      octave: textualNumbers != null
-          ? _octaveFromNumbers(int.parse(textualNumbers), isBass)
+      octave: useNumbers
+          ? _octaveFromNumbers(
+              .parse(match.namedGroup('numbers') ?? '0'),
+              isBass,
+            )
           : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
                 (throw FormatException('Invalid Pitch', match[0])),
     );

@@ -350,7 +350,9 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
     const textual = RomanceKeyNotation();
     const symbol = RomanceKeyNotation.symbol();
     const short = RomanceKeyNotation.symbol(showMode: false);
-    const chain = [textual, symbol, short];
+    const ascii = RomanceKeyNotation.ascii();
+    const asciiShort = RomanceKeyNotation.ascii(showMode: false);
+    const chain = [textual, symbol, short, ascii, asciiShort];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
