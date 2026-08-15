@@ -4,6 +4,7 @@ import 'package:music_notes/utils.dart';
 import '../accidental/accidental.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
+import 'numeric_scale_degree_notation.dart';
 import 'roman_scale_degree_notation.dart';
 
 /// A scale degree.
@@ -45,7 +46,12 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   static const vii = ScaleDegree(7);
 
   /// The chain of [StringParser]s used to parse a [ScaleDegree].
-  static const parsers = [RomanScaleDegreeNotation()];
+  static const parsers = [
+    RomanScaleDegreeNotation(),
+    NumericScaleDegreeNotation(),
+    NumericScaleDegreeNotation.ascii(),
+    NumericScaleDegreeNotation.plain(),
+  ];
 
   /// Parse [source] as a [ScaleDegree] and return its value.
   ///
@@ -58,6 +64,12 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// ScaleDegree.parse('ii') == .ii
   /// ScaleDegree.parse('vi') == .vi
   /// ScaleDegree.parse('z') // throws a FormatException
+  ///
+  /// const chain = <NumericScaleDegreeNotation>[.new(), .plain()];
+  /// ScaleDegree.parse('1̂', chain: chain) == ScaleDegree.i
+  /// ScaleDegree.parse('♯4̂', chain: chain) == ScaleDegree.iv.raised
+  /// ScaleDegree.parse('♭7', chain: chain) == ScaleDegree.vii.lowered
+  /// ScaleDegree.parse('0', chain: chain) // throws a FormatException
   /// ```
   factory ScaleDegree.parse(
     String source, {
@@ -106,6 +118,11 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// ScaleDegree.iii.format() == 'III'
   /// ScaleDegree.iv.raised.format() == '♯IV'
   /// ScaleDegree.vii.lowered.format() == '♭VII'
+  ///
+  /// const numeric = NumericScaleDegreeNotation();
+  /// ScaleDegree.iii.format(numeric) == '3̂'
+  /// ScaleDegree.iv.raised.format(numeric) == '♯4̂'
+  /// ScaleDegree.vii.lowered.format(numeric) == '♭7̂'
   /// ```
   @override
   String format([

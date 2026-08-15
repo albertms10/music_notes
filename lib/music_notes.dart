@@ -56,6 +56,7 @@ export 'src/range.dart';
 export 'src/respellable.dart';
 export 'src/scalable.dart';
 export 'src/scale/scale.dart';
+export 'src/scale_degree/numeric_scale_degree_notation.dart';
 export 'src/scale_degree/roman_scale_degree_notation.dart';
 export 'src/scale_degree/scale_degree.dart';
 export 'src/scale_pattern/scale_pattern.dart';
