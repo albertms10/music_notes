@@ -18,14 +18,18 @@ class HarmonicFunctionNotation extends StringNotationSystem<HarmonicFunction> {
   String format(HarmonicFunction harmonicFunction) {
     final HarmonicFunction(:scaleDegree, :pattern, :tonicization) =
         harmonicFunction;
-    final scaleDegreePart = scaleDegreeNotation.format(scaleDegree);
 
     final buffer = StringBuffer()
       ..writeAll([
-        if ((pattern?.isMinor ?? false) || (pattern?.isDiminished ?? false))
-          scaleDegreePart.toLowerCase()
-        else
-          scaleDegreePart.toUpperCase(),
+        switch (scaleDegreeNotation) {
+          RomanScaleDegreeNotation(:final format) => format(
+            scaleDegree,
+            useUppercase:
+                !(pattern?.isMinor ?? false) &&
+                !(pattern?.isDiminished ?? false),
+          ),
+          final notationSystem => notationSystem.format(scaleDegree),
+        },
         switch (pattern?.inversion) {
           1 => '6',
           2 => '64',

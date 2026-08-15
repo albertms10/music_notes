@@ -149,9 +149,7 @@ void main() {
         expect(ScaleDegree.vi.raised.format(english), 'sharp VI');
 
         expect(
-          ScaleDegree.vii.format(
-            const RomanScaleDegreeNotation(useUppercase: false),
-          ),
+          const RomanScaleDegreeNotation().format(.vii, useUppercase: false),
           'vii',
         );
       });
