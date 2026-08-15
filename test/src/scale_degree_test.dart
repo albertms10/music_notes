@@ -164,6 +164,7 @@ void main() {
       test('throws a FormatException when source is invalid', () {
         expect(() => ScaleDegree.parse('z'), throwsFormatException);
         expect(() => ScaleDegree.parse('0'), throwsFormatException);
+        expect(() => ScaleDegree.parse('♭7^'), throwsFormatException);
         expect(() => ScaleDegree.parse(''), throwsFormatException);
       });
 
@@ -180,7 +181,6 @@ void main() {
         expect(ScaleDegree.parse('4^'), ScaleDegree.iv);
         expect(ScaleDegree.parse('b2^'), ScaleDegree.ii.lowered);
         expect(ScaleDegree.parse('3'), ScaleDegree.iii);
-        expect(ScaleDegree.parse('♭7^'), ScaleDegree.vii.lowered);
         expect(ScaleDegree.parse('♭6'), ScaleDegree.vi.lowered);
       });
 

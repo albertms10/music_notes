@@ -52,7 +52,7 @@ void main() {
           TuningFork(Note.f.sharp.sharp.inOctave(-2), const Frequency(314.1)),
         );
 
-        const chain = [CompactTuningForkNotation(referenceOctave: 3)];
+        const chain = [CompactTuningForkNotation.ascii(referenceOctave: 3)];
         expect(
           TuningFork.parse('C# 256.44', chain: chain),
           TuningFork(Note.c.sharp.inOctave(3), const Frequency(256.44)),

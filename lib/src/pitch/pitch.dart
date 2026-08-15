@@ -57,10 +57,12 @@ final class Pitch extends Scalable<Pitch>
     ScientificPitchNotation.english,
     ScientificPitchNotation.german,
     ScientificPitchNotation.romance,
+    ScientificPitchNotation.ascii(),
     HelmholtzPitchNotation.english,
     HelmholtzPitchNotation.german,
     HelmholtzPitchNotation.numbered(),
     HelmholtzPitchNotation.romance,
+    HelmholtzPitchNotation.ascii(),
     AbcPitchNotation(),
   ];
 

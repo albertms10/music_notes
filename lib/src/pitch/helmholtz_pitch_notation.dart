@@ -16,29 +16,30 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   final NoteNotation noteNotation;
 
   /// Whether to use numbers instead of prime symbols.
-  final bool _useNumbers;
+  final bool useNumbers;
 
   /// Whether to use ASCII characters instead of Unicode characters.
-  final bool _useAscii;
+  final bool useAscii;
 
   /// Creates a new [HelmholtzPitchNotation].
   const HelmholtzPitchNotation({
     this.noteNotation = const EnglishNoteNotation.symbol(),
-  }) : _useNumbers = false,
-       _useAscii = false;
+    this.useNumbers = false,
+    this.useAscii = false,
+  });
 
   /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
   const HelmholtzPitchNotation.ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : _useNumbers = false,
-       _useAscii = true;
+    this.useNumbers = false,
+  }) : useAscii = true;
 
   /// Creates a new [HelmholtzPitchNotation] using numbers instead of prime
   /// symbols.
   const HelmholtzPitchNotation.numbered({
     this.noteNotation = const GermanNoteNotation(),
-  }) : _useNumbers = true,
-       _useAscii = false;
+    this.useAscii = false,
+  }) : useNumbers = true;
 
   /// The [EnglishNoteNotation] variant of this [HelmholtzPitchNotation].
   static const english = HelmholtzPitchNotation();
@@ -66,24 +67,22 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
     _superTriplePrime,
     _superQuadruplePrime,
   ];
-
-  static const _primeSymbols = [
-    _superPrime,
-    _superPrimeAscii,
-    _subPrime,
-    _subPrimeAscii,
-  ];
+  static const _primeSymbols = [_superPrime, _subPrime];
+  static const _asciiPrimeSymbols = [_superPrimeAscii, _subPrimeAscii];
 
   static const _middleOctave = Pitch.referenceOctave - 1;
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp?.pattern}'
-    '((?<primes>${[
-      ..._compoundPrimeSymbols,
-      for (final symbol in _primeSymbols) '$symbol+',
-    ].join('|')})|'
-    r'(?<numbers>[1-9]\d*))?',
+    '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
+            if (useAscii)
+              for (final symbol in _asciiPrimeSymbols) '$symbol+'
+            else ...[
+              ..._compoundPrimeSymbols,
+              for (final symbol in _primeSymbols) '$symbol+',
+            ],
+          ].join('|')})?'}',
     caseSensitive: false,
   );
 
@@ -108,13 +107,15 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   @override
   Pitch parseMatch(RegExpMatch match) {
     final noteName = match.namedGroup('noteName')!;
-    final textualNumbers = match.namedGroup('numbers');
     final isBass = noteName[0].isUpperCase;
 
     return Pitch(
       noteNotation.parseMatch(match),
-      octave: textualNumbers != null
-          ? _octaveFromNumbers(int.parse(textualNumbers), isBass)
+      octave: useNumbers
+          ? _octaveFromNumbers(
+              .parse(match.namedGroup('numbers') ?? '0'),
+              isBass,
+            )
           : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
                 (throw FormatException('Invalid Pitch', match[0])),
     );
@@ -138,9 +139,9 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   @override
   String format(Pitch pitch) {
     final note = noteNotation.format(pitch.note);
-    final symbols = _useNumbers
+    final symbols = useNumbers
         ? _numbered
-        : _useAscii
+        : useAscii
         ? _asciiSymbols
         : _symbols;
 

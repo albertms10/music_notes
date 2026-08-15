@@ -16,6 +16,11 @@ final class EnharmonicSpellingsPitchClassNotation
     this.noteNotation = const EnglishNoteNotation.symbol(),
   });
 
+  /// Creates a new [EnharmonicSpellingsPitchClassNotation] using ASCII symbols.
+  const EnharmonicSpellingsPitchClassNotation.ascii({
+    this.noteNotation = const EnglishNoteNotation.ascii(),
+  });
+
   @override
   RegExp get regExp => RegExp(
     r'(?:\{|\|)'

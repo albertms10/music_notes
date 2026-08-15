@@ -20,19 +20,20 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   final bool largerFirst;
 
   /// Whether to use ASCII symbols instead of Unicode symbols.
-  final bool _useAscii;
+  final bool useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
   const SymbolAccidentalNotation({
     this.showNatural = true,
     this.largerFirst = false,
-  }) : _useAscii = false;
+    this.useAscii = false,
+  });
 
   /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
   const SymbolAccidentalNotation.ascii({
     this.showNatural = true,
     this.largerFirst = false,
-  }) : _useAscii = true;
+  }) : useAscii = true;
 
   static const _doubleSharpSymbol = '𝄪';
   static const _doubleSharpSymbolAscii = 'x';
@@ -44,26 +45,28 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _flatSymbolAscii = 'b';
   static const _doubleFlatSymbol = '𝄫';
 
-  /// The list of valid symbols for an [Accidental].
+  /// The list of valid Unicode symbols for an [Accidental].
   static const symbols = [
     _doubleSharpSymbol,
-    _doubleSharpSymbolAscii,
     _sharpSymbol,
-    _sharpSymbolAscii,
     _naturalSymbol,
-    _naturalSymbolAscii,
     _flatSymbol,
-    _flatSymbolAscii,
     _doubleFlatSymbol,
   ];
 
-  static final _regExp = RegExp(
-    '(?<accidental>[${symbols.join()}]*)',
-    unicode: true,
-  );
+  /// The list of valid ASCII symbols for an [Accidental].
+  static const asciiSymbols = [
+    _doubleSharpSymbolAscii,
+    _sharpSymbolAscii,
+    _naturalSymbolAscii,
+    _flatSymbolAscii,
+  ];
 
   @override
-  RegExp get regExp => _regExp;
+  RegExp get regExp => RegExp(
+    '(?<accidental>[${(useAscii ? asciiSymbols : symbols).join()}]*)',
+    unicode: true,
+  );
 
   static int _semitonesFromSymbol(String symbol) => switch (symbol) {
     _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,
@@ -89,15 +92,15 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   String format(Accidental accidental) {
     if (accidental.isNatural) {
       if (!showNatural) return '';
-      return _useAscii ? _naturalSymbolAscii : _naturalSymbol;
+      return useAscii ? _naturalSymbolAscii : _naturalSymbol;
     }
 
     final accidentalSymbol = accidental.isFlat
-        ? (_useAscii ? _flatSymbolAscii : _flatSymbol)
-        : (_useAscii ? _sharpSymbolAscii : _sharpSymbol);
+        ? (useAscii ? _flatSymbolAscii : _flatSymbol)
+        : (useAscii ? _sharpSymbolAscii : _sharpSymbol);
     final doubleAccidentalSymbol = accidental.isFlat
-        ? (_useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
-        : (_useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
+        ? (useAscii ? _flatSymbolAscii * 2 : _doubleFlatSymbol)
+        : (useAscii ? _doubleSharpSymbolAscii : _doubleSharpSymbol);
 
     final absSemitones = accidental.semitones.abs();
     final fragments = [

@@ -23,6 +23,13 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
     ),
   });
 
+  /// Creates a new [RomanScaleDegreeNotation] using ASCII symbols.
+  const RomanScaleDegreeNotation.ascii({
+    this.accidentalNotation = const SymbolAccidentalNotation.ascii(
+      showNatural: false,
+    ),
+  });
+
   static const _romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
   /// Whether to use symbolic representation for [Accidental].

@@ -24,6 +24,13 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
     this.referenceOctave = Pitch.referenceOctave,
   });
 
+  /// Creates a new [CompactTuningForkNotation] using ASCII symbols.
+  const CompactTuningForkNotation.ascii({
+    this.noteNotation = const EnglishNoteNotation.ascii(),
+    this.frequencyNotation = const FrequencySINotation(),
+    this.referenceOctave = Pitch.referenceOctave,
+  });
+
   @override
   RegExp get regExp => RegExp(
     '(?!.*=)${noteNotation.regExp?.pattern}'

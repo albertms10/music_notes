@@ -50,6 +50,7 @@ final class ScaleDegree
   /// The chain of [StringParser]s used to parse a [ScaleDegree].
   static const parsers = [
     RomanScaleDegreeNotation(),
+    RomanScaleDegreeNotation.ascii(),
     NumericScaleDegreeNotation(),
     NumericScaleDegreeNotation.ascii(),
     NumericScaleDegreeNotation.plain(),

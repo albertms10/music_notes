@@ -2,6 +2,8 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../frequency/frequency.dart';
 import '../notation_system/notation_system.dart';
+import '../note/german_note_notation.dart';
+import '../pitch/helmholtz_pitch_notation.dart';
 import '../pitch/pitch.dart';
 import 'compact_tuning_fork_notation.dart';
 import 'scientific_tuning_fork_notation.dart';
@@ -34,10 +36,20 @@ final class TuningFork implements Formattable<TuningFork> {
   /// The chain of [StringParser]s used to parse a [TuningFork].
   static const parsers = [
     CompactTuningForkNotation(),
+    CompactTuningForkNotation.ascii(),
     ScientificTuningForkNotation.english,
+    ScientificTuningForkNotation.ascii(),
     ScientificTuningForkNotation.englishHelmholtz,
+    ScientificTuningForkNotation.ascii(
+      pitchNotation: HelmholtzPitchNotation.ascii(),
+    ),
     ScientificTuningForkNotation.german,
     ScientificTuningForkNotation.germanHelmholtz,
+    ScientificTuningForkNotation.ascii(
+      pitchNotation: HelmholtzPitchNotation.ascii(
+        noteNotation: GermanNoteNotation(),
+      ),
+    ),
   ];
 
   /// Parse [source] as a [TuningFork] and return its value.

@@ -51,6 +51,7 @@ final class Accidental
   /// The chain of [StringParser]s used to parse an [Accidental].
   static const parsers = [
     SymbolAccidentalNotation(),
+    SymbolAccidentalNotation.ascii(),
     EnglishAccidentalNotation(),
     GermanAccidentalNotation(),
     RomanceAccidentalNotation(),
