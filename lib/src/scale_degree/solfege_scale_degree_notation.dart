@@ -26,6 +26,8 @@ import 'scale_degree.dart';
 /// Compound/extended degrees (ordinal > 7) are octave-reduced, since
 /// solfège has no notion of a "9th": it's just sung as Re.
 ///
+/// See [Movable Do solfège](https://en.wikipedia.org/wiki/Solf%C3%A8ge#Movable_do_solf%C3%A8ge).
+///
 /// ---
 /// See also:
 /// * [ScaleDegree].
