@@ -7,6 +7,7 @@ void main() {
       test('returns a delta string representation of this num', () {
         expect(1.1.toDeltaString(), '+1.1');
         expect(0.toDeltaString(), '±0');
+        expect((-0).toDeltaString(), '±0');
         expect((-5).toDeltaString(), '−5');
         expect((-10.02).toDeltaString(), '−10.02');
         expect((-10.02).toDeltaString(fractionDigits: 0), '−10');
@@ -25,6 +26,7 @@ void main() {
       test('returns a negative Unicode representation of this num', () {
         expect(1.1.toNegativeUnicode(1), '1.1');
         expect(0.toNegativeUnicode(), '0');
+        expect((-0).toNegativeUnicode(), '0');
         expect((-5).toNegativeUnicode(), '−5');
         expect((-10.02).toNegativeUnicode(1), '−10.0');
       });
@@ -35,6 +37,7 @@ void main() {
         expect(5.nonZeroSign, 1);
         expect(345.2345.nonZeroSign, 1);
         expect(0.nonZeroSign, 1);
+        expect((-0).nonZeroSign, 1);
         expect((-2).nonZeroSign, -1);
         expect((-2.56).nonZeroSign, -1);
       });

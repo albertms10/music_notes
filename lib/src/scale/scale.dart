@@ -2,15 +2,15 @@ import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
+import '../chord/chord.dart';
+import '../chord_pattern/chord_pattern.dart';
 import '../enharmonic.dart';
-import '../harmony/chord.dart';
-import '../harmony/harmonic_function.dart';
+import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
-import '../interval/quality.dart';
 import '../scalable.dart';
+import '../scale_degree/scale_degree.dart';
+import '../scale_pattern/scale_pattern.dart';
 import '../transposable.dart';
-import 'scale_degree.dart';
-import 'scale_pattern.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
 ///
@@ -21,7 +21,7 @@ import 'scale_pattern.dart';
 /// * [ScalePattern].
 /// * [ScaleDegree].
 @immutable
-class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
+final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   final List<T> _degrees;
 
   /// The [Scalable] degrees that define this [Scale].
@@ -98,14 +98,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.a.flat.major.scale.degree(.vi) == .f
   /// ```
   T degree(ScaleDegree scaleDegree) {
-    final scalable = _degrees[scaleDegree.ordinal - 1];
-    if (scaleDegree.semitonesDelta == 0) return scalable;
+    final ScaleDegree(:ordinal, :accidental) = scaleDegree;
+    final scalable = _degrees[ordinal - 1];
+    if (accidental.isNatural) return scalable;
 
     return scalable.transposeBy(
       .perfect(
         .unison,
-        PerfectQuality(scaleDegree.semitonesDelta.abs()),
-      ).withDescending(scaleDegree.semitonesDelta.isNegative),
+        .new(accidental.semitones.abs()),
+      ).withDescending(accidental.isFlat),
     );
   }
 
@@ -115,9 +116,14 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// ```dart
   /// Note.g.major.scale.degreeChord(.vi) == Note.b.minorTriad
   /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
+  /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
   /// ```
   Chord<T> degreeChord(ScaleDegree scaleDegree) =>
-      pattern.degreePattern(scaleDegree).on(degree(scaleDegree));
+      // TODO(albertms10): find a better way of handling altered scale degrees.
+      (scaleDegree.isLowered
+              ? ChordPattern.majorTriad
+              : pattern.degreePattern(scaleDegree))
+          .on(degree(scaleDegree));
 
   /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
@@ -128,18 +134,34 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
   ///   == Note.g.minorTriad
   /// ```
-  Chord<T> functionChord(HarmonicFunction harmonicFunction) => harmonicFunction
-      .scaleDegrees
-      .skip(1)
-      .toList(growable: false)
-      .reversed
-      .fold(
-        this,
-        (scale, scaleDegree) => ScalePattern.fromChordPattern(
-          scale.pattern.degreePattern(scaleDegree),
-        ).on(scale.degree(scaleDegree)),
-      )
-      .degreeChord(harmonicFunction.scaleDegrees.first);
+  Chord<T> functionChord(HarmonicFunction harmonicFunction) => scaleOf(
+    harmonicFunction.tonicization,
+  ).degreeChord(harmonicFunction.scaleDegree);
+
+  /// Returns the tonal scale established by [harmonicFunction] relative to this
+  /// [Scale].
+  ///
+  /// The tonicization chain is resolved recursively, with each harmonic
+  /// function establishing a new tonal context from its
+  /// [HarmonicFunction.scaleDegree].
+  /// If [harmonicFunction] is `null`, this scale is returned unchanged.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.scaleOf(.v) == Note.g.major.scale
+  /// Note.f.minor.scale.scaleOf(.iii) == Note.a.flat.major.scale
+  /// ```
+  Scale<T> scaleOf(HarmonicFunction? harmonicFunction) {
+    if (harmonicFunction == null) return this;
+
+    final HarmonicFunction(:scaleDegree, :pattern, :tonicization) =
+        harmonicFunction;
+    final scale = scaleOf(tonicization);
+
+    return ScalePattern.fromChordPattern(
+      pattern ?? scale.pattern.degreePattern(scaleDegree),
+    ).on(scale.degree(scaleDegree));
+  }
 
   /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
@@ -170,10 +192,15 @@ class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   );
 
   @override
-  String toString() =>
-      '${_degrees.first} ${pattern.name} (${_degrees.join(' ')}'
-      '${_descendingDegrees != null ? ', '
-                '${_descendingDegrees.join(' ')}' : ''})';
+  String toString() {
+    final scale = _degrees.map((s) => s.format()).join(' ');
+    final descendingScale = _descendingDegrees != null
+        ? ', ${_descendingDegrees.map((s) => s.format()).join(' ')}'
+        : '';
+
+    return '${_degrees.first.format()} ${pattern.name} '
+        '($scale$descendingScale)';
+  }
 
   @override
   bool operator ==(Object other) =>

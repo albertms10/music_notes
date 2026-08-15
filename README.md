@@ -1,4 +1,4 @@
-![Analysis CI](https://github.com/albertms10/music_notes/workflows/Analysis%20CI/badge.svg)
+![Analysis CI](https://github.com/albertms10/music_notes/actions/workflows/analysis-ci.yaml/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/albertms10/music_notes/badge.svg?branch=main)](https://coveralls.io/github/albertms10/music_notes?branch=main)
 [![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/albertms10/music_notes/badge)](https://api.securityscorecards.dev/projects/github.com/albertms10/music_notes)
@@ -145,18 +145,18 @@ Represent them using any notation formatter:
 
 ```dart
 Note.d.flat
-  ..toString() // D♭
-  ..toString(formatter: const GermanNoteNotation()) // Des
-  ..toString(formatter: const RomanceNoteNotation.symbol()); // Re♭
+  ..format() // D♭
+  ..format(const GermanNoteNotation()) // Des
+  ..format(const RomanceNoteNotation.symbol()); // Re♭
 
-Note.b.flat.inOctave(-1).toString(); // B♭-1
-Note.c.inOctave(6).toString(formatter: HelmholtzPitchNotation.english); // c‴
+Note.b.flat.inOctave(-1).format(); // B♭-1
+Note.c.inOctave(6).format(HelmholtzPitchNotation.english); // c‴
 
-PitchClass.c.toString(); // {C}
-PitchClass.dSharp.toString(); // {D♯|E♭}
+PitchClass.c.format(); // {C}
+PitchClass.dSharp.format(); // {D♯|E♭}
 
-PitchClass.f.toString(formatter: const IntegerPitchClassNotation()); // 5
-PitchClass.aSharp.toString(formatter: const IntegerPitchClassNotation()); // t
+PitchClass.f.format(const IntegerPitchClassNotation()); // 5
+PitchClass.aSharp.format(const IntegerPitchClassNotation()); // t
 ```
 
 ### Intervals
@@ -231,7 +231,7 @@ Know the intervallic distance between two notes:
 Interval.P5.circleDistance<Note>(from: .c, to: .d);
 // (2, notes: [C, G, D])
 Interval.P4.circleDistance<Note>(from: .b.flat, to: .d);
-// (-4, notes: [B♭, F, D, G, D])
+// (-4, notes: [B♭, F, C, G, D])
 ```
 
 And even explore the circle of fifths or any circle of intervals
@@ -295,12 +295,12 @@ IntervalClass.m3 * 2; // {A4|d5}
 Represent them as a string:
 
 ```dart
-Interval.m2.toString(); // m2
-Interval.A6.toString(); // A6
+Interval.m2.format(); // m2
+Interval.A6.format(); // A6
 
-IntervalClass.M2.toString(); // {M2|d3}
-IntervalClass.P4.toString(); // {P4}
-IntervalClass.tritone.toString(); // {A4|d5}
+IntervalClass.M2.format(); // {M2|d3}
+IntervalClass.P4.format(); // {P4}
+IntervalClass.tritone.format(); // {A4|d5}
 ```
 
 ### Keys
@@ -340,9 +340,9 @@ Note.c.sharp.major.parallel; // C♯ minor
 Represent it using any notation formatter:
 
 ```dart
-Note.d.flat.major.toString(); // D♭ major
-Note.c.major.toString(formatter: const RomanceKeyNotation()); // Do maggiore
-Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-Moll
+Note.d.flat.major.format(); // D♭ major
+Note.c.major.format(const RomanceKeyNotation()); // Do maggiore
+Note.e.flat.minor.format(const GermanKeyNotation()); // es-Moll
 ```
 
 ### Key signatures
@@ -542,8 +542,8 @@ Or parse a `ClosestPitch` from a string:
 ```dart
 ClosestPitch.parse('A4'); // A4±0
 ClosestPitch.parse('E♭3-28'); // E♭3−28
-ClosestPitch.parse('A4+12.6').toString(
-  formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+ClosestPitch.parse('A4+12.6').format(
+  const StandardClosestPitchNotation(fractionDigits: 1),
 ); // A4+12.6
 ```
 

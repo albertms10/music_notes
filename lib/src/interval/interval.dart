@@ -6,13 +6,15 @@ import 'package:music_notes/utils.dart';
 
 import '../comparators.dart';
 import '../enharmonic.dart';
-import '../notation/notation_system.dart';
+import '../interval_class/interval_class.dart';
+import '../notation_system/notation_system.dart';
 import '../note/note.dart';
+import '../quality/quality.dart';
 import '../respellable.dart';
 import '../scalable.dart';
-import 'interval_class.dart';
-import 'quality.dart';
-import 'size.dart';
+import '../size/size.dart';
+import 'german_interval_notation.dart';
+import 'standard_interval_notation.dart';
 
 /// Distance between two notes.
 ///
@@ -23,7 +25,7 @@ import 'size.dart';
 @immutable
 final class Interval
     with Enharmonic<IntervalClass>, Comparators<Interval>, Respellable<Interval>
-    implements Comparable<Interval> {
+    implements Comparable<Interval>, Formattable<Interval> {
   /// Number of lines and spaces (or alphabet letters) spanning the two notes,
   /// including the beginning and end.
   final Size size;
@@ -132,6 +134,18 @@ final class Interval
   /// An augmented ninth [Interval].
   static const A9 = Interval.imperfect(.ninth, .augmented);
 
+  /// A diminished tenth [Interval].
+  static const d10 = Interval.imperfect(.tenth, .diminished);
+
+  /// A minor tenth [Interval].
+  static const m10 = Interval.imperfect(.tenth, .minor);
+
+  /// A major tenth [Interval].
+  static const M10 = Interval.imperfect(.tenth, .major);
+
+  /// An augmented tenth [Interval].
+  static const A10 = Interval.imperfect(.tenth, .augmented);
+
   /// A diminished eleventh [Interval].
   static const d11 = Interval.perfect(.eleventh, .diminished);
 
@@ -140,6 +154,15 @@ final class Interval
 
   /// An augmented eleventh [Interval].
   static const A11 = Interval.perfect(.eleventh, .augmented);
+
+  /// A diminished twelfth [Interval].
+  static const d12 = Interval.perfect(.twelfth, .diminished);
+
+  /// A perfect twelfth [Interval].
+  static const P12 = Interval.perfect(.twelfth);
+
+  /// An augmented twelfth [Interval].
+  static const A12 = Interval.perfect(.twelfth, .augmented);
 
   /// A diminished thirteenth [Interval].
   static const d13 = Interval.imperfect(.thirteenth, .diminished);
@@ -155,16 +178,49 @@ final class Interval
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
   const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // This operation uses a bitmask implementation, modified to be allowed
+        // in a const context:
+        //
+        // ```dart
+        // ((1 << (abs() % 7)) & 50) != 0
+        // ```
+        //
+        // This is equivalent to the more readable pattern in [Size.isPerfect].
+        //
+        // In the bitmask, each bit represents a [Size] within the octave cycle
+        // (modulo 7). Perfect intervals occur at positions:
+        //
+        // - 1 for [Size.unison],
+        // - 4 for [Size.fourth], and
+        // - 5 for [Size.fifth].
+        //
+        // The number 50 (which is `0b0110010` in binary) has bits set at these
+        // positions:
+        //
+        // ```
+        //  2^ 6 5 4 3 2 1 0
+        //     -------------
+        //     0 1 1 0 0 1 0
+        //       ^ ^     ^
+        // ```
+        //
+        // - `abs() % 7` computes the [Size] modulo 7, mapping it to its
+        //   position within the octave cycle.
+        // - `1 <<` creates a bitmask with a single bit set at the position
+        //   corresponding to the [Size].
+        // - Performing a bitwise AND `&` with 50 (`0b0110010`) checks if this
+        //   bit corresponds to a perfect interval size.
+        // - The expression `!= 0` returns `true` if the result is non-zero
+        //   (e.g., the [Size] is perfect) and `false` otherwise.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) != 0,
         'Interval must be perfect.',
       );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
-    // Copied from [.isPerfect] to allow const.
     : assert(
+        // See [Interval.perfect] for an explanation of this bitmask operation.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
         'Interval must be imperfect.',
       );
@@ -176,11 +232,15 @@ final class Interval
       : .imperfect(size, ImperfectQuality(semitones));
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
-  factory Interval.fromSizeAndSemitones(Size size, int semitones) =>
-      .fromSizeAndQualitySemitones(
-        size,
-        semitones * size.sign - size.semitones.abs(),
-      );
+  factory Interval.fromSizeAndSemitones(
+    Size size,
+    int semitones,
+  ) => .fromSizeAndQualitySemitones(
+    size,
+    // adding 0 to prevent -0 from being treated as negative,
+    // which would cause the quality to be inverted
+    (semitones + 0) * size.sign - size.semitones.abs(),
+  );
 
   /// Creates a new [Interval] from the given distance in [semitones].
   /// The size is inferred.
@@ -188,7 +248,7 @@ final class Interval
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
   /// The chain of [StringParser]s used to parse an [Interval].
-  static const parsers = [IntervalNotation()];
+  static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
 
   /// Parse [source] as an [Interval] and return its value.
   ///
@@ -441,14 +501,17 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.M3.toString() == 'M3'
-  /// (-Interval.d5).toString() == 'd-5'
-  /// .twelfth.perfect.toString() == 'P12 (P5)'
+  /// Interval.M3.format() == 'M3'
+  /// (-Interval.d5).format() == 'd-5'
+  /// .twelfth.perfect.format() == 'P12 (P5)'
   /// ```
   @override
-  String toString({
-    StringFormatter<Interval> formatter = const IntervalNotation(),
-  }) => formatter.format(this);
+  String format([
+    StringFormatter<Interval> formatter = const StandardIntervalNotation(),
+  ]) => formatter.format(this);
+
+  @override
+  String toString() => '$runtimeType(size: $size, quality: $quality)';
 
   /// Adds [other] to this [Interval].
   ///
@@ -518,61 +581,5 @@ extension IntervalIterable on Iterable<Interval> {
       yield interval - previous;
       previous = interval;
     }
-  }
-}
-
-/// A notation system for [Interval].
-final class IntervalNotation extends StringNotationSystem<Interval> {
-  /// The [SizeNotation].
-  final SizeNotation sizeNotation;
-
-  /// The [PerfectQualityNotation].
-  final PerfectQualityNotation perfectQualityNotation;
-
-  /// The [ImperfectQualityNotation].
-  final ImperfectQualityNotation imperfectQualityNotation;
-
-  /// Creates a new [IntervalNotation].
-  const IntervalNotation({
-    this.sizeNotation = const SizeNotation(),
-    this.perfectQualityNotation = const PerfectQualityNotation(),
-    this.imperfectQualityNotation = const ImperfectQualityNotation(),
-  });
-
-  @override
-  RegExp get regExp =>
-      // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
-      //  named capture groups are supported.
-      //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>\\w+?)\\s*${sizeNotation.regExp.pattern}');
-
-  @override
-  Interval parseMatch(RegExpMatch match) {
-    final size = sizeNotation.parseMatch(match);
-    // ignore: omit_local_variable_types False positive (?)
-    final StringParser<Quality> parser = size.isPerfect
-        ? perfectQualityNotation
-        : imperfectQualityNotation;
-
-    final quality = match.namedGroup('quality')!;
-    if (!parser.matches(quality)) {
-      throw FormatException('Invalid Quality', quality, 0);
-    }
-
-    return ._(size, parser.parseMatch(match));
-  }
-
-  @override
-  String format(Interval interval) {
-    final quality = switch (interval.quality) {
-      final PerfectQuality quality => perfectQualityNotation.format(quality),
-      final ImperfectQuality quality => imperfectQualityNotation.format(
-        quality,
-      ),
-    };
-    final naming = '$quality${sizeNotation.format(interval.size)}';
-    if (!interval.isCompound) return naming;
-
-    return '$naming ($quality${sizeNotation.format(interval.simple.size)})';
   }
 }
