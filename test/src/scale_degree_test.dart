@@ -269,8 +269,8 @@ void main() {
         expect(ScaleDegree.iii.lowered.format(formatter), 'Me');
         expect(ScaleDegree.vii.lowered.format(formatter), 'Te');
 
-        expect(const ScaleDegree(9), 'Re');
-        expect(const ScaleDegree(13), 'La');
+        expect(const ScaleDegree(9).format(formatter), 'Re');
+        expect(const ScaleDegree(13).format(formatter), 'La');
 
         expect(ScaleDegree.i.format(laBased), 'La');
         expect(ScaleDegree.iii.format(laBased), 'Do');
