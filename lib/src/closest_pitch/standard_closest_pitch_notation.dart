@@ -7,7 +7,8 @@ import '../pitch/scientific_pitch_notation.dart';
 import 'closest_pitch.dart';
 
 /// The [StringNotationSystem] for standard [ClosestPitch].
-class StandardClosestPitchNotation extends StringNotationSystem<ClosestPitch> {
+final class StandardClosestPitchNotation
+    extends StringNotationSystem<ClosestPitch> {
   /// The [StringNotationSystem] for [Pitch] notation.
   final StringNotationSystem<Pitch> pitchNotation;
 

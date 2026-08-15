@@ -3,6 +3,7 @@ import 'package:music_notes/utils.dart';
 
 import '../notation_system/notation_system.dart';
 import '../note/note.dart';
+import 'abc_accidental_notation.dart';
 import 'english_accidental_notation.dart';
 import 'german_accidental_notation.dart';
 import 'romance_accidental_notation.dart';
@@ -53,6 +54,7 @@ final class Accidental
     EnglishAccidentalNotation(),
     GermanAccidentalNotation(),
     RomanceAccidentalNotation(),
+    AbcAccidentalNotation(),
   ];
 
   /// Parse [source] as an [Accidental] and return its value.

@@ -178,6 +178,102 @@ void main() {
       });
     });
 
+    group('.inverted', () {
+      test('returns the next inversion of this ChordPattern', () {
+        expect(
+          ChordPattern.majorTriad.inverted,
+          const ChordPattern([.m3, .m6]),
+        );
+        expect(
+          ChordPattern.majorTriad.inverted.inverted,
+          const ChordPattern([.P4, .M6]),
+        );
+        // A full cycle of inversions returns to root position.
+        expect(
+          ChordPattern.majorTriad.inverted.inverted.inverted,
+          ChordPattern.majorTriad,
+        );
+
+        expect(
+          ChordPattern.minorTriad.inverted,
+          const ChordPattern([.M3, .M6]),
+        );
+
+        expect(
+          ChordPattern.majorTriad.add7().inverted,
+          const ChordPattern([.m3, .d5, .m6]),
+        );
+        expect(
+          ChordPattern.majorTriad.add7().inverted.inverted.inverted.inverted,
+          ChordPattern.majorTriad.add7(),
+        );
+      });
+
+      test(
+        'sorts the resulting Intervals even for compound (extended) chords',
+        () {
+          expect(
+            ChordPattern.majorTriad.add7().add9().inverted,
+            const ChordPattern([.m3, .d5, .m6, .m7]),
+          );
+        },
+      );
+
+      test('is a no-op for a rootless (single-note) ChordPattern', () {
+        expect(const ChordPattern([]).inverted, const ChordPattern([]));
+      });
+
+      test(
+        'is unaffected by the order in which the Intervals were given',
+        () {
+          expect(
+            const ChordPattern([.P5, .M3]).inverted,
+            ChordPattern.majorTriad.inverted,
+          );
+        },
+      );
+    });
+
+    group('.inversion', () {
+      test('returns the inversion number of this ChordPattern', () {
+        expect(ChordPattern.majorTriad.inversion, 0);
+        expect(ChordPattern.minorTriad.inversion, 0);
+
+        expect(ChordPattern.majorTriad.inverted.inversion, 1);
+        expect(ChordPattern.majorTriad.inverted.inverted.inversion, 2);
+        expect(
+          ChordPattern.majorTriad.inverted.inverted.inverted.inversion,
+          0,
+        );
+
+        expect(ChordPattern.majorTriad.add7().inversion, 0);
+        expect(ChordPattern.majorTriad.add7().inverted.inversion, 1);
+        expect(
+          ChordPattern.majorTriad.add7().inverted.inverted.inversion,
+          2,
+        );
+        expect(
+          ChordPattern.majorTriad.add7().inverted.inverted.inverted.inversion,
+          3,
+        );
+
+        expect(const ChordPattern([.m3, .d5, .d7]).inversion, 0);
+        expect(const ChordPattern([.m3, .d5, .M6]).inversion, 1);
+        expect(const ChordPattern([.m3, .A4, .M6]).inversion, 2);
+        expect(const ChordPattern([.A2, .A4, .M6]).inversion, 3);
+      });
+
+      test(
+        'throws a StateError for a non-tertian (e.g. quartal) ChordPattern',
+        () {
+          expect(
+            () => const ChordPattern([.P4, .P5]).inversion,
+            throwsStateError,
+          );
+        },
+      );
+    });
+
     group('.augmented', () {
       test('returns a new ChordPattern with an augmented root triad', () {
         expect(ChordPattern.minorTriad.augmented, ChordPattern.augmentedTriad);

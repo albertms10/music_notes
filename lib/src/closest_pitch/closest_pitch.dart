@@ -17,7 +17,7 @@ import 'standard_closest_pitch_notation.dart';
 /// * [Cent].
 /// * [Frequency].
 @immutable
-class ClosestPitch implements Formattable<ClosestPitch> {
+final class ClosestPitch implements Formattable<ClosestPitch> {
   /// The [Pitch] closest to the original [Frequency].
   final Pitch pitch;
 

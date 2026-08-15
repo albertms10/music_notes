@@ -2,7 +2,7 @@ import '../notation_system/notation_system.dart';
 import 'frequency.dart';
 
 /// The [StringNotationSystem] for SI-notated [Frequency].
-class FrequencySINotation extends StringNotationSystem<Frequency> {
+final class FrequencySINotation extends StringNotationSystem<Frequency> {
   /// Creates a new [FrequencySINotation].
   const FrequencySINotation();
 

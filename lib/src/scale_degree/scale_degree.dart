@@ -1,10 +1,11 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/src/scale_degree/solfege_scale_degree_notation.dart';
 import 'package:music_notes/utils.dart';
 
-import '../chord/chord.dart';
+import '../accidental/accidental.dart';
 import '../notation_system/notation_system.dart';
-import '../quality/quality.dart';
 import '../scale/scale.dart';
+import 'numeric_scale_degree_notation.dart';
 import 'roman_scale_degree_notation.dart';
 
 /// A scale degree.
@@ -13,41 +14,23 @@ import 'roman_scale_degree_notation.dart';
 /// See also:
 /// * [Scale].
 @immutable
-class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
+final class ScaleDegree
+    implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
 
-  /// The inversion of the [Chord] above this [ScaleDegree].
-  final int inversion;
-
-  /// The quality of the [Chord] above this [ScaleDegree].
-  final ImperfectQuality? quality;
-
-  /// The semitones raising or lowering this [ScaleDegree]’s root note.
-  final int semitonesDelta;
+  /// The chromatic alteration of this this [ScaleDegree].
+  final Accidental accidental;
 
   /// Creates a new [ScaleDegree].
-  const ScaleDegree(
-    this.ordinal, {
-    this.quality,
-    this.inversion = 0,
-    this.semitonesDelta = 0,
-  }) : assert(ordinal > 0, 'Ordinal must be greater than zero.'),
-       assert(inversion >= 0, 'Inversion must be greater or equal than zero.');
+  const ScaleDegree(this.ordinal, {this.accidental = .natural})
+    : assert(ordinal > 0, 'Ordinal must be greater than zero.');
 
   /// The I (tonic) [ScaleDegree].
   static const i = ScaleDegree(1);
 
   /// The II [ScaleDegree].
   static const ii = ScaleDegree(2);
-
-  /// The neapolitan sixth [ScaleDegree].
-  static const neapolitanSixth = ScaleDegree(
-    2,
-    quality: .major,
-    inversion: 1,
-    semitonesDelta: -1,
-  );
 
   /// The III [ScaleDegree].
   static const iii = ScaleDegree(3);
@@ -65,7 +48,13 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   static const vii = ScaleDegree(7);
 
   /// The chain of [StringParser]s used to parse a [ScaleDegree].
-  static const parsers = [RomanScaleDegreeNotation()];
+  static const parsers = [
+    RomanScaleDegreeNotation(),
+    NumericScaleDegreeNotation(),
+    NumericScaleDegreeNotation.ascii(),
+    NumericScaleDegreeNotation.plain(),
+    SolfegeScaleDegreeNotation(),
+  ];
 
   /// Parse [source] as a [ScaleDegree] and return its value.
   ///
@@ -74,10 +63,20 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.parse('I') == .i.major
-  /// ScaleDegree.parse('bII6') == .neapolitanSixth
-  /// ScaleDegree.parse('vi') == .vi.minor
+  /// ScaleDegree.parse('I') == .i
+  /// ScaleDegree.parse('ii') == .ii
+  /// ScaleDegree.parse('vi') == .vi
   /// ScaleDegree.parse('z') // throws a FormatException
+  ///
+  /// const numeric = <NumericScaleDegreeNotation>[.new(), .plain()];
+  /// ScaleDegree.parse('1̂', chain: numeric) == .i
+  /// ScaleDegree.parse('♯4̂', chain: numeric) == .iv.raised
+  /// ScaleDegree.parse('♭7', chain: numeric) == .vii.lowered
+  ///
+  /// const solfege = SolfegeScaleDegreeNotation();
+  /// ScaleDegree.parse('Do', chain: solfege) == .i
+  /// ScaleDegree.parse('fi', chain: solfege) == .iv.raised
+  /// ScaleDegree.parse('Te', chain: solfege) == .vii.lowered
   /// ```
   factory ScaleDegree.parse(
     String source, {
@@ -91,7 +90,7 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// ScaleDegree.ii.raised.isRaised == true
   /// ScaleDegree.neapolitanSixth.isRaised == false
   /// ```
-  bool get isRaised => semitonesDelta > 0;
+  bool get isRaised => accidental.isSharp;
 
   /// Whether this [ScaleDegree] is lowered.
   ///
@@ -101,76 +100,41 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// ScaleDegree.neapolitanSixth.isLowered == true
   /// ```
   // using < 0 instead of isNegative to avoid -0 being treated as negative
-  bool get isLowered => semitonesDelta < 0;
+  bool get isLowered => accidental.isFlat;
 
   /// This [ScaleDegree] raised by 1 semitone.
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.vi.raised == const ScaleDegree(6, semitonesDelta: 1)
+  /// ScaleDegree.vi.raised == const ScaleDegree(6, accidental: .sharp)
   /// ```
-  ScaleDegree get raised => copyWith(semitonesDelta: semitonesDelta + 1);
+  ScaleDegree get raised => ScaleDegree(ordinal, accidental: accidental + 1);
 
   /// This [ScaleDegree] lowered by 1 semitone.
   ///
   /// Example:
   /// ```dart
-  /// ScaleDegree.ii.lowered == const ScaleDegree(2, semitonesDelta: -1)
+  /// ScaleDegree.ii.lowered == const ScaleDegree(2, accidental: .flat)
   /// ```
-  ScaleDegree get lowered => copyWith(semitonesDelta: semitonesDelta - 1);
-
-  /// This [ScaleDegree] inverted.
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.vii.inverted == const ScaleDegree(7, inversion: 1)
-  /// ScaleDegree.i.inverted.inverted == const ScaleDegree(1, inversion: 2)
-  /// ```
-  ScaleDegree get inverted => copyWith(inversion: inversion + 1);
-
-  /// This [ScaleDegree] as [ImperfectQuality.major].
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.ii.major == const ScaleDegree(2, quality: .major)
-  /// ```
-  ScaleDegree get major => copyWith(quality: .major);
-
-  /// This [ScaleDegree] as [ImperfectQuality.minor].
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.v.minor == const ScaleDegree(5, quality: .minor)
-  /// ```
-  ScaleDegree get minor => copyWith(quality: .minor);
-
-  /// Creates a new [ScaleDegree] from this one by updating individual
-  /// properties.
-  ///
-  /// Example:
-  /// ```dart
-  /// ScaleDegree.i.copyWith(inversion: 2) == .i.inverted.inverted
-  /// ScaleDegree.vi.copyWith(semitonesDelta: -1) == .vi.lowered
-  /// ```
-  ScaleDegree copyWith({
-    int? ordinal,
-    ImperfectQuality? quality,
-    int? inversion,
-    int? semitonesDelta,
-  }) => ScaleDegree(
-    ordinal ?? this.ordinal,
-    quality: quality ?? this.quality,
-    inversion: inversion ?? this.inversion,
-    semitonesDelta: semitonesDelta ?? this.semitonesDelta,
-  );
+  ScaleDegree get lowered => ScaleDegree(ordinal, accidental: accidental - 1);
 
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
   /// Example:
   /// ```dart
   /// ScaleDegree.iii.format() == 'III'
-  /// ScaleDegree.vi.minor.lowered.format() == '♭vi'
-  /// ScaleDegree.neapolitanSixth.format() == '♭II6'
+  /// ScaleDegree.iv.raised.format() == '♯IV'
+  /// ScaleDegree.vii.lowered.format() == '♭VII'
+  ///
+  /// const numeric = NumericScaleDegreeNotation();
+  /// ScaleDegree.iii.format(numeric) == '3̂'
+  /// ScaleDegree.iv.raised.format(numeric) == '♯4̂'
+  /// ScaleDegree.vii.lowered.format(numeric) == '♭7̂'
+  ///
+  /// const solfege = SolfegeScaleDegreeNotation();
+  /// ScaleDegree.i.format(solfege) == 'Do'
+  /// ScaleDegree.iv.raised.format(solfege) == 'Fi'
+  /// ScaleDegree.vii.lowered.format(solfege) == 'Te'
   /// ```
   @override
   String format([
@@ -179,33 +143,20 @@ class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
 
   @override
   String toString() =>
-      '$runtimeType(ordinal: $ordinal, inversion: $inversion, '
-      'quality: $quality, semitonesDelta: $semitonesDelta)';
+      '$runtimeType(ordinal: $ordinal, accidental: $accidental)';
 
   @override
   bool operator ==(Object other) =>
       other is ScaleDegree &&
       ordinal == other.ordinal &&
-      inversion == other.inversion &&
-      quality == other.quality &&
-      semitonesDelta == other.semitonesDelta;
+      accidental == other.accidental;
 
   @override
-  int get hashCode => Object.hash(ordinal, inversion, quality, semitonesDelta);
+  int get hashCode => Object.hash(ordinal, accidental);
 
   @override
   int compareTo(ScaleDegree other) => compareMultiple([
     () => ordinal.compareTo(other.ordinal),
-    () => semitonesDelta.compareTo(other.semitonesDelta),
-    () => inversion.compareTo(other.inversion),
-    () {
-      if (quality != null && other.quality != null) {
-        return quality!.compareTo(other.quality!);
-      }
-      if (quality != null) return -1;
-      if (other.quality != null) return 1;
-
-      return 0;
-    },
+    () => accidental.compareTo(other.accidental),
   ]);
 }

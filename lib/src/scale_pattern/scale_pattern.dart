@@ -299,23 +299,20 @@ final class ScalePattern {
       degreePattern(ScaleDegree(i)),
   ];
 
-  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern], deduced
+  /// from this [intervalSteps].
   ///
   /// Example:
   /// ```dart
   /// ScalePattern.major.degreePattern(.i) == .majorTriad
   /// ScalePattern.major.degreePattern(.vii) == .diminishedTriad
+  /// ScalePattern.major.degreePattern(.ii.lowered) == .majorTriad
   /// ScalePattern.naturalMinor.degreePattern(.iv) == .minorTriad
   /// ```
-  ChordPattern degreePattern(ScaleDegree scaleDegree) {
-    if (scaleDegree.quality != null) return .fromQuality(scaleDegree.quality!);
-
-    // Deduce the diatonic `ChordPattern` from this `intervalSteps`.
-    return .fromIntervalSteps([
-      _addNextStepTo(scaleDegree.ordinal),
-      _addNextStepTo(scaleDegree.ordinal + 2),
-    ]);
-  }
+  ChordPattern degreePattern(ScaleDegree scaleDegree) => .fromIntervalSteps([
+    _addNextStepTo(scaleDegree.ordinal),
+    _addNextStepTo(scaleDegree.ordinal + 2),
+  ]);
 
   Interval _stepFrom(int ordinal) =>
       _intervalSteps[(ordinal - 1) % _intervalSteps.length];

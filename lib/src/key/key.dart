@@ -114,6 +114,48 @@ final class Key implements Comparable<Key>, Formattable<Key> {
   /// ```
   Scale<Note> get scale => mode.scale.on(note);
 
+  /// The [KeyRelationship] between this [Key] and [other].
+  ///
+  /// The relationship is derived from two independent vectors:
+  ///
+  ///  * the fifths-distance between [note] and `other.note` (sharpward
+  ///    when positive, flatward when negative), from [Note.fifthsDistanceWith];
+  ///  * the change in [Mode.brightness] between [mode] and `other.mode`
+  ///    (brightening when positive, darkening when negative, zero when
+  ///    the mode does not change).
+  ///
+  /// When the mode is unchanged, the relationship is always
+  /// [KeyRelationship.direct]. Otherwise, the two vectors either cancel
+  /// each other out (one sharpward/flatward push offset by an opposing
+  /// brightening/darkening pull) yielding [KeyRelationship.indirect],
+  /// or reinforce each other, yielding [KeyRelationship.doubleDirect].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.relationshipWith(Note.g.major)
+  ///   == (distance: 1, relationship: .direct)
+  /// Note.c.major.relationshipWith(Note.e.minor)
+  ///   == (distance: 4, relationship: .indirect)
+  /// Note.c.minor.relationshipWith(Note.f.major)
+  ///   == (distance: -1, relationship: .indirect)
+  /// Note.c.minor.relationshipWith(Note.e.major)
+  ///   == (distance: 4, relationship: .doubleDirect)
+  /// Note.c.major.relationshipWith(Note.f.minor)
+  ///   == (distance: -1, relationship: .doubleDirect)
+  /// ```
+  ({int distance, KeyRelationship relationship}) relationshipWith(Key other) {
+    final distance = note.fifthsDistanceWith(other.note);
+
+    return (
+      distance: distance,
+      relationship: mode == other.mode
+          ? .direct
+          : distance.sign * mode.distanceWith(other.mode).sign > 0
+          ? .doubleDirect
+          : .indirect,
+    );
+  }
+
   /// The string representation of this [Key] based on [formatter].
   ///
   /// Example:
@@ -149,4 +191,79 @@ final class Key implements Comparable<Key>, Formattable<Key> {
     () => note.compareTo(other.note),
     () => mode.name.compareTo(other.mode.name),
   ]);
+}
+
+/// The relationship between two tonal centers (keys), classified by how
+/// much tonal tension separates them.
+///
+/// ## Measuring distance
+///
+/// Distance is counted in fifths from the tonal center, a.k.a. the number of
+/// steps along the circle of fifths between one tonic and another,
+/// independently of key signature. D major, D dorian, and D minor sit at
+/// the same distance from C, 2 fifths, despite their different key
+/// signatures: what the ear actually tracks is the fundamental, not the
+/// accidentals on the page. This is also why a minor key feels closer to
+/// its parallel major (same tonic) than to its relative major (same key
+/// signature): C minor leans toward C major far more than toward its
+/// relative, E-flat major.
+///
+/// ## Two independent vectors
+///
+/// Moving from one key to another involves two separate motions, each
+/// with its own direction:
+///
+///  * **fifth-motion:** sharpward (up the circle of fifths) or flatward
+///    (down it);
+///  * **mode-change:** brightening (minor → major) or darkening
+///    (major → minor), or no change at all.
+///
+/// Tension builds along both axes independently, and how they combine
+/// determines the [KeyRelationship]:
+///
+///  * if the mode doesn’t change, only fifth-distance matters: [direct];
+///  * if the mode changes, its direction can either work *against* the
+///    fifth-motion, damping the net tension ([indirect]), or work *with*
+///    it, compounding the tension ([doubleDirect]).
+enum KeyRelationship {
+  /// The two vectors oppose each other: fifth-motion in one direction is
+  /// paired with a mode-change pulling the other way, so part of the
+  /// tension cancels out.
+  ///
+  /// This covers sharpward motion darkened by a major-to-minor shift, or
+  /// flatward motion brightened by a minor-to-major shift. The resulting
+  /// key still shares enough diatonic content with the reference to lean
+  /// back toward it.
+  ///
+  /// Example: C major → E minor moves 4 fifths sharpward, but darkens
+  /// from major to minor. E minor’s natural G, among other shared
+  /// notes, keeps it tied to C major, so the relationship reads as
+  /// indirect rather than as remote as 4 fifths alone would suggest.
+  ///
+  /// Example: C minor → F major moves 1 fifth flatward while
+  /// brightening from minor to major: likewise indirect!
+  indirect,
+
+  /// The mode is preserved (major to major, or minor to minor), so
+  /// there is no second vector to interact with the first. Tension is
+  /// felt directly, in straightforward proportion to the fifth-distance
+  /// between the two tonics.
+  direct,
+
+  /// The two vectors reinforce each other: fifth-motion in one direction
+  /// is paired with a mode-change pulling the *same* way, so the
+  /// tensions compound rather than cancel.
+  ///
+  /// This covers sharpward motion brightened by a minor-to-major shift,
+  /// or flatward motion darkened by a major-to-minor shift: moving
+  /// much further from the reference tonal center than an [indirect]
+  /// relationship at the same fifth-distance.
+  ///
+  /// Example: C minor → E major moves 4 fifths sharpward while also
+  /// brightening from minor to major: doubly reinforced, hence double
+  /// direct.
+  ///
+  /// Example: C major → F minor moves 1 fifth flatward while also
+  /// darkening from major to minor: likewise double direct!
+  doubleDirect,
 }

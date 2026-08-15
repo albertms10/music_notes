@@ -1,5 +1,3 @@
-// To allow major (M) and minor (m) static constant names.
-
 import '../notation_system/notation_system.dart';
 import '../quality/quality.dart';
 import '../quality/quality_notation.dart';

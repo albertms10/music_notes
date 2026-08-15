@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart' show immutable;
+
 import 'enharmonic.dart';
 import 'interval/interval.dart';
 import 'notation_system/notation_system.dart';
@@ -8,6 +10,7 @@ import 'transposable.dart';
 import 'tuning_system/equal_temperament.dart';
 
 /// An interface for items that can form scales.
+@immutable
 abstract class Scalable<T extends Scalable<T>>
     with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T>, Formattable<T> {

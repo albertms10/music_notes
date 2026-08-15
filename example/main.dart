@@ -123,7 +123,7 @@ void main() {
   Interval.P5.circleDistance<Note>(from: .c, to: .d);
   // (2, notes: [C, G, D])
   Interval.P4.circleDistance<Note>(from: .b.flat, to: .d);
-  // (-4, notes: [B♭, F, D, G, D])
+  // (-4, notes: [B♭, F, C, G, D])
 
   Interval.P5.circleFrom(Note.c).take(13).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]

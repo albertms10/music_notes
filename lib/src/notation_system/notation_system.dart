@@ -1,5 +1,7 @@
 // ignore_for_file: one_member_abstracts - Code reusability
 
+import 'package:meta/meta.dart' show immutable;
+
 /// An abstract representation of a notation system for parsing
 /// and formatting [I].
 ///
@@ -7,6 +9,7 @@
 /// of each other:
 /// the output of [format] should be a valid argument for [parse], and
 /// `parse(format(value))` should return a value equal to the original value.
+@immutable
 abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
   /// Creates a new formatter.
   const NotationSystem();
