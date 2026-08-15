@@ -1,4 +1,4 @@
-![Analysis CI](https://github.com/albertms10/music_notes/workflows/Analysis%20CI/badge.svg)
+![Analysis CI](https://github.com/albertms10/music_notes/workflows/Analysis%20CI/badge.svg?branch=main)
 [![Coverage Status](https://coveralls.io/repos/github/albertms10/music_notes/badge.svg?branch=main)](https://coveralls.io/github/albertms10/music_notes?branch=main)
 [![pub package](https://img.shields.io/pub/v/music_notes.svg)](https://pub.dev/packages/music_notes)
 [![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/albertms10/music_notes/badge)](https://api.securityscorecards.dev/projects/github.com/albertms10/music_notes)
