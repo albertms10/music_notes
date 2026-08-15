@@ -21,14 +21,12 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
 
   static const _romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
 
-  static final _regExp = RegExp(
-    '(?<accidental>[${SymbolAccidentalNotation.symbols.join()}]*)'
+  @override
+  RegExp get regExp => RegExp(
+    '${accidentalNotation.regExp?.pattern}'
     '(?<romanNumeral>${_romanNumerals.join('|')})\$',
     caseSensitive: false,
   );
-
-  @override
-  RegExp get regExp => _regExp;
 
   @override
   ScaleDegree parseMatch(RegExpMatch match) {
