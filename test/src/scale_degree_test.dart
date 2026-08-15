@@ -117,6 +117,7 @@ void main() {
     const english = RomanScaleDegreeNotation(
       accidentalNotation: EnglishAccidentalNotation(),
     );
+    const chain = [english];
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
@@ -133,7 +134,7 @@ void main() {
         expect(ScaleDegree.parse('Vi'), ScaleDegree.vi);
         expect(ScaleDegree.parse('♯Vi'), ScaleDegree.vi.raised);
         expect(
-          ScaleDegree.parse('flat VII', chain: const [english]),
+          ScaleDegree.parse('flat VII', chain: chain),
           ScaleDegree.vii.lowered,
         );
       });
