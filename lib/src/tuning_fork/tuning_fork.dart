@@ -1,5 +1,12 @@
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/music_notes.dart';
+
+import '../frequency/frequency.dart';
+import '../notation_system/notation_system.dart';
+import '../note/german_note_notation.dart';
+import '../pitch/helmholtz_pitch_notation.dart';
+import '../pitch/pitch.dart';
+import 'compact_tuning_fork_notation.dart';
+import 'scientific_tuning_fork_notation.dart';
 
 /// The representation of a tuning fork.
 @immutable
