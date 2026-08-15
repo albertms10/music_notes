@@ -64,6 +64,11 @@ void main() {
               .format(),
           'iv/♭II6/V',
         );
+
+        const numeric = HarmonicFunctionNotation(
+          scaleDegreeNotation: NumericScaleDegreeNotation(),
+        );
+        expect(HarmonicFunction.neapolitanSixth.format(numeric), '♭2̂6');
       });
     });
 

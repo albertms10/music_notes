@@ -17,15 +17,11 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   /// The [StringNotationSystem] for [Accidental].
   final StringNotationSystem<Accidental> accidentalNotation;
 
-  /// Whether to use uppercase for roman numerals.
-  final bool useUppercase;
-
   /// Creates a new [RomanScaleDegreeNotation].
   const RomanScaleDegreeNotation({
     this.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),
-    this.useUppercase = true,
   });
 
   static const _romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii'];
@@ -48,7 +44,7 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   );
 
   @override
-  String format(ScaleDegree scaleDegree) {
+  String format(ScaleDegree scaleDegree, {bool useUppercase = true}) {
     final ScaleDegree(:ordinal, :accidental) = scaleDegree;
     final numeral = _romanNumerals.elementAtOrNull(ordinal - 1);
     final buffer = StringBuffer()
