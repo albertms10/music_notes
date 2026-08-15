@@ -21,7 +21,7 @@ import '../transposable.dart';
 /// * [ScalePattern].
 /// * [ScaleDegree].
 @immutable
-class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
+final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   final List<T> _degrees;
 
   /// The [Scalable] degrees that define this [Scale].

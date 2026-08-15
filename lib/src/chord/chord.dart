@@ -20,7 +20,7 @@ import '../transposable.dart';
 /// * [Scalable].
 /// * [Chordable].
 @immutable
-class Chord<T extends Scalable<T>>
+final class Chord<T extends Scalable<T>>
     with Chordable<Chord<T>>
     implements Transposable<Chord<T>>, Formattable<Chord<T>> {
   final List<T> _items;

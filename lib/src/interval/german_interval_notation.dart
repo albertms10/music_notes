@@ -1,5 +1,3 @@
-// To allow major (M) and minor (m) static constant names.
-
 import '../quality/quality_notation.dart';
 import 'interval.dart';
 import 'standard_interval_notation.dart';

@@ -13,7 +13,8 @@ import 'roman_scale_degree_notation.dart';
 /// See also:
 /// * [Scale].
 @immutable
-class ScaleDegree implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
+final class ScaleDegree
+    implements Comparable<ScaleDegree>, Formattable<ScaleDegree> {
   /// The ordinal that identifies this [ScaleDegree].
   final int ordinal;
 

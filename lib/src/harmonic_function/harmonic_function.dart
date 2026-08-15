@@ -1,10 +1,10 @@
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/src/harmonic_function/harmonic_function_notation.dart';
 
 import '../chord_pattern/chord_pattern.dart';
 import '../notation_system/notation_system.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
+import 'harmonic_function_notation.dart';
 
 /// A harmonic function.
 ///
@@ -13,7 +13,7 @@ import '../scale_degree/scale_degree.dart';
 /// * [Scale].
 /// * [ScaleDegree].
 @immutable
-class HarmonicFunction implements Formattable<HarmonicFunction> {
+final class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The [ScaleDegree] of this [HarmonicFunction].
   final ScaleDegree scaleDegree;
 

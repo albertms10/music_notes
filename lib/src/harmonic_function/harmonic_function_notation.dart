@@ -1,11 +1,11 @@
-import 'package:music_notes/src/scale_degree/roman_scale_degree_notation.dart';
-
 import '../notation_system/notation_system.dart';
+import '../scale_degree/roman_scale_degree_notation.dart';
 import '../scale_degree/scale_degree.dart';
 import 'harmonic_function.dart';
 
 /// The [StringNotationSystem] for [HarmonicFunction] notation.
-class HarmonicFunctionNotation extends StringNotationSystem<HarmonicFunction> {
+final class HarmonicFunctionNotation
+    extends StringNotationSystem<HarmonicFunction> {
   /// The [StringNotationSystem] for [ScaleDegree] notation.
   final StringNotationSystem<ScaleDegree> scaleDegreeNotation;
 
