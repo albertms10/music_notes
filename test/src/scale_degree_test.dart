@@ -114,18 +114,29 @@ void main() {
   });
 
   group('RomanScaleDegreeNotation', () {
+    const english = RomanScaleDegreeNotation(
+      accidentalNotation: EnglishAccidentalNotation(),
+    );
+    const chain = [english];
+
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => ScaleDegree.parse(''), throwsFormatException);
         expect(() => ScaleDegree.parse('x'), throwsFormatException);
         expect(() => ScaleDegree.parse('H'), throwsFormatException);
         expect(() => ScaleDegree.parse('vv'), throwsFormatException);
+        expect(() => ScaleDegree.parse('♯ II'), throwsFormatException);
       });
 
       test('parses source as a ScaleDegree', () {
         expect(ScaleDegree.parse('I'), ScaleDegree.i);
         expect(ScaleDegree.parse('bii'), ScaleDegree.ii.lowered);
         expect(ScaleDegree.parse('Vi'), ScaleDegree.vi);
+        expect(ScaleDegree.parse('♯Vi'), ScaleDegree.vi.raised);
+        expect(
+          ScaleDegree.parse('flat VII', chain: chain),
+          ScaleDegree.vii.lowered,
+        );
       });
     });
 
@@ -135,6 +146,8 @@ void main() {
         expect(ScaleDegree.vii.lowered.format(), '♭VII');
         expect(const ScaleDegree(10).format(), '10');
         expect(const ScaleDegree(10).raised.format(), '♯10');
+        expect(ScaleDegree.vi.raised.format(english), 'sharp VI');
+
         expect(
           ScaleDegree.vii.format(
             const RomanScaleDegreeNotation(useUppercase: false),

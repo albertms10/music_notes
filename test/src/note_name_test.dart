@@ -110,7 +110,7 @@ void main() {
       test('throws a FormatException when source is invalid', () {
         expect(() => NoteName.parse('x'), throwsFormatException);
         expect(
-          () => NoteName.parse('H', chain: [const EnglishNoteNameNotation()]),
+          () => NoteName.parse('H', chain: const [EnglishNoteNameNotation()]),
           throwsFormatException,
         );
         expect(() => NoteName.parse('X'), throwsFormatException);

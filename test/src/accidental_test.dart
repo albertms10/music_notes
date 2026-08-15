@@ -218,9 +218,9 @@ void main() {
         expect(Accidental.parse('flat'), Accidental.flat);
         expect(Accidental.parse('double-Flat'), Accidental.doubleFlat);
 
-        const parser = EnglishAccidentalNotation(separator: ' ');
+        const chain = [EnglishAccidentalNotation(separator: ' ')];
         expect(
-          Accidental.parse('triple Flat', chain: const [parser]),
+          Accidental.parse('triple Flat', chain: chain),
           Accidental.tripleFlat,
         );
       });
