@@ -1525,4 +1525,72 @@ void main() {
       });
     });
   });
+
+  group('AbcPitchNotation', () {
+    const formatter = AbcPitchNotation();
+    const showNatural = AbcPitchNotation.showNatural();
+    const chain = [formatter];
+
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => Pitch.parse('H', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('^', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('_', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('C#', chain: chain), throwsFormatException);
+      });
+
+      test('parses source as a Pitch', () {
+        expect(Pitch.parse('C', chain: chain), Note.c.inOctave(4));
+        expect(Pitch.parse('g', chain: chain), Note.g.inOctave(5));
+        expect(Pitch.parse('C,', chain: chain), Note.c.inOctave(3));
+        expect(Pitch.parse('C,,,', chain: chain), Note.c.inOctave(1));
+        expect(Pitch.parse("c'", chain: chain), Note.c.inOctave(6));
+        expect(Pitch.parse("c'''", chain: chain), Note.c.inOctave(8));
+
+        expect(Pitch.parse('^F,', chain: chain), Note.f.sharp.inOctave(3));
+        expect(Pitch.parse("_e'", chain: chain), Note.e.flat.inOctave(6));
+        expect(
+          Pitch.parse('^^C', chain: chain),
+          Note.c.sharp.sharp.inOctave(4),
+        );
+        expect(Pitch.parse('__B', chain: chain), Note.b.flat.flat.inOctave(4));
+
+        expect(Pitch.parse('=C', chain: chain), Note.c.inOctave(4));
+      });
+
+      test('is the inverse of .format()', () {
+        const notation = AbcPitchNotation();
+        for (final pitch in [
+          Note.c.inOctave(4),
+          Note.g.inOctave(5),
+          Note.f.sharp.inOctave(3),
+          Note.e.flat.inOctave(6),
+          Note.b.flat.flat.inOctave(2),
+        ]) {
+          expect(notation.parse(notation.format(pitch)), pitch);
+        }
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Pitch', () {
+        expect(Note.c.inOctave(4).format(formatter), 'C');
+        expect(Note.g.inOctave(4).format(formatter), 'G');
+        expect(Note.c.inOctave(5).format(formatter), 'c');
+        expect(Note.g.inOctave(5).format(formatter), 'g');
+        expect(Note.c.inOctave(3).format(formatter), 'C,');
+        expect(Note.c.inOctave(1).format(formatter), 'C,,,');
+        expect(Note.c.inOctave(6).format(formatter), "c'");
+        expect(Note.c.inOctave(8).format(formatter), "c'''");
+
+        expect(Note.f.sharp.inOctave(3).format(formatter), '^F,');
+        expect(Note.e.flat.inOctave(6).format(formatter), "_e'");
+        expect(Note.c.sharp.sharp.inOctave(4).format(formatter), '^^C');
+        expect(Note.b.flat.flat.inOctave(4).format(formatter), '__B');
+
+        expect(Note.c.inOctave(4).format(showNatural), '=C');
+      });
+    });
+  });
 }
