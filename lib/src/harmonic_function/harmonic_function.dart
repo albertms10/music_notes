@@ -13,7 +13,7 @@ import '../scale_degree/scale_degree.dart';
 /// * [Scale].
 /// * [ScaleDegree].
 @immutable
-class HarmonicFunction implements Formattable<HarmonicFunction> {
+final class HarmonicFunction implements Formattable<HarmonicFunction> {
   /// The [ScaleDegree] of this [HarmonicFunction].
   final ScaleDegree scaleDegree;
 

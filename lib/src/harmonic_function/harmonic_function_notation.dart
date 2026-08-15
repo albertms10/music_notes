@@ -5,7 +5,8 @@ import '../scale_degree/scale_degree.dart';
 import 'harmonic_function.dart';
 
 /// The [StringNotationSystem] for [HarmonicFunction] notation.
-class HarmonicFunctionNotation extends StringNotationSystem<HarmonicFunction> {
+final class HarmonicFunctionNotation
+    extends StringNotationSystem<HarmonicFunction> {
   /// The [StringNotationSystem] for [ScaleDegree] notation.
   final StringNotationSystem<ScaleDegree> scaleDegreeNotation;
 

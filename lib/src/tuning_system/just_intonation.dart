@@ -38,7 +38,7 @@ sealed class JustIntonation extends TuningSystem {
 ///
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
 @immutable
-class PythagoreanTuning extends JustIntonation {
+final class PythagoreanTuning extends JustIntonation {
   /// Creates a new [PythagoreanTuning] from [fork].
   const PythagoreanTuning({super.fork});
 

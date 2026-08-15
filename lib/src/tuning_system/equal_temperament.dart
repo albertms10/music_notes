@@ -21,7 +21,7 @@ const int chromaticDivisions = 12;
 /// See also:
 /// * [TuningSystem].
 @immutable
-class EqualTemperament extends TuningSystem {
+final class EqualTemperament extends TuningSystem {
   final List<int> _steps;
 
   /// The equal divisions between each [NoteName] and the next one.

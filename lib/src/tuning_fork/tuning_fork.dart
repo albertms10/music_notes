@@ -8,7 +8,7 @@ import 'scientific_tuning_fork_notation.dart';
 
 /// The representation of a tuning fork.
 @immutable
-class TuningFork implements Formattable<TuningFork> {
+final class TuningFork implements Formattable<TuningFork> {
   /// The reference [Pitch] of this tuning fork.
   final Pitch pitch;
 

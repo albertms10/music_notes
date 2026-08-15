@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart' show immutable;
-
 import '../accidental/accidental.dart';
 import '../accidental/symbol_accidental_notation.dart';
 import '../notation_system/notation_system.dart';
@@ -24,7 +22,6 @@ import 'scale_degree.dart';
 /// See also:
 /// * [ScaleDegree].
 /// * [RomanScaleDegreeNotation].
-@immutable
 final class NumericScaleDegreeNotation
     extends StringNotationSystem<ScaleDegree> {
   /// The [StringNotationSystem] for [Accidental].

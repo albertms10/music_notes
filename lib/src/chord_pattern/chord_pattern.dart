@@ -23,7 +23,7 @@ import 'chord_pattern_notation.dart';
 /// * [Chord].
 /// * [Interval].
 @immutable
-class ChordPattern
+final class ChordPattern
     with Chordable<ChordPattern>
     implements Formattable<ChordPattern> {
   final List<Interval> _intervals;
