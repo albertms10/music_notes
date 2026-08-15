@@ -1,3 +1,35 @@
+## 0.27.0
+
+- feat(key): ✨ support shorter `GermanKeyNotation` without the mode [#732](https://github.com/albertms10/music_notes/pull/732)
+- refactor(accidental): 🔥 remove `name` getter in favor of `EnglishAccidentalNotation` [#733](https://github.com/albertms10/music_notes/pull/733)
+- feat(accidental): ✨ support different separators for compound accidentals in `EnglishAccidentalNotation` [#734](https://github.com/albertms10/music_notes/pull/734)
+- feat(key): ✨ support shorter `EnglishKeyNotation` and `RomanceKeyNotation` [#735](https://github.com/albertms10/music_notes/pull/735)
+- refactor(key): ♻️ make `showMode` an explicit constructor parameter [#736](https://github.com/albertms10/music_notes/pull/736)
+- feat(key): ✨ add `relationshipWith` method [#738](https://github.com/albertms10/music_notes/pull/738)
+- refactor(mode): ♻️ restructure model in clearer directories [#739](https://github.com/albertms10/music_notes/pull/739)
+- refactor!(scale_degree): ♻️ rewrite using `accidental` instead of raw `semitonesDelta` [#741](https://github.com/albertms10/music_notes/pull/741)
+- refactor!(harmonic_function): ♻️ rewrite using composition instead of a plain list of `ScaleDegree` [#742](https://github.com/albertms10/music_notes/pull/742)
+- refactor!(harmonic_function): ♻️ move `accidental` from `ScaleDegree` [#743](https://github.com/albertms10/music_notes/pull/743)
+- feat(chord_pattern): ✨ add `inversion`-related getters [#744](https://github.com/albertms10/music_notes/pull/744)
+- Revert "refactor!(harmonic_function): ♻️ move `accidental` from `ScaleDegree`" [#746](https://github.com/albertms10/music_notes/pull/746)
+- refactor!(harmonic_function): ♻️ rewrite using `pattern` instead of `inversion` and `quality` [#745](https://github.com/albertms10/music_notes/pull/745)
+- docs(README): 📖 address wrong example for `Interval.circleDistance` [#747](https://github.com/albertms10/music_notes/pull/747)
+- refactor(scale_degree): ♻️ reuse `accidentalNotation.regExp` value [#748](https://github.com/albertms10/music_notes/pull/748)
+- feat(scale_degree): ✨ add support for `NumericScaleDegreeNotation` [#750](https://github.com/albertms10/music_notes/pull/750)
+- refactor(harmonic_function): ♻️ delegate the responsibility for `useUppercase` to `RomanScaleDegreeNotation` [#749](https://github.com/albertms10/music_notes/pull/749)
+- refactor!: ♻️ reinforce `@immutable` and mark classes as `final` [#751](https://github.com/albertms10/music_notes/pull/751)
+- docs(README): 📖 show status badge for the `main` branch only [#756](https://github.com/albertms10/music_notes/pull/756)
+- feat(pitch): ✨ add support for `AbcPitchNotation` [#753](https://github.com/albertms10/music_notes/pull/753)
+- feat(scale_degree): ✨ add support for `SolfegeScaleDegreeNotation` [#757](https://github.com/albertms10/music_notes/pull/757)
+- feat!: 💥 make parsers format rules explicit [#755](https://github.com/albertms10/music_notes/pull/755)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#737](https://github.com/albertms10/music_notes/pull/737)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#740](https://github.com/albertms10/music_notes/pull/740)
+
+**Full Changelog**: [`v0.26.0...v0.27.0`](https://github.com/albertms10/music_notes/compare/v0.26.0...v0.27.0)
+
 ## 0.26.0
 
 - feat(interval): ✨ add support for `GermanIntervalNotation` [#712](https://github.com/albertms10/music_notes/pull/712)
