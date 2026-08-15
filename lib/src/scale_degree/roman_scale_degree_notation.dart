@@ -29,17 +29,10 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   );
 
   @override
-  ScaleDegree parseMatch(RegExpMatch match) {
-    final accidental = match.namedGroup('accidental')!;
-    final romanNumeral = match.namedGroup('romanNumeral')!;
-
-    return ScaleDegree(
-      _romanNumerals.indexOf(romanNumeral.toLowerCase()) + 1,
-      accidental: accidental.isNotEmpty
-          ? .parse(accidental, chain: [accidentalNotation])
-          : .natural,
-    );
-  }
+  ScaleDegree parseMatch(RegExpMatch match) => ScaleDegree(
+    _romanNumerals.indexOf(match.namedGroup('romanNumeral')!.toLowerCase()) + 1,
+    accidental: accidentalNotation.parseMatch(match),
+  );
 
   @override
   String format(ScaleDegree scaleDegree) {
