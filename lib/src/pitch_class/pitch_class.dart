@@ -25,7 +25,7 @@ import 'integer_pitch_class_notation.dart';
 /// * [Pitch].
 @immutable
 final class PitchClass extends Scalable<PitchClass>
-    implements Comparable<PitchClass>, Formattable<PitchClass> {
+    implements Formattable<PitchClass> {
   /// The number of semitones (chroma) that represent this [PitchClass].
   ///
   /// See [Chroma feature](https://en.wikipedia.org/wiki/Chroma_feature).
@@ -309,7 +309,4 @@ final class PitchClass extends Scalable<PitchClass>
 
   @override
   int get hashCode => semitones.hashCode;
-
-  @override
-  int compareTo(PitchClass other) => semitones.compareTo(other.semitones);
 }
