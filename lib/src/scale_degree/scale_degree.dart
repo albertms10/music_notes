@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/src/scale_degree/solfege_scale_degree_notation.dart';
 import 'package:music_notes/utils.dart';
 
 import '../accidental/accidental.dart';
@@ -52,6 +53,7 @@ final class ScaleDegree
     NumericScaleDegreeNotation(),
     NumericScaleDegreeNotation.ascii(),
     NumericScaleDegreeNotation.plain(),
+    SolfegeScaleDegreeNotation(),
   ];
 
   /// Parse [source] as a [ScaleDegree] and return its value.
@@ -66,11 +68,15 @@ final class ScaleDegree
   /// ScaleDegree.parse('vi') == .vi
   /// ScaleDegree.parse('z') // throws a FormatException
   ///
-  /// const chain = <NumericScaleDegreeNotation>[.new(), .plain()];
-  /// ScaleDegree.parse('1̂', chain: chain) == ScaleDegree.i
-  /// ScaleDegree.parse('♯4̂', chain: chain) == ScaleDegree.iv.raised
-  /// ScaleDegree.parse('♭7', chain: chain) == ScaleDegree.vii.lowered
-  /// ScaleDegree.parse('0', chain: chain) // throws a FormatException
+  /// const numeric = <NumericScaleDegreeNotation>[.new(), .plain()];
+  /// ScaleDegree.parse('1̂', chain: numeric) == .i
+  /// ScaleDegree.parse('♯4̂', chain: numeric) == .iv.raised
+  /// ScaleDegree.parse('♭7', chain: numeric) == .vii.lowered
+  ///
+  /// const solfege = SolfegeScaleDegreeNotation();
+  /// ScaleDegree.parse('Do', chain: solfege) == .i
+  /// ScaleDegree.parse('fi', chain: solfege) == .iv.raised
+  /// ScaleDegree.parse('Te', chain: solfege) == .vii.lowered
   /// ```
   factory ScaleDegree.parse(
     String source, {
@@ -124,6 +130,11 @@ final class ScaleDegree
   /// ScaleDegree.iii.format(numeric) == '3̂'
   /// ScaleDegree.iv.raised.format(numeric) == '♯4̂'
   /// ScaleDegree.vii.lowered.format(numeric) == '♭7̂'
+  ///
+  /// const solfege = SolfegeScaleDegreeNotation();
+  /// ScaleDegree.i.format(solfege) == 'Do'
+  /// ScaleDegree.iv.raised.format(solfege) == 'Fi'
+  /// ScaleDegree.vii.lowered.format(solfege) == 'Te'
   /// ```
   @override
   String format([

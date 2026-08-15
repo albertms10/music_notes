@@ -3,6 +3,7 @@ import '../accidental/symbol_accidental_notation.dart';
 import '../notation_system/notation_system.dart';
 import 'numeric_scale_degree_notation.dart';
 import 'scale_degree.dart';
+import 'solfege_scale_degree_notation.dart';
 
 /// The roman [ScaleDegree] notation formatter.
 ///
@@ -10,6 +11,7 @@ import 'scale_degree.dart';
 /// See also:
 /// * [ScaleDegree].
 /// * [NumericScaleDegreeNotation].
+/// * [SolfegeScaleDegreeNotation].
 final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   /// The [StringNotationSystem] for [Accidental].
   final StringNotationSystem<Accidental> accidentalNotation;
