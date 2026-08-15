@@ -60,6 +60,7 @@ export 'src/scale/scale.dart';
 export 'src/scale_degree/numeric_scale_degree_notation.dart';
 export 'src/scale_degree/roman_scale_degree_notation.dart';
 export 'src/scale_degree/scale_degree.dart';
+export 'src/scale_degree/solfege_scale_degree_notation.dart';
 export 'src/scale_pattern/scale_pattern.dart';
 export 'src/size/size.dart';
 export 'src/size/size_notation.dart';

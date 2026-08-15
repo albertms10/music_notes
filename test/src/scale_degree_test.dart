@@ -185,11 +185,11 @@ void main() {
       });
 
       test('is the inverse of .format()', () {
-        for (final scaleDegree in [
-          ScaleDegree.i,
-          ScaleDegree.ii.raised,
-          ScaleDegree.iii.lowered,
-          ScaleDegree.vii.lowered,
+        for (final scaleDegree in <ScaleDegree>[
+          .i,
+          .ii.raised,
+          .iii.lowered,
+          .vii.lowered,
         ]) {
           expect(
             ScaleDegree.parse(formatter.format(scaleDegree), chain: chain),
@@ -218,6 +218,99 @@ void main() {
         expect(ScaleDegree.iii.format(plain), '3');
         expect(ScaleDegree.vii.lowered.format(plain), '♭7');
         expect(ScaleDegree.vi.raised.format(plain), '♯6');
+      });
+    });
+  });
+
+  group('SolfegeScaleDegreeNotation', () {
+    const formatter = SolfegeScaleDegreeNotation();
+    const laBased = SolfegeScaleDegreeNotation.laBased();
+
+    group('.format()', () {
+      test('throws an UnsupportedError for unsupported ScaleDegrees', () {
+        expect(
+          () => ScaleDegree.iii.raised.format(formatter),
+          throwsUnsupportedError,
+        );
+        expect(
+          () => ScaleDegree.vii.raised.format(formatter),
+          throwsUnsupportedError,
+        );
+
+        expect(
+          () => ScaleDegree.i.lowered.format(formatter),
+          throwsUnsupportedError,
+        );
+        expect(
+          () => ScaleDegree.iv.lowered.format(formatter),
+          throwsUnsupportedError,
+        );
+
+        expect(
+          () => ScaleDegree.iv.raised.raised.format(formatter),
+          throwsUnsupportedError,
+        );
+        expect(
+          () => ScaleDegree.ii.lowered.lowered.format(formatter),
+          throwsUnsupportedError,
+        );
+      });
+
+      test('returns the string representation of this ScaleDegree', () {
+        expect(ScaleDegree.i.format(formatter), 'Do');
+        expect(ScaleDegree.v.format(formatter), 'Sol');
+        expect(ScaleDegree.vii.format(formatter), 'Ti');
+
+        expect(ScaleDegree.i.raised.format(formatter), 'Di');
+        expect(ScaleDegree.iv.raised.format(formatter), 'Fi');
+        expect(ScaleDegree.vi.raised.format(formatter), 'Li');
+
+        expect(ScaleDegree.ii.lowered.format(formatter), 'Ra');
+        expect(ScaleDegree.iii.lowered.format(formatter), 'Me');
+        expect(ScaleDegree.vii.lowered.format(formatter), 'Te');
+
+        expect(const ScaleDegree(9), 'Re');
+        expect(const ScaleDegree(13), 'La');
+
+        expect(ScaleDegree.i.format(laBased), 'La');
+        expect(ScaleDegree.iii.format(laBased), 'Do');
+        expect(ScaleDegree.vii.format(laBased), 'Sol');
+      });
+    });
+
+    group('.parse()', () {
+      test('throws a FormatException on an unrecognized syllable', () {
+        expect(() => ScaleDegree.parse('Zi'), throwsFormatException);
+        expect(() => ScaleDegree.parse(''), throwsFormatException);
+      });
+
+      test('parses source as a ScaleDegree', () {
+        expect(ScaleDegree.parse('Do'), ScaleDegree.i);
+        expect(ScaleDegree.parse('sol'), ScaleDegree.v);
+        expect(ScaleDegree.parse('Fi'), ScaleDegree.iv.raised);
+        expect(ScaleDegree.parse('Te'), ScaleDegree.vii.lowered);
+        expect(ScaleDegree.parse('DO'), ScaleDegree.i);
+        expect(ScaleDegree.parse('ti'), ScaleDegree.vii);
+
+        expect(
+          ScaleDegree.parse('La', chain: const [laBased]),
+          ScaleDegree.i,
+        );
+        expect(
+          ScaleDegree.parse('Do', chain: const [laBased]),
+          ScaleDegree.iii,
+        );
+      });
+
+      test('is the inverse of .format() for representable degrees', () {
+        for (final scaleDegree in <ScaleDegree>[
+          .i,
+          .i.raised,
+          .ii.lowered,
+          .vii.lowered,
+        ]) {
+          expect(formatter.parse(formatter.format(scaleDegree)), scaleDegree);
+        }
       });
     });
   });

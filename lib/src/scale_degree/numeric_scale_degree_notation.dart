@@ -3,6 +3,7 @@ import '../accidental/symbol_accidental_notation.dart';
 import '../notation_system/notation_system.dart';
 import 'roman_scale_degree_notation.dart';
 import 'scale_degree.dart';
+import 'solfege_scale_degree_notation.dart';
 
 /// The conventional numeric (caret) notation system for [ScaleDegree],
 /// e.g. 1̂, ♯4̂, ♭7̂.
@@ -15,13 +16,14 @@ import 'scale_degree.dart';
 ///
 /// Unlike Roman numerals, the numeral's case carries no meaning here, since
 /// a bare scale degree (unlike a triad) has no inherent major/minor
-/// quality — only [ScaleDegree.accidental] alters it, exactly as in
+/// quality; only [ScaleDegree.accidental] alters it, exactly as in
 /// [RomanScaleDegreeNotation].
 ///
 /// ---
 /// See also:
 /// * [ScaleDegree].
 /// * [RomanScaleDegreeNotation].
+/// * [SolfegeScaleDegreeNotation].
 final class NumericScaleDegreeNotation
     extends StringNotationSystem<ScaleDegree> {
   /// The [StringNotationSystem] for [Accidental].

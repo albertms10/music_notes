@@ -170,7 +170,7 @@ final class ChordPattern
   List<Interval> get _sortedIntervals => _intervals.sorted();
 
   /// Whether [_sortedIntervals] forms an uninterrupted stack of thirds
-  /// above the root — 3rd, 5th, 7th, 9th, 11th, 13th, and so on — meaning
+  /// above the root (e.g., 3rd, 5th, 7th, 9th, 11th, 13th, and so on) meaning
   /// this [ChordPattern] is in root position.
   bool get isRootPosition => _sortedIntervals.indexed.every(
     (entry) => entry.$2.size == Size.third + 2 * entry.$1,
@@ -180,9 +180,8 @@ final class ChordPattern
   /// [Interval] is moved above the octave (becoming the new top note) and
   /// every remaining [Interval] is re-expressed from that new bass.
   ///
-  /// This is derived solely from the interval content of [_sortedIntervals]
-  /// — nothing about the resulting shape is hardcoded — so it holds for
-  /// triads, seventh chords, and extended (9th/11th/13th) chords alike.
+  /// This is derived solely from the interval content of [_sortedIntervals],
+  /// so it holds for triads, seventh chords, and extended chords alike.
   ///
   /// See [Inversion § Chords](https://en.wikipedia.org/wiki/Inversion_(music)#Chords).
   ///
@@ -221,8 +220,8 @@ final class ChordPattern
   /// to `_noteCount - 1`.
   ///
   /// The result is obtained by repeatedly applying [inverted] until an
-  /// uninterrupted stack of thirds — i.e. root position, see
-  /// [isRootPosition] — is reached, then working back from how many
+  /// uninterrupted stack of thirds, i.e. root position (see
+  /// [isRootPosition]) is reached, then working back from how many
   /// rotations that took. Since chord inversion is only a meaningful
   /// concept for chords stacked in thirds, calling this on a non-tertian
   /// [ChordPattern] (e.g. quartal or added-tone chords) throws a
