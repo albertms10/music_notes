@@ -1,6 +1,5 @@
-import 'package:music_notes/src/scale_degree/roman_scale_degree_notation.dart';
-
 import '../notation_system/notation_system.dart';
+import '../scale_degree/roman_scale_degree_notation.dart';
 import '../scale_degree/scale_degree.dart';
 import 'harmonic_function.dart';
 
