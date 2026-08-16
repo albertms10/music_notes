@@ -76,7 +76,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.major.scale.degreeChords == [
+  /// Note.a.major.scale.degreeChords() == [
   ///   Note.a.majorTriad,
   ///   Note.b.minorTriad,
   ///   Note.c.sharp.minorTriad,

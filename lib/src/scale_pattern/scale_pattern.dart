@@ -309,11 +309,11 @@ final class ScalePattern {
   /// Example:
   /// ```dart
   /// ScalePattern.major.degreePattern(.i) == .majorTriad
-  /// ScalePattern.major.degreePattern(.v, shape: {.third, .fifth, .seventh})
-  ///   == .majorTriad.add7(.minor) // dominant 7th
+  /// ScalePattern.major.degreePattern(.v, shape: Size.tetrad)
+  ///   == .majorTriad.add7(.minor)
   /// ScalePattern.major.degreePattern(
   ///   .ii,
-  ///   shape: {.third, .fifth, .sixth, .ninth, .thirteenth},
+  ///   shape: {...Size.triad, .sixth, .ninth, .thirteenth},
   /// ) == ChordPattern.minorTriad.add6(.major).add9(.major).add13(.major)
   /// ```
   ChordPattern degreePattern(
