@@ -1,4 +1,5 @@
-import 'package:collection/collection.dart' show UnmodifiableListView;
+import 'package:collection/collection.dart'
+    show IterableComparableExtension, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 
 import '../chord_pattern/chord_pattern.dart';
@@ -8,6 +9,7 @@ import '../pitch_class/pitch_class.dart';
 import '../scalable.dart';
 import '../scale/scale.dart';
 import '../scale_degree/scale_degree.dart';
+import '../size/size.dart';
 import '../tuning_system/equal_temperament.dart';
 
 /// A set of musical intervals that conform a musical scale.
@@ -299,26 +301,44 @@ final class ScalePattern {
       degreePattern(ScaleDegree(i)),
   ];
 
-  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern], deduced
-  /// from this [intervalSteps].
+  /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern], with one
+  /// member for every [Size] present in [shape] (a triad, by default). Each
+  /// member's actual quality is deduced diatonically from this
+  /// [intervalSteps] — [shape] only says *which* chord tones to include.
   ///
   /// Example:
   /// ```dart
   /// ScalePattern.major.degreePattern(.i) == .majorTriad
-  /// ScalePattern.major.degreePattern(.vii) == .diminishedTriad
-  /// ScalePattern.major.degreePattern(.ii.lowered) == .majorTriad
-  /// ScalePattern.naturalMinor.degreePattern(.iv) == .minorTriad
+  /// ScalePattern.major.degreePattern(.v, shape: Size.tetrad)
+  ///   == .majorTriad.add7(.minor)
+  /// ScalePattern.major.degreePattern(
+  ///   .ii,
+  ///   shape: {...Size.triad, .sixth, .ninth, .thirteenth},
+  /// ) == ChordPattern.minorTriad.add6(.major).add9(.major).add13(.major)
   /// ```
-  ChordPattern degreePattern(ScaleDegree scaleDegree) => .fromIntervalSteps([
-    _addNextStepTo(scaleDegree.ordinal),
-    _addNextStepTo(scaleDegree.ordinal + 2),
+  ChordPattern degreePattern(
+    ScaleDegree scaleDegree, {
+    Set<Size> shape = Size.triad,
+  }) => ChordPattern([
+    for (final size in shape.sorted())
+      _intervalAbove(scaleDegree.ordinal, Size(size.toInt()) - 1),
   ]);
 
   Interval _stepFrom(int ordinal) =>
       _intervalSteps[(ordinal - 1) % _intervalSteps.length];
 
-  Interval _addNextStepTo(int ordinal) =>
-      _stepFrom(ordinal) + _stepFrom(ordinal + 1);
+  /// The [Interval] from scale position [ordinal] to the note [scaleStepsAway]
+  /// diatonic scale steps above it (e.g. `2` for a third, `5` for a sixth),
+  /// deduced by summing this [intervalSteps] — correctly producing compound
+  /// intervals once [scaleStepsAway] exceeds the octave.
+  Interval _intervalAbove(int ordinal, int scaleStepsAway) {
+    var interval = _stepFrom(ordinal);
+    for (var i = 1; i < scaleStepsAway; i++) {
+      interval += _stepFrom(ordinal + i);
+    }
+
+    return interval;
+  }
 
   /// Excludes [intervals] from this [ScalePattern].
   ///

@@ -10,6 +10,7 @@ import '../interval/interval.dart';
 import '../scalable.dart';
 import '../scale_degree/scale_degree.dart';
 import '../scale_pattern/scale_pattern.dart';
+import '../size/size.dart';
 import '../transposable.dart';
 
 /// A set of musical notes ordered by fundamental frequency or pitch.
@@ -75,7 +76,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///
   /// Example:
   /// ```dart
-  /// Note.a.major.scale.degreeChords == [
+  /// Note.a.major.scale.degreeChords() == [
   ///   Note.a.majorTriad,
   ///   Note.b.minorTriad,
   ///   Note.c.sharp.minorTriad,
@@ -85,8 +86,9 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> get degreeChords => [
-    for (var i = 1; i < _degrees.length; i++) degreeChord(ScaleDegree(i)),
+  List<Chord<T>> degreeChords({Set<Size> shape = Size.triad}) => [
+    for (var i = 1; i < _degrees.length; i++)
+      degreeChord(ScaleDegree(i), shape: shape),
   ];
 
   /// The [T] for the [scaleDegree] of this [Scale].
@@ -118,11 +120,14 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
   /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
   /// ```
-  Chord<T> degreeChord(ScaleDegree scaleDegree) =>
+  Chord<T> degreeChord(
+    ScaleDegree scaleDegree, {
+    Set<Size> shape = Size.triad,
+  }) =>
       // TODO(albertms10): find a better way of handling altered scale degrees.
       (scaleDegree.isLowered
               ? ChordPattern.majorTriad
-              : pattern.degreePattern(scaleDegree))
+              : pattern.degreePattern(scaleDegree, shape: shape))
           .on(degree(scaleDegree));
 
   /// The [Chord] for the [harmonicFunction] of this [Scale].

@@ -70,7 +70,7 @@ void main() {
 
     group('.degreeChords', () {
       test('returns the Chord for each ScaleDegree of this Scale', () {
-        expect(Note.c.sharp.major.scale.degreeChords, [
+        expect(Note.c.sharp.major.scale.degreeChords(), [
           Note.c.sharp.majorTriad,
           Note.d.sharp.minorTriad,
           Note.e.sharp.minorTriad,
@@ -79,7 +79,18 @@ void main() {
           Note.a.sharp.minorTriad,
           Note.b.sharp.diminishedTriad,
         ]);
-        expect(ScalePattern.harmonicMinor.on(Note.f).degreeChords, [
+
+        final shape = <Size>{...Size.tetrad, .ninth};
+        expect(Note.a.flat.major.scale.degreeChords(shape: shape), [
+          Note.a.flat.majorTriad.add7(.major).add9(),
+          Note.b.flat.minorTriad.add7().add9(),
+          Note.c.minorTriad.add7().add9(.minor),
+          Note.d.flat.majorTriad.add7(.major).add9(),
+          Note.e.flat.majorTriad.add7().add9(),
+          Note.f.minorTriad.add7().add9(),
+          Note.g.diminishedTriad.add7().add9(.minor),
+        ]);
+        expect(ScalePattern.harmonicMinor.on(Note.f).degreeChords(), [
           Note.f.minorTriad,
           Note.g.diminishedTriad,
           Note.a.flat.augmentedTriad,
