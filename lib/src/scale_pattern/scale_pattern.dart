@@ -309,25 +309,20 @@ final class ScalePattern {
   /// Example:
   /// ```dart
   /// ScalePattern.major.degreePattern(.i) == .majorTriad
-  /// ScalePattern.major.degreePattern(.v, shape: .majorTriad.add7())
+  /// ScalePattern.major.degreePattern(.v, shape: {.third, .fifth, .seventh})
   ///   == .majorTriad.add7(.minor) // dominant 7th
   /// ScalePattern.major.degreePattern(
   ///   .ii,
-  ///   shape: ChordPattern.majorTriad.add6().add9().add13(),
+  ///   shape: {.third, .fifth, .sixth, .ninth, .thirteenth},
   /// ) == ChordPattern.minorTriad.add6(.major).add9(.major).add13(.major)
   /// ```
-  ChordPattern degreePattern(ScaleDegree scaleDegree, {ChordPattern? shape}) {
-    final sizes = <Size>{
-      .third,
-      .fifth,
-      ...?shape?.intervals.map((interval) => interval.size),
-    };
-
-    return ChordPattern([
-      for (final size in sizes.sorted())
-        _intervalAbove(scaleDegree.ordinal, Size(size.toInt()) - 1),
-    ]);
-  }
+  ChordPattern degreePattern(
+    ScaleDegree scaleDegree, {
+    Set<Size> shape = Size.triad,
+  }) => ChordPattern([
+    for (final size in shape.sorted())
+      _intervalAbove(scaleDegree.ordinal, Size(size.toInt()) - 1),
+  ]);
 
   Interval _stepFrom(int ordinal) =>
       _intervalSteps[(ordinal - 1) % _intervalSteps.length];

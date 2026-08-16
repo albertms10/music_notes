@@ -423,7 +423,10 @@ void main() {
             ChordPattern.minorTriad,
           );
           expect(
-            ScalePattern.major.degreePattern(.vi, shape: .majorTriad.add6()),
+            ScalePattern.major.degreePattern(
+              .vi,
+              shape: {...Size.triad, .sixth},
+            ),
             ChordPattern.minorTriad.add6(.minor),
           );
           expect(

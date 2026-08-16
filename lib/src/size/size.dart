@@ -52,6 +52,12 @@ extension type const Size._(int size) implements int {
   /// A thirteenth [ImperfectSize].
   static const thirteenth = ImperfectSize(13);
 
+  /// The shape of a triad.
+  static const triad = <Size>{.third, .fifth};
+
+  /// The shape of a tetrad.
+  static const tetrad = <Size>{...triad, .seventh};
+
   /// [Size] to the corresponding [ImperfectQuality.minor] or
   /// [PerfectQuality.perfect] semitones.
   static const _sizeToSemitones = {

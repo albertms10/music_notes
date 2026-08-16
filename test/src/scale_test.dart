@@ -80,7 +80,7 @@ void main() {
           Note.b.sharp.diminishedTriad,
         ]);
 
-        final shape = ChordPattern.majorTriad.add7().add9();
+        final shape = <Size>{...Size.tetrad, .ninth};
         expect(Note.a.flat.major.scale.degreeChords(shape: shape), [
           Note.a.flat.majorTriad.add7(.major).add9(),
           Note.b.flat.minorTriad.add7().add9(),
