@@ -304,7 +304,7 @@ final class ScalePattern {
   /// The [ChordPattern] for the [scaleDegree] of this [ScalePattern], with one
   /// member for every [Size] present in [shape] (a triad, by default). Each
   /// member's actual quality is deduced diatonically from this
-  /// [intervalSteps] — [shape] only says *which* chord tones to include.
+  /// [intervalSteps]; [shape] only says *which* chord tones to include.
   ///
   /// Example:
   /// ```dart
@@ -329,8 +329,8 @@ final class ScalePattern {
 
   /// The [Interval] from scale position [ordinal] to the note [scaleStepsAway]
   /// diatonic scale steps above it (e.g. `2` for a third, `5` for a sixth),
-  /// deduced by summing this [intervalSteps] — correctly producing compound
-  /// intervals once [scaleStepsAway] exceeds the octave.
+  /// deduced by summing this [intervalSteps], and thus, correctly producing
+  /// compound intervals once [scaleStepsAway] exceeds the octave.
   Interval _intervalAbove(int ordinal, int scaleStepsAway) {
     var interval = _stepFrom(ordinal);
     for (var i = 1; i < scaleStepsAway; i++) {

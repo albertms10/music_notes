@@ -54,6 +54,82 @@ void main() {
       });
     });
 
+    group('.isRootPosition', () {
+      test('returns whether this Chord’s pattern is in root position', () {
+        expect(ChordPattern.majorTriad.on(Note.c).isRootPosition, isTrue);
+        expect(
+          ChordPattern.majorTriad.add7(.major).on(Note.c).isRootPosition,
+          isTrue,
+        );
+        expect(const Chord<Note>([.e, .g, .c]).isRootPosition, isFalse);
+        expect(const Chord<Note>([.g, .c, .e]).isRootPosition, isFalse);
+      });
+    });
+
+    group('.inverted', () {
+      test('rotates this Chord to its next inversion', () {
+        expect(
+          ChordPattern.majorTriad.on(Note.c).inverted,
+          const Chord<Note>([.e, .g, .c]),
+        );
+        expect(
+          const Chord<Note>([.e, .g, .c]).inverted,
+          const Chord<Note>([.g, .c, .e]),
+        );
+        expect(
+          const Chord<Note>([.g, .c, .e]).inverted,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+      });
+
+      test('returns the same Chord for a single-note Chord', () {
+        expect(const Chord<Note>([.c]).inverted, const Chord<Note>([.c]));
+      });
+    });
+
+    group('.inversion', () {
+      test('returns the inversion number of this Chord', () {
+        expect(ChordPattern.majorTriad.on(Note.c).inversion, 0);
+        expect(const Chord<Note>([.e, .g, .c]).inversion, 1);
+        expect(const Chord<Note>([.g, .c, .e]).inversion, 2);
+        expect(
+          ChordPattern.majorTriad.add7(.major).on(Note.c).inversion,
+          0,
+        );
+        expect(const Chord<Note>([.e, .g, .b, .c]).inversion, 1);
+        expect(const Chord<Note>([.g, .b, .c, .e]).inversion, 2);
+        expect(const Chord<Note>([.b, .c, .e, .g]).inversion, 3);
+      });
+    });
+
+    group('.rootPosition', () {
+      test('throws a StateError on a non-tertian Chord', () {
+        expect(
+          () => const Chord<Note>([.d, .c, .e, .g]).rootPosition,
+          throwsStateError,
+        );
+      });
+
+      test('rewrites this Chord in root position', () {
+        expect(
+          const Chord<Note>([.e, .g, .c]).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+        expect(
+          const Chord<Note>([.g, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+        expect(
+          const Chord<Note>([.g, .b, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.add7(.major).on(Note.c),
+        );
+        expect(
+          ChordPattern.majorTriad.on(Note.c).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+      });
+    });
+
     group('.modifiers', () {
       test('returns the list of modifiers from the root note', () {
         expect(Note.c.majorTriad.modifiers, const <Interval>[]);
@@ -391,99 +467,96 @@ Chord<Note>(items: [
   });
 
   group('ChordNotation', () {
-    const notation = ChordNotation<Note>(
+    const formatter = ChordNotation<Note>(
       scalableNotation: EnglishNoteNotation.symbol(),
     );
+    const chain = [formatter];
 
     group('.parse()', () {
-      test('parses a root position Chord from a chord symbol', () {
-        expect(notation.parse('C'), ChordPattern.majorTriad.on(Note.c));
-        expect(notation.parse('A-'), ChordPattern.minorTriad.on(Note.a));
+      test('throws a FormatException on an invalid Chord', () {
         expect(
-          notation.parse('F♯dim'),
+          () => Chord<Note>.parse('', chain: chain),
+          throwsFormatException,
+        );
+        expect(
+          () => Chord<Note>.parse('z', chain: chain),
+          throwsFormatException,
+        );
+        expect(
+          () => Chord<Note>.parse('C/E/G', chain: chain),
+          throwsFormatException,
+        );
+      });
+
+      test('parses source as a Chord', () {
+        expect(
+          Chord<Note>.parse('C', chain: chain),
+          ChordPattern.majorTriad.on(Note.c),
+        );
+        expect(
+          Chord<Note>.parse('A-', chain: chain),
+          ChordPattern.minorTriad.on(Note.a),
+        );
+        expect(
+          Chord<Note>.parse('F♯dim', chain: chain),
           ChordPattern.diminishedTriad.on(Note.f.sharp),
         );
         expect(
-          notation.parse('Cmaj7'),
+          Chord<Note>.parse('Cmaj7', chain: chain),
           ChordPattern.majorTriad.add7(.major).on(Note.c),
         );
-      });
 
-      test('rotates the Chord when the bass matches one of its tones', () {
-        expect(notation.parse('C/E'), const Chord<Note>([.e, .g, .c]));
-        expect(notation.parse('C/G'), const Chord<Note>([.g, .c, .e]));
-        expect(notation.parse('A-/C'), const Chord<Note>([.c, .e, .a]));
         expect(
-          notation.parse('Cmaj7/E'),
+          Chord<Note>.parse('C/E', chain: chain),
+          const Chord<Note>([.e, .g, .c]),
+        );
+        expect(
+          Chord<Note>.parse('C/G', chain: chain),
+          const Chord<Note>([.g, .c, .e]),
+        );
+        expect(
+          Chord<Note>.parse('A-/C', chain: chain),
+          const Chord<Note>([.c, .e, .a]),
+        );
+        expect(
+          Chord<Note>.parse('Cmaj7/E', chain: chain),
           const Chord<Note>([.e, .g, .b, .c]),
         );
         expect(
-          notation.parse('Cmaj7/G'),
+          Chord<Note>.parse('Cmaj7/G', chain: chain),
           const Chord<Note>([.g, .b, .c, .e]),
         );
-      });
 
-      test(
-        'adds the bass below the Chord when it is not one of its tones',
-        () {
-          expect(notation.parse('C/D'), const Chord<Note>([.d, .c, .e, .g]));
-        },
-      );
-
-      test('parses a Chord with no explicit bass the same as its root', () {
-        expect(notation.parse('C/C'), notation.parse('C'));
-      });
-
-      test('throws a FormatException on an invalid Chord', () {
-        expect(() => notation.parse(''), throwsFormatException);
-        expect(() => notation.parse('H'), throwsFormatException);
-        expect(() => notation.parse('C/E/G'), throwsFormatException);
+        expect(
+          Chord<Note>.parse('C/D', chain: chain),
+          const Chord<Note>([.d, .c, .e, .g]),
+        );
+        expect(
+          Chord<Note>.parse('C/C', chain: chain),
+          Chord<Note>.parse('C', chain: chain),
+        );
       });
     });
 
     group('.format()', () {
-      test(
-        'returns the chord symbol alone when the bass is the root',
-        () {
-          expect(
-            notation.format(ChordPattern.majorTriad.on(Note.c)),
-            'C',
-          );
-          expect(
-            notation.format(ChordPattern.minorTriad.on(Note.a)),
-            'A-',
-          );
-          expect(
-            notation.format(
-              ChordPattern.majorTriad.add7(.major).on(Note.c),
-            ),
-            'Cmaj7',
-          );
-        },
-      );
+      test('returns the string representation of this Chord', () {
+        expect(ChordPattern.majorTriad.on(Note.c).format(formatter), 'C');
+        expect(ChordPattern.minorTriad.on(Note.a).format(formatter), 'A-');
+        expect(
+          ChordPattern.majorTriad.add7(.major).on(Note.c).format(formatter),
+          'Cmaj7',
+        );
 
-      test(
-        'appends the slash bass when the lowest note is a chord tone',
-        () {
-          expect(notation.format(const Chord<Note>([.e, .g, .c])), 'C/E');
-          expect(notation.format(const Chord<Note>([.g, .c, .e])), 'C/G');
-          expect(notation.format(const Chord<Note>([.c, .e, .a])), 'A-/C');
-          expect(
-            notation.format(const Chord<Note>([.e, .g, .b, .c])),
-            'Cmaj7/E',
-          );
-        },
-      );
+        expect(const Chord<Note>([.e, .g, .c]).format(formatter), 'C/E');
+        expect(const Chord<Note>([.g, .c, .e]).format(formatter), 'C/G');
+        expect(const Chord<Note>([.c, .e, .a]).format(formatter), 'A-/C');
+        expect(
+          const Chord<Note>([.e, .g, .b, .c]).format(formatter),
+          'Cmaj7/E',
+        );
 
-      test(
-        'appends the slash bass when the lowest note is not a chord tone',
-        () {
-          expect(
-            notation.format(const Chord<Note>([.d, .c, .e, .g])),
-            'C/D',
-          );
-        },
-      );
+        expect(const Chord<Note>([.d, .c, .e, .g]).format(formatter), 'C/D');
+      });
 
       test('round-trips with .parse()', () {
         for (final source in [
@@ -497,7 +570,10 @@ Chord<Note>(items: [
           'Cmaj7/E',
           'C/D',
         ]) {
-          expect(notation.format(notation.parse(source)), source);
+          expect(
+            Chord<Note>.parse(source, chain: chain).format(formatter),
+            source,
+          );
         }
       });
     });

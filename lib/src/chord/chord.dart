@@ -11,7 +11,6 @@ import '../quality/quality.dart';
 import '../scalable.dart';
 import '../size/size.dart';
 import '../transposable.dart';
-import 'chord_notation.dart';
 
 /// A musical chord.
 ///
@@ -32,6 +31,21 @@ final class Chord<T extends Scalable<T>>
   /// Creates a new [Chord] from [_items].
   const Chord(this._items);
 
+  /// Parse [source] as a [ChordPattern] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ChordPattern], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Chord.parse('maj7') == .majorTriad.add7(.major)
+  /// Chord.parse('z') // throws a FormatException
+  /// ```
+  factory Chord.parse(
+    String source, {
+    required List<StringParser<Chord<T>>> chain,
+  }) => chain.parse(source);
+
   /// The root [Scalable] of this [Chord].
   T get root => _items.first;
 
@@ -50,6 +64,64 @@ final class Chord<T extends Scalable<T>>
       // (e.g., [Interval.M2]) in chords where distance is not explicit
       // (so, [Note] based chords rather than [Pitch] based).
       .fromIntervalSteps(_items.intervalSteps);
+
+  /// Whether [pattern] is in root position.
+  ///
+  /// See [ChordPattern.isRootPosition].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.on(Note.c).isRootPosition == true
+  /// const Chord<Note>([.e, .g, .c]).isRootPosition == false
+  /// ```
+  bool get isRootPosition => pattern.isRootPosition;
+
+  /// This [Chord] rotated to its next inversion: [root] moves above the
+  /// other notes, becoming the new top note.
+  ///
+  /// See [ChordPattern.inverted].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.on(Note.c).inverted
+  ///   == const Chord<Note>([.e, .g, .c])
+  /// const Chord<Note>([.e, .g, .c]).inverted
+  ///   == const Chord<Note>([.g, .c, .e])
+  /// ```
+  Chord<T> get inverted =>
+      _items.length < 2 ? this : Chord([..._items.skip(1), _items.first]);
+
+  /// The inversion number of this [Chord], derived from [pattern] rather
+  /// than kept as separate state.
+  ///
+  /// See [ChordPattern.inversion].
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.on(Note.c).inversion == 0
+  /// const Chord<Note>([.e, .g, .c]).inversion == 1
+  /// const Chord<Note>([.g, .c, .e]).inversion == 2
+  /// ```
+  int get inversion => pattern.inversion;
+
+  /// This [Chord] rewritten in root position, undoing [inversion] while
+  /// preserving its pitch-class content.
+  ///
+  /// Throws a [StateError] when [pattern] is not stacked in thirds (see
+  /// [ChordPattern.inversion]) which is the case, for instance, when this
+  /// [Chord] carries a bass note that is foreign to its own [pattern]
+  /// (e.g. a C major chord with an added D bass).
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord<Note>([.e, .g, .c]).rootPosition
+  ///   == ChordPattern.majorTriad.on(Note.c)
+  /// ```
+  Chord<T> get rootPosition {
+    final rotations = (_items.length - inversion) % _items.length;
+
+    return Chord([..._items.skip(rotations), ..._items.take(rotations)]);
+  }
 
   /// The modifier [T]s from the root note.
   ///
@@ -122,13 +194,8 @@ final class Chord<T extends Scalable<T>>
 
   /// The string representation of this [Chord] based on [formatter].
   ///
-  /// When no [formatter] is given, [root] and [pattern] are formatted using
-  /// their own default notation, ignoring any slash bass (see
-  /// [ChordNotation] for slash-chord support, e.g. `C/E`).
-  ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.on(Note.c).format() == 'C'
   /// Chord<Note>([.e, .g, .c]).format(
   ///   ChordNotation(scalableNotation: EnglishNoteNotation.symbol()),
   /// ) == 'C/E'

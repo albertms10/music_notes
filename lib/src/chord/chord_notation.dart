@@ -17,11 +17,11 @@ import 'chord.dart';
 /// * [Chord].
 /// * [ChordPattern].
 /// * [ChordPatternNotation].
-final class ChordNotation<S extends Scalable<S>>
-    extends StringNotationSystem<Chord<S>> {
+final class ChordNotation<T extends Scalable<T>>
+    extends StringNotationSystem<Chord<T>> {
   /// The [StringNotationSystem] used to format and parse the root and bass
-  /// [S] of this [Chord].
-  final StringNotationSystem<S> scalableNotation;
+  /// [T] of this [Chord].
+  final StringNotationSystem<T> scalableNotation;
 
   /// The [StringNotationSystem] for [ChordPattern].
   final StringNotationSystem<ChordPattern> chordPatternNotation;
@@ -35,16 +35,16 @@ final class ChordNotation<S extends Scalable<S>>
   static const _slash = '/';
 
   @override
-  Chord<S> parse(String source) {
+  Chord<T> parse(String source) {
     final parts = source.split(_slash);
     if (parts.length > 2) {
-      throw FormatException('Invalid ${Chord<S>}', source);
+      throw FormatException('Invalid ${Chord<T>}', source);
     }
 
     final rootSource = parts.first;
     final rootMatch = scalableNotation.regExp?.firstMatch(rootSource);
     if (rootMatch == null || rootMatch.start != 0) {
-      throw FormatException('Invalid ${Chord<S>}', source);
+      throw FormatException('Invalid ${Chord<T>}', source);
     }
 
     final root = scalableNotation.parseMatch(rootMatch);
@@ -67,39 +67,38 @@ final class ChordNotation<S extends Scalable<S>>
   }
 
   @override
-  String format(Chord<S> chord) {
+  String format(Chord<T> chord) {
     final items = chord.items;
     if (items.length == 1) return scalableNotation.format(items.first);
 
-    final bass = items.first;
-    final rootPositionItems =
-        _rootPositionOf(items) ??
-        _rootPositionOf(items.skip(1).toList(growable: false)) ??
-        items;
+    final bass = chord.root;
+    final rootPositionChord = _rootPositionChordOf(chord);
+    final rootItems = rootPositionChord.items;
+    final root = rootItems.first;
 
-    final root = rootPositionItems.first;
-    final symbol = rootPositionItems.length < 2
-        ? scalableNotation.format(root)
-        : '${scalableNotation.format(root)}${chordPatternNotation.format(
-            .fromIntervalSteps(rootPositionItems.intervalSteps),
-          )}';
+    final symbol =
+        '${scalableNotation.format(root)}'
+        '${rootItems.length < 2 ? '' : chordPatternNotation.format(
+                rootPositionChord.pattern,
+              )}';
     if (root == bass) return symbol;
 
     return '$symbol$_slash${scalableNotation.format(bass)}';
   }
 
-  /// Returns [items] rotated so it forms an uninterrupted stack of thirds
-  /// (i.e., root position — see [ChordPattern.isRootPosition]), or `null`
-  /// if no rotation of [items] does.
-  static List<S>? _rootPositionOf<S extends Scalable<S>>(List<S> items) {
-    var current = items;
-    for (var i = 0; i < items.length; i++) {
-      if (current.length < 2 || Chord(current).pattern.isRootPosition) {
-        return current;
-      }
-      current = [...current.skip(1), current.first];
+  /// The root-position [Chord] used to derive the chord symbol for [chord].
+  ///
+  /// Delegates to [Chord.rootPosition] (which itself relies on
+  /// [ChordPattern.inversion]) for genuine inversions (e.g. `C/E`). When
+  /// [chord]'s own bass is foreign to its [Chord.pattern], i.e. an added
+  /// bass rather than an inverted tone (e.g. `C/D`), [Chord.rootPosition]
+  /// throws, and the bass is set aside so the remaining tones can be
+  /// formatted on their own instead.
+  Chord<T> _rootPositionChordOf(Chord<T> chord) {
+    try {
+      return chord.rootPosition;
+    } on StateError {
+      return Chord(chord.items.skip(1).toList(growable: false));
     }
-
-    return null;
   }
 }
