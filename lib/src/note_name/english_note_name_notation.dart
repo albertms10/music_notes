@@ -13,13 +13,10 @@ final class EnglishNoteNameNotation extends StringNotationSystem<NoteName> {
             ..sort())
           .join();
 
-  static final _regExp = RegExp(
-    '(?<noteName>[$_noteNames])',
-    caseSensitive: false,
-  );
+  static final _pattern = '(?<noteName>[$_noteNames])';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   NoteName parseMatch(RegExpMatch match) =>

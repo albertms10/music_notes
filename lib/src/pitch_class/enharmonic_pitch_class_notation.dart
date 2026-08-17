@@ -22,12 +22,7 @@ final class EnharmonicSpellingsPitchClassNotation
   });
 
   @override
-  RegExp get regExp => RegExp(
-    r'(?:\{|\|)'
-    '${noteNotation.regExp?.pattern}'
-    r'(?:\|.*|\})',
-    caseSensitive: false,
-  );
+  String get pattern => '(?:\\{|\\|)${noteNotation.pattern}(?:\\|.*|\\})';
 
   @override
   PitchClass parseMatch(RegExpMatch match) {

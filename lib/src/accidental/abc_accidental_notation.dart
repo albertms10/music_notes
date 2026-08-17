@@ -28,10 +28,10 @@ final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   /// The list of valid symbols for an [Accidental].
   static const symbols = [_flatSymbol, _naturalSymbol, _sharpSymbol];
 
-  static final _regExp = RegExp('(?<accidental>[${symbols.join()}]*)');
+  static final _pattern = '(?<accidental>[${symbols.join()}]*)';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   static int _semitonesFromSymbol(String symbol) => switch (symbol) {
     _sharpSymbol => 1,

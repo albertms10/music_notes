@@ -21,9 +21,8 @@ final class PerfectQualityNotation
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '(?<quality>$diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)',
-  );
+  String get pattern =>
+      '(?<quality>$diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)';
 
   @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
@@ -68,10 +67,9 @@ final class ImperfectQualityNotation
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '(?<quality>$diminishedSymbol+|$minorSymbol|$majorSymbol'
-    '|$augmentedSymbol+)',
-  );
+  String get pattern =>
+      '(?<quality>$diminishedSymbol+|$minorSymbol|$majorSymbol'
+      '|$augmentedSymbol+)';
 
   @override
   ImperfectQuality parseMatch(RegExpMatch match) {

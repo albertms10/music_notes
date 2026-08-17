@@ -18,14 +18,12 @@ final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _triple = 'triplo';
   static const _times = '×';
 
-  static final _regExp = RegExp(
-    '(?<accidental>(?:(?:$_double|$_triple)\\s*)?'
-    '(?:$_flat|$_sharp)|$_natural)?',
-    caseSensitive: false,
-  );
+  static const _pattern =
+      '(?<accidental>(?:(?:$_double|$_triple)\\s*)?'
+      '(?:$_flat|$_sharp)|$_natural)?';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   Accidental parseMatch(RegExpMatch match) {

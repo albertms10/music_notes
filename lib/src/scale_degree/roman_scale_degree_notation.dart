@@ -36,12 +36,10 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
-  RegExp get regExp => RegExp(
-    '${accidentalNotation.regExp?.pattern}'
-    '${_isSymbol ? '' : r'\s+'}'
-    '(?<romanNumeral>${_romanNumerals.join('|')})\$',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${accidentalNotation.pattern}'
+      '${_isSymbol ? '' : r'\s+'}'
+      '(?<romanNumeral>${_romanNumerals.join('|')})';
 
   @override
   ScaleDegree parseMatch(RegExpMatch match) => ScaleDegree(

@@ -20,9 +20,9 @@ final class GermanIntervalNotation extends StandardIntervalNotation {
   });
 
   @override
-  RegExp get regExp =>
+  String get pattern =>
       // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
       //  named capture groups are supported.
       //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>v+|r|k|g|ü+?)\\s*${sizeNotation.regExp.pattern}');
+      '(?<quality>v+|r|k|g|ü+?)\\s*${sizeNotation.pattern}';
 }

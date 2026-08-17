@@ -24,11 +24,9 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}(:?-${tonalModeNotation.regExp.pattern})'
-    '${showMode ? '' : '?'}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNotation.pattern}(:?-${tonalModeNotation.pattern})'
+      '${showMode ? '' : '?'}';
 
   @override
   Key parseMatch(RegExpMatch match) {

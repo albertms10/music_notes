@@ -59,12 +59,10 @@ final class AbcPitchNotation extends StringNotationSystem<Pitch> {
   static const _subPrimeSymbol = ',';
 
   @override
-  RegExp? get regExp => RegExp(
-    '${accidentalNotation.regExp.pattern}'
-    '${noteNameNotation.regExp?.pattern}'
-    '(?<primes>[$_primeSymbol$_subPrimeSymbol]*)\$',
-    caseSensitive: false,
-  );
+  String? get pattern =>
+      '${accidentalNotation.pattern}'
+      '${noteNameNotation.pattern}'
+      '(?<primes>[$_primeSymbol$_subPrimeSymbol]*)';
 
   @override
   String format(Pitch pitch) {

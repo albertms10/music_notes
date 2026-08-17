@@ -44,11 +44,9 @@ final class EnglishNoteNotation extends NoteNotation {
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNameNotation.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
+      '${accidentalNotation.pattern}';
 
   @override
   Note parseMatch(RegExpMatch match) => Note(
