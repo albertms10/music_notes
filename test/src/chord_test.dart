@@ -389,4 +389,117 @@ Chord<Note>(items: [
       });
     });
   });
+
+  group('ChordNotation', () {
+    const notation = ChordNotation<Note>(
+      scalableNotation: EnglishNoteNotation.symbol(),
+    );
+
+    group('.parse()', () {
+      test('parses a root position Chord from a chord symbol', () {
+        expect(notation.parse('C'), ChordPattern.majorTriad.on(Note.c));
+        expect(notation.parse('A-'), ChordPattern.minorTriad.on(Note.a));
+        expect(
+          notation.parse('F♯dim'),
+          ChordPattern.diminishedTriad.on(Note.f.sharp),
+        );
+        expect(
+          notation.parse('Cmaj7'),
+          ChordPattern.majorTriad.add7(.major).on(Note.c),
+        );
+      });
+
+      test('rotates the Chord when the bass matches one of its tones', () {
+        expect(notation.parse('C/E'), const Chord<Note>([.e, .g, .c]));
+        expect(notation.parse('C/G'), const Chord<Note>([.g, .c, .e]));
+        expect(notation.parse('A-/C'), const Chord<Note>([.c, .e, .a]));
+        expect(
+          notation.parse('Cmaj7/E'),
+          const Chord<Note>([.e, .g, .b, .c]),
+        );
+        expect(
+          notation.parse('Cmaj7/G'),
+          const Chord<Note>([.g, .b, .c, .e]),
+        );
+      });
+
+      test(
+        'adds the bass below the Chord when it is not one of its tones',
+        () {
+          expect(notation.parse('C/D'), const Chord<Note>([.d, .c, .e, .g]));
+        },
+      );
+
+      test('parses a Chord with no explicit bass the same as its root', () {
+        expect(notation.parse('C/C'), notation.parse('C'));
+      });
+
+      test('throws a FormatException on an invalid Chord', () {
+        expect(() => notation.parse(''), throwsFormatException);
+        expect(() => notation.parse('H'), throwsFormatException);
+        expect(() => notation.parse('C/E/G'), throwsFormatException);
+      });
+    });
+
+    group('.format()', () {
+      test(
+        'returns the chord symbol alone when the bass is the root',
+        () {
+          expect(
+            notation.format(ChordPattern.majorTriad.on(Note.c)),
+            'C',
+          );
+          expect(
+            notation.format(ChordPattern.minorTriad.on(Note.a)),
+            'A-',
+          );
+          expect(
+            notation.format(
+              ChordPattern.majorTriad.add7(.major).on(Note.c),
+            ),
+            'Cmaj7',
+          );
+        },
+      );
+
+      test(
+        'appends the slash bass when the lowest note is a chord tone',
+        () {
+          expect(notation.format(const Chord<Note>([.e, .g, .c])), 'C/E');
+          expect(notation.format(const Chord<Note>([.g, .c, .e])), 'C/G');
+          expect(notation.format(const Chord<Note>([.c, .e, .a])), 'A-/C');
+          expect(
+            notation.format(const Chord<Note>([.e, .g, .b, .c])),
+            'Cmaj7/E',
+          );
+        },
+      );
+
+      test(
+        'appends the slash bass when the lowest note is not a chord tone',
+        () {
+          expect(
+            notation.format(const Chord<Note>([.d, .c, .e, .g])),
+            'C/D',
+          );
+        },
+      );
+
+      test('round-trips with .parse()', () {
+        for (final source in [
+          'C',
+          'A-',
+          'F♯dim',
+          'Cmaj7',
+          'C/E',
+          'C/G',
+          'A-/C',
+          'Cmaj7/E',
+          'C/D',
+        ]) {
+          expect(notation.format(notation.parse(source)), source);
+        }
+      });
+    });
+  });
 }

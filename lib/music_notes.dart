@@ -10,6 +10,7 @@ export 'src/accidental/symbol_accidental_notation.dart';
 export 'src/celsius/celsius.dart';
 export 'src/cent/cent.dart';
 export 'src/chord/chord.dart';
+export 'src/chord/chord_notation.dart';
 export 'src/chord_pattern/chord_pattern.dart';
 export 'src/chord_pattern/chord_pattern_notation.dart';
 export 'src/chordable.dart';

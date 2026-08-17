@@ -11,6 +11,7 @@ import '../quality/quality.dart';
 import '../scalable.dart';
 import '../size/size.dart';
 import '../transposable.dart';
+import 'chord_notation.dart';
 
 /// A musical chord.
 ///
@@ -119,8 +120,22 @@ final class Chord<T extends Scalable<T>>
   Chord<T> transposeBy(Interval interval) =>
       Chord(_items.transposeBy(interval).toList(growable: false));
 
+  /// The string representation of this [Chord] based on [formatter].
+  ///
+  /// When no [formatter] is given, [root] and [pattern] are formatted using
+  /// their own default notation, ignoring any slash bass (see
+  /// [ChordNotation] for slash-chord support, e.g. `C/E`).
+  ///
+  /// Example:
+  /// ```dart
+  /// ChordPattern.majorTriad.on(Note.c).format() == 'C'
+  /// Chord<Note>([.e, .g, .c]).format(
+  ///   ChordNotation(scalableNotation: EnglishNoteNotation.symbol()),
+  /// ) == 'C/E'
+  /// ```
   @override
-  String format() => '${root.format()}${pattern.format()}';
+  String format([StringFormatter<Chord<T>>? formatter]) =>
+      formatter?.format(this) ?? '${root.format()}${pattern.format()}';
 
   @override
   String toString() => '$runtimeType(items: ${items.prettyToString()})';
