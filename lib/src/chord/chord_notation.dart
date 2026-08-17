@@ -97,6 +97,7 @@ final class ChordNotation<T extends Scalable<T>>
   Chord<T> _rootPositionChordOf(Chord<T> chord) {
     try {
       return chord.rootPosition;
+      // ignore: avoid_catching_errors ease
     } on StateError {
       return Chord(chord.items.skip(1).toList(growable: false));
     }

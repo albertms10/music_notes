@@ -38,8 +38,9 @@ final class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// Chord.parse('maj7') == .majorTriad.add7(.major)
-  /// Chord.parse('z') // throws a FormatException
+  /// Chord<Note>.parse('Cmaj7')
+  ///   == ChordPattern.majorTriad.add7(.major).on(Note.c)
+  /// Chord<Note>.parse('z') // throws a FormatException
   /// ```
   factory Chord.parse(
     String source, {
