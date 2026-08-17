@@ -8,23 +8,26 @@ final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
   const IntegerPitchClassNotation();
 
-  static final _regExp = RegExp('(?<pitchClass>[0-9et])');
+  static const _ten = 't';
+  static const _eleven = 'e';
+
+  static const _pattern = '(?<pitchClass>[0-9$_ten$_eleven])';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   PitchClass parseMatch(RegExpMatch match) =>
       PitchClass(switch (match.namedGroup('pitchClass')!) {
-        't' => 10,
-        'e' => 11,
+        _ten => 10,
+        _eleven => 11,
         final semitones => .parse(semitones),
       });
 
   @override
   String format(PitchClass pitchClass) => switch (pitchClass.semitones) {
-    10 => 't',
-    11 => 'e',
+    10 => _ten,
+    11 => _eleven,
     final semitones => '$semitones',
   };
 }

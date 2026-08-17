@@ -41,11 +41,9 @@ final class RomanceNoteNotation extends NoteNotation {
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}\\s*'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNameNotation.pattern}\\s*'
+      '${accidentalNotation.pattern}';
 
   @override
   Note parseMatch(RegExpMatch match) => Note(

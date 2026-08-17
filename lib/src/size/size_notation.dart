@@ -6,10 +6,10 @@ final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
   const SizeNotation();
 
-  static final _regExp = RegExp(r'(?<size>-?\d+)');
+  static const _pattern = r'(?<size>-?\d+)';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   Size parseMatch(RegExpMatch match) => Size(.parse(match.namedGroup('size')!));

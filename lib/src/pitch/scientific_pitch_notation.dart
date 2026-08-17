@@ -41,11 +41,8 @@ final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
   );
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp?.pattern}'
-    '(?<octave>[-${NumExtension.minusSign}]?\\d+)',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNotation.pattern}(?<octave>[-${NumExtension.minusSign}]?\\d+)';
 
   @override
   Pitch parseMatch(RegExpMatch match) => Pitch(

@@ -26,11 +26,9 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _times = '×';
 
   @override
-  RegExp get regExp => RegExp(
-    '(?<accidental>(?:(?:$_double|$_triple)[$separator]*)?'
-    '(?:$_flat|$_sharp)|$_natural)?',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '(?<accidental>(?:(?:$_double|$_triple)[$separator]*)?'
+      '(?:$_flat|$_sharp)|$_natural)?';
 
   @override
   Accidental parseMatch(RegExpMatch match) {

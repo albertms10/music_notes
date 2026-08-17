@@ -73,18 +73,16 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   static const _middleOctave = Pitch.referenceOctave - 1;
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp?.pattern}'
-    '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
-            if (useAscii)
-              for (final symbol in _asciiPrimeSymbols) '$symbol+'
-            else ...[
-              ..._compoundPrimeSymbols,
-              for (final symbol in _primeSymbols) '$symbol+',
-            ],
-          ].join('|')})?'}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNotation.pattern}'
+      '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
+              if (useAscii)
+                for (final symbol in _asciiPrimeSymbols) '$symbol+'
+              else ...[
+                ..._compoundPrimeSymbols,
+                for (final symbol in _primeSymbols) '$symbol+',
+              ],
+            ].join('|')})?'}';
 
   int _octaveFromNumbers(int numbers, bool isBass) =>
       isBass ? 2 - numbers : numbers + 3;

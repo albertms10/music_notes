@@ -40,16 +40,15 @@ abstract class StringNotationSystem<V> extends NotationSystem<V, String>
   const StringNotationSystem();
 
   @override
-  RegExp? get regExp => null;
+  RegExp? get regExp => pattern != null
+      ? RegExp('^$pattern\$', caseSensitive: false, unicode: true)
+      : null;
 
   @override
-  bool matches(String source) =>
-      regExp == null ||
-      RegExp(
-        '^${regExp?.pattern}\$',
-        caseSensitive: regExp?.isCaseSensitive ?? true,
-        unicode: regExp?.isUnicode ?? false,
-      ).hasMatch(source);
+  String? get pattern => null;
+
+  @override
+  bool matches(String source) => regExp?.hasMatch(source) ?? false;
 
   /// Parses [source] as [V].
   ///
@@ -86,6 +85,9 @@ abstract interface class Parser<I, V> {
 abstract interface class StringParser<V> extends Parser<String, V> {
   /// The regular expression for matching [V].
   RegExp? get regExp;
+
+  /// The regular expression pattern for matching [V].
+  String? get pattern => null;
 
   /// Whether [source] can be parsed with [parse].
   bool matches(String source);

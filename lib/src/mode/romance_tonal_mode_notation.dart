@@ -9,13 +9,10 @@ final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
   static const _major = 'maggiore';
   static const _minor = 'minore';
 
-  static final RegExp _regExp = RegExp(
-    '(?<mode>$_major|$_minor)',
-    caseSensitive: false,
-  );
+  static const _pattern = '(?<mode>$_major|$_minor)';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   TonalMode parseMatch(RegExpMatch match) =>

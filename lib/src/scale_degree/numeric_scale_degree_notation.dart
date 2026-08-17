@@ -73,14 +73,11 @@ final class NumericScaleDegreeNotation
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override
-  RegExp get regExp => RegExp(
-    '${accidentalNotation.regExp?.pattern}'
-    '${_isSymbol ? '' : r'\s+'}'
-    '(?<ordinal>[1-9][0-9]*)'
-    '${showCaret ? '[${useAscii ? _caretSymbolAscii : _caretSymbol}]' : ''}\$',
-    caseSensitive: false,
-    unicode: true,
-  );
+  String get pattern =>
+      '${accidentalNotation.pattern}'
+      '${_isSymbol ? '' : r'\s+'}'
+      '(?<ordinal>[1-9][0-9]*)'
+      '${showCaret ? '[${useAscii ? _caretSymbolAscii : _caretSymbol}]' : ''}';
 
   @override
   ScaleDegree parseMatch(RegExpMatch match) => ScaleDegree(

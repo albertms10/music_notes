@@ -63,10 +63,8 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   ];
 
   @override
-  RegExp get regExp => RegExp(
-    '(?<accidental>[${(useAscii ? asciiSymbols : symbols).join()}]*)',
-    unicode: true,
-  );
+  String get pattern =>
+      '(?<accidental>[${(useAscii ? asciiSymbols : symbols).join()}]*)';
 
   static int _semitonesFromSymbol(String symbol) => switch (symbol) {
     _doubleSharpSymbol || _doubleSharpSymbolAscii => 2,

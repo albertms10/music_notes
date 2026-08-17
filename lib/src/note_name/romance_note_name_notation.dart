@@ -16,13 +16,10 @@ final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
     .b: 'Si',
   };
 
-  static final _regExp = RegExp(
-    '(?<noteName>${_noteNames.values.join('|')})',
-    caseSensitive: false,
-  );
+  static final _pattern = '(?<noteName>${_noteNames.values.join('|')})';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   NoteName parseMatch(RegExpMatch match) {

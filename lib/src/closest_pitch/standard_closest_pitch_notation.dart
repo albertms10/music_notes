@@ -34,11 +34,10 @@ final class StandardClosestPitchNotation
   static const noRound = StandardClosestPitchNotation(fractionDigits: null);
 
   @override
-  RegExp get regExp => RegExp(
-    '${pitchNotation.regExp?.pattern}\\s*'
-    '(?<cents>[+-${NumExtension.minusSign}${NumExtension.plusMinusSign}]\\d+(?:\\.\\d+)?)?',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${pitchNotation.pattern}\\s*'
+      '(?<cents>[+-${NumExtension.minusSign}${NumExtension.plusMinusSign}]'
+      r'\d+(?:\.\d+)?)?';
 
   @override
   ClosestPitch parseMatch(RegExpMatch match) => ClosestPitch(
