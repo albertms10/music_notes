@@ -7,6 +7,7 @@ import '../chord_pattern/chord_pattern.dart';
 import '../enharmonic.dart';
 import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
+import '../note/note.dart';
 import '../scalable.dart';
 import '../scale_degree/scale_degree.dart';
 import '../scale_pattern/scale_pattern.dart';
@@ -86,7 +87,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   ///   Note.g.sharp.diminishedTriad,
   /// ]
   /// ```
-  List<Chord<T>> degreeChords({Set<Size> shape = Size.triad}) => [
+  List<Chord> degreeChords({Set<Size> shape = Size.triad}) => [
     for (var i = 1; i < _degrees.length; i++)
       degreeChord(ScaleDegree(i), shape: shape),
   ];
@@ -120,7 +121,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
   /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
   /// ```
-  Chord<T> degreeChord(
+  Chord degreeChord(
     ScaleDegree scaleDegree, {
     Set<Size> shape = Size.triad,
   }) =>
@@ -128,7 +129,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
       (scaleDegree.isLowered
               ? ChordPattern.majorTriad
               : pattern.degreePattern(scaleDegree, shape: shape))
-          .on(degree(scaleDegree));
+          .on(degree(scaleDegree) as Note);
 
   /// The [Chord] for the [harmonicFunction] of this [Scale].
   ///
@@ -139,7 +140,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
   ///   == Note.g.minorTriad
   /// ```
-  Chord<T> functionChord(HarmonicFunction harmonicFunction) => scaleOf(
+  Chord functionChord(HarmonicFunction harmonicFunction) => scaleOf(
     harmonicFunction.tonicization,
   ).degreeChord(harmonicFunction.scaleDegree);
 
