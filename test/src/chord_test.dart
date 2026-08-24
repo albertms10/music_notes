@@ -467,9 +467,7 @@ Chord<Note>(items: [
   });
 
   group('ChordNotation', () {
-    const formatter = ChordNotation<Note>(
-      scalableNotation: EnglishNoteNotation.symbol(),
-    );
+    const formatter = ChordNotation();
     const chain = [formatter];
 
     group('.parse()', () {

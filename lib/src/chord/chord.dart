@@ -197,9 +197,7 @@ final class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// Chord<Note>([.e, .g, .c]).format(
-  ///   ChordNotation(scalableNotation: EnglishNoteNotation.symbol()),
-  /// ) == 'C/E'
+  /// Chord<Note>([.e, .g, .c]).format(const ChordNotation()) == 'C/E'
   /// ```
   @override
   String format([StringFormatter<Chord<T>>? formatter]) =>
