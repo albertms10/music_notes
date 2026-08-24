@@ -54,6 +54,82 @@ void main() {
       });
     });
 
+    group('.isRootPosition', () {
+      test('returns whether this Chord’s pattern is in root position', () {
+        expect(ChordPattern.majorTriad.on(Note.c).isRootPosition, isTrue);
+        expect(
+          ChordPattern.majorTriad.add7(.major).on(Note.c).isRootPosition,
+          isTrue,
+        );
+        expect(const Chord<Note>([.e, .g, .c]).isRootPosition, isFalse);
+        expect(const Chord<Note>([.g, .c, .e]).isRootPosition, isFalse);
+      });
+    });
+
+    group('.inverted', () {
+      test('rotates this Chord to its next inversion', () {
+        expect(
+          ChordPattern.majorTriad.on(Note.c).inverted,
+          const Chord<Note>([.e, .g, .c]),
+        );
+        expect(
+          const Chord<Note>([.e, .g, .c]).inverted,
+          const Chord<Note>([.g, .c, .e]),
+        );
+        expect(
+          const Chord<Note>([.g, .c, .e]).inverted,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+      });
+
+      test('returns the same Chord for a single-note Chord', () {
+        expect(const Chord<Note>([.c]).inverted, const Chord<Note>([.c]));
+      });
+    });
+
+    group('.inversion', () {
+      test('returns the inversion number of this Chord', () {
+        expect(ChordPattern.majorTriad.on(Note.c).inversion, 0);
+        expect(const Chord<Note>([.e, .g, .c]).inversion, 1);
+        expect(const Chord<Note>([.g, .c, .e]).inversion, 2);
+        expect(
+          ChordPattern.majorTriad.add7(.major).on(Note.c).inversion,
+          0,
+        );
+        expect(const Chord<Note>([.e, .g, .b, .c]).inversion, 1);
+        expect(const Chord<Note>([.g, .b, .c, .e]).inversion, 2);
+        expect(const Chord<Note>([.b, .c, .e, .g]).inversion, 3);
+      });
+    });
+
+    group('.rootPosition', () {
+      test('throws a StateError on a non-tertian Chord', () {
+        expect(
+          () => const Chord<Note>([.d, .c, .e, .g]).rootPosition,
+          throwsStateError,
+        );
+      });
+
+      test('rewrites this Chord in root position', () {
+        expect(
+          const Chord<Note>([.e, .g, .c]).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+        expect(
+          const Chord<Note>([.g, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+        expect(
+          const Chord<Note>([.g, .b, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.add7(.major).on(Note.c),
+        );
+        expect(
+          ChordPattern.majorTriad.on(Note.c).rootPosition,
+          ChordPattern.majorTriad.on(Note.c),
+        );
+      });
+    });
+
     group('.modifiers', () {
       test('returns the list of modifiers from the root note', () {
         expect(Note.c.majorTriad.modifiers, const <Interval>[]);
