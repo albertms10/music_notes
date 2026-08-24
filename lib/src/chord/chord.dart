@@ -72,7 +72,7 @@ final class Chord<T extends Scalable<T>>
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.on(Note.c).isRootPosition == true
+  /// const Chord<Note>([.c, .e, .g, .b]).isRootPosition == true
   /// const Chord<Note>([.e, .g, .c]).isRootPosition == false
   /// ```
   bool get isRootPosition => pattern.isRootPosition;
