@@ -14,6 +14,43 @@ void main() {
       });
     });
 
+    group('.fromPitches()', () {
+      test('drops octave information', () {
+        expect(
+          Chord.fromPitches(<Note>[.c, .e, .g].inOctave(4)),
+          const Chord([.c, .e, .g]),
+        );
+      });
+
+      test('deduplicates doubled tones, keeping first (bass) occurrence', () {
+        expect(
+          Chord.fromPitches([
+            Note.c.inOctave(3),
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
+            Note.c.inOctave(4),
+          ]),
+          const Chord([.c, .e, .g]),
+        );
+      });
+
+      test('preserves inversion via the bass (first) pitch', () {
+        expect(
+          Chord.fromPitches([
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
+            Note.c.inOctave(4),
+          ]),
+          const Chord([.e, .g, .c]),
+        );
+      });
+
+      test('round-trips identity for a non-doubled, ordered voicing', () {
+        final voicing = <Note>[.c, .e, .g].inOctave(4);
+        expect(Chord.fromPitches(voicing).toPitches(), voicing);
+      });
+    });
+
     group('.root', () {
       test('returns the root of this Chord', () {
         expect(ChordPattern.majorTriad.on(.f).root, Note.f);
@@ -300,6 +337,69 @@ void main() {
         expect(
           ChordPattern.minorTriad.add7(.major).on(.e.flat).transposeBy(.m3),
           Chord([.g.flat, .b.flat.flat, .d.flat, .f]),
+        );
+      });
+    });
+
+    group('.toPitches()', () {
+      test('realizes a close-position triad ascending from octave', () {
+        expect(
+          const Chord([.c, .e, .g]).toPitches(),
+          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.inOctave(4)],
+        );
+      });
+
+      test('wraps tones into the next octave when needed', () {
+        expect(
+          Chord([.b, .d.sharp, .f.sharp]).toPitches(octave: 3),
+          [
+            Note.b.inOctave(3),
+            Note.d.sharp.inOctave(4),
+            Note.f.sharp.inOctave(4),
+          ],
+        );
+      });
+
+      test('matches toVoicing() over the identity voice order', () {
+        const chord = Chord([.c, .e, .g, .b]);
+        expect(chord.toPitches(), chord.toVoicing([0, 1, 2, 3]));
+      });
+    });
+
+    group('.toVoicing()', () {
+      test('anchors the first voice at octave', () {
+        expect(
+          const Chord([.c, .e, .g]).toVoicing([0, 1, 2], octave: 2),
+          [Note.c.inOctave(2), Note.e.inOctave(2), Note.g.inOctave(2)],
+        );
+      });
+
+      test('doubles a repeated index an octave above, never in unison', () {
+        expect(
+          const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], octave: 2),
+          [
+            Note.c.inOctave(2),
+            Note.c.inOctave(3),
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
+            Note.c.inOctave(4),
+          ],
+        );
+      });
+
+      test('indexes into items literally, ignoring inversion/root order', () {
+        // Chord is already in first inversion; index 0 means the literal
+        // first item (E), not the harmonic root (C).
+        expect(
+          const Chord([.e, .g, .c]).toVoicing([0, 1, 2]),
+          [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)],
+        );
+      });
+
+      test('throws a RangeError for an out-of-range voice index', () {
+        expect(
+          () => const Chord([.c, .e, .g]).toVoicing([0, 3]),
+          throwsRangeError,
         );
       });
     });

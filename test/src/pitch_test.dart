@@ -18,25 +18,6 @@ void main() {
       });
     });
 
-    group('.inOctave()', () {
-      test('changes the octave of each Pitch in this list', () {
-        expect(const <Pitch>[].inOctave(2), const <Pitch>[]);
-
-        expect([Note.f.sharp.inOctave(1)].inOctave(5), [
-          Note.f.sharp.inOctave(5),
-        ]);
-
-        expect(
-          [
-            Note.c.inOctave(3),
-            Note.e.inOctave(-1),
-            Note.g.flat.inOctave(6),
-          ].inOctave(4),
-          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.flat.inOctave(4)],
-        );
-      });
-    });
-
     group('.octaveFromSemitones', () {
       test(
         'returns the octave that corresponds to the semitones from root height',
@@ -712,6 +693,42 @@ void main() {
       });
     });
 
+    group('.nearestAbove()', () {
+      test('returns the nearest Pitch of note above this Pitch', () {
+        expect(Note.b.inOctave(3).nearestAbove(.c), Note.c.inOctave(4));
+        expect(Note.c.inOctave(4).nearestAbove(.e), Note.e.inOctave(4));
+        expect(Note.e.inOctave(4).nearestAbove(.c), Note.c.inOctave(5));
+        expect(Note.c.inOctave(4).nearestAbove(.c), Note.c.inOctave(5));
+
+        expect(
+          Note.c.inOctave(4).nearestAbove(.b.sharp),
+          Note.b.sharp.inOctave(4),
+        );
+        expect(
+          Note.b.sharp.inOctave(4).nearestAbove(.b.sharp),
+          Note.b.sharp.inOctave(5),
+        );
+      });
+    });
+
+    group('.nearestBelow()', () {
+      test('returns the nearest Pitch of note below this Pitch', () {
+        expect(Note.b.inOctave(3).nearestBelow(.c), Note.c.inOctave(3));
+        expect(Note.c.inOctave(4).nearestBelow(.e), Note.e.inOctave(3));
+        expect(Note.e.inOctave(4).nearestBelow(.c), Note.c.inOctave(4));
+        expect(Note.c.inOctave(4).nearestBelow(.c), Note.c.inOctave(3));
+
+        expect(
+          Note.c.inOctave(4).nearestBelow(.c.flat),
+          Note.c.flat.inOctave(4),
+        );
+        expect(
+          Note.b.sharp.inOctave(4).nearestBelow(.b.sharp),
+          Note.b.sharp.inOctave(3),
+        );
+      });
+    });
+
     group('.toClass()', () {
       test('creates a new PitchClass from semitones', () {
         expect(Note.a.inOctave(4).toClass(), PitchClass.a);
@@ -1122,6 +1139,83 @@ void main() {
           Note.b.sharp.inOctave(4),
           Note.b.flat.inOctave(5),
         ]);
+      });
+    });
+  });
+
+  group('Pitches', () {
+    group('.moveVoice()', () {
+      test('moves a voice up by a positive number of octaves', () {
+        expect(
+          const <Note>[
+            .c,
+            .e,
+            .g,
+          ].toStacked(octave: 2).moveVoice(0, octaves: 1),
+          const <Note>[.e, .g, .c].toStacked(octave: 2),
+        );
+        expect(
+          const <Note>[.c, .e, .g, .b].toStacked().moveVoice(2, octaves: -1),
+          const <Note>[.g, .c, .e, .b].toStacked(octave: 3),
+        );
+        expect(const <Note>[.c, .e].toStacked().moveVoice(0, octaves: -2), [
+          Note.c.inOctave(2),
+          Note.e.inOctave(4),
+        ]);
+      });
+
+      test('drop(voice) is equivalent to moveVoice(length - voice, -1)', () {
+        final voicing = <Note>[.c, .e, .g, .b].toStacked();
+        expect(
+          voicing.drop(2),
+          voicing.moveVoice(voicing.length - 2, octaves: -1),
+        );
+        expect(
+          voicing.drop(3),
+          voicing.moveVoice(voicing.length - 3, octaves: -1),
+        );
+      });
+    });
+
+    group('.doubling()', () {
+      test('adds a new voice built from Note and octaves', () {
+        expect(
+          const <Note>[.c, .e].toStacked().doubling(.c),
+          <Note>[.c, .e, .c].toStacked(),
+        );
+        final voicing = const <Note>[.c, .e].toStacked(octave: 3);
+        expect(
+          voicing.doubling(.c, octaves: -1),
+          <Note>[.c, .c, .e].toStacked(octave: 2),
+        );
+        expect(
+          voicing.doubling(.c, octaves: -2),
+          [Note.c.inOctave(1), ...voicing],
+        );
+      });
+
+      test('can be chained for multi-octave doubling', () {
+        final voicing = <Note>[.c, .e].toStacked(octave: 3);
+        expect(
+          voicing.doubling(Note.c, octaves: -1).doubling(Note.c, octaves: -1),
+          [Note.c.inOctave(1), Note.c.inOctave(2), ...voicing],
+        );
+      });
+    });
+
+    group('.drop()', () {
+      test('drops the 2nd voice from the top by an octave (drop 2)', () {
+        expect(
+          const <Note>[.c, .e, .g, .b].inOctave(4).drop(2),
+          const <Note>[.g, .c, .e, .b].toStacked(octave: 3),
+        );
+      });
+
+      test('drops the 3rd voice from the top by an octave (drop 3)', () {
+        expect(
+          const <Note>[.c, .e, .g, .b].toStacked().drop(3),
+          const <Note>[.e, .c, .g, .b].toStacked(octave: 3),
+        );
       });
     });
   });

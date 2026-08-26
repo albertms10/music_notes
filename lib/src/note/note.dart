@@ -507,4 +507,37 @@ extension Notes on List<Note> {
   /// ```
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
+
+  /// Stacks ascending from [octave], like a chord voicing.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.e, .g, .c].toStacked(octave: 4)
+  ///   == [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)]
+  /// ```
+  List<Pitch> toStacked({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.nearestAbove(note));
+
+  /// Places each note at the pitch closest to the previous one, like a
+  /// melodic line.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.c, .a, .d].toMelody(octave: 3)
+  ///   == [Note.c.inOctave(3), Note.a.inOctave(2), Note.d.inOctave(3)]
+  /// ```
+  List<Pitch> toMelody({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.closestTo(note));
+
+  List<Pitch> _mapToPitches(
+    int octave,
+    Pitch Function(Pitch previous, Note note) next,
+  ) {
+    var current = first.inOctave(octave);
+
+    return [
+      current,
+      for (final note in skip(1)) current = next(current, note),
+    ];
+  }
 }
