@@ -138,6 +138,254 @@ void main() {
           ChordPattern.majorTriad.on(.c).rootPosition,
           ChordPattern.majorTriad.on(.c),
         );
+
+        expect(
+          skip: 'Sort out repeated notes in a Chord',
+          () => const Chord([.c, .e, .g, .c]).rootPosition,
+          const Chord([.c, .e, .g]),
+        );
+        expect(
+          skip: 'Should this be the expected output disposition?',
+          const Chord([.e, .c, .g]).rootPosition,
+          const Chord([.c, .g, .e]),
+        );
+
+        expect(
+          Chord([.b.flat, .c, .e, .g]).rootPosition,
+          Chord([.c, .e, .g, .b.flat]),
+        );
+        expect(
+          skip: 'Unsupported open disposition',
+          () => Chord([.b.flat, .c, .g, .e]).rootPosition,
+          Chord([.c, .e, .g, .b.flat]),
+        );
+        expect(
+          skip: 'Unsupported non-tertian chords',
+          () => Chord([.b.flat, .c, .g, .f]).rootPosition,
+          Chord([.c, .f, .g, .b.flat]),
+        );
+
+        expect(
+          Chord([.d, .f, .a.flat, .b]).rootPosition,
+          Chord([.b, .d, .f, .a.flat]),
+        );
+
+        expect(
+          Chord([.f.sharp, .a, .c, .e.flat]).rootPosition,
+          Chord([.f.sharp, .a, .c, .e.flat]),
+        );
+        expect(
+          Chord([.a, .c, .e.flat, .f.sharp]).rootPosition,
+          Chord([.f.sharp, .a, .c, .e.flat]),
+        );
+        expect(
+          Chord([.b.flat.flat, .c, .e.flat, .g.flat]).rootPosition,
+          Chord([.c, .e.flat, .g.flat, .b.flat.flat]),
+        );
+        expect(
+          Chord([.c, .d.sharp, .f.sharp, .a]).rootPosition,
+          Chord([.d.sharp, .f.sharp, .a, .c]),
+        );
+
+        expect(
+          Note.f.augmentedTriad.add7().add9().rootPosition,
+          Chord([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          skip: 'Unsupported 9th chords',
+          () => Chord([.a, .c.sharp, .e.flat, .f, .g]).rootPosition,
+          Chord([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          skip: 'Unsupported 9th chords',
+          () => Chord([.c.sharp, .e.flat, .f, .g, .a]).rootPosition,
+          Chord([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+        expect(
+          skip: 'Unsupported 9th chords',
+          () => Chord([.e.flat, .f, .g, .a, .c.sharp]).rootPosition,
+          Chord([.f, .a, .c.sharp, .e.flat, .g]),
+        );
+
+        expect(
+          Note.a.flat.majorTriad.add7().add9().add11().rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .c,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .d.flat,
+          ]).rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+          ]).rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+          ]).rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .b.flat,
+            .c,
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+          ]).rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .d.flat,
+            .e.flat,
+            .g.flat,
+            .a.flat,
+            .b.flat,
+            .c,
+          ]).rootPosition,
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
+        );
+
+        expect(
+          Note.d.sharp.minorTriad
+              .add7(.major)
+              .add9(.minor)
+              .add11()
+              .rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .g.sharp,
+          ]).rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+          ]).rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+          ]).rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .e,
+            .f.sharp,
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+          ]).rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+        expect(
+          skip: 'Unsupported 11th chords',
+          () => Chord([
+            .g.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .d.sharp,
+            .e,
+            .f.sharp,
+          ]).rootPosition,
+          Chord([
+            .d.sharp,
+            .f.sharp,
+            .a.sharp,
+            .c.sharp.sharp,
+            .e,
+            .g.sharp,
+          ]),
+        );
+
+        expect(Note.c.majorTriad.rootPosition, Note.c.majorTriad);
+        expect(Note.g.majorTriad.rootPosition, Note.g.majorTriad);
+        expect(Note.b.flat.majorTriad.rootPosition, Note.b.flat.majorTriad);
       });
     });
 
