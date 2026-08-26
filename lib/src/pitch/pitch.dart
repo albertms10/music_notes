@@ -316,6 +316,40 @@ final class Pitch extends Scalable<Pitch>
     ).withDescending(sizeDelta.isNegative);
   }
 
+  /// The nearest [Pitch] built from [note] that is strictly above this [Pitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.b.inOctave(3).nearestAbove(.c) == Note.c.inOctave(4)
+  /// Note.c.inOctave(4).nearestAbove(.e) == Note.e.inOctave(4)
+  /// Note.c.inOctave(4).nearestAbove(.c) == Note.c.inOctave(5)
+  /// ```
+  Pitch nearestAbove(Note note) {
+    var candidate = note.inOctave(octave);
+    while (candidate <= this) {
+      candidate = note.inOctave(candidate.octave + 1);
+    }
+
+    return candidate;
+  }
+
+  /// The nearest [Pitch] built from [note] that is strictly below this [Pitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.b.inOctave(3).nearestBelow(.c) == Note.c.inOctave(3)
+  /// Note.c.inOctave(4).nearestBelow(.a) == Note.a.inOctave(3)
+  /// Note.c.inOctave(3).nearestBelow(.c) == Note.c.inOctave(2)
+  /// ```
+  Pitch nearestBelow(Note note) {
+    var candidate = note.inOctave(octave);
+    while (candidate >= this) {
+      candidate = note.inOctave(candidate.octave - 1);
+    }
+
+    return candidate;
+  }
+
   /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
   ///
   /// Example:
@@ -462,4 +496,20 @@ extension Pitches on List<Pitch> {
   /// ```
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
+
+  /// Doubles [note] an octave above the highest voice.
+  List<Pitch> doubling(Note note) => [
+    ...this,
+    firstWhere((p) => p.note == note).transposeBy(.P8),
+  ];
+
+  /// A "drop [voice]" voicing: the [voice]-th pitch from the top
+  /// (1-indexed, matching arranger convention: drop 2, drop 3) is
+  /// lowered by an octave.
+  List<Pitch> drop(int voice) {
+    final i = length - voice;
+
+    return [...take(i), ...skip(i + 1), this[i].transposeBy(.P8.descending)]
+      ..sort();
+  }
 }

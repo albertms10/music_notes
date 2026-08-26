@@ -8,6 +8,7 @@ import '../chordable.dart';
 import '../interval/interval.dart';
 import '../notation_system/notation_system.dart';
 import '../note/note.dart';
+import '../pitch/pitch.dart';
 import '../quality/quality.dart';
 import '../scalable.dart';
 import '../size/size.dart';
@@ -31,6 +32,10 @@ final class Chord
 
   /// Creates a new [Chord] from [_items].
   const Chord(this._items);
+
+  /// Creates a new [Chord] from a list of [Pitch]es.
+  factory Chord.fromPitches(List<Pitch> pitches) =>
+      Chord(pitches.map((pitch) => pitch.note).toSet().toList());
 
   /// The root [Scalable] of this [Chord].
   Note get root => _items.first;
@@ -165,11 +170,39 @@ final class Chord
   Chord transposeBy(Interval interval) =>
       Chord(_items.transposeBy(interval).toList(growable: false));
 
+  /// Realizes this [Chord] as an ascending [List<Pitch>], one entry per
+  /// [voices] index (0-based, into [items]).
+  ///
+  /// The first voice is anchored at [bassOctave]. Each subsequent voice sits
+  /// at the nearest occurrence of its requested note strictly above the
+  /// previous one, so a repeated index doubles that tone an octave up,
+  /// never in unison.
+  ///
+  /// Example:
+  /// ```dart
+  /// const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], bassOctave: 2)
+  ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3),
+  ///       Note.g.inOctave(3), Note.c.inOctave(4)]
+  /// ```
+  List<Pitch> toVoicing(List<int> voices, {required int bassOctave}) {
+    var current = _items[voices.first].inOctave(bassOctave);
+
+    return [
+      current,
+      for (final i in voices.skip(1)) current = current.nearestAbove(_items[i]),
+    ];
+  }
+
+  /// Returns a list of [Pitch]es from [items] based on [bassOctave].
+  List<Pitch> toPitches(int bassOctave) => toVoicing([
+    for (var i = 0; i < _items.length; i++) i,
+  ], bassOctave: bassOctave);
+
   @override
   String format() => '${root.format()}${pattern.format()}';
 
   @override
-  String toString() => '$runtimeType(items: ${items.prettyToString()})';
+  String toString() => '$runtimeType(items: ${_items.prettyToString()})';
 
   @override
   bool operator ==(Object other) =>
