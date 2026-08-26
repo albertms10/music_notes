@@ -505,17 +505,17 @@ extension Pitches on List<Pitch> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c.inOctave(4), Note.g.inOctave(4)].moveVoice(1, -1)
+  /// [Note.c.inOctave(4), Note.g.inOctave(4)].moveVoice(1, octaves: -1)
   ///   == [Note.g.inOctave(3), Note.c.inOctave(4)]
   /// ```
-  List<Pitch> moveVoice(int index, int octaves) {
+  List<Pitch> moveVoice(int index, {required int octaves}) {
     final moved = this[index].note.inOctave(this[index].octave + octaves);
     return [...take(index), ...skip(index + 1), moved]..sort();
   }
 
   /// A "drop [voice]" voicing, 1-indexed from the top
   /// (arranger convention: drop 2, drop 3).
-  List<Pitch> drop(int voice) => moveVoice(length - voice, -1);
+  List<Pitch> drop(int voice) => moveVoice(length - voice, octaves: -1);
 
   /// Adds a new voice built from [note], [octaves] octaves beyond the
   /// current extreme voice (positive: above the highest voice; negative:

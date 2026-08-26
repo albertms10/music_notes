@@ -1147,14 +1147,18 @@ void main() {
     group('.moveVoice()', () {
       test('moves a voice up by a positive number of octaves', () {
         expect(
-          const <Note>[.c, .e, .g].toStacked(octave: 2).moveVoice(0, 1),
+          const <Note>[
+            .c,
+            .e,
+            .g,
+          ].toStacked(octave: 2).moveVoice(0, octaves: 1),
           const <Note>[.e, .g, .c].toStacked(octave: 2),
         );
         expect(
-          const <Note>[.c, .e, .g, .b].toStacked().moveVoice(2, -1),
+          const <Note>[.c, .e, .g, .b].toStacked().moveVoice(2, octaves: -1),
           const <Note>[.g, .c, .e, .b].toStacked(octave: 3),
         );
-        expect(const <Note>[.c, .e].toStacked().moveVoice(0, -2), [
+        expect(const <Note>[.c, .e].toStacked().moveVoice(0, octaves: -2), [
           Note.c.inOctave(2),
           Note.e.inOctave(4),
         ]);
@@ -1162,8 +1166,14 @@ void main() {
 
       test('drop(voice) is equivalent to moveVoice(length - voice, -1)', () {
         final voicing = <Note>[.c, .e, .g, .b].toStacked();
-        expect(voicing.drop(2), voicing.moveVoice(voicing.length - 2, -1));
-        expect(voicing.drop(3), voicing.moveVoice(voicing.length - 3, -1));
+        expect(
+          voicing.drop(2),
+          voicing.moveVoice(voicing.length - 2, octaves: -1),
+        );
+        expect(
+          voicing.drop(3),
+          voicing.moveVoice(voicing.length - 3, octaves: -1),
+        );
       });
     });
 
