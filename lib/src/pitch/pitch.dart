@@ -350,6 +350,20 @@ final class Pitch extends Scalable<Pitch>
     return candidate;
   }
 
+  /// The [Pitch] built from [note] placed as close as possible to this
+  /// [Pitch] — above or below, whichever is nearer. Ties (an exact
+  /// tritone) resolve to the higher option.
+  Pitch closestTo(Note note) {
+    final same = note.inOctave(octave);
+    if (same == this) return same;
+    final above = same > this ? same : nearestAbove(note);
+    final below = same < this ? same : nearestBelow(note);
+
+    return (above.semitones - semitones) <= (semitones - below.semitones)
+        ? above
+        : below;
+  }
+
   /// The [Frequency] of this [Pitch] from [tuningSystem] and [temperature].
   ///
   /// Example:
@@ -497,19 +511,38 @@ extension Pitches on List<Pitch> {
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
 
-  /// Doubles [note] an octave above the highest voice.
-  List<Pitch> doubling(Note note) => [
-    ...this,
-    firstWhere((p) => p.note == note).transposeBy(.P8),
-  ];
+  /// Moves the voice at [index] by [octaves] octaves (positive: up,
+  /// negative: down), re-sorting the result.
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c.inOctave(4), Note.g.inOctave(4)].moveVoice(1, -1)
+  ///   == [Note.g.inOctave(3), Note.c.inOctave(4)]
+  /// ```
+  List<Pitch> moveVoice(int index, int octaves) {
+    final moved = this[index].note.inOctave(this[index].octave + octaves);
+    return [...take(index), ...skip(index + 1), moved]..sort();
+  }
 
-  /// A "drop [voice]" voicing: the [voice]-th pitch from the top
-  /// (1-indexed, matching arranger convention: drop 2, drop 3) is
-  /// lowered by an octave.
-  List<Pitch> drop(int voice) {
-    final i = length - voice;
+  /// A "drop [voice]" voicing, 1-indexed from the top
+  /// (arranger convention: drop 2, drop 3).
+  List<Pitch> drop(int voice) => moveVoice(length - voice, -1);
 
-    return [...take(i), ...skip(i + 1), this[i].transposeBy(.P8.descending)]
-      ..sort();
+  /// Adds a new voice built from [note], [octaves] octaves beyond the
+  /// current extreme voice — positive: above the highest voice; negative:
+  /// below the lowest voice.
+  ///
+  /// Example:
+  /// ```dart
+  /// [Note.c.inOctave(3), Note.e.inOctave(3)].doubling(Note.c, octaves: -1)
+  ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3)]
+  /// ```
+  List<Pitch> doubling(Note note, {int octaves = 1}) {
+    final ascending = octaves > 0;
+    var edge = ascending ? last : first;
+    for (var i = 0; i < octaves.abs(); i++) {
+      edge = ascending ? edge.nearestAbove(note) : edge.nearestBelow(note);
+    }
+    return ascending ? [...this, edge] : [edge, ...this];
   }
 }

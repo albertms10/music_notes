@@ -194,9 +194,8 @@ final class Chord
   }
 
   /// Returns a list of [Pitch]es from [items] based on [bassOctave].
-  List<Pitch> toPitches({int bassOctave = 4}) => toVoicing([
-    for (var i = 0; i < _items.length; i++) i,
-  ], bassOctave: bassOctave);
+  List<Pitch> toPitches({int bassOctave = 4}) =>
+      _items.toStackedPitches(octave: bassOctave);
 
   @override
   String format() => '${root.format()}${pattern.format()}';
