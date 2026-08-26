@@ -184,14 +184,8 @@ final class Chord
   ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3),
   ///       Note.g.inOctave(3), Note.c.inOctave(4)]
   /// ```
-  List<Pitch> toVoicing(List<int> voices, {int octave = 4}) {
-    var current = _items[voices.first].inOctave(octave);
-
-    return [
-      current,
-      for (final i in voices.skip(1)) current = current.nearestAbove(_items[i]),
-    ];
-  }
+  List<Pitch> toVoicing(List<int> voices, {int octave = 4}) =>
+      voices.map((i) => _items[i]).toList().toStacked(octave: octave);
 
   /// Returns a list of [Pitch]es from [items] based on [octave].
   List<Pitch> toPitches({int octave = 4}) => _items.toStacked(octave: octave);
