@@ -159,7 +159,7 @@ final class Chord
   ///
   /// Example:
   /// ```dart
-  /// const Chord([.a, .c, .e]).transposeBy(.m3)  == Chord([.c, .e.flat, .g])
+  /// const Chord([.a, .c, .e]).transposeBy(.m3) == Chord([.c, .e.flat, .g])
   /// ```
   @override
   Chord transposeBy(Interval interval) =>
