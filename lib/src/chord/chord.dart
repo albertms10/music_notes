@@ -13,6 +13,7 @@ import '../quality/quality.dart';
 import '../scalable.dart';
 import '../size/size.dart';
 import '../transposable.dart';
+import 'chord_notation.dart';
 
 /// A musical chord.
 ///
@@ -32,6 +33,24 @@ final class Chord
 
   /// Creates a new [Chord] from [_items].
   const Chord(this._items);
+
+  /// The chain of [StringParser]s used to parse a [Chord].
+  static const parsers = [ChordNotation()];
+
+  /// Parse [source] as a [ChordPattern] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [ChordPattern], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Chord.parse('Cmaj7') == ChordPattern.majorTriad.add7(.major).on(.c)
+  /// Chord.parse('z') // throws a FormatException
+  /// ```
+  factory Chord.parse(
+    String source, {
+    List<StringParser<Chord>> chain = parsers,
+  }) => chain.parse(source);
 
   /// Creates a new [Chord] from a list of [Pitch]es.
   factory Chord.fromPitches(List<Pitch> pitches) =>
@@ -190,8 +209,15 @@ final class Chord
   /// Returns a list of [Pitch]es from [items] based on [octave].
   List<Pitch> toPitches({int octave = 4}) => _items.toStacked(octave: octave);
 
+  /// The string representation of this [Chord] based on [formatter].
+  ///
+  /// Example:
+  /// ```dart
+  /// Chord([.e, .g, .c]).format() == 'C/E'
+  /// ```
   @override
-  String format() => '${root.format()}${pattern.format()}';
+  String format([StringFormatter<Chord> formatter = const ChordNotation()]) =>
+      formatter.format(this);
 
   @override
   String toString() => '$runtimeType(items: ${_items.prettyToString()})';

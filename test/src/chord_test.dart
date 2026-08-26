@@ -460,4 +460,63 @@ Chord(items: [
       });
     });
   });
+
+  group('ChordNotation', () {
+    group('.parse()', () {
+      test('throws a FormatException on an invalid Chord', () {
+        expect(() => Chord.parse(''), throwsFormatException);
+        expect(() => Chord.parse('z'), throwsFormatException);
+        expect(() => Chord.parse('C/E/G'), throwsFormatException);
+      });
+
+      test('parses source as a Chord', () {
+        expect(Chord.parse('C'), ChordPattern.majorTriad.on(.c));
+        expect(Chord.parse('A-'), ChordPattern.minorTriad.on(.a));
+        expect(Chord.parse('F♯dim'), ChordPattern.diminishedTriad.on(.f.sharp));
+        expect(
+          Chord.parse('Cmaj7'),
+          ChordPattern.majorTriad.add7(.major).on(.c),
+        );
+
+        expect(Chord.parse('C/E'), const Chord([.e, .g, .c]));
+        expect(Chord.parse('C/G'), const Chord([.g, .c, .e]));
+        expect(Chord.parse('A-/C'), const Chord([.c, .e, .a]));
+        expect(Chord.parse('Cmaj7/E'), const Chord([.e, .g, .b, .c]));
+        expect(Chord.parse('Cmaj7/G'), const Chord([.g, .b, .c, .e]));
+
+        expect(Chord.parse('C/D'), const Chord([.d, .c, .e, .g]));
+        expect(Chord.parse('C/C'), Chord.parse('C'));
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Chord', () {
+        expect(ChordPattern.majorTriad.on(.c).format(), 'C');
+        expect(ChordPattern.minorTriad.on(.a).format(), 'A-');
+        expect(ChordPattern.majorTriad.add7(.major).on(.c).format(), 'Cmaj7');
+
+        expect(const Chord([.e, .g, .c]).format(), 'C/E');
+        expect(const Chord([.g, .c, .e]).format(), 'C/G');
+        expect(const Chord([.c, .e, .a]).format(), 'A-/C');
+        expect(const Chord([.e, .g, .b, .c]).format(), 'Cmaj7/E');
+        expect(const Chord([.d, .c, .e, .g]).format(), 'C/D');
+      });
+
+      test('round-trips with .parse()', () {
+        for (final source in [
+          'C',
+          'A-',
+          'F♯dim',
+          'Cmaj7',
+          'C/E',
+          'C/G',
+          'A-/C',
+          'Cmaj7/E',
+          'C/D',
+        ]) {
+          expect(Chord.parse(source).format(), source);
+        }
+      });
+    });
+  });
 }
