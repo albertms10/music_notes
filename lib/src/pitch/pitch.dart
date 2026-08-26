@@ -351,8 +351,7 @@ final class Pitch extends Scalable<Pitch>
   }
 
   /// The [Pitch] built from [note] placed as close as possible to this
-  /// [Pitch] — above or below, whichever is nearer. Ties (an exact
-  /// tritone) resolve to the higher option.
+  /// [Pitch]. Ties (e.g., an exact tritone) resolve to the higher option.
   Pitch closestTo(Note note) {
     final same = note.inOctave(octave);
     if (same == this) return same;
@@ -529,8 +528,8 @@ extension Pitches on List<Pitch> {
   List<Pitch> drop(int voice) => moveVoice(length - voice, -1);
 
   /// Adds a new voice built from [note], [octaves] octaves beyond the
-  /// current extreme voice — positive: above the highest voice; negative:
-  /// below the lowest voice.
+  /// current extreme voice (positive: above the highest voice; negative:
+  /// below the lowest voice).
   ///
   /// Example:
   /// ```dart
