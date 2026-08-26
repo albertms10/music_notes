@@ -101,15 +101,6 @@ final class Pitch extends Scalable<Pitch>
     );
   }
 
-  /// Changes the octave of this [Pitch].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.inOctave(4).inOctave(2) == Note.a.inOctave(2);
-  /// Note.c.sharp.inOctave(6).inOctave(-1) == Note.c.sharp.inOctave(-1);
-  /// ```
-  Pitch inOctave(int octave) => Pitch(note, octave: octave);
-
   /// The [octave] that corresponds to the semitones from root height.
   ///
   /// Example:
