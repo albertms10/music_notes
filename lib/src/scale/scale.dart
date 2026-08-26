@@ -7,6 +7,7 @@ import '../chord_pattern/chord_pattern.dart';
 import '../enharmonic.dart';
 import '../harmonic_function/harmonic_function.dart';
 import '../interval/interval.dart';
+import '../note/note.dart';
 import '../scalable.dart';
 import '../scale_degree/scale_degree.dart';
 import '../scale_pattern/scale_pattern.dart';
@@ -72,102 +73,6 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   Scale<T> get reversed =>
       Scale(descendingDegrees, _descendingDegrees != null ? _degrees : null);
 
-  /// The [Chord] for each [ScaleDegree] of this [Scale].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.major.scale.degreeChords() == [
-  ///   Note.a.majorTriad,
-  ///   Note.b.minorTriad,
-  ///   Note.c.sharp.minorTriad,
-  ///   Note.d.majorTriad,
-  ///   Note.e.majorTriad,
-  ///   Note.f.sharp.minorTriad,
-  ///   Note.g.sharp.diminishedTriad,
-  /// ]
-  /// ```
-  List<Chord<T>> degreeChords({Set<Size> shape = Size.triad}) => [
-    for (var i = 1; i < _degrees.length; i++)
-      degreeChord(ScaleDegree(i), shape: shape),
-  ];
-
-  /// The [T] for the [scaleDegree] of this [Scale].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.major.scale.degree(.ii.lowered) == .d.flat
-  /// Note.c.minor.scale.degree(.v) == .g
-  /// Note.a.flat.major.scale.degree(.vi) == .f
-  /// ```
-  T degree(ScaleDegree scaleDegree) {
-    final ScaleDegree(:ordinal, :accidental) = scaleDegree;
-    final scalable = _degrees[ordinal - 1];
-    if (accidental.isNatural) return scalable;
-
-    return scalable.transposeBy(
-      .perfect(
-        .unison,
-        .new(accidental.semitones.abs()),
-      ).withDescending(accidental.isFlat),
-    );
-  }
-
-  /// The [Chord] for the [scaleDegree] of this [Scale].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.g.major.scale.degreeChord(.vi) == Note.b.minorTriad
-  /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
-  /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
-  /// ```
-  Chord<T> degreeChord(
-    ScaleDegree scaleDegree, {
-    Set<Size> shape = Size.triad,
-  }) =>
-      // TODO(albertms10): find a better way of handling altered scale degrees.
-      (scaleDegree.isLowered
-              ? ChordPattern.majorTriad
-              : pattern.degreePattern(scaleDegree, shape: shape))
-          .on(degree(scaleDegree));
-
-  /// The [Chord] for the [harmonicFunction] of this [Scale].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.g.major.scale.functionChord(HarmonicFunction.dominantV / .dominantV)
-  ///   == Note.a.majorTriad
-  /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
-  ///   == Note.g.minorTriad
-  /// ```
-  Chord<T> functionChord(HarmonicFunction harmonicFunction) => scaleOf(
-    harmonicFunction.tonicization,
-  ).degreeChord(harmonicFunction.scaleDegree);
-
-  /// Returns the tonal scale established by [harmonicFunction] relative to this
-  /// [Scale].
-  ///
-  /// The tonicization chain is resolved recursively, with each harmonic
-  /// function establishing a new tonal context from its
-  /// [HarmonicFunction.scaleDegree].
-  /// If [harmonicFunction] is `null`, this scale is returned unchanged.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.major.scale.scaleOf(.v) == Note.g.major.scale
-  /// Note.f.minor.scale.scaleOf(.iii) == Note.a.flat.major.scale
-  /// ```
-  Scale<T> scaleOf(HarmonicFunction? harmonicFunction) {
-    if (harmonicFunction == null) return this;
-
-    final HarmonicFunction(:scaleDegree, :pattern, :tonicization) =
-        harmonicFunction;
-    final scale = scaleOf(tonicization);
-
-    return ScalePattern.fromChordPattern(
-      pattern ?? scale.pattern.degreePattern(scaleDegree),
-    ).on(scale.degree(scaleDegree));
-  }
-
   /// Whether this [Scale] is enharmonically equivalent to [other].
   ///
   /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
@@ -218,4 +123,103 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
     Object.hashAll(_degrees),
     _descendingDegrees != null ? Object.hashAll(_descendingDegrees) : null,
   );
+}
+
+/// A Scale of Notes.
+extension NoteScale on Scale<Note> {
+  /// The [Chord] for each [ScaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.major.scale.degreeChords() == [
+  ///   Note.a.majorTriad,
+  ///   Note.b.minorTriad,
+  ///   Note.c.sharp.minorTriad,
+  ///   Note.d.majorTriad,
+  ///   Note.e.majorTriad,
+  ///   Note.f.sharp.minorTriad,
+  ///   Note.g.sharp.diminishedTriad,
+  /// ]
+  /// ```
+  List<Chord> degreeChords({Set<Size> shape = Size.triad}) => [
+    for (var i = 1; i < _degrees.length; i++)
+      degreeChord(ScaleDegree(i), shape: shape),
+  ];
+
+  /// The [Note] for the [scaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.degree(.ii.lowered) == .d.flat
+  /// Note.c.minor.scale.degree(.v) == .g
+  /// Note.a.flat.major.scale.degree(.vi) == .f
+  /// ```
+  Note degree(ScaleDegree scaleDegree) {
+    final ScaleDegree(:ordinal, :accidental) = scaleDegree;
+    final scalable = _degrees[ordinal - 1];
+    if (accidental.isNatural) return scalable;
+
+    return scalable.transposeBy(
+      .perfect(
+        .unison,
+        .new(accidental.semitones.abs()),
+      ).withDescending(accidental.isFlat),
+    );
+  }
+
+  /// The [Chord] for the [scaleDegree] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.major.scale.degreeChord(.vi) == Note.b.minorTriad
+  /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
+  /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
+  /// ```
+  Chord degreeChord(
+    ScaleDegree scaleDegree, {
+    Set<Size> shape = Size.triad,
+  }) =>
+      // TODO(albertms10): find a better way of handling altered scale degrees.
+      (scaleDegree.isLowered
+              ? ChordPattern.majorTriad
+              : pattern.degreePattern(scaleDegree, shape: shape))
+          .on(degree(scaleDegree));
+
+  /// The [Chord] for the [harmonicFunction] of this [Scale].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.major.scale.functionChord(HarmonicFunction.dominantV / .dominantV)
+  ///   == Note.a.majorTriad
+  /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
+  ///   == Note.g.minorTriad
+  /// ```
+  Chord functionChord(HarmonicFunction harmonicFunction) => scaleOf(
+    harmonicFunction.tonicization,
+  ).degreeChord(harmonicFunction.scaleDegree);
+
+  /// Returns the tonal scale established by [harmonicFunction] relative to this
+  /// [Scale].
+  ///
+  /// The tonicization chain is resolved recursively, with each harmonic
+  /// function establishing a new tonal context from its
+  /// [HarmonicFunction.scaleDegree].
+  /// If [harmonicFunction] is `null`, this scale is returned unchanged.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major.scale.scaleOf(.v) == Note.g.major.scale
+  /// Note.f.minor.scale.scaleOf(.iii) == Note.a.flat.major.scale
+  /// ```
+  Scale<Note> scaleOf(HarmonicFunction? harmonicFunction) {
+    if (harmonicFunction == null) return this;
+
+    final HarmonicFunction(:scaleDegree, :pattern, :tonicization) =
+        harmonicFunction;
+    final scale = scaleOf(tonicization);
+
+    return ScalePattern.fromChordPattern(
+      pattern ?? scale.pattern.degreePattern(scaleDegree),
+    ).on(scale.degree(scaleDegree));
+  }
 }

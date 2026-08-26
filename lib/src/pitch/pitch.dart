@@ -4,8 +4,6 @@ import 'package:music_notes/utils.dart';
 import '../accidental/accidental.dart';
 import '../celsius/celsius.dart';
 import '../cent/cent.dart';
-import '../chord/chord.dart';
-import '../chord_pattern/chord_pattern.dart';
 import '../closest_pitch/closest_pitch.dart';
 import '../comparators.dart';
 import '../enharmonic.dart';
@@ -167,86 +165,6 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   @override
   int difference(Pitch other) => other.semitones - semitones;
-
-  /// The [ChordPattern.diminishedTriad] on this [Pitch].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.a.inOctave(3).diminishedTriad
-  ///   == Chord([
-  ///        Note.a.inOctave(3),
-  ///        Note.c.inOctave(4),
-  ///        Note.e.flat.inOctave(4),
-  ///      ])
-  ///
-  /// Note.b.inOctave(3).diminishedTriad
-  ///   == Chord([
-  ///        Note.b.inOctave(3),
-  ///        Note.d.inOctave(4),
-  ///        Note.f.inOctave(4),
-  ///      ])
-  /// ```
-  Chord<Pitch> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
-
-  /// The [ChordPattern.minorTriad] on this [Pitch].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.e.inOctave(4).minorTriad
-  ///   == Chord([
-  ///        Note.e.inOctave(4),
-  ///        Note.g.inOctave(4),
-  ///        Note.b.inOctave(4),
-  ///      ])
-  ///
-  /// Note.f.sharp.inOctave(3).minorTriad
-  ///   == Chord([
-  ///        Note.f.sharp.inOctave(3),
-  ///        Note.a.inOctave(3),
-  ///        Note.c.sharp.inOctave(4)
-  ///      ])
-  /// ```
-  Chord<Pitch> get minorTriad => ChordPattern.minorTriad.on(this);
-
-  /// The [ChordPattern.majorTriad] on this [Pitch].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.d.inOctave(3).majorTriad
-  ///   == Chord([
-  ///        Note.d.inOctave(3),
-  ///        Note.f.sharp.inOctave(3),
-  ///        Note.a.inOctave(3),
-  ///      ])
-  ///
-  /// Note.a.flat.inOctave(4).majorTriad
-  ///   == Chord([
-  ///        Note.a.flat.inOctave(4),
-  ///        Note.c.inOctave(5),
-  ///        Note.e.flat.inOctave(5),
-  ///      ])
-  /// ```
-  Chord<Pitch> get majorTriad => ChordPattern.majorTriad.on(this);
-
-  /// The [ChordPattern.augmentedTriad] on this [Pitch].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.d.flat.inOctave(4).augmentedTriad
-  ///   == Chord([
-  ///        Note.d.flat.inOctave(4),
-  ///        Note.f.inOctave(4),
-  ///        Note.a.inOctave(4),
-  ///      ])
-  ///
-  /// Note.g.inOctave(5).augmentedTriad
-  ///   == Chord([
-  ///        Note.g.inOctave(5),
-  ///        Note.b.inOctave(5),
-  ///        Note.d.sharp.inOctave(6),
-  ///      ])
-  /// ```
-  Chord<Pitch> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
   /// This [Pitch] respelled by [noteName] while keeping the
   /// same number of [semitones].

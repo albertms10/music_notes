@@ -183,37 +183,37 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.a.diminishedTriad == Chord<Note>([.a, .c, .e.flat])
-  /// Note.b.diminishedTriad == Chord<Note>([.b, .d, .f])
+  /// Note.a.diminishedTriad == Chord([.a, .c, .e.flat])
+  /// Note.b.diminishedTriad == Chord([.b, .d, .f])
   /// ```
-  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+  Chord get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
   /// The [ChordPattern.minorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.e.minorTriad == Chord<Note>([.e, .g, .b])
-  /// Note.f.sharp.minorTriad == Chord<Note>([.f.sharp, .a, .c.sharp])
+  /// Note.e.minorTriad == Chord([.e, .g, .b])
+  /// Note.f.sharp.minorTriad == Chord([.f.sharp, .a, .c.sharp])
   /// ```
-  Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
+  Chord get minorTriad => ChordPattern.minorTriad.on(this);
 
   /// The [ChordPattern.majorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.majorTriad == Chord<Note>([.d, .f.sharp, .a])
-  /// Note.a.flat.majorTriad == Chord<Note>([.a.flat, .c, .e.flat])
+  /// Note.d.majorTriad == Chord([.d, .f.sharp, .a])
+  /// Note.a.flat.majorTriad == Chord([.a.flat, .c, .e.flat])
   /// ```
-  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord get majorTriad => ChordPattern.majorTriad.on(this);
 
   /// The [ChordPattern.augmentedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.augmentedTriad == Chord<Note>([.d.flat, .f, .a])
-  /// Note.g.augmentedTriad == Chord<Note>([.g, .b, .d.sharp])
+  /// Note.d.flat.augmentedTriad == Chord([.d.flat, .f, .a])
+  /// Note.g.augmentedTriad == Chord([.g, .b, .d.sharp])
   /// ```
-  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
+  Chord get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
   /// This [Note] respelled by [noteName] while keeping the same number of
   /// [semitones].

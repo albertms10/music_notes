@@ -457,8 +457,8 @@ Or know its numeric representation:
 Create a `Chord` from a series of `Note`s or a `ChordPattern`:
 
 ```dart
-Chord<Note>([.a, .c.sharp, .e]); // A
-ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp); // D♯+11 13
+Chord([.a, .c.sharp, .e]); // A
+ChordPattern.augmentedTriad.add11().add13().on(.d.sharp); // D♯+11 13
 ```
 
 Or build it on top of a `Note`:
