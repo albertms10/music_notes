@@ -500,15 +500,7 @@ final class Pitch extends Scalable<Pitch>
 
 /// A list of pitches extension.
 extension Pitches on List<Pitch> {
-  /// Changes the octave of each [Pitch] in this list.
-  ///
-  /// Example:
-  /// ```dart
-  /// [Note.a.inOctave(2), Note.c.inOctave(4)].inOctave(3)
-  ///   == [Note.a.inOctave(3), Note.c.inOctave(3)]
-  /// ```
-  List<Pitch> inOctave(int octave) =>
-      map((note) => note.inOctave(octave)).toList();
+
 
   /// Moves the voice at [index] by [octaves] octaves (positive: up,
   /// negative: down), re-sorting the result.
