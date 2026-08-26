@@ -944,14 +944,14 @@ void main() {
       });
     });
 
-    group('.toStackedPitches()', () {
+    group('.toStacked()', () {
       test('stacks each Note from the given octave', () {
-        expect(const <Note>[.e, .g, .c].toStackedPitches(), [
+        expect(const <Note>[.e, .g, .c].toStacked(), [
           Note.e.inOctave(4),
           Note.g.inOctave(4),
           Note.c.inOctave(5),
         ]);
-        expect(<Note>[.e, .g, .c, .c.flat].toStackedPitches(octave: -1), [
+        expect(<Note>[.e, .g, .c, .c.flat].toStacked(octave: -1), [
           Note.e.inOctave(-1),
           Note.g.inOctave(-1),
           Note.c.inOctave(0),

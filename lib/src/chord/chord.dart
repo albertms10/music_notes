@@ -173,19 +173,19 @@ final class Chord
   /// Realizes this [Chord] as an ascending [List<Pitch>], one entry per
   /// [voices] index (0-based, into [items]).
   ///
-  /// The first voice is anchored at [bassOctave]. Each subsequent voice sits
+  /// The first voice is anchored at [octave]. Each subsequent voice sits
   /// at the nearest occurrence of its requested note strictly above the
   /// previous one, so a repeated index doubles that tone an octave up,
   /// never in unison.
   ///
   /// Example:
   /// ```dart
-  /// const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], bassOctave: 2)
+  /// const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], octave: 2)
   ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3),
   ///       Note.g.inOctave(3), Note.c.inOctave(4)]
   /// ```
-  List<Pitch> toVoicing(List<int> voices, {int bassOctave = 4}) {
-    var current = _items[voices.first].inOctave(bassOctave);
+  List<Pitch> toVoicing(List<int> voices, {int octave = 4}) {
+    var current = _items[voices.first].inOctave(octave);
 
     return [
       current,
@@ -193,9 +193,8 @@ final class Chord
     ];
   }
 
-  /// Returns a list of [Pitch]es from [items] based on [bassOctave].
-  List<Pitch> toPitches({int bassOctave = 4}) =>
-      _items.toStackedPitches(octave: bassOctave);
+  /// Returns a list of [Pitch]es from [items] based on [octave].
+  List<Pitch> toPitches({int octave = 4}) => _items.toStacked(octave: octave);
 
   @override
   String format() => '${root.format()}${pattern.format()}';

@@ -351,7 +351,7 @@ void main() {
 
       test('wraps tones into the next octave when needed', () {
         expect(
-          Chord([.b, .d.sharp, .f.sharp]).toPitches(bassOctave: 3),
+          Chord([.b, .d.sharp, .f.sharp]).toPitches(octave: 3),
           [
             Note.b.inOctave(3),
             Note.d.sharp.inOctave(4),
@@ -367,16 +367,16 @@ void main() {
     });
 
     group('.toVoicing()', () {
-      test('anchors the first voice at bassOctave', () {
+      test('anchors the first voice at octave', () {
         expect(
-          const Chord([.c, .e, .g]).toVoicing([0, 1, 2], bassOctave: 2),
+          const Chord([.c, .e, .g]).toVoicing([0, 1, 2], octave: 2),
           [Note.c.inOctave(2), Note.e.inOctave(2), Note.g.inOctave(2)],
         );
       });
 
       test('doubles a repeated index an octave above, never in unison', () {
         expect(
-          const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], bassOctave: 2),
+          const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], octave: 2),
           [
             Note.c.inOctave(2),
             Note.c.inOctave(3),

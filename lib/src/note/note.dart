@@ -512,10 +512,10 @@ extension Notes on List<Note> {
   ///
   /// Example:
   /// ```dart
-  /// const <Note>[.e, .g, .c].toStackedPitches(octave: 4)
+  /// const <Note>[.e, .g, .c].toStacked(octave: 4)
   ///   == [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)]
   /// ```
-  List<Pitch> toStackedPitches({int octave = 4}) {
+  List<Pitch> toStacked({int octave = 4}) {
     var current = first.inOctave(octave);
 
     return [
@@ -529,8 +529,8 @@ extension Notes on List<Note> {
   ///
   /// Example:
   /// ```dart
-  /// const <Note>[.c, .a, .d].toMelody()
-  ///   == [Note.c.inOctave(4), Note.a.inOctave(3), Note.d.inOctave(4)]
+  /// const <Note>[.c, .a, .d].toMelody(octave: 3)
+  ///   == [Note.c.inOctave(3), Note.a.inOctave(2), Note.d.inOctave(3)]
   /// ```
   List<Pitch> toMelody({int octave = 4}) {
     var current = first.inOctave(octave);

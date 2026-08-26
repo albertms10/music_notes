@@ -1166,21 +1166,21 @@ void main() {
     group('.moveVoice()', () {
       test('moves a voice up by a positive number of octaves', () {
         expect(
-          const <Note>[.c, .e, .g].toStackedPitches(octave: 2).moveVoice(0, 1),
-          const <Note>[.e, .g, .c].toStackedPitches(octave: 2),
+          const <Note>[.c, .e, .g].toStacked(octave: 2).moveVoice(0, 1),
+          const <Note>[.e, .g, .c].toStacked(octave: 2),
         );
         expect(
-          const <Note>[.c, .e, .g, .b].toStackedPitches().moveVoice(2, -1),
-          const <Note>[.g, .c, .e, .b].toStackedPitches(octave: 3),
+          const <Note>[.c, .e, .g, .b].toStacked().moveVoice(2, -1),
+          const <Note>[.g, .c, .e, .b].toStacked(octave: 3),
         );
-        expect(const <Note>[.c, .e].toStackedPitches().moveVoice(0, -2), [
+        expect(const <Note>[.c, .e].toStacked().moveVoice(0, -2), [
           Note.c.inOctave(2),
           Note.e.inOctave(4),
         ]);
       });
 
       test('drop(voice) is equivalent to moveVoice(length - voice, -1)', () {
-        final voicing = <Note>[.c, .e, .g, .b].toStackedPitches();
+        final voicing = <Note>[.c, .e, .g, .b].toStacked();
         expect(voicing.drop(2), voicing.moveVoice(voicing.length - 2, -1));
         expect(voicing.drop(3), voicing.moveVoice(voicing.length - 3, -1));
       });
@@ -1189,13 +1189,13 @@ void main() {
     group('.doubling()', () {
       test('adds a new voice built from Note and octaves', () {
         expect(
-          const <Note>[.c, .e].toStackedPitches().doubling(.c),
-          <Note>[.c, .e, .c].toStackedPitches(),
+          const <Note>[.c, .e].toStacked().doubling(.c),
+          <Note>[.c, .e, .c].toStacked(),
         );
-        final voicing = const <Note>[.c, .e].toStackedPitches(octave: 3);
+        final voicing = const <Note>[.c, .e].toStacked(octave: 3);
         expect(
           voicing.doubling(.c, octaves: -1),
-          <Note>[.c, .c, .e].toStackedPitches(octave: 2),
+          <Note>[.c, .c, .e].toStacked(octave: 2),
         );
         expect(
           voicing.doubling(.c, octaves: -2),
@@ -1204,7 +1204,7 @@ void main() {
       });
 
       test('can be chained for multi-octave doubling', () {
-        final voicing = <Note>[.c, .e].toStackedPitches(octave: 3);
+        final voicing = <Note>[.c, .e].toStacked(octave: 3);
         expect(
           voicing.doubling(Note.c, octaves: -1).doubling(Note.c, octaves: -1),
           [Note.c.inOctave(1), Note.c.inOctave(2), ...voicing],
@@ -1216,14 +1216,14 @@ void main() {
       test('drops the 2nd voice from the top by an octave (drop 2)', () {
         expect(
           const <Note>[.c, .e, .g, .b].inOctave(4).drop(2),
-          const <Note>[.g, .c, .e, .b].toStackedPitches(octave: 3),
+          const <Note>[.g, .c, .e, .b].toStacked(octave: 3),
         );
       });
 
       test('drops the 3rd voice from the top by an octave (drop 3)', () {
         expect(
-          const <Note>[.c, .e, .g, .b].toStackedPitches().drop(3),
-          const <Note>[.e, .c, .g, .b].toStackedPitches(octave: 3),
+          const <Note>[.c, .e, .g, .b].toStacked().drop(3),
+          const <Note>[.e, .c, .g, .b].toStacked(octave: 3),
         );
       });
     });
