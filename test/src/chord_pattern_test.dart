@@ -48,56 +48,28 @@ void main() {
 
     group('.on()', () {
       test('returns the Chord built on Scalable', () {
+        expect(ChordPattern.majorTriad.on(.e), Chord([.e, .g.sharp, .b]));
         expect(
-          ChordPattern.majorTriad.on(Note.e),
-          Chord<Note>([.e, .g.sharp, .b]),
+          ChordPattern.minorTriad.add7().on(.f),
+          Chord([.f, .a.flat, .c, .e.flat]),
         );
         expect(
-          ChordPattern.minorTriad.add7().on(Note.f),
-          Chord<Note>([.f, .a.flat, .c, .e.flat]),
-        );
-        expect(
-          ChordPattern.majorTriad.add7().add9().on(Note.d),
-          Chord<Note>([.d, .f.sharp, .a, .c, .e]),
-        );
-        expect(
-          ChordPattern.diminishedTriad
-              .add7(ImperfectQuality.diminished)
-              .on(Note.b.flat.inOctave(4)),
-          Chord([
-            Note.b.flat.inOctave(4),
-            Note.d.flat.inOctave(5),
-            Note.f.flat.inOctave(5),
-            Note.a.flat.flat.inOctave(5),
-          ]),
+          ChordPattern.majorTriad.add7().add9().on(.d),
+          Chord([.d, .f.sharp, .a, .c, .e]),
         );
       });
     });
 
     group('.under()', () {
       test('returns the Chord built under Scalable', () {
+        expect(ChordPattern.majorTriad.under(.e), const Chord([.a, .c, .e]));
         expect(
-          ChordPattern.majorTriad.under(Note.e),
-          const Chord<Note>([.a, .c, .e]),
+          ChordPattern.minorTriad.add7().under(.f),
+          Chord([.g, .b.flat, .d, .f]),
         );
         expect(
-          ChordPattern.minorTriad.add7().under(Note.f),
-          Chord<Note>([.g, .b.flat, .d, .f]),
-        );
-        expect(
-          ChordPattern.majorTriad.add7().add9().under(Note.d),
-          Chord<Note>([.c, .e, .g, .b.flat, .d]),
-        );
-        expect(
-          ChordPattern.diminishedTriad
-              .add7(.diminished)
-              .under(Note.b.flat.inOctave(4)),
-          Chord([
-            Note.c.sharp.inOctave(4),
-            Note.e.inOctave(4),
-            Note.g.inOctave(4),
-            Note.b.flat.inOctave(4),
-          ]),
+          ChordPattern.majorTriad.add7().add9().under(.d),
+          Chord([.c, .e, .g, .b.flat, .d]),
         );
       });
     });

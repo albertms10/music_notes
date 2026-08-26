@@ -245,8 +245,8 @@ void main() {
     ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 
   // Chords
-  Chord<Note>([.a, .c.sharp, .e]); // A
-  ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
+  Chord([.a, .c.sharp, .e]); // A
+  ChordPattern.augmentedTriad.add11().add13().on(.d.sharp);
   // D♯+11 13
 
   Note.f.minorTriad.add7().add9(.minor);

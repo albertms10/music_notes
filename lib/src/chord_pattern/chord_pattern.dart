@@ -11,8 +11,8 @@ import '../chord/chord.dart';
 import '../chordable.dart';
 import '../interval/interval.dart';
 import '../notation_system/notation_system.dart';
+import '../note/note.dart';
 import '../quality/quality.dart';
-import '../scalable.dart';
 import '../size/size.dart';
 import 'chord_pattern_notation.dart';
 
@@ -94,33 +94,32 @@ final class ChordPattern
     List<StringParser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
 
-  /// The [Chord] built on top of [scalable].
+  /// The [Chord] built on top of [note].
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.on(Note.c) == const Chord<Note>([.c, .e, .g])
+  /// ChordPattern.majorTriad.on(.c) == const Chord([.c, .e, .g])
   /// ```
-  Chord<T> on<T extends Scalable<T>>(T scalable) => Chord(
+  Chord on(Note note) => Chord(
     _intervals.fold(
-      [scalable],
-      (chordItems, interval) => [...chordItems, scalable.transposeBy(interval)],
+      [note],
+      (chordItems, interval) => [...chordItems, note.transposeBy(interval)],
     ),
   );
 
-  /// The [Chord] built under [scalable].
+  /// The [Chord] built under [note].
   ///
   /// Example:
   /// ```dart
-  /// ChordPattern.majorTriad.under(Note.c)
-  ///   == const Chord<Note>([.f, .a.flat, .c])
+  /// ChordPattern.majorTriad.under(.c) == const Chord([.f, .a.flat, .c])
   /// ```
-  Chord<T> under<T extends Scalable<T>>(T scalable) => Chord(
+  Chord under(Note note) => Chord(
     _intervals
         .fold(
-          [scalable],
+          [note],
           (chordItems, interval) => [
             ...chordItems,
-            scalable.transposeBy(-interval),
+            note.transposeBy(-interval),
           ],
         )
         .reversed

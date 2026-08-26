@@ -183,37 +183,37 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.a.diminishedTriad == Chord<Note>([.a, .c, .e.flat])
-  /// Note.b.diminishedTriad == Chord<Note>([.b, .d, .f])
+  /// Note.a.diminishedTriad == Chord([.a, .c, .e.flat])
+  /// Note.b.diminishedTriad == Chord([.b, .d, .f])
   /// ```
-  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+  Chord get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
   /// The [ChordPattern.minorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.e.minorTriad == Chord<Note>([.e, .g, .b])
-  /// Note.f.sharp.minorTriad == Chord<Note>([.f.sharp, .a, .c.sharp])
+  /// Note.e.minorTriad == Chord([.e, .g, .b])
+  /// Note.f.sharp.minorTriad == Chord([.f.sharp, .a, .c.sharp])
   /// ```
-  Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
+  Chord get minorTriad => ChordPattern.minorTriad.on(this);
 
   /// The [ChordPattern.majorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.majorTriad == Chord<Note>([.d, .f.sharp, .a])
-  /// Note.a.flat.majorTriad == Chord<Note>([.a.flat, .c, .e.flat])
+  /// Note.d.majorTriad == Chord([.d, .f.sharp, .a])
+  /// Note.a.flat.majorTriad == Chord([.a.flat, .c, .e.flat])
   /// ```
-  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord get majorTriad => ChordPattern.majorTriad.on(this);
 
   /// The [ChordPattern.augmentedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.augmentedTriad == Chord<Note>([.d.flat, .f, .a])
-  /// Note.g.augmentedTriad == Chord<Note>([.g, .b, .d.sharp])
+  /// Note.d.flat.augmentedTriad == Chord([.d.flat, .f, .a])
+  /// Note.g.augmentedTriad == Chord([.g, .b, .d.sharp])
   /// ```
-  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
+  Chord get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
   /// This [Note] respelled by [noteName] while keeping the same number of
   /// [semitones].
@@ -507,4 +507,37 @@ extension Notes on List<Note> {
   /// ```
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
+
+  /// Stacks ascending from [octave], like a chord voicing.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.e, .g, .c].toStacked(octave: 4)
+  ///   == [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)]
+  /// ```
+  List<Pitch> toStacked({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.nearestAbove(note));
+
+  /// Places each note at the pitch closest to the previous one, like a
+  /// melodic line.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.c, .a, .d].toMelody(octave: 3)
+  ///   == [Note.c.inOctave(3), Note.a.inOctave(2), Note.d.inOctave(3)]
+  /// ```
+  List<Pitch> toMelody({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.closestTo(note));
+
+  List<Pitch> _mapToPitches(
+    int octave,
+    Pitch Function(Pitch previous, Note note) next,
+  ) {
+    var current = first.inOctave(octave);
+
+    return [
+      current,
+      for (final note in skip(1)) current = next(current, note),
+    ];
+  }
 }

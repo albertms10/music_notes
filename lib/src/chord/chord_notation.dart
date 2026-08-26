@@ -18,7 +18,7 @@ import 'chord.dart';
 /// * [Chord].
 /// * [ChordPattern].
 /// * [ChordPatternNotation].
-final class ChordNotation extends StringNotationSystem<Chord<Note>> {
+final class ChordNotation extends StringNotationSystem<Chord> {
   /// The [StringNotationSystem] used to format and parse the root and bass
   /// [Note] of this [Chord].
   final StringNotationSystem<Note> noteNotation;
@@ -35,16 +35,16 @@ final class ChordNotation extends StringNotationSystem<Chord<Note>> {
   static const _slash = '/';
 
   @override
-  Chord<Note> parse(String source) {
+  Chord parse(String source) {
     final parts = source.split(_slash);
     if (parts.length > 2) {
-      throw FormatException('Invalid ${Chord<Note>}', source);
+      throw FormatException('Invalid $Chord', source);
     }
 
     final rootSource = parts.first;
     final rootMatch = noteNotation.regExp?.firstMatch(rootSource);
     if (rootMatch == null || rootMatch.start != 0) {
-      throw FormatException('Invalid ${Chord<Note>}', source);
+      throw FormatException('Invalid $Chord', source);
     }
 
     final root = noteNotation.parseMatch(rootMatch);
@@ -67,7 +67,7 @@ final class ChordNotation extends StringNotationSystem<Chord<Note>> {
   }
 
   @override
-  String format(Chord<Note> chord) {
+  String format(Chord chord) {
     final items = chord.items;
     if (items.length == 1) return noteNotation.format(items.first);
 
@@ -94,7 +94,7 @@ final class ChordNotation extends StringNotationSystem<Chord<Note>> {
   /// bass rather than an inverted tone (e.g. `C/D`), [Chord.rootPosition]
   /// throws, and the bass is set aside so the remaining tones can be
   /// formatted on their own instead.
-  Chord<Note> _rootPositionChordOf(Chord<Note> chord) {
+  Chord _rootPositionChordOf(Chord chord) {
     try {
       return chord.rootPosition;
       // ignore: avoid_catching_errors ease

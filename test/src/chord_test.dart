@@ -8,47 +8,64 @@ void main() {
     group('.items', () {
       test('returns an unmodifiable collection', () {
         expect(
-          ChordPattern.majorTriad.on(Note.c).items,
+          ChordPattern.majorTriad.on(.c).items,
           isA<UnmodifiableListView<Note>>(),
         );
       });
     });
 
+    group('.fromPitches()', () {
+      test('drops octave information', () {
+        expect(
+          Chord.fromPitches(<Note>[.c, .e, .g].inOctave(4)),
+          const Chord([.c, .e, .g]),
+        );
+      });
+
+      test('deduplicates doubled tones, keeping first (bass) occurrence', () {
+        expect(
+          Chord.fromPitches([
+            Note.c.inOctave(3),
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
+            Note.c.inOctave(4),
+          ]),
+          const Chord([.c, .e, .g]),
+        );
+      });
+
+      test('preserves inversion via the bass (first) pitch', () {
+        expect(
+          Chord.fromPitches([
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
+            Note.c.inOctave(4),
+          ]),
+          const Chord([.e, .g, .c]),
+        );
+      });
+
+      test('round-trips identity for a non-doubled, ordered voicing', () {
+        final voicing = <Note>[.c, .e, .g].inOctave(4);
+        expect(Chord.fromPitches(voicing).toPitches(), voicing);
+      });
+    });
+
     group('.root', () {
       test('returns the root of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.f).root, Note.f);
-        expect(
-          Chord([
-            Note.d.inOctave(3),
-            Note.f.inOctave(3),
-            Note.a.inOctave(3),
-          ]).root,
-          Note.d.inOctave(3),
-        );
+        expect(ChordPattern.majorTriad.on(.f).root, Note.f);
       });
     });
 
     group('.pattern', () {
       test('returns the ChordPattern for this Chord', () {
+        expect(ChordPattern.majorTriad.on(.c).pattern, ChordPattern.majorTriad);
         expect(
-          ChordPattern.majorTriad.on(Note.c).pattern,
-          ChordPattern.majorTriad,
-        );
-        expect(
-          const Chord<Note>([.a, .c, .e, .g]).pattern,
+          const Chord([.a, .c, .e, .g]).pattern,
           ChordPattern.minorTriad.add7(),
         );
         expect(
-          Chord([
-            Note.a.flat.inOctave(4),
-            Note.c.inOctave(5),
-            Note.e.inOctave(5),
-            Note.g.inOctave(5),
-          ]).pattern,
-          ChordPattern.augmentedTriad.add7(.major),
-        );
-        expect(
-          const Chord<Note>([.c, .e, .g, .b, .d, .f]).pattern,
+          const Chord([.c, .e, .g, .b, .d, .f]).pattern,
           ChordPattern.majorTriad.add7(.major).add9().add11(),
         );
       });
@@ -56,76 +73,70 @@ void main() {
 
     group('.isRootPosition', () {
       test('returns whether this Chord’s pattern is in root position', () {
-        expect(ChordPattern.majorTriad.on(Note.c).isRootPosition, isTrue);
+        expect(ChordPattern.majorTriad.on(.c).isRootPosition, isTrue);
         expect(
-          ChordPattern.majorTriad.add7(.major).on(Note.c).isRootPosition,
+          ChordPattern.majorTriad.add7(.major).on(.c).isRootPosition,
           isTrue,
         );
-        expect(const Chord<Note>([.e, .g, .c]).isRootPosition, isFalse);
-        expect(const Chord<Note>([.g, .c, .e]).isRootPosition, isFalse);
+        expect(const Chord([.e, .g, .c]).isRootPosition, isFalse);
+        expect(const Chord([.g, .c, .e]).isRootPosition, isFalse);
       });
     });
 
     group('.inverted', () {
       test('rotates this Chord to its next inversion', () {
         expect(
-          ChordPattern.majorTriad.on(Note.c).inverted,
-          const Chord<Note>([.e, .g, .c]),
+          ChordPattern.majorTriad.on(.c).inverted,
+          const Chord([.e, .g, .c]),
         );
+        expect(const Chord([.e, .g, .c]).inverted, const Chord([.g, .c, .e]));
         expect(
-          const Chord<Note>([.e, .g, .c]).inverted,
-          const Chord<Note>([.g, .c, .e]),
-        );
-        expect(
-          const Chord<Note>([.g, .c, .e]).inverted,
-          ChordPattern.majorTriad.on(Note.c),
+          const Chord([.g, .c, .e]).inverted,
+          ChordPattern.majorTriad.on(.c),
         );
       });
 
       test('returns the same Chord for a single-note Chord', () {
-        expect(const Chord<Note>([.c]).inverted, const Chord<Note>([.c]));
+        expect(const Chord([.c]).inverted, const Chord([.c]));
       });
     });
 
     group('.inversion', () {
       test('returns the inversion number of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.c).inversion, 0);
-        expect(const Chord<Note>([.e, .g, .c]).inversion, 1);
-        expect(const Chord<Note>([.g, .c, .e]).inversion, 2);
-        expect(
-          ChordPattern.majorTriad.add7(.major).on(Note.c).inversion,
-          0,
-        );
-        expect(const Chord<Note>([.e, .g, .b, .c]).inversion, 1);
-        expect(const Chord<Note>([.g, .b, .c, .e]).inversion, 2);
-        expect(const Chord<Note>([.b, .c, .e, .g]).inversion, 3);
+        expect(ChordPattern.majorTriad.on(.c).inversion, 0);
+        expect(const Chord([.e, .g, .c]).inversion, 1);
+        expect(const Chord([.g, .c, .e]).inversion, 2);
+        expect(ChordPattern.majorTriad.add7(.major).on(.c).inversion, 0);
+        expect(const Chord([.e, .g, .b, .c]).inversion, 1);
+        expect(const Chord([.g, .b, .c, .e]).inversion, 2);
+        expect(const Chord([.b, .c, .e, .g]).inversion, 3);
       });
     });
 
     group('.rootPosition', () {
       test('throws a StateError on a non-tertian Chord', () {
         expect(
-          () => const Chord<Note>([.d, .c, .e, .g]).rootPosition,
+          () => const Chord([.d, .c, .e, .g]).rootPosition,
           throwsStateError,
         );
       });
 
       test('rewrites this Chord in root position', () {
         expect(
-          const Chord<Note>([.e, .g, .c]).rootPosition,
-          ChordPattern.majorTriad.on(Note.c),
+          const Chord([.e, .g, .c]).rootPosition,
+          ChordPattern.majorTriad.on(.c),
         );
         expect(
-          const Chord<Note>([.g, .c, .e]).rootPosition,
-          ChordPattern.majorTriad.on(Note.c),
+          const Chord([.g, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.on(.c),
         );
         expect(
-          const Chord<Note>([.g, .b, .c, .e]).rootPosition,
-          ChordPattern.majorTriad.add7(.major).on(Note.c),
+          const Chord([.g, .b, .c, .e]).rootPosition,
+          ChordPattern.majorTriad.add7(.major).on(.c),
         );
         expect(
-          ChordPattern.majorTriad.on(Note.c).rootPosition,
-          ChordPattern.majorTriad.on(Note.c),
+          ChordPattern.majorTriad.on(.c).rootPosition,
+          ChordPattern.majorTriad.on(.c),
         );
       });
     });
@@ -146,7 +157,7 @@ void main() {
         expect(Note.c.majorTriad.augmented, Note.c.augmentedTriad);
         expect(
           Note.f.majorTriad.add7().add9().augmented,
-          Chord<Note>([.f, .a, .c.sharp, .e.flat, .g]),
+          Chord([.f, .a, .c.sharp, .e.flat, .g]),
         );
       });
     });
@@ -156,7 +167,7 @@ void main() {
         expect(Note.g.minorTriad.major, Note.g.majorTriad);
         expect(
           Note.a.flat.minorTriad.add7().add9().major,
-          Chord<Note>([.a.flat, .c, .e.flat, .g.flat, .b.flat]),
+          Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat]),
         );
       });
     });
@@ -166,7 +177,7 @@ void main() {
         expect(Note.f.sharp.augmentedTriad.minor, Note.f.sharp.minorTriad);
         expect(
           Note.a.majorTriad.add7().add9().minor,
-          const Chord<Note>([.a, .c, .e, .g, .b]),
+          const Chord([.a, .c, .e, .g, .b]),
         );
       });
     });
@@ -176,25 +187,19 @@ void main() {
         expect(Note.g.flat.majorTriad.diminished, Note.g.flat.diminishedTriad);
         expect(
           Note.g.sharp.augmentedTriad.add7().add9().diminished,
-          Chord<Note>([.g.sharp, .b, .d, .f.sharp, .a.sharp]),
+          Chord([.g.sharp, .b, .d, .f.sharp, .a.sharp]),
         );
       });
     });
 
     group('.sus2()', () {
       test('turns this Chord into a suspended 2nd Chord', () {
-        expect(Note.c.majorTriad.sus2(), const Chord<Note>([.c, .d, .g]));
-        expect(
-          Note.d.minorTriad.sus4().sus2(),
-          const Chord<Note>([.d, .e, .a]),
-        );
-        expect(
-          Note.a.majorTriad.sus2().sus2(),
-          const Chord<Note>([.a, .b, .e]),
-        );
+        expect(Note.c.majorTriad.sus2(), const Chord([.c, .d, .g]));
+        expect(Note.d.minorTriad.sus4().sus2(), const Chord([.d, .e, .a]));
+        expect(Note.a.majorTriad.sus2().sus2(), const Chord([.a, .b, .e]));
         expect(
           Note.f.sharp.minorTriad.add7().sus2(),
-          Chord<Note>([.f.sharp, .g.sharp, .c.sharp, .e]),
+          Chord([.f.sharp, .g.sharp, .c.sharp, .e]),
         );
       });
     });
@@ -203,88 +208,76 @@ void main() {
       test('turns this Chord into a suspended 4th Chord', () {
         expect(
           Note.d.flat.majorTriad.sus4(),
-          Chord<Note>([.d.flat, .g.flat, .a.flat]),
+          Chord([.d.flat, .g.flat, .a.flat]),
         );
-        expect(Note.f.minorTriad.sus2().sus4(), Chord<Note>([.f, .b.flat, .c]));
-        expect(
-          Note.e.majorTriad.sus4().sus4(),
-          const Chord<Note>([.e, .a, .b]),
-        );
-        expect(
-          Note.g.minorTriad.add7().sus4(),
-          const Chord<Note>([.g, .c, .d, .f]),
-        );
+        expect(Note.f.minorTriad.sus2().sus4(), Chord([.f, .b.flat, .c]));
+        expect(Note.e.majorTriad.sus4().sus4(), const Chord([.e, .a, .b]));
+        expect(Note.g.minorTriad.add7().sus4(), const Chord([.g, .c, .d, .f]));
       });
     });
 
     group('.add6()', () {
       test('adds a 6th Interval to this Chord', () {
-        expect(Note.c.majorTriad.add6(), const Chord<Note>([.c, .e, .g, .a]));
+        expect(Note.c.majorTriad.add6(), const Chord([.c, .e, .g, .a]));
         expect(
           Note.e.majorTriad.sus2().add6(),
-          Chord<Note>([.e, .f.sharp, .b, .c.sharp]),
+          Chord([.e, .f.sharp, .b, .c.sharp]),
         );
         expect(
           Note.f.minorTriad.sus2().add6(.minor),
-          Chord<Note>([.f, .g, .c, .d.flat]),
+          Chord([.f, .g, .c, .d.flat]),
         );
         expect(
           Note.f.sharp.minorTriad.add6(.minor).add9(),
-          Chord<Note>([.f.sharp, .a, .c.sharp, .d, .g.sharp]),
+          Chord([.f.sharp, .a, .c.sharp, .d, .g.sharp]),
         );
       });
     });
 
     group('.add7()', () {
       test('adds a 7th Interval to this Chord', () {
-        expect(Note.a.majorTriad.add7(), Chord<Note>([.a, .c.sharp, .e, .g]));
-        expect(
-          Note.a.minorTriad.sus2().add7(),
-          const Chord<Note>([.a, .b, .e, .g]),
-        );
+        expect(Note.a.majorTriad.add7(), Chord([.a, .c.sharp, .e, .g]));
+        expect(Note.a.minorTriad.sus2().add7(), const Chord([.a, .b, .e, .g]));
         expect(
           Note.b.majorTriad.sus2().add7(.major),
-          Chord<Note>([.b, .c.sharp, .f.sharp, .a.sharp]),
+          Chord([.b, .c.sharp, .f.sharp, .a.sharp]),
         );
-        expect(
-          Note.c.minorTriad.add7(.major),
-          Chord<Note>([.c, .e.flat, .g, .b]),
-        );
+        expect(Note.c.minorTriad.add7(.major), Chord([.c, .e.flat, .g, .b]));
       });
     });
 
     group('.add9()', () {
       test('adds a 9th Interval to this Chord', () {
-        expect(Note.d.majorTriad.add9(), Chord<Note>([.d, .f.sharp, .a, .e]));
+        expect(Note.d.majorTriad.add9(), Chord([.d, .f.sharp, .a, .e]));
         expect(
           Note.d.sharp.minorTriad.sus4().add9(),
-          Chord<Note>([.d.sharp, .g.sharp, .a.sharp, .e.sharp]),
+          Chord([.d.sharp, .g.sharp, .a.sharp, .e.sharp]),
         );
         expect(
           Note.f.majorTriad.sus2().add9(.minor),
-          Chord<Note>([.f, .g, .c, .g.flat]),
+          Chord([.f, .g, .c, .g.flat]),
         );
         expect(
           Note.g.flat.minorTriad.add9(.minor),
-          Chord<Note>([.g.flat, .b.flat.flat, .d.flat, .a.flat.flat]),
+          Chord([.g.flat, .b.flat.flat, .d.flat, .a.flat.flat]),
         );
       });
     });
 
     group('.add11()', () {
       test('adds an 11th Interval to this Chord', () {
-        expect(Note.g.majorTriad.add11(), const Chord<Note>([.g, .b, .d, .c]));
+        expect(Note.g.majorTriad.add11(), const Chord([.g, .b, .d, .c]));
         expect(
           Note.c.sharp.minorTriad.add7().add9().add11(),
-          Chord<Note>([.c.sharp, .e, .g.sharp, .b, .d.sharp, .f.sharp]),
+          Chord([.c.sharp, .e, .g.sharp, .b, .d.sharp, .f.sharp]),
         );
         expect(
           Note.d.majorTriad.sus2().add9(.minor).add11(.diminished),
-          Chord<Note>([.d, .e, .a, .e.flat, .g.flat]),
+          Chord([.d, .e, .a, .e.flat, .g.flat]),
         );
         expect(
           Note.c.flat.minorTriad.add11(.augmented),
-          Chord<Note>([.c.flat, .e.flat.flat, .g.flat, .f]),
+          Chord([.c.flat, .e.flat.flat, .g.flat, .f]),
         );
       });
     });
@@ -293,11 +286,11 @@ void main() {
       test('adds an 13th Interval to this Chord', () {
         expect(
           Note.a.sharp.diminishedTriad.add13(),
-          Chord<Note>([.a.sharp, .c.sharp, .e, .f.sharp.sharp]),
+          Chord([.a.sharp, .c.sharp, .e, .f.sharp.sharp]),
         );
         expect(
           Note.g.minorTriad.add7().add9().add11().add13(),
-          Chord<Note>([.g, .b.flat, .d, .f, .a, .c, .e]),
+          Chord([.g, .b.flat, .d, .f, .a, .c, .e]),
         );
         expect(
           Note.a.flat.majorTriad
@@ -305,11 +298,11 @@ void main() {
               .add11(.augmented)
               .sus2()
               .add13(.minor),
-          Chord<Note>([.a.flat, .b.flat, .e.flat, .b.flat.flat, .d, .f.flat]),
+          Chord([.a.flat, .b.flat, .e.flat, .b.flat.flat, .d, .f.flat]),
         );
         expect(
           Note.c.flat.minorTriad.add13(.minor),
-          Chord<Note>([.c.flat, .e.flat.flat, .g.flat, .a.flat.flat]),
+          Chord([.c.flat, .e.flat.flat, .g.flat, .a.flat.flat]),
         );
       });
     });
@@ -318,19 +311,19 @@ void main() {
       test('adds an Interval to this Chord', () {
         expect(
           Note.c.majorTriad.add(.P4, replaceSizes: const {.third}),
-          const Chord<Note>([.c, .f, .g]),
+          const Chord([.c, .f, .g]),
         );
-        expect(Note.c.majorTriad.add(.M7), const Chord<Note>([.c, .e, .g, .b]));
+        expect(Note.c.majorTriad.add(.M7), const Chord([.c, .e, .g, .b]));
       });
 
       test('ignores any previous Interval size in this ChordPattern', () {
         expect(
-          Chord<Note>([.e, .g.sharp, .b, .d.sharp]).add(.M7),
-          Chord<Note>([.e, .g.sharp, .b, .d.sharp]),
+          Chord([.e, .g.sharp, .b, .d.sharp]).add(.M7),
+          Chord([.e, .g.sharp, .b, .d.sharp]),
         );
         expect(
-          const Chord<Note>([.f, .a, .c, .e]).add(.m7),
-          Chord<Note>([.f, .a, .c, .e.flat]),
+          const Chord([.f, .a, .c, .e]).add(.m7),
+          Chord([.f, .a, .c, .e.flat]),
         );
       });
     });
@@ -338,69 +331,75 @@ void main() {
     group('.transposeBy()', () {
       test('transposes this Chord by Interval', () {
         expect(
-          ChordPattern.majorTriad.add9(.minor).on(Note.c).transposeBy(.M2),
-          Chord<Note>([.d, .f.sharp, .a, .e.flat]),
+          ChordPattern.majorTriad.add9(.minor).on(.c).transposeBy(.M2),
+          Chord([.d, .f.sharp, .a, .e.flat]),
         );
         expect(
-          ChordPattern.minorTriad.add7(.major).on(Note.e.flat).transposeBy(.m3),
-          Chord<Note>([.g.flat, .b.flat.flat, .d.flat, .f]),
+          ChordPattern.minorTriad.add7(.major).on(.e.flat).transposeBy(.m3),
+          Chord([.g.flat, .b.flat.flat, .d.flat, .f]),
         );
+      });
+    });
 
+    group('.toPitches()', () {
+      test('realizes a close-position triad ascending from octave', () {
         expect(
-          ChordPattern.augmentedTriad
-              .add7(.major)
-              .add9()
-              .on(Note.g.inOctave(3))
-              .transposeBy(.A4),
-          Chord([
-            Note.c.sharp.inOctave(4),
-            Note.e.sharp.inOctave(4),
-            Note.g.sharp.sharp.inOctave(4),
-            Note.b.sharp.inOctave(4),
-            Note.d.sharp.inOctave(5),
-          ]),
+          const Chord([.c, .e, .g]).toPitches(),
+          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.inOctave(4)],
         );
+      });
+
+      test('wraps tones into the next octave when needed', () {
         expect(
-          ChordPattern.augmentedTriad
-              .add7(.major)
-              .add9()
-              .on(Note.g.flat.inOctave(3))
-              .transposeBy(.A4),
-          Chord([
+          Chord([.b, .d.sharp, .f.sharp]).toPitches(octave: 3),
+          [
+            Note.b.inOctave(3),
+            Note.d.sharp.inOctave(4),
+            Note.f.sharp.inOctave(4),
+          ],
+        );
+      });
+
+      test('matches toVoicing() over the identity voice order', () {
+        const chord = Chord([.c, .e, .g, .b]);
+        expect(chord.toPitches(), chord.toVoicing([0, 1, 2, 3]));
+      });
+    });
+
+    group('.toVoicing()', () {
+      test('anchors the first voice at octave', () {
+        expect(
+          const Chord([.c, .e, .g]).toVoicing([0, 1, 2], octave: 2),
+          [Note.c.inOctave(2), Note.e.inOctave(2), Note.g.inOctave(2)],
+        );
+      });
+
+      test('doubles a repeated index an octave above, never in unison', () {
+        expect(
+          const Chord([.c, .e, .g]).toVoicing([0, 0, 1, 2, 0], octave: 2),
+          [
+            Note.c.inOctave(2),
+            Note.c.inOctave(3),
+            Note.e.inOctave(3),
+            Note.g.inOctave(3),
             Note.c.inOctave(4),
-            Note.e.inOctave(4),
-            Note.g.sharp.inOctave(4),
-            Note.b.inOctave(4),
-            Note.d.inOctave(5),
-          ]),
+          ],
         );
+      });
+
+      test('indexes into items literally, ignoring inversion/root order', () {
+        // Chord is already in first inversion; index 0 means the literal
+        // first item (E), not the harmonic root (C).
         expect(
-          ChordPattern.augmentedTriad
-              .add7()
-              .add9(.minor)
-              .on(Note.g.sharp.inOctave(3))
-              .transposeBy(.A4),
-          Chord([
-            Note.c.sharp.sharp.inOctave(4),
-            Note.e.sharp.sharp.inOctave(4),
-            Note.g.sharp.sharp.sharp.inOctave(4),
-            Note.b.sharp.inOctave(4),
-            Note.d.sharp.inOctave(5),
-          ]),
+          const Chord([.e, .g, .c]).toVoicing([0, 1, 2]),
+          [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)],
         );
+      });
+
+      test('throws a RangeError for an out-of-range voice index', () {
         expect(
-          ChordPattern.augmentedTriad
-              .add7(.major)
-              .add9()
-              .on(Note.g.inOctave(3))
-              .transposeBy(.d5),
-          Chord([
-            Note.d.flat.inOctave(4),
-            Note.f.inOctave(4),
-            Note.a.inOctave(4),
-            Note.c.inOctave(5),
-            Note.e.flat.inOctave(5),
-          ]),
+          () => const Chord([.c, .e, .g]).toVoicing([0, 3]),
+          throwsRangeError,
         );
       });
     });
@@ -416,30 +415,26 @@ void main() {
       });
 
       test('returns the string representation of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.d).format(), 'D');
-        expect(Chord<Note>([.g.sharp, .b, .d.sharp]).format(), 'G♯-');
-        expect(
-          ChordPattern.augmentedTriad.add7().on(Note.c.inOctave(3)).format(),
-          'C3+7',
-        );
+        expect(ChordPattern.majorTriad.on(.d).format(), 'D');
+        expect(Chord([.g.sharp, .b, .d.sharp]).format(), 'G♯-');
       });
     });
 
     group('.toString()', () {
       test('returns the verbose string representation of this Chord', () {
         expect(
-          ChordPattern.majorTriad.on(Note.c).toString(),
+          ChordPattern.majorTriad.on(.c).toString(),
           '''
-Chord<Note>(items: [
+Chord(items: [
 \tNote(noteName: NoteName.c, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.e, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.g, accidental: Accidental(semitones: 0))
 ])''',
         );
         expect(
-          ChordPattern.minorTriad.add9().on(Note.f.sharp).toString(),
+          ChordPattern.minorTriad.add9().on(.f.sharp).toString(),
           '''
-Chord<Note>(items: [
+Chord(items: [
 \tNote(noteName: NoteName.f, accidental: Accidental(semitones: 1)),
 \tNote(noteName: NoteName.a, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.c, accidental: Accidental(semitones: 1)),
@@ -452,108 +447,59 @@ Chord<Note>(items: [
     group('.hashCode', () {
       test('ignores equal Chord instances in a Set', () {
         final collection = {
-          const Chord<Note>([.c, .e, .g]),
-          ChordPattern.minorTriad.on(Note.g),
-          ChordPattern.augmentedTriad.on(Note.d),
+          const Chord([.c, .e, .g]),
+          ChordPattern.minorTriad.on(.g),
+          ChordPattern.augmentedTriad.on(.d),
         };
         collection.addAll(collection);
         expect(collection.toList(), [
-          const Chord<Note>([.c, .e, .g]),
-          ChordPattern.minorTriad.on(Note.g),
-          ChordPattern.augmentedTriad.on(Note.d),
+          const Chord([.c, .e, .g]),
+          ChordPattern.minorTriad.on(.g),
+          ChordPattern.augmentedTriad.on(.d),
         ]);
       });
     });
   });
 
   group('ChordNotation', () {
-    const formatter = ChordNotation();
-    const chain = [formatter];
-
     group('.parse()', () {
       test('throws a FormatException on an invalid Chord', () {
-        expect(
-          () => Chord<Note>.parse('', chain: chain),
-          throwsFormatException,
-        );
-        expect(
-          () => Chord<Note>.parse('z', chain: chain),
-          throwsFormatException,
-        );
-        expect(
-          () => Chord<Note>.parse('C/E/G', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Chord.parse(''), throwsFormatException);
+        expect(() => Chord.parse('z'), throwsFormatException);
+        expect(() => Chord.parse('C/E/G'), throwsFormatException);
       });
 
       test('parses source as a Chord', () {
+        expect(Chord.parse('C'), ChordPattern.majorTriad.on(.c));
+        expect(Chord.parse('A-'), ChordPattern.minorTriad.on(.a));
+        expect(Chord.parse('F♯dim'), ChordPattern.diminishedTriad.on(.f.sharp));
         expect(
-          Chord<Note>.parse('C', chain: chain),
-          ChordPattern.majorTriad.on(Note.c),
-        );
-        expect(
-          Chord<Note>.parse('A-', chain: chain),
-          ChordPattern.minorTriad.on(Note.a),
-        );
-        expect(
-          Chord<Note>.parse('F♯dim', chain: chain),
-          ChordPattern.diminishedTriad.on(Note.f.sharp),
-        );
-        expect(
-          Chord<Note>.parse('Cmaj7', chain: chain),
-          ChordPattern.majorTriad.add7(.major).on(Note.c),
+          Chord.parse('Cmaj7'),
+          ChordPattern.majorTriad.add7(.major).on(.c),
         );
 
-        expect(
-          Chord<Note>.parse('C/E', chain: chain),
-          const Chord<Note>([.e, .g, .c]),
-        );
-        expect(
-          Chord<Note>.parse('C/G', chain: chain),
-          const Chord<Note>([.g, .c, .e]),
-        );
-        expect(
-          Chord<Note>.parse('A-/C', chain: chain),
-          const Chord<Note>([.c, .e, .a]),
-        );
-        expect(
-          Chord<Note>.parse('Cmaj7/E', chain: chain),
-          const Chord<Note>([.e, .g, .b, .c]),
-        );
-        expect(
-          Chord<Note>.parse('Cmaj7/G', chain: chain),
-          const Chord<Note>([.g, .b, .c, .e]),
-        );
+        expect(Chord.parse('C/E'), const Chord([.e, .g, .c]));
+        expect(Chord.parse('C/G'), const Chord([.g, .c, .e]));
+        expect(Chord.parse('A-/C'), const Chord([.c, .e, .a]));
+        expect(Chord.parse('Cmaj7/E'), const Chord([.e, .g, .b, .c]));
+        expect(Chord.parse('Cmaj7/G'), const Chord([.g, .b, .c, .e]));
 
-        expect(
-          Chord<Note>.parse('C/D', chain: chain),
-          const Chord<Note>([.d, .c, .e, .g]),
-        );
-        expect(
-          Chord<Note>.parse('C/C', chain: chain),
-          Chord<Note>.parse('C', chain: chain),
-        );
+        expect(Chord.parse('C/D'), const Chord([.d, .c, .e, .g]));
+        expect(Chord.parse('C/C'), Chord.parse('C'));
       });
     });
 
     group('.format()', () {
       test('returns the string representation of this Chord', () {
-        expect(ChordPattern.majorTriad.on(Note.c).format(formatter), 'C');
-        expect(ChordPattern.minorTriad.on(Note.a).format(formatter), 'A-');
-        expect(
-          ChordPattern.majorTriad.add7(.major).on(Note.c).format(formatter),
-          'Cmaj7',
-        );
+        expect(ChordPattern.majorTriad.on(.c).format(), 'C');
+        expect(ChordPattern.minorTriad.on(.a).format(), 'A-');
+        expect(ChordPattern.majorTriad.add7(.major).on(.c).format(), 'Cmaj7');
 
-        expect(const Chord<Note>([.e, .g, .c]).format(formatter), 'C/E');
-        expect(const Chord<Note>([.g, .c, .e]).format(formatter), 'C/G');
-        expect(const Chord<Note>([.c, .e, .a]).format(formatter), 'A-/C');
-        expect(
-          const Chord<Note>([.e, .g, .b, .c]).format(formatter),
-          'Cmaj7/E',
-        );
-
-        expect(const Chord<Note>([.d, .c, .e, .g]).format(formatter), 'C/D');
+        expect(const Chord([.e, .g, .c]).format(), 'C/E');
+        expect(const Chord([.g, .c, .e]).format(), 'C/G');
+        expect(const Chord([.c, .e, .a]).format(), 'A-/C');
+        expect(const Chord([.e, .g, .b, .c]).format(), 'Cmaj7/E');
+        expect(const Chord([.d, .c, .e, .g]).format(), 'C/D');
       });
 
       test('round-trips with .parse()', () {
@@ -568,10 +514,7 @@ Chord<Note>(items: [
           'Cmaj7/E',
           'C/D',
         ]) {
-          expect(
-            Chord<Note>.parse(source, chain: chain).format(formatter),
-            source,
-          );
+          expect(Chord.parse(source).format(), source);
         }
       });
     });

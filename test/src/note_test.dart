@@ -104,20 +104,20 @@ void main() {
 
     group('.augmentedTriad', () {
       test('returns the augmented triad on this Note', () {
-        expect(Note.c.augmentedTriad, Chord<Note>([.c, .e, .g.sharp]));
-        expect(Note.a.augmentedTriad, Chord<Note>([.a, .c.sharp, .e.sharp]));
+        expect(Note.c.augmentedTriad, Chord([.c, .e, .g.sharp]));
+        expect(Note.a.augmentedTriad, Chord([.a, .c.sharp, .e.sharp]));
         expect(
           Note.b.augmentedTriad,
-          Chord<Note>([.b, .d.sharp, .f.sharp.sharp]),
+          Chord([.b, .d.sharp, .f.sharp.sharp]),
         );
       });
     });
 
     group('.majorTriad', () {
       test('returns the major triad on this Note', () {
-        expect(Note.c.majorTriad, const Chord<Note>([.c, .e, .g]));
-        expect(Note.e.flat.majorTriad, Chord<Note>([.e.flat, .g, .b.flat]));
-        expect(Note.b.majorTriad, Chord<Note>([.b, .d.sharp, .f.sharp]));
+        expect(Note.c.majorTriad, const Chord([.c, .e, .g]));
+        expect(Note.e.flat.majorTriad, Chord([.e.flat, .g, .b.flat]));
+        expect(Note.b.majorTriad, Chord([.b, .d.sharp, .f.sharp]));
       });
     });
 
@@ -125,21 +125,21 @@ void main() {
       test('returns the minor triad on this Note', () {
         expect(
           Note.d.flat.minorTriad,
-          Chord<Note>([.d.flat, .f.flat, .a.flat]),
+          Chord([.d.flat, .f.flat, .a.flat]),
         );
-        expect(Note.g.sharp.minorTriad, Chord<Note>([.g.sharp, .b, .d.sharp]));
-        expect(Note.a.minorTriad, const Chord<Note>([.a, .c, .e]));
+        expect(Note.g.sharp.minorTriad, Chord([.g.sharp, .b, .d.sharp]));
+        expect(Note.a.minorTriad, const Chord([.a, .c, .e]));
       });
     });
 
     group('.diminishedTriad', () {
       test('returns the diminished triad on this Note', () {
-        expect(Note.e.diminishedTriad, Chord<Note>([.e, .g, .b.flat]));
+        expect(Note.e.diminishedTriad, Chord([.e, .g, .b.flat]));
         expect(
           Note.g.flat.diminishedTriad,
-          Chord<Note>([.g.flat, .b.flat.flat, .d.flat.flat]),
+          Chord([.g.flat, .b.flat.flat, .d.flat.flat]),
         );
-        expect(Note.b.diminishedTriad, const Chord<Note>([.b, .d, .f]));
+        expect(Note.b.diminishedTriad, const Chord([.b, .d, .f]));
       });
     });
 
@@ -940,6 +940,34 @@ void main() {
           Note.a.sharp.inOctave(-1),
           Note.c.sharp.inOctave(-1),
           Note.e.flat.inOctave(-1),
+        ]);
+      });
+    });
+
+    group('.toStacked()', () {
+      test('stacks each Note from the given octave', () {
+        expect(const <Note>[.e, .g, .c].toStacked(), [
+          Note.e.inOctave(4),
+          Note.g.inOctave(4),
+          Note.c.inOctave(5),
+        ]);
+        expect(<Note>[.e, .g, .c, .c.flat].toStacked(octave: -1), [
+          Note.e.inOctave(-1),
+          Note.g.inOctave(-1),
+          Note.c.inOctave(0),
+          Note.c.flat.inOctave(1),
+        ]);
+      });
+    });
+
+    group('.toMelody()', () {
+      test('places each Note at the Pitch closest to the previous one', () {
+        expect(const <Note>[.e, .f, .b, .c, .g].toMelody(), [
+          Note.e.inOctave(4),
+          Note.f.inOctave(4),
+          Note.b.inOctave(4),
+          Note.c.inOctave(5),
+          Note.g.inOctave(4),
         ]);
       });
     });
