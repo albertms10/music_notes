@@ -184,7 +184,7 @@ final class Chord
   ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3),
   ///       Note.g.inOctave(3), Note.c.inOctave(4)]
   /// ```
-  List<Pitch> toVoicing(List<int> voices, {required int bassOctave}) {
+  List<Pitch> toVoicing(List<int> voices, {int bassOctave = 4}) {
     var current = _items[voices.first].inOctave(bassOctave);
 
     return [
@@ -194,7 +194,7 @@ final class Chord
   }
 
   /// Returns a list of [Pitch]es from [items] based on [bassOctave].
-  List<Pitch> toPitches(int bassOctave) => toVoicing([
+  List<Pitch> toPitches({int bassOctave = 4}) => toVoicing([
     for (var i = 0; i < _items.length; i++) i,
   ], bassOctave: bassOctave);
 

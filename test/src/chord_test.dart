@@ -47,7 +47,7 @@ void main() {
 
       test('round-trips identity for a non-doubled, ordered voicing', () {
         final voicing = <Note>[.c, .e, .g].inOctave(4);
-        expect(Chord.fromPitches(voicing).toPitches(4), voicing);
+        expect(Chord.fromPitches(voicing).toPitches(), voicing);
       });
     });
 
@@ -344,15 +344,14 @@ void main() {
     group('.toPitches()', () {
       test('realizes a close-position triad ascending from octave', () {
         expect(
-          const Chord([.c, .e, .g]).toPitches(4),
+          const Chord([.c, .e, .g]).toPitches(),
           [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.inOctave(4)],
         );
       });
 
       test('wraps tones into the next octave when needed', () {
-        // B major triad: D♯ and F♯ must land above B3, i.e. in octave 4.
         expect(
-          Chord([.b, .d.sharp, .f.sharp]).toPitches(3),
+          Chord([.b, .d.sharp, .f.sharp]).toPitches(bassOctave: 3),
           [
             Note.b.inOctave(3),
             Note.d.sharp.inOctave(4),
@@ -363,10 +362,7 @@ void main() {
 
       test('matches toVoicing() over the identity voice order', () {
         const chord = Chord([.c, .e, .g, .b]);
-        expect(
-          chord.toPitches(4),
-          chord.toVoicing([0, 1, 2, 3], bassOctave: 4),
-        );
+        expect(chord.toPitches(), chord.toVoicing([0, 1, 2, 3]));
       });
     });
 
@@ -395,14 +391,14 @@ void main() {
         // Chord is already in first inversion; index 0 means the literal
         // first item (E), not the harmonic root (C).
         expect(
-          const Chord([.e, .g, .c]).toVoicing([0, 1, 2], bassOctave: 4),
+          const Chord([.e, .g, .c]).toVoicing([0, 1, 2]),
           [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)],
         );
       });
 
       test('throws a RangeError for an out-of-range voice index', () {
         expect(
-          () => const Chord([.c, .e, .g]).toVoicing([0, 3], bassOctave: 4),
+          () => const Chord([.c, .e, .g]).toVoicing([0, 3]),
           throwsRangeError,
         );
       });
