@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart' show immutable;
-
 import '../cent/cent.dart';
 import '../interval/interval.dart';
 import 'tuning_system.dart';
@@ -11,7 +9,6 @@ import 'tuning_system.dart';
 /// ---
 /// See also:
 /// * [TuningSystem].
-@immutable
 abstract class JustIntonation extends TuningSystem {
   /// Creates a new [JustIntonation] from [fork].
   const JustIntonation({super.fork = .c256});

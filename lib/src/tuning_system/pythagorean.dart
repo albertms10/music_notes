@@ -1,7 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:meta/meta.dart' show immutable;
-
 import '../interval/interval.dart';
 import '../pitch/pitch.dart';
 import 'equal_temperament.dart';
@@ -10,7 +8,7 @@ import 'just_intonation.dart';
 /// A representation of the three-limit (a.k.a. Pythagorean) tuning formatter.
 ///
 /// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
-@immutable
+
 class PythagoreanTuning extends JustIntonation {
   /// Creates a new [PythagoreanTuning] from [fork].
   const PythagoreanTuning({super.fork});

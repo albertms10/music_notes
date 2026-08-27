@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:collection/collection.dart'
     show ListEquality, UnmodifiableListView;
-import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../cent/cent.dart';
@@ -20,7 +19,6 @@ const int chromaticDivisions = 12;
 /// ---
 /// See also:
 /// * [TuningSystem].
-@immutable
 final class EqualTemperament extends TuningSystem {
   final List<int> _steps;
 
