@@ -148,6 +148,7 @@ void main() {
     group('.format()', () {
       test('returns the string representation of this Range iterable.', () {
         expect(const <Range<Note>>[].format(), '');
+        expect(const [(from: 1, to: 10)].format(), '1–10');
         expect(const [(from: Note.e, to: Note.e)].format(), 'E');
         expect([(from: Note.d.flat, to: Note.f.sharp)].format(), 'D♭–F♯');
         expect(

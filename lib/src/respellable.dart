@@ -1,5 +1,5 @@
-import 'note/accidental.dart';
-import 'note/note_name.dart';
+import 'accidental/accidental.dart';
+import 'note_name/note_name.dart';
 import 'scalable.dart';
 
 /// A mixin for anything that can be respelled.

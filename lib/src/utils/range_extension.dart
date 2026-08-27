@@ -1,5 +1,5 @@
-import '../notation/notation_system.dart';
-import '../note/pitch.dart';
+import '../notation_system/notation_system.dart';
+import '../pitch/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
 import './iterable_extension.dart';
@@ -113,7 +113,12 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
     StringFormatter<E>? formatter,
   }) => map(
     (range) => [range.from, if (range.from != range.to) range.to]
-        .map(formatter?.format ?? (element) => element.toString())
+        .map(
+          formatter?.format ??
+              (range.from is Formattable<E>
+                  ? (element) => (element as Formattable<E>).format()
+                  : (element) => element.toString()),
+        )
         .join(rangeSeparator),
   ).join(nonConsecutiveSeparator);
 }

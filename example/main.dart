@@ -1,5 +1,6 @@
 // For documentation purposes.
 // ignore_for_file: unnecessary_statements, cascade_invocations
+// ignore_for_file: use_named_constants
 
 import 'package:music_notes/music_notes.dart';
 
@@ -65,18 +66,18 @@ void main() {
   PitchClass.d * 5; // {A♯|B♭}
 
   Note.d.flat
-    ..toString() // D♭
-    ..toString(formatter: const GermanNoteNotation()) // Des
-    ..toString(formatter: const RomanceNoteNotation.symbol()); // Re♭
+    ..format() // D♭
+    ..format(const GermanNoteNotation()) // Des
+    ..format(const RomanceNoteNotation.symbol()); // Re♭
 
-  Note.b.flat.inOctave(-1).toString(); // B♭-1
-  Note.c.inOctave(6).toString(formatter: HelmholtzPitchNotation.english); // c‴
+  Note.b.flat.inOctave(-1).format(); // B♭-1
+  Note.c.inOctave(6).format(HelmholtzPitchNotation.english); // c‴
 
-  PitchClass.c.toString(); // {C}
-  PitchClass.dSharp.toString(); // {D♯|E♭}
+  PitchClass.c.format(); // {C}
+  PitchClass.dSharp.format(); // {D♯|E♭}
 
-  PitchClass.f.toString(formatter: const IntegerPitchClassNotation()); // 5
-  PitchClass.aSharp.toString(formatter: const IntegerPitchClassNotation()); // t
+  PitchClass.f.format(const IntegerPitchClassNotation()); // 5
+  PitchClass.aSharp.format(const IntegerPitchClassNotation()); // t
 
   // Intervals
   const Interval.imperfect(.tenth, .major); // M10
@@ -89,8 +90,10 @@ void main() {
   Interval.parse('AA6'); // AA6
 
   -Interval.m7; // m-7
-  Interval.M3.descending(); // M-3
-  (-Interval.P4).descending(false); // P4
+  (-Interval.P5).direction; // -1
+  Interval.M3.descending; // M-3
+  (-Interval.P4).ascending; // P4
+  (-Interval.P4).withDescending(false); // P4
 
   Interval.m3.inversion; // M6
   Interval.A4.inversion; // d5
@@ -120,7 +123,7 @@ void main() {
   Interval.P5.circleDistance<Note>(from: .c, to: .d);
   // (2, notes: [C, G, D])
   Interval.P4.circleDistance<Note>(from: .b.flat, to: .d);
-  // (-4, notes: [B♭, F, D, G, D])
+  // (-4, notes: [B♭, F, C, G, D])
 
   Interval.P5.circleFrom(Note.c).take(13).toList();
   // [C, G, D, A, E, B, F♯, C♯, G♯, D♯, A♯, E♯, B♯]
@@ -159,12 +162,12 @@ void main() {
   IntervalClass.M2 * 0; // {P1}
   IntervalClass.m3 * 2; // {A4|d5}
 
-  Interval.m2.toString(); // m2
-  Interval.A6.toString(); // A6
+  Interval.m2.format(); // m2
+  Interval.A6.format(); // A6
 
-  IntervalClass.M2.toString(); // {M2|d3}
-  IntervalClass.P4.toString(); // {P4}
-  IntervalClass.tritone.toString(); // {A4|d5}
+  IntervalClass.M2.format(); // {M2|d3}
+  IntervalClass.P4.format(); // {P4}
+  IntervalClass.tritone.format(); // {A4|d5}
 
   // Keys
   const Key(.e, .minor); // E minor
@@ -183,9 +186,9 @@ void main() {
   Note.f.minor.parallel; // F major
   Note.c.sharp.major.parallel; // C♯ minor
 
-  Note.d.flat.major.toString(); // D♭ major
-  Note.c.major.toString(formatter: const RomanceKeyNotation()); // Do maggiore
-  Note.e.flat.minor.toString(formatter: const GermanKeyNotation()); // es-moll
+  Note.d.flat.major.format(); // D♭ major
+  Note.c.major.format(const RomanceKeyNotation()); // Do maggiore
+  Note.e.flat.minor.format(const GermanKeyNotation()); // es-Moll
 
   // Key signatures
   KeySignature.fromDistance(4); // {E major, C♯ minor} +4 fifths (F♯ C♯ G♯ D♯)
@@ -242,8 +245,8 @@ void main() {
     ..deltaNumericRepresentation.toList(); // [0, -1, 4, 2]
 
   // Chords
-  Chord<Note>([.a, .c.sharp, .e]); // A
-  ChordPattern.augmentedTriad.add11().add13().on(Note.d.sharp);
+  Chord([.a, .c.sharp, .e]); // A
+  ChordPattern.augmentedTriad.add11().add13().on(.d.sharp);
   // D♯+11 13
 
   Note.f.minorTriad.add7().add9(.minor);
@@ -285,8 +288,8 @@ void main() {
 
   ClosestPitch.parse('A4'); // A4
   ClosestPitch.parse('E♭3-28'); // E♭3−28
-  ClosestPitch.parse('A4+12.6').toString(
-    formatter: const StandardClosestPitchNotation(fractionDigits: 1),
+  ClosestPitch.parse('A4+12.6').format(
+    const StandardClosestPitchNotation(fractionDigits: 1),
   ); // A4+12.6
 
   // In a nutshell

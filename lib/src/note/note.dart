@@ -1,18 +1,22 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
-import '../harmony/chord.dart';
-import '../harmony/chord_pattern.dart';
+import '../accidental/accidental.dart';
+import '../chord/chord.dart';
+import '../chord_pattern/chord_pattern.dart';
 import '../interval/interval.dart';
 import '../key/key.dart';
-import '../key/key_signature.dart';
-import '../notation/notation_system.dart';
+import '../key_signature/key_signature.dart';
+import '../notation_system/notation_system.dart';
+import '../note_name/note_name.dart';
+import '../pitch/pitch.dart';
 import '../respellable.dart';
 import '../scalable.dart';
-import '../tuning/equal_temperament.dart';
-import 'accidental.dart';
-import 'note_name.dart';
-import 'pitch.dart';
+import '../size/size.dart';
+import '../tuning_system/equal_temperament.dart';
+import 'english_note_notation.dart';
+import 'german_note_notation.dart';
+import 'romance_note_notation.dart';
 
 /// A musical note.
 ///
@@ -26,7 +30,7 @@ import 'pitch.dart';
 @immutable
 final class Note extends Scalable<Note>
     with RespellableScalable<Note>
-    implements Comparable<Note> {
+    implements Comparable<Note>, Formattable<Note> {
   /// The name that defines this [Note].
   final NoteName noteName;
 
@@ -61,9 +65,11 @@ final class Note extends Scalable<Note>
   static const parsers = [
     EnglishNoteNotation(),
     EnglishNoteNotation.symbol(),
+    EnglishNoteNotation.ascii(),
     GermanNoteNotation(),
     RomanceNoteNotation(),
     RomanceNoteNotation.symbol(),
+    RomanceNoteNotation.ascii(),
   ];
 
   /// Parse [source] as a [Note] and return its value.
@@ -177,37 +183,37 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.a.diminishedTriad == Chord<Note>([.a, .c, .e.flat])
-  /// Note.b.diminishedTriad == Chord<Note>([.b, .d, .f])
+  /// Note.a.diminishedTriad == Chord([.a, .c, .e.flat])
+  /// Note.b.diminishedTriad == Chord([.b, .d, .f])
   /// ```
-  Chord<Note> get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+  Chord get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
   /// The [ChordPattern.minorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.e.minorTriad == Chord<Note>([.e, .g, .b])
-  /// Note.f.sharp.minorTriad == Chord<Note>([.f.sharp, .a, .c.sharp])
+  /// Note.e.minorTriad == Chord([.e, .g, .b])
+  /// Note.f.sharp.minorTriad == Chord([.f.sharp, .a, .c.sharp])
   /// ```
-  Chord<Note> get minorTriad => ChordPattern.minorTriad.on(this);
+  Chord get minorTriad => ChordPattern.minorTriad.on(this);
 
   /// The [ChordPattern.majorTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.majorTriad == Chord<Note>([.d, .f.sharp, .a])
-  /// Note.a.flat.majorTriad == Chord<Note>([.a.flat, .c, .e.flat])
+  /// Note.d.majorTriad == Chord([.d, .f.sharp, .a])
+  /// Note.a.flat.majorTriad == Chord([.a.flat, .c, .e.flat])
   /// ```
-  Chord<Note> get majorTriad => ChordPattern.majorTriad.on(this);
+  Chord get majorTriad => ChordPattern.majorTriad.on(this);
 
   /// The [ChordPattern.augmentedTriad] on this [Note].
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.augmentedTriad == Chord<Note>([.d.flat, .f, .a])
-  /// Note.g.augmentedTriad == Chord<Note>([.g, .b, .d.sharp])
+  /// Note.d.flat.augmentedTriad == Chord([.d.flat, .f, .a])
+  /// Note.g.augmentedTriad == Chord([.g, .b, .d.sharp])
   /// ```
-  Chord<Note> get augmentedTriad => ChordPattern.augmentedTriad.on(this);
+  Chord get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
   /// This [Note] respelled by [noteName] while keeping the same number of
   /// [semitones].
@@ -379,9 +385,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.fifthsDistanceWith(Note.e.flat) == -3
-  /// Note.f.sharp.fifthsDistanceWith(Note.b) == -1
-  /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
+  /// Note.c.fifthsDistanceWith(.e.flat) == -3
+  /// Note.f.sharp.fifthsDistanceWith(.b) == -1
+  /// Note.a.flat.fifthsDistanceWith(.c.sharp) == 11
   /// ```
   int fifthsDistanceWith(Note other) =>
       Interval.P5.circleDistance(from: this, to: other).$1;
@@ -390,8 +396,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.interval(Note.d) == Interval.m2
-  /// Note.d.interval(Note.a.flat) == Interval.d5
+  /// Note.c.interval(.d) == .M2
+  /// Note.d.interval(.a.flat) == .d5
   /// ```
   @override
   Interval interval(Note other) => .fromSizeAndSemitones(
@@ -403,8 +409,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.transposeBy(Interval.tritone) == Note.f.sharp
-  /// Note.a.transposeBy(-Interval.M2) == Note.g
+  /// Note.c.transposeBy(.tritone) == .f.sharp
+  /// Note.a.transposeBy(.M2.descending) == .g
   /// ```
   @override
   Note transposeBy(Interval interval) {
@@ -430,15 +436,18 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.d.flat.toString() == 'D♭'
-  /// Note.d.flat.toString(formatter: const GermanNoteNotation()) == 'Des'
-  /// Note.d.flat.toString(formatter: const RomanceNoteNotation.symbol())
-  ///   == 'Re♭'
+  /// Note.d.flat.format() == 'D♭'
+  /// Note.d.flat.format(const GermanNoteNotation()) == 'Des'
+  /// Note.d.flat.format(const RomanceNoteNotation.symbol()) == 'Re♭'
   /// ```
   @override
-  String toString({
+  String format([
     StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
-  }) => formatter.format(this);
+  ]) => formatter.format(this);
+
+  @override
+  String toString() =>
+      '$runtimeType(noteName: $noteName, accidental: $accidental)';
 
   @override
   bool operator ==(Object other) =>
@@ -453,194 +462,32 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// The abstract [StringNotationSystem] for [Note].
-abstract class NoteNotation extends StringNotationSystem<Note> {
-  /// The [NoteName] notation system used to format the [Note.noteName].
-  final StringNotationSystem<NoteName> noteNameNotation;
-
-  /// The [Accidental] notation system used to format the [Note.accidental].
-  final StringNotationSystem<Accidental> accidentalNotation;
-
-  /// Creates a new [NoteNotation].
-  const NoteNotation({
-    this.noteNameNotation = const EnglishNoteNameNotation(),
-    this.accidentalNotation = const SymbolAccidentalNotation(),
-  });
-}
-
-/// The English notation system for [Note].
-final class EnglishNoteNotation extends NoteNotation {
-  /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-    super.accidentalNotation = const EnglishAccidentalNotation(
-      showNatural: false,
-    ),
-  });
-
-  /// Creates a new symbolic [EnglishNoteNotation].
-  const EnglishNoteNotation.symbol({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-    super.accidentalNotation = const SymbolAccidentalNotation(
-      showNatural: false,
-      largerFirst: true,
-    ),
-  });
-
-  /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
-  const EnglishNoteNotation.ascii({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-           largerFirst: true,
-         ),
-       );
-
-  /// The [EnglishNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
-  static const showNatural = EnglishNoteNotation.symbol(
-    accidentalNotation: SymbolAccidentalNotation(largerFirst: true),
-  );
-
-  /// Whether to use symbolic representation for [Accidental].
-  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${_isSymbol ? r'\s*' : r'(?:-|\s*)'}'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) => Note(
-    noteNameNotation.parseMatch(match),
-    accidentalNotation.parseMatch(match),
-  );
-
-  @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : '-'}$accidental';
-  }
-}
-
-/// The German alphabetic notation system for [Note].
-///
-/// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
-final class GermanNoteNotation extends NoteNotation {
-  /// Creates a new [GermanNoteNotation].
-  const GermanNoteNotation({
-    super.noteNameNotation = const GermanNoteNameNotation(),
-    super.accidentalNotation = const GermanAccidentalNotation(),
-  });
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) {
-    final noteName = match.namedGroup('noteName')!;
-    final textualAccidental = match.namedGroup('accidental') ?? '';
-    final accidental = accidentalNotation.parseMatch(match);
-    switch (noteName.toLowerCase()) {
-      case 'b' when accidental.isSharp:
-        throw FormatException('Invalid Note', match);
-      case 'b':
-        return Note(.b, accidental - 1);
-      case 'h' when accidental.isFlat:
-        throw FormatException('Invalid Note', match);
-      case 'a' || 'e':
-        if (textualAccidental.startsWith('e')) {
-          throw FormatException('Invalid Note', match);
-        }
-      case _ when textualAccidental.startsWith('s'):
-        throw FormatException('Invalid Note', match);
+/// A Note iterable.
+extension NoteIterable on Iterable<Note> {
+  /// The closest [Interval]s between [Scalable]s in this [Iterable].
+  Iterable<Interval> get closestSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      final interval = elementAt(i).interval(elementAt(i + 1));
+      yield interval >= .P5 ? interval + -Interval.m6 : interval;
     }
-
-    return Note(noteNameNotation.parseMatch(match), accidental);
   }
 
-  @override
-  String format(Note note) => switch (note) {
-    Note(noteName: .b, accidental: .flat) => 'B',
-
-    Note(noteName: .a || .e, :final accidental) && Note(:final noteName)
-        when accidental.isFlat =>
-      noteNameNotation.format(noteName) +
-          accidentalNotation.format(accidental).substring(1),
-
-    Note(:final noteName, :final accidental) =>
-      noteNameNotation.format(noteName) + accidentalNotation.format(accidental),
-  };
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// Overrides [ScalableIterable.isStepwise] to use [closestSteps].
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// <Note>[.c, .d, .e, .f.sharp].isStepwise == true
+  /// const <Note>[.c, .e, .g, .a].isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      closestSteps.every((interval) => interval.size.abs() <= Size.second);
 }
 
-/// The Romance alphabetic notation system for [Note].
-final class RomanceNoteNotation extends NoteNotation {
-  /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-    super.accidentalNotation = const RomanceAccidentalNotation(
-      showNatural: false,
-    ),
-  });
-
-  /// Creates a new symbolic [RomanceNoteNotation].
-  const RomanceNoteNotation.symbol({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
-       );
-
-  /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
-  const RomanceNoteNotation.ascii({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-         ),
-       );
-
-  /// The [RomanceNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
-  static const showNatural = RomanceNoteNotation(
-    accidentalNotation: SymbolAccidentalNotation(),
-  );
-
-  /// Whether to use symbolic representation for [Accidental].
-  bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
-
-  @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}\\s*'
-    '${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
-
-  @override
-  Note parseMatch(RegExpMatch match) => Note(
-    noteNameNotation.parseMatch(match),
-    accidentalNotation.parseMatch(match),
-  );
-
-  @override
-  String format(Note note) {
-    final noteName = noteNameNotation.format(note.noteName);
-    final accidental = accidentalNotation.format(note.accidental);
-    if (accidental.isEmpty) return noteName;
-
-    return '$noteName${_isSymbol ? '' : ' '}$accidental';
-  }
-}
-
-/// A list of notes extension.
+/// A list of notes.
 extension Notes on List<Note> {
   /// Flattens all notes on this [List].
   List<Note> get flat => map((note) => note.flat).toList();
@@ -660,4 +507,37 @@ extension Notes on List<Note> {
   /// ```
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
+
+  /// Stacks ascending from [octave], like a chord voicing.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.e, .g, .c].toStacked(octave: 4)
+  ///   == [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)]
+  /// ```
+  List<Pitch> toStacked({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.nearestAbove(note));
+
+  /// Places each note at the pitch closest to the previous one, like a
+  /// melodic line.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.c, .a, .d].toMelody(octave: 3)
+  ///   == [Note.c.inOctave(3), Note.a.inOctave(2), Note.d.inOctave(3)]
+  /// ```
+  List<Pitch> toMelody({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.closestTo(note));
+
+  List<Pitch> _mapToPitches(
+    int octave,
+    Pitch Function(Pitch previous, Note note) next,
+  ) {
+    var current = first.inOctave(octave);
+
+    return [
+      current,
+      for (final note in skip(1)) current = next(current, note),
+    ];
+  }
 }
