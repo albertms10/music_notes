@@ -122,9 +122,12 @@ final class Chord
   /// Example:
   /// ```dart
   /// const Chord([.e, .g, .c]).rootPosition == ChordPattern.majorTriad.on(.c)
+  /// const Chord([.g, .b, .c, .e]).rootPosition
+  ///   == ChordPattern.majorTriad.add7(.major).on(.c)
   /// ```
   Chord get rootPosition {
     final rotations = (_items.length - inversion) % _items.length;
+    if (rotations == 0) return this;
 
     return Chord([..._items.skip(rotations), ..._items.take(rotations)]);
   }
