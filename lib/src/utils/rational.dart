@@ -32,23 +32,37 @@ final class Rational implements Comparable<Rational> {
            (wholePart < 0 ? -1 : 1);
 
   static final _regExp = RegExp(
-    r'^(?<integer>-?\d+)\s*(?:(?<numerator>\d+)/(?<denominator>\d+))?$',
+    r'^(?<integer>-?\d+)'
+    r'(?:(?:\s+(?<numerator>\d+)/(?<denominator>\d+))'
+    r'|(?:/(?<fractionDenominator>\d+)))?$',
   );
 
   /// Parses source as a [Rational].
+  ///
+  /// Example:
+  /// ```dart
+  /// Rational.parse('1 1/2') == const Rational.fromMixed(1, 1, 2)
+  /// Rational.parse('3/4') == const Rational(3, 4)
+  /// Rational.parse('-35/4') == const Rational.fromMixed(-8, 3, 4)
+  /// ```
   factory Rational.parse(String source) {
-    final match = _regExp.firstMatch(source);
-    if (match == null || match[0] == null) {
-      return throw FormatException('Invalid Ratio', source);
-    }
+    final match =
+        _regExp.firstMatch(source) ??
+        (throw FormatException('Invalid Ratio', source));
 
     final integer = int.parse(match.namedGroup('integer')!);
-    if (match.namedGroup('numerator') == null) return .fromMixed(integer);
+    final numerator = match.namedGroup('numerator');
 
-    final numerator = int.parse(match.namedGroup('numerator')!);
-    final denominator = int.parse(match.namedGroup('denominator')!);
+    if (numerator != null) {
+      final denominator = match.namedGroup('denominator')!;
 
-    return .fromMixed(integer, numerator, denominator);
+      return .fromMixed(integer, .parse(numerator), .parse(denominator));
+    }
+
+    final denominator = match.namedGroup('fractionDenominator');
+    if (denominator == null) return .fromMixed(integer);
+
+    return Rational(integer, .parse(denominator));
   }
 
   /// Creates a new [Rational] from [number] and [tolerance].
