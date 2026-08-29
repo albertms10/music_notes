@@ -32,15 +32,9 @@ final class Rational implements Comparable<Rational> {
            (wholePart < 0 ? -1 : 1);
 
   static final _regExp = RegExp(
-    r'^(?<integer>-?\d+)\s*(?:(?<numerator>\d+)/(?<denominator>\d+))?$',
-  );
-
-  /// A bare fraction, with no whole-number part (e.g. '3/4', '-35/4').
-  /// Checked before [_regExp], whose integer group would otherwise
-  /// greedily (and incorrectly) absorb leading digits from the
-  /// numerator (e.g., '-35/4' as integer '-3', numerator '5').
-  static final _fractionRegExp = RegExp(
-    r'^(?<sign>-)?(?<numerator>\d+)/(?<denominator>\d+)$',
+    r'^(?<integer>-?\d+)'
+    r'(?:(?:\s+(?<numerator>\d+)/(?<denominator>\d+))'
+    r'|(?:/(?<fractionDenominator>\d+)))?$',
   );
 
   /// Parses source as a [Rational].
@@ -52,27 +46,23 @@ final class Rational implements Comparable<Rational> {
   /// Rational.parse('-35/4') == const Rational.fromMixed(-8, 3, 4)
   /// ```
   factory Rational.parse(String source) {
-    final fractionMatch = _fractionRegExp.firstMatch(source);
-    if (fractionMatch != null) {
-      final numerator = int.parse(fractionMatch.namedGroup('numerator')!);
-      final denominator = int.parse(fractionMatch.namedGroup('denominator')!);
-      final isNegative = fractionMatch.namedGroup('sign') != null;
-
-      return Rational(isNegative ? -numerator : numerator, denominator);
-    }
-
-    final match = _regExp.firstMatch(source);
-    if (match == null || match[0] == null) {
-      return throw FormatException('Invalid Ratio', source);
-    }
+    final match =
+        _regExp.firstMatch(source) ??
+        (throw FormatException('Invalid Ratio', source));
 
     final integer = int.parse(match.namedGroup('integer')!);
-    if (match.namedGroup('numerator') == null) return .fromMixed(integer);
+    final numerator = match.namedGroup('numerator');
 
-    final numerator = int.parse(match.namedGroup('numerator')!);
-    final denominator = int.parse(match.namedGroup('denominator')!);
+    if (numerator != null) {
+      final denominator = match.namedGroup('denominator')!;
 
-    return .fromMixed(integer, numerator, denominator);
+      return .fromMixed(integer, .parse(numerator), .parse(denominator));
+    }
+
+    final denominator = match.namedGroup('fractionDenominator');
+    if (denominator == null) return .fromMixed(integer);
+
+    return Rational(integer, .parse(denominator));
   }
 
   /// Creates a new [Rational] from [number] and [tolerance].
