@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart' show ListEquality;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
@@ -21,6 +22,9 @@ final class MixtureRow {
   /// The reference pipe height in feet.
   static const referenceHeight = Rational.fromMixed(8);
 
+  static final _regExp = RegExp(r'^(\S+)\s+(.+)$');
+  static final _separatorRegExp = RegExp(r'\s*,\s*');
+
   /// Parses [source] as a [MixtureRow].
   ///
   /// An example valid source:
@@ -30,29 +34,36 @@ final class MixtureRow {
   ///     C4 4, 2 2/3, 2, 1 1/3
   ///     C5 5 1/3, 4, 2 2/3, 2
   factory MixtureRow.parse(String source) {
-    final trimmed = source.trim();
-    final gap = trimmed.indexOf(' ');
-    final breakpoint = Pitch.parse(trimmed.substring(0, gap));
-    final rankFeet = trimmed
-        .substring(gap + 1)
-        .split(',')
-        .map((token) => _parseFeet(token.trim()))
+    final match =
+        _regExp.firstMatch(source.trim()) ??
+        (throw FormatException('Invalid mixture row', source));
+
+    final breakpoint = Pitch.parse(match.group(1)!);
+    final rankFeet = match
+        .group(2)!
+        .split(_separatorRegExp)
+        .map(Rational.parse)
         .toList();
 
     return MixtureRow(breakpoint, rankFeet);
   }
 
-  // Rational.parse's grammar requires a leading whole-number part
-  // ("1 1/3" parses fine), so a bare fraction like "2/3" is normalized
-  // to "0 2/3" first.
-  static Rational _parseFeet(String token) => .parse(
-    token.contains('/') && !token.contains(' ') ? '0 $token' : token,
-  );
-
   /// The [Interval] ranks that conform this [MixtureRow].
   List<Interval> get ranks => rankFeet
       .map((feet) => Interval.fromRatio((referenceHeight * feet).toDouble()))
       .toList();
+
+  /// Formats this [MixtureRow].
+  String format() => '$breakpoint ${rankFeet.join(', ')}';
+
+  @override
+  bool operator ==(Object other) =>
+      other is MixtureRow &&
+      breakpoint == other.breakpoint &&
+      const ListEquality<Rational>().equals(rankFeet, other.rankFeet);
+
+  @override
+  int get hashCode => Object.hash(breakpoint, Object.hashAll(rankFeet));
 }
 
 /// A mixture disposition extension.
@@ -62,6 +73,9 @@ extension MixtureDisposition on List<MixtureRow> {
     for (final line in source.trim().split('\n'))
       if (line.trim().isNotEmpty) .parse(line),
   ];
+
+  /// Formats this list of [MixtureRow].
+  String format() => map((row) => row.toString()).join('\n');
 
   /// The disposition row that applies to [key]: the highest breakpoint
   /// at or below it.
