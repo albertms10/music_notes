@@ -3,7 +3,6 @@ import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
 import '../pitch/pitch.dart';
-import 'organ_pipe_height.dart';
 
 /// One row of the mixture disposition, transcribed directly from the
 /// source table: the breakpoint key and the ranks' foot-lengths
@@ -18,6 +17,9 @@ final class MixtureRow {
 
   /// Creates a new [MixtureRow].
   const MixtureRow(this.breakpoint, this.rankFeet);
+
+  /// The reference pipe height in feet.
+  static const referenceHeight = Rational.fromMixed(8);
 
   /// Parses [source] as a [MixtureRow].
   ///
@@ -48,7 +50,9 @@ final class MixtureRow {
   );
 
   /// The [Interval] ranks that conform this [MixtureRow].
-  List<Interval> get ranks => rankFeet.map((feet) => feet.interval).toList();
+  List<Interval> get ranks => rankFeet
+      .map((feet) => Interval.fromRatio((referenceHeight * feet).toDouble()))
+      .toList();
 }
 
 /// A mixture disposition extension.

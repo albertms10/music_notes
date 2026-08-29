@@ -4,6 +4,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../cent/cent.dart';
 import '../comparators.dart';
 import '../enharmonic.dart';
 import '../interval_class/interval_class.dart';
@@ -248,6 +249,18 @@ final class Interval
   /// The size is inferred.
   factory Interval.fromSemitones(int semitones) =>
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
+
+  /// Creates a new [Interval] from a ratio.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.fromRatio(1) == .P1
+  /// Interval.fromRatio(2 / 3) == .P5
+  /// Interval.fromRatio(1 / 2) == .P8
+  /// ```
+  factory Interval.fromRatio(num ratio) => .fromSemitones(
+    (Cent.fromRatio(1 / ratio) / Cent.divisionsPerSemitone).round(),
+  );
 
   /// The chain of [StringParser]s used to parse an [Interval].
   static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
