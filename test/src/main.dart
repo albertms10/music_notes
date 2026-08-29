@@ -12,6 +12,7 @@ import 'interval_test.dart' as interval_test;
 import 'just_intonation_test.dart' as just_intonation_test;
 import 'key_signature_test.dart' as key_signature_test;
 import 'key_test.dart' as key_test;
+import 'mixture_row_test.dart' as mixture_row_test;
 import 'mode_test.dart' as mode_test;
 import 'notation_system_test.dart' as notation_system_test;
 import 'note_name_test.dart' as note_name_test;
@@ -41,6 +42,7 @@ void main() {
   just_intonation_test.main();
   key_signature_test.main();
   key_test.main();
+  mixture_row_test.main();
   mode_test.main();
   notation_system_test.main();
   note_name_test.main();
