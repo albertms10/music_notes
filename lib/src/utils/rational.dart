@@ -98,14 +98,20 @@ final class Rational implements Comparable<Rational> {
     return Rational(numerator, bestDenominator);
   }
 
-  /// The simplified version of this [Rational].
-  Rational get simple {
+  (int, int) get _canonical {
     final divisor = _numerator.gcd(_denominator);
 
-    return Rational(
+    return (
       _denominator.nonZeroSign * (_numerator ~/ divisor),
       _denominator.abs() ~/ divisor,
     );
+  }
+
+  /// The simplified version of this [Rational].
+  Rational get simple {
+    final (numerator, denominator) = _canonical;
+
+    return Rational(numerator, denominator);
   }
 
   /// Truncates this [Rational] to an integer and returns the result as an
@@ -181,13 +187,19 @@ final class Rational implements Comparable<Rational> {
   /// ```
   Rational operator -() => Rational(-_numerator, _denominator);
 
+  /// Two [Rational]s are equal iff they represent the same exact rational
+  /// number.
   @override
   bool operator ==(Object other) =>
-      (other is num && other == toDouble()) ||
-      (other is Rational && other.toDouble() == toDouble());
+      other is Rational &&
+      _numerator * other._denominator == other._numerator * _denominator;
 
   @override
-  int get hashCode => toDouble().hashCode;
+  int get hashCode {
+    final (numerator, denominator) = _canonical;
+
+    return Object.hash(numerator, denominator);
+  }
 
   @override
   int compareTo(Rational other) {
