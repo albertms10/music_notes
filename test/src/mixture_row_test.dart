@@ -44,7 +44,7 @@ void main() {
         expect(row.format(), equals('C2 1 1/3, 1, 2/3'));
       });
 
-      test('toString and parse are symmetric', () {
+      test('format and parse are symmetric', () {
         const sources = [
           'C2 1 1/3, 1, 2/3',
           'C3 2 2/3, 2, 1 1/3, 1',
@@ -54,7 +54,7 @@ void main() {
 
         for (final source in sources) {
           final row = MixtureRow.parse(source);
-          expect(MixtureRow.parse(row.toString()), equals(row));
+          expect(MixtureRow.parse(row.format()), equals(row));
         }
       });
     });

@@ -54,7 +54,7 @@ final class MixtureRow {
       .toList();
 
   /// Formats this [MixtureRow].
-  String format() => '$breakpoint ${rankFeet.join(', ')}';
+  String format() => '${breakpoint.format()} ${rankFeet.join(', ')}';
 
   @override
   bool operator ==(Object other) =>
