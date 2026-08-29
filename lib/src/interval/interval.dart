@@ -13,6 +13,8 @@ import '../quality/quality.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../size/size.dart';
+import '../tuning_system/just_intonation.dart';
+import '../tuning_system/tuning_system.dart';
 import 'german_interval_notation.dart';
 import 'standard_interval_notation.dart';
 
@@ -496,6 +498,18 @@ final class Interval
   /// ```
   @override
   IntervalClass toClass() => IntervalClass(semitones);
+
+  /// The ratio that represents this [Interval] based on [tuningSystem].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P8.ratio() == 1 / 2
+  /// Interval.P5.ratio() == 2 / 3
+  /// Interval.P5.ratio(tuningSystem: const EqualTemperament.edo12()) == 0.66742
+  /// ```
+  double ratio({
+    TuningSystem tuningSystem = const PythagoreanTuning(),
+  }) => 1 / tuningSystem.ratio(tuningSystem.fork.pitch.transposeBy(this));
 
   /// The string representation of this [Interval] based on [formatter].
   ///
