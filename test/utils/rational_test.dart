@@ -47,11 +47,7 @@ void main() {
         expect(Rational.parse('1 1/2'), const Rational.fromMixed(1, 1, 2));
         expect(Rational.parse('-1 2/3'), const Rational.fromMixed(-1, 2, 3));
         expect(Rational.parse('2'), const Rational(2));
-        expect(
-          skip: 'TODO: allow fraction only.',
-          () => Rational.parse('3/4'),
-          const Rational(3, 4),
-        );
+        expect(Rational.parse('3/4'), const Rational(3, 4));
         expect(Rational.parse('5  3/5'), const Rational.fromMixed(5, 3, 5));
         expect(Rational.parse('4 5/4'), const Rational.fromMixed(4, 5, 4));
         expect(
@@ -59,11 +55,7 @@ void main() {
           const Rational.fromMixed(32, 10, 111),
         );
         expect(Rational.parse('314'), const Rational.fromMixed(314));
-        expect(
-          skip: 'TODO: allow fraction only.',
-          Rational.parse('-35/4'),
-          const Rational.fromMixed(-8, 3, 4),
-        );
+        expect(Rational.parse('-35/4'), const Rational.fromMixed(-8, 3, 4));
       });
     });
 
