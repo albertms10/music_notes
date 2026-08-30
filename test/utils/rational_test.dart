@@ -47,11 +47,7 @@ void main() {
         expect(Rational.parse('1 1/2'), const Rational.fromMixed(1, 1, 2));
         expect(Rational.parse('-1 2/3'), const Rational.fromMixed(-1, 2, 3));
         expect(Rational.parse('2'), const Rational(2));
-        expect(
-          skip: 'TODO: allow fraction only.',
-          () => Rational.parse('3/4'),
-          const Rational(3, 4),
-        );
+        expect(Rational.parse('3/4'), const Rational(3, 4));
         expect(Rational.parse('5  3/5'), const Rational.fromMixed(5, 3, 5));
         expect(Rational.parse('4 5/4'), const Rational.fromMixed(4, 5, 4));
         expect(
@@ -59,11 +55,7 @@ void main() {
           const Rational.fromMixed(32, 10, 111),
         );
         expect(Rational.parse('314'), const Rational.fromMixed(314));
-        expect(
-          skip: 'TODO: allow fraction only.',
-          Rational.parse('-35/4'),
-          const Rational.fromMixed(-8, 3, 4),
-        );
+        expect(Rational.parse('-35/4'), const Rational.fromMixed(-8, 3, 4));
       });
     });
 
@@ -227,6 +219,101 @@ void main() {
           const Rational(-1, 9),
         );
       });
+    });
+  });
+
+  group('operator ==()', () {
+    test('equal rationals compare equal', () {
+      expect(const Rational(1, 2), equals(const Rational(1, 2)));
+    });
+
+    test('equivalent fractions compare equal', () {
+      expect(const Rational(1, 2), equals(const Rational(2, 4)));
+      expect(const Rational(-1, 2), equals(const Rational(-2, 4)));
+    });
+
+    test('different rationals do not compare equal', () {
+      expect(const Rational(1, 2), isNot(equals(const Rational(2, 3))));
+    });
+
+    test('equality is independent of denominator sign', () {
+      expect(const Rational(1, 2), equals(const Rational(-1, -2)));
+      expect(const Rational(-1, 2), equals(const Rational(1, -2)));
+    });
+
+    test('equality is symmetric', () {
+      const a = Rational(1, 2);
+      const b = Rational(2, 4);
+
+      expect(a == b, isTrue);
+      expect(b == a, isTrue);
+    });
+
+    test('reflexive', () {
+      const rational = Rational(3, 4);
+
+      expect(rational == rational, isTrue);
+    });
+
+    test('symmetric', () {
+      const a = Rational(1, 2);
+      const b = Rational(2, 4);
+
+      expect(a == b, equals(b == a));
+    });
+
+    test('transitive', () {
+      const a = Rational(1, 2);
+      const b = Rational(2, 4);
+      const c = Rational(50, 100);
+
+      expect(a == b, isTrue);
+      expect(b == c, isTrue);
+      expect(a == c, isTrue);
+    });
+
+    test('equal values behave correctly in a Set', () {
+      final values = {
+        const Rational(1, 2),
+        const Rational(2, 4),
+        const Rational(50, 100),
+      };
+
+      expect(values, hasLength(1));
+    });
+
+    test('equal values behave correctly as Map keys', () {
+      final map = <Rational, String>{const Rational(1, 2): 'half'};
+
+      expect(map[const Rational(2, 4)], equals('half'));
+    });
+  });
+
+  group('.hashCode', () {
+    test('equal rationals have equal hash codes', () {
+      expect(
+        const Rational(1, 2).hashCode,
+        equals(const Rational(2, 4).hashCode),
+      );
+    });
+
+    test(
+      'equal rationals have equal hash codes with negative denominators',
+      () {
+        expect(
+          const Rational(1, 2).hashCode,
+          equals(const Rational(-1, -2).hashCode),
+        );
+      },
+    );
+
+    test('hashCode is consistent across equivalent representations', () {
+      const a = Rational(1, 2);
+      const b = Rational(2, 4);
+      const c = Rational(50, 100);
+
+      expect(a.hashCode, equals(b.hashCode));
+      expect(b.hashCode, equals(c.hashCode));
     });
   });
 }

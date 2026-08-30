@@ -223,10 +223,12 @@ final class ChordPattern
     // Re-sorted because, for extended chords, a compound interval (e.g. a
     // 9th) can end up smaller than `P8 - newBass` once re-measured from the
     // new bass, so simple append order no longer guarantees ascending order.
-    return ChordPattern([
-      for (final interval in sorted.skip(1)) interval - newBass,
-      Interval.P8 - newBass,
-    ]..sort());
+    return ChordPattern(
+      [
+        for (final interval in sorted.skip(1)) interval - newBass,
+        Interval.P8 - newBass,
+      ]..sort(),
+    );
   }
 
   /// The inversion number of this [ChordPattern], calculated on demand from

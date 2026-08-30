@@ -385,9 +385,9 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.fifthsDistanceWith(Note.e.flat) == -3
-  /// Note.f.sharp.fifthsDistanceWith(Note.b) == -1
-  /// Note.a.flat.fifthsDistanceWith(Note.c.sharp) == 11
+  /// Note.c.fifthsDistanceWith(.e.flat) == -3
+  /// Note.f.sharp.fifthsDistanceWith(.b) == -1
+  /// Note.a.flat.fifthsDistanceWith(.c.sharp) == 11
   /// ```
   int fifthsDistanceWith(Note other) =>
       Interval.P5.circleDistance(from: this, to: other).$1;
@@ -396,8 +396,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.interval(Note.d) == Interval.m2
-  /// Note.d.interval(Note.a.flat) == Interval.d5
+  /// Note.c.interval(.d) == .M2
+  /// Note.d.interval(.a.flat) == .d5
   /// ```
   @override
   Interval interval(Note other) => .fromSizeAndSemitones(
@@ -409,8 +409,8 @@ final class Note extends Scalable<Note>
   ///
   /// Example:
   /// ```dart
-  /// Note.c.transposeBy(Interval.tritone) == Note.f.sharp
-  /// Note.a.transposeBy(-Interval.M2) == Note.g
+  /// Note.c.transposeBy(.tritone) == .f.sharp
+  /// Note.a.transposeBy(.M2.descending) == .g
   /// ```
   @override
   Note transposeBy(Interval interval) {

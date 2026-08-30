@@ -514,7 +514,7 @@ extension Pitches on List<Pitch> {
   ///
   /// Example:
   /// ```dart
-  /// [Note.c.inOctave(3), Note.e.inOctave(3)].doubling(Note.c, octaves: -1)
+  /// [Note.c.inOctave(3), Note.e.inOctave(3)].doubling(.c, octaves: -1)
   ///   == [Note.c.inOctave(2), Note.c.inOctave(3), Note.e.inOctave(3)]
   /// ```
   List<Pitch> doubling(Note note, {int octaves = 1}) {

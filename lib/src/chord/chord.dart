@@ -111,7 +111,6 @@ final class Chord
   /// ```
   int get inversion => pattern.inversion;
 
-
   /// This [Chord] rewritten in root position.
   ///
   /// [Chord] does not store which of its [items] is the harmonic root
