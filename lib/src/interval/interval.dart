@@ -255,11 +255,11 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.fromRatio(1) == .P1
-  /// Interval.fromRatio(2 / 3) == .P5
-  /// Interval.fromRatio(1 / 2) == .P8
+  /// Interval.fromRatio(3 / 2) == .P5
+  /// Interval.fromRatio(2) == .P8
   /// ```
   factory Interval.fromRatio(num ratio) => .fromSemitones(
-    (Cent.fromRatio(1 / ratio) / Cent.divisionsPerSemitone).round(),
+    (Cent.fromRatio(ratio) / Cent.divisionsPerSemitone).round(),
   );
 
   /// The chain of [StringParser]s used to parse an [Interval].
@@ -516,13 +516,17 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// Interval.P8.ratio() == 1 / 2
-  /// Interval.P5.ratio() == 2 / 3
-  /// Interval.P5.ratio(tuningSystem: const EqualTemperament.edo12()) == 0.66742
+  /// Interval.P1.ratio() == 1
+  /// Interval.P4.ratio() == 4 / 3
+  /// Interval.P5.ratio() == 3 / 2
+  /// Interval.P8.ratio() == 2
+  ///
+  /// const edo12 = EqualTemperament.edo12();
+  /// Interval.P5.ratio(tuningSystem: edo12) == 1.4983070768766815
   /// ```
-  double ratio({
+  num ratio({
     TuningSystem tuningSystem = const PythagoreanTuning(),
-  }) => 1 / tuningSystem.ratio(tuningSystem.fork.pitch.transposeBy(this));
+  }) => tuningSystem.ratio(tuningSystem.fork.pitch.transposeBy(this));
 
   /// The string representation of this [Interval] based on [formatter].
   ///

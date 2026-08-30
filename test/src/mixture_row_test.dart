@@ -61,19 +61,15 @@ void main() {
 
     group('.ranks()', () {
       test('converts rank feet to intervals', () {
-        final row = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-
         expect(
-          row.ranks,
-          equals([
-            Interval.fromRatio(
-              (MixtureRow.referenceHeight * Rational.parse('1 1/3')).toDouble(),
+          MixtureRow.parse('C2 1 1/3, 1, 2/3').ranks,
+          equals(<Interval>[
+            .fromRatio(
+              (MixtureRow.referenceHeight / .parse('1 1/3')).toDouble(),
             ),
-            Interval.fromRatio(
-              (MixtureRow.referenceHeight * Rational.parse('1')).toDouble(),
-            ),
-            Interval.fromRatio(
-              (MixtureRow.referenceHeight * Rational.parse('2/3')).toDouble(),
+            .fromRatio((MixtureRow.referenceHeight / .parse('1')).toDouble()),
+            .fromRatio(
+              (MixtureRow.referenceHeight / .parse('2/3')).toDouble(),
             ),
           ]),
         );
@@ -85,13 +81,10 @@ void main() {
         expect(row.ranks.length, equals(row.rankFeet.length));
 
         for (var i = 0; i < row.ranks.length; i++) {
-          final expectedRatio = (MixtureRow.referenceHeight * row.rankFeet[i])
+          final expectedRatio = (MixtureRow.referenceHeight / row.rankFeet[i])
               .toDouble();
 
-          expect(
-            row.ranks[i],
-            equals(Interval.fromRatio(expectedRatio)),
-          );
+          expect(row.ranks[i], equals(Interval.fromRatio(expectedRatio)));
         }
       });
     });

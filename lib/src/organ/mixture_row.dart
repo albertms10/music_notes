@@ -50,7 +50,7 @@ final class MixtureRow {
 
   /// The [Interval] ranks that conform this [MixtureRow].
   List<Interval> get ranks => rankFeet
-      .map((feet) => Interval.fromRatio((referenceHeight * feet).toDouble()))
+      .map((feet) => Interval.fromRatio((referenceHeight / feet).toDouble()))
       .toList();
 
   /// Formats this [MixtureRow].
