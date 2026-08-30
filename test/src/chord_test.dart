@@ -192,18 +192,15 @@ void main() {
           Chord([.f, .a, .c.sharp, .e.flat, .g]),
         );
         expect(
-          skip: 'Unsupported 9th chords',
-          () => Chord([.a, .c.sharp, .e.flat, .f, .g]).rootPosition,
+          Chord([.a, .c.sharp, .e.flat, .f, .g]).rootPosition,
           Chord([.f, .a, .c.sharp, .e.flat, .g]),
         );
         expect(
-          skip: 'Unsupported 9th chords',
-          () => Chord([.c.sharp, .e.flat, .f, .g, .a]).rootPosition,
+          Chord([.c.sharp, .e.flat, .f, .g, .a]).rootPosition,
           Chord([.f, .a, .c.sharp, .e.flat, .g]),
         );
         expect(
-          skip: 'Unsupported 9th chords',
-          () => Chord([.e.flat, .f, .g, .a, .c.sharp]).rootPosition,
+          Chord([.e.flat, .f, .g, .a, .c.sharp]).rootPosition,
           Chord([.f, .a, .c.sharp, .e.flat, .g]),
         );
 
@@ -212,8 +209,7 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .c,
             .e.flat,
             .g.flat,
@@ -224,8 +220,7 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .e.flat,
             .g.flat,
             .a.flat,
@@ -236,8 +231,7 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .g.flat,
             .a.flat,
             .b.flat,
@@ -248,8 +242,7 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .b.flat,
             .c,
             .d.flat,
@@ -260,8 +253,7 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .d.flat,
             .e.flat,
             .g.flat,
@@ -288,8 +280,7 @@ void main() {
           ]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .f.sharp,
             .a.sharp,
             .c.sharp.sharp,
@@ -307,8 +298,7 @@ void main() {
           ]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .a.sharp,
             .c.sharp.sharp,
             .d.sharp,
@@ -326,8 +316,7 @@ void main() {
           ]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .c.sharp.sharp,
             .d.sharp,
             .e,
@@ -345,8 +334,7 @@ void main() {
           ]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .e,
             .f.sharp,
             .g.sharp,
@@ -364,8 +352,7 @@ void main() {
           ]),
         );
         expect(
-          skip: 'Unsupported 11th chords',
-          () => Chord([
+          Chord([
             .g.sharp,
             .a.sharp,
             .c.sharp.sharp,
@@ -387,6 +374,30 @@ void main() {
         expect(Note.g.majorTriad.rootPosition, Note.g.majorTriad);
         expect(Note.b.flat.majorTriad.rootPosition, Note.b.flat.majorTriad);
       });
+
+      test(
+        'supports a 13th chord only when already in root position, since '
+        'generic structure alone cannot otherwise tell which of its 7 '
+        'note names is the root',
+        () {
+          final root13 = Note.c.majorTriad.add7().add9().add11().add13();
+          expect(root13.items, <Note>[.c, .e, .g, .b.flat, .d, .f, .a]);
+          expect(root13.rootPosition, root13);
+
+          expect(
+            () => Chord([
+              .e,
+              .g,
+              .b.flat,
+              .c,
+              .d,
+              .f,
+              .a,
+            ]).rootPosition,
+            throwsStateError,
+          );
+        },
+      );
     });
 
     group('.modifiers', () {

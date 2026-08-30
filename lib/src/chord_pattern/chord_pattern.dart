@@ -171,6 +171,9 @@ final class ChordPattern
   /// Whether [_sortedIntervals] forms an uninterrupted stack of thirds
   /// above the root (e.g., 3rd, 5th, 7th, 9th, 11th, 13th, and so on) meaning
   /// this [ChordPattern] is in root position.
+  ///
+  /// Unlike [inversion], this never throws: it is a plain structural
+  /// check, so it is also used as [inversion]'s fast, unambiguous path.
   bool get isRootPosition => _sortedIntervals.indexed.every(
     (entry) => entry.$2.size == Size.third + 2 * entry.$1,
   );
@@ -179,8 +182,25 @@ final class ChordPattern
   /// [Interval] is moved above the octave (becoming the new top note) and
   /// every remaining [Interval] is re-expressed from that new bass.
   ///
-  /// This is derived solely from the interval content of [_sortedIntervals],
-  /// so it holds for triads, seventh chords, and extended chords alike.
+  /// This is derived solely from the interval content of [_sortedIntervals]
+  /// — nothing about the resulting shape is hardcoded — so a single
+  /// rotation is correct for triads, seventh chords, and extended
+  /// (9th/11th/13th) chords alike.
+  ///
+  /// Chaining this repeatedly reflects what physically happens when you
+  /// keep moving the lowest note of a voicing above the rest: it always
+  /// promotes whichever note is currently closest to the bass. For a
+  /// chord that spans no more than an octave in root position (triads,
+  /// seventh chords), that is exactly the next scale degree each time, so
+  /// chaining [inverted] cycles through every degree and back to root
+  /// after as many steps as this [ChordPattern] has notes. For a chord
+  /// that spans more than an octave in root position (9th chords and
+  /// above), an upper extension can sit closer to the bass than the
+  /// octave-doubled root does — F-A-C♯-E♭-G, for instance, revisits F
+  /// before ever reaching G — so repeated [inverted] calls are not
+  /// guaranteed to visit every degree before returning to root. Use
+  /// [inversion] to identify a specific inversion directly instead of
+  /// chaining [inverted] to search for one.
   ///
   /// See [Inversion § Chords](https://en.wikipedia.org/wiki/Inversion_(music)#Chords).
   ///
@@ -203,28 +223,40 @@ final class ChordPattern
     // Re-sorted because, for extended chords, a compound interval (e.g. a
     // 9th) can end up smaller than `P8 - newBass` once re-measured from the
     // new bass, so simple append order no longer guarantees ascending order.
-    return ChordPattern(
-      [
-        for (final interval in sorted.skip(1)) interval - newBass,
-        Interval.P8 - newBass,
-      ]..sort(),
-    );
+    return ChordPattern([
+      for (final interval in sorted.skip(1)) interval - newBass,
+      Interval.P8 - newBass,
+    ]..sort());
   }
 
   /// The inversion number of this [ChordPattern], calculated on demand from
-  /// [intervals] rather than kept as separate state.
+  /// [intervals] rather than kept as separate, hardcodable state.
   ///
   /// `0` is root position. `1` is the first inversion (the original root
   /// is now the topmost note), `2` is the second inversion, and so on up
   /// to `_noteCount - 1`.
   ///
-  /// The result is obtained by repeatedly applying [inverted] until an
-  /// uninterrupted stack of thirds, i.e. root position (see
-  /// [isRootPosition]) is reached, then working back from how many
-  /// rotations that took. Since chord inversion is only a meaningful
-  /// concept for chords stacked in thirds, calling this on a non-tertian
-  /// [ChordPattern] (e.g. quartal or added-tone chords) throws a
-  /// [StateError].
+  /// This does not chain [inverted] in search of root position — that
+  /// approach breaks down for extended chords, as explained in
+  /// [inverted]'s documentation. Instead, each interval's generic
+  /// (letter-only) position above the bass is compared, modulo the 7 note
+  /// names, against what every possible bass degree would produce: in
+  /// root position, the degree at index `i` sits `2 * i` generic steps
+  /// above the root, so from a bass at degree `k`, degree `i` sits
+  /// `(2 * (i - k)) % 7` steps above the bass. Only the true `k` makes
+  /// that hold for every stored [Interval] at once.
+  ///
+  /// Since chord inversion is only a meaningful concept for chords stacked
+  /// in thirds, calling this on a non-tertian [ChordPattern] (e.g.
+  /// quartal or added-tone chords) throws a [StateError].
+  ///
+  /// A [ChordPattern] spanning all 7 note names (a 13th chord or beyond)
+  /// is a special case: reading it from any of its 7 members produces an
+  /// equally valid-looking stack of thirds — the same ambiguity as
+  /// reading a 7-note diatonic collection starting from any of its
+  /// degrees — so generic structure alone cannot identify the bass's
+  /// degree unless this [ChordPattern] is already in root position. This
+  /// also throws a [StateError] in that case.
   ///
   /// Example:
   /// ```dart
@@ -235,11 +267,35 @@ final class ChordPattern
   int get inversion {
     final noteCount = _noteCount;
     if (noteCount <= 1) return 0;
+    if (isRootPosition) return 0;
 
-    var pattern = this;
-    for (var rotations = 0; rotations < noteCount; rotations++) {
-      if (pattern.isRootPosition) return (noteCount - rotations) % noteCount;
-      pattern = pattern.inverted;
+    if (noteCount > 7) {
+      throw StateError(
+        'Cannot determine the inversion of a ChordPattern spanning more '
+        'than 7 note names: $this',
+      );
+    }
+    if (noteCount == 7) {
+      throw StateError(
+        'Cannot determine the inversion of a ChordPattern spanning all 7 '
+        'note names (a 13th chord or beyond) unless it is already in root '
+        'position: from generic structure alone, any of its 7 members '
+        'could equally be read as the root. $this',
+      );
+    }
+
+    final observed = {
+      for (final interval in _sortedIntervals) (interval.size - 1) % 7,
+    };
+
+    for (var k = 1; k < noteCount; k++) {
+      final expected = {
+        for (var i = 0; i < noteCount; i++)
+          if (i != k) (2 * (i - k)) % 7,
+      };
+      final matches =
+          expected.length == observed.length && expected.containsAll(observed);
+      if (matches) return k;
     }
 
     throw StateError(

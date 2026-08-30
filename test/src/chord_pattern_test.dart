@@ -150,6 +150,19 @@ void main() {
       });
     });
 
+    group('.isRootPosition', () {
+      test('returns whether this ChordPattern is in root position', () {
+        expect(ChordPattern.majorTriad.isRootPosition, isTrue);
+        expect(ChordPattern.minorTriad.isRootPosition, isTrue);
+        expect(ChordPattern.majorTriad.inverted.isRootPosition, isFalse);
+        expect(
+          ChordPattern.majorTriad.add7().add9().add11().add13().isRootPosition,
+          isTrue,
+        );
+        expect(const ChordPattern([.P4, .P5]).isRootPosition, isFalse);
+      });
+    });
+
     group('.inverted', () {
       test('returns the next inversion of this ChordPattern', () {
         expect(
@@ -240,6 +253,73 @@ void main() {
         () {
           expect(
             () => const ChordPattern([.P4, .P5]).inversion,
+            throwsStateError,
+          );
+        },
+      );
+
+      test('correctly handles extended (9th) chords', () {
+        // F augmented triad, add7() (minor), add9() (major): F-A-C#-Eb-G.
+        const root9 = ChordPattern([.M3, .A5, .m7, .M9]);
+        expect(root9.inversion, 0);
+        // Bass on A (the 3rd).
+        expect(const ChordPattern([.M3, .d5, .m6, .m7]).inversion, 1);
+        // Bass on C# (the 5th).
+        expect(const ChordPattern([.d3, .d4, .d5, .m6]).inversion, 2);
+        // Bass on Eb (the 7th).
+        expect(const ChordPattern([.M2, .M3, .A4, .A6]).inversion, 3);
+      });
+
+      test('correctly handles extended (11th) chords', () {
+        // Ab major triad, add7() (minor), add9() (major), add11() (perfect):
+        // Ab-C-Eb-Gb-Bb-Db.
+        const root11 = ChordPattern([.M3, .P5, .m7, .M9, .P11]);
+        expect(root11.inversion, 0);
+        // Bass on C (the 3rd).
+        expect(
+          const ChordPattern([.m3, .d5, .m6, .m7, .m9]).inversion,
+          1,
+        );
+        // Bass on Eb (the 5th).
+        expect(
+          const ChordPattern([.m3, .P4, .P5, .M6, .m7]).inversion,
+          2,
+        );
+        // Bass on Gb (the 7th).
+        expect(
+          const ChordPattern([.M2, .M3, .A4, .P5, .M6]).inversion,
+          3,
+        );
+        // Bass on Bb (the 9th).
+        expect(
+          const ChordPattern([.M2, .m3, .P4, .m6, .m7]).inversion,
+          4,
+        );
+        // Bass on Db (the 11th).
+        expect(
+          const ChordPattern([.M2, .P4, .P5, .M6, .M7]).inversion,
+          5,
+        );
+      });
+
+      test(
+        'only recognizes a 13th chord (or beyond) when already in root '
+        'position, since generic structure alone cannot otherwise tell '
+        'which of its 7 note names is the root',
+        () {
+          expect(
+            const ChordPattern([.M3, .P5, .m7, .M9, .P11, .M13]).inversion,
+            0,
+          );
+          expect(
+            () => const ChordPattern([
+              .m3,
+              .d5,
+              .m6,
+              .m7,
+              .m9,
+              .P11,
+            ]).inversion,
             throwsStateError,
           );
         },
