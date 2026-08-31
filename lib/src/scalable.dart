@@ -13,7 +13,7 @@ import 'tuning_system/equal_temperament.dart';
 @immutable
 abstract class Scalable<T extends Scalable<T>>
     with Enharmonic<PitchClass>, Respellable<T>
-    implements Transposable<T>, Formattable<T> {
+    implements Transposable<T>, Comparable<T>, Formattable<T> {
   /// Creates a new [Scalable].
   const Scalable();
 
@@ -23,7 +23,7 @@ abstract class Scalable<T extends Scalable<T>>
 
   /// Enharmonic [Comparator] for [Scalable].
   static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
-      a.semitones.compareTo(b.semitones);
+      a.compareTo(b);
 
   /// Returns the [PitchClass] from [semitones].
   ///
@@ -47,6 +47,9 @@ abstract class Scalable<T extends Scalable<T>>
         ? diff
         : diff - chromaticDivisions * diff.sign;
   }
+
+  @override
+  int compareTo(T other) => semitones.compareTo(other.semitones);
 }
 
 /// A Scalable iterable.

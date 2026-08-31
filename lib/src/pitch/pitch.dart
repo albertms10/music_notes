@@ -34,7 +34,7 @@ import 'scientific_pitch_notation.dart';
 @immutable
 final class Pitch extends Scalable<Pitch>
     with Comparators<Pitch>, RespellableScalable<Pitch>
-    implements Comparable<Pitch>, Formattable<Pitch> {
+    implements Formattable<Pitch> {
   /// The note inside the octave.
   final Note note;
 

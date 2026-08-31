@@ -30,7 +30,7 @@ import 'romance_note_notation.dart';
 @immutable
 final class Note extends Scalable<Note>
     with RespellableScalable<Note>
-    implements Comparable<Note>, Formattable<Note> {
+    implements Formattable<Note> {
   /// The name that defines this [Note].
   final NoteName noteName;
 
