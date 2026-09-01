@@ -19,7 +19,7 @@ final class MixtureRowNotation extends StringNotationSystem<MixtureRow> {
 
   @override
   RegExp get regExp => RegExp(
-    '${pitchNotation.regExp?.pattern}\\s+(?:<feet>.+)',
+    '${pitchNotation.regExp?.pattern}\\s+(?<feet>.+)',
     caseSensitive: false,
   );
 

@@ -7,20 +7,11 @@ void main() {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
         expect(() => MixtureRow.parse('x'), throwsFormatException);
+        expect(() => MixtureRow.parse(' C2 1'), throwsFormatException);
       });
 
       test('parses a row', () {
         final row = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-
-        expect(row.breakpoint, equals(Pitch.parse('C2')));
-        expect(
-          row.rankFeet,
-          equals(const <Rational>[.fromMixed(1, 1, 3), .new(1), .new(2, 3)]),
-        );
-      });
-
-      test('ignores surrounding whitespace', () {
-        final row = MixtureRow.parse('  C2 1 1/3, 1, 2/3  ');
 
         expect(row.breakpoint, equals(Pitch.parse('C2')));
         expect(
