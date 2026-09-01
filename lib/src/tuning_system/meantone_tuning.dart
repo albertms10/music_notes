@@ -7,27 +7,27 @@ import 'just_intonation.dart';
 
 /// A general Meantone temperament tuning system.
 /// Can handle any fraction of the syntonic comma (m/n).
-class Meantone extends JustIntonation {
+class MeantoneTuning extends JustIntonation {
   /// The comma ratio.
   final Rational rational;
 
-  /// Creates a new [Meantone] tuning system.
-  const Meantone(this.rational, {super.fork = .c256});
+  /// Creates a new [MeantoneTuning] tuning system.
+  const MeantoneTuning(this.rational, {super.fork = .c256});
 
   /// Meantone tuning with fifth-comma temperament (1/5).
-  static const fifth = Meantone(Rational(1, 5));
+  static const fifth = MeantoneTuning(Rational(1, 5));
 
   /// Meantone tuning with two-sevenths-comma temperament (2/7).
-  static const twoSevenths = Meantone(Rational(2, 7));
+  static const twoSevenths = MeantoneTuning(Rational(2, 7));
 
   /// Meantone tuning with quarter-comma temperament (1/4).
-  static const quarter = Meantone(Rational(1, 4));
+  static const quarter = MeantoneTuning(Rational(1, 4));
 
   /// Meantone tuning with third-comma temperament (1/3).
-  static const third = Meantone(Rational(1, 3));
+  static const third = MeantoneTuning(Rational(1, 3));
 
   /// Meantone tuning with half-comma temperament (1/2).
-  static const half = Meantone(Rational(1, 2));
+  static const half = MeantoneTuning(Rational(1, 2));
 
   /// Return the cents offset relative to equal temperament
   num centsOffset(Pitch pitch) {

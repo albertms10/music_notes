@@ -71,6 +71,6 @@ export 'src/tuning_fork/scientific_tuning_fork_notation.dart';
 export 'src/tuning_fork/tuning_fork.dart';
 export 'src/tuning_system/equal_temperament.dart';
 export 'src/tuning_system/just_intonation.dart';
-export 'src/tuning_system/meantone.dart';
-export 'src/tuning_system/pythagorean.dart';
+export 'src/tuning_system/meantone_tuning.dart';
+export 'src/tuning_system/pythagorean_tuning.dart';
 export 'src/tuning_system/tuning_system.dart';
