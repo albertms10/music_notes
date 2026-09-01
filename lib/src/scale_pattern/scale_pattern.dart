@@ -422,9 +422,9 @@ final class ScalePattern {
 
   @override
   int get hashCode => Object.hash(
-    Object.hashAll(_intervalSteps.toClass()),
+    .hashAll(_intervalSteps.toClass()),
     _descendingIntervalSteps != null
-        ? Object.hashAll(_descendingIntervalSteps.toClass())
+        ? .hashAll(_descendingIntervalSteps.toClass())
         : null,
   );
 }
