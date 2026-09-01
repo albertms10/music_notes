@@ -3,13 +3,15 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
+import '../notation_system/notation_system.dart';
 import '../pitch/pitch.dart';
+import 'mixture_row_notation.dart';
 
 /// One row of the mixture disposition, transcribed directly from the
 /// source table: the breakpoint key and the ranks' foot-lengths
 /// (ascending pitch) starting at that key.
 @immutable
-final class MixtureRow {
+final class MixtureRow implements Formattable<MixtureRow> {
   /// The breakpoint [Pitch].
   final Pitch breakpoint;
 
@@ -22,8 +24,8 @@ final class MixtureRow {
   /// The reference pipe height in feet.
   static const referenceHeight = Rational.fromMixed(8);
 
-  static final _regExp = RegExp(r'^(\S+)\s+(.+)$');
-  static final _separatorRegExp = RegExp(r'\s*,\s*');
+  /// The chain of [StringParser]s used to parse a [MixtureRow].
+  static const parsers = [MixtureRowNotation()];
 
   /// Parses [source] as a [MixtureRow].
   ///
@@ -33,20 +35,10 @@ final class MixtureRow {
   ///     C3 2 2/3, 2, 1 1/3, 1
   ///     C4 4, 2 2/3, 2, 1 1/3
   ///     C5 5 1/3, 4, 2 2/3, 2
-  factory MixtureRow.parse(String source) {
-    final match =
-        _regExp.firstMatch(source.trim()) ??
-        (throw FormatException('Invalid mixture row', source));
-
-    final breakpoint = Pitch.parse(match.group(1)!);
-    final rankFeet = match
-        .group(2)!
-        .split(_separatorRegExp)
-        .map(Rational.parse)
-        .toList();
-
-    return MixtureRow(breakpoint, rankFeet);
-  }
+  factory MixtureRow.parse(
+    String source, {
+    List<StringParser<MixtureRow>> chain = parsers,
+  }) => chain.parse(source);
 
   /// The [Interval] ranks that conform this [MixtureRow].
   List<Interval> get ranks => rankFeet
@@ -54,7 +46,10 @@ final class MixtureRow {
       .toList();
 
   /// Formats this [MixtureRow].
-  String format() => '${breakpoint.format()} ${rankFeet.join(', ')}';
+  @override
+  String format([
+    StringFormatter<MixtureRow> formatter = const MixtureRowNotation(),
+  ]) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -63,7 +58,7 @@ final class MixtureRow {
       const ListEquality<Rational>().equals(rankFeet, other.rankFeet);
 
   @override
-  int get hashCode => Object.hash(breakpoint, Object.hashAll(rankFeet));
+  int get hashCode => Object.hash(breakpoint, .hashAll(rankFeet));
 }
 
 /// A mixture disposition extension.
@@ -75,7 +70,7 @@ extension MixtureDisposition on List<MixtureRow> {
   ];
 
   /// Formats this list of [MixtureRow].
-  String format() => map((row) => row.toString()).join('\n');
+  String format() => map((mixtureRow) => mixtureRow.format()).join('\n');
 
   /// The disposition row that applies to [key]: the highest breakpoint
   /// at or below it.

@@ -1,11 +1,14 @@
 import 'package:music_notes/music_notes.dart';
 import 'package:music_notes/organ.dart';
-import 'package:music_notes/utils.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('MixtureRow', () {
     group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(() => MixtureRow.parse('x'), throwsFormatException);
+      });
+
       test('parses a row', () {
         final row = MixtureRow.parse('C2 1 1/3, 1, 2/3');
 
@@ -186,15 +189,9 @@ C3 2 2/3, 2, 1 1/3, 1
 C2 1 1/3, 1, 2/3
 C3 2 2/3, 2, 1 1/3, 1
 C4 4, 2 2/3, 2, 1 1/3
-C5 5 1/3, 4, 2 2/3, 2
-''';
+C5 5 1/3, 4, 2 2/3, 2''';
 
-        final rows = MixtureDisposition.parse(source);
-
-        expect(
-          rows.map((row) => row.format()).join('\n'),
-          equals(source.trim()),
-        );
+        expect(MixtureDisposition.parse(source).format(), equals(source));
       });
     });
 
