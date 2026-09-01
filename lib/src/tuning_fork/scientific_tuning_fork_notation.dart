@@ -48,11 +48,8 @@ final class ScientificTuningForkNotation
   );
 
   @override
-  RegExp get regExp => RegExp(
-    '${pitchNotation.regExp?.pattern}\\s*=\\s*'
-    '${frequencyNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${pitchNotation.pattern}\\s*=\\s*${frequencyNotation.pattern}';
 
   @override
   TuningFork parseMatch(RegExpMatch match) => TuningFork(

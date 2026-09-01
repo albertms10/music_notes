@@ -9,13 +9,11 @@ final class FrequencySINotation extends StringNotationSystem<Frequency> {
   /// The symbol for the Hertz unit.
   static const _hertzUnitSymbol = 'Hz';
 
-  /// The [RegExp] pattern for parsing [Frequency].
-  static final _regExp = RegExp(
-    '(?<frequency>\\d+(\\.\\d+)?)(?:\\s*$_hertzUnitSymbol)?',
-  );
+  static const _pattern =
+      '(?<frequency>\\d+(\\.\\d+)?)(?:\\s*$_hertzUnitSymbol)?';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   Frequency parseMatch(RegExpMatch match) =>

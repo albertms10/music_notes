@@ -10,12 +10,11 @@ final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _flat = 'es';
   static const _sharp = 'is';
 
-  static final _regExp = RegExp(
-    '(?<accidental>$_flatShort?(?:$_flat)*|(?:$_sharp)+)?',
-  );
+  static const _pattern =
+      '(?<accidental>$_flatShort?(?:$_flat)*|(?:$_sharp)+)?';
 
   @override
-  RegExp get regExp => _regExp;
+  String get pattern => _pattern;
 
   @override
   Accidental parseMatch(RegExpMatch match) {

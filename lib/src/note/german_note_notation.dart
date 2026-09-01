@@ -14,10 +14,8 @@ final class GermanNoteNotation extends NoteNotation {
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNameNotation.regExp?.pattern}${accidentalNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNameNotation.pattern}${accidentalNotation.pattern}';
 
   @override
   Note parseMatch(RegExpMatch match) {

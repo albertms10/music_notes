@@ -38,11 +38,9 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '${noteNotation.regExp.pattern}(?:\\s+${tonalModeNotation.regExp.pattern})'
-    '${showMode ? '' : '?'}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '${noteNotation.pattern}(?:\\s+${tonalModeNotation.pattern})'
+      '${showMode ? '' : '?'}';
 
   @override
   Key parseMatch(RegExpMatch match) {

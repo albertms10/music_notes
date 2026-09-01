@@ -32,11 +32,9 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '(?!.*=)${noteNotation.regExp?.pattern}'
-    '(?<octave>-?\\d\\s+)?\\s*${frequencyNotation.regExp?.pattern}',
-    caseSensitive: false,
-  );
+  String get pattern =>
+      '(?!.*=)${noteNotation.pattern}'
+      '(?<octave>-?\\d\\s+)?\\s*${frequencyNotation.pattern}';
 
   @override
   TuningFork parseMatch(RegExpMatch match) {

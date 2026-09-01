@@ -23,11 +23,11 @@ class StandardIntervalNotation extends StringNotationSystem<Interval> {
   });
 
   @override
-  RegExp get regExp =>
+  String get pattern =>
       // TODO(albertms10): use `qualityNotation.regExp.pattern` when duplicated
       //  named capture groups are supported.
       //  See https://github.com/dart-lang/sdk/issues/61337.
-      RegExp('(?<quality>d+|P|m|M|A+?)\\s*${sizeNotation.regExp.pattern}');
+      '(?<quality>d+|P|m|M|A+?)\\s*${sizeNotation.pattern}';
 
   @override
   Interval parseMatch(RegExpMatch match) {
