@@ -258,7 +258,7 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.parse('m3') == .m3
-  /// Interval.parse('P-5') == -Interval.P5
+  /// Interval.parse('P-5') == .P5.descending
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(
@@ -339,7 +339,7 @@ final class Interval
   /// Interval.m3.inversion == .M6
   /// Interval.A4.inversion == .d5
   /// Interval.M7.inversion == .m2
-  /// (-Interval.P1).inversion == -Interval.P8
+  /// (-Interval.P1).inversion == .P8.descending
   /// ```
   ///
   /// If this [Interval.size] is greater than [.octave], the simplified
@@ -492,8 +492,8 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// -Interval.perfect(-Size.fifth) == .P5
-  /// -Interval.m3 == (-Size.third).minor
+  /// Interval.perfect(-Size.fifth).descending == .P5
+  /// Interval.m3.descending == (-Size.third).minor
   /// ```
   Interval operator -() => ._(-size, quality);
 

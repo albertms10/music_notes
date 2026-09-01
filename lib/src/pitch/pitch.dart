@@ -270,7 +270,7 @@ final class Pitch extends Scalable<Pitch>
   /// Example:
   /// ```dart
   /// Note.g.inOctave(4).transposeBy(.P5) == Note.d.inOctave(5)
-  /// Note.d.flat.inOctave(2).transposeBy(-Interval.M2)
+  /// Note.d.flat.inOctave(2).transposeBy(.M2.descending)
   ///   == Note.c.flat.inOctave(2)
   /// ```
   @override
@@ -294,7 +294,7 @@ final class Pitch extends Scalable<Pitch>
   /// ```dart
   /// Note.g.inOctave(4).interval(Note.d.inOctave(5)) == .P5
   /// Note.a.flat.inOctave(3).interval(Note.d.inOctave(4)) == .A4
-  /// Note.c.inOctave(5).interval(Note.b.inOctave(4)) == -Interval.m2
+  /// Note.c.inOctave(5).interval(Note.b.inOctave(4)) == .m2.descending
   /// ```
   @override
   Interval interval(Pitch other) {
