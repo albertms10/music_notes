@@ -63,5 +63,5 @@ final class PythagoreanTuning extends JustIntonation {
   }
 
   /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  num get pythagoreanComma => ratio(fork.pitch.transposeBy(-Interval.d2));
+  num get pythagoreanComma => ratio(fork.pitch.transposeBy(.d2.descending));
 }

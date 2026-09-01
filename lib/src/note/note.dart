@@ -471,7 +471,7 @@ extension NoteIterable on Iterable<Note> {
   Iterable<Interval> get closestSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       final interval = elementAt(i).interval(elementAt(i + 1));
-      yield interval >= .P5 ? interval + -Interval.m6 : interval;
+      yield interval >= .P5 ? interval - Interval.m6 : interval;
     }
   }
 

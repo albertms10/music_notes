@@ -93,7 +93,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
   /// Example:
   /// ```dart
   /// Note.c.major.scale.transposeBy(.m3) == Note.e.flat.major.scale
-  /// Note.f.sharp.minor.scale.transposeBy(-Interval.A4) == Note.c.minor.scale
+  /// Note.f.sharp.minor.scale.transposeBy(.A4.descending) == Note.c.minor.scale
   /// ```
   @override
   Scale<T> transposeBy(Interval interval) => Scale(
