@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import '../interval/interval.dart';
+import '../note/note.dart';
 import '../pitch/pitch.dart';
 import 'equal_temperament.dart';
 import 'just_intonation.dart';

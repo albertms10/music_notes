@@ -490,7 +490,7 @@ final class Pitch extends Scalable<Pitch>
 }
 
 /// A list of pitches extension.
-extension Pitches on List<Pitch> {
+extension PitchList on List<Pitch> {
   /// Moves the voice at [index] by [octaves] octaves (positive: up,
   /// negative: down), re-sorting the result.
   ///

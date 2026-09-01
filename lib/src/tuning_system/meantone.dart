@@ -1,6 +1,7 @@
 import 'package:music_notes/utils.dart';
 
 import '../cent/cent.dart';
+import '../note/note.dart';
 import '../pitch/pitch.dart';
 import 'just_intonation.dart';
 

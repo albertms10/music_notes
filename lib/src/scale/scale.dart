@@ -120,8 +120,8 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
   @override
   int get hashCode => Object.hash(
-    Object.hashAll(_degrees),
-    _descendingDegrees != null ? Object.hashAll(_descendingDegrees) : null,
+    .hashAll(_degrees),
+    _descendingDegrees != null ? .hashAll(_descendingDegrees) : null,
   );
 }
 

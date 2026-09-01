@@ -87,5 +87,5 @@ final class EqualTemperament extends TuningSystem {
       fork == other.fork;
 
   @override
-  int get hashCode => Object.hash(Object.hashAll(_steps), fork);
+  int get hashCode => Object.hash(.hashAll(_steps), fork);
 }
