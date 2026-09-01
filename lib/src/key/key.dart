@@ -119,7 +119,8 @@ final class Key implements Comparable<Key>, Formattable<Key> {
   /// The relationship is derived from two independent vectors:
   ///
   ///  * the fifths-distance between [note] and `other.note` (sharpward
-  ///    when positive, flatward when negative), from [Note.fifthsDistanceWith];
+  ///    when positive, flatward when negative), from
+  ///    [NoteCircleOfFifths.fifthsDistanceWith];
   ///  * the change in [Mode.brightness] between [mode] and `other.mode`
   ///    (brightening when positive, darkening when negative, zero when
   ///    the mode does not change).

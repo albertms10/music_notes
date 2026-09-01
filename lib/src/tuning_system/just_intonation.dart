@@ -4,6 +4,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import '../cent/cent.dart';
 import '../interval/interval.dart';
+import '../note/note.dart';
 import '../pitch/pitch.dart';
 import 'equal_temperament.dart';
 import 'tuning_system.dart';
