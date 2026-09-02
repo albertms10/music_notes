@@ -149,6 +149,103 @@ void main() {
       });
     });
 
+    group('.pitchClassRatioFrom()', () {
+      test('returns 1 for the origin (0 fifths, 0 thirds)', () {
+        expect(
+          const FiveLimitTuning().pitchClassRatioFrom(fifths: 0, thirds: 0),
+          1,
+        );
+      });
+
+      test('returns the pure fifth/third for a single step on each axis', () {
+        expect(
+          const FiveLimitTuning().pitchClassRatioFrom(fifths: 1, thirds: 0),
+          3 / 2,
+        );
+        expect(
+          const FiveLimitTuning().pitchClassRatioFrom(fifths: 0, thirds: 1),
+          5 / 4,
+        );
+      });
+
+      test('matches the coordinates .ratio() resolves to, for a pitch in '
+          'the fork’s own octave', () {
+        // F♯4 (distance 6) is a pitch in the same octave as the C4 fork,
+        // so no additional octave adjustment applies and .ratio() should
+        // equal the canonical path’s pitchClassRatioFrom() exactly.
+        expect(
+          const FiveLimitTuning().ratio(Note.f.sharp.inOctave(4)),
+          const FiveLimitTuning().pitchClassRatioFrom(fifths: 2, thirds: 1),
+        );
+      });
+    });
+
+    group('.pathsTo()', () {
+      test('every path satisfies fifths + 4 * thirds == fifthsDistance', () {
+        final paths = const FiveLimitTuning().pathsTo(
+          Note.f.sharp.inOctave(4),
+        );
+        for (final path in paths) {
+          expect(path.fifths + 4 * path.thirds, 6); // F♯ distance from C
+        }
+      });
+
+      test('exactly one path is canonical, and it matches .ratio()', () {
+        final pitch = Note.f.sharp.inOctave(4);
+        final paths = const FiveLimitTuning().pathsTo(pitch);
+        final canonical = paths.where((path) => path.isCanonical);
+
+        expect(canonical, hasLength(1));
+        expect(canonical.single.ratio, const FiveLimitTuning().ratio(pitch));
+      });
+
+      test('returns the two commonly-cited alternatives for F♯ (45/32 vs '
+          'the juster but fifths-heavier 25/18)', () {
+        final paths = const FiveLimitTuning().pathsTo(
+          Note.f.sharp.inOctave(4),
+        );
+
+        final conventional = paths.firstWhere(
+          (path) => path.thirds == 1 && path.fifths == 2,
+        );
+        expect(conventional.ratio, 45 / 32);
+        expect(conventional.isCanonical, isTrue);
+
+        final juster = paths.firstWhere(
+          (path) => path.thirds == 2 && path.fifths == -2,
+        );
+        expect(juster.ratio, closeTo(25 / 18, 1e-9));
+        expect(juster.isCanonical, isFalse);
+      });
+
+      test('adjacent paths differ by exactly the syntonic comma, away from '
+          'octave-fold boundaries', () {
+        // F♯ (distance 6): none of these paths cross an octave fold, so
+        // every step divides the ratio by exactly 81/80 as thirds
+        // increases by one.
+        final paths = const FiveLimitTuning().pathsTo(
+          Note.f.sharp.inOctave(4),
+        );
+        const comma = JustIntonation.syntonicCommaRatio;
+
+        for (var i = 1; i < paths.length; i++) {
+          expect(
+            paths[i - 1].ratio / paths[i].ratio,
+            closeTo(comma, 1e-9),
+            reason: 'thirds ${paths[i - 1].thirds} -> ${paths[i].thirds}',
+          );
+        }
+      });
+
+      test('respects a custom maxThirds window', () {
+        final paths = const FiveLimitTuning().pathsTo(
+          Note.c.inOctave(4),
+          maxThirds: 1,
+        );
+        expect(paths, hasLength(3)); // thirds in {-1, 0, 1}
+      });
+    });
+
     group('.generator', () {
       test('returns the pure ascending fifth, inherited from '
           'JustIntonation', () {

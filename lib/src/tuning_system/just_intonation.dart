@@ -45,7 +45,7 @@ abstract class JustIntonation extends TuningSystem {
   /// (e.g. `MeantoneTuning`) override this with their own tempered fifth.
   num get fifthRatio => ascendingFifthRatio;
 
-  /// The ratio of the ascending fourth, i.e. the octave complement of
+  /// The ratio of the ascending fourth, e.g., the octave complement of
   /// [fifthRatio] (a fourth and a fifth together span an octave).
   num get fourthRatio => 2 / fifthRatio;
 
@@ -76,7 +76,7 @@ abstract class JustIntonation extends TuningSystem {
     return ratio;
   }
 
-  /// Folds [ratio] into a single octave, i.e. `[1, 2)`.
+  /// Folds [ratio] into a single octave, e.g., `[1, 2)`.
   @protected
   num foldIntoOctave(num ratio) {
     var folded = ratio;
@@ -93,7 +93,7 @@ abstract class JustIntonation extends TuningSystem {
   /// Applies the correct octave transposition to [pitchClassRatio] for
   /// [pitch] relative to [fork].
   ///
-  /// [pitchClassRatio] is assumed to lie within `[1, 2)`, i.e. as if [pitch]
+  /// [pitchClassRatio] is assumed to lie within `[1, 2)`, e.g., as if [pitch]
   /// were in the same octave as [fork]. This method derives the real octave
   /// delta between [pitch] and [fork] from their real semitone distance,
   /// discounting the octave already embedded in [pitchClassRatio],
