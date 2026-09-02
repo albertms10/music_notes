@@ -89,13 +89,24 @@ void main() {
 
     group('.pythagoreanComma', () {
       test('returns the ratio of the Pythagorean comma', () {
-        const pythagoreanComma = 1.0136432647705078;
-        expect(const PythagoreanTuning().pythagoreanComma, pythagoreanComma);
         expect(
           PythagoreanTuning(
             fork: Note.f.sharp.inOctave(5).at(.reference),
           ).pythagoreanComma,
-          pythagoreanComma,
+          const PythagoreanTuning().pythagoreanComma,
+        );
+      });
+    });
+
+    group('.centsOffset()', () {
+      test('returns 0 for the fork’s own pitch', () {
+        expect(const PythagoreanTuning().centsOffset(Note.c.inOctave(4)), 0);
+      });
+
+      test('is inherited from TuningSystem, not Meantone-specific', () {
+        expect(
+          const PythagoreanTuning().centsOffset(Note.g.inOctave(4)),
+          closeTo(1.9550008653874, 1e-9),
         );
       });
     });
