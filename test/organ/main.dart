@@ -1,5 +1,5 @@
-import 'mixture_row_test.dart' as mixture_row_test;
+import 'pipe_row_test.dart' as pipe_row_test;
 
 void main() {
-  mixture_row_test.main();
+  pipe_row_test.main();
 }

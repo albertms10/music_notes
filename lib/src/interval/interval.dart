@@ -14,7 +14,7 @@ import '../quality/quality.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../size/size.dart';
-import '../tuning_system/just_intonation.dart';
+import '../tuning_system/pythagorean_tuning.dart';
 import '../tuning_system/tuning_system.dart';
 import 'german_interval_notation.dart';
 import 'standard_interval_notation.dart';

@@ -3,26 +3,26 @@ import 'package:music_notes/organ.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('MixtureRow', () {
+  group('PipeRow', () {
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(() => MixtureRow.parse('x'), throwsFormatException);
-        expect(() => MixtureRow.parse(' C2 1'), throwsFormatException);
+        expect(() => PipeRow.parse('x'), throwsFormatException);
+        expect(() => PipeRow.parse(' C2 1'), throwsFormatException);
       });
 
       test('parses a row', () {
-        final row = MixtureRow.parse('C2 1 1/3, 1, 2/3');
+        final row = PipeRow.parse('C2 1 1/3, 1, 2/3');
 
         expect(row.breakpoint, equals(Pitch.parse('C2')));
         expect(
-          row.rankFeet,
+          row.ranks,
           equals(const <Rational>[.fromMixed(1, 1, 3), .new(1), .new(2, 3)]),
         );
       });
 
       test('accepts whitespace around commas', () {
         expect(
-          MixtureRow.parse('C2 1 1/3,1,  2/3').rankFeet,
+          PipeRow.parse('C2 1 1/3,1,  2/3').ranks,
           equals(const <Rational>[.fromMixed(1, 1, 3), .new(1), .new(2, 3)]),
         );
       });
@@ -30,7 +30,7 @@ void main() {
 
     group('.format()', () {
       test('formats a row in parseable form', () {
-        const row = MixtureRow(
+        const row = PipeRow(
           Pitch(.c, octave: 2),
           [.fromMixed(1, 1, 3), .new(1), .new(2, 3)],
         );
@@ -47,8 +47,8 @@ void main() {
         ];
 
         for (final source in sources) {
-          final row = MixtureRow.parse(source);
-          expect(MixtureRow.parse(row.format()), equals(row));
+          final row = PipeRow.parse(source);
+          expect(PipeRow.parse(row.format()), equals(row));
         }
       });
     });
@@ -56,80 +56,85 @@ void main() {
     group('.ranks()', () {
       test('converts rank feet to intervals', () {
         expect(
-          MixtureRow.parse('C2 1 1/3, 1, 2/3').ranks,
+          PipeRow.parse('C2 1 1/3, 1, 2/3').rankIntervals,
           equals(<Interval>[
             .fromRatio(
-              (MixtureRow.referenceHeight / .parse('1 1/3')).toDouble(),
+              (PipeRow.referenceHeight / .parse('1 1/3')).toDouble(),
             ),
-            .fromRatio((MixtureRow.referenceHeight / .parse('1')).toDouble()),
             .fromRatio(
-              (MixtureRow.referenceHeight / .parse('2/3')).toDouble(),
+              (PipeRow.referenceHeight / .parse('1')).toDouble(),
+            ),
+            .fromRatio(
+              (PipeRow.referenceHeight / .parse('2/3')).toDouble(),
             ),
           ]),
         );
       });
 
       test('returns ranks in the same order as rankFeet', () {
-        final row = MixtureRow.parse('C2 1 1/3, 1, 2/3');
+        final row = PipeRow.parse('C2 1 1/3, 1, 2/3');
 
-        expect(row.ranks.length, equals(row.rankFeet.length));
+        expect(row.rankIntervals.length, equals(row.ranks.length));
 
-        for (var i = 0; i < row.ranks.length; i++) {
-          final expectedRatio = (MixtureRow.referenceHeight / row.rankFeet[i])
+        for (var i = 0; i < row.rankIntervals.length; i++) {
+          final expectedRatio = (PipeRow.referenceHeight / row.ranks[i])
               .toDouble();
 
-          expect(row.ranks[i], equals(Interval.fromRatio(expectedRatio)));
+          expect(
+            row.rankIntervals[i],
+            equals(Interval.fromRatio(expectedRatio)),
+          );
         }
       });
     });
 
     group('operator ==()', () {
       test('equal rows compare equal', () {
-        final a = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-        final b = MixtureRow.parse('C2 1 1/3, 1, 2/3');
+        final a = PipeRow.parse('C2 1 1/3, 1, 2/3');
+        final b = PipeRow.parse('C2 1 1/3, 1, 2/3');
 
         expect(a, equals(b));
       });
 
       test('rows with different breakpoints are not equal', () {
-        final a = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-        final b = MixtureRow.parse('C3 1 1/3, 1, 2/3');
+        final a = PipeRow.parse('C2 1 1/3, 1, 2/3');
+        final b = PipeRow.parse('C3 1 1/3, 1, 2/3');
 
         expect(a, isNot(equals(b)));
       });
 
       test('rows with different rank feet are not equal', () {
-        final a = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-        final b = MixtureRow.parse('C2 1 1/3, 1, 1/2');
+        final a = PipeRow.parse('C2 1 1/3, 1, 2/3');
+        final b = PipeRow.parse('C2 1 1/3, 1, 1/2');
 
         expect(a, isNot(equals(b)));
       });
 
       test('rank order matters', () {
-        final a = MixtureRow.parse('C2 1, 2/3');
-        final b = MixtureRow.parse('C2 2/3, 1');
+        final a = PipeRow.parse('C2 1, 2/3');
+        final b = PipeRow.parse('C2 2/3, 1');
 
         expect(a, isNot(equals(b)));
       });
 
       test('different number of ranks are not equal', () {
-        final a = MixtureRow.parse('C2 1, 2/3');
-        final b = MixtureRow.parse('C2 1');
+        final a = PipeRow.parse('C2 1, 2/3');
+        final b = PipeRow.parse('C2 1');
 
         expect(a, isNot(equals(b)));
       });
 
       test('equality is symmetric', () {
-        final a = MixtureRow.parse('C2 1 1/3, 1, 2/3');
-        final b = MixtureRow.parse('C2 1 1/3, 1, 2/3');
+        final a = PipeRow.parse('C2 1 1/3, 1, 2/3');
+        final b = PipeRow.parse('C2 1 1/3, 1, 2/3');
 
         expect(a == b, equals(b == a));
       });
 
       test('equal rows behave as a single Set element', () {
         final rows = {
-          MixtureRow.parse('C2 1, 2/3'),
-          MixtureRow.parse('C2 1, 2/3'),
+          PipeRow.parse('C2 1, 2/3'),
+          PipeRow.parse('C2 1, 2/3'),
         };
 
         expect(rows, hasLength(1));
@@ -139,17 +144,17 @@ void main() {
     group('.hashCode', () {
       test('equal rows have equal hash codes', () {
         expect(
-          MixtureRow.parse('C2 1 1/3, 1, 2/3').hashCode,
-          equals(MixtureRow.parse('C2 1 1/3, 1, 2/3').hashCode),
+          PipeRow.parse('C2 1 1/3, 1, 2/3').hashCode,
+          equals(PipeRow.parse('C2 1 1/3, 1, 2/3').hashCode),
         );
       });
     });
   });
 
-  group('MixtureDisposition', () {
+  group('StopDisposition', () {
     group('.parse()', () {
       test('parses multiple rows', () {
-        final rows = MixtureDisposition.parse('''
+        final rows = StopDisposition.parse('''
 C2 1 1/3, 1, 2/3
 C3 2 2/3, 2, 1 1/3, 1
 C4 4, 2 2/3, 2, 1 1/3
@@ -164,7 +169,7 @@ C5 5 1/3, 4, 2 2/3, 2
       });
 
       test('ignores empty lines', () {
-        final rows = MixtureDisposition.parse('''
+        final rows = StopDisposition.parse('''
 
 C2 1 1/3, 1, 2/3
 
@@ -182,12 +187,12 @@ C3 2 2/3, 2, 1 1/3, 1
 C4 4, 2 2/3, 2, 1 1/3
 C5 5 1/3, 4, 2 2/3, 2''';
 
-        expect(MixtureDisposition.parse(source).format(), equals(source));
+        expect(StopDisposition.parse(source).format(), equals(source));
       });
     });
 
     group('.rowFor()', () {
-      final rows = MixtureDisposition.parse('''
+      final rows = StopDisposition.parse('''
 C2 1 1/3, 1, 2/3
 C3 2 2/3, 2, 1 1/3, 1
 C4 4, 2 2/3, 2, 1 1/3
