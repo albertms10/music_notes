@@ -4,6 +4,7 @@
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
+import '../cent/cent.dart';
 import '../comparators.dart';
 import '../enharmonic.dart';
 import '../interval_class/interval_class.dart';
@@ -13,6 +14,8 @@ import '../quality/quality.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../size/size.dart';
+import '../tuning_system/pythagorean_tuning.dart';
+import '../tuning_system/tuning_system.dart';
 import 'german_interval_notation.dart';
 import 'standard_interval_notation.dart';
 
@@ -247,6 +250,18 @@ final class Interval
   factory Interval.fromSemitones(int semitones) =>
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
+  /// Creates a new [Interval] from a ratio.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.fromRatio(1) == .P1
+  /// Interval.fromRatio(3 / 2) == .P5
+  /// Interval.fromRatio(2) == .P8
+  /// ```
+  factory Interval.fromRatio(num ratio) => .fromSemitones(
+    (Cent.fromRatio(ratio) / Cent.divisionsPerSemitone).round(),
+  );
+
   /// The chain of [StringParser]s used to parse an [Interval].
   static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
 
@@ -441,6 +456,22 @@ final class Interval
   /// ```
   @override
   IntervalClass toClass() => IntervalClass(semitones);
+
+  /// The ratio that represents this [Interval] based on [tuningSystem].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P1.ratio() == 1
+  /// Interval.P4.ratio() == 4 / 3
+  /// Interval.P5.ratio() == 3 / 2
+  /// Interval.P8.ratio() == 2
+  ///
+  /// const edo12 = EqualTemperament.edo12();
+  /// Interval.P5.ratio(tuningSystem: edo12) == 1.4983070768766815
+  /// ```
+  num ratio({
+    TuningSystem tuningSystem = const PythagoreanTuning(),
+  }) => tuningSystem.ratio(tuningSystem.fork.pitch.transposeBy(this));
 
   /// The string representation of this [Interval] based on [formatter].
   ///
