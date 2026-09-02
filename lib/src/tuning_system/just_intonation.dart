@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 
+import 'package:meta/meta.dart' show protected;
+
 import '../cent/cent.dart';
 import '../interval/interval.dart';
 import '../note/note.dart';
@@ -58,14 +60,23 @@ abstract class JustIntonation extends TuningSystem {
       if (ratio >= 2) ratio /= 2;
     }
 
-    // `ratio` is the pitch-class ratio, always within [1, 2), e.g., as if
-    // [pitch] were in the same octave as [fork]. The actual octave delta
-    // between [pitch] and [fork] is derived (with its sign) from their real
-    // semitone distance, discounting the octave already embedded in `ratio`.
+    return octaveAdjustedRatio(pitch, ratio);
+  }
+
+  /// Applies the correct octave transposition to [pitchClassRatio] for
+  /// [pitch] relative to [fork].
+  ///
+  /// [pitchClassRatio] is assumed to lie within `[1, 2)`, i.e. as if [pitch]
+  /// were in the same octave as [fork]. This method derives the real octave
+  /// delta between [pitch] and [fork] from their real semitone distance,
+  /// discounting the octave already embedded in [pitchClassRatio],
+  /// and scales it accordingly.
+  @protected
+  num octaveAdjustedRatio(Pitch pitch, num pitchClassRatio) {
     final realCents = fork.pitch.difference(pitch) * Cent.divisionsPerSemitone;
-    final chainCents = Cent.fromRatio(ratio);
+    final chainCents = Cent.fromRatio(pitchClassRatio);
     final octaveDelta = ((realCents - chainCents) / Cent.octave).round();
 
-    return ratio * math.pow(2, octaveDelta);
+    return pitchClassRatio * math.pow(2, octaveDelta);
   }
 }

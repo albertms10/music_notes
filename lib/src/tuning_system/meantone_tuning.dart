@@ -1,17 +1,16 @@
 import 'package:music_notes/utils.dart';
 
 import '../cent/cent.dart';
-import '../pitch/pitch.dart';
 import 'just_intonation.dart';
 
 /// A general Meantone temperament tuning system.
 /// Can handle any fraction of the syntonic comma (m/n).
 class MeantoneTuning extends JustIntonation {
-  /// The comma ratio.
-  final Rational rational;
+  /// The fraction of the syntonic comma tempered out of each fifth.
+  final Rational commaFraction;
 
   /// Creates a new [MeantoneTuning] tuning system.
-  const MeantoneTuning(this.rational, {super.fork = .c256});
+  const MeantoneTuning(this.commaFraction, {super.fork = .c256});
 
   /// Meantone tuning with fifth-comma temperament (1/5).
   static const fifth = MeantoneTuning(Rational(1, 5));
@@ -30,7 +29,8 @@ class MeantoneTuning extends JustIntonation {
 
   /// Fifth adjustment in cents: -(m / n) * comma
   double get _perFifthAdjustment =>
-      -Cent.fromRatio(JustIntonation.syntonicCommaRatio) * rational.toDouble();
+      -Cent.fromRatio(JustIntonation.syntonicCommaRatio) *
+      commaFraction.toDouble();
 
   @override
   num get fifthRatio =>
@@ -38,22 +38,4 @@ class MeantoneTuning extends JustIntonation {
 
   @override
   Cent get generator => .fromRatio(ratio(fork.pitch.transposeBy(.P5)));
-
-  /// Return the cents offset relative to equal temperament
-  num centsOffset(Pitch pitch) {
-    final equalCents = Cent(
-      fork.pitch.interval(pitch).semitones * Cent.divisionsPerSemitone,
-    );
-    final actualCents = Cent.fromRatio(ratio(pitch));
-
-    return _normalizeCents(Cent(actualCents - equalCents));
-  }
-
-  num _normalizeCents(Cent cents) {
-    var normalized = cents % Cent.octave;
-    if (normalized > Cent.octave / 2) normalized -= Cent.octave;
-    if (normalized < -Cent.octave / 2) normalized += Cent.octave;
-
-    return normalized;
-  }
 }
