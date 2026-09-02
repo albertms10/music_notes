@@ -256,22 +256,20 @@ void main() {
     });
 
     group('.isEnharmonicWith()', () {
-      test(
-        'returns whether this Note is enharmonically equivalent to other',
-        () {
-          expect(Note.c.sharp.isEnharmonicWith(Note.d.flat), isTrue);
-          expect(Note.b.isEnharmonicWith(Note.c.flat), isTrue);
-          expect(Note.b.sharp.isEnharmonicWith(Note.c), isTrue);
-          expect(Note.e.isEnharmonicWith(Note.f.flat), isTrue);
-          expect(Note.e.sharp.isEnharmonicWith(Note.f), isTrue);
-          expect(Note.e.sharp.sharp.isEnharmonicWith(Note.g.flat), isTrue);
-          expect(Note.a.flat.flat.isEnharmonicWith(Note.f.sharp.sharp), isTrue);
+      test('returns whether this Note is enharmonically equivalent to '
+          'other', () {
+        expect(Note.c.sharp.isEnharmonicWith(Note.d.flat), isTrue);
+        expect(Note.b.isEnharmonicWith(Note.c.flat), isTrue);
+        expect(Note.b.sharp.isEnharmonicWith(Note.c), isTrue);
+        expect(Note.e.isEnharmonicWith(Note.f.flat), isTrue);
+        expect(Note.e.sharp.isEnharmonicWith(Note.f), isTrue);
+        expect(Note.e.sharp.sharp.isEnharmonicWith(Note.g.flat), isTrue);
+        expect(Note.a.flat.flat.isEnharmonicWith(Note.f.sharp.sharp), isTrue);
 
-          expect(Note.c.isEnharmonicWith(Note.b), isFalse);
-          expect(Note.f.isEnharmonicWith(Note.g), isFalse);
-          expect(Note.a.isEnharmonicWith(Note.d.sharp), isFalse);
-        },
-      );
+        expect(Note.c.isEnharmonicWith(Note.b), isFalse);
+        expect(Note.f.isEnharmonicWith(Note.g), isFalse);
+        expect(Note.a.isEnharmonicWith(Note.d.sharp), isFalse);
+      });
     });
 
     group('.splitCircleOfFifths', () {

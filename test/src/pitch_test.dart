@@ -19,27 +19,25 @@ void main() {
     });
 
     group('.octaveFromSemitones', () {
-      test(
-        'returns the octave that corresponds to the semitones from root height',
-        () {
-          expect(Pitch.octaveFromSemitones(-37), -4);
-          expect(Pitch.octaveFromSemitones(-36), -3);
-          expect(Pitch.octaveFromSemitones(-25), -3);
-          expect(Pitch.octaveFromSemitones(-24), -2);
-          expect(Pitch.octaveFromSemitones(-23), -2);
-          expect(Pitch.octaveFromSemitones(-12), -1);
-          expect(Pitch.octaveFromSemitones(-11), -1);
-          expect(Pitch.octaveFromSemitones(-1), -1);
-          expect(Pitch.octaveFromSemitones(0), 0); // root C
-          expect(Pitch.octaveFromSemitones(1), 0);
-          expect(Pitch.octaveFromSemitones(11), 0);
-          expect(Pitch.octaveFromSemitones(12), 1);
-          expect(Pitch.octaveFromSemitones(13), 1);
-          expect(Pitch.octaveFromSemitones(24), 2);
-          expect(Pitch.octaveFromSemitones(34), 2);
-          expect(Pitch.octaveFromSemitones(58), 4);
-        },
-      );
+      test('returns the octave that corresponds to the semitones from '
+          'root height', () {
+        expect(Pitch.octaveFromSemitones(-37), -4);
+        expect(Pitch.octaveFromSemitones(-36), -3);
+        expect(Pitch.octaveFromSemitones(-25), -3);
+        expect(Pitch.octaveFromSemitones(-24), -2);
+        expect(Pitch.octaveFromSemitones(-23), -2);
+        expect(Pitch.octaveFromSemitones(-12), -1);
+        expect(Pitch.octaveFromSemitones(-11), -1);
+        expect(Pitch.octaveFromSemitones(-1), -1);
+        expect(Pitch.octaveFromSemitones(0), 0); // root C
+        expect(Pitch.octaveFromSemitones(1), 0);
+        expect(Pitch.octaveFromSemitones(11), 0);
+        expect(Pitch.octaveFromSemitones(12), 1);
+        expect(Pitch.octaveFromSemitones(13), 1);
+        expect(Pitch.octaveFromSemitones(24), 2);
+        expect(Pitch.octaveFromSemitones(34), 2);
+        expect(Pitch.octaveFromSemitones(58), 4);
+      });
     });
 
     group('.semitones', () {
@@ -739,31 +737,29 @@ void main() {
     });
 
     group('.isEnharmonicWith()', () {
-      test(
-        'returns whether this Pitch is enharmonically equivalent to other',
-        () {
-          expect(
-            Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)),
-            isTrue,
-          );
-          expect(
-            Note.a.sharp.inOctave(4).isEnharmonicWith(Note.b.flat.inOctave(4)),
-            isTrue,
-          );
-          expect(
-            Note.a.inOctave(2).isEnharmonicWith(Note.b.flat.inOctave(4)),
-            isFalse,
-          );
-          expect(
-            Note.e.flat.inOctave(-1).isEnharmonicWith(Note.e.flat.inOctave(3)),
-            isFalse,
-          );
-          expect(
-            Note.b.sharp.inOctave(3).isEnharmonicWith(Note.c.inOctave(4)),
-            isTrue,
-          );
-        },
-      );
+      test('returns whether this Pitch is enharmonically equivalent to '
+          'other', () {
+        expect(
+          Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)),
+          isTrue,
+        );
+        expect(
+          Note.a.sharp.inOctave(4).isEnharmonicWith(Note.b.flat.inOctave(4)),
+          isTrue,
+        );
+        expect(
+          Note.a.inOctave(2).isEnharmonicWith(Note.b.flat.inOctave(4)),
+          isFalse,
+        );
+        expect(
+          Note.e.flat.inOctave(-1).isEnharmonicWith(Note.e.flat.inOctave(3)),
+          isFalse,
+        );
+        expect(
+          Note.b.sharp.inOctave(3).isEnharmonicWith(Note.c.inOctave(4)),
+          isTrue,
+        );
+      });
     });
 
     group('.frequency()', () {

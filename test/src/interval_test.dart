@@ -930,18 +930,16 @@ void main() {
     });
 
     group('operator <=()', () {
-      test(
-        'returns whether this Interval is smaller than or equal to other',
-        () {
-          expect(Interval.P1 <= .M3, isTrue);
-          expect(Interval.d8 <= .d8, isTrue);
-          expect(-Interval.m6 <= .d5, isTrue);
-          expect(-Interval.A4 <= .d5, isTrue);
+      test('returns whether this Interval is smaller than or equal to '
+          'other', () {
+        expect(Interval.P1 <= .M3, isTrue);
+        expect(Interval.d8 <= .d8, isTrue);
+        expect(-Interval.m6 <= .d5, isTrue);
+        expect(-Interval.A4 <= .d5, isTrue);
 
-          expect(Interval.m3 <= .m2, isFalse);
-          expect(Interval.m2 <= -Interval.A4, isFalse);
-        },
-      );
+        expect(Interval.m3 <= .m2, isFalse);
+        expect(Interval.m2 <= -Interval.A4, isFalse);
+      });
     });
 
     group('operator >()', () {
@@ -957,19 +955,17 @@ void main() {
     });
 
     group('operator >=()', () {
-      test(
-        'returns whether this Interval is larger than or equal to other',
-        () {
-          expect(Interval.M3 >= .m2, isTrue);
-          expect(Interval.P4 >= .P4, isTrue);
-          expect(Interval.d8 >= .m7, isTrue);
-          expect(Interval.A5 >= -Interval.m6, isTrue);
+      test('returns whether this Interval is larger than or equal to '
+          'other', () {
+        expect(Interval.M3 >= .m2, isTrue);
+        expect(Interval.P4 >= .P4, isTrue);
+        expect(Interval.d8 >= .m7, isTrue);
+        expect(Interval.A5 >= -Interval.m6, isTrue);
 
-          expect(Interval.m2 >= .m3, isFalse);
-          expect(-Interval.A1 >= .m3, isFalse);
-          expect(-Interval.P5 >= .M2, isFalse);
-        },
-      );
+        expect(Interval.m2 >= .m3, isFalse);
+        expect(-Interval.A1 >= .m3, isFalse);
+        expect(-Interval.P5 >= .M2, isFalse);
+      });
     });
 
     group('.hashCode', () {
