@@ -9,48 +9,72 @@ void main() {
       });
 
       test('returns the 5-limit ratio for the diatonic notes', () {
-        expect(const FiveLimitTuning().ratio(Note.d.inOctave(4)), 9 / 8);
-        expect(const FiveLimitTuning().ratio(Note.e.inOctave(4)), 5 / 4);
-        expect(const FiveLimitTuning().ratio(Note.f.inOctave(4)), 4 / 3);
-        expect(const FiveLimitTuning().ratio(Note.g.inOctave(4)), 3 / 2);
-        expect(const FiveLimitTuning().ratio(Note.a.inOctave(4)), 5 / 3);
-        expect(const FiveLimitTuning().ratio(Note.b.inOctave(4)), 15 / 8);
+        expect(
+          const FiveLimitTuning().ratio(Note.d.inOctave(4)),
+          closeTo(9 / 8, 1e-12),
+        );
+        expect(
+          const FiveLimitTuning().ratio(Note.e.inOctave(4)),
+          closeTo(5 / 4, 1e-12),
+        );
+        expect(
+          const FiveLimitTuning().ratio(Note.f.inOctave(4)),
+          closeTo(4 / 3, 1e-12),
+        );
+        expect(
+          const FiveLimitTuning().ratio(Note.g.inOctave(4)),
+          closeTo(3 / 2, 1e-12),
+        );
+        expect(
+          const FiveLimitTuning().ratio(Note.a.inOctave(4)),
+          closeTo(5 / 3, 1e-12),
+        );
+        expect(
+          const FiveLimitTuning().ratio(Note.b.inOctave(4)),
+          closeTo(15 / 8, 1e-12),
+        );
       });
 
       test('returns the 5-limit ratio for the chromatic notes', () {
         expect(
           const FiveLimitTuning().ratio(Note.c.sharp.inOctave(4)),
-          135 / 128,
+          closeTo(25 / 24, 1e-12),
         );
         expect(
           const FiveLimitTuning().ratio(Note.d.flat.inOctave(4)),
-          16 / 15,
+          closeTo(16 / 15, 1e-12),
         );
         expect(
           const FiveLimitTuning().ratio(Note.d.sharp.inOctave(4)),
-          75 / 64,
+          closeTo(75 / 64, 1e-12),
         );
-        expect(const FiveLimitTuning().ratio(Note.e.flat.inOctave(4)), 6 / 5);
+        expect(
+          const FiveLimitTuning().ratio(Note.e.flat.inOctave(4)),
+          closeTo(6 / 5, 1e-12),
+        );
         expect(
           const FiveLimitTuning().ratio(Note.f.sharp.inOctave(4)),
-          45 / 32,
+          closeTo(45 / 32, 1e-12),
         );
         expect(
           const FiveLimitTuning().ratio(Note.g.flat.inOctave(4)),
-          64 / 45,
+          closeTo(64 / 45, 1e-12),
         );
         expect(
           const FiveLimitTuning().ratio(Note.g.sharp.inOctave(4)),
-          25 / 16,
+          closeTo(25 / 16, 1e-12),
         );
-        expect(const FiveLimitTuning().ratio(Note.a.flat.inOctave(4)), 8 / 5);
+        expect(
+          const FiveLimitTuning().ratio(Note.a.flat.inOctave(4)),
+          closeTo(8 / 5, 1e-12),
+        );
         expect(
           const FiveLimitTuning().ratio(Note.a.sharp.inOctave(4)),
-          225 / 128,
+          closeTo(225 / 128, 1e-12),
         );
         expect(
           const FiveLimitTuning().ratio(Note.b.flat.inOctave(4)),
-          16 / 9,
+          closeTo(16 / 9, 1e-12),
         );
       });
 
@@ -88,14 +112,39 @@ void main() {
         expect(const FiveLimitTuning().ratio(Note.g.inOctave(3)), 0.75);
       });
 
-      test('throws for notes outside the standard 12-note chromatic set', () {
+      test('computes ratios for notes outside the standard 12, unlike a '
+          'fixed lookup table', () {
+        // F𝄪 (double sharp, distance 13): 3 ascending thirds and 1
+        // ascending fifth, landing in the same octave as the fork.
         expect(
-          () => const FiveLimitTuning().ratio(Note.c.flat.inOctave(4)),
-          throwsUnsupportedError,
+          const FiveLimitTuning().ratio(Note.f.sharp.sharp.inOctave(4)),
+          closeTo(375 / 256, 1e-12),
+        );
+      });
+
+      test('respects real octave placement even when it crosses a letter '
+          'boundary', () {
+        // C♭ ’s accidental pushes its real pitch height *below* its
+        // letter’s octave: C♭4 is enharmonically B3 (see
+        // Pitch.respelledSimple’s doc comment). Its 5-limit pitch class,
+        // 48/25 (2 descending thirds + 1 ascending fifth), therefore gets
+        // folded down by one octave to land where C♭4 really sits: just
+        // under the C4 fork, not almost an octave above it.
+        expect(
+          const FiveLimitTuning().ratio(Note.c.flat.inOctave(4)),
+          closeTo(24 / 25, 1e-9),
         );
         expect(
-          () => const FiveLimitTuning().ratio(Note.f.sharp.sharp.inOctave(4)),
-          throwsUnsupportedError,
+          const FiveLimitTuning().ratio(Note.c.flat.inOctave(4)),
+          lessThan(1),
+        );
+      });
+
+      test('prefers the fewest fifths, matching the “asymmetric scale” '
+          'convention for C♯ (25/24, not the also-common 135/128)', () {
+        expect(
+          const FiveLimitTuning().ratio(Note.c.sharp.inOctave(4)),
+          closeTo(25 / 24, 1e-12),
         );
       });
     });
