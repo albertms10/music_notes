@@ -1,23 +1,19 @@
 import 'dart:math' as math;
 
-import 'package:meta/meta.dart' show immutable;
-
 import '../cent/cent.dart';
 import '../interval/interval.dart';
 import '../note/note.dart';
 import '../pitch/pitch.dart';
-import 'equal_temperament.dart';
 import 'tuning_system.dart';
 
-/// A representation of a just tuning formatter.
+/// A representation of a just tuning.
 ///
 /// See [Just intonation](https://en.wikipedia.org/wiki/Just_intonation).
 ///
 /// ---
 /// See also:
 /// * [TuningSystem].
-@immutable
-sealed class JustIntonation extends TuningSystem {
+abstract class JustIntonation extends TuningSystem {
   /// Creates a new [JustIntonation] from [fork].
   const JustIntonation({super.fork = .c256});
 
@@ -29,39 +25,47 @@ sealed class JustIntonation extends TuningSystem {
 
   /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma)
   /// (a.k.a. Didymean comma).
-  static const syntonicComma = (81 / 64) / (5 / 4);
+  static const syntonicCommaRatio = (81 / 64) / (5 / 4);
+
+  /// The number of [Cent] for the generator at [Interval.P5].
+  ///
+  /// ---
+  /// * See [TuningSystem.generator].
+  static final generatorCents = Cent.fromRatio(ascendingFifthRatio);
 
   @override
-  Cent get generator => .fromRatio(ascendingFifthRatio);
-}
+  Cent get generator => generatorCents;
 
-/// A representation of the three-limit (a.k.a. Pythagorean) tuning formatter.
-///
-/// See [Pythagorean tuning](https://en.wikipedia.org/wiki/Pythagorean_tuning).
-@immutable
-final class PythagoreanTuning extends JustIntonation {
-  /// Creates a new [PythagoreanTuning] from [fork].
-  const PythagoreanTuning({super.fork});
+  /// The ratio of the ascending fifth used to build up the chain of fifths
+  /// in this [JustIntonation] system.
+  ///
+  /// Defaults to the pure [ascendingFifthRatio] (3/2). Tempered subclasses
+  /// (e.g. `MeantoneTuning`) override this with their own tempered fifth.
+  num get fifthRatio => ascendingFifthRatio;
+
+  /// The ratio of the ascending fourth, i.e. the octave complement of
+  /// [fifthRatio] (a fourth and a fifth together span an octave).
+  num get fourthRatio => 2 / fifthRatio;
 
   @override
   num ratio(Pitch pitch) {
     final distance = fork.pitch.note.fifthsDistanceWith(pitch.note);
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
-      ratio *= distance.isNegative
-          ? JustIntonation.ascendingFourthRatio
-          : JustIntonation.ascendingFifthRatio;
+      ratio *= distance.isNegative ? fourthRatio : fifthRatio;
       // When ratio is greater than 2, so greater than [Size.octave],
       // divide by 2 to transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
 
-    final octaveDelta =
-        pitch.interval(fork.pitch).semitones.abs() ~/ chromaticDivisions;
+    // `ratio` is the pitch-class ratio, always within [1, 2), e.g., as if
+    // [pitch] were in the same octave as [fork]. The actual octave delta
+    // between [pitch] and [fork] is derived (with its sign) from their real
+    // semitone distance, discounting the octave already embedded in `ratio`.
+    final realCents = fork.pitch.difference(pitch) * Cent.divisionsPerSemitone;
+    final chainCents = Cent.fromRatio(ratio);
+    final octaveDelta = ((realCents - chainCents) / Cent.octave).round();
 
     return ratio * math.pow(2, octaveDelta);
   }
-
-  /// See [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma).
-  num get pythagoreanComma => ratio(fork.pitch.transposeBy(.d2.descending));
 }

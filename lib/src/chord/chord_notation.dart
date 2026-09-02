@@ -90,7 +90,7 @@ final class ChordNotation extends StringNotationSystem<Chord> {
   ///
   /// Delegates to [Chord.rootPosition] (which itself relies on
   /// [ChordPattern.inversion]) for genuine inversions (e.g. `C/E`). When
-  /// [chord]'s own bass is foreign to its [Chord.pattern], i.e. an added
+  /// [chord]'s own bass is foreign to its [Chord.pattern], e.g., an added
   /// bass rather than an inverted tone (e.g. `C/D`), [Chord.rootPosition]
   /// throws, and the bass is set aside so the remaining tones can be
   /// formatted on their own instead.
