@@ -1,7 +1,6 @@
 import 'package:music_notes/utils.dart';
 
 import '../cent/cent.dart';
-import '../note/note.dart';
 import '../pitch/pitch.dart';
 import 'just_intonation.dart';
 
@@ -29,6 +28,17 @@ class MeantoneTuning extends JustIntonation {
   /// Meantone tuning with half-comma temperament (1/2).
   static const half = MeantoneTuning(Rational(1, 2));
 
+  /// Fifth adjustment in cents: -(m / n) * comma
+  double get _perFifthAdjustment =>
+      -Cent.fromRatio(JustIntonation.syntonicCommaRatio) * rational.toDouble();
+
+  @override
+  num get fifthRatio =>
+      Cent(JustIntonation.generatorCents + _perFifthAdjustment).ratio;
+
+  @override
+  Cent get generator => .fromRatio(ratio(fork.pitch.transposeBy(.P5)));
+
   /// Return the cents offset relative to equal temperament
   num centsOffset(Pitch pitch) {
     final equalCents = Cent(
@@ -46,17 +56,4 @@ class MeantoneTuning extends JustIntonation {
 
     return normalized;
   }
-
-  /// Fifth adjustment in cents: -(m / n) * comma
-  double get _perFifthAdjustment =>
-      -Cent.fromRatio(JustIntonation.syntonicCommaRatio) * rational.toDouble();
-
-  @override
-  num ratio(Pitch pitch) => Cent(
-    fork.pitch.note.fifthsDistanceWith(pitch.note) *
-        (JustIntonation.generatorCents + _perFifthAdjustment),
-  ).ratio;
-
-  @override
-  Cent get generator => .fromRatio(ratio(fork.pitch.transposeBy(.P5)));
 }

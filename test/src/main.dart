@@ -19,6 +19,7 @@ import 'note_name_test.dart' as note_name_test;
 import 'note_test.dart' as note_test;
 import 'pitch_class_test.dart' as pitch_class_test;
 import 'pitch_test.dart' as pitch_test;
+import 'pythagorean_tuning_test.dart' as pythagorean_tuning_test;
 import 'quality_test.dart' as quality_test;
 import 'scalable_test.dart' as scalable_test;
 import 'scale_degree_test.dart' as scale_degree_test;
@@ -49,6 +50,7 @@ void main() {
   note_test.main();
   pitch_class_test.main();
   pitch_test.main();
+  pythagorean_tuning_test.main();
   quality_test.main();
   scalable_test.main();
   scale_degree_test.main();
