@@ -54,19 +54,17 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'returns the verbose string representation of this ScaleDegree',
-        () {
-          expect(
-            ScaleDegree.iii.toString(),
-            'ScaleDegree(ordinal: 3, accidental: Accidental(semitones: 0))',
-          );
-          expect(
-            ScaleDegree.vi.lowered.toString(),
-            'ScaleDegree(ordinal: 6, accidental: Accidental(semitones: -1))',
-          );
-        },
-      );
+      test('returns the verbose string representation of this '
+          'ScaleDegree', () {
+        expect(
+          ScaleDegree.iii.toString(),
+          'ScaleDegree(ordinal: 3, accidental: Accidental(semitones: 0))',
+        );
+        expect(
+          ScaleDegree.vi.lowered.toString(),
+          'ScaleDegree(ordinal: 6, accidental: Accidental(semitones: -1))',
+        );
+      });
     });
 
     group('.hashCode', () {

@@ -193,7 +193,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// Example:
   /// ```dart
   /// PitchClass.c.transposeBy(.tritone) == .fSharp
-  /// PitchClass.a.transposeBy(-Interval.M2) == .g
+  /// PitchClass.a.transposeBy(.M2.descending) == .g
   /// ```
   @override
   // TODO(albertms10): expect [IntervalClass]. See #248.

@@ -181,29 +181,24 @@ void main() {
         );
       });
 
-      test(
-        'sorts the resulting Intervals even for compound (extended) chords',
-        () {
-          expect(
-            ChordPattern.majorTriad.add7().add9().inverted,
-            const ChordPattern([.m3, .d5, .m6, .m7]),
-          );
-        },
-      );
+      test('sorts the resulting Intervals even for compound (extended) '
+          'chords', () {
+        expect(
+          ChordPattern.majorTriad.add7().add9().inverted,
+          const ChordPattern([.m3, .d5, .m6, .m7]),
+        );
+      });
 
       test('is a no-op for a rootless (single-note) ChordPattern', () {
         expect(const ChordPattern([]).inverted, const ChordPattern([]));
       });
 
-      test(
-        'is unaffected by the order in which the Intervals were given',
-        () {
-          expect(
-            const ChordPattern([.P5, .M3]).inverted,
-            ChordPattern.majorTriad.inverted,
-          );
-        },
-      );
+      test('is unaffected by the order in which the Intervals were given', () {
+        expect(
+          const ChordPattern([.P5, .M3]).inverted,
+          ChordPattern.majorTriad.inverted,
+        );
+      });
     });
 
     group('.inversion', () {
@@ -235,15 +230,13 @@ void main() {
         expect(const ChordPattern([.A2, .A4, .M6]).inversion, 3);
       });
 
-      test(
-        'throws a StateError for a non-tertian (e.g. quartal) ChordPattern',
-        () {
-          expect(
-            () => const ChordPattern([.P4, .P5]).inversion,
-            throwsStateError,
-          );
-        },
-      );
+      test('throws a StateError for a non-tertian (e.g. quartal) '
+          'ChordPattern', () {
+        expect(
+          () => const ChordPattern([.P4, .P5]).inversion,
+          throwsStateError,
+        );
+      });
     });
 
     group('.augmented', () {
@@ -459,28 +452,26 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'returns the verbose string representation of this ChordPattern',
-        () {
-          expect(
-            ChordPattern.majorTriad.toString(),
-            '''
+      test('returns the verbose string representation of this '
+          'ChordPattern', () {
+        expect(
+          ChordPattern.majorTriad.toString(),
+          '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0))
 ])''',
-          );
-          expect(
-            ChordPattern.minorTriad.add7(.major).toString(),
-            '''
+        );
+        expect(
+          ChordPattern.minorTriad.add7(.major).toString(),
+          '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 0)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0)),
 \tInterval(size: 7, quality: ImperfectQuality(semitones: 1))
 ])''',
-          );
-        },
-      );
+        );
+      });
     });
 
     group('.hashCode', () {

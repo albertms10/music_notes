@@ -219,7 +219,7 @@ final class ChordPattern
   /// to `_noteCount - 1`.
   ///
   /// The result is obtained by repeatedly applying [inverted] until an
-  /// uninterrupted stack of thirds, i.e. root position (see
+  /// uninterrupted stack of thirds, e.g., root position (see
   /// [isRootPosition]) is reached, then working back from how many
   /// rotations that took. Since chord inversion is only a meaningful
   /// concept for chords stacked in thirds, calling this on a non-tertian

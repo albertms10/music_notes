@@ -44,4 +44,33 @@ abstract class TuningSystem {
   /// pt.ratio(Note.f.inOctave(4)) == 4 / 3
   /// ```
   num ratio(Pitch pitch);
+
+  /// The deviation in [Cent] of [pitch] in this [TuningSystem] from its
+  /// 12-tone equal temperament counterpart.
+  ///
+  /// A positive value means [pitch] is sharper than 12-EDO; a negative
+  /// value means it’s flatter. The result always falls within `±600` cents.
+  ///
+  /// Example:
+  /// ```dart
+  /// Meantone.quarter.centsOffset(Note.g.inOctave(4)) == const Cent(-3.42)
+  /// const EqualTemperament.edo12().centsOffset(Note.g.inOctave(4))
+  ///   == const Cent(0)
+  /// ```
+  num centsOffset(Pitch pitch) {
+    final equalCents = Cent(
+      fork.pitch.interval(pitch).semitones * Cent.divisionsPerSemitone,
+    );
+    final actualCents = Cent.fromRatio(ratio(pitch));
+
+    return _normalizeCents(Cent(actualCents - equalCents));
+  }
+
+  num _normalizeCents(Cent cents) {
+    var normalized = cents % Cent.octave;
+    if (normalized > Cent.octave / 2) normalized -= Cent.octave;
+    if (normalized < -Cent.octave / 2) normalized += Cent.octave;
+
+    return normalized;
+  }
 }

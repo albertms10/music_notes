@@ -315,6 +315,78 @@ final class Note extends Scalable<Note>
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
+  /// The [Interval] between this [Note] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.interval(.d) == .M2
+  /// Note.d.interval(.a.flat) == .d5
+  /// ```
+  @override
+  Interval interval(Note other) => .fromSizeAndSemitones(
+    noteName.intervalSize(other.noteName),
+    difference(other) % chromaticDivisions,
+  );
+
+  /// Transposes this [Note] by [interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.transposeBy(.tritone) == .f.sharp
+  /// Note.a.transposeBy(.M2.descending) == .g
+  /// ```
+  @override
+  Note transposeBy(Interval interval) {
+    final transposedNoteName = noteName.transposeBySize(interval.size);
+    final positiveDifference = interval.isDescending
+        ? transposedNoteName.positiveDifference(noteName)
+        : noteName.positiveDifference(transposedNoteName);
+
+    final accidentalSemitones =
+        (accidental.semitones * interval.size.sign) +
+        ((interval.semitones * interval.size.sign) - positiveDifference);
+    final semitonesOctaveMod =
+        accidentalSemitones -
+        chromaticDivisions * ((interval.size.abs() - 1) ~/ 7);
+
+    return Note(
+      transposedNoteName,
+      Accidental(semitonesOctaveMod * interval.size.sign),
+    );
+  }
+
+  /// The string representation of this [Note] based on [formatter].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.format() == 'D♭'
+  /// Note.d.flat.format(const GermanNoteNotation()) == 'Des'
+  /// Note.d.flat.format(const RomanceNoteNotation.symbol()) == 'Re♭'
+  /// ```
+  @override
+  String format([
+    StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
+  ]) => formatter.format(this);
+
+  @override
+  String toString() =>
+      '$runtimeType(noteName: $noteName, accidental: $accidental)';
+
+  @override
+  bool operator ==(Object other) =>
+      other is Note &&
+      noteName == other.noteName &&
+      accidental == other.accidental;
+
+  @override
+  int get hashCode => Object.hash(noteName, accidental);
+
+  @override
+  int compareTo(Note other) => compareMultiple(_comparators(this, other));
+}
+
+/// A Note extension method for circle of fifths operations.
+extension NoteCircleOfFifths on Note {
   /// The circle of fifths starting from this [Note] split by sharps (`up`) and
   /// flats (`down`).
   ///
@@ -391,75 +463,6 @@ final class Note extends Scalable<Note>
   /// ```
   int fifthsDistanceWith(Note other) =>
       Interval.P5.circleDistance(from: this, to: other).$1;
-
-  /// The [Interval] between this [Note] and [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.interval(.d) == .M2
-  /// Note.d.interval(.a.flat) == .d5
-  /// ```
-  @override
-  Interval interval(Note other) => .fromSizeAndSemitones(
-    noteName.intervalSize(other.noteName),
-    difference(other) % chromaticDivisions,
-  );
-
-  /// Transposes this [Note] by [interval].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.transposeBy(.tritone) == .f.sharp
-  /// Note.a.transposeBy(.M2.descending) == .g
-  /// ```
-  @override
-  Note transposeBy(Interval interval) {
-    final transposedNoteName = noteName.transposeBySize(interval.size);
-    final positiveDifference = interval.isDescending
-        ? transposedNoteName.positiveDifference(noteName)
-        : noteName.positiveDifference(transposedNoteName);
-
-    final accidentalSemitones =
-        (accidental.semitones * interval.size.sign) +
-        ((interval.semitones * interval.size.sign) - positiveDifference);
-    final semitonesOctaveMod =
-        accidentalSemitones -
-        chromaticDivisions * ((interval.size.abs() - 1) ~/ 7);
-
-    return Note(
-      transposedNoteName,
-      Accidental(semitonesOctaveMod * interval.size.sign),
-    );
-  }
-
-  /// The string representation of this [Note] based on [formatter].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.d.flat.format() == 'D♭'
-  /// Note.d.flat.format(const GermanNoteNotation()) == 'Des'
-  /// Note.d.flat.format(const RomanceNoteNotation.symbol()) == 'Re♭'
-  /// ```
-  @override
-  String format([
-    StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
-  ]) => formatter.format(this);
-
-  @override
-  String toString() =>
-      '$runtimeType(noteName: $noteName, accidental: $accidental)';
-
-  @override
-  bool operator ==(Object other) =>
-      other is Note &&
-      noteName == other.noteName &&
-      accidental == other.accidental;
-
-  @override
-  int get hashCode => Object.hash(noteName, accidental);
-
-  @override
-  int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
 /// A Note iterable.
@@ -468,7 +471,7 @@ extension NoteIterable on Iterable<Note> {
   Iterable<Interval> get closestSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       final interval = elementAt(i).interval(elementAt(i + 1));
-      yield interval >= .P5 ? interval + -Interval.m6 : interval;
+      yield interval >= .P5 ? interval - Interval.m6 : interval;
     }
   }
 
@@ -488,7 +491,7 @@ extension NoteIterable on Iterable<Note> {
 }
 
 /// A list of notes.
-extension Notes on List<Note> {
+extension NoteList on List<Note> {
   /// Flattens all notes on this [List].
   List<Note> get flat => map((note) => note.flat).toList();
 

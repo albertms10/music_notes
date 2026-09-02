@@ -108,5 +108,22 @@ void main() {
         );
       });
     });
+
+    group('.centsOffset()', () {
+      test('is always 0 in 12-EDO, since it defines equal temperament '
+          'itself', () {
+        const edo12 = EqualTemperament.edo12();
+        for (final note in <Note>[
+          .c, .d.flat, .d, .e.flat, .e, .f, //
+          .f.sharp, .g, .a, .b.flat, .b, // TODO(albertms10): .a.flat is -200.
+        ]) {
+          expect(
+            edo12.centsOffset(note.inOctave(4)),
+            closeTo(0, 1e-9),
+            reason: '$note should have 0 centsOffset in 12-EDO',
+          );
+        }
+      });
+    });
   });
 }

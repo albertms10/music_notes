@@ -183,19 +183,16 @@ void main() {
         // ... Similar to `.resolveSpelling()`.
       });
 
-      test(
-        'returns the closest Note where a similar call to .resolveSpelling() '
-        'would throw',
-        () {
-          expect(
-            PitchClass.cSharp.resolveClosestSpelling(.natural),
-            Note.c.sharp,
-          );
-          expect(PitchClass.c.resolveClosestSpelling(.flat), Note.c);
-          expect(PitchClass.d.resolveClosestSpelling(.sharp), Note.d);
-          expect(PitchClass.a.resolveClosestSpelling(.tripleFlat), Note.a);
-        },
-      );
+      test('returns the closest Note where a similar call to '
+          '.resolveSpelling() would throw', () {
+        expect(
+          PitchClass.cSharp.resolveClosestSpelling(.natural),
+          Note.c.sharp,
+        );
+        expect(PitchClass.c.resolveClosestSpelling(.flat), Note.c);
+        expect(PitchClass.d.resolveClosestSpelling(.sharp), Note.d);
+        expect(PitchClass.a.resolveClosestSpelling(.tripleFlat), Note.a);
+      });
     });
 
     group('.interval()', () {
@@ -288,28 +285,26 @@ void main() {
     });
 
     group('operator *()', () {
-      test(
-        'returns the pitch-class multiplication modulo 12 of this PitchClass',
-        () {
-          expect(PitchClass.cSharp * 7, PitchClass.g);
-          expect(PitchClass.d * 5, PitchClass.aSharp);
+      test('returns the pitch-class multiplication modulo 12 of this '
+          'PitchClass', () {
+        expect(PitchClass.cSharp * 7, PitchClass.g);
+        expect(PitchClass.d * 5, PitchClass.aSharp);
 
-          expect(
-            ScalePattern.chromatic
-                .on(PitchClass.c)
-                .degrees
-                .map((note) => note * 7),
-            Interval.P5.circleFrom(PitchClass.c).take(13),
-          );
-          expect(
-            ScalePattern.chromatic
-                .on(PitchClass.c)
-                .degrees
-                .map((note) => note * 5),
-            (-Interval.P5).circleFrom(PitchClass.c).take(13),
-          );
-        },
-      );
+        expect(
+          ScalePattern.chromatic
+              .on(PitchClass.c)
+              .degrees
+              .map((note) => note * 7),
+          Interval.P5.circleFrom(PitchClass.c).take(13),
+        );
+        expect(
+          ScalePattern.chromatic
+              .on(PitchClass.c)
+              .degrees
+              .map((note) => note * 5),
+          (-Interval.P5).circleFrom(PitchClass.c).take(13),
+        );
+      });
     });
 
     group('.toString()', () {

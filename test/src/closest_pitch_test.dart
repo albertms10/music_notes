@@ -88,26 +88,24 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'returns the verbose string representation of this ClosestPitch',
-        () {
-          expect(
-            ClosestPitch(
-              Note.g.sharp.inOctave(2),
-              cents: const Cent(14.5),
-            ).toString(),
-            'ClosestPitch(pitch: Pitch(note: '
-            'Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), '
-            'octave: 2), cents: 14.5)',
-          );
-          expect(
-            ClosestPitch(Note.d.inOctave(4)).toString(),
-            'ClosestPitch(pitch: Pitch(note: '
-            'Note(noteName: NoteName.d, accidental: Accidental(semitones: 0)), '
-            'octave: 4), cents: 0)',
-          );
-        },
-      );
+      test('returns the verbose string representation of this '
+          'ClosestPitch', () {
+        expect(
+          ClosestPitch(
+            Note.g.sharp.inOctave(2),
+            cents: const Cent(14.5),
+          ).toString(),
+          'ClosestPitch(pitch: Pitch(note: '
+          'Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), '
+          'octave: 2), cents: 14.5)',
+        );
+        expect(
+          ClosestPitch(Note.d.inOctave(4)).toString(),
+          'ClosestPitch(pitch: Pitch(note: '
+          'Note(noteName: NoteName.d, accidental: Accidental(semitones: 0)), '
+          'octave: 4), cents: 0)',
+        );
+      });
     });
 
     group('.hashCode', () {
@@ -259,39 +257,37 @@ void main() {
         );
       });
 
-      test(
-        'returns the ASCII string representation of this ClosestPitch',
-        () {
-          const formatter = StandardClosestPitchNotation.ascii();
-          expect(
-            ClosestPitch(Note.a.inOctave(-3)).format(formatter),
-            'A-3+0',
-          );
-          expect(
-            ClosestPitch(
-              Note.f.sharp.inOctave(6),
-              cents: const Cent(0.4),
-            ).format(formatter),
-            'F#6+0',
-          );
-          expect(
-            ClosestPitch(
-              Note.a.inOctave(4),
-              cents: const Cent(3.456),
-            ).format(
-              const StandardClosestPitchNotation.ascii(fractionDigits: 3),
-            ),
-            'A4+3.456',
-          );
-          expect(
-            ClosestPitch(
-              Note.d.flat.inOctave(3),
-              cents: const Cent(-28.6),
-            ).format(formatter),
-            'Db3-29',
-          );
-        },
-      );
+      test('returns the ASCII string representation of this '
+          'ClosestPitch', () {
+        const formatter = StandardClosestPitchNotation.ascii();
+        expect(
+          ClosestPitch(Note.a.inOctave(-3)).format(formatter),
+          'A-3+0',
+        );
+        expect(
+          ClosestPitch(
+            Note.f.sharp.inOctave(6),
+            cents: const Cent(0.4),
+          ).format(formatter),
+          'F#6+0',
+        );
+        expect(
+          ClosestPitch(
+            Note.a.inOctave(4),
+            cents: const Cent(3.456),
+          ).format(
+            const StandardClosestPitchNotation.ascii(fractionDigits: 3),
+          ),
+          'A4+3.456',
+        );
+        expect(
+          ClosestPitch(
+            Note.d.flat.inOctave(3),
+            cents: const Cent(-28.6),
+          ).format(formatter),
+          'Db3-29',
+        );
+      });
     });
   });
 }

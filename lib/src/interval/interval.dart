@@ -273,7 +273,7 @@ final class Interval
   /// Example:
   /// ```dart
   /// Interval.parse('m3') == .m3
-  /// Interval.parse('P-5') == -Interval.P5
+  /// Interval.parse('P-5') == .P5.descending
   /// Interval.parse('z') // throws a FormatException
   /// ```
   factory Interval.parse(
@@ -354,7 +354,7 @@ final class Interval
   /// Interval.m3.inversion == .M6
   /// Interval.A4.inversion == .d5
   /// Interval.M7.inversion == .m2
-  /// (-Interval.P1).inversion == -Interval.P8
+  /// (-Interval.P1).inversion == .P8.descending
   /// ```
   ///
   /// If this [Interval.size] is greater than [.octave], the simplified
@@ -446,61 +446,6 @@ final class Interval
   @override
   Interval get respelledSimple => .fromSemitones(semitones);
 
-  /// The circle distance between [from] and [to] in this [Interval],
-  /// including all visited `notes`.
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5.circleDistance<Note>(from: .c, to: .d)
-  ///   == const (2, notes: <Note>[.c, .g, .d])
-  /// Interval.P5.circleDistance<Note>(from: .a, to: .g)
-  ///   == const (-2, notes: <Note>[.a, .d, .g])
-  /// (-Interval.P5).circleDistance<Note>(from: .b.flat, to: .d)
-  ///   == (-4, notes: <Note>[.b.flat, .f, .d, .g, .d])
-  /// Interval.P4.circleDistance<Note>(from: .f, to: .a.flat)
-  ///   == (3, notes: <Note>[.f, .b.flat, .e.flat, .a.flat])
-  /// ```
-  (int distance, {List<T> notes}) circleDistance<T extends Scalable<T>>({
-    required T from,
-    required T to,
-  }) {
-    var distance = 0;
-    final ascendingNotes = [from];
-    final descendingNotes = [from];
-    while (true) {
-      if (ascendingNotes.last == to) {
-        return (distance, notes: ascendingNotes);
-      }
-      if (descendingNotes.last == to) {
-        return (-distance, notes: descendingNotes);
-      }
-      distance++;
-      ascendingNotes.add(ascendingNotes.last.transposeBy(this));
-      descendingNotes.add(descendingNotes.last.transposeBy(inversion));
-    }
-  }
-
-  /// The circle of this [Interval] from [scalable].
-  ///
-  /// Example:
-  /// ```dart
-  /// Interval.P5.circleFrom(Note.c).take(7).toList()
-  ///   == <Note>[.c, .g, .d, .a, .e, .b, .f.sharp]
-  ///
-  /// Interval.P4.circleFrom(Note.c).take(6).toList()
-  ///   == <Note>[.c, .f, .b.flat, .e.flat, .a.flat, .d.flat]
-  ///
-  /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
-  /// ```
-  Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
-    T last;
-    yield last = scalable;
-    const maxCircleLoop = 48;
-    for (var i = 0; i < maxCircleLoop; i++) {
-      yield last = last.transposeBy(this);
-    }
-  }
-
   /// Creates a new [IntervalClass] from [semitones].
   ///
   /// Example:
@@ -578,8 +523,8 @@ final class Interval
   ///
   /// Example:
   /// ```dart
-  /// -Interval.perfect(-Size.fifth) == .P5
-  /// -Interval.m3 == (-Size.third).minor
+  /// Interval.perfect(-Size.fifth).descending == .P5
+  /// Interval.m3.descending == (-Size.third).minor
   /// ```
   Interval operator -() => ._(-size, quality);
 
@@ -595,6 +540,64 @@ final class Interval
     () => size.compareTo(other.size),
     () => quality.compareTo(other.quality),
   ]);
+}
+
+/// An Interval extension for circle operations.
+extension IntervalCircle on Interval {
+  /// The circle distance between [from] and [to] in this [Interval],
+  /// including all visited `notes`.
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.circleDistance<Note>(from: .c, to: .d)
+  ///   == const (2, notes: <Note>[.c, .g, .d])
+  /// Interval.P5.circleDistance<Note>(from: .a, to: .g)
+  ///   == const (-2, notes: <Note>[.a, .d, .g])
+  /// (-Interval.P5).circleDistance<Note>(from: .b.flat, to: .d)
+  ///   == (-4, notes: <Note>[.b.flat, .f, .d, .g, .d])
+  /// Interval.P4.circleDistance<Note>(from: .f, to: .a.flat)
+  ///   == (3, notes: <Note>[.f, .b.flat, .e.flat, .a.flat])
+  /// ```
+  (int distance, {List<T> notes}) circleDistance<T extends Scalable<T>>({
+    required T from,
+    required T to,
+  }) {
+    var distance = 0;
+    final ascendingNotes = [from];
+    final descendingNotes = [from];
+    while (true) {
+      if (ascendingNotes.last == to) {
+        return (distance, notes: ascendingNotes);
+      }
+      if (descendingNotes.last == to) {
+        return (-distance, notes: descendingNotes);
+      }
+      distance++;
+      ascendingNotes.add(ascendingNotes.last.transposeBy(this));
+      descendingNotes.add(descendingNotes.last.transposeBy(inversion));
+    }
+  }
+
+  /// The circle of this [Interval] from [scalable].
+  ///
+  /// Example:
+  /// ```dart
+  /// Interval.P5.circleFrom(Note.c).take(7).toList()
+  ///   == <Note>[.c, .g, .d, .a, .e, .b, .f.sharp]
+  ///
+  /// Interval.P4.circleFrom(Note.c).take(6).toList()
+  ///   == <Note>[.c, .f, .b.flat, .e.flat, .a.flat, .d.flat]
+  ///
+  /// (-Interval.P4).circleFrom(Note.c) == Interval.P5.circleFrom(Note.c)
+  /// ```
+  Iterable<T> circleFrom<T extends Scalable<T>>(T scalable) sync* {
+    T last;
+    yield last = scalable;
+    const maxCircleLoop = 48;
+    for (var i = 0; i < maxCircleLoop; i++) {
+      yield last = last.transposeBy(this);
+    }
+  }
 }
 
 /// An [Interval] iterable extension.
