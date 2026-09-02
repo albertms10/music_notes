@@ -159,7 +159,7 @@ extension type const Size._(int size) implements int {
   /// ```dart
   /// Size.second.diminished == .d2
   /// Size.fifth.diminished == .d5
-  /// (-Size.seventh).diminished == -Interval.d7
+  /// (-Size.seventh).diminished == .d7.descending
   /// ```
   Interval get diminished =>
       isPerfect ? .perfect(this, .diminished) : .imperfect(this, .diminished);
@@ -171,7 +171,7 @@ extension type const Size._(int size) implements int {
   /// ```dart
   /// Size.third.augmented == .A3
   /// Size.fourth.augmented == .A4
-  /// (-Size.sixth).augmented == -Interval.A6
+  /// (-Size.sixth).augmented == .A6.descending
   /// ```
   Interval get augmented =>
       isPerfect ? .perfect(this, .augmented) : .imperfect(this, .augmented);
@@ -291,7 +291,7 @@ extension type const PerfectSize._(int size) implements Size {
   /// ```dart
   /// Size.unison.perfect == .P1
   /// Size.fourth.perfect == .P4
-  /// (-Size.fifth).perfect == -Interval.P5
+  /// (-Size.fifth).perfect == .P5.descending
   /// ```
   Interval get perfect => .perfect(this);
 
@@ -328,7 +328,7 @@ extension type const ImperfectSize._(int size) implements Size {
   /// ```dart
   /// Size.second.major == .M2
   /// Size.sixth.major == .M6
-  /// (-Size.ninth).major == -Interval.M9
+  /// (-Size.ninth).major == .M9.descending
   /// ```
   Interval get major => .imperfect(this, .major);
 
@@ -338,7 +338,7 @@ extension type const ImperfectSize._(int size) implements Size {
   /// ```dart
   /// Size.third.minor == .m3
   /// Size.seventh.minor == .m7
-  /// (-Size.sixth).minor == -Interval.m6
+  /// (-Size.sixth).minor == .m6.descending
   /// ```
   Interval get minor => .imperfect(this, .minor);
 
