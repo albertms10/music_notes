@@ -4,6 +4,7 @@ import 'chord_pattern_test.dart' as chord_pattern_test;
 import 'chord_test.dart' as chord_test;
 import 'closest_pitch_test.dart' as closest_pitch_test;
 import 'equal_temperament_test.dart' as equal_temperament_test;
+import 'five_limit_tuning_test.dart' as five_limit_tuning_test;
 import 'frequency_test.dart' as frequency_test;
 import 'harmonic_function_test.dart' as harmonic_function_test;
 import 'hearing_range_test.dart' as hearing_range_test;
@@ -35,6 +36,7 @@ void main() {
   chord_test.main();
   closest_pitch_test.main();
   equal_temperament_test.main();
+  five_limit_tuning_test.main();
   frequency_test.main();
   harmonic_function_test.main();
   hearing_range_test.main();
