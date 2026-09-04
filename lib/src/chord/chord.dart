@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart'
-    show ListEquality, UnmodifiableListView;
+    show IterableExtension, ListEquality, UnmodifiableListView;
 import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
@@ -111,22 +111,95 @@ final class Chord
   /// ```
   int get inversion => pattern.inversion;
 
-  /// This [Chord] rewritten in root position, undoing [inversion] while
-  /// preserving its pitch-class content.
+  /// This [Chord] rewritten in root position.
   ///
-  /// Throws a [StateError] when [pattern] is not stacked in thirds (see
-  /// [ChordPattern.inversion]) which is the case, for instance, when this
-  /// [Chord] carries a bass note that is foreign to its own [pattern]
-  /// (e.g. a C major chord with an added D bass).
+  /// [Chord] does not store which of its [items] is the harmonic root
+  /// separately from [items] itself, so this works it out from the given
+  /// order: [items] is expected to be a closed, uninterrupted stack of
+  /// thirds (starting on any chord tone and continuing upward through the
+  /// rest, as you would read off a keyboard or a printed chord) but not
+  /// necessarily starting on the root itself.
+  ///
+  /// [pattern] already reflects this: it treats [Chord.root] (i.e.
+  /// [items].first) as if it were the bass. For a chord spanning no more
+  /// than an octave in root position (triads, seventh chords), the rest of
+  /// [items] then simply continues upward in the same closed order as a
+  /// fresh root-position voicing would, so [ChordPattern.inverted] and
+  /// [ChordPattern.inversion] alone are enough to find the rotation point.
+  ///
+  /// For a chord spanning more than an octave in root position (9th chords
+  /// and above), closed order stops matching scale-degree order once
+  /// [ChordPattern.inversion] is reached: an upper extension can sit
+  /// closer to the bass than a lower degree does once octave-shifted (see
+  /// [ChordPattern.inverted]'s documentation), so which [items] entry is
+  /// the true root can no longer be read off its position in the list.
+  /// Instead, every entry's generic (letter-only) position relative to the
+  /// bass is compared against the position [ChordPattern.inversion]
+  /// implies for each scale degree, which recovers each entry's true
+  /// degree regardless of where closed order happened to place it; sorting
+  /// by degree then reconstructs true root position, and [ChordPattern] is
+  /// recalculated from that corrected order rather than reused, so it
+  /// reflects the real compound intervals of the reconstructed voicing.
+  ///
+  /// [items] spanning all 7 note names (13th chords and beyond) cannot be
+  /// resolved this way unless already in root position, for the same
+  /// reason [ChordPattern.inversion] can't: see its documentation. Doubled
+  /// notes, open (non-contiguous) dispositions, and non-tertian chords are
+  /// also not supported: for those, and for a 13th chord or beyond not
+  /// already in root position, this throws a [StateError].
   ///
   /// Example:
   /// ```dart
-  /// const Chord([.e, .g, .c]).rootPosition == ChordPattern.majorTriad.on(.c)
+  /// const Chord([.e, .g, .c]).rootPosition
+  ///   == ChordPattern.majorTriad.on(.c)
+  /// const Chord([.g, .b, .c, .e]).rootPosition
+  ///   == ChordPattern.majorTriad.add7(.major).on(.c)
+  /// Note.f.augmentedTriad.add7().add9().inverted.rootPosition
+  ///   == Note.f.augmentedTriad.add7().add9()
   /// ```
   Chord get rootPosition {
-    final rotations = (_items.length - inversion) % _items.length;
+    final noteCount = _items.length;
+    if (noteCount <= 1 || pattern.isRootPosition) return this;
 
-    return Chord([..._items.skip(rotations), ..._items.take(rotations)]);
+    // A chord spanning all 7 note names can only be resolved trivially
+    // (the `isRootPosition` check above); see [ChordPattern.inversion].
+    if (noteCount > 6) {
+      throw StateError(
+        'Cannot determine the root position of a $noteCount-note Chord '
+        'that is not already in root position: $this',
+      );
+    }
+
+    final bass = _items.first;
+
+    // Try every possible scale degree for the bass in turn. For each
+    // candidate, every other item's generic position above the bass
+    // (mod 7) pins down which degree it must be if that candidate is
+    // right; a valid candidate is the one for which those degrees land
+    // on every one of 0..noteCount - 1 exactly once.
+    for (var k = 1; k < noteCount; k++) {
+      final degreesByItem = <Note, int>{};
+      var isConsistent = true;
+
+      for (final item in _items) {
+        final position = (bass.interval(item).size - 1) % 7;
+        final degree = (k + 4 * position) % 7;
+        if (degree >= noteCount || degreesByItem.containsValue(degree)) {
+          isConsistent = false;
+          break;
+        }
+        degreesByItem[item] = degree;
+      }
+      if (!isConsistent) continue;
+
+      final sortedItems = _items.sortedBy((item) => degreesByItem[item]!);
+
+      return Chord(sortedItems).pattern.on(sortedItems.first);
+    }
+
+    throw StateError(
+      'Cannot determine the root position of a non-tertian Chord: $this',
+    );
   }
 
   /// The modifier [Note]s from the root note.
