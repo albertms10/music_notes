@@ -340,14 +340,6 @@ void main() {
     });
 
     group('custom generators', () {
-      test('an empty generator list behaves exactly like three-limit', () {
-        const custom = PrimeLimitTuning([]);
-        expect(
-          custom.ratio(Note.g.inOctave(4)),
-          PrimeLimitTuning.threeLimit.ratio(Note.g.inOctave(4)),
-        );
-      });
-
       test('accepts an arbitrary custom generator', () {
         // An 11-limit-style undecimal generator (11/8), 5 descending
         // fifths away up to its own comma, purely as a construction test.

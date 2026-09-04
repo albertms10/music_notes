@@ -31,7 +31,7 @@ void main() {
       });
 
       test('.fourthRatio is always the octave complement of .fifthRatio', () {
-        final tuning = PrimeLimitTuning.threeLimit;
+        const tuning = PrimeLimitTuning.threeLimit;
         expect(tuning.fourthRatio * tuning.fifthRatio, 2);
       });
     });

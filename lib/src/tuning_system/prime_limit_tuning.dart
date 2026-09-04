@@ -5,21 +5,21 @@ import 'just_intonation.dart';
 /// A single generator axis for a [PrimeLimitTuning], beyond the base chain
 /// of fifths (3/2).
 ///
-/// [ascendingRatio] is the generator itself: 5/4 for the five-limit’s
+/// `ascendingRatio` is the generator itself: 5/4 for the five-limit’s
 /// major third, 7/4 for the seven-limit’s harmonic seventh, 11/8 for an
 /// eleven-limit undecimal generator, and so on.
 ///
-/// [fifthsEquivalence] is the number of ascending fifths that one
+/// `fifthsEquivalence` is the number of ascending fifths that one
 /// ascending step of this generator conventionally stands in for, up to
 /// the comma linking the two. E.g., `4` for the major third (the two differ
 /// by the [JustIntonation.syntonicCommaRatio]), or `-2` for the harmonic
 /// seventh (the two differ by the septimal comma, 64/63).
 ///
-/// [autoResolve] controls whether [PrimeLimitTuning.ratio] is allowed to
+/// `autoResolve` controls whether [PrimeLimitTuning.ratio] is allowed to
 /// pick this axis’s step count automatically. It exists because “nearest
 /// fit” isn’t a safe default beyond the very first extra generator: with
 /// two or more axes active, a later axis with a small
-/// [fifthsEquivalence] (like the seventh’s `-2`) can numerically absorb
+/// `fifthsEquivalence` (like the seventh’s `-2`) can numerically absorb
 /// leftover fifths from notes that were never meant to be reinterpreted
 /// (e.g. a five-limit whole tone lining up exactly with one descending
 /// seventh step), with no purely numeric way to tell that case apart from
@@ -34,12 +34,12 @@ typedef PrimeLimitGenerator = ({
   bool autoResolve,
 });
 
-/// A specific point on a [PrimeLimitTuning]’s lattice: [fifths] ascending
-/// fifths, plus [steps] ascending generator steps (one entry per
+/// A specific point on a [PrimeLimitTuning]’s lattice: `fifths` ascending
+/// fifths, plus `steps` ascending generator steps (one entry per
 /// [PrimeLimitTuning.generators], in the same order) together with the
-/// resulting pitch-class [ratio].
+/// resulting pitch-class `ratio`.
 ///
-/// [isCanonical] marks the specific path [PrimeLimitTuning.ratio] actually
+/// `isCanonical` marks the specific path [PrimeLimitTuning.ratio] actually
 /// uses for a given note.
 ///
 /// ---
@@ -65,20 +65,20 @@ typedef PrimeLimitPath = ({
 /// [PrimeLimitTuning] captures that shape once: [generators] is an ordered
 /// list of axes beyond the fifth. For a given note, its three-limit fifths
 /// distance is resolved sequentially; each generator with
-/// [PrimeLimitGenerator.autoResolve] set claims the nearest whole number
+/// `PrimeLimitGenerator.autoResolve` set claims the nearest whole number
 /// of its own steps, leaving the remainder for the next axis, with any
 /// leftover finally absorbed by the fifths themselves.
 ///
 /// ## Where convention ends and judgment begins
 ///
 /// Three-limit and five-limit tuning have essentially one accepted
-/// [PrimeLimitGenerator.fifthsEquivalence] each ([threeLimit] has no
+/// `PrimeLimitGenerator.fifthsEquivalence` each ([threeLimit] has no
 /// generators to choose; [fiveLimit]’s `4` reproduces the conventional
 /// 12-tone “asymmetric” 5-limit scale, per
 /// [Five-limit tuning](https://en.wikipedia.org/wiki/Five-limit_tuning)).
 /// Beyond that, there generally isn’t a single settled choice. Tuning
 /// theorists use different commas depending on what they’re optimizing
-/// for, *and*, as [PrimeLimitGenerator.autoResolve] explains, no settled
+/// for, *and*, as `PrimeLimitGenerator.autoResolve` explains, no settled
 /// rule for which notes should even be reinterpreted at all.
 /// [sevenLimitSeptimal] uses the septimal comma (64/63), the most
 /// commonly cited seven-limit convention, but with `autoResolve: false`:
@@ -95,11 +95,11 @@ class PrimeLimitTuning extends JustIntonation {
   const PrimeLimitTuning(this.generators, {super.fork});
 
   /// Three-limit (Pythagorean) tuning: no generators beyond the fifth.
-  static final threeLimit = PrimeLimitTuning([]);
+  static const threeLimit = PrimeLimitTuning([]);
 
   /// Five-limit tuning: adds the major third (5/4), 4 fifths away from
   /// unison up to the syntonic comma.
-  static final fiveLimit = PrimeLimitTuning([
+  static const fiveLimit = PrimeLimitTuning([
     (ascendingRatio: 5 / 4, fifthsEquivalence: 4, autoResolve: true),
   ]);
 
@@ -107,11 +107,11 @@ class PrimeLimitTuning extends JustIntonation {
   /// (5/4) and the harmonic seventh (7/4, 2 descending fifths away from
   /// unison up to the septimal comma, 64/63).
   ///
-  /// The seventh’s [PrimeLimitGenerator.autoResolve] is `false`: [ratio]
+  /// The seventh’s `PrimeLimitGenerator.autoResolve` is `false`: [ratio]
   /// matches [fiveLimit] for every note. Reach the harmonic seventh (and
   /// other septimal alternatives) explicitly via [pathsTo] or
   /// [pitchClassRatioFrom].
-  static final sevenLimitSeptimal = PrimeLimitTuning([
+  static const sevenLimitSeptimal = PrimeLimitTuning([
     (ascendingRatio: 5 / 4, fifthsEquivalence: 4, autoResolve: true),
     (ascendingRatio: 7 / 4, fifthsEquivalence: -2, autoResolve: false),
   ]);
@@ -189,7 +189,7 @@ class PrimeLimitTuning extends JustIntonation {
 
   /// Resolves the canonical (fifths, steps) coordinates for
   /// [fifthsDistance] by peeling off the nearest whole number of steps of
-  /// each [PrimeLimitGenerator.autoResolve]-enabled generator in order,
+  /// each `PrimeLimitGenerator.autoResolve`-enabled generator in order,
   /// minimizing what’s left over at each stage, and handing the remainder
   /// down to the next axis, with any final leftover absorbed by the
   /// fifths. Generators with `autoResolve: false` always contribute `0`
