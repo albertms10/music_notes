@@ -289,6 +289,12 @@ void main() {
           () => const ChordPattern([.m3, .d5, .m6, .m7, .m9, .P11]).inversion,
           throwsStateError,
         );
+        expect(
+          () => const ChordPattern([
+            .m3, .d5, .m6, .m7, .m9, .P11, .M13, //
+          ]).inversion,
+          throwsStateError,
+        );
       });
     });
 
