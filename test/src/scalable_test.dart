@@ -32,20 +32,18 @@ void main() {
     });
 
     group('.descendingIntervalSteps', () {
-      test(
-        'returns the descending Interval steps of this ScalableIterable',
-        () {
-          expect(
-            <Note>[.b, .a, .g, .f].descendingIntervalSteps,
-            const <Interval>[.M2, .M2, .M2],
-          );
+      test('returns the descending Interval steps of this '
+          'ScalableIterable', () {
+        expect(
+          <Note>[.b, .a, .g, .f].descendingIntervalSteps,
+          const <Interval>[.M2, .M2, .M2],
+        );
 
-          expect(
-            <Note>[.c, .d, .e, .f.sharp].descendingIntervalSteps,
-            const <Interval>[.m7, .m7, .m7],
-          );
-        },
-      );
+        expect(
+          <Note>[.c, .d, .e, .f.sharp].descendingIntervalSteps,
+          const <Interval>[.m7, .m7, .m7],
+        );
+      });
     });
 
     group('.closestSteps', () {
@@ -175,18 +173,8 @@ void main() {
         );
         expect(
           <PitchClass>{
-            .b,
-            .aSharp,
-            .d,
-            .dSharp,
-            .g,
-            .fSharp,
-            .gSharp,
-            .e,
-            .f,
-            .c,
-            .cSharp,
-            .a,
+            .b, .aSharp, .d, .dSharp, .g, .fSharp, //
+            .gSharp, .e, .f, .c, .cSharp, .a,
           }.numericRepresentation().toList(),
           const [0, 11, 3, 4, 8, 7, 9, 5, 6, 1, 2, 10],
         );
@@ -194,54 +182,32 @@ void main() {
     });
 
     group('.deltaNumericRepresentation', () {
-      test(
-        'returns the delta numeric representation of this ScalableIterable',
-        () {
-          expect(
-            const <PitchClass>{}.deltaNumericRepresentation.toList(),
-            const <int>[],
-          );
-          expect({PitchClass.g}.deltaNumericRepresentation.toList(), const [0]);
-          expect(
-            <PitchClass>{.g, .a}.deltaNumericRepresentation.toList(),
-            const [0, 2],
-          );
-          expect(
-            <Note>{
-              .b,
-              .b.flat,
-              .d,
-              .d.sharp,
-              .g,
-              .f.sharp,
-              .a.flat,
-              .f.flat,
-              .f,
-              .b.sharp,
-              .d.flat,
-              .b.flat.flat,
-            }.deltaNumericRepresentation.toList(),
-            const [0, -1, 4, 1, 4, -1, 2, -4, 1, -5, 1, -4],
-          );
-          expect(
-            <PitchClass>{
-              .b,
-              .aSharp,
-              .d,
-              .dSharp,
-              .g,
-              .fSharp,
-              .gSharp,
-              .e,
-              .f,
-              .c,
-              .cSharp,
-              .a,
-            }.deltaNumericRepresentation.toList(),
-            const [0, -1, 4, 1, 4, -1, 2, -4, 1, -5, 1, -4],
-          );
-        },
-      );
+      test('returns the delta numeric representation of this '
+          'ScalableIterable', () {
+        expect(
+          const <PitchClass>{}.deltaNumericRepresentation.toList(),
+          const <int>[],
+        );
+        expect({PitchClass.g}.deltaNumericRepresentation.toList(), const [0]);
+        expect(
+          <PitchClass>{.g, .a}.deltaNumericRepresentation.toList(),
+          const [0, 2],
+        );
+        expect(
+          <Note>{
+            .b, .b.flat, .d, .d.sharp, .g, .f.sharp, .a.flat, //
+            .f.flat, .f, .b.sharp, .d.flat, .b.flat.flat,
+          }.deltaNumericRepresentation.toList(),
+          const [0, -1, 4, 1, 4, -1, 2, -4, 1, -5, 1, -4],
+        );
+        expect(
+          <PitchClass>{
+            .b, .aSharp, .d, .dSharp, .g, .fSharp, //
+            .gSharp, .e, .f, .c, .cSharp, .a,
+          }.deltaNumericRepresentation.toList(),
+          const [0, -1, 4, 1, 4, -1, 2, -4, 1, -5, 1, -4],
+        );
+      });
     });
   });
 }

@@ -59,8 +59,10 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
         if (!_isSymbol) ' ',
         if (numeral == null)
           ordinal
+        else if (useUppercase)
+          numeral.toUpperCase()
         else
-          useUppercase ? numeral.toUpperCase() : numeral,
+          numeral,
       ]);
 
     return buffer.toString();

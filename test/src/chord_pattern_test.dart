@@ -194,29 +194,24 @@ void main() {
         );
       });
 
-      test(
-        'sorts the resulting Intervals even for compound (extended) chords',
-        () {
-          expect(
-            ChordPattern.majorTriad.add7().add9().inverted,
-            const ChordPattern([.m3, .d5, .m6, .m7]),
-          );
-        },
-      );
+      test('sorts the resulting Intervals even for compound (extended) '
+          'chords', () {
+        expect(
+          ChordPattern.majorTriad.add7().add9().inverted,
+          const ChordPattern([.m3, .d5, .m6, .m7]),
+        );
+      });
 
       test('is a no-op for a rootless (single-note) ChordPattern', () {
         expect(const ChordPattern([]).inverted, const ChordPattern([]));
       });
 
-      test(
-        'is unaffected by the order in which the Intervals were given',
-        () {
-          expect(
-            const ChordPattern([.P5, .M3]).inverted,
-            ChordPattern.majorTriad.inverted,
-          );
-        },
-      );
+      test('is unaffected by the order in which the Intervals were given', () {
+        expect(
+          const ChordPattern([.P5, .M3]).inverted,
+          ChordPattern.majorTriad.inverted,
+        );
+      });
     });
 
     group('.inversion', () {
@@ -248,20 +243,17 @@ void main() {
         expect(const ChordPattern([.A2, .A4, .M6]).inversion, 3);
       });
 
-      test(
-        'throws a StateError for a non-tertian (e.g. quartal) ChordPattern',
-        () {
-          expect(
-            () => const ChordPattern([.P4, .P5]).inversion,
-            throwsStateError,
-          );
-        },
-      );
+      test('throws a StateError for a non-tertian (e.g. quartal) '
+          'ChordPattern', () {
+        expect(
+          () => const ChordPattern([.P4, .P5]).inversion,
+          throwsStateError,
+        );
+      });
 
       test('correctly handles extended (9th) chords', () {
         // F augmented triad, add7() (minor), add9() (major): F-A-C#-Eb-G.
-        const root9 = ChordPattern([.M3, .A5, .m7, .M9]);
-        expect(root9.inversion, 0);
+        expect(const ChordPattern([.M3, .A5, .m7, .M9]).inversion, 0);
         // Bass on A (the 3rd).
         expect(const ChordPattern([.M3, .d5, .m6, .m7]).inversion, 1);
         // Bass on C# (the 5th).
@@ -273,57 +265,31 @@ void main() {
       test('correctly handles extended (11th) chords', () {
         // Ab major triad, add7() (minor), add9() (major), add11() (perfect):
         // Ab-C-Eb-Gb-Bb-Db.
-        const root11 = ChordPattern([.M3, .P5, .m7, .M9, .P11]);
-        expect(root11.inversion, 0);
+        expect(const ChordPattern([.M3, .P5, .m7, .M9, .P11]).inversion, 0);
         // Bass on C (the 3rd).
-        expect(
-          const ChordPattern([.m3, .d5, .m6, .m7, .m9]).inversion,
-          1,
-        );
+        expect(const ChordPattern([.m3, .d5, .m6, .m7, .m9]).inversion, 1);
         // Bass on Eb (the 5th).
-        expect(
-          const ChordPattern([.m3, .P4, .P5, .M6, .m7]).inversion,
-          2,
-        );
+        expect(const ChordPattern([.m3, .P4, .P5, .M6, .m7]).inversion, 2);
         // Bass on Gb (the 7th).
-        expect(
-          const ChordPattern([.M2, .M3, .A4, .P5, .M6]).inversion,
-          3,
-        );
+        expect(const ChordPattern([.M2, .M3, .A4, .P5, .M6]).inversion, 3);
         // Bass on Bb (the 9th).
-        expect(
-          const ChordPattern([.M2, .m3, .P4, .m6, .m7]).inversion,
-          4,
-        );
+        expect(const ChordPattern([.M2, .m3, .P4, .m6, .m7]).inversion, 4);
         // Bass on Db (the 11th).
-        expect(
-          const ChordPattern([.M2, .P4, .P5, .M6, .M7]).inversion,
-          5,
-        );
+        expect(const ChordPattern([.M2, .P4, .P5, .M6, .M7]).inversion, 5);
       });
 
-      test(
-        'only recognizes a 13th chord (or beyond) when already in root '
-        'position, since generic structure alone cannot otherwise tell '
-        'which of its 7 note names is the root',
-        () {
-          expect(
-            const ChordPattern([.M3, .P5, .m7, .M9, .P11, .M13]).inversion,
-            0,
-          );
-          expect(
-            () => const ChordPattern([
-              .m3,
-              .d5,
-              .m6,
-              .m7,
-              .m9,
-              .P11,
-            ]).inversion,
-            throwsStateError,
-          );
-        },
-      );
+      test('only recognizes a 13th chord (or beyond) when already in root '
+          'position, since generic structure alone cannot otherwise tell '
+          'which of its 7 note names is the root', () {
+        expect(
+          const ChordPattern([.M3, .P5, .m7, .M9, .P11, .M13]).inversion,
+          0,
+        );
+        expect(
+          () => const ChordPattern([.m3, .d5, .m6, .m7, .m9, .P11]).inversion,
+          throwsStateError,
+        );
+      });
     });
 
     group('.augmented', () {
@@ -539,28 +505,26 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'returns the verbose string representation of this ChordPattern',
-        () {
-          expect(
-            ChordPattern.majorTriad.toString(),
-            '''
+      test('returns the verbose string representation of this '
+          'ChordPattern', () {
+        expect(
+          ChordPattern.majorTriad.toString(),
+          '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0))
 ])''',
-          );
-          expect(
-            ChordPattern.minorTriad.add7(.major).toString(),
-            '''
+        );
+        expect(
+          ChordPattern.minorTriad.add7(.major).toString(),
+          '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 0)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0)),
 \tInterval(size: 7, quality: ImperfectQuality(semitones: 1))
 ])''',
-          );
-        },
-      );
+        );
+      });
     });
 
     group('.hashCode', () {

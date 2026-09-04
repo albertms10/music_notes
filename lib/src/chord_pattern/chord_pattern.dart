@@ -238,7 +238,7 @@ final class ChordPattern
   /// is now the topmost note), `2` is the second inversion, and so on up
   /// to `_noteCount - 1`.
   ///
-  /// This does not chain [inverted] in search of root position — that
+  /// This does not chain [inverted] in search of root position; that
   /// approach breaks down for extended chords, as explained in
   /// [inverted]'s documentation. Instead, each interval's generic
   /// (letter-only) position above the bass is compared, modulo the 7 note
@@ -254,9 +254,9 @@ final class ChordPattern
   ///
   /// A [ChordPattern] spanning all 7 note names (a 13th chord or beyond)
   /// is a special case: reading it from any of its 7 members produces an
-  /// equally valid-looking stack of thirds — the same ambiguity as
+  /// equally valid-looking stack of thirds (the same ambiguity as
   /// reading a 7-note diatonic collection starting from any of its
-  /// degrees — so generic structure alone cannot identify the bass's
+  /// degrees) so generic structure alone cannot identify the bass's
   /// degree unless this [ChordPattern] is already in root position. This
   /// also throws a [StateError] in that case.
   ///

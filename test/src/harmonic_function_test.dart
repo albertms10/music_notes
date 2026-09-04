@@ -4,24 +4,22 @@ import 'package:test/test.dart';
 void main() {
   group('HarmonicFunction', () {
     group('.copyWith()', () {
-      test(
-        'creates a new HarmonicFunction by updating individual properties',
-        () {
-          expect(HarmonicFunction.iv.copyWith(), HarmonicFunction.iv);
-          expect(
-            HarmonicFunction.i.copyWith(scaleDegree: .iii),
-            HarmonicFunction.iii,
-          );
-          expect(
-            HarmonicFunction.ii.copyWith(tonicization: .iii),
-            HarmonicFunction.ii / .iii,
-          );
-          expect(
-            HarmonicFunction.dominantV.on(.vi).copyWith(scaleDegree: .ii),
-            HarmonicFunction.ii / .vi,
-          );
-        },
-      );
+      test('creates a new HarmonicFunction by updating individual '
+          'properties', () {
+        expect(HarmonicFunction.iv.copyWith(), HarmonicFunction.iv);
+        expect(
+          HarmonicFunction.i.copyWith(scaleDegree: .iii),
+          HarmonicFunction.iii,
+        );
+        expect(
+          HarmonicFunction.ii.copyWith(tonicization: .iii),
+          HarmonicFunction.ii / .iii,
+        );
+        expect(
+          HarmonicFunction.dominantV.on(.vi).copyWith(scaleDegree: .ii),
+          HarmonicFunction.ii / .vi,
+        );
+      });
     });
 
     group('operator /()', () {
@@ -73,20 +71,19 @@ void main() {
     });
 
     group('.toString()', () {
-      test(
-        'returns the verbose string representation of this HarmonicFunction',
-        () {
-          expect(
-            HarmonicFunction.neapolitanSixth.toString(),
-            '''
+      test('returns the verbose string representation of this '
+          'HarmonicFunction', () {
+        expect(
+          HarmonicFunction.neapolitanSixth.toString(),
+          '''
 HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 2, accidental: Accidental(semitones: -1)), pattern: ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 0)),
 \tInterval(size: 6, quality: ImperfectQuality(semitones: 0))
 ]), tonicization: null)''',
-          );
-          expect(
-            (HarmonicFunction.dominantV / .dominantV).toString(),
-            '''
+        );
+        expect(
+          (HarmonicFunction.dominantV / .dominantV).toString(),
+          '''
 HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(semitones: 0)), pattern: ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0))
@@ -94,9 +91,8 @@ HarmonicFunction(scaleDegree: ScaleDegree(ordinal: 5, accidental: Accidental(sem
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0))
 ]), tonicization: null))''',
-          );
-        },
-      );
+        );
+      });
     });
 
     group('.hashCode', () {
