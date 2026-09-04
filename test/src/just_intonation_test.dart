@@ -18,7 +18,7 @@ void main() {
       });
     });
 
-    group('.fifthRatio / .fourthRatio', () {
+    group('.fifthRatio, .fourthRatio', () {
       test('defaults to the pure ascending fifth and fourth ratios', () {
         expect(
           PrimeLimitTuning.threeLimit.fifthRatio,
