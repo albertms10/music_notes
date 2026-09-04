@@ -125,7 +125,7 @@ void main() {
       test('smaller comma fractions produce fifths closer to just (3/2)', () {
         final quarterFifth = MeantoneTuning.quarter.ratio(Note.g.inOctave(4));
         final thirdFifth = MeantoneTuning.third.ratio(Note.g.inOctave(4));
-        const justFifth = JustIntonation.ascendingFifthRatio;
+        final justFifth = PrimeLimitTuning.threeLimit.fifthRatio;
 
         expect(
           (justFifth - quarterFifth).abs(),

@@ -142,8 +142,7 @@ class PrimeLimitTuning extends JustIntonation {
       throw ArgumentError.value(
         steps,
         'steps',
-        'Must have exactly ${generators.length} entries, matching '
-            'generators.',
+        'Must have exactly ${generators.length} entries, matching generators.',
       );
     }
 
@@ -172,9 +171,7 @@ class PrimeLimitTuning extends JustIntonation {
     final window = [for (var s = -maxSteps; s <= maxSteps; s++) s];
 
     return [
-      for (final steps in _cartesianProduct(
-        List.filled(generators.length, window),
-      ))
+      for (final steps in _cartesianProduct(.filled(generators.length, window)))
         (
           fifths: distance - _weightedSum(steps),
           steps: steps,

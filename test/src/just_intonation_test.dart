@@ -20,14 +20,8 @@ void main() {
 
     group('.fifthRatio, .fourthRatio', () {
       test('defaults to the pure ascending fifth and fourth ratios', () {
-        expect(
-          PrimeLimitTuning.threeLimit.fifthRatio,
-          JustIntonation.ascendingFifthRatio,
-        );
-        expect(
-          PrimeLimitTuning.threeLimit.fourthRatio,
-          JustIntonation.ascendingFourthRatio,
-        );
+        expect(PrimeLimitTuning.threeLimit.fifthRatio, 3 / 2);
+        expect(PrimeLimitTuning.threeLimit.fourthRatio, 4 / 3);
       });
 
       test('.fourthRatio is always the octave complement of .fifthRatio', () {

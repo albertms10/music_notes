@@ -20,10 +20,10 @@ abstract class JustIntonation extends TuningSystem {
   const JustIntonation({super.fork = .c256});
 
   /// The ratio of an ascending [Interval.P5].
-  static const ascendingFifthRatio = 3 / 2;
+  static const _fifthRatio = 3 / 2;
 
   /// The ratio of an ascending [Interval.P4].
-  static const ascendingFourthRatio = 4 / 3;
+  static const _fourthRatio = 2 / _fifthRatio;
 
   /// See [Syntonic comma](https://en.wikipedia.org/wiki/Syntonic_comma)
   /// (a.k.a. Didymean comma).
@@ -33,7 +33,7 @@ abstract class JustIntonation extends TuningSystem {
   ///
   /// ---
   /// * See [TuningSystem.generator].
-  static final generatorCents = Cent.fromRatio(ascendingFifthRatio);
+  static final generatorCents = Cent.fromRatio(_fifthRatio);
 
   @override
   Cent get generator => generatorCents;
@@ -41,13 +41,13 @@ abstract class JustIntonation extends TuningSystem {
   /// The ratio of the ascending fifth used to build up the chain of fifths
   /// in this [JustIntonation] system.
   ///
-  /// Defaults to the pure [ascendingFifthRatio] (3/2). Tempered subclasses
-  /// (e.g. `MeantoneTuning`) override this with their own tempered fifth.
-  num get fifthRatio => ascendingFifthRatio;
+  /// Defaults to the pure [_fifthRatio] (3/2). Tempered subclasses override
+  /// this with their own tempered fifth.
+  num get fifthRatio => _fifthRatio;
 
-  /// The ratio of the ascending fourth, i.e. the octave complement of
+  /// The ratio of the ascending fourth, e.g., the octave complement of
   /// [fifthRatio] (a fourth and a fifth together span an octave).
-  num get fourthRatio => 2 / fifthRatio;
+  num get fourthRatio => _fourthRatio;
 
   /// A measure of how far the enharmonic respelling via a descending
   /// [Interval.d2] deviates from unison in this [JustIntonation] system.
