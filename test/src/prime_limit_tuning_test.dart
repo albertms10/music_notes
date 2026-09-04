@@ -165,16 +165,6 @@ void main() {
     });
 
     group('.sevenLimitSeptimal', () {
-      test('has two generators: the major third, then the harmonic '
-          'seventh (not auto-resolved)', () {
-        final generators = PrimeLimitTuning.sevenLimitSeptimal.generators;
-        expect(generators, hasLength(2));
-        expect(generators[0].autoResolve, isTrue);
-        expect(generators[1].ascendingRatio, 7 / 4);
-        expect(generators[1].fifthsEquivalence, -2);
-        expect(generators[1].autoResolve, isFalse);
-      });
-
       test('.ratio() matches five-limit for every standard note, since the '
           'seventh is never auto-resolved', () {
         for (final note in [
@@ -341,17 +331,47 @@ void main() {
 
     group('custom generators', () {
       test('accepts an arbitrary custom generator', () {
-        // An 11-limit-style undecimal generator (11/8), 5 descending
-        // fifths away up to its own comma, purely as a construction test.
-        const custom = PrimeLimitTuning([
-          (ascendingRatio: 11 / 8, fifthsEquivalence: -5, autoResolve: true),
-        ]);
-        expect(custom.generators.single.ascendingRatio, 11 / 8);
+        // An 11-limit-style undecimal generator (11/8), purely as a
+        // construction test.
+        final custom = PrimeLimitTuning([PrimeLimitGenerator(11 / 8)]);
         expect(
           custom.pitchClassRatioFrom(fifths: 0, steps: [1]),
           11 / 8,
         );
       });
+    });
+  });
+
+  group('PrimeLimitGenerator', () {
+    test('derives fifthsEquivalence for the major third (syntonic comma)', () {
+      expect(PrimeLimitGenerator.majorThird.ascendingRatio, 5 / 4);
+      expect(PrimeLimitGenerator.majorThird.fifthsEquivalence, 4);
+    });
+
+    test('derives fifthsEquivalence for the harmonic seventh (septimal '
+        'comma), not the mathematically-closer but non-standard match', () {
+      expect(PrimeLimitGenerator.harmonicSeventh.ascendingRatio, 7 / 4);
+      expect(PrimeLimitGenerator.harmonicSeventh.fifthsEquivalence, -2);
+    });
+
+    test('two generators for the same ratio are equal', () {
+      expect(PrimeLimitGenerator(5 / 4), PrimeLimitGenerator.majorThird);
+      expect(
+        PrimeLimitGenerator(5 / 4).hashCode,
+        PrimeLimitGenerator.majorThird.hashCode,
+      );
+    });
+
+    test('throws when no small fifths chain approximates the ratio '
+        'closely enough', () {
+      expect(
+        () => PrimeLimitGenerator(7 / 4, maxFifths: 1),
+        throwsStateError,
+      );
+      expect(
+        () => PrimeLimitGenerator(7 / 4, commaThreshold: 5),
+        throwsStateError,
+      );
     });
   });
 }
