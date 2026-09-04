@@ -116,8 +116,8 @@ final class Chord
   /// [Chord] does not store which of its [items] is the harmonic root
   /// separately from [items] itself, so this works it out from the given
   /// order: [items] is expected to be a closed, uninterrupted stack of
-  /// thirds — starting on any chord tone and continuing upward through the
-  /// rest, as you would read off a keyboard or a printed chord — but not
+  /// thirds (starting on any chord tone and continuing upward through the
+  /// rest, as you would read off a keyboard or a printed chord) but not
   /// necessarily starting on the root itself.
   ///
   /// [pattern] already reflects this: it treats [Chord.root] (i.e.

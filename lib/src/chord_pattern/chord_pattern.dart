@@ -182,9 +182,8 @@ final class ChordPattern
   /// [Interval] is moved above the octave (becoming the new top note) and
   /// every remaining [Interval] is re-expressed from that new bass.
   ///
-  /// This is derived solely from the interval content of [_sortedIntervals]
-  /// — nothing about the resulting shape is hardcoded — so a single
-  /// rotation is correct for triads, seventh chords, and extended
+  /// This is derived solely from the interval content of [_sortedIntervals],
+  /// so a single rotation is correct for triads, seventh chords, and extended
   /// (9th/11th/13th) chords alike.
   ///
   /// Chaining this repeatedly reflects what physically happens when you
@@ -196,8 +195,8 @@ final class ChordPattern
   /// after as many steps as this [ChordPattern] has notes. For a chord
   /// that spans more than an octave in root position (9th chords and
   /// above), an upper extension can sit closer to the bass than the
-  /// octave-doubled root does — F-A-C♯-E♭-G, for instance, revisits F
-  /// before ever reaching G — so repeated [inverted] calls are not
+  /// octave-doubled root does (e.g., F-A-C♯-E♭-G, for instance, revisits F
+  /// before ever reaching G), so repeated [inverted] calls are not
   /// guaranteed to visit every degree before returning to root. Use
   /// [inversion] to identify a specific inversion directly instead of
   /// chaining [inverted] to search for one.
