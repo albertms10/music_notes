@@ -49,18 +49,55 @@ abstract class JustIntonation extends TuningSystem {
   /// [fifthRatio] (a fourth and a fifth together span an octave).
   num get fourthRatio => 2 / fifthRatio;
 
+  /// A measure of how far the enharmonic respelling via a descending
+  /// [Interval.d2] deviates from unison in this [JustIntonation] system.
+  ///
+  /// For three-limit (Pythagorean) tuning this is the classic
+  /// [Pythagorean comma](https://en.wikipedia.org/wiki/Pythagorean_comma)
+  /// (~23.46 cents, from closing a chain of 12 fifths). Other systems
+  /// generally close by a different amount (e.g., five-limit tuning closes
+  /// by the [Diesis](https://en.wikipedia.org/wiki/Diesis) instead).
+  num get comma => ratio(fork.pitch.transposeBy(.d2.descending));
+
   @override
   num ratio(Pitch pitch) {
     final distance = fork.pitch.note.fifthsDistanceWith(pitch.note);
+
+    return octaveAdjustedRatio(pitch, chainRatio(distance, fifthRatio));
+  }
+
+  /// Builds a pitch-class ratio by applying [ascendingRatio] (or its octave
+  /// complement, `2 / ascendingRatio`, if [distance] is negative) up to
+  /// [distance] times, folding the running product back into a single
+  /// octave whenever it reaches `2`.
+  ///
+  /// The result always lies within `[1, 2)`.
+  @protected
+  num chainRatio(int distance, num ascendingRatio) {
+    final descendingRatio = 2 / ascendingRatio;
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
-      ratio *= distance.isNegative ? fourthRatio : fifthRatio;
+      ratio *= distance.isNegative ? descendingRatio : ascendingRatio;
       // When ratio is greater than 2, so greater than [Size.octave],
       // divide by 2 to transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
 
-    return octaveAdjustedRatio(pitch, ratio);
+    return ratio;
+  }
+
+  /// Folds [ratio] into a single octave, i.e. `[1, 2)`.
+  @protected
+  num foldIntoOctave(num ratio) {
+    var folded = ratio;
+    while (folded >= 2) {
+      folded /= 2;
+    }
+    while (folded < 1) {
+      folded *= 2;
+    }
+
+    return folded;
   }
 
   /// Applies the correct octave transposition to [pitchClassRatio] for
