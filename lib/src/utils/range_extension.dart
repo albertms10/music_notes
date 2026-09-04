@@ -2,7 +2,7 @@ import '../notation_system/notation_system.dart';
 import '../pitch/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
-import './iterable_extension.dart';
+import 'iterable_extension.dart';
 
 /// A Range record extension.
 extension RangeExtension<E> on Range<E> {
