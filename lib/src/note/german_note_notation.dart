@@ -3,7 +3,10 @@ import '../note_name/german_note_name_notation.dart';
 import 'note.dart';
 import 'note_notation.dart';
 
-/// The German alphabetic notation system for [Note].
+/// The German notation for [Note]: a letter name (see
+/// [GermanNoteNameNotation]) with the accidental suffix fused directly
+/// onto it, plus two irregular spellings inherited from German musical
+/// tradition — B♭ is simply `B` (not `Hes`), and B (natural) is `H`.
 ///
 /// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
 final class GermanNoteNotation extends NoteNotation {

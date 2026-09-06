@@ -2,10 +2,15 @@ import '../notation_system/notation_system.dart';
 import '../note/note.dart';
 import 'accidental.dart';
 
-/// The Romance notation system for [Accidental].
+/// The written-out Italian-derived Romance notation for [Accidental]:
+/// "diesis" (sharp), "bemolle" (flat), "doppio"/"triplo" prefixes for
+/// double and triple alterations, and "naturale".
+///
+/// Beyond triple, an accidental has no name of its own and falls back to
+/// a multiplier, e.g. 4 semitones sharp formats as `×4 diesis`.
 final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
+  /// Whether a natural [Note] should be spelled out as "naturale" rather
+  /// than an empty string.
   final bool showNatural;
 
   /// Creates a new [RomanceAccidentalNotation].

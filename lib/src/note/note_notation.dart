@@ -5,15 +5,20 @@ import '../note_name/english_note_name_notation.dart';
 import '../note_name/note_name.dart';
 import 'note.dart';
 
-/// The abstract [StringNotationSystem] for [Note].
+/// The shared shape of every language-specific [Note] notation: a
+/// [NoteName] spelling paired with an [Accidental] spelling, combined by
+/// each subclass's own `regExp`/`parseMatch`/`format` (letter-plus-suffix
+/// for German, letter-plus-symbol for English and Romance, and so on).
 abstract class NoteNotation extends StringNotationSystem<Note> {
-  /// The [NoteName] notation system used to format the [Note.noteName].
+  /// The notation used to read and write this [Note]'s letter name.
   final StringNotationSystem<NoteName> noteNameNotation;
 
-  /// The [Accidental] notation system used to format the [Note.accidental].
+  /// The notation used to read and write this [Note]'s sharp/flat
+  /// alteration.
   final StringNotationSystem<Accidental> accidentalNotation;
 
-  /// Creates a new [NoteNotation].
+  /// Creates a new [NoteNotation] combining [noteNameNotation] and
+  /// [accidentalNotation].
   const NoteNotation({
     this.noteNameNotation = const EnglishNoteNameNotation(),
     this.accidentalNotation = const SymbolAccidentalNotation(),

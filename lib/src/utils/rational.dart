@@ -2,7 +2,11 @@ import 'package:meta/meta.dart' show immutable;
 
 import 'num_extension.dart';
 
-/// A rational representation with numerator and denominator.
+/// An exact fraction of two integers, used wherever floating-point error
+/// would corrupt a musically meaningful ratio — most notably
+/// [FiveLimitTuning]'s just-intonation pitch-class ratios, which are
+/// products of small whole numbers (like `3/2` for a pure fifth) that
+/// `double` division would only ever approximate.
 @immutable
 final class Rational implements Comparable<Rational> {
   /// The numerator of this [Rational].
@@ -11,15 +15,20 @@ final class Rational implements Comparable<Rational> {
   /// The denominator of this [Rational].
   final int _denominator;
 
-  /// Creates a new [Rational] from [_numerator] and [_denominator].
+  /// Creates a new [Rational] equal to `numerator / denominator`.
+  ///
+  /// Example:
+  /// ```dart
+  /// const Rational(3, 2) // a pure fifth's frequency ratio
+  /// ```
   const Rational(this._numerator, [this._denominator = 1])
     : assert(_denominator != 0, 'The denominator cannot be zero.');
 
   /// A [Rational] of value zero.
   static const zero = Rational(0);
 
-  /// Creates a new [Rational] from [wholePart], [numerator],
-  /// and [_denominator].
+  /// Creates a new [Rational] from a mixed number: [wholePart] plus the
+  /// fraction `numerator / _denominator` (e.g. `1 1/2`).
   const Rational.fromMixed(
     int wholePart, [
     int numerator = 0,
@@ -37,7 +46,8 @@ final class Rational implements Comparable<Rational> {
     r'|(?:/(?<fractionDenominator>\d+)))?$',
   );
 
-  /// Parses source as a [Rational].
+  /// Parses [source] as a [Rational], accepting a bare integer (`3`), an
+  /// improper fraction (`3/4`), or a mixed number (`1 1/2`).
   ///
   /// Example:
   /// ```dart
@@ -65,7 +75,12 @@ final class Rational implements Comparable<Rational> {
     return Rational(integer, .parse(denominator));
   }
 
-  /// Creates a new [Rational] from [number] and [tolerance].
+  /// The best [Rational] approximation of [number], searching denominators
+  /// up to [tolerance] for the closest match to its fractional part.
+  ///
+  /// Raising [tolerance] trades a coarser (but exact) fraction for a
+  /// finer approximation of [number]; see [Rational.fromDouble]'s test
+  /// cases for how the chosen denominator shifts as tolerance grows.
   factory Rational.fromDouble(double number, {int tolerance = 100}) {
     assert(!tolerance.isNegative, 'Tolerance must be positive.');
 
@@ -107,18 +122,20 @@ final class Rational implements Comparable<Rational> {
     );
   }
 
-  /// The simplified version of this [Rational].
+  /// This [Rational] reduced to lowest terms, with the sign carried on the
+  /// numerator.
   Rational get simple {
     final (numerator, denominator) = _canonical;
 
     return Rational(numerator, denominator);
   }
 
-  /// Truncates this [Rational] to an integer and returns the result as an
-  /// [int].
+  /// This [Rational] truncated toward zero to an [int], discarding any
+  /// fractional part.
   int toInt() => toDouble().toInt();
 
-  /// This [Rational] as a [double].
+  /// This [Rational] converted to a [double], which may lose precision for
+  /// denominators that aren't exactly representable in base 2.
   double toDouble() => _numerator / _denominator;
 
   @override
@@ -135,7 +152,7 @@ final class Rational implements Comparable<Rational> {
             : '$wholePart $remainder/$_denominator');
   }
 
-  /// Adds this [Rational] to [other].
+  /// The sum of this [Rational] and [other].
   ///
   /// ```dart
   /// const Rational(2, 3) + const Rational(4, 3) == const Rational(2)
@@ -146,7 +163,7 @@ final class Rational implements Comparable<Rational> {
     _denominator * other._denominator,
   );
 
-  /// Subtracts [other] from this [Rational].
+  /// The difference between this [Rational] and [other].
   ///
   /// ```dart
   /// const Rational(2, 3) - const Rational(4, 3) == const Rational(-2, 3)
@@ -157,7 +174,7 @@ final class Rational implements Comparable<Rational> {
     _denominator * other._denominator,
   );
 
-  /// Multiplies this [Rational] with [other].
+  /// The product of this [Rational] and [other].
   ///
   /// ```dart
   /// const Rational(2, 3) * const Rational(4, 3) == const Rational(8, 9)
@@ -168,7 +185,7 @@ final class Rational implements Comparable<Rational> {
     _denominator * other._denominator,
   );
 
-  /// Divides this [Rational] with [other].
+  /// This [Rational] divided by [other].
   ///
   /// ```dart
   /// const Rational(2, 3) / const Rational(4, 3) == const Rational(1, 2)
@@ -179,7 +196,7 @@ final class Rational implements Comparable<Rational> {
     _denominator * other._numerator,
   );
 
-  /// Negates this [Rational].
+  /// The negation of this [Rational].
   ///
   /// ```dart
   /// -const Rational(2, 3) == const Rational(-2, 3)
@@ -187,8 +204,9 @@ final class Rational implements Comparable<Rational> {
   /// ```
   Rational operator -() => Rational(-_numerator, _denominator);
 
-  /// Two [Rational]s are equal iff they represent the same exact rational
-  /// number.
+  /// Whether this [Rational] and [other] represent the same exact value,
+  /// regardless of how each fraction happens to be reduced (e.g. `1/2`
+  /// equals `2/4`).
   @override
   bool operator ==(Object other) =>
       other is Rational &&
@@ -210,8 +228,11 @@ final class Rational implements Comparable<Rational> {
   }
 }
 
-/// An organ pipe height extension.
+/// [Organ pipe length](https://en.wikipedia.org/wiki/Pipe_organ#Pipe_length)
+/// conventions expressed as [Rational] ratios of feet, the traditional way
+/// organists name a stop's pitch (e.g. an "8 foot" stop sounds at written
+/// pitch, a "4 foot" stop an octave higher).
 extension OrganPipeHeight on Rational {
-  /// The reference height of an organ pipe.
+  /// The unison ([Interval.P1]) reference length: an 8-foot pipe.
   static const reference = Rational.fromMixed(8);
 }

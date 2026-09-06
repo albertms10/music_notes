@@ -16,7 +16,18 @@ import '../size/size.dart';
 import 'german_interval_notation.dart';
 import 'standard_interval_notation.dart';
 
-/// Distance between two notes.
+/// The exact, spelled distance between two notes: a [Size] (how many
+/// letter names it spans) refined by a [Quality] (how many semitones,
+/// exactly, within that size) — e.g. a major third versus a diminished
+/// fourth, which sound identical but are different [Interval]s because
+/// they're spelled differently.
+///
+/// This spelling awareness is what separates [Interval] from the plain
+/// semitone count [IntervalClass] reduces to: [Note.interval] returns an
+/// [Interval] that reflects how the two notes are actually written, and
+/// [Note.transposeBy] uses that same spelling to land on a specific,
+/// correctly-spelled note rather than merely the nearest enharmonic
+/// pitch. A negative [size] denotes a descending interval.
 ///
 /// ---
 /// See also:
@@ -26,14 +37,13 @@ import 'standard_interval_notation.dart';
 final class Interval
     with Enharmonic<IntervalClass>, Comparators<Interval>, Respellable<Interval>
     implements Comparable<Interval>, Formattable<Interval> {
-  /// Number of lines and spaces (or alphabet letters) spanning the two notes,
-  /// including the beginning and end.
+  /// The generic, letter-counting span of this [Interval] (see [Size]);
+  /// together with [quality] this fully determines its [semitones].
   final Size size;
 
-  /// The quality of this [Interval].
-  ///
-  /// Must be an instance of [PerfectQuality] or [ImperfectQuality],
-  /// depending on the nature of this [Interval].
+  /// The precise half-step refinement of [size] — a [PerfectQuality] if
+  /// [size] is a [PerfectSize], an [ImperfectQuality] if it's an
+  /// [ImperfectSize].
   final Quality quality;
 
   const Interval._(this.size, this.quality);
@@ -176,7 +186,9 @@ final class Interval
   /// An augmented thirteenth [Interval].
   static const A13 = Interval.imperfect(.thirteenth, .augmented);
 
-  /// Creates a new [Interval] allowing only perfect quality [size]s.
+  /// Creates a new [Interval] from a [PerfectSize] and [quality] (perfect
+  /// by default); asserts that [size] actually belongs to the perfect
+  /// family (unison, fourth, fifth, octave, or a compound thereof).
   const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
     : assert(
         // This operation uses a bitmask implementation, modified to be allowed
@@ -217,7 +229,9 @@ final class Interval
         'Interval must be perfect.',
       );
 
-  /// Creates a new [Interval] allowing only imperfect quality [size]s.
+  /// Creates a new [Interval] from an [ImperfectSize] and [quality];
+  /// asserts that [size] actually belongs to the imperfect family (second,
+  /// third, sixth, seventh, or a compound thereof).
   const Interval.imperfect(this.size, ImperfectQuality this.quality)
     : assert(
         // See [Interval.perfect] for an explanation of this bitmask operation.
@@ -225,13 +239,18 @@ final class Interval
         'Interval must be imperfect.',
       );
 
-  /// Creates a new [Interval] from [size] and [Quality.semitones].
+  /// Creates a new [Interval] from [size], picking [PerfectQuality] or
+  /// [ImperfectQuality] automatically to match, with [semitones] as that
+  /// quality's raw deviation value (not an absolute semitone count — see
+  /// [Interval.fromSizeAndSemitones] for that).
   factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) =>
       size.isPerfect
       ? .perfect(size, PerfectQuality(semitones))
       : .imperfect(size, ImperfectQuality(semitones));
 
-  /// Creates a new [Interval] from [size] and [Interval.semitones].
+  /// Creates a new [Interval] spanning [size] with an absolute distance
+  /// of [semitones] (i.e. matching what [Interval.semitones] would report
+  /// on the result), deriving whichever [Quality] makes that true.
   factory Interval.fromSizeAndSemitones(
     Size size,
     int semitones,
@@ -242,18 +261,20 @@ final class Interval
     (semitones + 0) * size.sign - size.semitones.abs(),
   );
 
-  /// Creates a new [Interval] from the given distance in [semitones].
-  /// The size is inferred.
+  /// Creates a new [Interval] spanning exactly [semitones], inferring
+  /// the closest matching [Size] (see [Size.nearestFromSemitones]) rather
+  /// than requiring one to be given explicitly.
   factory Interval.fromSemitones(int semitones) =>
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
-  /// The chain of [StringParser]s used to parse an [Interval].
+  /// The chain of [StringParser]s tried in turn by [Interval.parse]:
+  /// standard letter-symbol notation, then its German equivalent.
   static const parsers = [StandardIntervalNotation(), GermanIntervalNotation()];
 
-  /// Parse [source] as an [Interval] and return its value.
+  /// Parses [source] as an [Interval] and returns its value.
   ///
-  /// If the [source] string does not contain a valid [Interval], a
-  /// [FormatException] is thrown.
+  /// If [source] does not contain a valid [Interval], a [FormatException]
+  /// is thrown.
   ///
   /// Example:
   /// ```dart
@@ -266,7 +287,9 @@ final class Interval
     List<StringParser<Interval>> chain = parsers,
   }) => chain.parse(source);
 
-  /// The number of semitones of this [Interval].
+  /// This [Interval]'s absolute distance in semitones, combining [size]'s
+  /// default span with [quality]'s deviation from it, signed to match
+  /// [direction].
   ///
   /// Example:
   /// ```dart
@@ -278,7 +301,8 @@ final class Interval
   @override
   int get semitones => (size.semitones.abs() + quality.semitones) * size.sign;
 
-  /// The direction of this [Interval] as a sign of [size].
+  /// This [Interval]'s direction as `1` (ascending) or `-1` (descending),
+  /// mirroring [size]'s sign.
   ///
   /// Example:
   /// ```dart
@@ -287,7 +311,8 @@ final class Interval
   /// ```
   int get direction => size.sign;
 
-  /// The ascending version of this [Interval].
+  /// This [Interval] with a positive [size], flipping direction only if
+  /// it was [isDescending].
   ///
   /// Example:
   /// ```dart
@@ -296,7 +321,8 @@ final class Interval
   /// ```
   Interval get ascending => isDescending ? ._(-size, quality) : this;
 
-  /// The descending version of this [Interval].
+  /// This [Interval] with a negative [size], flipping direction only if
+  /// it wasn't already [isDescending].
   ///
   /// Example:
   /// ```dart
@@ -305,7 +331,7 @@ final class Interval
   /// ```
   Interval get descending => isDescending ? this : ._(-size, quality);
 
-  /// Whether this [Interval] is descending.
+  /// Whether this [Interval] points downward, i.e. [size] is negative.
   ///
   /// Example:
   /// ```dart
@@ -315,8 +341,8 @@ final class Interval
   /// ```
   bool get isDescending => size.isNegative;
 
-  /// Returns the ascending or descending version of this [Interval]
-  /// based on [isDescending].
+  /// This [Interval] set to [isDescending]'s direction: [descending] if
+  /// `true`, [ascending] if `false`.
   ///
   /// Example:
   /// ```dart
@@ -329,8 +355,11 @@ final class Interval
   Interval withDescending(bool isDescending) =>
       isDescending ? descending : ascending;
 
-  /// The inversion of this [Interval], regardless of its direction (ascending
-  /// or descending).
+  /// This [Interval] turned upside down, the way moving its lower note
+  /// up an octave (or its upper note down one) would: [Size] and
+  /// [Quality] both invert together (see [Size.inversion] and
+  /// [Quality.inversion]), so a minor third inverts to a major sixth,
+  /// direction is preserved either way.
   ///
   /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
@@ -342,8 +371,8 @@ final class Interval
   /// (-Interval.P1).inversion == .P8.descending
   /// ```
   ///
-  /// If this [Interval.size] is greater than [.octave], the simplified
-  /// inversion is returned instead.
+  /// A compound [Interval] (greater than an [Size.octave]) is simplified
+  /// before inverting, since a ninth and a second invert the same way.
   ///
   /// Example:
   /// ```dart
@@ -352,7 +381,8 @@ final class Interval
   /// ```
   Interval get inversion => ._(size.inversion, quality.inversion);
 
-  /// The simplified version of this [Interval].
+  /// This [Interval] reduced within a single octave (see [Size.simple]),
+  /// keeping the same [Quality].
   ///
   /// Example:
   /// ```dart
@@ -363,7 +393,8 @@ final class Interval
   /// ```
   Interval get simple => ._(size.simple, quality);
 
-  /// Whether this [Interval] is greater than [.octave].
+  /// Whether this [Interval] spans more than an octave (a ninth or
+  /// larger; see [Size.isCompound]).
   ///
   /// Example:
   /// ```dart
@@ -376,7 +407,9 @@ final class Interval
   /// ```
   bool get isCompound => size.isCompound;
 
-  /// Whether this [Interval] is dissonant.
+  /// Whether this [Interval] is dissonant: true if either its [Quality]
+  /// (any diminished or augmented degree) or its [Size] (any second or
+  /// seventh, in any octave) makes it so.
   ///
   /// Example:
   /// ```dart
@@ -388,8 +421,9 @@ final class Interval
   /// ```
   bool get isDissonant => quality.isDissonant || size.isDissonant;
 
-  /// This [Interval] respelled by [size] while keeping the same number of
-  /// [semitones].
+  /// This [Interval] rewritten as [size], keeping the same [semitones]
+  /// by deriving whatever [Quality] makes up the difference (e.g. an
+  /// augmented fourth respelled as a fifth becomes a diminished fifth).
   ///
   /// Example:
   /// ```dart
@@ -398,8 +432,9 @@ final class Interval
   /// ```
   Interval respellBySize(Size size) => .fromSizeAndSemitones(size, semitones);
 
-  /// This [Interval] respelled upwards while keeping the same number of
-  /// [semitones].
+  /// This [Interval] respelled one [Size] step larger, keeping the same
+  /// [semitones] (its [Quality] shrinks to compensate, e.g. augmented
+  /// fourth becomes diminished fifth).
   ///
   /// Example:
   /// ```dart
@@ -409,8 +444,9 @@ final class Interval
   @override
   Interval get respelledUpwards => respellBySize(Size(size.incrementBy(1)));
 
-  /// This [Interval] respelled downwards while keeping the same number of
-  /// [semitones].
+  /// This [Interval] respelled one [Size] step smaller, keeping the same
+  /// [semitones] (its [Quality] grows to compensate, e.g. diminished
+  /// fifth becomes augmented fourth).
   ///
   /// Example:
   /// ```dart
@@ -420,8 +456,9 @@ final class Interval
   @override
   Interval get respelledDownwards => respellBySize(Size(size.incrementBy(-1)));
 
-  /// This [Interval] with the simplest spelling while keeping the same number
-  /// of [semitones].
+  /// This [Interval] rewritten with the simplest possible spelling for
+  /// its [semitones] (i.e. whichever [Size] needs the least extreme
+  /// [Quality] to reach that many semitones), via [Interval.fromSemitones].
   ///
   /// Example:
   /// ```dart
@@ -431,7 +468,9 @@ final class Interval
   @override
   Interval get respelledSimple => .fromSemitones(semitones);
 
-  /// Creates a new [IntervalClass] from [semitones].
+  /// This [Interval] reduced to its [IntervalClass]: the unsigned,
+  /// octave-folded semitone distance it shares with every enharmonic and
+  /// direction-flipped equivalent.
   ///
   /// Example:
   /// ```dart
@@ -442,7 +481,8 @@ final class Interval
   @override
   IntervalClass toClass() => IntervalClass(semitones);
 
-  /// The string representation of this [Interval] based on [formatter].
+  /// The string representation of this [Interval], using [formatter]
+  /// (standard letter-symbol notation by default, e.g. `M3`).
   ///
   /// Example:
   /// ```dart
@@ -458,7 +498,9 @@ final class Interval
   @override
   String toString() => '$runtimeType(size: $size, quality: $quality)';
 
-  /// Adds [other] to this [Interval].
+  /// This [Interval] followed immediately by [other], stacked from a
+  /// common reference pitch and re-measured as a single [Interval] (e.g.
+  /// a minor third plus a major third makes a perfect fifth).
   ///
   /// Example:
   /// ```dart
@@ -473,7 +515,9 @@ final class Interval
     return initialPitch.interval(finalPitch);
   }
 
-  /// Subtracts [other] from this [Interval].
+  /// This [Interval] with [other] taken back out, the inverse of
+  /// [operator +] (e.g. a perfect fifth minus a major third leaves a
+  /// minor third).
   ///
   /// Example:
   /// ```dart
@@ -488,7 +532,9 @@ final class Interval
     return initialPitch.interval(finalPitch);
   }
 
-  /// The negation of this [Interval].
+  /// This [Interval] with its direction flipped, keeping the same [size]
+  /// magnitude and [quality] (equivalent to [descending] when ascending,
+  /// or [ascending] when descending).
   ///
   /// Example:
   /// ```dart
@@ -511,10 +557,15 @@ final class Interval
   ]);
 }
 
-/// An Interval extension for circle operations.
+/// Interval-generated cycles over [Scalable] values — walking repeatedly
+/// by the same [Interval], the way the circle of fifths is generated by
+/// repeatedly stacking [Interval.P5].
 extension IntervalCircle on Interval {
-  /// The circle distance between [from] and [to] in this [Interval],
-  /// including all visited `notes`.
+  /// How many steps of this [Interval] (in whichever direction is
+  /// shorter) it takes to walk from [from] to [to], alongside every
+  /// intermediate `notes` visited along that path; negative when the
+  /// shorter path is this [Interval]'s [inversion] direction rather than
+  /// itself.
   ///
   /// Example:
   /// ```dart
@@ -547,7 +598,10 @@ extension IntervalCircle on Interval {
     }
   }
 
-  /// The circle of this [Interval] from [scalable].
+  /// The infinite sequence of [scalable] repeatedly transposed by this
+  /// [Interval] — [scalable] itself, then [scalable] transposed once, then
+  /// twice, and so on (bounded internally, so callers should always
+  /// [Iterable.take] a finite prefix).
   ///
   /// Example:
   /// ```dart
@@ -569,9 +623,13 @@ extension IntervalCircle on Interval {
   }
 }
 
-/// An [Interval] iterable extension.
+/// Step-by-step analysis of a sequence of [Interval]s measured from a
+/// common origin, as in a chord's intervals-from-the-root list.
 extension IntervalIterable on Iterable<Interval> {
-  /// The [Interval] steps between consecutive intervals.
+  /// The [Interval] from each element to the next, treating the sequence
+  /// as if measured cumulatively from a shared [Interval.P1] origin (e.g.
+  /// turning a chord's from-the-root interval list into the interval
+  /// *between* each consecutive pair of chord tones).
   ///
   /// Example:
   /// ```dart

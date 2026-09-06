@@ -1,7 +1,9 @@
 import '../notation_system/notation_system.dart';
 import 'size.dart';
 
-/// A notation system for [Size].
+/// A notation system for [Size]: its bare signed integer, as written in
+/// interval symbols like `M3` or `P-5` (the digits after the quality
+/// letter).
 final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
   const SizeNotation();

@@ -12,13 +12,21 @@ import '../note_name/note_name.dart';
 import '../pitch/pitch.dart';
 import '../respellable.dart';
 import '../scalable.dart';
+import '../scale/scale.dart';
 import '../size/size.dart';
 import '../tuning_system/equal_temperament.dart';
 import 'english_note_notation.dart';
 import 'german_note_notation.dart';
 import 'romance_note_notation.dart';
 
-/// A musical note.
+/// An unpositioned musical note: a [NoteName] letter modified by an
+/// [Accidental], with no octave attached (e.g. "D♭", as opposed to the
+/// octave-specific "D♭4" a [Pitch] would represent).
+///
+/// Being octave-free is what lets a single [Note] serve as a [Key]'s
+/// tonic, a step in a [Scale], or a member of a [Chord] without
+/// committing to where in register it sounds; anywhere octave matters,
+/// call [inOctave] to promote it to a [Pitch].
 ///
 /// ---
 /// See also:
@@ -31,16 +39,18 @@ import 'romance_note_notation.dart';
 final class Note extends Scalable<Note>
     with RespellableScalable<Note>
     implements Comparable<Note>, Formattable<Note> {
-  /// The name that defines this [Note].
+  /// The letter name this [Note] is spelled with, before [accidental] is
+  /// applied.
   final NoteName noteName;
 
-  /// The accidental that modifies the [noteName].
+  /// The sharp, flat, or natural alteration applied to [noteName].
   final Accidental accidental;
 
-  /// Creates a new [Note] from [noteName] and [accidental].
+  /// Creates a new [Note] from [noteName] altered by [accidental]
+  /// (natural by default).
   const Note(this.noteName, [this.accidental = .natural]);
 
-  /// Note C.
+  /// Note C, the tonic of [ScalePattern.major] built on itself.
   static const c = Note(.c);
 
   /// Note D.
@@ -55,13 +65,17 @@ final class Note extends Scalable<Note>
   /// Note G.
   static const g = Note(.g);
 
-  /// Note A.
+  /// Note A, the tonic of [ScalePattern.naturalMinor] built on itself, and
+  /// the pitch class of [Pitch.reference] (A440 by default).
   static const a = Note(.a);
 
   /// Note B.
   static const b = Note(.b);
 
-  /// The chain of [StringParser]s used to parse a [Note].
+  /// The chain of [StringParser]s tried in turn by [Note.parse]: textual
+  /// then symbolic then ASCII English spellings, German letter spellings,
+  /// then textual, symbolic, and ASCII Romance solfège spellings.
+
   static const parsers = [
     EnglishNoteNotation(),
     EnglishNoteNotation.symbol(),
@@ -72,10 +86,10 @@ final class Note extends Scalable<Note>
     RomanceNoteNotation.ascii(),
   ];
 
-  /// Parse [source] as a [Note] and return its value.
+  /// Parses [source] as a [Note] and returns its value.
   ///
-  /// If the [source] string does not contain a valid [Note], a
-  /// [FormatException] is thrown.
+  /// If [source] does not contain a valid [Note], a [FormatException] is
+  /// thrown.
   ///
   /// Example:
   /// ```dart
@@ -88,11 +102,16 @@ final class Note extends Scalable<Note>
     List<StringParser<Note>> chain = parsers,
   }) => chain.parse(source);
 
-  /// [Comparator] for [Note]s by fifths distance.
+  /// [Comparator] that orders [Note]s by their
+  /// [circleOfFifthsDistance] — sharpward notes sort after flatward ones,
+  /// regardless of pitch height.
   static int compareByFifthsDistance(Note a, Note b) =>
       a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
 
-  /// [Comparator] for [Note]s by closest distance.
+  /// [Comparator] that orders [Note]s by chromatic proximity: enharmonic
+  /// spellings of the same pitch class (e.g. C♯ and D♭) sort adjacent to
+  /// each other, using letter-name and accidental size only to break
+  /// exact ties.
   static int compareByClosestDistance(Note a, Note b) => compareMultiple([
     () {
       final distance = (a.semitones - b.semitones).abs();
@@ -109,7 +128,9 @@ final class Note extends Scalable<Note>
     () => a.noteName.semitones.compareTo(b.noteName.semitones),
   ];
 
-  /// The semitones distance of this [Note] relative to [Note.c].
+  /// This [Note]'s position in semitones relative to [Note.c], with no
+  /// octave folding — a triple sharp or flat can push it well outside
+  /// `[0, 11]`.
   ///
   /// Example:
   /// ```dart
@@ -122,7 +143,9 @@ final class Note extends Scalable<Note>
   @override
   int get semitones => noteName.semitones + accidental.semitones;
 
-  /// The difference in semitones between this [Note] and [other].
+  /// The signed semitone distance from this [Note] to [other], taking
+  /// the shorter path around the octave (so a descending step reports
+  /// negative even if [other]'s letter name comes later alphabetically).
   ///
   /// Example:
   /// ```dart
@@ -133,7 +156,8 @@ final class Note extends Scalable<Note>
   @override
   int difference(Note other) => super.difference(other);
 
-  /// This [Note] sharpened by 1 semitone.
+  /// This [Note] raised by one semitone, adding a sharp to its
+  /// [accidental] (e.g. natural becomes sharp, sharp becomes double sharp).
   ///
   /// Example:
   /// ```dart
@@ -142,7 +166,8 @@ final class Note extends Scalable<Note>
   /// ```
   Note get sharp => Note(noteName, accidental + 1);
 
-  /// This [Note] flattened by 1 semitone.
+  /// This [Note] lowered by one semitone, adding a flat to its
+  /// [accidental] (e.g. natural becomes flat, flat becomes double flat).
   ///
   /// Example:
   /// ```dart
@@ -151,7 +176,9 @@ final class Note extends Scalable<Note>
   /// ```
   Note get flat => Note(noteName, accidental - 1);
 
-  /// This [Note] without an accidental (natural).
+  /// This [Note] with [accidental] cleared, keeping only [noteName] (e.g.
+  /// G♭ becomes plain G — note that this changes the sounding pitch,
+  /// unlike the other respelling methods).
   ///
   /// Example:
   /// ```dart
@@ -161,7 +188,7 @@ final class Note extends Scalable<Note>
   /// ```
   Note get natural => Note(noteName);
 
-  /// The [TonalMode.major] [Key] from this [Note].
+  /// The [TonalMode.major] [Key] whose tonic is this [Note].
   ///
   /// Example:
   /// ```dart
@@ -170,7 +197,7 @@ final class Note extends Scalable<Note>
   /// ```
   Key get major => Key(this, .major);
 
-  /// The [TonalMode.minor] [Key] from this [Note].
+  /// The [TonalMode.minor] [Key] whose tonic is this [Note].
   ///
   /// Example:
   /// ```dart
@@ -179,7 +206,7 @@ final class Note extends Scalable<Note>
   /// ```
   Key get minor => Key(this, .minor);
 
-  /// The [ChordPattern.diminishedTriad] on this [Note].
+  /// The [ChordPattern.diminishedTriad] built with this [Note] as root.
   ///
   /// Example:
   /// ```dart
@@ -188,7 +215,7 @@ final class Note extends Scalable<Note>
   /// ```
   Chord get diminishedTriad => ChordPattern.diminishedTriad.on(this);
 
-  /// The [ChordPattern.minorTriad] on this [Note].
+  /// The [ChordPattern.minorTriad] built with this [Note] as root.
   ///
   /// Example:
   /// ```dart
@@ -197,7 +224,7 @@ final class Note extends Scalable<Note>
   /// ```
   Chord get minorTriad => ChordPattern.minorTriad.on(this);
 
-  /// The [ChordPattern.majorTriad] on this [Note].
+  /// The [ChordPattern.majorTriad] built with this [Note] as root.
   ///
   /// Example:
   /// ```dart
@@ -206,7 +233,7 @@ final class Note extends Scalable<Note>
   /// ```
   Chord get majorTriad => ChordPattern.majorTriad.on(this);
 
-  /// The [ChordPattern.augmentedTriad] on this [Note].
+  /// The [ChordPattern.augmentedTriad] built with this [Note] as root.
   ///
   /// Example:
   /// ```dart
@@ -215,8 +242,10 @@ final class Note extends Scalable<Note>
   /// ```
   Chord get augmentedTriad => ChordPattern.augmentedTriad.on(this);
 
-  /// This [Note] respelled by [noteName] while keeping the same number of
-  /// [semitones].
+  /// This [Note] rewritten under [noteName], keeping the same number of
+  /// [semitones] by choosing whichever [Accidental] makes up the
+  /// difference — however extreme (e.g. respelling C as D takes a double
+  /// flat).
   ///
   /// Example:
   /// ```dart
@@ -236,8 +265,8 @@ final class Note extends Scalable<Note>
     return Note(noteName, Accidental(deltaSemitones));
   }
 
-  /// This [Note] respelled by [NoteName.ordinal] distance while keeping the
-  /// same number of [semitones].
+  /// This [Note] respelled [distance] letter names away (see
+  /// [NoteName.ordinal]), keeping the same number of [semitones].
   ///
   /// Example:
   /// ```dart
@@ -248,8 +277,8 @@ final class Note extends Scalable<Note>
   Note respellByOrdinalDistance(int distance) =>
       respellByNoteName(.fromOrdinal(noteName.ordinal + distance));
 
-  /// This [Note] respelled upwards while keeping the same number of
-  /// [semitones].
+  /// This [Note] respelled with the next letter name up, keeping the
+  /// same number of [semitones] (e.g. G♯ becomes A♭).
   ///
   /// Example:
   /// ```dart
@@ -259,8 +288,8 @@ final class Note extends Scalable<Note>
   @override
   Note get respelledUpwards => super.respelledUpwards;
 
-  /// This [Note] respelled downwards while keeping the same number of
-  /// [semitones].
+  /// This [Note] respelled with the next letter name down, keeping the
+  /// same number of [semitones] (e.g. C becomes B♯).
   ///
   /// Example:
   /// ```dart
@@ -270,11 +299,13 @@ final class Note extends Scalable<Note>
   @override
   Note get respelledDownwards => super.respelledDownwards;
 
-  /// This [Note] respelled by [accidental] while keeping the same number of
-  /// [semitones].
+  /// This [Note] rewritten with [accidental], keeping the same number of
+  /// [semitones] by moving to whichever [noteName] the arithmetic demands
+  /// (e.g. respelling by [Accidental.sharp] turns B♭ into A♯).
   ///
-  /// When no respelling is possible with [accidental], the next closest
-  /// spelling is returned.
+  /// When no [noteName] can express this pitch with exactly [accidental],
+  /// the next-closest [accidental] value is used instead — walking
+  /// outward one semitone at a time until a valid [NoteName] is found.
   ///
   /// Example:
   /// ```dart
@@ -294,8 +325,9 @@ final class Note extends Scalable<Note>
     return respellByAccidental(accidental.incrementBy(1));
   }
 
-  /// This [Note] with the simplest [Accidental] spelling while keeping the
-  /// same number of [semitones].
+  /// This [Note] rewritten with as plain an [Accidental] as possible
+  /// (natural where a natural letter exists at this pitch, otherwise a
+  /// single sharp or flat).
   ///
   /// Example:
   /// ```dart
@@ -306,7 +338,7 @@ final class Note extends Scalable<Note>
   @override
   Note get respelledSimple => super.respelledSimple;
 
-  /// This [Note] positioned in the given [octave] as a [Pitch].
+  /// This [Note] fixed at [octave], promoting it to a [Pitch].
   ///
   /// Example:
   /// ```dart
@@ -315,7 +347,10 @@ final class Note extends Scalable<Note>
   /// ```
   Pitch inOctave(int octave) => Pitch(this, octave: octave);
 
-  /// The [Interval] between this [Note] and [other].
+  /// The [Interval] from this [Note] up to [other] (or descending, if
+  /// [other]'s letter name comes at or before this one's), combining the
+  /// generic size from [NoteName.intervalSize] with the actual semitone
+  /// [difference].
   ///
   /// Example:
   /// ```dart
@@ -328,7 +363,10 @@ final class Note extends Scalable<Note>
     difference(other) % chromaticDivisions,
   );
 
-  /// Transposes this [Note] by [interval].
+  /// This [Note] transposed by [interval]: its letter name shifts by
+  /// [interval]'s generic [Size] and its [Accidental] is recomputed so the
+  /// result is exactly [interval] away, rather than merely the nearest
+  /// enharmonic pitch.
   ///
   /// Example:
   /// ```dart
@@ -355,7 +393,8 @@ final class Note extends Scalable<Note>
     );
   }
 
-  /// The string representation of this [Note] based on [formatter].
+  /// The string representation of this [Note], using [formatter]
+  /// (symbolic English by default: letter name plus ♯/♭ glyphs).
   ///
   /// Example:
   /// ```dart
@@ -385,10 +424,14 @@ final class Note extends Scalable<Note>
   int compareTo(Note other) => compareMultiple(_comparators(this, other));
 }
 
-/// A Note extension method for circle of fifths operations.
+/// [Circle of fifths](https://en.wikipedia.org/wiki/Circle_of_fifths)
+/// navigation for [Note]: walking by ascending or descending perfect
+/// fifths, and measuring how many fifths separate two notes.
 extension NoteCircleOfFifths on Note {
-  /// The circle of fifths starting from this [Note] split by sharps (`up`) and
-  /// flats (`down`).
+  /// This [Note]'s circle of fifths split into two one-directional
+  /// sequences: `up` walking sharpward by ascending [Interval.P5], `down`
+  /// walking flatward by ascending [Interval.P4] (the octave-complement
+  /// direction), each starting one step away from this [Note] itself.
   ///
   /// Example:
   /// ```dart
@@ -409,8 +452,9 @@ extension NoteCircleOfFifths on Note {
     down: Interval.P4.circleFrom(this).skip(1),
   );
 
-  /// The continuous circle of fifths up to [distance] including this [Note],
-  /// from flats to sharps.
+  /// A single flats-to-sharps sequence of `2 * distance + 1` notes,
+  /// centered on this [Note], built by merging both directions of
+  /// [splitCircleOfFifths].
   ///
   /// Example:
   /// ```dart
@@ -443,7 +487,8 @@ extension NoteCircleOfFifths on Note {
     ];
   }
 
-  /// The distance in relation to the circle of fifths.
+  /// How many fifths this [Note] sits from [Note.c] on the circle of
+  /// fifths — positive sharpward, negative flatward.
   ///
   /// Example:
   /// ```dart
@@ -453,7 +498,8 @@ extension NoteCircleOfFifths on Note {
   /// ```
   int get circleOfFifthsDistance => Note.c.fifthsDistanceWith(this);
 
-  /// The fifths distance between this [Note] and [other].
+  /// How many fifths separate this [Note] from [other], found by walking
+  /// the circle of fifths in whichever direction reaches [other] first.
   ///
   /// Example:
   /// ```dart
@@ -465,9 +511,15 @@ extension NoteCircleOfFifths on Note {
       Interval.P5.circleDistance(from: this, to: other).$1;
 }
 
-/// A Note iterable.
+/// Melodic-line analysis for a sequence of [Note]s, treating each
+/// consecutive pair as the smaller of its two possible intervals (an
+/// ascending sixth read as a descending third, and so on) rather than
+/// [ScalableIterable.intervalSteps]'s literal, potentially compound
+/// distance.
 extension NoteIterable on Iterable<Note> {
-  /// The closest [Interval]s between [Scalable]s in this [Iterable].
+  /// The [Interval] from each element to the next, folded to whichever
+  /// direction spans less than a [Interval.P5] (so a leap up a sixth
+  /// reports as a step down a third instead).
   Iterable<Interval> get closestSteps sync* {
     for (var i = 0; i < length - 1; i++) {
       final interval = elementAt(i).interval(elementAt(i + 1));
@@ -475,9 +527,11 @@ extension NoteIterable on Iterable<Note> {
     }
   }
 
-  /// Whether this [Iterable] is built entirely from steps (no skips).
-  ///
-  /// Overrides [ScalableIterable.isStepwise] to use [closestSteps].
+  /// Whether every consecutive pair in this melodic line moves by
+  /// [Size.second] at most, using [closestSteps] rather than
+  /// [ScalableIterable.intervalSteps] so registral leaps that are really
+  /// just an inverted step (as [closestSteps] resolves them) still count
+  /// as stepwise.
   ///
   /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
   ///
@@ -490,18 +544,25 @@ extension NoteIterable on Iterable<Note> {
       closestSteps.every((interval) => interval.size.abs() <= Size.second);
 }
 
-/// A list of notes.
+/// Bulk operations over a [List] of [Note]s: uniform respelling and
+/// promotion to voiced [Pitch]es (either stacked upward like a chord or
+/// following the nearest-pitch path of a melody).
 extension NoteList on List<Note> {
-  /// Flattens all notes on this [List].
+  /// Every [Note] in this [List], flattened by one semitone (see
+  /// [Note.flat]).
   List<Note> get flat => map((note) => note.flat).toList();
 
-  /// Sharpens all notes on this [List].
+  /// Every [Note] in this [List], sharpened by one semitone (see
+  /// [Note.sharp]).
   List<Note> get sharp => map((note) => note.sharp).toList();
 
-  /// Makes all notes on this [List] natural.
+  /// Every [Note] in this [List] with its [Accidental] cleared (see
+  /// [Note.natural]).
   List<Note> get natural => map((note) => note.natural).toList();
 
-  /// Creates a [Pitch] at [octave] for each [Note] in this list.
+  /// Every [Note] in this list fixed at the same [octave], preserving
+  /// order and register (unlike [toStacked] or [toMelody], each note
+  /// lands in the exact same octave regardless of its neighbors).
   ///
   /// Example:
   /// ```dart
@@ -511,7 +572,9 @@ extension NoteList on List<Note> {
   List<Pitch> inOctave(int octave) =>
       map((note) => note.inOctave(octave)).toList();
 
-  /// Stacks ascending from [octave], like a chord voicing.
+  /// This [List] realized as ascending [Pitch]es, each placed just above
+  /// the previous one starting from [octave] — the natural registral
+  /// spread of a chord voicing read bottom to top.
   ///
   /// Example:
   /// ```dart
@@ -521,8 +584,10 @@ extension NoteList on List<Note> {
   List<Pitch> toStacked({int octave = 4}) =>
       _mapToPitches(octave, (previous, note) => previous.nearestAbove(note));
 
-  /// Places each note at the pitch closest to the previous one, like a
-  /// melodic line.
+  /// This [List] realized as [Pitch]es following the smoothest possible
+  /// voice leading: each note lands at whichever octave puts it nearest
+  /// the previous pitch, the way a singable melodic line moves rather
+  /// than a strictly ascending chord voicing.
   ///
   /// Example:
   /// ```dart

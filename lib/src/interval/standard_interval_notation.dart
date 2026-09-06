@@ -4,18 +4,24 @@ import '../quality/quality_notation.dart';
 import '../size/size_notation.dart';
 import 'interval.dart';
 
-/// A standard notation system for [Interval].
+/// The standard letter-symbol notation for [Interval]: a quality letter
+/// (`d`, `P`/`m`/`M`, or `A`) immediately followed by the signed size
+/// (e.g. `M3`, `P-5`, `AA6`). A compound interval also shows its
+/// simplified form in parentheses, e.g. `M9 (M2)`.
 class StandardIntervalNotation extends StringNotationSystem<Interval> {
-  /// The [SizeNotation].
+  /// The notation used to read and write this interval's signed [Size].
   final SizeNotation sizeNotation;
 
-  /// The [PerfectQualityNotation].
+  /// The notation used to read and write the quality of a
+  /// [PerfectSize]-based interval.
   final PerfectQualityNotation perfectQualityNotation;
 
-  /// The [ImperfectQualityNotation].
+  /// The notation used to read and write the quality of an
+  /// [ImperfectSize]-based interval.
   final ImperfectQualityNotation imperfectQualityNotation;
 
-  /// Creates a new [StandardIntervalNotation].
+  /// Creates a new [StandardIntervalNotation] combining [sizeNotation],
+  /// [perfectQualityNotation], and [imperfectQualityNotation].
   const StandardIntervalNotation({
     this.sizeNotation = const SizeNotation(),
     this.perfectQualityNotation = const PerfectQualityNotation(),

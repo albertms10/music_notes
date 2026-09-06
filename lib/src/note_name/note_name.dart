@@ -9,42 +9,54 @@ import 'english_note_name_notation.dart';
 import 'german_note_name_notation.dart';
 import 'romance_note_name_notation.dart';
 
-/// The note names of the diatonic scale.
+/// One of the seven natural letter names of the diatonic scale (C through
+/// B), unmodified by any [Accidental].
+///
+/// [NoteName] alone fixes a pitch's letter and its natural position in
+/// the octave (via [semitones]), but not any sharp or flat; pairing one
+/// with an [Accidental] is what [Note] does. Its seven values are also
+/// the fixed cycle that [ordinal], [next], [previous], and
+/// [transposeBySize] all walk letter-by-letter, independently of
+/// semitone distance — the difference between a generic ("a third") and
+/// a specific ("4 semitones") interval.
 ///
 /// ---
 /// See also:
 /// * [Note].
 enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
-  /// Note name C.
+  /// Note name C, the tonic of the C major scale.
   c(0),
 
-  /// Note name D.
+  /// Note name D, a whole step above [c].
   d(2),
 
-  /// Note name E.
+  /// Note name E, a half step above [d].
   e(4),
 
-  /// Note name F.
+  /// Note name F, a half step above [e].
   f(5),
 
-  /// Note name G.
+  /// Note name G, a whole step above [f].
   g(7),
 
-  /// Note name A.
+  /// Note name A, a whole step above [g].
   a(9),
 
-  /// Note name B.
+  /// Note name B, a whole step above [a] and a half step below the next
+  /// [c].
   b(11)
   ;
 
-  /// The number of semitones that identify this [NoteName].
+  /// This [NoteName]'s natural position in semitones from [NoteName.c],
+  /// before any [Accidental] is applied.
   final int semitones;
 
-  /// Creates a new [NoteName] from [semitones].
+  /// Creates a new [NoteName] naturally positioned at [semitones] above C.
   const NoteName(this.semitones);
 
-  /// Returns a [NoteName] that matches with [semitones] as in [NoteName],
-  /// otherwise returns `null`.
+  /// The [NoteName] whose natural [semitones] position matches
+  /// `semitones % chromaticDivisions`, or `null` if none does (i.e.
+  /// [semitones] lands on a black key with no natural letter of its own).
   ///
   /// Example:
   /// ```dart
@@ -56,7 +68,9 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
     (noteName) => semitones % chromaticDivisions == noteName.semitones,
   );
 
-  /// Returns a [NoteName] that matches with [ordinal].
+  /// The [NoteName] at [ordinal] in the seven-letter cycle, wrapping
+  /// around (and treating an [ordinal] of 0 as a full cycle back) via
+  /// [IntExtension.nonZeroMod].
   ///
   /// Example:
   /// ```dart
@@ -67,16 +81,18 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   factory NoteName.fromOrdinal(int ordinal) =>
       values[ordinal.nonZeroMod(values.length) - 1];
 
-  /// The chain of [StringParser]s used to parse a [NoteName].
+  /// The chain of [StringParser]s tried in turn by [NoteName.parse]:
+  /// English letters, German letters (including the `H`/`h` split for B),
+  /// then Romance solfège syllables.
   static const parsers = [
     EnglishNoteNameNotation(),
     GermanNoteNameNotation(),
     RomanceNoteNameNotation(),
   ];
 
-  /// Parse [source] as a [NoteName] and return its value.
+  /// Parses [source] as a [NoteName] and returns its value.
   ///
-  /// If the [source] string does not contain a valid [NoteName], a
+  /// If [source] does not contain a valid [NoteName], a
   /// [FormatException] is thrown.
   ///
   /// Example:
@@ -90,7 +106,8 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
     List<StringParser<NoteName>> chain = parsers,
   }) => chain.parse(source);
 
-  /// The ordinal number of this [NoteName].
+  /// This [NoteName]'s one-indexed position in the letter cycle (C is 1,
+  /// B is 7), the basis for generic (letter-counting) interval sizes.
   ///
   /// Example:
   /// ```dart
@@ -100,7 +117,9 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// ```
   int get ordinal => values.indexOf(this) + 1;
 
-  /// The [Size] that conforms between this [NoteName] and [other].
+  /// The generic [Size] spanning this [NoteName] and [other], counted by
+  /// letter names alone (always ascending and within a single octave),
+  /// regardless of any [Accidental] either note might carry.
   ///
   /// Example:
   /// ```dart
@@ -113,7 +132,8 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
     other.ordinal - ordinal + (ordinal > other.ordinal ? values.length : 0) + 1,
   );
 
-  /// The difference in semitones between this [NoteName] and [other].
+  /// The signed semitone distance from this [NoteName] to [other],
+  /// negative when [other] is the closer letter below rather than above.
   ///
   /// Example:
   /// ```dart
@@ -124,10 +144,9 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// ```
   int difference(NoteName other) => Note(this).difference(Note(other));
 
-  /// The positive difference in semitones between this [NoteName] and [other].
-  ///
-  /// When [difference] would return a negative value, this method returns the
-  /// difference with [other] being in the next octave.
+  /// The semitone distance from this [NoteName] up to [other], always
+  /// non-negative by treating [other] as lying in the octave above when
+  /// [difference] would otherwise be negative.
   ///
   /// Example:
   /// ```dart
@@ -142,7 +161,9 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
     return diff.isNegative ? diff + chromaticDivisions : diff;
   }
 
-  /// Transposes this [NoteName] by interval [size].
+  /// This [NoteName] moved [size] letter names away (ascending for a
+  /// positive [Size], descending for a negative one), wrapping around the
+  /// seven-letter cycle.
   ///
   /// Example:
   /// ```dart
@@ -153,17 +174,17 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   NoteName transposeBySize(Size size) =>
       .fromOrdinal(ordinal + size.incrementBy(-1));
 
-  /// The next ordinal [NoteName].
+  /// The next [NoteName] one letter up, wrapping from B back to C.
   ///
   /// Example:
   /// ```dart
   /// NoteName.c.next == .d
-  /// NoteName.f.next == .a
+  /// NoteName.f.next == .g
   /// NoteName.b.next == .c
   /// ```
   NoteName get next => transposeBySize(.second);
 
-  /// The previous ordinal [NoteName].
+  /// The previous [NoteName] one letter down, wrapping from C back to B.
   ///
   /// Example:
   /// ```dart
@@ -173,7 +194,8 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// ```
   NoteName get previous => transposeBySize(-Size.second);
 
-  /// The string representation of this [NoteName] based on [formatter].
+  /// The string representation of this [NoteName], using [formatter]
+  /// (uppercase English letters by default).
   @override
   String format([
     StringFormatter<NoteName> formatter = const EnglishNoteNameNotation(),

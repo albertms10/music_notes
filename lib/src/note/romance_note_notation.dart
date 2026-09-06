@@ -1,13 +1,16 @@
-import '../accidental/accidental.dart';
 import '../accidental/romance_accidental_notation.dart';
 import '../accidental/symbol_accidental_notation.dart';
 import '../note_name/romance_note_name_notation.dart';
 import 'note.dart';
 import 'note_notation.dart';
 
-/// The Romance alphabetic notation system for [Note].
+/// The Romance (solfège) notation for [Note]: a solfège syllable (see
+/// [RomanceNoteNameNotation]) followed by its accidental, either written
+/// out (`Do diesis`, the default) or as a symbol (`Do♯`, via
+/// [RomanceNoteNotation.symbol] or [RomanceNoteNotation.ascii]).
 final class RomanceNoteNotation extends NoteNotation {
-  /// Creates a new [RomanceNoteNotation].
+  /// Creates a new [RomanceNoteNotation] that writes accidentals out as
+  /// words (`Re bemolle`).
   const RomanceNoteNotation({
     super.noteNameNotation = const RomanceNoteNameNotation(),
     super.accidentalNotation = const RomanceAccidentalNotation(
@@ -15,14 +18,16 @@ final class RomanceNoteNotation extends NoteNotation {
     ),
   });
 
-  /// Creates a new symbolic [RomanceNoteNotation].
+  /// Creates a new [RomanceNoteNotation] that writes accidentals as
+  /// Unicode symbols (`Re♭`).
   const RomanceNoteNotation.symbol({
     super.noteNameNotation = const RomanceNoteNameNotation(),
   }) : super(
          accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
        );
 
-  /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
+  /// Creates a new [RomanceNoteNotation] that writes accidentals as ASCII
+  /// stand-in symbols (`Reb`) instead of Unicode glyphs.
   const RomanceNoteNotation.ascii({
     super.noteNameNotation = const RomanceNoteNameNotation(),
   }) : super(
@@ -31,13 +36,15 @@ final class RomanceNoteNotation extends NoteNotation {
          ),
        );
 
-  /// The [RomanceNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
+  /// The symbolic [RomanceNoteNotation] variant that spells out a natural
+  /// [Note] with an explicit ♮ (e.g. `Fa♮`) instead of omitting the symbol.
   static const showNatural = RomanceNoteNotation(
     accidentalNotation: SymbolAccidentalNotation(),
   );
 
-  /// Whether to use symbolic representation for [Accidental].
+  /// Whether [accidentalNotation] renders accidentals as symbols (♯/♭)
+  /// rather than words, which changes whether a space separates the
+  /// syllable from the accidental.
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override

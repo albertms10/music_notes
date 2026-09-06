@@ -1,16 +1,26 @@
 import 'package:collection/collection.dart' show IterableEquality;
 
-/// An enharmonic mixin.
+import 'interval_class/interval_class.dart';
+import 'pitch_class/pitch_class.dart';
+
+/// A mixin for pitch-like types that reduce to a chroma class [C] (a
+/// [PitchClass] or [IntervalClass]) once octave and spelling are discarded.
+///
+/// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence):
+/// two differently-spelled pitches or intervals that occupy the same
+/// position in 12-tone equal temperament (e.g. G♯ and A♭, or a diminished
+/// fourth and a major third) share the same [semitones] modulo the octave
+/// and therefore the same [C].
 mixin Enharmonic<C> {
-  /// The number of semitones that define this [C].
+  /// The number of semitones that place this value within its chroma class.
   int get semitones;
 
-  /// Returns the [C] from [semitones].
+  /// The chroma class [C] (a [PitchClass] or [IntervalClass]) this value
+  /// collapses to, discarding octave and spelling.
   C toClass();
 
-  /// Whether [C] is enharmonically equivalent to [other].
-  ///
-  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
+  /// Whether this value and [other] collapse to the same [C], i.e. are
+  /// enharmonically equivalent.
   ///
   /// Example:
   /// ```dart
@@ -21,14 +31,16 @@ mixin Enharmonic<C> {
   bool isEnharmonicWith(Enharmonic<C> other) => toClass() == other.toClass();
 }
 
-/// An enharmonic iterable.
+/// Enharmonic comparison and reduction across a whole collection at once,
+/// e.g. checking whether two differently-spelled chords or scales describe
+/// the same sounding pitches.
 extension EnharmonicIterable<C> on Iterable<Enharmonic<C>> {
-  /// The [C] representation of this [Iterable].
+  /// Every element reduced to its chroma class [C], preserving order and
+  /// any duplicate chroma classes.
   Iterable<C> toClass() => map((interval) => interval.toClass());
 
-  /// Whether this [Iterable] is enharmonically equivalent to [other].
-  ///
-  /// See [Enharmonic equivalence](https://en.wikipedia.org/wiki/Enharmonic_equivalence).
+  /// Whether this and [other] reduce, position by position, to the same
+  /// sequence of chroma classes.
   ///
   /// Example:
   /// ```dart
