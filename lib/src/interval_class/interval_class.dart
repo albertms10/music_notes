@@ -15,11 +15,16 @@ import '../quality/quality.dart';
 import '../size/size.dart';
 import '../tuning_system/equal_temperament.dart';
 
-/// The shortest distance in pitch class space between two unordered
-/// [PitchClass]es.
+/// A distance between two [PitchClass]es reduced to its simplest measure:
+/// the fewest semitones apart they can be, ignoring both direction and
+/// spelling. Where an [Interval] like an augmented fourth and a
+/// diminished fifth are distinct spellings of the same distance, both
+/// collapse to the identical [IntervalClass.tritone].
 ///
-/// The largest [IntervalClass] is the [tritone] (6 semitones) since any greater
-/// interval `n` may be reduced to `chromaticDivisions - n`.
+/// Because "up 8 semitones" and "down 4 semitones" reach the same pair
+/// of pitch classes, [semitones] is always folded into `[0, 6]` — the
+/// largest possible [IntervalClass] is the [tritone] itself, since any
+/// wider raw distance `n` is equivalent to `chromaticDivisions - n`.
 ///
 /// See [Interval class](https://en.wikipedia.org/wiki/Interval_class).
 ///
@@ -30,45 +35,50 @@ import '../tuning_system/equal_temperament.dart';
 final class IntervalClass
     with Comparators<IntervalClass>
     implements Comparable<IntervalClass>, Formattable<IntervalClass> {
-  /// The distance in semitones that defines this [IntervalClass].
+  /// This [IntervalClass]'s distance in semitones, always folded into
+  /// `[0, chromaticDivisions ~/ 2]`.
   final int semitones;
 
-  /// Creates an [IntervalClass] from [semitones].
+  /// Creates an [IntervalClass] by folding [semitones] to its shortest
+  /// equivalent distance, in `[0, chromaticDivisions ~/ 2]`.
   const IntervalClass(int semitones)
     : semitones = (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
           ? chromaticDivisions - (semitones % chromaticDivisions)
           : semitones % chromaticDivisions;
 
-  /// A distance of 0 semitones [IntervalClass], which corresponds to
-  /// [Interval.P1] or [Interval.P8].
+  /// 0 semitones apart: a unison or, equivalently, an octave
+  /// ([Interval.P1]/[Interval.P8]).
   static const P1 = IntervalClass(0);
 
-  /// A distance of 1 semitones [IntervalClass], which corresponds to
-  /// [Interval.m2] or [Interval.M7].
+  /// 1 semitone apart: a minor second or major seventh
+  /// ([Interval.m2]/[Interval.M7]).
   static const m2 = IntervalClass(1);
 
-  /// A distance of 2 semitones [IntervalClass], which corresponds to
-  /// [Interval.M2] or [Interval.m7].
+  /// 2 semitones apart: a major second or minor seventh
+  /// ([Interval.M2]/[Interval.m7]).
   static const M2 = IntervalClass(2);
 
-  /// A distance of 3 semitones [IntervalClass], which corresponds to
-  /// [Interval.m3] or [Interval.M6].
+  /// 3 semitones apart: a minor third or major sixth
+  /// ([Interval.m3]/[Interval.M6]).
   static const m3 = IntervalClass(3);
 
-  /// A distance of 4 semitones [IntervalClass], which corresponds to
-  /// [Interval.M3] or [Interval.m6].
+  /// 4 semitones apart: a major third or minor sixth
+  /// ([Interval.M3]/[Interval.m6]).
   static const M3 = IntervalClass(4);
 
-  /// A distance of 5 semitones [IntervalClass], which corresponds to
-  /// [Interval.P4] or [Interval.P5].
+  /// 5 semitones apart: a perfect fourth or perfect fifth
+  /// ([Interval.P4]/[Interval.P5]).
   static const P4 = IntervalClass(5);
 
-  /// A distance of 6 semitones [IntervalClass], which corresponds to
-  /// [Interval.A4] or [Interval.d5].
+  /// 6 semitones apart, exactly half an octave: the largest possible
+  /// [IntervalClass], equally an augmented fourth or diminished fifth
+  /// ([Interval.A4]/[Interval.d5]).
   static const tritone = IntervalClass(6);
 
-  /// The [Interval] spellings at [distance] sharing the same number of
-  /// [semitones].
+  /// Every [Interval] spelling that reduces to this [IntervalClass],
+  /// widened by up to [distance] extra diminished/augmented steps beyond
+  /// the closest match(es) (e.g. `distance: 1` also includes a
+  /// doubly-diminished or doubly-augmented alternative spelling).
   ///
   /// Example:
   /// ```dart
@@ -111,8 +121,10 @@ final class IntervalClass
     });
   }
 
-  /// The [Interval] that matches with [preferredQuality] from this
-  /// [IntervalClass].
+  /// The [Interval] spelling of this [IntervalClass] that best matches
+  /// [preferredQuality] (falling back to the plainest spelling overall,
+  /// by smallest [Quality] deviation, if no spelling has exactly that
+  /// quality or none is given).
   ///
   /// Example:
   /// ```dart
@@ -138,7 +150,8 @@ final class IntervalClass
         .first;
   }
 
-  /// Adds [other] to this [IntervalClass].
+  /// This [IntervalClass] and [other] stacked together and re-folded to
+  /// the shortest equivalent distance.
   ///
   /// Example:
   /// ```dart
@@ -149,7 +162,8 @@ final class IntervalClass
   IntervalClass operator +(IntervalClass other) =>
       IntervalClass(semitones + other.semitones);
 
-  /// Subtracts [other] from this [IntervalClass].
+  /// This [IntervalClass] with [other] taken back out, re-folded to the
+  /// shortest equivalent distance.
   ///
   /// Example:
   /// ```dart
@@ -160,7 +174,9 @@ final class IntervalClass
   IntervalClass operator -(IntervalClass other) =>
       IntervalClass(semitones - other.semitones);
 
-  /// Multiplies this [IntervalClass] by [factor].
+  /// This [IntervalClass] scaled by [factor] and re-folded to the
+  /// shortest equivalent distance — the operation behind
+  /// [PitchClass.operator *]'s circle-of-fourths/fifths transforms.
   ///
   /// Example:
   /// ```dart
@@ -170,7 +186,9 @@ final class IntervalClass
   /// ```
   IntervalClass operator *(int factor) => IntervalClass(semitones * factor);
 
-  /// The string representation of this [IntervalClass].
+  /// The string representation of this [IntervalClass]: every
+  /// [spellings] result joined between braces, e.g. `{A4|d5}` for the
+  /// tritone.
   ///
   /// Example:
   /// ```dart

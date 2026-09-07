@@ -2,7 +2,10 @@ import '../notation_system/notation_system.dart';
 import 'english_note_name_notation.dart';
 import 'note_name.dart';
 
-/// The German notation system for [NoteName].
+/// The German notation for [NoteName]: identical to the English letters
+/// except that [NoteName.b] is spelled `H`, freeing `B` for what English
+/// calls B♭ ([GermanNoteNotation] handles that reassignment; this class
+/// only covers the bare letters).
 final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [GermanNoteNameNotation].
   const GermanNoteNameNotation();

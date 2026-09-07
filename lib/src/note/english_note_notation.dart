@@ -1,13 +1,16 @@
-import '../accidental/accidental.dart';
 import '../accidental/english_accidental_notation.dart';
 import '../accidental/symbol_accidental_notation.dart';
 import '../note_name/english_note_name_notation.dart';
 import 'note.dart';
 import 'note_notation.dart';
 
-/// The English notation system for [Note].
+/// The English notation for [Note]: a letter name (see
+/// [EnglishNoteNameNotation]) followed by its accidental, either written
+/// out (`C-sharp`, the default) or as a symbol (`C♯`, via
+/// [EnglishNoteNotation.symbol] or [EnglishNoteNotation.ascii]).
 final class EnglishNoteNotation extends NoteNotation {
-  /// Creates a new [EnglishNoteNotation].
+  /// Creates a new [EnglishNoteNotation] that writes accidentals out as
+  /// words (`D-flat`).
   const EnglishNoteNotation({
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const EnglishAccidentalNotation(
@@ -15,7 +18,8 @@ final class EnglishNoteNotation extends NoteNotation {
     ),
   });
 
-  /// Creates a new symbolic [EnglishNoteNotation].
+  /// Creates a new [EnglishNoteNotation] that writes accidentals as
+  /// Unicode symbols (`D♭`).
   const EnglishNoteNotation.symbol({
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
@@ -24,7 +28,8 @@ final class EnglishNoteNotation extends NoteNotation {
     ),
   });
 
-  /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
+  /// Creates a new [EnglishNoteNotation] that writes accidentals as ASCII
+  /// stand-in symbols (`Db`) instead of Unicode glyphs.
   const EnglishNoteNotation.ascii({
     super.noteNameNotation = const EnglishNoteNameNotation(),
   }) : super(
@@ -34,13 +39,15 @@ final class EnglishNoteNotation extends NoteNotation {
          ),
        );
 
-  /// The [EnglishNoteNotation] format variant that shows the
-  /// [Accidental.natural] accidental.
+  /// The symbolic [EnglishNoteNotation] variant that spells out a natural
+  /// [Note] with an explicit ♮ (e.g. `F♮`) instead of omitting the symbol.
   static const showNatural = EnglishNoteNotation.symbol(
     accidentalNotation: SymbolAccidentalNotation(largerFirst: true),
   );
 
-  /// Whether to use symbolic representation for [Accidental].
+  /// Whether [accidentalNotation] renders accidentals as symbols (♯/♭)
+  /// rather than words, which changes whether a hyphen separates the
+  /// letter name from the accidental.
   bool get _isSymbol => accidentalNotation is SymbolAccidentalNotation;
 
   @override

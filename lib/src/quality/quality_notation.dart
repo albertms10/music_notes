@@ -1,16 +1,19 @@
 import '../notation_system/notation_system.dart';
 import 'quality.dart';
 
-/// A notation system for [PerfectQuality].
+/// The standard letter notation for [PerfectQuality]: `d` repeated per
+/// diminished degree, `P` for perfect, `A` repeated per augmented degree
+/// (e.g. `dd` for doubly diminished) — the letters that follow a [Size]
+/// in a full [Interval] symbol like `P5` or `A4`.
 final class PerfectQualityNotation
     extends StringNotationSystem<PerfectQuality> {
-  /// The symbol for a diminished [PerfectQuality].
+  /// The letter repeated once per diminished degree (`d` by default).
   final String diminishedSymbol;
 
-  /// The symbol for a [PerfectQuality].
+  /// The letter written for a perfect quality (`P` by default).
   final String perfectSymbol;
 
-  /// The symbol for an augmented [PerfectQuality].
+  /// The letter repeated once per augmented degree (`A` by default).
   final String augmentedSymbol;
 
   /// Creates a new [PerfectQualityNotation].
@@ -44,19 +47,22 @@ final class PerfectQualityNotation
   }
 }
 
-/// A notation system for [ImperfectQuality].
+/// The standard letter notation for [ImperfectQuality]: `d` repeated per
+/// diminished degree, `m` for minor, `M` for major, `A` repeated per
+/// augmented degree (e.g. `AA` for doubly augmented) — the letters that
+/// follow a [Size] in a full [Interval] symbol like `m3` or `M6`.
 final class ImperfectQualityNotation
     extends StringNotationSystem<ImperfectQuality> {
-  /// The symbol for a diminished [ImperfectQuality].
+  /// The letter repeated once per diminished degree (`d` by default).
   final String diminishedSymbol;
 
-  /// The symbol for an augmented [ImperfectQuality].
+  /// The letter repeated once per augmented degree (`A` by default).
   final String augmentedSymbol;
 
-  /// The symbol for a minor [ImperfectQuality].
+  /// The letter written for a minor quality (`m` by default).
   final String minorSymbol;
 
-  /// The symbol for a major [ImperfectQuality].
+  /// The letter written for a major quality (`M` by default).
   final String majorSymbol;
 
   /// Creates a new [ImperfectQualityNotation].

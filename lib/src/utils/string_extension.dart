@@ -1,8 +1,13 @@
 import 'num_extension.dart';
 
-/// A string extension.
+/// String helpers for casing decisions and notation clean-up, mostly in
+/// support of parsers and formatters that mix letter case with meaning
+/// (e.g. distinguishing a bass-register `H` from a treble-register `h` in
+/// [GermanNoteNameNotation]) or need to strip typographic symbols back to
+/// plain ASCII before calling [num.parse].
 extension StringExtension on String {
-  /// Whether this [String] is upper-cased.
+  /// Whether every cased character in this [String] is uppercase (an empty
+  /// string counts as uppercase, vacuously).
   ///
   /// Example:
   /// ```dart
@@ -12,8 +17,9 @@ extension StringExtension on String {
   /// ```
   bool get isUpperCase => toUpperCase() == this;
 
-  /// Converts the first letter of the string to uppercase and the rest to
-  /// lowercase.
+  /// This [String] with its first letter capitalized and every other
+  /// letter lowercased, as in the "Major"/"Minor" of
+  /// [GermanTonalModeNotation]'s formatted output.
   ///
   /// Example:
   /// ```dart
@@ -26,7 +32,11 @@ extension StringExtension on String {
     return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
   }
 
-  /// Converts the negative Unicode representation of this [String] to ASCII.
+  /// This [String] with [NumExtension.minusSign] and
+  /// [NumExtension.plusMinusSign] rewritten as plain ASCII `-` and `+`, so
+  /// the result can be handed to [num.parse] (which doesn't recognize the
+  /// Unicode symbols this library uses when formatting negative and
+  /// delta values).
   ///
   /// Example:
   /// ```dart

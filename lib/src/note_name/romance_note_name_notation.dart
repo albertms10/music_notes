@@ -1,7 +1,9 @@
 import '../notation_system/notation_system.dart';
 import 'note_name.dart';
 
-/// The Romance notation system for [NoteName].
+/// The Romance (movable-do solfège) notation for [NoteName]: `Do`, `Re`,
+/// `Mi`, `Fa`, `Sol`, `La`, `Si`, as used in Italian, French, Spanish,
+/// and related traditions in place of letter names.
 final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [RomanceNoteNameNotation].
   const RomanceNoteNameNotation();

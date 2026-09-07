@@ -1,13 +1,11 @@
 import '../notation_system/notation_system.dart';
 import 'accidental.dart';
 
-/// The ABC notation system for [Accidental].
-///
-/// If the [Accidental] represents a natural note (0 semitones), returns the
-/// natural symbol (=) if [showNatural] is true, an empty string otherwise.
-///
-/// For other accidentals, returns a combination of sharp (^) or flat (_)
-/// depending on the number of semitones above or below the natural note.
+/// The [ABC notation](https://abcnotation.com/wiki/abc:standard:v2.1)
+/// for [Accidental]: `^` (sharp) and `_` (flat) prefixed directly onto a
+/// note letter, doubled for a double alteration (`^^`, `__`); there is no
+/// dedicated triple-accidental symbol, so those repeat the base symbol a
+/// third time.
 final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether to emit an explicit `=` for natural pitches.
   ///
@@ -25,7 +23,8 @@ final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _naturalSymbol = '=';
   static const _sharpSymbol = '^';
 
-  /// The list of valid symbols for an [Accidental].
+  /// Every symbol this notation can parse or emit: flat, natural, and
+  /// sharp.
   static const symbols = [_flatSymbol, _naturalSymbol, _sharpSymbol];
 
   static final _regExp = RegExp('(?<accidental>[${symbols.join()}]*)');

@@ -1,7 +1,8 @@
 import '../notation_system/notation_system.dart';
 import 'note_name.dart';
 
-/// The English notation system for [NoteName].
+/// The English notation for [NoteName]: a single uppercase letter, C
+/// through B.
 final class EnglishNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [EnglishNoteNameNotation].
   const EnglishNoteNameNotation();

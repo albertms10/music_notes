@@ -1,8 +1,16 @@
 import 'num_extension.dart';
 
-/// An int extension.
+/// Integer arithmetic tuned for signed, one-indexed musical distances (e.g.
+/// [Accidental] semitones, fifths distances), where zero either never
+/// occurs or must be replaced with a full-cycle value.
 extension IntExtension on int {
-  /// This [int] incremented by [step].
+  /// This [int]'s magnitude increased by [step] while its sign is kept
+  /// (or flipped, if [step] is negative enough to cross zero).
+  ///
+  /// Unlike plain addition, this always moves further from zero for a
+  /// positive [step] regardless of this [int]'s sign, which is what lets
+  /// [KeySignature.incrementBy] add sharps to a flat-side signature (and
+  /// vice versa) by magnitude rather than by raw arithmetic.
   ///
   /// Example:
   /// ```dart
@@ -13,7 +21,9 @@ extension IntExtension on int {
   /// ```
   int incrementBy(int step) => (abs() + step) * nonZeroSign;
 
-  /// The modulo [n] of this [int], returning [n] when the modulo would give 0.
+  /// This [int] modulo [n], except a would-be `0` result is reported as
+  /// [n] instead — useful for one-indexed cycles (like the seven letter
+  /// names of [NoteName]) where "zero" really means "a full cycle back".
   ///
   /// Example:
   /// ```dart

@@ -2,24 +2,26 @@ import '../notation_system/notation_system.dart';
 import '../note/note.dart';
 import 'accidental.dart';
 
-/// The symbol notation system for [Accidental].
+/// The engraved-symbol notation for [Accidental]: ♯, ♭, 𝄪, 𝄫, and ♮, the
+/// glyphs that appear directly on a printed staff.
 ///
-/// If the [Accidental] represents a natural note (0 semitones), returns the
-/// natural symbol (♮) if [showNatural] is true, an empty string otherwise.
-///
-/// For other accidentals, returns a combination of sharp (♯), flat (♭), or
-/// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
-/// above or below the natural note.
+/// Compound accidentals decompose greedily into the largest symbols
+/// first (so 3 semitones sharp is 𝄪♯, a double- plus a single sharp,
+/// never ♯♯♯); [largerFirst] only controls which symbol is written
+/// first, not which symbols are chosen. A natural note formats as an
+/// empty string unless [showNatural] is set, matching how naturals are
+/// normally silent outside of cautionary or cancellation contexts.
 final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
+  /// Whether a natural [Note] should be spelled out with the
+  /// [Accidental.natural] symbol (♮) rather than nothing.
   final bool showNatural;
 
-  /// Whether to place larger accidentals (double sharps/flats) before smaller
-  /// ones.
+  /// Whether a compound accidental writes its larger symbol (𝄪 or 𝄫)
+  /// before its smaller one, e.g. `𝄪♯` instead of `♯𝄪` for a triple sharp.
   final bool largerFirst;
 
-  /// Whether to use ASCII symbols instead of Unicode symbols.
+  /// Whether to render with the ASCII stand-ins `x`, `#`, `n`, `b` instead
+  /// of the Unicode glyphs 𝄪, ♯, ♮, ♭, 𝄫.
   final bool useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
@@ -29,7 +31,8 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
     this.useAscii = false,
   });
 
-  /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
+  /// Creates a new [SymbolAccidentalNotation] that renders with ASCII
+  /// stand-ins (`x`, `#`, `n`, `b`) instead of Unicode glyphs.
   const SymbolAccidentalNotation.ascii({
     this.showNatural = true,
     this.largerFirst = false,
@@ -45,7 +48,8 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   static const _flatSymbolAscii = 'b';
   static const _doubleFlatSymbol = '𝄫';
 
-  /// The list of valid Unicode symbols for an [Accidental].
+  /// Every Unicode symbol this notation can parse or emit, ordered from
+  /// most sharp to most flat.
   static const symbols = [
     _doubleSharpSymbol,
     _sharpSymbol,
@@ -54,7 +58,8 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
     _doubleFlatSymbol,
   ];
 
-  /// The list of valid ASCII symbols for an [Accidental].
+  /// Every ASCII stand-in symbol this notation can parse or emit
+  /// (`useAscii: true`), ordered from most sharp to most flat.
   static const asciiSymbols = [
     _doubleSharpSymbolAscii,
     _sharpSymbolAscii,

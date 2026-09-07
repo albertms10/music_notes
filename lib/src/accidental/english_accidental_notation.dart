@@ -2,14 +2,19 @@ import '../notation_system/notation_system.dart';
 import '../note/note.dart';
 import 'accidental.dart';
 
-/// The English notation system for [Accidental].
+/// The written-out English notation for [Accidental]: "sharp", "flat",
+/// "double-sharp", "triple-flat", and so on, as read aloud rather than
+/// engraved.
+///
+/// Beyond triple, an accidental has no name of its own and falls back to
+/// a multiplier, e.g. 4 semitones sharp formats as `×4-sharp`.
 final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
-  /// Whether a natural [Note] should be represented with the
-  /// [Accidental.natural] symbol.
+  /// Whether a natural [Note] should be spelled out as "natural" rather
+  /// than an empty string.
   final bool showNatural;
 
-  /// The separator to use between compound accidentals
-  /// (e.g. "double-sharp" or "triple-flat").
+  /// The text placed between the magnitude and the direction of a
+  /// compound accidental, e.g. the hyphen in "double-sharp".
   final String separator;
 
   /// Creates a new [EnglishAccidentalNotation].

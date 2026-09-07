@@ -2,7 +2,11 @@ import '../quality/quality_notation.dart';
 import 'interval.dart';
 import 'standard_interval_notation.dart';
 
-/// The German notation system for [Interval].
+/// The German notation for [Interval]: [StandardIntervalNotation]'s same
+/// letter-plus-size shape, but with German quality letters — `r`
+/// (rein/perfect), `k`/`g` (klein/groß, minor/major), `v`
+/// (vermindert/übermäßig's diminished half), `ü` (übermäßig/augmented) —
+/// in place of the English `P`/`m`/`M`/`d`/`A`.
 final class GermanIntervalNotation extends StandardIntervalNotation {
   /// Creates a new [GermanIntervalNotation].
   const GermanIntervalNotation({

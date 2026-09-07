@@ -8,58 +8,85 @@ import '../quality/quality.dart';
 import '../tuning_system/equal_temperament.dart';
 import 'size_notation.dart';
 
-/// An [Interval] size.
+/// The generic, letter-counting size of an [Interval] — "a third",
+/// "a fifth", "a ninth" — counted inclusively across the staff
+/// (line-space-line-space...) independently of how many semitones it
+/// actually spans.
+///
+/// [Size] alone cannot distinguish a major third from a minor one (both
+/// are "a third"); that refinement is [Quality]'s job, and the two
+/// combine to make a full [Interval]. What [Size] does fix is whether a
+/// [Quality.perfect] or [Quality] imperfect (major/minor) family applies
+/// — unisons, fourths, fifths, and octaves are perfect-family
+/// ([PerfectSize]); seconds, thirds, sixths, and sevenths are
+/// imperfect-family ([ImperfectSize]) — which is why [Size] itself has
+/// no `major`/`minor`/`perfect` shorthands of its own: use the matching
+/// subtype's getters, or [Size.diminished]/[Size.augmented] which work
+/// either way.
+///
+/// A negative [Size] denotes a descending interval; sizes beyond the
+/// octave (ninths, elevenths, thirteenths, ...) are compound and can
+/// always be reduced with [simple].
 extension type const Size._(int size) implements int {
-  /// Creates a new [Size] from [size].
+  /// Creates a new [Size] counting [size] letter-steps (positive
+  /// ascending, negative descending; never zero).
   const Size(this.size) : assert(size != 0, 'Value must be non-zero.');
 
-  /// A unison [PerfectSize].
+  /// A unison: the same letter twice, spanning no distance at all.
   static const unison = PerfectSize(1);
 
-  /// A second [ImperfectSize].
+  /// A second, spanning two adjacent letters (e.g. C to D).
   static const second = ImperfectSize(2);
 
-  /// A third [ImperfectSize].
+  /// A third, spanning three letters (e.g. C to E) — the interval that
+  /// defines a triad's quality.
   static const third = ImperfectSize(3);
 
-  /// A fourth [PerfectSize].
+  /// A fourth, spanning four letters (e.g. C to F).
   static const fourth = PerfectSize(4);
 
-  /// A fifth [PerfectSize].
+  /// A fifth, spanning five letters (e.g. C to G) — the interval that
+  /// generates the circle of fifths.
   static const fifth = PerfectSize(5);
 
-  /// A sixth [ImperfectSize].
+  /// A sixth, spanning six letters (e.g. C to A).
   static const sixth = ImperfectSize(6);
 
-  /// A seventh [ImperfectSize].
+  /// A seventh, spanning seven letters (e.g. C to B).
   static const seventh = ImperfectSize(7);
 
-  /// An octave [PerfectSize].
+  /// An octave: the same letter one register up, spanning eight letters
+  /// (e.g. C4 to C5) and closing the cycle back to a unison-like [Quality].
   static const octave = PerfectSize(8);
 
-  /// A ninth [ImperfectSize].
+  /// A ninth (an octave plus a second), the smallest compound size.
   static const ninth = ImperfectSize(9);
 
-  /// A tenth [ImperfectSize].
+  /// A tenth (an octave plus a third).
   static const tenth = ImperfectSize(10);
 
-  /// An eleventh [PerfectSize].
+  /// An eleventh (an octave plus a fourth).
   static const eleventh = PerfectSize(11);
 
-  /// A twelfth [PerfectSize].
+  /// A twelfth (an octave plus a fifth).
   static const twelfth = PerfectSize(12);
 
-  /// A thirteenth [ImperfectSize].
+  /// A thirteenth (an octave plus a sixth), the largest size this
+  /// library names directly in [ChordPattern.add13] and similar helpers.
   static const thirteenth = ImperfectSize(13);
 
-  /// The shape of a triad.
+  /// The three [Size]s of a triad: third and fifth above the root (the
+  /// root itself is implicit).
   static const triad = <Size>{.third, .fifth};
 
-  /// The shape of a tetrad.
+  /// The four [Size]s of a tetrad (seventh chord): [triad] plus a
+  /// seventh.
   static const tetrad = <Size>{...triad, .seventh};
 
-  /// [Size] to the corresponding [ImperfectQuality.minor] or
-  /// [PerfectQuality.perfect] semitones.
+  /// The semitone span of each simple [Size] under its "default" quality
+  /// — [PerfectQuality.perfect] for the perfect-family sizes, or
+  /// [ImperfectQuality.minor] for the imperfect-family ones — used as the
+  /// baseline [semitones] measures deviation from.
   static const _sizeToSemitones = {
     unison: 0, // P
     second: 1, // m
@@ -71,16 +98,20 @@ extension type const Size._(int size) implements int {
     octave: 12, // P
   };
 
-  /// The chain of [StringParser]s used to parse a [Size].
+  /// The chain of [StringParser]s used to parse a [Size]: its bare,
+  /// signed integer count.
   static const parsers = [SizeNotation()];
 
-  /// Parses [source] as a [Size].
+  /// Parses [source] as a [Size] (a signed integer such as `3` or `-5`).
   factory Size.parse(
     String source, {
     List<StringParser<Size>> chain = parsers,
   }) => chain.parse(source);
 
-  /// Map a semitones value to a value between 0 and 12.
+  /// Reduces [semitones] to the `[0, chromaticDivisions]` range that
+  /// [_sizeToSemitones]'s values live in, treating an exact octave
+  /// specially so it maps to [chromaticDivisions] rather than wrapping to
+  /// `0`.
   static int _normalizeSemitones(int semitones) {
     final absSemitones = semitones.abs();
 
@@ -89,8 +120,10 @@ extension type const Size._(int size) implements int {
         : absSemitones % chromaticDivisions;
   }
 
-  /// Scale a given normalized [Size] (one of the entries in [_sizeToSemitones])
-  /// to the given [semitones].
+  /// Extends a within-the-octave [normalizedSize] out to whichever
+  /// compound (or negative) [Size] actually spans [semitones], adding an
+  /// octave's worth of letter-steps (7) for every full octave [semitones]
+  /// covers.
   factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
     final absSemitones = semitones.abs();
     if (absSemitones == chromaticDivisions) {
@@ -102,8 +135,10 @@ extension type const Size._(int size) implements int {
     return Size(absResult * semitones.nonZeroSign);
   }
 
-  /// The [Size] that matches with [semitones] in [_sizeToSemitones].
-  /// Otherwise, returns `null`.
+  /// The [Size] whose default quality spans exactly [semitones], or
+  /// `null` if no simple interval measures that many semitones (e.g. 2
+  /// semitones has no matching [Size], since that would be either an
+  /// augmented unison or a minor second — ambiguous without a [Quality]).
   ///
   /// Example:
   /// ```dart
@@ -122,8 +157,10 @@ extension type const Size._(int size) implements int {
     return ._scaleToSemitones(matchingSize, semitones);
   }
 
-  /// The [Size] that is nearest, truncating towards zero, to the given
-  /// interval in [semitones].
+  /// The [Size] whose default quality comes closest to spanning
+  /// [semitones], breaking ties toward the smaller distance from zero
+  /// (used by [Interval.fromSemitones] to guess a sensible spelling when
+  /// none is exact).
   factory Size.nearestFromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
     final MapEntry<Size, int>(key: closest) = minBy(
@@ -134,7 +171,10 @@ extension type const Size._(int size) implements int {
     return ._scaleToSemitones(closest, semitones);
   }
 
-  /// The number of semitones of this [Size] as in [_sizeToSemitones].
+  /// This [Size]'s default semitone span — [PerfectQuality.perfect] for
+  /// perfect-family sizes, [ImperfectQuality.minor] for imperfect-family
+  /// ones — the baseline an [Interval]'s [Quality.semitones] measures its
+  /// deviation from.
   ///
   /// Example:
   /// ```dart
@@ -152,8 +192,9 @@ extension type const Size._(int size) implements int {
     return (_sizeToSemitones[absSimple]! + octaves * chromaticDivisions) * sign;
   }
 
-  /// The [PerfectQuality.diminished] or [ImperfectQuality.diminished] interval
-  /// from this [Size].
+  /// The most-diminished [Interval] one step narrower than this [Size]'s
+  /// default quality — [PerfectQuality.diminished] for a perfect-family
+  /// size, [ImperfectQuality.diminished] for an imperfect-family one.
   ///
   /// Example:
   /// ```dart
@@ -164,8 +205,9 @@ extension type const Size._(int size) implements int {
   Interval get diminished =>
       isPerfect ? .perfect(this, .diminished) : .imperfect(this, .diminished);
 
-  /// The [PerfectQuality.augmented] or [ImperfectQuality.augmented] interval
-  /// from this [Size].
+  /// The [Interval] one step wider than this [Size]'s default quality —
+  /// [PerfectQuality.augmented] for a perfect-family size,
+  /// [ImperfectQuality.augmented] for an imperfect-family one.
   ///
   /// Example:
   /// ```dart
@@ -182,7 +224,10 @@ extension type const Size._(int size) implements int {
     return (diff.isNegative ? diff.abs() + 2 : diff) * size.sign;
   }
 
-  /// The inversion of this [Size].
+  /// This [Size] flipped upside down, the way stacking a low note an
+  /// octave higher turns a third into a sixth: perfect-family sizes stay
+  /// perfect-family, imperfect-family sizes stay imperfect-family, and
+  /// simple size + inverted size always add up to 9.
   ///
   /// See [Inversion § Intervals](https://en.wikipedia.org/wiki/Inversion_(music)#Intervals).
   ///
@@ -207,7 +252,8 @@ extension type const Size._(int size) implements int {
   static int _simple(Size size) =>
       size.isCompound ? ((size.abs() - 1).nonZeroMod(7) + 1) * size.sign : size;
 
-  /// The simplified version of this [Size].
+  /// This [Size] reduced within a single octave, folding away any whole
+  /// octaves it spans (e.g. a thirteenth simplifies to a sixth).
   ///
   /// Example:
   /// ```dart
@@ -218,7 +264,9 @@ extension type const Size._(int size) implements int {
   /// ```
   Size get simple => Size(_simple(this));
 
-  /// Whether this [Size] conforms a [PerfectQuality] interval.
+  /// Whether this [Size] belongs to the perfect family (unison, fourth,
+  /// fifth, octave, or any of their compounds), which takes
+  /// [PerfectQuality] rather than [ImperfectQuality].
   ///
   /// Example:
   /// ```dart
@@ -232,7 +280,7 @@ extension type const Size._(int size) implements int {
     return false;
   }
 
-  /// Whether this [Size] is greater than [Size.octave].
+  /// Whether this [Size] spans more than an octave (a ninth or larger).
   ///
   /// Example:
   /// ```dart
@@ -245,7 +293,10 @@ extension type const Size._(int size) implements int {
   /// ```
   bool get isCompound => abs() > octave;
 
-  /// Whether this [Size] is dissonant.
+  /// Whether this [Size], on its own generic shape alone, is dissonant:
+  /// true for every second and seventh (in any octave), regardless of
+  /// [Quality] — see [Interval.isDissonant] for the full dissonance rule
+  /// that also accounts for quality.
   ///
   /// Example:
   /// ```dart
@@ -260,11 +311,13 @@ extension type const Size._(int size) implements int {
     return false;
   }
 
-  /// The string representation of this [Size] based on [formatter].
+  /// The string representation of this [Size], using [formatter] (its
+  /// bare signed integer by default).
   String format([StringFormatter<Size> formatter = const SizeNotation()]) =>
       formatter.format(this);
 
-  /// The negation of this [Size].
+  /// This [Size] with its direction flipped: ascending becomes descending
+  /// and vice versa, without changing which letter-count it represents.
   ///
   /// Example:
   /// ```dart
@@ -275,9 +328,12 @@ extension type const Size._(int size) implements int {
   Size operator -() => Size(-size);
 }
 
-/// An [Interval.perfect] size.
+/// A [Size] from the perfect-family: unison, fourth, fifth, octave, or
+/// any of their compounds (eleventh, twelfth, ...) — the sizes that take
+/// [PerfectQuality] rather than major/minor [ImperfectQuality].
 extension type const PerfectSize._(int size) implements Size {
-  /// Creates a new [PerfectSize] from [size].
+  /// Creates a new [PerfectSize], asserting [size] actually belongs to
+  /// the perfect family.
   const PerfectSize(this.size)
     // Copied from [Size.isPerfect] to allow const.
     : assert(
@@ -285,7 +341,8 @@ extension type const PerfectSize._(int size) implements Size {
         'Interval must be perfect.',
       );
 
-  /// The [PerfectQuality.perfect] interval from this [PerfectSize].
+  /// The perfect [Interval] of this [PerfectSize] (e.g. [Size.fifth]
+  /// gives [Interval.P5]).
   ///
   /// Example:
   /// ```dart
@@ -312,9 +369,12 @@ extension type const PerfectSize._(int size) implements Size {
   PerfectSize operator -() => PerfectSize(-size);
 }
 
-/// An [Interval.imperfect] size.
+/// A [Size] from the imperfect family: second, third, sixth, seventh, or
+/// any of their compounds (ninth, tenth, ...) — the sizes that take
+/// major/minor [ImperfectQuality] rather than [PerfectQuality].
 extension type const ImperfectSize._(int size) implements Size {
-  /// Creates a new [ImperfectSize] from [size].
+  /// Creates a new [ImperfectSize], asserting [size] actually belongs to
+  /// the imperfect family.
   const ImperfectSize(this.size)
     // Copied from [Size.isPerfect] to allow const.
     : assert(
@@ -322,7 +382,8 @@ extension type const ImperfectSize._(int size) implements Size {
         'Interval must be imperfect.',
       );
 
-  /// The [ImperfectQuality.major] interval from this [ImperfectSize].
+  /// The major [Interval] of this [ImperfectSize] (e.g. [Size.third]
+  /// gives [Interval.M3]).
   ///
   /// Example:
   /// ```dart
@@ -332,7 +393,8 @@ extension type const ImperfectSize._(int size) implements Size {
   /// ```
   Interval get major => .imperfect(this, .major);
 
-  /// The [ImperfectQuality.minor] interval from this [ImperfectSize].
+  /// The minor [Interval] of this [ImperfectSize] (e.g. [Size.third]
+  /// gives [Interval.m3]).
   ///
   /// Example:
   /// ```dart

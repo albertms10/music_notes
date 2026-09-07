@@ -4,7 +4,9 @@ import '../range.dart';
 import '../scalable.dart';
 import 'iterable_extension.dart';
 
-/// A Range record extension.
+/// Expands a [Range] back into the individual values it spans — the
+/// inverse of [IterableExtension.compact] — generalized over an explicit
+/// [nextValue] step function and [compare] ordering.
 extension RangeExtension<E> on Range<E> {
   List<E> _explode({
     required E Function(E current) nextValue,
@@ -28,7 +30,8 @@ extension RangeExtension<E> on Range<E> {
     return set.toList(growable: false);
   }
 
-  /// Fills this range of values between `from` and `to` (`to` not included).
+  /// Every value from [Range.from] up to (but not including)
+  /// [Range.to], stepping with [nextValue] and ordering with [compare].
   ///
   /// Example:
   /// ```dart
@@ -46,9 +49,13 @@ extension RangeExtension<E> on Range<E> {
   }) => _explode(nextValue: nextValue, compare: compare);
 }
 
-/// A Scalable range record extension.
+/// [RangeExtension.explode] specialized for [Scalable] values, defaulting
+/// to chromatic stepping ([Scalable.chromaticMotion]) and enharmonic
+/// comparison ([Scalable.compareEnharmonically]) — turning a compact
+/// "C–E♭" style range back into every chromatic pitch it covers.
 extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
-  /// Fills this range of values between `from` and `to` (`to` not included).
+  /// Every pitch from [Range.from] up to (but not including) [Range.to],
+  /// stepping chromatically by default.
   ///
   /// Example:
   /// ```dart
@@ -64,9 +71,13 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
       );
 }
 
-/// A compressed range extension.
+/// Parsing and formatting for a list of [Range]s as a compact,
+/// comma-separated notation (e.g. `C–E♭, G♯–B`) — the written form of a
+/// [IterableExtension.compact] result.
 extension RangeIterableExtension<E> on Iterable<Range<E>> {
-  /// Parses [source] as a compressed range list.
+  /// Parses [source] as a comma-separated list of `from`–`to` spans (each
+  /// parsed with [chain] if given, or kept as raw strings of type [E]
+  /// otherwise).
   ///
   /// Example:
   /// ```dart
@@ -94,10 +105,11 @@ extension RangeIterableExtension<E> on Iterable<Range<E>> {
       })
       .toList(growable: false);
 
-  /// Formats this compressed range list into a readable string representation.
+  /// Renders this list of [Range]s as a comma-separated string, collapsing
+  /// a single-value range (where `from == to`) down to just that value.
   ///
-  /// The function expects the given [E] type to have a proper implementation
-  /// of `operator ==`.
+  /// [E] must have a proper `operator ==` for the single-value collapse to
+  /// be detected correctly.
   ///
   /// Example:
   /// ```dart

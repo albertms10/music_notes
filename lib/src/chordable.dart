@@ -3,50 +3,61 @@ import 'interval/interval.dart';
 import 'quality/quality.dart';
 import 'size/size.dart';
 
-/// A mixin for items that can form chords.
+/// A mixin providing the shared vocabulary for building and altering
+/// tertian chords: swapping the root triad's quality, suspending its
+/// third, and stacking extensions (6th through 13th) above it.
+///
+/// Implemented by both [Chord] (a chord built on a specific root note) and
+/// `ChordPattern` (its root-agnostic interval shape), so the same fluent
+/// API (`.add7().add9()`) works whether or not a root has been chosen yet.
 ///
 /// ---
 /// See also:
 /// * [Chord].
 mixin Chordable<T> {
-  /// This [T] with an [ImperfectQuality.diminished] root triad.
+  /// This [T] with its root triad recast as [ImperfectQuality.diminished]
+  /// (e.g. a major triad becomes diminished, its extensions untouched).
   T get diminished;
 
-  /// This [T] with an [ImperfectQuality.minor] root triad.
+  /// This [T] with its root triad recast as [ImperfectQuality.minor].
   T get minor;
 
-  /// This [T] with an [ImperfectQuality.major] root triad.
+  /// This [T] with its root triad recast as [ImperfectQuality.major].
   T get major;
 
-  /// This [T] with an [ImperfectQuality.augmented] root triad.
+  /// This [T] with its root triad recast as [ImperfectQuality.augmented].
   T get augmented;
 
-  /// Returns this [T] with a suspended [Interval.M2].
+  /// This [T] with its third replaced by a suspended [Interval.M2] (a
+  /// "sus2" chord).
   T sus2() => add(.M2, replaceSizes: const {.third, .fourth});
 
-  /// Returns this [T] with a suspended [Interval.P4].
+  /// This [T] with its third replaced by a suspended [Interval.P4] (a
+  /// "sus4" chord).
   T sus4() => add(.P4, replaceSizes: const {.second, .third});
 
-  /// Returns this [T] adding a [quality] 6th.
+  /// This [T] with a 6th of [quality] added above the root.
   T add6([ImperfectQuality quality = .major]) =>
       add(.imperfect(.sixth, quality));
 
-  /// Returns this [T] adding a [quality] 7th.
+  /// This [T] with a 7th of [quality] added above the root.
   T add7([ImperfectQuality quality = .minor]) =>
       add(.imperfect(.seventh, quality));
 
-  /// Returns this [T] adding a [quality] 9th.
+  /// This [T] with a 9th of [quality] added above the root.
   T add9([ImperfectQuality quality = .major]) =>
       add(.imperfect(.ninth, quality));
 
-  /// Returns this [T] adding an [quality] 11th.
+  /// This [T] with an 11th of [quality] added above the root.
   T add11([PerfectQuality quality = .perfect]) =>
       add(.perfect(.eleventh, quality));
 
-  /// Returns this [T] adding a [quality] 13th.
+  /// This [T] with a 13th of [quality] added above the root.
   T add13([ImperfectQuality quality = .major]) =>
       add(.imperfect(.thirteenth, quality));
 
-  /// Returns this [T] adding [interval].
+  /// This [T] with [interval] added above the root, replacing any existing
+  /// member(s) at [replaceSizes] (or at [interval]'s own [Size] if
+  /// [replaceSizes] is omitted).
   T add(Interval interval, {Set<Size>? replaceSizes});
 }

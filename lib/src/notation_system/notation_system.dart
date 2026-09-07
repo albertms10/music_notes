@@ -2,13 +2,16 @@
 
 import 'package:meta/meta.dart' show immutable;
 
-/// An abstract representation of a notation system for parsing
-/// and formatting [I].
+/// The pairing of a [Parser] and a [Formatter] for the same value type [I],
+/// converting between it and some external representation [O] — for
+/// [StringNotationSystem], conventionally a written notation such as
+/// standard interval symbols (`m3`, `A4`) or scientific pitch spellings
+/// (`C4`, `B♭3`).
 ///
-/// The [parse] and [format] methods should be designed to be [inverses](https://en.wikipedia.org/wiki/Inverse_function)
-/// of each other:
-/// the output of [format] should be a valid argument for [parse], and
-/// `parse(format(value))` should return a value equal to the original value.
+/// [parse] and [format] are meant to be [inverse functions](https://en.wikipedia.org/wiki/Inverse_function)
+/// of each other: anything [format] produces should be valid input to
+/// [parse], and round-tripping a value through both should return an equal
+/// value, i.e. `parse(format(value)) == value`.
 @immutable
 abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
   /// Creates a new formatter.
@@ -16,24 +19,25 @@ abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
 
   /// Parses [source] as [I].
   ///
-  /// The input [source] should typically be produced by [format], ensuring
-  /// that `parse(format(value)) == value`.
+  /// [source] is typically something [format] produced, so that
+  /// `parse(format(value)) == value`.
   ///
-  /// If the [source] string does not contain a valid [I], a [FormatException]
-  /// should be thrown.
+  /// Throws a [FormatException] if [source] does not encode a valid [I].
   @override
   I parse(O source);
 
-  /// Formats this [I].
+  /// Renders this [I] in this notation system's external representation.
   ///
-  /// The output of this method should be accepted by [parse] to reconstruct
-  /// the original value.
+  /// The result should be valid input to [parse], reconstructing the
+  /// original value.
   @override
   O format(I value);
 }
 
-/// An abstract representation of a notation system for parsing
-/// and formatting [V] from and to a string.
+/// A [NotationSystem] whose external representation [O] is [String] — the
+/// base every concrete notation in this library (note names, intervals,
+/// pitches, key signatures, chord symbols, and so on) extends, typically by
+/// supplying a [regExp] and a [parseMatch] built from its named groups.
 abstract class StringNotationSystem<V> extends NotationSystem<V, String>
     implements StringFormatter<V>, StringParser<V> {
   /// Creates a new formatter.
@@ -51,13 +55,13 @@ abstract class StringNotationSystem<V> extends NotationSystem<V, String>
         unicode: regExp?.isUnicode ?? false,
       ).hasMatch(source);
 
-  /// Parses [source] as [V].
+  /// Parses [source] as [V] by matching it against [regExp] and delegating
+  /// to [parseMatch].
   ///
-  /// The input [source] should typically be produced by [format], ensuring
-  /// that `parse(format(value)) == value`.
+  /// [source] is typically something [format] produced, so that
+  /// `parse(format(value)) == value`.
   ///
-  /// If the [source] string does not contain a valid [V], a [FormatException]
-  /// should be thrown.
+  /// Throws a [FormatException] if [source] does not match [regExp].
   @override
   V parse(String source) => parseMatch(
     regExp?.firstMatch(source) ?? (throw FormatException('Invalid $V', source)),
@@ -68,45 +72,55 @@ abstract class StringNotationSystem<V> extends NotationSystem<V, String>
     'parseMatch is not implemented for $runtimeType.',
   );
 
-  /// Formats this [V].
-  ///
-  /// The output of this method should be accepted by [parse] to reconstruct
-  /// the original value.
+  /// Renders this [V] as a string accepted by [parse], reconstructing the
+  /// original value.
   @override
   String format(V value);
 }
 
-/// An abstract representation of a parser for [V].
+/// A converter from an external representation [I] to a value [V] — the
+/// read half of a [NotationSystem].
 abstract interface class Parser<I, V> {
   /// Parses [source] as [V].
   V parse(I source);
 }
 
-/// An abstract representation of a parser for [V].
+/// A [Parser] that reads [V] out of a [String], typically by matching a
+/// [regExp] and handing the resulting [RegExpMatch] to [parseMatch].
 abstract interface class StringParser<V> extends Parser<String, V> {
-  /// The regular expression for matching [V].
+  /// The pattern this parser recognizes as a valid [V], or `null` if this
+  /// parser instead overrides [parse] directly without using a regular
+  /// expression.
   RegExp? get regExp;
 
-  /// Whether [source] can be parsed with [parse].
+  /// Whether [source], taken as a whole, matches [regExp] (and so can be
+  /// handed to [parse] without throwing).
   bool matches(String source);
 
   /// Parses [source] as [V].
   @override
   V parse(String source);
 
-  /// Parses [match] from [regExp] as [V].
+  /// Builds a [V] out of an already-successful [regExp] match, reading its
+  /// named capture groups.
   V parseMatch(RegExpMatch match);
 }
 
-/// A [StringParser] chain.
+/// A prioritized fallback chain of [StringParser]s for the same value
+/// type, used wherever a `parse` factory accepts multiple notations at
+/// once (e.g. [Note.parse] trying English, German, then Romance spellings
+/// in turn).
 extension StringParserChain<V> on List<StringParser<V>> {
-  /// Parses [source] from this chain of [StringParser]s.
+  /// Parses [source] using the first parser in this chain whose [regExp]
+  /// matches it.
+  ///
+  /// Throws a [FormatException] if no parser in the chain matches [source].
   V parse(String source) =>
       firstMatchingParser(source)?.parse(source) ??
       (throw FormatException('End of parser chain: invalid $V', source));
 
-  /// Returns the first [StringParser] in this chain that matches [source],
-  /// or `null` if none match.
+  /// The first [StringParser] in this chain whose [StringParser.matches]
+  /// accepts [source], or `null` if none do.
   StringParser<V>? firstMatchingParser(String source) {
     for (final parser in this) {
       if (parser.matches(source)) return parser;
@@ -116,17 +130,21 @@ extension StringParserChain<V> on List<StringParser<V>> {
   }
 }
 
-/// An abstract representation of a formatter for [V].
+/// A converter from a value [V] to an external representation [O] — the
+/// write half of a [NotationSystem].
 abstract interface class Formatter<V, O> {
-  /// Formats this [V].
+  /// Renders this [V] in this formatter's external representation.
   O format(V value);
 }
 
-/// An abstract representation of a string formatter for [V].
+/// A [Formatter] that renders [V] as a [String].
 abstract interface class StringFormatter<V> extends Formatter<V, String> {}
 
-/// A value that can be formatted using a [Formatter].
+/// A value with a canonical, notation-free [String] rendering (typically
+/// delegating to a default [StringFormatter]), so it can be printed or
+/// interpolated without callers having to pick a notation system
+/// explicitly.
 abstract class Formattable<V> {
-  /// Formats this [V].
+  /// This [V] rendered using its default notation system.
   String format();
 }
