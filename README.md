@@ -6,12 +6,16 @@
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/license/bsd-3-clause/)
 [![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
-A Dart library for music theory: notes, intervals, chords, scales, keys,
-harmonic functions, and tuning systems, each with parsing and formatting
-across several notation conventions.
+A Dart library for music theory: notes, accidentals, intervals, chords,
+scales, keys, key signatures, harmonic functions, and tuning systems, with
+MIDI conversion and parsing/formatting across scientific, Helmholtz, ABC,
+English, German, and Romance notations.
 
-For more detailed usage instructions and examples, please refer to the
-[API documentation](https://pub.dev/documentation/music_notes/latest/).
+This README focuses on how the library models music theory:
+which class owns which concept, and how they compose.
+If you've ever hand-transposed a lead sheet at midnight and made an
+arithmetic error on the fourth bar, this is the library that does that
+arithmetic for you. :)
 
 ## Usage
 
@@ -278,6 +282,17 @@ ScaleDegree.iv.raised.format(const NumericScaleDegreeNotation()); // ♯4̂
 ScaleDegree.i.format(const SolfegeScaleDegreeNotation());         // Do
 ```
 
+## Why not just use semitones as integers?
+
+You can get surprisingly far treating pitch as `int % 12`, until you need
+to know whether a note is a D♯ or an E♭. That distinction is invisible to
+an integer and load-bearing to a musician: it's the difference between a
+chord spelled correctly on a page and one a sight-reader has to decode.
+`music_notes` keeps note names, accidentals, and enharmonic spelling as
+first-class, separate from raw semitone math, so respelling, key
+signatures, and correctly-spelled chord extensions all stay possible
+without you reverse-engineering them from a pitch class.
+
 ## Frequencies and tuning systems
 
 Any `Pitch` resolves to a `Frequency` under a given tuning system and
@@ -310,6 +325,10 @@ const meantone = MeantoneTuning.quarter;
 pythagorean.centsOffset(Note.g.inOctave(4)); // ≈ +2 cents
 meantone.centsOffset(Note.g.inOctave(4));    // ≈ −3.4 cents
 ```
+
+Every tuning system here is a historical compromise about which intervals
+get to be in tune at the expense of the others. 12-EDO just happens to be
+the compromise everybody eventually stopped arguing about.
 
 Going the other way, the closest playable pitch to an arbitrary frequency
 comes back with its deviation in cents:
@@ -347,6 +366,14 @@ const chain = [EnglishNoteNotation(), GermanNoteNotation()];
 chain.firstMatchingParser('C'); // EnglishNoteNotation
 chain.firstMatchingParser('h'); // GermanNoteNotation
 ```
+
+## Common questions this API answers
+
+- What note is MIDI number 61? → `Pitch.fromMidi(61)`
+- What's the key signature for E♭ minor? → `Note.e.flat.minor.signature`
+- Is this chord in root position or an inversion? → `chord.inversion`
+- What frequency is A4 at 18°C? → `Note.a.inOctave(4).frequency(temperature: const Celsius(18))`
+- What's the relative major of C♯ minor? → `Note.c.sharp.minor.relative`
 
 ## Similar projects in other languages
 
