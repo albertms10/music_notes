@@ -2,6 +2,7 @@ import 'package:meta/meta.dart' show immutable;
 
 import 'enharmonic.dart';
 import 'interval/interval.dart';
+import 'interval_class/interval_class.dart';
 import 'notation_system/notation_system.dart';
 import 'pitch_class/pitch_class.dart';
 import 'respellable.dart';
@@ -142,5 +143,30 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
     for (var i = 1; i < length; i++) {
       yield elementAt(i - 1).difference(elementAt(i));
     }
+  }
+
+  /// Counts every unordered pair in this collection by [IntervalClass],
+  /// following standard pitch-class set analysis.
+  /// See [Interval class content](https://en.wikipedia.org/wiki/Interval_class).
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.on(PitchClass.c).degrees.toSet().intervalClassVector
+  ///   == const [2, 5, 4, 3, 6, 1]
+  ///
+  /// ScalePattern.wholeTone.on(PitchClass.c)
+  ///   .degrees.toSet().intervalClassVector == const [0, 6, 0, 6, 0, 3]
+  /// ```
+  List<int> get intervalClassVector {
+    final vector = List<int>.filled(6, 0);
+    final items = toList(growable: false);
+    for (var i = 0; i < items.length; i++) {
+      for (var j = i + 1; j < items.length; j++) {
+        final ic = IntervalClass(items[i].difference(items[j]));
+        if (ic.semitones == 0) continue;
+        vector[ic.semitones - 1]++;
+      }
+    }
+    return vector;
   }
 }
