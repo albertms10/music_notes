@@ -159,7 +159,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
   ///   .degrees.toSet().intervalVector == const [0, 6, 0, 6, 0, 3]
   /// ```
   List<int> get intervalVector {
-    final vector = List<int>.filled(IntervalClass.values.length, 0);
+    final vector = List<int>.filled(IntervalClass.values.length - 1, 0);
     final items = toList(growable: false);
     for (var i = 0; i < items.length; i++) {
       for (var j = i + 1; j < items.length; j++) {
