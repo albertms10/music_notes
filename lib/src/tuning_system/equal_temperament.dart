@@ -49,13 +49,8 @@ final class EqualTemperament extends TuningSystem {
   ///   == const [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100]
   ///       as List<Cent>
   /// ```
-  Iterable<Cent> get cents sync* {
-    yield const Cent(0);
-    final edo = this.edo;
-    for (var i = 1; i < edo; i++) {
-      yield Cent.fromRatio(ratioFromSemitones(i));
-    }
-  }
+  Iterable<Cent> get cents =>
+      .generate(edo, (i) => .fromRatio(ratioFromSemitones(i)));
 
   /// The ratio from [semitones] for this [EqualTemperament].
   ///
