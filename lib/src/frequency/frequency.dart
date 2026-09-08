@@ -82,6 +82,7 @@ extension type const Frequency._(num hertz) implements num {
     final closestPitchFrequency = closestPitch.frequency(
       tuningSystem: tuningSystem,
       temperature: temperature,
+      referenceTemperature: referenceTemperature,
     );
     final hertzDelta = hertz - closestPitchFrequency;
 
