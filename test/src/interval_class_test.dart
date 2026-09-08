@@ -14,6 +14,17 @@ void main() {
       });
     });
 
+    group('.cycleLength, .cycleCount', () {
+      test('both getters satisfy the chromatic divisions invariant', () {
+        for (final intervalClass in IntervalClass.values) {
+          expect(
+            intervalClass.cycleCount * intervalClass.cycleLength,
+            chromaticDivisions,
+          );
+        }
+      });
+    });
+
     group('.cycle()', () {
       test('returns the PitchClass cycle for this IntervalClass', () {
         expect(IntervalClass.P1.cycle(), {PitchClass.c});
