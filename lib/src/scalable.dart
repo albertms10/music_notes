@@ -147,18 +147,19 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
 
   /// Counts every unordered pair in this collection by [IntervalClass],
   /// following standard pitch-class set analysis.
-  /// See [Interval class content](https://en.wikipedia.org/wiki/Interval_class).
+  ///
+  /// See [Interval vector](https://en.wikipedia.org/wiki/Interval_vector).
   ///
   /// Example:
   /// ```dart
-  /// ScalePattern.major.on(PitchClass.c).degrees.toSet().intervalClassVector
+  /// ScalePattern.major.on(PitchClass.c).degrees.toSet().intervalVector
   ///   == const [2, 5, 4, 3, 6, 1]
   ///
   /// ScalePattern.wholeTone.on(PitchClass.c)
-  ///   .degrees.toSet().intervalClassVector == const [0, 6, 0, 6, 0, 3]
+  ///   .degrees.toSet().intervalVector == const [0, 6, 0, 6, 0, 3]
   /// ```
-  List<int> get intervalClassVector {
-    final vector = List<int>.filled(6, 0);
+  List<int> get intervalVector {
+    final vector = List<int>.filled(IntervalClass.values.length, 0);
     final items = toList(growable: false);
     for (var i = 0; i < items.length; i++) {
       for (var j = i + 1; j < items.length; j++) {
@@ -167,6 +168,7 @@ extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
         vector[ic.semitones - 1]++;
       }
     }
+
     return vector;
   }
 }

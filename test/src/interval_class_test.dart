@@ -14,6 +14,53 @@ void main() {
       });
     });
 
+    group('.cycle()', () {
+      test('returns the PitchClass cycle for this IntervalClass', () {
+        expect(IntervalClass.P1.cycle(), {PitchClass.c});
+        expect(IntervalClass.tritone.cycle(), {
+          PitchClass.c,
+          PitchClass.fSharp,
+        });
+        expect(IntervalClass.M3.cycle(), {
+          PitchClass.c,
+          PitchClass.e,
+          PitchClass.gSharp,
+        });
+        expect(IntervalClass.m3.cycle(origin: .d), {
+          PitchClass.d,
+          PitchClass.f,
+          PitchClass.gSharp,
+          PitchClass.b,
+        });
+      });
+    });
+
+    group('.cycles', () {
+      test('returns all distinct cycles', () {
+        expect(
+          IntervalClass.M3.cycles.toSet(),
+          <Set<PitchClass>>{
+            {.c, .e, .gSharp},
+            {.cSharp, .f, .a},
+            {.d, .fSharp, .aSharp},
+            {.dSharp, .g, .b},
+          },
+        );
+      });
+
+      test('returns one cycle for an interval class coprime to 12', () {
+        expect(IntervalClass.P4.cycles.single.length, 12);
+      });
+
+      test('returns three cycles for a minor third', () {
+        expect(IntervalClass.m3.cycles.length, 3);
+        expect(
+          IntervalClass.m3.cycles.every((cycle) => cycle.length == 4),
+          isTrue,
+        );
+      });
+    });
+
     group('.spellings()', () {
       test('returns the correct Interval spellings for this IntervalClass', () {
         expect(IntervalClass.P1.spellings(), {Interval.P1});
