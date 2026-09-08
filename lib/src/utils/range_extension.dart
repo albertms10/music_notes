@@ -2,7 +2,7 @@ import '../notation_system/notation_system.dart';
 import '../pitch/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
-import './iterable_extension.dart';
+import 'iterable_extension.dart';
 
 /// A Range record extension.
 extension RangeExtension<E> on Range<E> {
@@ -52,8 +52,7 @@ extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
   ///
   /// Example:
   /// ```dart
-  /// (from: Note.c, to: Note.e.flat).explode()
-  ///   == <Note>[.c, .d.flat, .d, .e.flat]
+  /// (from: Note.c, to: Note.e.flat).explode() == const <Note>[.c, .d.flat, .d]
   /// ```
   /// ---
   /// See also:

@@ -1,3 +1,33 @@
+## 0.28.0
+
+- feat(scale_pattern): ✨ allow specifying the `shape` for a degree chord [#759](https://github.com/albertms10/music_notes/pull/759)
+- feat(chord): ✨ add support for inversion-aware methods [#764](https://github.com/albertms10/music_notes/pull/764)
+- refactor!(chord): 💥 constrain generic type to `Note` to simplify its API [#765](https://github.com/albertms10/music_notes/pull/765)
+- feat(chord): ✨ add support for `Pitch` voicing operations [#766](https://github.com/albertms10/music_notes/pull/766)
+- feat(chord): ✨ add support for inversion-aware `ChordNotation` [#762](https://github.com/albertms10/music_notes/pull/762)
+- docs(note): 📖 correct wrong `interval` method example [#767](https://github.com/albertms10/music_notes/pull/767)
+- fix(rational): 🐛 allow fraction-only `Rational` [#770](https://github.com/albertms10/music_notes/pull/770)
+- fix(rational): 🐛 make equality exact and hash-consistent [#771](https://github.com/albertms10/music_notes/pull/771)
+- refactor: ♻️ use dot shorthands for `Object.hashAll` [#773](https://github.com/albertms10/music_notes/pull/773)
+- refactor(src): ♻️ move circle of fifths methods into proper extensions [#774](https://github.com/albertms10/music_notes/pull/774)
+- refactor: ♻️ use `Interval.descending` getter when appropriate [#775](https://github.com/albertms10/music_notes/pull/775)
+- feat(tuning): ✨ add meantone tuning system [#690](https://github.com/albertms10/music_notes/pull/690)
+- refactor(tuning_system): ♻️ move `centsOffset` from `MeantoneTuning` [#776](https://github.com/albertms10/music_notes/pull/776)
+- feat(five_limit_tuning): ✨ add support for the tuning system [#777](https://github.com/albertms10/music_notes/pull/777)
+- style(test): 🎨 reformat code by reducing lines of code [#778](https://github.com/albertms10/music_notes/pull/778)
+- refactor(roman_scale_degree): ♻️ use an `if` element to conditionally add elements [#780](https://github.com/albertms10/music_notes/pull/780)
+- docs(range_extension): 📖 address incorrect `explode` method example [#782](https://github.com/albertms10/music_notes/pull/782)
+- ci(analysis): 💚 use `persist-credentials` set to `false` for checkout [#783](https://github.com/albertms10/music_notes/pull/783)
+- test(chord): 🧪 add more comprehensive test cases for `rootPosition` [#768](https://github.com/albertms10/music_notes/pull/768)
+
+### Dependabot updates
+
+- chore(deps): ⬆️ bump github/codeql-action/upload-sarif from 4.37.6 to 4.37.7 in the minor-actions-dependencies group [#760](https://github.com/albertms10/music_notes/pull/760)
+- chore(deps): ⬆️ bump github/codeql-action/upload-sarif from 4.37.7 to 4.37.8 in the minor-actions-dependencies group [#763](https://github.com/albertms10/music_notes/pull/763)
+- chore(deps): ⬆️ bump the minor-actions-dependencies group with 2 updates [#772](https://github.com/albertms10/music_notes/pull/772)
+
+**Full Changelog**: [`v0.27.0...v0.28.0`](https://github.com/albertms10/music_notes/compare/v0.27.0...v0.28.0)
+
 ## 0.27.0
 
 - feat(key): ✨ support shorter `GermanKeyNotation` without the mode [#732](https://github.com/albertms10/music_notes/pull/732)
