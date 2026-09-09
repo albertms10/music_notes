@@ -62,7 +62,7 @@ final class AbcPitchNotation extends StringNotationSystem<Pitch> {
   RegExp? get regExp => RegExp(
     '${accidentalNotation.regExp.pattern}'
     '${noteNameNotation.regExp?.pattern}'
-    '(?<primes>[$_primeSymbol$_subPrimeSymbol]*)\$',
+    '(?<primes>$_primeSymbol+|$_subPrimeSymbol+)?\$',
     caseSensitive: false,
   );
 
@@ -94,12 +94,13 @@ final class AbcPitchNotation extends StringNotationSystem<Pitch> {
     final noteName = match.namedGroup('noteName')!;
     final primes = match.namedGroup('primes') ?? '';
     final isLowercase = noteName == noteName.toLowerCase();
-    final octaveDelta = primes
-        .split('')
-        .fold<int>(
-          0,
-          (delta, mark) => delta + (mark == "'" ? 1 : -1),
-        );
+    final octaveDelta =
+        primes.length *
+        (switch (primes.split('').firstOrNull) {
+          _primeSymbol => 1,
+          _subPrimeSymbol => -1,
+          _ => 0,
+        });
     final octave =
         (isLowercase ? _baseLowercaseOctave : _baseUppercaseOctave) +
         octaveDelta;
