@@ -201,30 +201,26 @@ void main() {
       });
     });
 
-    group('.intervalClassVector', () {
+    group('.intervalVector', () {
       test('returns a vector of zeros for an empty collection', () {
-        expect(const <PitchClass>{}.intervalClassVector, const [
+        expect(const <PitchClass>{}.intervalVector, const [
           0, 0, 0, 0, 0, 0, //
         ]);
       });
 
       test('returns a vector of zeros for a single element', () {
-        expect({PitchClass.d}.intervalClassVector, const [0, 0, 0, 0, 0, 0]);
+        expect({PitchClass.d}.intervalVector, const [0, 0, 0, 0, 0, 0]);
       });
 
       test('ignores unison pairs between identical elements', () {
-        expect(<PitchClass>[.c, .c, .c].intervalClassVector, const [
+        expect(<PitchClass>[.c, .c, .c].intervalVector, const [
           0, 0, 0, 0, 0, 0, //
         ]);
       });
 
       test('returns the interval-class vector of a diatonic scale', () {
         expect(
-          ScalePattern.major
-              .on(PitchClass.c)
-              .degrees
-              .toSet()
-              .intervalClassVector,
+          ScalePattern.major.on(PitchClass.c).degrees.toSet().intervalVector,
           const [2, 5, 4, 3, 6, 1],
         );
         expect(
@@ -232,7 +228,7 @@ void main() {
               .on(PitchClass.a)
               .degrees
               .toSet()
-              .intervalClassVector,
+              .intervalVector,
           const [2, 5, 4, 3, 6, 1],
         );
       });
@@ -245,7 +241,7 @@ void main() {
                 .on(PitchClass.c)
                 .degrees
                 .toSet()
-                .intervalClassVector,
+                .intervalVector,
             const [4, 4, 8, 4, 4, 4],
           );
         },
@@ -257,7 +253,7 @@ void main() {
               .on(PitchClass.c)
               .degrees
               .toSet()
-              .intervalClassVector,
+              .intervalVector,
           const [0, 6, 0, 6, 0, 3],
         );
       });
@@ -265,18 +261,15 @@ void main() {
       test('folds intervals greater than a tritone into their inversion', () {
         // A major-seventh dyad (11 semitones) is interval class 1 (m2),
         // not 11.
-        expect(<Note>[.c, .b].intervalClassVector, const [1, 0, 0, 0, 0, 0]);
+        expect(<Note>[.c, .b].intervalVector, const [1, 0, 0, 0, 0, 0]);
         // A minor-seventh dyad (10 semitones) is interval class 2 (M2).
-        expect(
-          <Note>[.c, .b.flat].intervalClassVector,
-          const [0, 1, 0, 0, 0, 0],
-        );
+        expect(<Note>[.c, .b.flat].intervalVector, const [0, 1, 0, 0, 0, 0]);
       });
 
       test('is order-independent (unordered pairs)', () {
         expect(
-          <PitchClass>[.c, .e, .g].intervalClassVector,
-          <PitchClass>[.g, .c, .e].intervalClassVector,
+          <PitchClass>{.c, .e, .g}.intervalVector,
+          <PitchClass>{.g, .c, .e}.intervalVector,
         );
       });
     });

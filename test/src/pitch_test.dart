@@ -1540,6 +1540,7 @@ void main() {
         expect(() => Pitch.parse('^', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('_', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('C#', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse("f',", chain: chain), throwsFormatException);
       });
 
       test('parses source as a Pitch', () {
