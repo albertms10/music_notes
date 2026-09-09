@@ -127,8 +127,7 @@ final class IntervalClass
   ///
   /// Since cycles congruent mod [cycleCount] coincide, the [cycleCount]
   /// origins `0, 1, …, cycleCount - 1` already enumerate every distinct
-  /// cycle exactly once — no need to probe all 12 [PitchClass]es while
-  /// tracking which have already been visited.
+  /// cycle exactly once.
   ///
   /// Example:
   /// ```dart

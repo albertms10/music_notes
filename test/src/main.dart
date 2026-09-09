@@ -18,6 +18,7 @@ import 'mode_test.dart' as mode_test;
 import 'notation_system_test.dart' as notation_system_test;
 import 'note_name_test.dart' as note_name_test;
 import 'note_test.dart' as note_test;
+import 'octave_test.dart' as octave_test;
 import 'pitch_class_test.dart' as pitch_class_test;
 import 'pitch_test.dart' as pitch_test;
 import 'pythagorean_tuning_test.dart' as pythagorean_tuning_test;
@@ -50,6 +51,7 @@ void main() {
   notation_system_test.main();
   note_name_test.main();
   note_test.main();
+  octave_test.main();
   pitch_class_test.main();
   pitch_test.main();
   pythagorean_tuning_test.main();
