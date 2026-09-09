@@ -2,8 +2,9 @@ import 'package:collection/collection.dart' show IterableExtension;
 import 'package:music_notes/utils.dart';
 
 import '../notation_system/notation_system.dart';
+import '../note/german_note_notation.dart';
+import '../pitch/helmholtz_pitch_notation.dart';
 import '../pitch/pitch.dart';
-import '../pitch/scientific_pitch_notation.dart';
 import 'pipe_row.dart';
 
 /// The notation system for [PipeRow].
@@ -13,7 +14,9 @@ final class PipeRowNotation extends StringNotationSystem<PipeRow> {
 
   /// Creates a new [PipeRowNotation].
   const PipeRowNotation({
-    this.pitchNotation = ScientificPitchNotation.english,
+    this.pitchNotation = const HelmholtzPitchNotation.ascii(
+      noteNotation: GermanNoteNotation(),
+    ),
   });
 
   static const _prime = '′';

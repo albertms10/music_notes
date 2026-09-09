@@ -1,12 +1,12 @@
 import 'package:collection/collection.dart' show ListEquality;
 import 'package:meta/meta.dart' show immutable;
-import 'package:music_notes/src/pitch/helmholtz_pitch_notation.dart';
 import 'package:music_notes/utils.dart';
 
 import '../interval/interval.dart';
 import '../notation_system/notation_system.dart';
-import '../note/german_note_notation.dart';
+import '../pitch/helmholtz_pitch_notation.dart';
 import '../pitch/pitch.dart';
+import '../pitch/scientific_pitch_notation.dart';
 import 'pipe_row_notation.dart';
 
 /// One row of pipes, taking a breakpoint key and the ranks' foot-lengths
@@ -41,11 +41,7 @@ final class PipeRow implements Formattable<PipeRow> {
   static const parsers = [
     PipeRowNotation(),
     PipeRowNotation(pitchNotation: HelmholtzPitchNotation.german),
-    PipeRowNotation(
-      pitchNotation: HelmholtzPitchNotation.ascii(
-        noteNotation: GermanNoteNotation(),
-      ),
-    ),
+    PipeRowNotation(pitchNotation: ScientificPitchNotation.english),
   ];
 
   /// Parses [source] as a [PipeRow].
@@ -85,9 +81,12 @@ final class PipeRow implements Formattable<PipeRow> {
 /// A stop disposition extension.
 extension StopDisposition on List<PipeRow> {
   /// Parses [source] into [PipeRow]s.
-  static List<PipeRow> parse(String source) => [
+  static List<PipeRow> parse(
+    String source, {
+    List<StringParser<PipeRow>> chain = PipeRow.parsers,
+  }) => [
     for (final line in source.trim().split('\n'))
-      if (line.trim().isNotEmpty) .parse(line),
+      if (line.trim().isNotEmpty) .parse(line, chain: chain),
   ];
 
   /// Formats this list of [PipeRow].
@@ -95,7 +94,14 @@ extension StopDisposition on List<PipeRow> {
 
   /// The disposition row that applies to [key]: the highest breakpoint
   /// at or below it.
-  PipeRow rowFor(Pitch key) => where(
-    (row) => row.breakpoint.compareTo(key) <= 0,
-  ).reduce((a, b) => a.breakpoint.compareTo(b.breakpoint) > 0 ? a : b);
+  PipeRow? rowFor(Pitch key) {
+    final rows = where(
+      (row) => row.breakpoint.compareTo(key) <= 0,
+    );
+    if (rows.isEmpty) return null;
+
+    return rows.reduce(
+      (a, b) => a.breakpoint.compareTo(b.breakpoint) > 0 ? a : b,
+    );
+  }
 }
