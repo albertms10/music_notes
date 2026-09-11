@@ -8,9 +8,9 @@ final class OrganStop {
   /// The name of this [OrganStop].
   final String name;
 
-  /// The disposition of this [OrganStop].
-  final List<PipeRow> disposition;
+  /// The composition of this [OrganStop].
+  final List<PipeRow> composition;
 
   /// Creates a new [OrganStop].
-  const OrganStop({required this.name, this.disposition = const [.eightFeet]});
+  const OrganStop({required this.name, this.composition = const [.eightFeet]});
 }

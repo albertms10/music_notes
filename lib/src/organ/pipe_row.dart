@@ -7,12 +7,12 @@ import '../notation_system/notation_system.dart';
 import '../pitch/helmholtz_pitch_notation.dart';
 import '../pitch/pitch.dart';
 import '../pitch/scientific_pitch_notation.dart';
-import 'pipe_row_notation.dart';
+import 'stop_composition_notation.dart';
 
 /// One row of pipes, taking a breakpoint key and the ranks' foot-lengths
 /// (ascending pitch) starting at that key into account.
 @immutable
-final class PipeRow implements Formattable<PipeRow> {
+final class PipeRow {
   /// The breakpoint [Pitch].
   final Pitch breakpoint;
 
@@ -28,45 +28,19 @@ final class PipeRow implements Formattable<PipeRow> {
   /// The reference breakpoint for a [PipeRow].
   static const referenceBreakpoint = Pitch(.c, octave: 2);
 
-  /// The disposition for a single rank of 4 feet.
+  /// The composition for a single rank of 4 feet.
   static const fourFeet = PipeRow(referenceBreakpoint, [.fromMixed(4)]);
 
-  /// The disposition for a single rank of 8 feet.
+  /// The composition for a single rank of 8 feet.
   static const eightFeet = PipeRow(referenceBreakpoint, [.fromMixed(8)]);
 
-  /// The disposition for a single rank of 16 feet.
+  /// The composition for a single rank of 16 feet.
   static const sixteenFeet = PipeRow(referenceBreakpoint, [.fromMixed(16)]);
-
-  /// The chain of [StringParser]s used to parse a [PipeRow].
-  static const parsers = [
-    PipeRowNotation(),
-    PipeRowNotation(pitchNotation: HelmholtzPitchNotation.german),
-    PipeRowNotation(pitchNotation: ScientificPitchNotation.english),
-  ];
-
-  /// Parses [source] as a [PipeRow].
-  ///
-  /// An example valid source:
-  ///
-  ///     C2 1 1/3, 1, 2/3
-  ///     C3 2 2/3, 2, 1 1/3, 1
-  ///     C4 4, 2 2/3, 2, 1 1/3
-  ///     C5 5 1/3, 4, 2 2/3, 2
-  factory PipeRow.parse(
-    String source, {
-    List<StringParser<PipeRow>> chain = parsers,
-  }) => chain.parse(source);
 
   /// The [Interval] ranks that conform this [PipeRow].
   List<Interval> get rankIntervals => ranks
       .map((feet) => Interval.fromRatio((referenceHeight / feet).toDouble()))
       .toList();
-
-  /// Formats this [PipeRow].
-  @override
-  String format([
-    StringFormatter<PipeRow> formatter = const PipeRowNotation(),
-  ]) => formatter.format(this);
 
   @override
   bool operator ==(Object other) =>
@@ -78,21 +52,29 @@ final class PipeRow implements Formattable<PipeRow> {
   int get hashCode => Object.hash(breakpoint, .hashAll(ranks));
 }
 
-/// A stop disposition extension.
-extension StopDisposition on List<PipeRow> {
-  /// Parses [source] into [PipeRow]s.
-  static List<PipeRow> parse(
-    String source, {
-    List<StringParser<PipeRow>> chain = PipeRow.parsers,
-  }) => [
-    for (final line in source.trim().split('\n'))
-      if (line.trim().isNotEmpty) .parse(line, chain: chain),
+/// A stop composition extension.
+extension StopComposition on List<PipeRow> {
+  /// The chain of [StringParser]s used to parse a [PipeRow].
+  static const parsers = [
+    StopCompositionNotation(),
+    StopCompositionNotation(pitchNotation: HelmholtzPitchNotation.german),
+    StopCompositionNotation(pitchNotation: ScientificPitchNotation.english),
   ];
 
-  /// Formats this list of [PipeRow].
-  String format() => map((disposition) => disposition.format()).join('\n');
+  /// Parses [source] as a list of [PipeRow].
+  ///
+  /// An example valid source:
+  ///
+  ///     C2 1 1/3, 1, 2/3
+  ///     C3 2 2/3, 2, 1 1/3, 1
+  ///     C4 4, 2 2/3, 2, 1 1/3
+  ///     C5 5 1/3, 4, 2 2/3, 2
+  static List<PipeRow> parse(
+    String source, {
+    List<StringParser<List<PipeRow>>> chain = parsers,
+  }) => chain.parse(source);
 
-  /// The disposition row that applies to [key]: the highest breakpoint
+  /// The pipe row that applies to [key]: the highest breakpoint
   /// at or below it.
   PipeRow? rowFor(Pitch key) {
     final rows = where(
@@ -104,4 +86,13 @@ extension StopDisposition on List<PipeRow> {
       (a, b) => a.breakpoint.compareTo(b.breakpoint) > 0 ? a : b,
     );
   }
+
+  /// Formats this list of [PipeRow]s as an aligned rank table.
+  ///
+  /// Ranks with the same pipe length share columns across rows. If a pipe
+  /// length occurs more than once in a row, multiple columns are allocated for
+  /// that length.
+  String format([
+    StringFormatter<List<PipeRow>> formatter = const StopCompositionNotation(),
+  ]) => formatter.format(this);
 }
