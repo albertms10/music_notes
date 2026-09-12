@@ -182,6 +182,7 @@ Future<void> main(List<String> arguments) async {
         height: int.parse(results.option('line-height')!),
         title: '$title — pitch vs. frequency (log)',
         colorMode: _ColorMode.values.byName(results.option('color-by')!),
+        drawConnectors: results.flag('connectors'),
       ),
     );
   }
@@ -231,6 +232,16 @@ ArgParser _buildParser() => ArgParser()
     help: 'Pitch/frequency line chart height in terminal rows.',
   )
   ..addOption('title', help: 'Chart title.')
+  ..addFlag(
+    'connectors',
+    defaultsTo: true,
+    help:
+        'Draw a muted connector between two consecutive keys of the same '
+        'rank when they land more than a couple of columns apart. Real '
+        'pipes are always drawn as ●/⬤ on top, never hidden — disable '
+        "this if it still reads as noise (it's skipped automatically for "
+        'short, near-adjacent gaps).',
+  )
   ..addOption(
     'color-by',
     defaultsTo: 'breakpoint',
@@ -334,6 +345,37 @@ class _LogHistogram {
 
 double _log2(double value) => math.log(value) / math.ln2;
 
+/// Roman-numeral rank subtraction pairs, from largest to smallest — the
+/// standard way mixture ranks are labelled (Mixture IV, Rank I, II, …).
+const _romanNumeralValues = [
+  (1000, 'M'),
+  (900, 'CM'),
+  (500, 'D'),
+  (400, 'CD'),
+  (100, 'C'),
+  (90, 'XC'),
+  (50, 'L'),
+  (40, 'XL'),
+  (10, 'X'),
+  (9, 'IX'),
+  (5, 'V'),
+  (4, 'IV'),
+  (1, 'I'),
+];
+
+String _romanNumeral(int number) {
+  var remainder = number;
+  final buffer = StringBuffer();
+  for (final (value, symbol) in _romanNumeralValues) {
+    while (remainder >= value) {
+      buffer.write(symbol);
+      remainder -= value;
+    }
+  }
+
+  return buffer.toString();
+}
+
 /// A short axis label, e.g. `98.4`, `440`, `1.2k`.
 String _formatHertzShort(double hertz) => switch (hertz) {
   >= 1000 => '${(hertz / 1000).toStringAsFixed(1)}k',
@@ -361,12 +403,13 @@ String _formatHertzEu(num hertz) {
 /// whether lines are coloured by [PipeRow] breakpoint or by rank position;
 /// [allFrequencies] sets the shared y-axis domain.
 ///
-/// Connecting segments are drawn first, in a light, low-emphasis character,
-/// so real data points always stand out on top of them. Every data point
-/// where two or more ranks land on the exact same pitch — e.g. a mixture
-/// listing the same foot length twice in a row, to keep the ambitus full
-/// near a break — is drawn with a visibly bigger marker instead of quietly
-/// overlapping, so that duplication is something you can actually see.
+/// When [drawConnectors] is true, a muted, dimmed connector is drawn
+/// between two consecutive keys of the same rank *only* when they land
+/// more than a couple of columns apart (short, near-adjacent gaps are
+/// skipped, since with more plot columns than keys — the common case —
+/// they'd otherwise fire on almost every key and outnumber the real
+/// pipes). Real data points are always drawn last, in the rank's own
+/// colour and sized by duplicate count, so a connector never hides one.
 String _renderRankLinesChart({
   required List<Pitch> keys,
   required List<PipeRow> composition,
@@ -376,6 +419,7 @@ String _renderRankLinesChart({
   required int height,
   required String title,
   required _ColorMode colorMode,
+  required bool drawConnectors,
 }) {
   const yLabelWidth = 10;
   final plotWidth = math.max(10, width - yLabelWidth);
@@ -426,31 +470,30 @@ String _renderRankLinesChart({
     emphasis[y][x] = bold;
   }
 
-  // Pass 1: light connectors between consecutive points of the same rank,
-  // so the eye can follow a line without mistaking a connector for a
-  // sounding pipe.
-  for (final line in lines) {
-    final color = _palette[colorIndexFor(line) % _palette.length];
-    for (var p = 0; p < line.points.length - 1; p++) {
-      final (x0, y0) = (xFor(line.points[p].$1), yFor(line.points[p].$2));
-      final (x1, y1) = (
-        xFor(line.points[p + 1].$1),
-        yFor(line.points[p + 1].$2),
-      );
-      final steps = math
-          .max((x1 - x0).abs(), (y1 - y0).abs())
-          .clamp(
-            1,
-            plotWidth,
-          );
-      for (var s = 1; s < steps; s++) {
-        final t = s / steps;
-        plot(
-          (x0 + (x1 - x0) * t).round(),
-          (y0 + (y1 - y0) * t).round(),
-          '·',
-          color,
+  // Pass 1: muted connectors between consecutive points of the same rank,
+  // skipped for short gaps (adjacent-ish keys don't need a hint) so they
+  // can't outnumber the real pipes at typical width/keyboard proportions.
+  const connectorColor = 90; // bright black / grey: recedes behind markers
+  const minGapForConnector = 3;
+  if (drawConnectors) {
+    for (final line in lines) {
+      for (var p = 0; p < line.points.length - 1; p++) {
+        final (x0, y0) = (xFor(line.points[p].$1), yFor(line.points[p].$2));
+        final (x1, y1) = (
+          xFor(line.points[p + 1].$1),
+          yFor(line.points[p + 1].$2),
         );
+        final steps = math.max((x1 - x0).abs(), (y1 - y0).abs());
+        if (steps < minGapForConnector) continue;
+        for (var s = 1; s < steps; s++) {
+          final t = s / steps;
+          plot(
+            (x0 + (x1 - x0) * t).round(),
+            (y0 + (y1 - y0) * t).round(),
+            '·',
+            connectorColor,
+          );
+        }
       }
     }
   }
@@ -514,11 +557,10 @@ String _renderRankLinesChart({
     ..writeln(xLabelRow.join())
     ..writeln(
       '\n● one pipe here   ⬤ two unison-duplicated ranks   '
-      '\x1B[1m⬤\x1B[0m three or more',
+      '\x1B[1m⬤\x1B[0m three or more   '
+      '\x1B[90m·\x1B[0m connector (not a pipe)',
     )
-    // Legend: colour-matched to colorMode.
     ..writeln();
-
   switch (colorMode) {
     case .breakpoint:
       buffer.writeln(
@@ -535,7 +577,13 @@ String _renderRankLinesChart({
           .reduce(math.max);
       for (var i = 0; i < maxRanks; i++) {
         final color = _palette[i % _palette.length];
-        buffer.writeln('\x1B[${color}m■\x1B[0m Rank ${i + 1}');
+        final feet = [
+          for (final row in composition)
+            if (i < row.ranks.length) '${row.ranks[i]}′',
+        ].join(', ');
+        buffer.writeln(
+          '\x1B[${color}m■\x1B[0m Rank ${_romanNumeral(i + 1)}: $feet',
+        );
       }
   }
 
