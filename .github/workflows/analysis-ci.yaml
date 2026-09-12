@@ -62,7 +62,7 @@ jobs:
       fail-fast: false
       matrix:
         package:
-          - packages/music_notes
+          - music_notes
 
     steps:
       - name: Checkout code
@@ -89,18 +89,18 @@ jobs:
         run: dart pub get
 
       - name: Run web tests
-        working-directory: ${{ matrix.package }}
-        run: dart test -p chrome
+        working-directory: packages/${{ matrix.package }}
+        run: dart test test/main.dart -p chrome
 
       - name: Run tests with coverage
-        working-directory: ${{ matrix.package }}
-        run: dart test --coverage=coverage
+        working-directory: packages/${{ matrix.package }}
+        run: dart test test/main.dart --coverage=coverage
 
       - name: Install coverage
         run: dart pub global activate coverage
 
       - name: Format coverage
-        working-directory: ${{ matrix.package }}
+        working-directory: packages/${{ matrix.package }}
         run: |
           dart pub global run coverage:format_coverage \
             --lcov \
@@ -112,7 +112,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-${{ matrix.package }}
-          path: ${{ matrix.package }}/coverage/lcov.info
+          path: packages/${{ matrix.package }}/coverage/lcov.info
           if-no-files-found: error
 
   coveralls:
@@ -132,10 +132,12 @@ jobs:
         run: |
           set -euo pipefail
 
-          for artifact in coverage-packages-*; do
+          for artifact in coverage-*; do
             package="${artifact#coverage-}"
-            mkdir -p "$package/coverage"
-            mv "$artifact/lcov.info" "$package/coverage/lcov.info"
+
+            mkdir -p "packages/$package/coverage"
+            mv "$artifact/lcov.info" "packages/$package/coverage/lcov.info"
+
             rmdir "$artifact"
           done
 
