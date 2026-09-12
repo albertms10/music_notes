@@ -1,15 +1,19 @@
 // ignore_for_file: avoid_print CLI
 
-// A CLI tool for visualising a music_notes organ stop composition
+// A CLI tool for visualising a music_notes organ Stop composition
 // (a `List<PipeRow>`, from the work-in-progress `organ` branch) in the
 // terminal:
 //
 //   1. A log-frequency histogram of every pipe sounded across a keyboard
 //      (see `_LogHistogram`), rendered with `package:artisanal`.
-//   2. A pitch (x) vs. frequency-in-Hz-on-a-log-scale (y) chart with one
-//      line per `PipeRow` (each row gets its own colour; a row with
-//      several ranks draws several same-coloured lines), rendered with a
-//      small purpose-built ANSI renderer (see `_renderRankLinesChart`).
+//   2. A pitch (x) vs. frequency-in-Hz-on-a-log-scale (y) chart, one line
+//      per rank, coloured either by `PipeRow` breakpoint or by rank
+//      position (`--color-by`). Wherever two or more ranks land on the
+//      exact same pitch — e.g. a mixture repeating a foot length within a
+//      row to keep the ambitus full near a break — the marker is drawn
+//      bigger (and bold, at three or more) instead of silently
+//      overlapping. Rendered with a small purpose-built ANSI renderer (see
+//      `_renderRankLinesChart`).
 //
 // Every key of a keyboard is walked chromatically; for each key, the
 // [PipeRow] that applies at that key (`StopComposition.rowFor`) supplies a
@@ -37,8 +41,8 @@
 //   dart run bin/organ_frequency_chart.dart --charts breaks --line-height 30
 //   dart run bin/organ_frequency_chart.dart --help
 //
-// With no --file given, a Fourniture IV-style mixture (straight from the
-// PipeRow.parse doc comment) is used.
+// With no --file given, an example Fourniture IV-style mixture is used.
+
 import 'dart:io';
 import 'dart:math' as math;
 
@@ -176,7 +180,8 @@ Future<void> main(List<String> arguments) async {
         allFrequencies: frequencies,
         width: width,
         height: int.parse(results.option('line-height')!),
-        title: '$title — pitch vs. frequency (log), one colour per row',
+        title: '$title — pitch vs. frequency (log)',
+        colorMode: _ColorMode.values.byName(results.option('color-by')!),
       ),
     );
   }
@@ -226,6 +231,15 @@ ArgParser _buildParser() => ArgParser()
     help: 'Pitch/frequency line chart height in terminal rows.',
   )
   ..addOption('title', help: 'Chart title.')
+  ..addOption(
+    'color-by',
+    defaultsTo: 'breakpoint',
+    allowed: ['breakpoint', 'rank'],
+    help:
+        "How to colour the pitch/frequency chart's lines: one colour per "
+        'PipeRow breakpoint (default), or one colour per rank position '
+        "within its row (a row's 1st rank, 2nd rank, etc.).",
+  )
   ..addMultiOption(
     'charts',
     defaultsTo: ['distribution', 'breaks'],
@@ -233,6 +247,19 @@ ArgParser _buildParser() => ArgParser()
     help: 'Which chart(s) to render.',
   )
   ..addFlag('help', abbr: 'h', negatable: false, help: 'Show this help.');
+
+/// How `_renderRankLinesChart` assigns a colour to each [_RankLine].
+enum _ColorMode {
+  /// One colour per [PipeRow] (breakpoint segment); every rank of that row
+  /// shares it.
+  breakpoint,
+
+  /// One colour per rank *position* within its row (a row's 1st rank, 2nd
+  /// rank, …), so the same "slot" reads as the same colour across breaks
+  /// even though the row composition — and so what occupies that slot —
+  /// can change at each breakpoint.
+  rank,
+}
 
 /// One rank's frequency, as `(keyIndex, hertz)` points, across every key
 /// where [row] is the applicable [PipeRow] (see [StopComposition.rowFor].
@@ -330,10 +357,16 @@ String _formatHertzEu(num hertz) {
   return '$buffer Hz';
 }
 
-/// Renders a pitch (x) vs. log-frequency (y) chart with one colour per
-/// [PipeRow] in [composition] — every rank of a row is drawn in that row's
-/// colour, so a row with several ranks shows as several same-coloured
-/// lines. [allFrequencies] sets the shared y-axis domain.
+/// Renders a pitch (x) vs. log-frequency (y) chart. [colorMode] controls
+/// whether lines are coloured by [PipeRow] breakpoint or by rank position;
+/// [allFrequencies] sets the shared y-axis domain.
+///
+/// Connecting segments are drawn first, in a light, low-emphasis character,
+/// so real data points always stand out on top of them. Every data point
+/// where two or more ranks land on the exact same pitch — e.g. a mixture
+/// listing the same foot length twice in a row, to keep the ambitus full
+/// near a break — is drawn with a visibly bigger marker instead of quietly
+/// overlapping, so that duplication is something you can actually see.
 String _renderRankLinesChart({
   required List<Pitch> keys,
   required List<PipeRow> composition,
@@ -342,6 +375,7 @@ String _renderRankLinesChart({
   required int width,
   required int height,
   required String title,
+  required _ColorMode colorMode,
 }) {
   const yLabelWidth = 10;
   final plotWidth = math.max(10, width - yLabelWidth);
@@ -360,48 +394,80 @@ String _renderRankLinesChart({
       (plotHeight - 1) -
       (((_log2(hertz) - logMin) / logSpan) * (plotHeight - 1)).round();
 
+  int colorIndexFor(_RankLine line) => switch (colorMode) {
+    _ColorMode.breakpoint => composition.indexOf(line.row),
+    _ColorMode.rank => line.rankIndex,
+  };
+
+  // How many ranks land on the exact same (key, pitch) — same computation,
+  // same key, so exact `==` is safe — regardless of which row or rank
+  // slot they came from.
+  final duplicateCounts = <(int, double), int>{};
+  for (final line in lines) {
+    for (final point in line.points) {
+      duplicateCounts.update(point, (n) => n + 1, ifAbsent: () => 1);
+    }
+  }
+
   final canvas = List.generate(plotHeight, (_) => List.filled(plotWidth, ' '));
   final colors = List.generate(
     plotHeight,
     (_) => List<int?>.filled(plotWidth, null),
   );
+  final emphasis = List.generate(
+    plotHeight,
+    (_) => List<bool>.filled(plotWidth, false),
+  );
 
-  void plot(int x, int y, int color) {
+  void plot(int x, int y, String char, int color, {bool bold = false}) {
     if (x < 0 || x >= plotWidth || y < 0 || y >= plotHeight) return;
-    canvas[y][x] = '●';
+    canvas[y][x] = char;
     colors[y][x] = color;
+    emphasis[y][x] = bold;
   }
 
-  void drawSegment(
-    (int, double) a,
-    (int, double) b,
-    int color,
-  ) {
-    final x0 = xFor(a.$1);
-    final y0 = yFor(a.$2);
-    final x1 = xFor(b.$1);
-    final y1 = yFor(b.$2);
-    final steps = math
-        .max((x1 - x0).abs(), (y1 - y0).abs())
-        .clamp(
-          1,
-          plotWidth,
-        );
-    for (var s = 0; s <= steps; s++) {
-      final t = s / steps;
-      plot((x0 + (x1 - x0) * t).round(), (y0 + (y1 - y0) * t).round(), color);
-    }
-  }
-
+  // Pass 1: light connectors between consecutive points of the same rank,
+  // so the eye can follow a line without mistaking a connector for a
+  // sounding pipe.
   for (final line in lines) {
-    final color = _palette[composition.indexOf(line.row) % _palette.length];
-    if (line.points.length == 1) {
-      final (x, hertz) = line.points.single;
-      plot(xFor(x), yFor(hertz), color);
-      continue;
-    }
+    final color = _palette[colorIndexFor(line) % _palette.length];
     for (var p = 0; p < line.points.length - 1; p++) {
-      drawSegment(line.points[p], line.points[p + 1], color);
+      final (x0, y0) = (xFor(line.points[p].$1), yFor(line.points[p].$2));
+      final (x1, y1) = (
+        xFor(line.points[p + 1].$1),
+        yFor(line.points[p + 1].$2),
+      );
+      final steps = math
+          .max((x1 - x0).abs(), (y1 - y0).abs())
+          .clamp(
+            1,
+            plotWidth,
+          );
+      for (var s = 1; s < steps; s++) {
+        final t = s / steps;
+        plot(
+          (x0 + (x1 - x0) * t).round(),
+          (y0 + (y1 - y0) * t).round(),
+          '·',
+          color,
+        );
+      }
+    }
+  }
+
+  // Pass 2: the real data points, drawn last so a connector never hides
+  // one, sized by how many ranks share that exact pitch.
+  for (final line in lines) {
+    final color = _palette[colorIndexFor(line) % _palette.length];
+    for (final point in line.points) {
+      final count = duplicateCounts[point]!;
+      plot(
+        xFor(point.$1),
+        yFor(point.$2),
+        count >= 2 ? '⬤' : '●',
+        color,
+        bold: count >= 3,
+      );
     }
   }
 
@@ -422,7 +488,8 @@ String _renderRankLinesChart({
     for (var x = 0; x < plotWidth; x++) {
       final char = canvas[y][x];
       final color = colors[y][x];
-      buffer.write(color == null ? char : '\x1B[${color}m$char\x1B[0m');
+      final sgr = emphasis[y][x] ? '1;$color' : '$color';
+      buffer.write(color == null ? char : '\x1B[${sgr}m$char\x1B[0m');
     }
     buffer.writeln();
   }
@@ -445,14 +512,32 @@ String _renderRankLinesChart({
   }
   buffer
     ..writeln(xLabelRow.join())
-    ..writeln()
-    ..write(
-      composition.format(
-        StopCompositionNotation(
-          leading: (i, row) => '\x1B[${_palette[i % _palette.length]}m■\x1B[0m',
+    ..writeln(
+      '\n● one pipe here   ⬤ two unison-duplicated ranks   '
+      '\x1B[1m⬤\x1B[0m three or more',
+    )
+    // Legend: colour-matched to colorMode.
+    ..writeln();
+
+  switch (colorMode) {
+    case .breakpoint:
+      buffer.writeln(
+        composition.format(
+          StopCompositionNotation(
+            leading: (i, row) =>
+                '\x1B[${_palette[i % _palette.length]}m■\x1B[0m',
+          ),
         ),
-      ),
-    );
+      );
+    case .rank:
+      final maxRanks = composition
+          .map((row) => row.ranks.length)
+          .reduce(math.max);
+      for (var i = 0; i < maxRanks; i++) {
+        final color = _palette[i % _palette.length];
+        buffer.writeln('\x1B[${color}m■\x1B[0m Rank ${i + 1}');
+      }
+  }
 
   return buffer.toString();
 }
