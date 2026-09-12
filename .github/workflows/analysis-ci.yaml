@@ -41,8 +41,9 @@ jobs:
             ${{ runner.os }}-pubspec-
             ${{ runner.os }}-
 
-      # This has to run before formatting, as the formatter needs to know
-      # the language version of each file it formats.
+      # This has to be run before formatting, as the formatter needs
+      # to know the language version of each file it formats.
+      # See https://github.com/dart-lang/sdk/issues/60163#issuecomment-2680372038
       - name: Install dependencies
         run: dart pub get
 
