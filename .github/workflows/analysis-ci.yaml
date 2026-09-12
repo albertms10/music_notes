@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  analyze:
     name: Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -26,9 +26,13 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
       - name: Cache dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        id: cache
         with:
           path: ~/.pub-cache/hosted
           key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.yaml') }}
@@ -37,14 +41,8 @@ jobs:
             ${{ runner.os }}-pubspec-
             ${{ runner.os }}-
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
-        with:
-          sdk: ${{ env.DART_SDK_VERSION }}
-
-      # This has to be run before formatting, as the formatter needs
-      # to know the language version of each file it formats.
-      # See https://github.com/dart-lang/sdk/issues/60163#issuecomment-2680372038
+      # This has to run before formatting, as the formatter needs to know
+      # the language version of each file it formats.
       - name: Install dependencies
         run: dart pub get
 
@@ -54,16 +52,109 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
+  test:
+    name: Test ${{ matrix.package }}
+    needs: analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - packages/music_notes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.pub-cache/hosted
+          key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-
+            ${{ runner.os }}-pubspec-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: dart pub get
+
       - name: Run web tests
-        run: dart test -p chrome test/main.dart
+        working-directory: ${{ matrix.package }}
+        run: dart test -p chrome
 
-      - name: Run native tests and coverage
+      - name: Run tests with coverage
+        working-directory: ${{ matrix.package }}
+        run: dart test --coverage=coverage
+
+      - name: Install coverage
+        run: dart pub global activate coverage
+
+      - name: Format coverage
+        working-directory: ${{ matrix.package }}
         run: |
-          dart pub global activate coverage
-          dart test test/main.dart --coverage=coverage
-          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+          dart pub global run coverage:format_coverage \
+            --lcov \
+            --in=coverage \
+            --out=coverage/lcov.info \
+            --report-on=lib
 
-      - name: Coveralls upload
+      - name: Upload package coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.package }}
+          path: ${{ matrix.package }}/coverage/lcov.info
+          if-no-files-found: error
+
+  coveralls:
+    name: Combine coverage
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Download coverage
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-*
+          path: .
+
+      - name: Restore package coverage paths
+        run: |
+          set -euo pipefail
+
+          for artifact in coverage-packages-*; do
+            package="${artifact#coverage-}"
+            mkdir -p "$package/coverage"
+            mv "$artifact/lcov.info" "$package/coverage/lcov.info"
+            rmdir "$artifact"
+          done
+
+      - name: Install Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      - name: Install combine_coverage
+        run: dart pub global activate combine_coverage
+
+      - name: Combine coverage
+        run: |
+          dart pub global run combine_coverage \
+            --repo-path="${GITHUB_WORKSPACE}"
+
+      - name: Upload coverage to Coveralls
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          file: coverage/lcov.info
+          format: lcov
