@@ -68,6 +68,7 @@ jobs:
         # known coverage instead of reporting it as uncovered.
         package:
           - music_notes
+          - pipe_organ
 
     steps:
       - name: Checkout code
@@ -127,7 +128,7 @@ jobs:
   coveralls:
     name: Close Coveralls build
     needs: test
-    # The build must be closed even if one package's test job failed,
+    # The build must be closed even if one package’s test job failed,
     # otherwise the build will sit open on Coveralls forever.
     if: ${{ always() }}
     runs-on: ubuntu-latest
@@ -140,6 +141,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
           # Keep this in sync with the `matrix.package` list above. If a
-          # package's job is ever skipped, Coveralls reuses its last known
+          # package’s job is ever skipped, Coveralls reuses its last known
           # report instead of scoring it as 0% covered.
-          carryforward: "music_notes"
+          carryforward: "music_notes,pipe_organ"
