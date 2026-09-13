@@ -1,0 +1,11 @@
+digit               = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+digit_excl_zero     = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+natural_number      = digit_excl_zero, { digit } | "0" ;
+minus_sign          = "-" | "\u2212" ;                  (* ASCII or Unicode minus U+2212 *)
+plus_minus_sign     = "+" | "\u00B1" ;                   (* Unicode plus-minus U+00B1 *)
+integer             = [ minus_sign ], natural_number ;
+decimal             = natural_number, [ ".", { digit } ] ;
+signed_decimal      = [ ( "+" | minus_sign ) ], decimal ;
+delta_decimal       = ( "+" | minus_sign | plus_minus_sign ), decimal ;
+whitespace          = " " | "\t" ;
+letter_a_to_g       = "a" | "b" | "c" | "d" | "e" | "f" | "g" ;
