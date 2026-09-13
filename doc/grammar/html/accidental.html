@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="generator" content="ebnf2railroad" />
+  <title>doc/grammar/accidental</title>
+  <style type="text/css">
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+:root {
+    --subtleText: #777;
+    --highlightText: hotpink;
+    --itemHeadingBackground: #eee;
+    --background: white;
+    --borderColor: #ccc;
+    --textColor: #111;
+
+    --diagramBackground: #f8f8f8;
+    --diagramLines: black;
+    --diagramText: black;
+    --terminalLines: black;
+    --terminalFill: #feffdf;
+    --nonTerminalLines: black;
+    --nonTerminalFill: #feffdf;
+    --specialSequenceLines: black;
+    --specialSequenceFill: #ffe79a;
+
+    --ebnfCodeBackground: #e8e8e8;
+    --ebnfIdentifier: #ef5a5a;
+    --ebnfTerminal: #ffa952;
+    --ebnfBaseColor: #777;
+}
+
+.theme-dark {
+    --subtleText: #777;
+    --highlightText: hotpink;
+    --itemHeadingBackground: #444;
+    --background: #333;
+    --borderColor: lightblue;
+    --textColor: #ddd;
+
+    --diagramBackground: #222;
+    --diagramLines: #3e432e;
+    --diagramText: #a7d129;
+    --terminalLines: #a7d129;
+    --terminalFill: #3e432e;
+    --nonTerminalLines: #a7d129;
+    --nonTerminalFill: #3e432e;
+    --specialSequenceLines: #a7d129;
+    --specialSequenceFill: #444;
+
+    --ebnfCodeBackground: #3e432e;
+    --ebnfIdentifier: lightblue;
+    --ebnfTerminal: #a7d129;
+    --ebnfBaseColor: #ddd;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--textColor);
+}
+
+a {
+    color: inherit;
+}
+
+a:visited {
+    color: var(--subtleText);
+}
+
+a:active, a:focus, a:hover {
+    color: var(--highlightText);
+}
+
+header {
+    border-bottom: 1px solid var(--borderColor);
+    padding: 1rem;
+}
+
+header button {
+  display: none;
+}
+
+main {
+    overflow: hidden;
+    margin-left: 300px;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    padding: 1rem 2rem 1rem 1rem;
+    z-index: 5;
+    background: var(--background);
+    width: 300px;
+    float: left;
+    overflow: auto;
+}
+
+nav h3 {
+    white-space: nowrap;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav a {
+    display: inline-block;
+    color: var(--subtleText);
+    text-decoration: none;
+    padding: 0.33rem 0;
+}
+
+article {
+    width: 100%;
+    overflow: hidden;
+    padding: 1rem 2rem;
+    border-left: 1px solid var(--borderColor);
+}
+
+article + footer {
+    padding: 1rem 2rem;
+    border-left: 1px solid var(--borderColor);
+    background: var(--itemHeadingBackground);
+}
+
+code {
+    width: 100%;
+}
+
+pre {
+    overflow: auto;
+}
+
+pre > code {
+    display: block;
+    padding: 1em;
+    background: var(--diagramBackground);
+}
+
+h4 {
+    padding: 2rem;
+    margin: 4rem -2rem 1rem -2rem;
+    background: var(--itemHeadingBackground);
+    font-size: 125%;
+}
+
+blockquote {
+    margin-left: 0;
+    margin-top: calc(1em - 1px);
+    margin-bottom: calc(1em - 1px);
+    padding: 1px 0 1px 1rem;
+    border-left: 1rem solid var(--ebnfCodeBackground);
+}
+
+dfn {
+    font-style: normal;
+    cursor: default;
+}
+
+.diagram-container {
+    background: var(--diagramBackground);
+    margin-bottom: 0.25rem;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+}
+
+/* Responsiveness */
+@media (max-width: 800px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  header {
+    padding: 0.5rem 1rem;
+    display: flex;
+  }
+
+  header h1 {
+    margin: 0 auto 0 0;
+    display: flex;
+    align-items: center;
+  }
+
+  header button {
+    display: initial;
+    position: relative;
+    z-index: 10;
+  }
+
+  header button::after {
+    content: '☰';
+    margin-left: auto;
+    font-size: 1.5rem;
+  }
+
+  main {
+    display: block;
+    position: relative;
+    margin-left: 0;
+  }
+
+  nav {
+    height: auto;
+    display: block;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(300px);
+    padding-top: 3rem;
+    background: var(--background);
+    box-shadow: 0 0 0 1000000rem rgba(0, 0, 0, 0.35);
+  }
+
+  .menu-open nav {
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateX(0px);
+  }
+
+  nav a {
+    padding: 0.66rem 0;
+  }
+
+  article {
+    margin-left: 0;
+    border-left: 0;
+    padding: 1rem;
+  }
+  article + footer {
+    padding: 1rem;
+    border-left: 0;
+  }
+}
+
+/* EBNF text representation styling */
+code.ebnf {
+  padding: 1em;
+  background: var(--ebnfCodeBackground);
+  font-weight: bold;
+  color: var(--ebnfBaseColor);
+  white-space: pre-wrap;
+  display: inline-block;
+  width: 100%;
+}
+.ebnf-identifier {
+  color: var(--ebnfIdentifier);
+}
+.ebnf-terminal {
+  color: var(--ebnfTerminal);
+}
+.ebnf-non-terminal {
+  font-weight: normal;
+}
+.ebnf-comment {
+  font-weight: normal;
+  font-style: italic;
+  color: #999;
+}
+
+/* EBNF diagram representation styling */
+svg.railroad-diagram {
+  width: 100%;
+}
+svg.railroad-diagram path {
+  stroke-width: 3;
+  stroke: var(--diagramLines);
+  fill: rgba(0,0,0,0);
+}
+svg.railroad-diagram text {
+  font: bold 14px monospace;
+  text-anchor: middle;
+  fill: var(--diagramText);
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram text.label {
+  text-anchor: start;
+}
+svg.railroad-diagram text.comment {
+  font: italic 12px monospace;
+}
+svg.railroad-diagram g.non-terminal text {
+  /*font-style: italic;*/
+}
+svg.railroad-diagram g.special-sequence rect {
+  fill: var(--specialSequenceFill);
+  stroke: var(--specialSequenceLines);
+}
+svg.railroad-diagram g.special-sequence text {
+  font-style: italic;
+}
+svg.railroad-diagram rect {
+  stroke-width: 3;
+}
+svg.railroad-diagram rect.group-box {
+  stroke: gray;
+  stroke-dasharray: 10 5;
+  fill: none;
+}
+svg.railroad-diagram g.non-terminal rect {
+  fill: var(--nonTerminalFill);
+  stroke: var(--nonTerminalLines);
+}
+svg.railroad-diagram g.terminal rect {
+  fill: var(--terminalFill);
+  stroke: var(--terminalLines);
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 3;
+  stroke: black;
+  fill: white;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: #eee;
+}
+</style>
+</head>
+<body>
+
+  <script type="text/javascript">
+    const htmlTag = document.getElementsByTagName("html")[0];
+    const options = (document.location.search || "")
+      .slice(1)
+      .split("&")
+      .map(kv => kv.split("="))
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+
+    if (options["theme"]) {
+      htmlTag.classList.add("theme-" + options["theme"]);
+    }
+  </script>
+  <header>
+    <h1>doc/grammar/accidental</h1>
+    <button type="button"></button>
+  </header>
+  <nav>
+    
+    <h3>Root element:</h3>
+    <ul class="nav-alphabetical">
+    <li class="root-node"><a href="#accidental">accidental</a>
+        
+        
+      </li>
+    </ul>
+    
+    
+    <h3>Quick navigation:</h3>
+    <ul class="nav-alphabetical">
+    <li><a href="#abc_accidental">abc_accidental</a>
+        
+        
+      </li><li><a href="#double_flat_glyph">double_flat_glyph</a>
+        
+        
+      </li><li><a href="#english_accidental">english_accidental</a>
+        
+        
+      </li><li><a href="#german_accidental">german_accidental</a>
+        
+        
+      </li><li><a href="#romance_accidental">romance_accidental</a>
+        
+        
+      </li><li><a href="#separator">separator</a>
+        
+        
+      </li><li><a href="#symbol_accidental">symbol_accidental</a>
+        
+        
+      </li>
+    </ul>
+    
+    
+    
+    <h3>Character sets:</h3>
+    <ul class="nav-alphabetical">
+    <li><a href="#double_sharp_glyph">double_sharp_glyph</a>
+        
+        
+      </li><li><a href="#flat_glyph">flat_glyph</a>
+        
+        
+      </li><li><a href="#natural_glyph">natural_glyph</a>
+        
+        
+      </li><li><a href="#sharp_glyph">sharp_glyph</a>
+        
+        
+      </li>
+    </ul>
+    
+  </nav>
+  <main>
+  <article>
+    <p>Unicode/ASCII symbolic accidental: an unordered run of glyphs, summed to
+  a semitone count (e.g. "♯𝄪" and "𝄪♯" are both +3 semitones). </p><section>
+  <h4 id="symbol_accidental">symbol_accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="353" style="max-height: 198px;" viewBox="0 0 353 198"><g transform="translate(.5 .5)"><g><path d="M20 29v20m0 -10h20"></path></g><g><path d="M40 39h0"></path><path d="M313 39h0"></path><path d="M40 39a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M60 19h233"></path></g><path d="M293 19a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M40 39h20"></path><g><path d="M60 39h0"></path><path d="M293 39h0"></path><path d="M60 39h10"></path><g><path d="M70 39h0"></path><path d="M283 39h0"></path><path d="M70 39h20"></path><g class="non-terminal"><path d="M90 39h0"></path><path d="M263 39h0"></path><rect x="90" y="28" width="173" height="22"></rect><a xlink:href="#double_sharp_glyph"><text x="176.5" y="43">double&#95;sharp&#95;glyph</text></a></g><path d="M263 39h20"></path><path d="M70 39a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M90 69h29.75"></path><path d="M233.25 69h29.75"></path><rect x="119.75" y="58" width="113.5" height="22"></rect><a xlink:href="#sharp_glyph"><text x="176.5" y="73">sharp&#95;glyph</text></a></g><path d="M263 69a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path><path d="M70 39a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M90 99h21.25"></path><path d="M241.75 99h21.25"></path><rect x="111.25" y="88" width="130.5" height="22"></rect><a xlink:href="#natural_glyph"><text x="176.5" y="103">natural&#95;glyph</text></a></g><path d="M263 99a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"></path><path d="M70 39a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M90 129h34"></path><path d="M229 129h34"></path><rect x="124" y="118" width="105" height="22"></rect><a xlink:href="#flat_glyph"><text x="176.5" y="133">flat&#95;glyph</text></a></g><path d="M263 129a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10"></path><path d="M70 39a10 10 0 0 1 10 10v100a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M90 159h4.25"></path><path d="M258.75 159h4.25"></path><rect x="94.25" y="148" width="164.5" height="22"></rect><a xlink:href="#double_flat_glyph"><text x="176.5" y="163">double&#95;flat&#95;glyph</text></a></g><path d="M263 159a10 10 0 0 0 10 -10v-100a10 10 0 0 1 10 -10"></path></g><path d="M283 39h10"></path><path d="M70 39a10 10 0 0 0 -10 10v119a10 10 0 0 0 10 10"></path><g><path d="M70 178h213"></path></g><path d="M283 178a10 10 0 0 0 10 -10v-119a10 10 0 0 0 -10 -10"></path></g><path d="M293 39h20"></path></g><path d="M 313 39 h 20 m 0 -10 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">symbol_accidental</span> = 
+  { <a class="ebnf-non-terminal" href="#double_sharp_glyph">double_sharp_glyph</a>
+  | <a class="ebnf-non-terminal" href="#sharp_glyph">sharp_glyph</a>
+  | <a class="ebnf-non-terminal" href="#natural_glyph">natural_glyph</a>
+  | <a class="ebnf-non-terminal" href="#flat_glyph">flat_glyph</a>
+  | <a class="ebnf-non-terminal" href="#double_flat_glyph">double_flat_glyph</a>
+  } <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>symbol_accidental</strong>:<p>
+<ul>
+<li><a href="#accidental">accidental</a></li>
+</ul>
+  <p><strong>symbol_accidental</strong> is referencing:<p>
+<ul>
+<li><a href="#double_sharp_glyph">double_sharp_glyph</a></li><li><a href="#sharp_glyph">sharp_glyph</a></li><li><a href="#natural_glyph">natural_glyph</a></li><li><a href="#flat_glyph">flat_glyph</a></li><li><a href="#double_flat_glyph">double_flat_glyph</a></li>
+</ul>
+</section>
+<section>
+  <h4 id="double_sharp_glyph">double_sharp_glyph</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="242" style="max-height: 92px;" viewBox="0 0 242 92"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M202 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h0"></path><path d="M182 31h0"></path><rect x="60" y="20" width="122" height="22" rx="10" ry="10"></rect><text x="121" y="35">\uD834\uDD2A</text></g><path d="M182 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M60 61h46.75"></path><path d="M135.25 61h46.75"></path><rect x="106.75" y="50" width="28.5" height="22" rx="10" ry="10"></rect><text x="121" y="65">x</text></g><path d="M182 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 202 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">double_sharp_glyph</span> = <span class="ebnf-terminal">"\uD834\uDD2A"</span> | <span class="ebnf-terminal">"x"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>double_sharp_glyph</strong>:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li>
+</ul>
+</section>
+<p>𝄪 or ASCII "x" </p><section>
+  <h4 id="sharp_glyph">sharp_glyph</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="191" style="max-height: 92px;" viewBox="0 0 191 92"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M151 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h0"></path><path d="M131 31h0"></path><rect x="60" y="20" width="71" height="22" rx="10" ry="10"></rect><text x="95.5" y="35">\u266F</text></g><path d="M131 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M60 61h21.25"></path><path d="M109.75 61h21.25"></path><rect x="81.25" y="50" width="28.5" height="22" rx="10" ry="10"></rect><text x="95.5" y="65">#</text></g><path d="M131 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 151 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">sharp_glyph</span> = <span class="ebnf-terminal">"\u266F"</span> | <span class="ebnf-terminal">"#"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>sharp_glyph</strong>:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li>
+</ul>
+</section>
+<p>♯ </p><section>
+  <h4 id="natural_glyph">natural_glyph</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="191" style="max-height: 92px;" viewBox="0 0 191 92"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M151 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h0"></path><path d="M131 31h0"></path><rect x="60" y="20" width="71" height="22" rx="10" ry="10"></rect><text x="95.5" y="35">\u266E</text></g><path d="M131 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M60 61h21.25"></path><path d="M109.75 61h21.25"></path><rect x="81.25" y="50" width="28.5" height="22" rx="10" ry="10"></rect><text x="95.5" y="65">n</text></g><path d="M131 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 151 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">natural_glyph</span> = <span class="ebnf-terminal">"\u266E"</span> | <span class="ebnf-terminal">"n"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>natural_glyph</strong>:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li>
+</ul>
+</section>
+<p>♮ </p><section>
+  <h4 id="flat_glyph">flat_glyph</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="191" style="max-height: 92px;" viewBox="0 0 191 92"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M151 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h0"></path><path d="M131 31h0"></path><rect x="60" y="20" width="71" height="22" rx="10" ry="10"></rect><text x="95.5" y="35">\u266D</text></g><path d="M131 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M60 61h21.25"></path><path d="M109.75 61h21.25"></path><rect x="81.25" y="50" width="28.5" height="22" rx="10" ry="10"></rect><text x="95.5" y="65">b</text></g><path d="M131 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M 151 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">flat_glyph</span> = <span class="ebnf-terminal">"\u266D"</span> | <span class="ebnf-terminal">"b"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>flat_glyph</strong>:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li>
+</ul>
+</section>
+<p>♭ </p><section>
+  <h4 id="double_flat_glyph">double_flat_glyph</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="222" style="max-height: 62px;" viewBox="0 0 222 62"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g class="terminal"><path d="M50 31h0"></path><path d="M172 31h0"></path><rect x="50" y="20" width="122" height="22" rx="10" ry="10"></rect><text x="111" y="35">\uD834\uDD2B</text></g><path d="M172 31h10"></path><path d="M 182 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">double_flat_glyph</span> = <span class="ebnf-terminal">"\uD834\uDD2B"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>double_flat_glyph</strong>:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li>
+</ul>
+</section>
+<p>𝄫; ASCII form is "bb" </p><p>English textual form, e.g. "double-sharp", "flat", "natural". </p><section>
+  <h4 id="english_accidental">english_accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="530" style="max-height: 138px;" viewBox="0 0 530 138"><g transform="translate(.5 .5)"><g><path d="M20 21v20m0 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M490 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h165.25"></path><path d="M304.75 31h165.25"></path><rect x="225.25" y="20" width="79.5" height="22" rx="10" ry="10"></rect><text x="265" y="35">natural</text></g><path d="M470 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v26a10 10 0 0 0 10 10"></path><g><path d="M60 77h0"></path><path d="M470 77h0"></path><g><path d="M60 77h0"></path><path d="M367.5 77h0"></path><path d="M60 77a10 10 0 0 0 10 -10v-7a10 10 0 0 1 10 -10"></path><g><path d="M80 50h267.5"></path></g><path d="M347.5 50a10 10 0 0 1 10 10v7a10 10 0 0 0 10 10"></path><path d="M60 77h20"></path><g><path d="M80 77h0"></path><path d="M347.5 77h0"></path><g><path d="M80 77h0"></path><path d="M191 77h0"></path><path d="M80 77h20"></path><g class="terminal"><path d="M100 77h0"></path><path d="M171 77h0"></path><rect x="100" y="66" width="71" height="22" rx="10" ry="10"></rect><text x="135.5" y="81">double</text></g><path d="M171 77h20"></path><path d="M80 77a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M100 107h0"></path><path d="M171 107h0"></path><rect x="100" y="96" width="71" height="22" rx="10" ry="10"></rect><text x="135.5" y="111">triple</text></g><path d="M171 107a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><g><path d="M191 77h0"></path><path d="M347.5 77h0"></path><path d="M191 77a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M211 57h116.5"></path></g><path d="M327.5 57a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M191 77h20"></path><g><path d="M211 77h0"></path><path d="M327.5 77h0"></path><path d="M211 77h10"></path><g class="non-terminal"><path d="M221 77h0"></path><path d="M317.5 77h0"></path><rect x="221" y="66" width="96.5" height="22"></rect><a xlink:href="#separator"><text x="269.25" y="81">separator</text></a></g><path d="M317.5 77h10"></path><path d="M221 77a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M221 97h96.5"></path></g><path d="M317.5 97a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g><path d="M327.5 77h20"></path></g></g><path d="M347.5 77h20"></path></g><g><path d="M367.5 77h0"></path><path d="M470 77h0"></path><path d="M367.5 77h20"></path><g class="terminal"><path d="M387.5 77h4.25"></path><path d="M445.75 77h4.25"></path><rect x="391.75" y="66" width="54" height="22" rx="10" ry="10"></rect><text x="418.75" y="81">flat</text></g><path d="M450 77h20"></path><path d="M367.5 77a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M387.5 107h0"></path><path d="M450 107h0"></path><rect x="387.5" y="96" width="62.5" height="22" rx="10" ry="10"></rect><text x="418.75" y="111">sharp</text></g><path d="M450 107a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M470 77a10 10 0 0 0 10 -10v-26a10 10 0 0 1 10 -10"></path></g><path d="M 490 31 h 20 m 0 -10 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">english_accidental</span>
+  = <span class="ebnf-terminal">"natural"</span>
+  | [ ( <span class="ebnf-terminal">"double"</span> | <span class="ebnf-terminal">"triple"</span> ) , { <a class="ebnf-non-terminal" href="#separator">separator</a> } ] ,
+    ( <span class="ebnf-terminal">"flat"</span> | <span class="ebnf-terminal">"sharp"</span> )
+  <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>english_accidental</strong>:<p>
+<ul>
+<li><a href="#accidental">accidental</a></li>
+</ul>
+  <p><strong>english_accidental</strong> is referencing:<p>
+<ul>
+<li><a href="#separator">separator</a></li>
+</ul>
+</section>
+<section>
+  <h4 id="separator">separator</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="128.5" style="max-height: 62px;" viewBox="0 0 128.5 62"><g transform="translate(.5 .5)"><g><path d="M20 21v20m10 -20v20m-10 -10h20"></path></g><path d="M40 31h10"></path><g class="terminal"><path d="M50 31h0"></path><path d="M78.5 31h0"></path><rect x="50" y="20" width="28.5" height="22" rx="10" ry="10"></rect><text x="64.25" y="35">-</text></g><path d="M78.5 31h10"></path><path d="M 88.5 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">separator</span> = <span class="ebnf-terminal">"-"</span> <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>separator</strong>:<p>
+<ul>
+<li><a href="#english_accidental">english_accidental</a></li>
+</ul>
+</section>
+<p>configurable, default "-" </p><p>German suffix form, e.g. "is", "isis", "es", "As" (elided "aes"). </p><section>
+  <h4 id="german_accidental">german_accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="285.5" style="max-height: 118px;" viewBox="0 0 285.5 118"><g transform="translate(.5 .5)"><g><path d="M20 29v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 39h0"></path><path d="M245.5 39h0"></path><path d="M40 39h20"></path><g><path d="M60 39h0"></path><path d="M225.5 39h0"></path><g><path d="M60 39h0"></path><path d="M128.5 39h0"></path><path d="M60 39a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M80 19h28.5"></path></g><path d="M108.5 19a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M60 39h20"></path><g class="terminal"><path d="M80 39h0"></path><path d="M108.5 39h0"></path><rect x="80" y="28" width="28.5" height="22" rx="10" ry="10"></rect><text x="94.25" y="43">s</text></g><path d="M108.5 39h20"></path></g><g><path d="M128.5 39h0"></path><path d="M225.5 39h0"></path><path d="M128.5 39a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M148.5 19h57"></path></g><path d="M205.5 19a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M128.5 39h20"></path><g><path d="M148.5 39h0"></path><path d="M205.5 39h0"></path><path d="M148.5 39h10"></path><g class="terminal"><path d="M158.5 39h0"></path><path d="M195.5 39h0"></path><rect x="158.5" y="28" width="37" height="22" rx="10" ry="10"></rect><text x="177" y="43">es</text></g><path d="M195.5 39h10"></path><path d="M158.5 39a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M158.5 59h37"></path></g><path d="M195.5 59a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g><path d="M205.5 39h20"></path></g></g><path d="M225.5 39h20"></path><path d="M40 39a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"></path><g><path d="M60 78h54.25"></path><path d="M171.25 78h54.25"></path><path d="M114.25 78h10"></path><g class="terminal"><path d="M124.25 78h0"></path><path d="M161.25 78h0"></path><rect x="124.25" y="67" width="37" height="22" rx="10" ry="10"></rect><text x="142.75" y="82">is</text></g><path d="M161.25 78h10"></path><path d="M124.25 78a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M124.25 98h37"></path></g><path d="M161.25 98a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g><path d="M225.5 78a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"></path></g><path d="M 245.5 39 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">german_accidental</span> = [ <span class="ebnf-terminal">"s"</span> ] , { <span class="ebnf-terminal">"es"</span> } | { <span class="ebnf-terminal">"is"</span> }- <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>german_accidental</strong>:<p>
+<ul>
+<li><a href="#accidental">accidental</a></li>
+</ul>
+</section>
+<p>Romance textual form, e.g. "diesis", "doppio bemolle". </p><section>
+  <h4 id="romance_accidental">romance_accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="525.5" style="max-height: 130px;" viewBox="0 0 525.5 130"><g transform="translate(.5 .5)"><g><path d="M20 21v20m0 -10h20"></path></g><g><path d="M40 31h0"></path><path d="M485.5 31h0"></path><path d="M40 31h20"></path><g class="terminal"><path d="M60 31h158.75"></path><path d="M306.75 31h158.75"></path><rect x="218.75" y="20" width="88" height="22" rx="10" ry="10"></rect><text x="262.75" y="35">naturale</text></g><path d="M465.5 31h20"></path><path d="M40 31a10 10 0 0 1 10 10v18a10 10 0 0 0 10 10"></path><g><path d="M60 69h0"></path><path d="M465.5 69h0"></path><g><path d="M60 69h0"></path><path d="M346 69h0"></path><path d="M60 69a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M80 49h246"></path></g><path d="M326 49a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M60 69h20"></path><g><path d="M80 69h0"></path><path d="M326 69h0"></path><g><path d="M80 69h0"></path><path d="M191 69h0"></path><path d="M80 69h20"></path><g class="terminal"><path d="M100 69h0"></path><path d="M171 69h0"></path><rect x="100" y="58" width="71" height="22" rx="10" ry="10"></rect><text x="135.5" y="73">doppio</text></g><path d="M171 69h20"></path><path d="M80 69a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M100 99h0"></path><path d="M171 99h0"></path><rect x="100" y="88" width="71" height="22" rx="10" ry="10"></rect><text x="135.5" y="103">triplo</text></g><path d="M171 99a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M191 69h10"></path><g><path d="M201 69h0"></path><path d="M326 69h0"></path><path d="M201 69h10"></path><g class="non-terminal"><path d="M211 69h0"></path><path d="M316 69h0"></path><rect x="211" y="58" width="105" height="22"></rect><a xlink:href="#whitespace"><text x="263.5" y="73">whitespace</text></a></g><path d="M316 69h10"></path><path d="M211 69a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M211 89h105"></path></g><path d="M316 89a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g></g><path d="M326 69h20"></path></g><g><path d="M346 69h0"></path><path d="M465.5 69h0"></path><path d="M346 69h20"></path><g class="terminal"><path d="M366 69h0"></path><path d="M445.5 69h0"></path><rect x="366" y="58" width="79.5" height="22" rx="10" ry="10"></rect><text x="405.75" y="73">bemolle</text></g><path d="M445.5 69h20"></path><path d="M346 69a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M366 99h4.25"></path><path d="M441.25 99h4.25"></path><rect x="370.25" y="88" width="71" height="22" rx="10" ry="10"></rect><text x="405.75" y="103">diesis</text></g><path d="M445.5 99a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M465.5 69a10 10 0 0 0 10 -10v-18a10 10 0 0 1 10 -10"></path></g><path d="M 485.5 31 h 20 m 0 -10 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">romance_accidental</span>
+  = <span class="ebnf-terminal">"naturale"</span>
+  | [ ( <span class="ebnf-terminal">"doppio"</span> | <span class="ebnf-terminal">"triplo"</span> ) , { <a class="ebnf-non-terminal" href="#whitespace">whitespace</a> }- ] ,
+    ( <span class="ebnf-terminal">"bemolle"</span> | <span class="ebnf-terminal">"diesis"</span> )
+  <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>romance_accidental</strong>:<p>
+<ul>
+<li><a href="#accidental">accidental</a></li>
+</ul>
+  <p><strong>romance_accidental</strong> is referencing:<p>
+<ul>
+<li><a href="#whitespace">whitespace</a></li>
+</ul>
+</section>
+<p>ABC notation prefix form: "^" sharp, "_" flat, "=" natural, doubled for
+  double sharp/flat. </p><section>
+  <h4 id="abc_accidental">abc_accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="208.5" style="max-height: 138px;" viewBox="0 0 208.5 138"><g transform="translate(.5 .5)"><g><path d="M20 29v20m10 -20v20m-10 -10h20"></path></g><g><path d="M40 39h0"></path><path d="M168.5 39h0"></path><path d="M40 39a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M60 19h88.5"></path></g><path d="M148.5 19a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M40 39h20"></path><g><path d="M60 39h0"></path><path d="M148.5 39h0"></path><path d="M60 39h10"></path><g><path d="M70 39h0"></path><path d="M138.5 39h0"></path><path d="M70 39h20"></path><g class="terminal"><path d="M90 39h0"></path><path d="M118.5 39h0"></path><rect x="90" y="28" width="28.5" height="22" rx="10" ry="10"></rect><text x="104.25" y="43">^</text></g><path d="M118.5 39h20"></path><path d="M70 39a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M90 69h0"></path><path d="M118.5 69h0"></path><rect x="90" y="58" width="28.5" height="22" rx="10" ry="10"></rect><text x="104.25" y="73">&#95;</text></g><path d="M118.5 69a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path><path d="M70 39a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M90 99h0"></path><path d="M118.5 99h0"></path><rect x="90" y="88" width="28.5" height="22" rx="10" ry="10"></rect><text x="104.25" y="103">=</text></g><path d="M118.5 99a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"></path></g><path d="M138.5 39h10"></path><path d="M70 39a10 10 0 0 0 -10 10v59a10 10 0 0 0 10 10"></path><g><path d="M70 118h68.5"></path></g><path d="M138.5 118a10 10 0 0 0 10 -10v-59a10 10 0 0 0 -10 -10"></path></g><path d="M148.5 39h20"></path></g><path d="M 168.5 39 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">abc_accidental</span> = { <span class="ebnf-terminal">"^"</span> | <span class="ebnf-terminal">"_"</span> | <span class="ebnf-terminal">"="</span> } <span class="ebnf-end">;</span></code>
+  <p>Items referencing <strong>abc_accidental</strong>:<p>
+<ul>
+<li><a href="#accidental">accidental</a></li>
+</ul>
+</section>
+<section>
+  <h4 id="accidental">accidental</h4>
+  <div class="diagram-container"><svg class="railroad-diagram" width="565.5" style="max-height: 852px;" viewBox="0 0 565.5 852"><g transform="translate(.5 .5)"><g><path d="M20 59v20m0 -10h20"></path></g><g><path d="M40 69h0"></path><path d="M525.5 69h0"></path><path d="M40 69h20"></path><g><path d="M60 69h86.25"></path><path d="M419.25 69h86.25"></path><rect x="146.25" y="42" width="273" height="212" rx="10" ry="10" class="group-box"></rect><g><path d="M146.25 69h0"></path><path d="M419.25 69h0"></path><path d="M146.25 69a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M166.25 49h233"></path></g><path d="M399.25 49a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M146.25 69h20"></path><g><path d="M166.25 69h0"></path><path d="M399.25 69h0"></path><path d="M166.25 69h10"></path><g><path d="M176.25 69h0"></path><path d="M389.25 69h0"></path><path d="M176.25 69h20"></path><g class="non-terminal"><path d="M196.25 69h0"></path><path d="M369.25 69h0"></path><rect x="196.25" y="58" width="173" height="22"></rect><a xlink:href="#double_sharp_glyph"><text x="282.75" y="73">double&#95;sharp&#95;glyph</text></a></g><path d="M369.25 69h20"></path><path d="M176.25 69a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M196.25 99h29.75"></path><path d="M339.5 99h29.75"></path><rect x="226" y="88" width="113.5" height="22"></rect><a xlink:href="#sharp_glyph"><text x="282.75" y="103">sharp&#95;glyph</text></a></g><path d="M369.25 99a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path><path d="M176.25 69a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M196.25 129h21.25"></path><path d="M348 129h21.25"></path><rect x="217.5" y="118" width="130.5" height="22"></rect><a xlink:href="#natural_glyph"><text x="282.75" y="133">natural&#95;glyph</text></a></g><path d="M369.25 129a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"></path><path d="M176.25 69a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10"></path><g class="non-terminal"><path d="M196.25 159h34"></path><path d="M335.25 159h34"></path><rect x="230.25" y="148" width="105" height="22"></rect><a xlink:href="#flat_glyph"><text x="282.75" y="163">flat&#95;glyph</text></a></g><path d="M369.25 159a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10"></path><path d="M176.25 69a10 10 0 0 1 10 10v130a10 10 0 0 0 10 10"></path><g><path d="M196.25 219h15.5"></path><path d="M353.75 219h15.5"></path><rect x="211.75" y="200" width="142" height="38" rx="10" ry="10" class="group-box"></rect><g class="terminal"><path d="M211.75 219h10"></path><path d="M343.75 219h10"></path><rect x="221.75" y="208" width="122" height="22" rx="10" ry="10"></rect><text x="282.75" y="223">\uD834\uDD2B</text></g><g><path d="M211.75 189h0"></path><path d="M340.75 189h0"></path><a xlink:href="#double_flat_glyph"><text x="276.25" y="194" class="comment">double&#95;flat&#95;glyph</text></a></g></g><path d="M369.25 219a10 10 0 0 0 10 -10v-130a10 10 0 0 1 10 -10"></path></g><path d="M389.25 69h10"></path><path d="M176.25 69a10 10 0 0 0 -10 10v157a10 10 0 0 0 10 10"></path><g><path d="M176.25 246h213"></path></g><path d="M389.25 246a10 10 0 0 0 10 -10v-157a10 10 0 0 0 -10 -10"></path></g><path d="M399.25 69h20"></path></g><g><path d="M146.25 31h0"></path><path d="M275.25 31h0"></path><a xlink:href="#symbol_accidental"><text x="210.75" y="36" class="comment">symbol&#95;accidental</text></a></g></g><path d="M505.5 69h20"></path><path d="M40 69a10 10 0 0 1 10 10v214a10 10 0 0 0 10 10"></path><g><path d="M60 303h9.5"></path><path d="M496 303h9.5"></path><rect x="69.5" y="284" width="426.5" height="144" rx="10" ry="10" class="group-box"></rect><g><path d="M69.5 303h0"></path><path d="M496 303h0"></path><path d="M69.5 303h20"></path><g class="terminal"><path d="M89.5 303h153.5"></path><path d="M322.5 303h153.5"></path><rect x="243" y="292" width="79.5" height="22" rx="10" ry="10"></rect><text x="282.75" y="307">natural</text></g><path d="M476 303h20"></path><path d="M69.5 303a10 10 0 0 1 10 10v56a10 10 0 0 0 10 10"></path><g><path d="M89.5 379h0"></path><path d="M476 379h0"></path><g><path d="M89.5 379h0"></path><path d="M373.5 379h0"></path><path d="M89.5 379a10 10 0 0 0 10 -10v-37a10 10 0 0 1 10 -10"></path><g><path d="M109.5 322h244"></path></g><path d="M353.5 322a10 10 0 0 1 10 10v37a10 10 0 0 0 10 10"></path><path d="M89.5 379h20"></path><g><path d="M109.5 379h0"></path><path d="M353.5 379h0"></path><g><path d="M109.5 379h0"></path><path d="M220.5 379h0"></path><path d="M109.5 379h20"></path><g class="terminal"><path d="M129.5 379h0"></path><path d="M200.5 379h0"></path><rect x="129.5" y="368" width="71" height="22" rx="10" ry="10"></rect><text x="165" y="383">double</text></g><path d="M200.5 379h20"></path><path d="M109.5 379a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M129.5 409h0"></path><path d="M200.5 409h0"></path><rect x="129.5" y="398" width="71" height="22" rx="10" ry="10"></rect><text x="165" y="413">triple</text></g><path d="M200.5 409a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><g><path d="M220.5 379h0"></path><path d="M353.5 379h0"></path><path d="M220.5 379a10 10 0 0 0 10 -10v-29a10 10 0 0 1 10 -10"></path><g><path d="M240.5 330h93"></path></g><path d="M333.5 330a10 10 0 0 1 10 10v29a10 10 0 0 0 10 10"></path><path d="M220.5 379h20"></path><g><path d="M240.5 379h0"></path><path d="M333.5 379h0"></path><path d="M240.5 379h10"></path><g><path d="M250.5 379h0"></path><path d="M323.5 379h0"></path><rect x="250.5" y="360" width="73" height="38" rx="10" ry="10" class="group-box"></rect><g class="terminal"><path d="M250.5 379h22.25"></path><path d="M301.25 379h22.25"></path><rect x="272.75" y="368" width="28.5" height="22" rx="10" ry="10"></rect><text x="287" y="383">-</text></g><g><path d="M250.5 349h0"></path><path d="M323.5 349h0"></path><a xlink:href="#separator"><text x="287" y="354" class="comment">separator</text></a></g></g><path d="M323.5 379h10"></path><path d="M250.5 379a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10"></path><g><path d="M250.5 406h73"></path></g><path d="M323.5 406a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10"></path></g><path d="M333.5 379h20"></path></g></g><path d="M353.5 379h20"></path></g><g><path d="M373.5 379h0"></path><path d="M476 379h0"></path><path d="M373.5 379h20"></path><g class="terminal"><path d="M393.5 379h4.25"></path><path d="M451.75 379h4.25"></path><rect x="397.75" y="368" width="54" height="22" rx="10" ry="10"></rect><text x="424.75" y="383">flat</text></g><path d="M456 379h20"></path><path d="M373.5 379a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M393.5 409h0"></path><path d="M456 409h0"></path><rect x="393.5" y="398" width="62.5" height="22" rx="10" ry="10"></rect><text x="424.75" y="413">sharp</text></g><path d="M456 409a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M476 379a10 10 0 0 0 10 -10v-56a10 10 0 0 1 10 -10"></path></g><g><path d="M69.5 273h0"></path><path d="M205.5 273h0"></path><a xlink:href="#english_accidental"><text x="137.5" y="278" class="comment">english&#95;accidental</text></a></g></g><path d="M505.5 303a10 10 0 0 0 10 -10v-214a10 10 0 0 1 10 -10"></path><path d="M40 69a10 10 0 0 1 10 10v396a10 10 0 0 0 10 10"></path><g><path d="M60 485h120"></path><path d="M385.5 485h120"></path><rect x="180" y="458" width="205.5" height="94" rx="10" ry="10" class="group-box"></rect><g><path d="M180 485h0"></path><path d="M385.5 485h0"></path><path d="M180 485h20"></path><g><path d="M200 485h0"></path><path d="M365.5 485h0"></path><g><path d="M200 485h0"></path><path d="M268.5 485h0"></path><path d="M200 485a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M220 465h28.5"></path></g><path d="M248.5 465a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M200 485h20"></path><g class="terminal"><path d="M220 485h0"></path><path d="M248.5 485h0"></path><rect x="220" y="474" width="28.5" height="22" rx="10" ry="10"></rect><text x="234.25" y="489">s</text></g><path d="M248.5 485h20"></path></g><g><path d="M268.5 485h0"></path><path d="M365.5 485h0"></path><path d="M268.5 485a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M288.5 465h57"></path></g><path d="M345.5 465a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M268.5 485h20"></path><g><path d="M288.5 485h0"></path><path d="M345.5 485h0"></path><path d="M288.5 485h10"></path><g class="terminal"><path d="M298.5 485h0"></path><path d="M335.5 485h0"></path><rect x="298.5" y="474" width="37" height="22" rx="10" ry="10"></rect><text x="317" y="489">es</text></g><path d="M335.5 485h10"></path><path d="M298.5 485a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M298.5 505h37"></path></g><path d="M335.5 505a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g><path d="M345.5 485h20"></path></g></g><path d="M365.5 485h20"></path><path d="M180 485a10 10 0 0 1 10 10v19a10 10 0 0 0 10 10"></path><g><path d="M200 524h54.25"></path><path d="M311.25 524h54.25"></path><path d="M254.25 524h10"></path><g class="terminal"><path d="M264.25 524h0"></path><path d="M301.25 524h0"></path><rect x="264.25" y="513" width="37" height="22" rx="10" ry="10"></rect><text x="282.75" y="528">is</text></g><path d="M301.25 524h10"></path><path d="M264.25 524a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M264.25 544h37"></path></g><path d="M301.25 544a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g><path d="M365.5 524a10 10 0 0 0 10 -10v-19a10 10 0 0 1 10 -10"></path></g><g><path d="M180 447h0"></path><path d="M309 447h0"></path><a xlink:href="#german_accidental"><text x="244.5" y="452" class="comment">german&#95;accidental</text></a></g></g><path d="M505.5 485a10 10 0 0 0 10 -10v-396a10 10 0 0 1 10 -10"></path><path d="M40 69a10 10 0 0 1 10 10v512a10 10 0 0 0 10 10"></path><g><path d="M60 601h0"></path><path d="M505.5 601h0"></path><rect x="60" y="582" width="445.5" height="106" rx="10" ry="10" class="group-box"></rect><g><path d="M60 601h0"></path><path d="M505.5 601h0"></path><path d="M60 601h20"></path><g class="terminal"><path d="M80 601h158.75"></path><path d="M326.75 601h158.75"></path><rect x="238.75" y="590" width="88" height="22" rx="10" ry="10"></rect><text x="282.75" y="605">naturale</text></g><path d="M485.5 601h20"></path><path d="M60 601a10 10 0 0 1 10 10v18a10 10 0 0 0 10 10"></path><g><path d="M80 639h0"></path><path d="M485.5 639h0"></path><g><path d="M80 639h0"></path><path d="M366 639h0"></path><path d="M80 639a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M100 619h246"></path></g><path d="M346 619a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M80 639h20"></path><g><path d="M100 639h0"></path><path d="M346 639h0"></path><g><path d="M100 639h0"></path><path d="M211 639h0"></path><path d="M100 639h20"></path><g class="terminal"><path d="M120 639h0"></path><path d="M191 639h0"></path><rect x="120" y="628" width="71" height="22" rx="10" ry="10"></rect><text x="155.5" y="643">doppio</text></g><path d="M191 639h20"></path><path d="M100 639a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M120 669h0"></path><path d="M191 669h0"></path><rect x="120" y="658" width="71" height="22" rx="10" ry="10"></rect><text x="155.5" y="673">triplo</text></g><path d="M191 669a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g><path d="M211 639h10"></path><g><path d="M221 639h0"></path><path d="M346 639h0"></path><path d="M221 639h10"></path><g class="non-terminal"><path d="M231 639h0"></path><path d="M336 639h0"></path><rect x="231" y="628" width="105" height="22"></rect><a xlink:href="#whitespace"><text x="283.5" y="643">whitespace</text></a></g><path d="M336 639h10"></path><path d="M231 639a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10"></path><g><path d="M231 659h105"></path></g><path d="M336 659a10 10 0 0 0 10 -10v0a10 10 0 0 0 -10 -10"></path></g></g><path d="M346 639h20"></path></g><g><path d="M366 639h0"></path><path d="M485.5 639h0"></path><path d="M366 639h20"></path><g class="terminal"><path d="M386 639h0"></path><path d="M465.5 639h0"></path><rect x="386" y="628" width="79.5" height="22" rx="10" ry="10"></rect><text x="425.75" y="643">bemolle</text></g><path d="M465.5 639h20"></path><path d="M366 639a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M386 669h4.25"></path><path d="M461.25 669h4.25"></path><rect x="390.25" y="658" width="71" height="22" rx="10" ry="10"></rect><text x="425.75" y="673">diesis</text></g><path d="M465.5 669a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path></g></g><path d="M485.5 639a10 10 0 0 0 10 -10v-18a10 10 0 0 1 10 -10"></path></g><g><path d="M60 571h0"></path><path d="M196 571h0"></path><a xlink:href="#romance_accidental"><text x="128" y="576" class="comment">romance&#95;accidental</text></a></g></g><path d="M505.5 601a10 10 0 0 0 10 -10v-512a10 10 0 0 1 10 -10"></path><path d="M40 69a10 10 0 0 1 10 10v656a10 10 0 0 0 10 10"></path><g><path d="M60 745h158.5"></path><path d="M347 745h158.5"></path><rect x="218.5" y="718" width="128.5" height="114" rx="10" ry="10" class="group-box"></rect><g><path d="M218.5 745h0"></path><path d="M347 745h0"></path><path d="M218.5 745a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10"></path><g><path d="M238.5 725h88.5"></path></g><path d="M327 725a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10"></path><path d="M218.5 745h20"></path><g><path d="M238.5 745h0"></path><path d="M327 745h0"></path><path d="M238.5 745h10"></path><g><path d="M248.5 745h0"></path><path d="M317 745h0"></path><path d="M248.5 745h20"></path><g class="terminal"><path d="M268.5 745h0"></path><path d="M297 745h0"></path><rect x="268.5" y="734" width="28.5" height="22" rx="10" ry="10"></rect><text x="282.75" y="749">^</text></g><path d="M297 745h20"></path><path d="M248.5 745a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M268.5 775h0"></path><path d="M297 775h0"></path><rect x="268.5" y="764" width="28.5" height="22" rx="10" ry="10"></rect><text x="282.75" y="779">&#95;</text></g><path d="M297 775a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10"></path><path d="M248.5 745a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10"></path><g class="terminal"><path d="M268.5 805h0"></path><path d="M297 805h0"></path><rect x="268.5" y="794" width="28.5" height="22" rx="10" ry="10"></rect><text x="282.75" y="809">=</text></g><path d="M297 805a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10"></path></g><path d="M317 745h10"></path><path d="M248.5 745a10 10 0 0 0 -10 10v59a10 10 0 0 0 10 10"></path><g><path d="M248.5 824h68.5"></path></g><path d="M317 824a10 10 0 0 0 10 -10v-59a10 10 0 0 0 -10 -10"></path></g><path d="M327 745h20"></path></g><g><path d="M218.5 707h0"></path><path d="M326.5 707h0"></path><a xlink:href="#abc_accidental"><text x="272.5" y="712" class="comment">abc&#95;accidental</text></a></g></g><path d="M505.5 745a10 10 0 0 0 10 -10v-656a10 10 0 0 1 10 -10"></path></g><path d="M 525.5 69 h 20 m 0 -10 v 20"></path></g></svg>
+</div>
+  <code class="ebnf"><span class="ebnf-identifier">accidental</span>
+  = <a class="ebnf-non-terminal" href="#symbol_accidental">symbol_accidental</a>
+  | <a class="ebnf-non-terminal" href="#english_accidental">english_accidental</a>
+  | <a class="ebnf-non-terminal" href="#german_accidental">german_accidental</a>
+  | <a class="ebnf-non-terminal" href="#romance_accidental">romance_accidental</a>
+  | <a class="ebnf-non-terminal" href="#abc_accidental">abc_accidental</a>
+  <span class="ebnf-end">;</span></code>
+  <p><strong>accidental</strong> is referencing:<p>
+<ul>
+<li><a href="#symbol_accidental">symbol_accidental</a></li><li><a href="#english_accidental">english_accidental</a></li><li><a href="#german_accidental">german_accidental</a></li><li><a href="#romance_accidental">romance_accidental</a></li><li><a href="#abc_accidental">abc_accidental</a></li>
+</ul>
+</section>
+
+  </article>
+  <footer>
+    <p>Date: 2026-09-13T23:18 - <a href="?theme=dark" data-theme="dark">Dark</a> - <a href="?theme=light" data-theme="light">Light</a></p>
+  </footer>
+  </main>
+  <script type="text/javascript">
+    document.querySelector("header button").addEventListener("click", function() {
+      document.getElementsByTagName("html")[0].classList.toggle("menu-open");
+    });
+    document.querySelector("nav").addEventListener("click", function(event) {
+      if (event.target.tagName !== "A") return;
+      htmlTag.classList.remove("menu-open");
+    });
+    document.querySelectorAll("footer a").forEach(element =>
+      element.addEventListener("click", function(event) {
+        event.preventDefault();
+        const theme = event.target.getAttribute("data-theme");
+        const remove = Array.from(htmlTag.classList).filter(className => className.startsWith("theme-"));
+        remove.forEach(name => htmlTag.classList.remove(name));
+        htmlTag.classList.add("theme-" + theme);
+      })
+    );
+  </script>
+
+</body>
+</html>
