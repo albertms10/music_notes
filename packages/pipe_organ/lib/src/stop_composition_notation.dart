@@ -1,10 +1,7 @@
 import 'package:collection/collection.dart' show IterableExtension;
+import 'package:music_notes/music_notes.dart';
 import 'package:music_notes/utils.dart';
 
-import '../notation_system/notation_system.dart';
-import '../note/german_note_notation.dart';
-import '../pitch/helmholtz_pitch_notation.dart';
-import '../pitch/pitch.dart';
 import 'pipe_row.dart';
 
 /// The notation system for [List<PipeRow>].

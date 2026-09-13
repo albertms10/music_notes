@@ -1,12 +1,8 @@
 import 'package:collection/collection.dart' show ListEquality;
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/music_notes.dart';
 import 'package:music_notes/utils.dart';
 
-import '../interval/interval.dart';
-import '../notation_system/notation_system.dart';
-import '../pitch/helmholtz_pitch_notation.dart';
-import '../pitch/pitch.dart';
-import '../pitch/scientific_pitch_notation.dart';
 import 'stop_composition_notation.dart';
 
 /// One row of pipes, taking a breakpoint key and the ranks' foot-lengths

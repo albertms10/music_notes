@@ -49,8 +49,8 @@ import 'dart:math' as math;
 import 'package:args/args.dart';
 import 'package:artisanal/charting.dart';
 import 'package:music_notes/music_notes.dart';
-import 'package:music_notes/organ.dart';
 import 'package:music_notes/utils.dart';
+import 'package:pipe_organ/pipe_organ.dart';
 
 const _fournitureExample = '''
 C			1 1/3'	1'	2/3'	1/2'

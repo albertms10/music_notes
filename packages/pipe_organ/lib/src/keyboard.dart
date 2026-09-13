@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart' show immutable;
-
-import '../pitch/pitch.dart';
-import '../range.dart';
+import 'package:music_notes/music_notes.dart';
 
 /// A keyboard representation.
 @immutable

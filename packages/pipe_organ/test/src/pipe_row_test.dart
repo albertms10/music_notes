@@ -1,5 +1,5 @@
 import 'package:music_notes/music_notes.dart';
-import 'package:music_notes/organ.dart';
+import 'package:pipe_organ/pipe_organ.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print CLI
 
-import 'package:music_notes/organ.dart';
 import 'package:music_notes/utils.dart';
+import 'package:pipe_organ/pipe_organ.dart';
 
 final metzler2005 = Organ(
   stops: [

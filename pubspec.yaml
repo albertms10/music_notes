@@ -3,6 +3,7 @@ publish_to: none
 
 workspace:
   - packages/music_notes
+  - packages/pipe_organ
 
 environment:
   sdk: ">=3.10.0 <4.0.0"
