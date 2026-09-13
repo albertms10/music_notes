@@ -62,6 +62,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Add each new package to this monorepo here. Every entry must also
+        # be listed in the `carryforward` input of the `coveralls` job below,
+        # so a build with a missing/skipped package still reuses its last
+        # known coverage instead of reporting it as uncovered.
         package:
           - music_notes
 
@@ -87,6 +91,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
+        working-directory: packages/${{ matrix.package }}
         run: dart pub get
 
       - name: Run web tests
@@ -97,7 +102,7 @@ jobs:
         working-directory: packages/${{ matrix.package }}
         run: dart test test/main.dart --coverage=coverage
 
-      - name: Install coverage
+      - name: Install coverage formatter
         run: dart pub global activate coverage
 
       - name: Format coverage
@@ -109,60 +114,32 @@ jobs:
             --out=coverage/lcov.info \
             --report-on=lib
 
-      - name: Upload package coverage
-        uses: actions/upload-artifact@v4
+      # Each package uploads its own report as one job of a single parallel
+      # Coveralls build, tagged with a flag matching its package name.
+      - name: Upload coverage to Coveralls (parallel)
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
-          name: coverage-${{ matrix.package }}
-          path: packages/${{ matrix.package }}/coverage/lcov.info
-          if-no-files-found: error
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: ${{ matrix.package }}
+          file: packages/${{ matrix.package }}/coverage/lcov.info
+          parallel: true
 
   coveralls:
-    name: Combine coverage
+    name: Close Coveralls build
     needs: test
+    # The build must be closed even if one package's test job failed,
+    # otherwise the build will sit open on Coveralls forever.
+    if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Download coverage
-        uses: actions/download-artifact@v4
-        with:
-          pattern: coverage-*
-          path: .
-
-      - name: Restore package coverage paths
-        run: |
-          set -euo pipefail
-
-          for artifact in coverage-*; do
-            package="${artifact#coverage-}"
-
-            mkdir -p "packages/$package/coverage"
-            mv "$artifact/lcov.info" "packages/$package/coverage/lcov.info"
-
-            rmdir "$artifact"
-          done
-
-      - name: Install Dart
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
-        with:
-          sdk: ${{ env.DART_SDK_VERSION }}
-
-      - name: Install combine_coverage
-        run: dart pub global activate combine_coverage
-
-      - name: Combine coverage
-        run: |
-          dart pub global run combine_coverage \
-            --repo-path="${GITHUB_WORKSPACE}"
-
-      - name: Upload coverage to Coveralls
+      - name: Close parallel build
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: coverage/lcov.info
-          format: lcov
+          parallel-finished: true
+          # Keep this in sync with the `matrix.package` list above. If a
+          # package's job is ever skipped, Coveralls reuses its last known
+          # report instead of scoring it as 0% covered.
+          carryforward: "music_notes"
