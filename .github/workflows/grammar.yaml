@@ -1,0 +1,57 @@
+name: Generate EBNF diagrams
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'doc/grammar/**/*.ebnf'
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagrams:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install ebnf2railroad
+        run: bun add --global ebnf2railroad
+
+      - name: Generate SVGs
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          find doc/grammar -type f -name '*.ebnf' -print0 |
+          while IFS= read -r -d '' input; do
+            relative="${input#doc/grammar/}"
+            output="doc/grammar/html/${relative%.ebnf}.html"
+
+            mkdir -p "$(dirname "$output")"
+
+            ebnf2railroad "$input" -o "$output"
+          done
+
+      - name: Commit generated SVGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add doc/grammar/html/
+
+          if git diff --cached --quiet; then
+            echo "No generated changes."
+            exit 0
+          fi
+
+          git commit -m "docs(grammar): 🛤 regenerate EBNF diagrams"
+          git push

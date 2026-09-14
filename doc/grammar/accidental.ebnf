@@ -1,0 +1,31 @@
+(* Unicode/ASCII symbolic accidental: an unordered run of glyphs, summed to
+   a semitone count (e.g. "♯𝄪" and "𝄪♯" are both +3 semitones). *)
+symbol_accidental     = { double_sharp_glyph | sharp_glyph
+                         | natural_glyph | flat_glyph | double_flat_glyph } ;
+double_sharp_glyph    = "\uD834\uDD2A" | "x" ;             (* 𝄪 or ASCII "x" *)
+sharp_glyph           = "\u266F" | "#" ;                   (* ♯ *)
+natural_glyph         = "\u266E" | "n" ;                   (* ♮ *)
+flat_glyph            = "\u266D" | "b" ;                   (* ♭ *)
+double_flat_glyph     = "\uD834\uDD2B" ;                   (* 𝄫; ASCII form is "bb" *)
+
+(* English textual form, e.g. "double-sharp", "flat", "natural". *)
+english_accidental    = "natural"
+                       | [ ( "double" | "triple" ), { separator } ],
+                         ( "flat" | "sharp" ) ;
+separator             = "-" ;                              (* configurable, default "-" *)
+
+(* German suffix form, e.g. "is", "isis", "es", "As" (elided "aes"). *)
+german_accidental     = [ "s" ], { "es" }
+                       | "is", { "is" } ;
+
+(* Romance textual form, e.g. "diesis", "doppio bemolle". *)
+romance_accidental    = "naturale"
+                       | [ ( "doppio" | "triplo" ), whitespace, { whitespace } ],
+                         ( "bemolle" | "diesis" ) ;
+
+(* ABC notation prefix form: "^" sharp, "_" flat, "=" natural, doubled for
+   double sharp/flat. *)
+abc_accidental        = { "^" | "_" | "=" } ;
+
+accidental            = symbol_accidental | english_accidental
+                       | german_accidental | romance_accidental | abc_accidental ;
