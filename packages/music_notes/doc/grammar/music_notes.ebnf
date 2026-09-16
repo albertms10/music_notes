@@ -1,3 +1,4 @@
+(*
 # `music_notes` Notation Grammar (ISO/IEC 14977 EBNF)
 
 This document formalizes, as an ISO/IEC 14977 EBNF grammar, the family of
@@ -22,12 +23,12 @@ scale degrees, keys, chords, frequencies, tuning forks, and pitch classes).
   `roman_scale_degree`, ...) is an independent grammar entry point
   corresponding to one concrete `StringNotationSystem` class; several share
   the lexical productions defined in §1–§3.
+*)
 
----
-
+(*
 ## 1. Lexical primitives
+*)
 
-```ebnf
 digit               = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 digit_excl_zero     = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 natural_number      = digit_excl_zero, { digit } | "0" ;
@@ -39,13 +40,11 @@ signed_decimal      = [ ( "+" | minus_sign ) ], decimal ;
 delta_decimal       = ( "+" | minus_sign | plus_minus_sign ), decimal ;
 whitespace          = " " | "\t" ;
 letter_a_to_g       = "a" | "b" | "c" | "d" | "e" | "f" | "g" ;
-```
 
----
-
+(*
 ## 2. Note name notations
+*)
 
-```ebnf
 english_note_name  = letter_a_to_g ;
 
 german_note_name    = letter_a_to_g | "h" ;               (* "h" == B natural *)
@@ -53,13 +52,11 @@ german_note_name    = letter_a_to_g | "h" ;               (* "h" == B natural *)
 romance_note_name   = "do" | "re" | "mi" | "fa" | "sol" | "la" | "si" ;
 
 note_name           = english_note_name | german_note_name | romance_note_name ;
-```
 
----
-
+(*
 ## 3. Accidental notations
+*)
 
-```ebnf
 (* Unicode/ASCII symbolic accidental: an unordered run of glyphs, summed to
    a semitone count (e.g. "♯𝄪" and "𝄪♯" are both +3 semitones). *)
 symbol_accidental     = { double_sharp_glyph | sharp_glyph
@@ -91,13 +88,11 @@ abc_accidental        = { "^" | "_" | "=" } ;
 
 accidental            = symbol_accidental | english_accidental
                        | german_accidental | romance_accidental | abc_accidental ;
-```
 
----
-
+(*
 ## 4. Note notations
+*)
 
-```ebnf
 english_note_symbol  = english_note_name, { whitespace }, symbol_accidental ;
 english_note_textual  = english_note_name,
                           ( separator | { whitespace } ), english_accidental ;
@@ -114,13 +109,11 @@ romance_note            = romance_note_name, { whitespace },
                             ( symbol_accidental | romance_accidental ) ;
 
 note                    = english_note | german_note | romance_note ;
-```
 
----
-
+(*
 ## 5. Pitch notations
+*)
 
-```ebnf
 signed_octave         = [ minus_sign ], natural_number ;
 
 (* Octave 4 (containing middle C) is the canonical reference octave. *)
@@ -144,23 +137,21 @@ abc_pitch              = abc_accidental, english_note_name, { "'" | "," } ;
 
 pitch                  = scientific_pitch | helmholtz_pitch
                         | numbered_helmholtz_pitch | abc_pitch ;
-```
 
----
+(*
+ ## 6. Size, quality, and interval notations
+*)
 
-## 6. Size, quality, and interval notations
+size                      = integer ;                          (* size ≠ 0 *)
 
-```ebnf
-size                      = integer ;                        (* size ≠ 0 *)
-
-standard_interval_quality = "d", { "d" }                      (* diminished(s) *)
+standard_interval_quality = "d", { "d" }                       (* diminished(s) *)
                           | "P"                                (* perfect *)
                           | "m"                                (* minor *)
                           | "M"                                (* major *)
                           | "A", { "A" } ;                     (* augmented(s) *)
 standard_interval         = standard_interval_quality, { whitespace }, size ;
 
-german_interval_quality   = "v", { "v" }                       (* vermindert, diminished(s) *)
+german_interval_quality   = "v", { "v" }                        (* vermindert, diminished(s) *)
                           | "r"                                 (* rein, perfect *)
                           | "k"                                 (* klein, minor *)
                           | "g"                                 (* groß, major *)
@@ -168,13 +159,11 @@ german_interval_quality   = "v", { "v" }                       (* vermindert, di
 german_interval           = german_interval_quality, { whitespace }, size ;
 
 interval                  = standard_interval | german_interval ;
-```
 
----
-
+(*
 ## 7. Scale degree notations
+*)
 
-```ebnf
 roman_numeral           = "i" | "ii" | "iii" | "iv" | "v" | "vi" | "vii" ;
 roman_scale_degree      = accidental, [ whitespace, { whitespace } ], roman_numeral ;
 
@@ -191,13 +180,11 @@ solfege_scale_degree     = solfege_syllable_natural
 
 scale_degree             = roman_scale_degree | numeric_scale_degree
                           | solfege_scale_degree ;
-```
 
----
+(*
+ ## 8. Mode and key notations
+*)
 
-## 8. Mode and key notations
-
-```ebnf
 english_tonal_mode = "major" | "minor" ;
 german_tonal_mode   = "dur" | "moll" ;
 romance_tonal_mode  = "maggiore" | "minore" ;
@@ -210,13 +197,11 @@ romance_key  = romance_note, [ whitespace, { whitespace }, romance_tonal_mode ] 
    letter case of the tonic note letter: uppercase = major, lowercase = minor. *)
 
 key = english_key | german_key | romance_key ;
-```
 
----
-
+(*
 ## 9. Chord and chord-pattern notations
+*)
 
-```ebnf
 triad_symbol            = "" | "+" | "-" | "dim" ;
 half_diminished_marker  = "\u00F8" ;                         (* ø *)
 seventh_symbol          = "maj7" | "7" ;
@@ -235,13 +220,11 @@ chord_pattern           = half_diminished_marker
 chord                    = note, [ chord_pattern ], [ "/", note ] ;
 (* "/" introduces an explicit bass note: either a genuine chord tone
    (an inversion, e.g. "C/E") or a foreign bass note (e.g. "C/D"). *)
-```
 
----
-
+(*
 ## 10. Frequency, tuning fork, and closest-pitch notations
+*)
 
-```ebnf
 frequency               = natural_number, [ ".", { digit } ],
                            [ { whitespace }, "Hz" ] ;
 
@@ -253,25 +236,27 @@ tuning_fork             = compact_tuning_fork | scientific_tuning_fork ;
 cents                    = ( "+" | minus_sign | plus_minus_sign ),
                             natural_number, [ ".", { digit } ] ;
 closest_pitch            = pitch, { whitespace }, [ cents ] ;
-```
 
----
-
+(*
 ## 11. Pitch class notations
+*)
 
-```ebnf
 enharmonic_pitch_class  = "{", note, { "|", note }, "}" ;
 
 integer_pitch_class     = digit | "t" | "e" ;                (* "t"=10, "e"=11 *)
 
 pitch_class              = enharmonic_pitch_class | integer_pitch_class ;
-```
 
----
-
+(*
 ## 12. Root grammar
 
-```ebnf
+Each alternative of `notation` is parsed independently by its own
+`StringNotationSystem`/`StringParser` chain (e.g. `Pitch.parsers`,
+`Note.parsers`, `Key.parsers`); `notation` itself is not a single unified
+entry point in the library but the union of all recognized surface forms,
+built compositionally from §1–§3's shared lexical productions.
+*)
+
 notation = note_name
           | accidental
           | note
@@ -287,10 +272,3 @@ notation = note_name
           | tuning_fork
           | closest_pitch
           | pitch_class ;
-```
-
-Each alternative of `notation` is parsed independently by its own
-`StringNotationSystem`/`StringParser` chain (e.g. `Pitch.parsers`,
-`Note.parsers`, `Key.parsers`); `notation` itself is not a single unified
-entry point in the library but the union of all recognized surface forms,
-built compositionally from §1–§3's shared lexical productions.

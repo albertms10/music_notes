@@ -1,7 +1,0 @@
-english_note_name  = letter_a_to_g ;
-
-german_note_name    = letter_a_to_g | "h" ;               (* "h" == B natural *)
-
-romance_note_name   = "do" | "re" | "mi" | "fa" | "sol" | "la" | "si" ;
-
-note_name           = english_note_name | german_note_name | romance_note_name ;
