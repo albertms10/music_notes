@@ -8,6 +8,8 @@ import 'accidental.dart';
 ///
 /// For other accidentals, returns a combination of sharp (^) or flat (_)
 /// depending on the number of semitones above or below the natural note.
+///
+/// ![AbcAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.28.0/packages/music_notes/doc/diagrams/AbcAccidentalNotation.svg)
 final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether to emit an explicit `=` for natural pitches.
   ///

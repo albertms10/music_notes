@@ -11,7 +11,7 @@ scale degrees, keys, chords, frequencies, tuning forks, and pitch classes).
 - Syntax follows ISO/IEC 14977: `=` defines a rule, `;` terminates it,
   `,` is concatenation, `|` is alternation, `[ x ]` is "zero or one `x`",
   `{ x }` is "zero or more `x`", `( x )` groups, `"x"` is a terminal, and
-  `(* ... *)` is a comment.
+  `\(* ... *\)` is a comment.
 - Rule (meta-)identifiers use `snake_case` (underscores instead of spaces or
   dashes), per ISO/IEC 14977 §5.1's allowance for identifier characters.
 - Unless stated otherwise, alphabetic terminals are matched **case-insensitively**
@@ -202,7 +202,7 @@ key = english_key | german_key | romance_key ;
 ## 9. Chord and chord-pattern notations
 *)
 
-triad_symbol            = "" | "+" | "-" | "dim" ;
+triad_symbol            = empty_string | "+" | "-" | "dim" ;
 half_diminished_marker  = "\u00F8" ;                         (* ø *)
 seventh_symbol          = "maj7" | "7" ;
 sus_symbol              = "sus2" | "sus4" ;

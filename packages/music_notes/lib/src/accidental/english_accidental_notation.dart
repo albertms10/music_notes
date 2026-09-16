@@ -3,6 +3,8 @@ import '../note/note.dart';
 import 'accidental.dart';
 
 /// The English notation system for [Accidental].
+///
+/// ![EnglishAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.28.0/packages/music_notes/doc/diagrams/EnglishAccidentalNotation.svg)
 final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.

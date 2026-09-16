@@ -3,6 +3,8 @@ import '../note/note.dart';
 import 'accidental.dart';
 
 /// The Romance notation system for [Accidental].
+///
+/// ![RomanceAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.28.0/packages/music_notes/doc/diagrams/RomanceAccidentalNotation.svg)
 final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
