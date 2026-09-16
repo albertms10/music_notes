@@ -6,6 +6,8 @@ import '../note/german_note_notation.dart';
 import 'key.dart';
 
 /// The German notation system for [Key].
+///
+/// ![GermanKeyNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/GermanKeyNotation.svg)
 final class GermanKeyNotation extends StringNotationSystem<Key> {
   /// The [GermanNoteNotation] used to format the [Key.note].
   final GermanNoteNotation noteNotation;

@@ -11,7 +11,7 @@ import 'accidental.dart';
 /// double sharp or flat symbols (𝄪, 𝄫) depending on the number of semitones
 /// above or below the natural note.
 ///
-/// ![SymbolAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.28.0/packages/music_notes/doc/diagrams/SymbolAccidentalNotation.svg)
+/// ![SymbolAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/SymbolAccidentalNotation.svg)
 final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Whether a natural [Note] should be represented with the
   /// [Accidental.natural] symbol.
