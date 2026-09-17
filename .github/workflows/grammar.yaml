@@ -1,57 +1,58 @@
-name: Generate EBNF diagrams
+name: Diagrams CI
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "doc/grammar/music_notes.ebnf"
+      - "tool/extract_diagrams.dart"
+
   pull_request:
+    branches: [main]
     types: [opened, synchronize, reopened]
     paths:
-      - 'doc/grammar/**/*.ebnf'
+      - "doc/grammar/music_notes.ebnf"
+      - "tool/extract_diagrams.dart"
 
-  workflow_dispatch:
+env:
+  DART_SDK_VERSION: "3.10"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  diagrams:
+  verify-diagrams:
+    name: Verify diagrams are up to date
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
+          persist-credentials: false
 
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      # `ebnf2railroad` has no Dart equivalent; this is the one acknowledged
+      # non-Dart tool call the extractor makes (see tool/extract_diagrams.dart's
+      # header comment).
       - uses: oven-sh/setup-bun@v2
 
-      - name: Install ebnf2railroad
-        run: bun add --global ebnf2railroad
 
-      - name: Generate SVGs
-        shell: bash
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Render diagrams to a scratch directory
+        run: dart run tool/extract_diagrams.dart --out /tmp/diagrams
+
+      - name: Fail if committed SVGs are out of date
         run: |
-          set -euo pipefail
-
-          find doc/grammar -type f -name '*.ebnf' -print0 |
-          while IFS= read -r -d '' input; do
-            relative="${input#doc/grammar/}"
-            output="doc/grammar/html/${relative%.ebnf}.html"
-
-            mkdir -p "$(dirname "$output")"
-
-            ebnf2railroad "$input" -o "$output"
-          done
-
-      - name: Commit generated SVGs
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add doc/grammar/html/
-
-          if git diff --cached --quiet; then
-            echo "No generated changes."
-            exit 0
+          if ! diff -rq doc/diagrams /tmp/diagrams; then
+            echo "::error::doc/diagrams is out of date. Run" \
+              "'dart run tool/extract_diagrams.dart' locally and commit the result."
+            exit 1
           fi
-
-          git commit -m "docs(grammar): 🛤 regenerate EBNF diagrams"
-          git push
