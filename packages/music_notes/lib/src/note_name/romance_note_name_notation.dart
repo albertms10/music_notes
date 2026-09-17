@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'note_name.dart';
 
 /// The Romance notation system for [NoteName].
+///
+/// ![RomanceNoteNameNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/RomanceNoteNameNotation.svg)
 final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [RomanceNoteNameNotation].
   const RomanceNoteNameNotation();
