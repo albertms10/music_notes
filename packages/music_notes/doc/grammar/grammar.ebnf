@@ -85,7 +85,7 @@ note_name
 (* Unicode/ASCII symbolic accidental: an unordered run of glyphs, summed to
    a semitone count (e.g. "♯𝄪" and "𝄪♯" are both +3 semitones). *)
 
-symbol_accidental =
+symbol_accidental = 
   { double_sharp_glyph
   | sharp_glyph
   | natural_glyph
@@ -335,7 +335,7 @@ key = english_key | german_key | romance_key ;
 ## 9. Chord and chord-pattern notations
 *)
 
-triad_symbol = empty_string | "+" | "-" | "dim" ;
+triad_symbol = whitespace | "+" | "-" | "dim" ;
 
 half_diminished_marker = "\u00F8" ;
 

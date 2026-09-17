@@ -42,14 +42,15 @@ jobs:
       # header comment).
       - uses: oven-sh/setup-bun@v2
 
-
       - name: Install dependencies
         run: dart pub get
 
       - name: Render diagrams to a scratch directory
+        working-directory: packages/music_notes
         run: dart run tool/extract_diagrams.dart --out /tmp/diagrams
 
       - name: Fail if committed SVGs are out of date
+        working-directory: packages/music_notes
         run: |
           if ! diff -rq doc/diagrams /tmp/diagrams; then
             echo "::error::doc/diagrams is out of date. Run" \

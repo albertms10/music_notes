@@ -1,4 +1,4 @@
-// Renders `doc/grammar/grammar.ebnf` via `npx ebnf2railroad`, then
+// Renders `doc/grammar/grammar.ebnf` via `bunx ebnf2railroad`, then
 // extracts one self-contained SVG per named rule into
 // `doc/diagrams/<ClassName>.svg`, inlining only the CSS that rule's
 // diagram actually references.
@@ -94,26 +94,53 @@ final class _RenderedGrammar {
   final String htmlDir;
 }
 
-/// Renders [grammarPath] once via `npx ebnf2railroad` and parses the result.
+/// Runs `bunx ebnf2railroad [args]` and derives success/failure from its
+/// own printed output rather than `result.exitCode` — `bunx` (like `npx`)
+/// has a documented history of not reliably forwarding the wrapped
+/// process's real exit code, particularly on an install-then-run first
+/// invocation, which is exactly the gap that let a real lint failure
+/// (exit 2) surface here as an apparent success (exit 0).
+///
+/// NOTE: `lintFailurePattern` below is a best-effort guess at
+/// ebnf2railroad's lint-summary format ("N error(s)"/"N problem(s)"), not
+/// verified against real `--lint` failure output. Run it once against a
+/// grammar file you know has a lint issue and adjust the pattern if it
+/// doesn't match — this intentionally fails loud (treats unrecognized
+/// output as a pass only when *no* failure-shaped text is found at all)
+/// rather than silently trusting exitCode again.
+Future<ProcessResult> _runEbnf2Railroad(List<String> args) async {
+  final result = await Process.run('bunx', ['ebnf2railroad', ...args]);
+  final output = '${result.stdout}\n${result.stderr}';
+
+  final lintFailurePattern = RegExp(
+    r'(\d+)\s+(error|problem|issue)s?|line \d+\b',
+    caseSensitive: false,
+  );
+  final match = lintFailurePattern.firstMatch(output);
+  final reportedFailures = match != null && int.parse(match.group(1)!) > 0;
+
+  if (reportedFailures && result.exitCode == 0) {
+    stderr.writeln(
+      'bunx reported exit code 0 but output looks like a lint failure — '
+      'trusting the output over the exit code.',
+    );
+    return ProcessResult(result.pid, 2, result.stdout, result.stderr);
+  }
+
+  return result;
+}
+
+/// Renders [grammarPath] once via `bunx ebnf2railroad` and parses the result.
 Future<_RenderedGrammar> _renderGrammar(String grammarPath) async {
   final tmpDir = await Directory.systemTemp.createTemp('ebnf2railroad_');
   final outHtml = p.join(tmpDir.path, 'grammar.html');
-
-  final result = await Process.run('bunx', [
-    'ebnf2railroad',
+  await _runEbnf2Railroad([
     grammarPath,
+    '--lint',
+    '--write-style',
     '-o',
     outHtml,
   ]);
-  if (result.exitCode != 0) {
-    throw ProcessException(
-      'npx',
-      ['ebnf2railroad', grammarPath, '-o', outHtml],
-      'ebnf2railroad failed:\n${result.stderr}',
-      result.exitCode,
-    );
-  }
-
   final source = await File(outHtml).readAsString();
 
   return _RenderedGrammar(html_parser.parse(source), tmpDir.path);
