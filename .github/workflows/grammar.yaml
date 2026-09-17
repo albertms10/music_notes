@@ -4,15 +4,15 @@ on:
   push:
     branches: [main]
     paths:
-      - "doc/grammar/music_notes.ebnf"
-      - "tool/extract_diagrams.dart"
+      - "packages/**/doc/grammar/grammar.ebnf"
+      - "packages/**/tool/extract_diagrams.dart"
 
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened]
     paths:
-      - "doc/grammar/music_notes.ebnf"
-      - "tool/extract_diagrams.dart"
+      - "packages/**/doc/grammar/grammar.ebnf"
+      - "packages/**/tool/extract_diagrams.dart"
 
 env:
   DART_SDK_VERSION: "3.10"

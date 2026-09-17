@@ -1,4 +1,4 @@
-// Renders `doc/grammar/music_notes.ebnf` via `npx ebnf2railroad`, then
+// Renders `doc/grammar/grammar.ebnf` via `npx ebnf2railroad`, then
 // extracts one self-contained SVG per named rule into
 // `doc/diagrams/<ClassName>.svg`, inlining only the CSS that rule's
 // diagram actually references.
@@ -55,7 +55,7 @@ const ruleToClass = <String, String>{
   'integer_pitch_class': 'IntegerPitchClassNotation',
 };
 
-const grammarPath = 'doc/grammar/music_notes.ebnf';
+const grammarPath = 'doc/grammar/grammar.ebnf';
 
 Future<void> main(List<String> arguments) async {
   final args = (ArgParser()..addOption('out', defaultsTo: 'doc/diagrams'))
