@@ -209,9 +209,3 @@ final class Rational implements Comparable<Rational> {
     return 0;
   }
 }
-
-/// An organ pipe height extension.
-extension OrganPipeHeight on Rational {
-  /// The reference height of an organ pipe.
-  static const reference = Rational.fromMixed(8);
-}
