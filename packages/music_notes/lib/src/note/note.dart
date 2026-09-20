@@ -444,25 +444,30 @@ extension NoteCircleOfFifths on Note {
   }
 
   /// The distance in relation to the circle of fifths.
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.circleOfFifthsDistance == 0
-  /// Note.d.circleOfFifthsDistance == 2
-  /// Note.a.flat.circleOfFifthsDistance == -4
-  /// ```
-  int get circleOfFifthsDistance => Note.c.fifthsDistanceWith(this);
-
-  /// The fifths distance between this [Note] and [other].
-  ///
-  /// Example:
-  /// ```dart
-  /// Note.c.fifthsDistanceWith(.e.flat) == -3
-  /// Note.f.sharp.fifthsDistanceWith(.b) == -1
-  /// Note.a.flat.fifthsDistanceWith(.c.sharp) == 11
-  /// ```
-  int fifthsDistanceWith(Note other) =>
-      Interval.P5.circleDistance(from: this, to: other).$1;
+	///
+	/// A perfect fifth generates the cycle of fifths in ℤ₁₂: it's coprime to
+	/// [chromaticDivisions] and, since 7 × 7 ≡ 1 mod 12, its own modular
+	/// inverse. Multiplying a natural note's semitones by that same generator
+	/// and re-centering the result recovers its position on the cycle (F=−1
+	/// through B=5) without tabulating the seven positions by hand. Each
+	/// accidental then shifts that position by exactly one generator's worth,
+	/// with no wraparound — unlike the natural letters, accidentals aren't
+	/// bounded to a single octave.
+	int get circleOfFifthsDistance {
+	  const halfOctave = chromaticDivisions ~/ 2;
+	  final fifthGenerator = Interval.P5.semitones;
+	
+	  final naturalPosition =
+	      (fifthGenerator * noteName.semitones + halfOctave) %
+	              chromaticDivisions -
+	          halfOctave;
+	
+	  return naturalPosition + fifthGenerator * accidental.semitones;
+	}
+	
+	/// The fifths distance between this [Note] and [other].
+	int fifthsDistanceWith(Note other) =>
+	    other.circleOfFifthsDistance - circleOfFifthsDistance;
 }
 
 /// A Note iterable.
