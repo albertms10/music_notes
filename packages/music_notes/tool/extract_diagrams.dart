@@ -70,20 +70,13 @@ Future<void> main(List<String> arguments) async {
   for (final MapEntry(key: ruleName, value: className) in ruleToClass.entries) {
     final rawSvg = _extractSvgElement(rendered.document, ruleName);
     final svg = _stripDanglingLinks(rawSvg, ruleName);
-    final relevantCss = _relevantCss(pageCss, _usedClasses(svg));
+    final classes = _usedClasses(svg);
+    final css = _buildThemeCss(pageCss, classes);
 
-    if (relevantCss.trim().isEmpty) {
-      throw StateError(
-        'Filtered CSS for "$ruleName" ($className) is empty even though '
-        'page CSS was found. _usedClasses() or _relevantCss() likely isn’t '
-        "matching this diagram's actual class names. Inspect the rendered "
-        '<svg> and stylesheet before trusting this output.',
-      );
-    }
-
-    final outPath = p.join(outDir, '$className.svg');
-    await File(outPath).writeAsString(_makeStandalone(svg, relevantCss));
-    stdout.writeln('wrote $outPath');
+    final path = p.join(outDir, '$className.svg');
+    await File(path).writeAsString(_makeStandalone(svg, css));
+    await minifySvg(path);
+    stdout.writeln('wrote $path');
   }
 }
 
@@ -134,13 +127,22 @@ Future<ProcessResult> _runEbnf2Railroad(List<String> args) async {
 Future<_RenderedGrammar> _renderGrammar(String grammarPath) async {
   final tmpDir = await Directory.systemTemp.createTemp('ebnf2railroad_');
   final outHtml = p.join(tmpDir.path, 'grammar.html');
-  await _runEbnf2Railroad([
+  final result = await _runEbnf2Railroad([
     grammarPath,
     '--lint',
     '--write-style',
     '-o',
     outHtml,
   ]);
+  if (result.exitCode != 0) {
+    throw ProcessException(
+      'bun',
+      ['ebnf2railroad', grammarPath, '-o', outHtml],
+      'ebnf2railroad failed:\n${result.stderr}',
+      result.exitCode,
+    );
+  }
+
   final source = await File(outHtml).readAsString();
 
   return _RenderedGrammar(html_parser.parse(source), tmpDir.path);
@@ -221,23 +223,61 @@ Set<String> _usedClasses(String svg) => {
     ...match[1]!.split(RegExp(r'\s+')).where((name) => name.isNotEmpty),
 };
 
-/// [pageCss] filtered to only the rules whose selector mentions at least
-/// one class in [usedClasses]. Selectors with no class component (bare
-/// tag/`svg`/`text` rules, generic layout) are kept unconditionally, since
-/// they're structural rather than diagram-specific.
+/// Resolves the page CSS into a single stylesheet containing the light theme
+/// as the default `:root` and the dark theme as a `prefers-color-scheme: dark`
+/// override.
 ///
-/// NOTE: only top-level rule sets are filtered; rules nested inside an
-/// `@media` block are left untouched (kept, not dropped); worst case this
-/// ships slightly more CSS than strictly needed, never less. Verify the
-/// exact `csslib` visitor API surface below against the installed version
-/// (`RuleSet`/`SimpleSelectorSequence`/`ClassSelector` field names, and
-/// `CssPrinter.visitTree`'s exact parameters) since none of it is pinned
-/// to a specific `csslib` version here.
-String _relevantCss(String pageCss, Set<String> usedClasses) {
+/// The resulting CSS is suitable for embedding in an SVG <style> element:
+///
+///   :root{--foo:light;...}
+///   @media (prefers-color-scheme:dark){:root{--foo:dark;...}}
+///
+/// This avoids emitting two independent theme stylesheets or relying on
+/// duplicate `:root` rules being preserved by SVG/CSS minifiers.
+///
+/// NOTE: only top-level rule sets are inspected for the used-class filter;
+/// rules nested inside an `@media` block are left untouched (kept, not
+/// dropped) — worst case this ships slightly more CSS than strictly needed.
+/// Verify the exact `csslib` visitor API surface against the installed
+/// version (`RuleSet`/`SimpleSelectorSequence`/`ClassSelector` field names,
+/// and `CssPrinter.visitTree`'s exact parameters).
+String _buildThemeCss(
+  String pageCss,
+  Set<String> usedClasses,
+) {
+  final rootBody = _extractRuleBody(pageCss, ':root');
+  if (rootBody == null) {
+    throw StateError(
+      'No ":root" rule found in page CSS — cannot resolve theme variables.',
+    );
+  }
+
+  final themeDarkBody = _extractRuleBody(pageCss, '.theme-dark');
+
+  if (themeDarkBody == null) {
+    stderr.writeln(
+      'warning: no ".theme-dark" rule found in page CSS — '
+      'the SVG will contain only the light theme. Re-check the selector '
+      'name against current ebnf2railroad output.',
+    );
+  }
+
+  final lightVariables = _parseCustomProperties(rootBody);
+  final darkVariables = themeDarkBody == null
+      ? const <String, String>{}
+      : _parseCustomProperties(themeDarkBody);
+
   final stylesheet = css_parser.parse(pageCss);
 
   stylesheet.topLevels.removeWhere((node) {
     if (node is! RuleSet) return false;
+
+    // :root and .theme-dark are handled explicitly below.
+    final sourceText = node.span.text.trimLeft();
+    if (sourceText.startsWith(':root') ||
+        sourceText.startsWith('.theme-dark')) {
+      return true;
+    }
 
     final classesInSelector = [
       for (final selector
@@ -247,13 +287,70 @@ String _relevantCss(String pageCss, Set<String> usedClasses) {
             selector.name,
     ];
 
-    if (classesInSelector.isEmpty) return false; // keep structural rules
+    if (classesInSelector.isEmpty) {
+      return false; // Keep structural rules.
+    }
 
     return !classesInSelector.any(usedClasses.contains);
   });
 
-  return (CssPrinter()..visitTree(stylesheet)).toString();
+  final remainingCss = (CssPrinter()..visitTree(stylesheet)).toString();
+
+  String rootBlock(Map<String, String> variables) {
+    final declarations = variables.entries
+        .map((entry) => '${entry.key}:${entry.value};')
+        .join();
+
+    return ':root{$declarations}';
+  }
+
+  String darkMediaBlock(Map<String, String> variables) {
+    if (variables.isEmpty) return '';
+
+    return '@media (prefers-color-scheme:dark){${rootBlock(variables)}}';
+  }
+
+  return [
+    rootBlock(lightVariables),
+    darkMediaBlock(darkVariables),
+    remainingCss,
+  ].join();
 }
+
+/// Finds the first `<selector> { ... }` block in [css] and returns its
+/// declaration body (the text between the braces), or `null` if [selector]
+/// isn't found. Brace matching is naive character counting rather than a
+/// real parser — safe here specifically because `:root`/`.theme-dark` in
+/// this stylesheet contain only flat `--property: value;` declarations
+/// with no nested braces (no `@media`, no nested rules).
+String? _extractRuleBody(String css, String selector) {
+  final selectorMatch = RegExp(
+    '${RegExp.escape(selector)}\\s*\\{',
+  ).firstMatch(css);
+  if (selectorMatch == null) return null;
+
+  final braceStart = selectorMatch.end - 1;
+  var depth = 0;
+  for (var i = braceStart; i < css.length; i++) {
+    if (css[i] == '{') depth++;
+    if (css[i] == '}') {
+      depth--;
+      if (depth == 0) return css.substring(braceStart + 1, i);
+    }
+  }
+
+  return null; // unterminated block; malformed CSS
+}
+
+/// Parses `--custom-property: value;` declarations out of [ruleBody] (the
+/// text between a rule's braces) into a property→value map. Only bare
+/// custom-property declarations are handled — this stylesheet's
+/// `:root`/`.theme-dark` blocks contain nothing else, so a full CSS-value
+/// parser isn't needed here.
+Map<String, String> _parseCustomProperties(String ruleBody) => {
+  for (final match in RegExp(r'(--[\w-]+)\s*:\s*([^;]+);').allMatches(ruleBody))
+    match.group(1)!: match.group(2)!.trim(),
+};
 
 /// Ensures [svg] is valid as a standalone file: declares `xmlns` (implicit,
 /// and often omitted, when embedded directly inside an HTML page), declares
@@ -279,4 +376,32 @@ String _makeStandalone(String svg, String css) {
 
   return '${result.substring(0, openTagEnd)}<style>$css</style>'
       '${result.substring(openTagEnd)}';
+}
+
+/// Minifies the SVG at [path] in place via `svgo_cli`
+/// (https://pub.dev/packages/svgo_cli).
+///
+/// UNVERIFIED: I'm inferring the activated command name (`svgo`) and its
+/// flags (`-i`/`-o` for input/output) from SVGO's own conventional CLI
+/// surface and this package's name, not from a confirmed read of
+/// svgo_cli's own README/API. Check both before trusting this in CI:
+///   - the exact command it installs on PATH after
+///     `dart pub global activate svgo_cli` (may be `svgo_cli` rather
+///     than `svgo`),
+///   - whether its default preset strips anything this pipeline depends
+///     on (`viewBox`, the `xmlns`/`xmlns:xlink` declarations added by
+///     [_makeStandalone] — SVGO's default preset typically preserves the
+///     root `xmlns`, but I have not confirmed its behavior on
+///     `xmlns:xlink` specifically when no `xlink:` usage remains after
+///     [_stripDanglingLinks]).
+Future<void> minifySvg(String path) async {
+  final result = await Process.run('svgo', [path]);
+  if (result.exitCode != 0) {
+    throw ProcessException(
+      'svgo',
+      [path],
+      'svgo failed (exit ${result.exitCode}):\n${result.stderr}',
+      result.exitCode,
+    );
+  }
 }
