@@ -71,6 +71,11 @@ final class PitchClass extends Scalable<PitchClass>
   /// Pitch class 11, which corresponds to [Note.b].
   static const b = PitchClass(11);
 
+  /// A list of all [PitchClass] values.
+  static const values = <PitchClass>[
+    c, cSharp, d, dSharp, e, f, fSharp, g, gSharp, a, aSharp, b, //
+  ];
+
   /// The chain of [StringParser]s used to parse a [PitchClass].
   static const parsers = [
     EnharmonicSpellingsPitchClassNotation(),

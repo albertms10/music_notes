@@ -86,6 +86,31 @@ void main() {
             .closestPitch(temperature: temperature);
         expect(closestPitch, pitch + const Cent(0));
       });
+
+      test('round-trips with the provided reference temperature', () {
+        const temperature = Celsius(24);
+        const referenceTemperature = Celsius(15);
+
+        final frequency = Note.a
+            .inOctave(4)
+            .frequency(
+              temperature: temperature,
+              referenceTemperature: referenceTemperature,
+            );
+
+        expect(
+          frequency
+              .closestPitch(
+                temperature: temperature,
+                referenceTemperature: referenceTemperature,
+              )
+              .frequency(
+                temperature: temperature,
+                referenceTemperature: referenceTemperature,
+              ),
+          frequency,
+        );
+      });
     });
 
     group('.harmonic()', () {

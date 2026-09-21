@@ -1,0 +1,18 @@
+name: Keep the latest tag version up to date
+
+on:
+  release:
+    types: [released, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  tagger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Update latest tag
+        uses: EndBug/latest-tag@latest

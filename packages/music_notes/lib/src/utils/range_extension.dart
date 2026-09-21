@@ -1,5 +1,4 @@
 import '../notation_system/notation_system.dart';
-import '../pitch/pitch.dart';
 import '../range.dart';
 import '../scalable.dart';
 import 'iterable_extension.dart';
@@ -10,32 +9,43 @@ extension RangeExtension<E> on Range<E> {
     required E Function(E current) nextValue,
     required Comparator<E> compare,
   }) {
-    if (from == to) return const [];
-
     assert(
-      E != Pitch || compare(from, to) <= 0,
+      compare(from, to) <= 0,
       'To must be greater than or equal to from.',
     );
 
-    final set = {from};
-    var temp = from;
-    while (compare(nextValue(temp), to) != 0) {
-      temp = nextValue(temp);
-      if (set.contains(temp)) break;
-      set.add(temp);
+    final values = <E>[];
+    var current = from;
+
+    while (true) {
+      final comparison = compare(current, to);
+
+      // Current value is outside the range.
+      if (comparison > 0) break;
+      values.add(current);
+
+      // The inclusive endpoint has been reached.
+      if (comparison == 0) break;
+
+      final next = nextValue(current);
+
+      // nextValue must make forward progress.
+      if (compare(next, current) <= 0) break;
+
+      current = next;
     }
 
-    return set.toList(growable: false);
+    return values.toList(growable: false);
   }
 
-  /// Fills this range of values between `from` and `to` (`to` not included).
+  /// Fills this range of values between `from` and `to` (both included).
   ///
   /// Example:
   /// ```dart
   /// const (from: 1, to: 10).explode(
   ///   nextValue: (current) => current + 1,
   ///   compare: Comparable.compare,
-  /// ) == const [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  /// ) == const [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   /// ```
   /// ---
   /// See also:
@@ -48,11 +58,11 @@ extension RangeExtension<E> on Range<E> {
 
 /// A Scalable range record extension.
 extension ScalableRangeExtension<E extends Scalable<E>> on Range<E> {
-  /// Fills this range of values between `from` and `to` (`to` not included).
+  /// Fills this range of values between `from` and `to` (both included).
   ///
   /// Example:
   /// ```dart
-  /// (from: Note.c, to: Note.e.flat).explode() == const <Note>[.c, .d.flat, .d]
+  /// (from: Note.c, to: Note.d).explode() == const <Note>[.c, .d.flat, .d]
   /// ```
   /// ---
   /// See also:
