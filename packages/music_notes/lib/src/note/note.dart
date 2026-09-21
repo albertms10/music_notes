@@ -445,14 +445,13 @@ extension NoteCircleOfFifths on Note {
 
   /// The distance in relation to the circle of fifths.
   ///
-  /// A perfect fifth generates the cycle of fifths in ℤ₁₂: it's coprime to
+  /// A perfect fifth generates the cycle of fifths in ℤ₁₂: it is coprime to
   /// [chromaticDivisions] and, since 7 × 7 ≡ 1 mod 12, its own modular
-  /// inverse. Multiplying a natural note's semitones by that same generator
+  /// inverse. Multiplying a natural note’s semitones by that same generator
   /// and re-centering the result recovers its position on the cycle (F=−1
   /// through B=5) without tabulating the seven positions by hand. Each
-  /// accidental then shifts that position by exactly one generator's worth,
-  /// with no wraparound — unlike the natural letters, accidentals aren't
-  /// bounded to a single octave.
+  /// accidental then shifts that position by exactly one generator’s worth,
+  /// with no wraparound.
   int get circleOfFifthsDistance {
     const halfOctave = chromaticDivisions ~/ 2;
     final fifthGenerator = Interval.P5.semitones;
