@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'size.dart';
 
 /// A notation system for [Size].
+///
+/// ![SizeNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/SizeNotation.svg)
 final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
   const SizeNotation();
