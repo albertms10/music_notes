@@ -61,17 +61,40 @@ void main() {
 
     group('operator +()', () {
       test('adds semitones to this Accidental', () {
-        expect(Accidental.sharp + 1, Accidental.doubleSharp);
-        expect(Accidental.flat + 2, Accidental.sharp);
-        expect(Accidental.doubleFlat + 1, Accidental.flat);
+        expect(Accidental.natural + .tripleSharp, Accidental.tripleSharp);
+        expect(Accidental.sharp + .sharp, Accidental.doubleSharp);
+        expect(Accidental.flat + .doubleSharp, Accidental.sharp);
+        expect(Accidental.doubleFlat + .sharp, Accidental.flat);
+
+        expect(
+          const Accidental(1, 2) + const Accidental(1, 3),
+          const Accidental(5, 6),
+        );
+        expect(
+          const Accidental(2, 4) + const Accidental(2, 4),
+          const Accidental(4, 4),
+        );
       });
     });
 
     group('operator -()', () {
       test('subtracts semitones from this Accidental', () {
-        expect(Accidental.sharp - 1, Accidental.natural);
-        expect(Accidental.flat - 2, Accidental.tripleFlat);
-        expect(Accidental.doubleSharp - 1, Accidental.sharp);
+        expect(Accidental.sharp - .sharp, Accidental.natural);
+        expect(Accidental.flat - .doubleSharp, Accidental.tripleFlat);
+        expect(Accidental.doubleSharp - .sharp, Accidental.sharp);
+
+        expect(
+          const Accidental(1, 2) - const Accidental(1, 3),
+          const Accidental(1, 6),
+        );
+        expect(
+          const Accidental(3, 4) - const Accidental(1, 4),
+          const Accidental(2, 4),
+        );
+        expect(
+          const Accidental(1, 3) - const Accidental(1, 2),
+          const Accidental(-1, 6),
+        );
       });
     });
 
