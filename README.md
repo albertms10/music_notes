@@ -319,11 +319,10 @@ reference pitch. `centsOffset` shows how far each drifts from 12-EDO for a
 given pitch:
 
 ```dart
-const pythagorean = PythagoreanTuning();
-const meantone = MeantoneTuning.quarter;
+final g4 = Note.g.inOctave(4);
 
-pythagorean.centsOffset(Note.g.inOctave(4)); // ≈ +2 cents
-meantone.centsOffset(Note.g.inOctave(4));    // ≈ −3.4 cents
+const PythagoreanTuning().centsOffset(g4); // ≈ +2 cents
+MeantoneTuning.quarter.centsOffset(g4);    // ≈ −3.4 cents
 ```
 
 Every tuning system here is a historical compromise about which intervals

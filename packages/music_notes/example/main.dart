@@ -117,11 +117,9 @@ void main() {
   TuningFork.c256; // C256
   Note.a.inOctave(4).at(const Frequency(438)); // A438
 
-  const pythagorean = PythagoreanTuning();
-  const meantone = MeantoneTuning.quarter;
-
-  pythagorean.centsOffset(Note.g.inOctave(4)); // ≈ +2 cents
-  meantone.centsOffset(Note.g.inOctave(4)); // ≈ −3.4 cents
+  final g4 = Note.g.inOctave(4);
+  const PythagoreanTuning().centsOffset(g4); // ≈ +2 cents
+  MeantoneTuning.quarter.centsOffset(g4); // ≈ −3.4 cents
 
   const Frequency(432).closestPitch(); // A4−32
 
