@@ -19,11 +19,10 @@ void main() {
         const frequency = Frequency(415);
         expect(frequency.closestPitch().frequency(), frequency);
 
-        const temperature = Celsius(18);
         expect(
           frequency
-              .closestPitch(temperature: temperature)
-              .frequency(temperature: temperature),
+              .closestPitch(temperature: const .celsius(18))
+              .frequency(temperature: const .celsius(18)),
           frequency,
         );
       });

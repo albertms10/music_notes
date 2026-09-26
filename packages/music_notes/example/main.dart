@@ -259,7 +259,7 @@ void main() {
 
   // Frequencies
   Note.a.inOctave(4).frequency(); // 440
-  Note.a.inOctave(4).frequency(temperature: const Celsius(18));
+  Note.a.inOctave(4).frequency(temperature: const .celsius(18));
   // 438.4619866006409
 
   Note.a.inOctave(4).at(const Frequency(438)); // A438
@@ -272,12 +272,12 @@ void main() {
         tuningSystem: const EqualTemperament.edo12(fork: .c256),
       ); // 456.1401436878537
 
-  const Frequency(440).at(const Celsius(18)); // 438.4619866006409
-  const Frequency(440).at(const Celsius(24)); // 443.07602679871826
+  const Frequency(440).at(const .celsius(18)); // 438.4619866006409
+  const Frequency(440).at(const .fahrenheit(74)); // 442.56335566559864
 
   const Frequency(432).closestPitch(); // A4−32
   const Frequency(314).closestPitch(); // E♭4+16
-  const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4−12
+  const Frequency(440).closestPitch(temperature: const .celsius(24)); // A4−12
 
   Note.c.inOctave(1).harmonics().take(16).toSet();
   // {C1±0, C2±0, G2+2, C3±0, E3−14, G3+2, A♯3−31, C4±0,

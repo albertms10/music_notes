@@ -62,15 +62,15 @@ void main() {
         );
 
         expect(
-          const Frequency(440).closestPitch(temperature: const Celsius(24)),
+          const Frequency(440).closestPitch(temperature: const .celsius(24)),
           Note.a.inOctave(4) - const Cent(12.060895566170192),
         );
         expect(
-          const Frequency(440).closestPitch(temperature: const Celsius(18)),
+          const Frequency(440).closestPitch(temperature: const .celsius(18)),
           Note.a.inOctave(4) + const Cent(6.062103827228064),
         );
         expect(
-          const Frequency(256).closestPitch(temperature: const Celsius(18)),
+          const Frequency(256).closestPitch(temperature: const .celsius(18)),
           Note.c.inOctave(4) - const Cent(31.569552402363644),
         );
       });
@@ -80,16 +80,15 @@ void main() {
         var closestPitch = pitch.frequency().closestPitch();
         expect(closestPitch, pitch + const Cent(0));
 
-        const temperature = Celsius(18);
         closestPitch = pitch
-            .frequency(temperature: temperature)
-            .closestPitch(temperature: temperature);
+            .frequency(temperature: const .celsius(18))
+            .closestPitch(temperature: const .celsius(18));
         expect(closestPitch, pitch + const Cent(0));
       });
 
       test('round-trips with the provided reference temperature', () {
-        const temperature = Celsius(24);
-        const referenceTemperature = Celsius(15);
+        const temperature = Temperature.celsius(24);
+        const referenceTemperature = Temperature.celsius(15);
 
         final frequency = Note.a
             .inOctave(4)

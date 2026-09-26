@@ -483,7 +483,7 @@ Get the `Frequency` of a `Pitch`:
 
 ```dart
 Note.a.inOctave(4).frequency(); // 440
-Note.a.inOctave(4).frequency(temperature: const Celsius(18));
+Note.a.inOctave(4).frequency(temperature: const .celsius(18));
 // 438.4619866006409
 ```
 
@@ -509,8 +509,8 @@ Note.b.flat
 Get the `Frequency` at a given temperature:
 
 ```dart
-const Frequency(440).at(const Celsius(18)); // 438.4619866006409
-const Frequency(440).at(const Celsius(24)); // 443.07602679871826
+const Frequency(440).at(const .celsius(18)); // 438.4619866006409
+const Frequency(440).at(const .fahrenheit(74)); // 442.56335566559864
 ```
 
 Get the closest `Pitch` from a given `Frequency`:
@@ -518,7 +518,7 @@ Get the closest `Pitch` from a given `Frequency`:
 ```dart
 const Frequency(432).closestPitch(); // A4−32
 const Frequency(314).closestPitch(); // E♭4+16
-const Frequency(440).closestPitch(temperature: const Celsius(24)); // A4−12
+const Frequency(440).closestPitch(temperature: const .celsius(24)); // A4−12
 ```
 
 And combining both `frequency` and `closestPitch` methods,
