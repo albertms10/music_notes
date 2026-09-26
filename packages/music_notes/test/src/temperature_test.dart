@@ -28,5 +28,42 @@ void main() {
         expect(const Temperature.kelvin(373.15), 100);
       });
     });
+
+    group('.ratio()', () {
+      test('is 1 at the reference temperature', () {
+        expect(const Temperature.celsius(20).ratio(), 1);
+      });
+
+      test('compares two Celsius temperatures', () {
+        expect(
+          const Temperature.celsius(0).ratio(),
+          closeTo(331.3 / 343.3, 1e-10),
+        );
+      });
+
+      test('is symmetric through the reciprocal', () {
+        const a = Temperature.celsius(0);
+        const b = Temperature.celsius(20);
+
+        expect(
+          a.ratio() * b.ratio(a),
+          closeTo(1, 1e-10),
+        );
+      });
+
+      test('uses the custom reference temperature', () {
+        expect(
+          const Temperature.celsius(30).ratio(const .celsius(10)),
+          closeTo(349.3 / 337.3, 1e-10),
+        );
+      });
+
+      test('works with temperatures created from other scales', () {
+        expect(
+          const Temperature.fahrenheit(32).ratio(const .kelvin(293.15)),
+          closeTo(331.3 / 343.3, 1e-10),
+        );
+      });
+    });
   });
 }
