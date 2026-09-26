@@ -1,0 +1,444 @@
+import 'dart:collection' show SplayTreeSet;
+
+import 'package:music_notes/music_notes.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('Key', () {
+    group('.relative', () {
+      test('returns the relative of this Key', () {
+        expect(Note.c.major.relative, Note.a.minor);
+        expect(Note.f.major.relative, Note.d.minor);
+        expect(Note.b.minor.relative, Note.d.major);
+        expect(Note.g.sharp.minor.relative, Note.b.major);
+        expect(Note.a.flat.minor.relative, Note.c.flat.major);
+      });
+    });
+
+    group('.parallel', () {
+      test('returns the parallel of this Key', () {
+        expect(Note.c.major.parallel, Note.c.minor);
+        expect(Note.f.major.parallel, Note.f.minor);
+        expect(Note.b.minor.parallel, Note.b.major);
+        expect(Note.g.sharp.minor.parallel, Note.g.sharp.major);
+        expect(Note.a.flat.major.parallel, Note.a.flat.minor);
+      });
+    });
+
+    group('.signature', () {
+      test('returns the KeySignature of this Key', () {
+        expect(Note.c.major.signature, KeySignature.empty);
+        expect(Note.a.minor.signature, KeySignature.empty);
+
+        expect(Note.g.major.signature, KeySignature([.f.sharp]));
+        expect(Note.e.minor.signature, KeySignature([.f.sharp]));
+        expect(Note.f.major.signature, KeySignature([.b.flat]));
+        expect(Note.d.minor.signature, KeySignature([.b.flat]));
+
+        expect(
+          Note.b.major.signature,
+          KeySignature([.f.sharp, .c.sharp, .g.sharp, .d.sharp, .a.sharp]),
+        );
+        expect(
+          Note.g.sharp.minor.signature,
+          KeySignature([.f.sharp, .c.sharp, .g.sharp, .d.sharp, .a.sharp]),
+        );
+        expect(
+          Note.d.flat.major.signature,
+          KeySignature([.b.flat, .e.flat, .a.flat, .d.flat, .g.flat]),
+        );
+        expect(
+          Note.b.flat.minor.signature,
+          KeySignature([.b.flat, .e.flat, .a.flat, .d.flat, .g.flat]),
+        );
+      });
+    });
+
+    group('.isTheoretical', () {
+      test('returns whether this Key is theoretical', () {
+        expect(Note.c.flat.major.isTheoretical, false);
+        expect(Note.a.flat.minor.isTheoretical, false);
+        expect(Note.c.minor.isTheoretical, false);
+        expect(Note.e.major.isTheoretical, false);
+        expect(Note.c.sharp.major.isTheoretical, false);
+        expect(Note.a.sharp.minor.isTheoretical, false);
+
+        expect(Note.f.flat.major.isTheoretical, true);
+        expect(Note.d.flat.minor.isTheoretical, true);
+        expect(Note.c.sharp.sharp.minor.isTheoretical, true);
+        expect(Note.a.flat.flat.major.isTheoretical, true);
+        expect(Note.g.sharp.major.isTheoretical, true);
+        expect(Note.e.sharp.minor.isTheoretical, true);
+      });
+    });
+
+    group('.scale', () {
+      test('returns the scale notes of this Key', () {
+        expect(
+          Note.d.major.scale,
+          Scale<Note>([.d, .e, .f.sharp, .g, .a, .b, .c.sharp, .d]),
+        );
+        expect(
+          Note.c.minor.scale,
+          Scale<Note>([.c, .d, .e.flat, .f, .g, .a.flat, .b.flat, .c]),
+        );
+      });
+    });
+
+    group('.relationshipWith()', () {
+      test('returns the relationship between this Key and other', () {
+        expect(
+          Note.c.major.relationshipWith(Note.c.major),
+          (distance: 0, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.f.major),
+          (distance: -1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.g.major),
+          (distance: 1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.f.minor),
+          (distance: -1, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.f.major),
+          (distance: -1, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.f.minor),
+          (distance: -1, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.a.minor),
+          (distance: 3, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.a.major),
+          (distance: 3, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.e.flat.major),
+          (distance: -3, relationship: KeyRelationship.direct),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.e.flat.major),
+          (distance: -3, relationship: KeyRelationship.indirect),
+        );
+        expect(
+          Note.c.major.relationshipWith(Note.e.flat.minor),
+          (distance: -3, relationship: KeyRelationship.doubleDirect),
+        );
+        expect(
+          Note.c.minor.relationshipWith(Note.e.flat.minor),
+          (distance: -3, relationship: KeyRelationship.direct),
+        );
+      });
+    });
+
+    group('.toString()', () {
+      test('returns the verbose string representation of this Key', () {
+        expect(
+          Note.a.major.toString(),
+          '''
+Key(note: Note(noteName: NoteName.a, accidental: Accidental(semitones: 0)), mode: TonalMode.major)''',
+        );
+        expect(
+          Note.g.sharp.minor.toString(),
+          '''
+Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode: TonalMode.minor)''',
+        );
+      });
+    });
+
+    group('.hashCode', () {
+      test('ignores equal Key instances in a Set', () {
+        final collection = {
+          Note.d.major,
+          Note.f.sharp.minor,
+          Note.g.sharp.minor,
+        };
+        collection.addAll(collection);
+        expect(collection.toList(), [
+          Note.d.major,
+          Note.f.sharp.minor,
+          Note.g.sharp.minor,
+        ]);
+      });
+    });
+
+    group('.compareTo()', () {
+      test('sorts Keys in a collection', () {
+        final orderedSet = SplayTreeSet<Key>.of({
+          Note.f.sharp.minor,
+          Note.c.minor,
+          Note.d.major,
+          Note.c.major,
+          Note.d.flat.major,
+          Note.e.flat.major,
+        });
+        expect(orderedSet.toList(), [
+          Note.c.major,
+          Note.c.minor,
+          Note.d.flat.major,
+          Note.d.major,
+          Note.e.flat.major,
+          Note.f.sharp.minor,
+        ]);
+      });
+    });
+  });
+
+  group('EnglishKeyNotation', () {
+    const textual = EnglishKeyNotation();
+    const symbol = EnglishKeyNotation.symbol();
+    const short = EnglishKeyNotation.symbol(showMode: false);
+    const chain = [textual, symbol, short];
+
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(
+          () => Key.parse('C', chain: const [textual]),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('major', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('C major minor', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('', chain: chain), throwsFormatException);
+      });
+
+      test('parses source as a Key', () {
+        expect(Key.parse('A'), Note.a.major);
+        expect(Key.parse('d'), Note.d.minor);
+        expect(Key.parse('f♯'), Note.f.sharp.minor);
+        expect(Key.parse('b♭'), Note.b.flat.minor);
+        expect(Key.parse('C major'), Note.c.major);
+        expect(Key.parse('D major'), Note.d.major);
+        expect(Key.parse('f♯ major'), Note.f.sharp.major);
+        expect(Key.parse('A minor'), Note.a.minor);
+        expect(Key.parse('G-flat major'), Note.g.flat.major);
+        expect(Key.parse('d minor'), Note.d.minor);
+        expect(Key.parse('C♯ minor'), Note.c.sharp.minor);
+        expect(Key.parse('C-double-sharp minor'), Note.c.sharp.sharp.minor);
+      });
+
+      test('.format() and .parse() are inverses', () {
+        final testKeys = [
+          Note.c.major,
+          Note.a.minor,
+          Note.f.sharp.major,
+          Note.b.flat.minor,
+        ];
+
+        for (final key in testKeys) {
+          expect(key, Key.parse(key.format()));
+        }
+      });
+    });
+
+    group('.format() ', () {
+      test('returns the string representation of this Key', () {
+        expect(Note.c.major.format(), 'C major');
+        expect(Note.d.minor.format(), 'D minor');
+        expect(Note.a.flat.major.format(), 'A♭ major');
+        expect(Note.f.sharp.minor.format(), 'F♯ minor');
+        expect(Note.g.sharp.sharp.major.format(), 'G𝄪 major');
+        expect(Note.e.flat.flat.minor.format(), 'E𝄫 minor');
+
+        expect(Note.c.major.format(textual), 'C major');
+        expect(Note.d.minor.format(textual), 'D minor');
+        expect(Note.a.flat.major.format(textual), 'A-flat major');
+        expect(Note.f.sharp.minor.format(textual), 'F-sharp minor');
+        expect(
+          Note.g.sharp.sharp.major.format(textual),
+          'G-double-sharp major',
+        );
+        expect(Note.e.flat.flat.minor.format(textual), 'E-double-flat minor');
+
+        expect(Note.c.major.format(short), 'C');
+        expect(Note.d.minor.format(short), 'd');
+        expect(Note.a.flat.major.format(short), 'A♭');
+        expect(Note.f.sharp.minor.format(short), 'f♯');
+        expect(Note.g.sharp.sharp.major.format(short), 'G𝄪');
+        expect(Note.e.flat.flat.minor.format(short), 'e𝄫');
+      });
+    });
+  });
+
+  group('GermanKeyNotation', () {
+    const formatter = GermanKeyNotation();
+    const short = GermanKeyNotation(showMode: false);
+    const chain = [formatter, short];
+
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(
+          () => Key.parse('C', chain: const [formatter]),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('dur', chain: chain), throwsFormatException);
+        expect(
+          () => Key.parse('C-dur-moll', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('', chain: chain), throwsFormatException);
+      });
+
+      test('parses source as a Key', () {
+        expect(Key.parse('C', chain: chain), Note.c.major);
+        expect(Key.parse('h', chain: chain), Note.b.minor);
+        expect(Key.parse('Ais', chain: chain), Note.a.sharp.major);
+        expect(Key.parse('des', chain: chain), Note.d.flat.minor);
+
+        expect(Key.parse('C-Dur', chain: chain), Note.c.major);
+        expect(Key.parse('B-dur', chain: chain), Note.b.flat.major);
+        expect(Key.parse('b-dur', chain: chain), Note.b.flat.major);
+        expect(Key.parse('H-Moll', chain: chain), Note.b.minor);
+        expect(Key.parse('D-dur', chain: chain), Note.d.major);
+        expect(
+          Key.parse('Gisis-dur', chain: chain),
+          Note.g.sharp.sharp.major,
+        );
+        expect(Key.parse('a-Moll', chain: chain), Note.a.minor);
+        expect(Key.parse('As-moll', chain: chain), Note.a.flat.minor);
+        expect(Key.parse('d-Moll', chain: chain), Note.d.minor);
+      });
+
+      test('.format() and .parse() are inverses', () {
+        final testKeys = [
+          Note.c.major,
+          Note.a.minor,
+          Note.f.sharp.major,
+          Note.b.flat.minor,
+        ];
+
+        for (final key in testKeys) {
+          expect(
+            key,
+            Key.parse(key.format(formatter), chain: chain),
+          );
+        }
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Key', () {
+        expect(Note.c.sharp.major.format(short), 'Cis');
+        expect(Note.f.minor.format(short), 'f');
+
+        expect(Note.c.major.format(formatter), 'C-Dur');
+        expect(Note.d.minor.format(formatter), 'd-Moll');
+        expect(Note.a.flat.major.format(formatter), 'As-Dur');
+        expect(Note.f.sharp.minor.format(formatter), 'fis-Moll');
+        expect(
+          Note.g.sharp.sharp.major.format(formatter),
+          'Gisis-Dur',
+        );
+        expect(
+          Note.e.flat.flat.minor.format(formatter),
+          'eses-Moll',
+        );
+      });
+    });
+  });
+
+  group('RomanceKeyNotation', () {
+    const textual = RomanceKeyNotation();
+    const symbol = RomanceKeyNotation.symbol();
+    const short = RomanceKeyNotation.symbol(showMode: false);
+    const ascii = RomanceKeyNotation.ascii();
+    const asciiShort = RomanceKeyNotation.ascii(showMode: false);
+    const chain = [textual, symbol, short, ascii, asciiShort];
+
+    group('.parse()', () {
+      test('throws a FormatException when source is invalid', () {
+        expect(
+          () => Key.parse('Do', chain: const [textual]),
+          throwsFormatException,
+        );
+        expect(
+          () => Key.parse('maggiore', chain: chain),
+          throwsFormatException,
+        );
+        expect(
+          () => Key.parse('Do maggiore minore', chain: chain),
+          throwsFormatException,
+        );
+        expect(() => Key.parse('', chain: chain), throwsFormatException);
+      });
+
+      test('parses source as a Key', () {
+        expect(Key.parse('Do', chain: chain), Note.c.major);
+        expect(Key.parse('Do maggiore', chain: chain), Note.c.major);
+        expect(Key.parse('Sol# maggiore', chain: chain), Note.g.sharp.major);
+        expect(
+          Key.parse('Fa diesis minore', chain: chain),
+          Note.f.sharp.minor,
+        );
+        expect(Key.parse('Re maggiore', chain: chain), Note.d.major);
+        expect(Key.parse('La♭ minore', chain: chain), Note.a.flat.minor);
+        expect(
+          Key.parse('La bemolle minore', chain: chain),
+          Note.a.flat.minor,
+        );
+        expect(Key.parse('La minore', chain: chain), Note.a.minor);
+        expect(Key.parse('Re minore', chain: chain), Note.d.minor);
+
+        expect(Key.parse('Re', chain: chain), Note.d.major);
+        expect(Key.parse('do', chain: chain), Note.c.minor);
+        expect(Key.parse('la#', chain: chain), Note.a.sharp.minor);
+        expect(Key.parse('Mib', chain: chain), Note.e.flat.major);
+      });
+
+      test('.format() and .parse() are inverses', () {
+        final testKeys = [
+          Note.c.major,
+          Note.a.minor,
+          Note.f.sharp.major,
+          Note.b.flat.minor,
+        ];
+
+        for (final key in testKeys) {
+          expect(
+            key,
+            Key.parse(key.format(symbol), chain: chain),
+          );
+        }
+      });
+    });
+
+    group('.format()', () {
+      test('returns the string representation of this Key', () {
+        expect(Note.c.major.format(symbol), 'Do maggiore');
+        expect(Note.d.minor.format(symbol), 'Re minore');
+        expect(
+          Note.a.flat.major.format(textual),
+          'La bemolle maggiore',
+        );
+        expect(Note.a.flat.major.format(symbol), 'La♭ maggiore');
+        expect(Note.f.sharp.minor.format(symbol), 'Fa♯ minore');
+        expect(
+          Note.g.sharp.sharp.major.format(symbol),
+          'Sol𝄪 maggiore',
+        );
+        expect(
+          Note.a.sharp.sharp.major.format(textual),
+          'La doppio diesis maggiore',
+        );
+        expect(
+          Note.e.flat.flat.minor.format(symbol),
+          'Mi𝄫 minore',
+        );
+
+        expect(Note.c.major.format(short), 'Do');
+        expect(Note.b.minor.format(short), 'si');
+        expect(Note.a.sharp.major.format(short), 'La♯');
+        expect(Note.e.flat.minor.format(short), 'mi♭');
+      });
+    });
+  });
+}

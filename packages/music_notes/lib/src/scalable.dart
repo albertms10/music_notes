@@ -1,0 +1,174 @@
+import 'package:meta/meta.dart' show immutable;
+
+import 'enharmonic.dart';
+import 'interval/interval.dart';
+import 'interval_class/interval_class.dart';
+import 'notation_system/notation_system.dart';
+import 'pitch_class/pitch_class.dart';
+import 'respellable.dart';
+import 'size/size.dart';
+import 'transposable.dart';
+import 'tuning_system/equal_temperament.dart';
+
+/// An interface for items that can form scales.
+@immutable
+abstract class Scalable<T extends Scalable<T>>
+    with Enharmonic<PitchClass>, Respellable<T>
+    implements Transposable<T>, Formattable<T> {
+  /// Creates a new [Scalable].
+  const Scalable();
+
+  /// Predicate to transpose this [Scalable] by ascending chromatic motion.
+  static T chromaticMotion<T extends Scalable<T>>(T scalable) =>
+      scalable.transposeBy(.m2).respelledSimple;
+
+  /// Enharmonic [Comparator] for [Scalable].
+  static int compareEnharmonically<T extends Scalable<T>>(T a, T b) =>
+      a.semitones.compareTo(b.semitones);
+
+  /// Returns the [PitchClass] from [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(4).toClass() == .c
+  /// Note.e.sharp.inOctave(2).toClass() == .f
+  /// Note.c.flat.flat.inOctave(5).toClass() == .aSharp
+  /// ```
+  @override
+  PitchClass toClass() => PitchClass(semitones);
+
+  /// The [Interval] between this [Scalable] and [other].
+  Interval interval(T other);
+
+  /// The difference in semitones between this [Scalable] and [other].
+  int difference(T other) {
+    final diff = other.semitones - semitones;
+
+    return diff.abs() < chromaticDivisions ~/ 2
+        ? diff
+        : diff - chromaticDivisions * diff.sign;
+  }
+}
+
+/// A Scalable iterable.
+extension ScalableIterable<T extends Scalable<T>> on Iterable<T> {
+  /// The [Interval]s between [T]s in this [Iterable].
+  Iterable<Interval> get intervalSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      yield elementAt(i).interval(elementAt(i + 1));
+    }
+  }
+
+  /// The descending [Interval]s between [T]s this [Iterable].
+  Iterable<Interval> get descendingIntervalSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      yield elementAt(i + 1).interval(elementAt(i));
+    }
+  }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// <Note>[.d, .e, .e.flat, .d].inOctave(4).isStepwise == true
+  /// const <Note>[.c, .e, .g, .a].inOctave(3).isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      intervalSteps.every((interval) => interval.size.abs() <= Size.second);
+
+  /// Transposes this [Iterable] by [interval].
+  Iterable<T> transposeBy(Interval interval) =>
+      map((item) => item.transposeBy(interval));
+
+  /// The inversion of this [ScalableIterable].
+  ///
+  /// See [Inversion](https://en.wikipedia.org/wiki/Inversion_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
+  ///
+  /// Example:
+  /// ```dart
+  /// <Note>{.b, .a.sharp, .d}.inversion.toSet() == <Note>{.b, .c, .g.sharp}
+  /// ```
+  Iterable<T> get inversion sync* {
+    if (isEmpty) return;
+    T last;
+    yield last = first;
+    for (var i = 1; i < length; i++) {
+      yield last = last.transposeBy(elementAt(i).interval(elementAt(i - 1)));
+    }
+  }
+
+  /// The retrograde of this [ScalableIterable].
+  ///
+  /// See [Retrograde](https://en.wikipedia.org/wiki/Retrograde_(music)) and
+  /// [Retrograde inversion](https://en.wikipedia.org/wiki/Retrograde_inversion)
+  /// for a combination of both [retrograde] and [inversion].
+  ///
+  /// Example:
+  /// ```dart
+  /// <PitchClass>{.dSharp, .g, .fSharp}).retrograde.toSet()
+  ///   == <PitchClass>{.fSharp, .g, .dSharp}
+  /// ```
+  Iterable<T> get retrograde => toList(growable: false).reversed;
+
+  /// The numeric representation of this [ScalableIterable] from [reference].
+  /// The [first] element is used as the reference if none is provided.
+  ///
+  /// Example:
+  /// ```dart
+  /// <PitchClass>{.b, .aSharp, .d}.numericRepresentation().toSet()
+  ///   == const {0, 11, 3}
+  ///
+  /// <PitchClass>{.b, .aSharp, .d}.numericRepresentation(reference: .g).toSet()
+  ///   == const {4, 3, 7}
+  /// ```
+  Iterable<int> numericRepresentation({T? reference}) => map(
+    (scalable) =>
+        (reference ?? first).difference(scalable) % chromaticDivisions,
+  );
+
+  /// The delta numeric representation of this [ScalableIterable].
+  ///
+  /// Example:
+  /// ```dart
+  /// <PitchClass>{.b, .aSharp, .d, .e}.deltaNumericRepresentation.toList()
+  ///   == const [0, -1, 4, 2]
+  /// ```
+  Iterable<int> get deltaNumericRepresentation sync* {
+    if (isEmpty) return;
+    yield 0;
+    for (var i = 1; i < length; i++) {
+      yield elementAt(i - 1).difference(elementAt(i));
+    }
+  }
+
+  /// Counts every unordered pair in this collection by [IntervalClass],
+  /// following standard pitch-class set analysis.
+  ///
+  /// See [Interval vector](https://en.wikipedia.org/wiki/Interval_vector).
+  ///
+  /// Example:
+  /// ```dart
+  /// ScalePattern.major.on(PitchClass.c).degrees.toSet().intervalVector
+  ///   == const [2, 5, 4, 3, 6, 1]
+  ///
+  /// ScalePattern.wholeTone.on(PitchClass.c)
+  ///   .degrees.toSet().intervalVector == const [0, 6, 0, 6, 0, 3]
+  /// ```
+  List<int> get intervalVector {
+    final vector = List<int>.filled(IntervalClass.values.length - 1, 0);
+    final items = toList(growable: false);
+    for (var i = 0; i < items.length; i++) {
+      for (var j = i + 1; j < items.length; j++) {
+        final ic = IntervalClass(items[i].difference(items[j]));
+        if (ic.semitones == 0) continue;
+        vector[ic.semitones - 1]++;
+      }
+    }
+
+    return vector;
+  }
+}

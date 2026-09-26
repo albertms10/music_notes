@@ -9,23 +9,30 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  DART_SDK_VERSION: "3.6"
+  DART_SDK_VERSION: "3.10"
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  analyze:
     name: Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
 
       - name: Cache dependencies
-        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
-        id: cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.pub-cache/hosted
           key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.yaml') }}
@@ -34,27 +41,105 @@ jobs:
             ${{ runner.os }}-pubspec-
             ${{ runner.os }}-
 
-      - name: Set up Dart
-        uses: dart-lang/setup-dart@e630b99d28a3b71860378cafdc2a067c71107f94 # v1.7.0
-        with:
-          sdk: ${{ env.DART_SDK_VERSION }}
+      # This has to be run before formatting, as the formatter needs
+      # to know the language version of each file it formats.
+      # See https://github.com/dart-lang/sdk/issues/60163#issuecomment-2680372038
+      - name: Install dependencies
+        run: dart pub get
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
 
-      - name: Install dependencies
-        run: dart pub get
-
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Run tests
-        run: |
-          dart pub global activate coverage
-          dart test test/main.dart --coverage=coverage
-          dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
+  test:
+    name: Test ${{ matrix.package }}
+    needs: analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
-      - name: Coveralls upload
-        uses: coverallsapp/github-action@cfd0633edbd2411b532b808ba7a8b5e04f76d2c8 # v2.3.4
+    strategy:
+      fail-fast: false
+      matrix:
+        # Add each new package to this monorepo here. Every entry must also
+        # be listed in the `carryforward` input of the `coveralls` job below,
+        # so a build with a missing/skipped package still reuses its last
+        # known coverage instead of reporting it as uncovered.
+        package:
+          - music_notes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.pub-cache/hosted
+          key: ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-${{ hashFiles('**/pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pubspec-${{ env.DART_SDK_VERSION }}-
+            ${{ runner.os }}-pubspec-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        working-directory: packages/${{ matrix.package }}
+        run: dart pub get
+
+      - name: Run web tests
+        working-directory: packages/${{ matrix.package }}
+        run: dart test test/main.dart -p chrome
+
+      - name: Run tests with coverage
+        working-directory: packages/${{ matrix.package }}
+        run: dart test test/main.dart --coverage=coverage
+
+      - name: Install coverage formatter
+        run: dart pub global activate coverage
+
+      - name: Format coverage
+        working-directory: packages/${{ matrix.package }}
+        run: |
+          dart pub global run coverage:format_coverage \
+            --lcov \
+            --in=coverage \
+            --out=coverage/lcov.info \
+            --report-on=lib
+
+      # Each package uploads its own report as one job of a single parallel
+      # Coveralls build, tagged with a flag matching its package name.
+      - name: Upload coverage to Coveralls (parallel)
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          flag-name: ${{ matrix.package }}
+          file: packages/${{ matrix.package }}/coverage/lcov.info
+          parallel: true
+
+  coveralls:
+    name: Close Coveralls build
+    needs: test
+    # The build must be closed even if one package's test job failed,
+    # otherwise the build will sit open on Coveralls forever.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Close parallel build
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+          # Keep this in sync with the `matrix.package` list above. If a
+          # package's job is ever skipped, Coveralls reuses its last known
+          # report instead of scoring it as 0% covered.
+          carryforward: "music_notes"

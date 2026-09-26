@@ -1,6 +1,8 @@
 {
   "cSpell.ignoreWords": ["music"],
   "cSpell.words": [
+    "ascii",
+    "Ascii",
     "barline",
     "bitmask",
     "chordable",
@@ -10,6 +12,7 @@
     "Didymean",
     "dorian",
     "enharmonically",
+    "flatward",
     "helmholtz",
     "heptatonic",
     "ionian",
@@ -17,6 +20,8 @@
     "lydian",
     "maggiore",
     "majeur",
+    "meantone",
+    "Meantone",
     "mineur",
     "mixolydian",
     "neapolitan",
@@ -28,7 +33,11 @@
     "redeclares",
     "respellable",
     "Respellable",
+    "sharpward",
     "sublist",
+    "tonicization",
+    "tonicized",
+    "unicode",
     "Versetzungszeichen",
     "Xenharmonic"
   ],
