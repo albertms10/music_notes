@@ -1,10 +1,10 @@
 import 'package:meta/meta.dart' show immutable;
 
-import '../celsius/celsius.dart';
 import '../cent/cent.dart';
 import '../frequency/frequency.dart';
 import '../notation_system/notation_system.dart';
 import '../pitch/pitch.dart';
+import '../temperature/temperature.dart';
 import '../tuning_system/equal_temperament.dart';
 import '../tuning_system/tuning_system.dart';
 import 'standard_closest_pitch_notation.dart';
@@ -59,8 +59,8 @@ final class ClosestPitch implements Formattable<ClosestPitch> {
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = .reference,
-    Celsius referenceTemperature = .reference,
+    Temperature temperature = .reference,
+    Temperature referenceTemperature = .reference,
   }) => Frequency(
     pitch.frequency(
           tuningSystem: tuningSystem,

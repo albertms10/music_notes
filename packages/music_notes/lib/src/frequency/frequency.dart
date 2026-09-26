@@ -1,10 +1,10 @@
-import '../celsius/celsius.dart';
 import '../cent/cent.dart';
 import '../closest_pitch/closest_pitch.dart';
 import '../hearing_range/hearing_range.dart';
 import '../notation_system/notation_system.dart';
 import '../pitch/pitch.dart';
 import '../pitch_class/pitch_class.dart';
+import '../temperature/temperature.dart';
 import '../tuning_system/equal_temperament.dart';
 import '../tuning_system/tuning_system.dart';
 import 'frequency_si_notation.dart';
@@ -65,8 +65,8 @@ extension type const Frequency._(num hertz) implements num {
   /// ```
   ClosestPitch closestPitch({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = .reference,
-    Celsius referenceTemperature = .reference,
+    Temperature temperature = .reference,
+    Temperature referenceTemperature = .reference,
   }) {
     final cents = Cent.fromRatio(
       at(temperature, referenceTemperature) / tuningSystem.fork.frequency,
@@ -102,7 +102,7 @@ extension type const Frequency._(num hertz) implements num {
   /// See [Change of pitch with change of temperature](https://sengpielaudio.com/calculator-pitchchange.htm).
   ///
   /// ![Effect of a Local Temperature Change in an Organ Pipe](https://sengpielaudio.com/TonhoehenaenderungDurchTemperaturaenderung.gif)
-  Frequency at(Celsius temperature, [Celsius reference = .reference]) =>
+  Frequency at(Temperature temperature, [Temperature reference = .reference]) =>
       Frequency(hertz * temperature.ratio(reference));
 
   /// The harmonic at [index] from this [Frequency], including negative
