@@ -1,13 +1,10 @@
 import 'dart:math' as math;
 
-import 'package:collection/collection.dart'
-    show ListEquality, UnmodifiableListView;
 import 'package:music_notes/utils.dart';
 
 import '../cent/cent.dart';
 import '../note_name/note_name.dart';
 import '../pitch/pitch.dart';
-import '../tuning_fork/tuning_fork.dart';
 import 'tuning_system.dart';
 
 /// Number of chromatic octave divisions in [EqualTemperament.edo12].
@@ -21,65 +18,15 @@ const int chromaticDivisions = 12;
 /// See also:
 /// * [TuningSystem].
 final class EqualTemperament extends TuningSystem {
-  final List<int> _steps;
+  /// The number of equal divisions of the octave.
+  final int edo;
 
-  /// The equal divisions between each [NoteName] and the next one.
-  List<int> get steps => UnmodifiableListView(_steps);
+  /// Creates a new [EqualTemperament] from [edo] and [fork].
+  const EqualTemperament(this.edo, {super.fork = .a440})
+    : assert(edo > 0, 'edo must be positive');
 
-  /// Creates a new [EqualTemperament] from [_steps] and [fork].
-  const EqualTemperament(this._steps, {super.fork = .a440});
-
-  /// See [12 equal temperament](https://en.wikipedia.org/wiki/12_equal_temperament).
-  const EqualTemperament.edo12({super.fork = .a440})
-    : _steps = const [2, 2, 1, 2, 2, 2, 1];
-
-  /// See [19 equal temperament](https://en.wikipedia.org/wiki/19_equal_temperament).
-  const EqualTemperament.edo19({super.fork = .a440})
-    : _steps = const [3, 3, 2, 3, 3, 3, 2];
-
-  /// Generic EDO constructor.
-  ///
-  /// Creates a 7-step pattern (similar to a “major scale”) whose sum of steps
-  /// equals [divisions]. This works for standard 12, 19, 24 EDO or any other
-  /// integer.
-  factory EqualTemperament.edo(
-    int divisions, {
-    TuningFork fork = TuningFork.a440,
-  }) {
-    final EqualTemperament(:steps) = const EqualTemperament.edo12();
-
-    final ratio = divisions / 12.0;
-    final scaledSteps = steps.map((step) => (step * ratio).round()).toList();
-
-    // Adjust to ensure sum == divisions
-    final total = scaledSteps.fold(0, (a, b) => a + b);
-    var diff = divisions - total;
-
-    if (diff != 0) {
-      // We'll adjust from left to right (or you could do largest-first, etc.)
-      final length = scaledSteps.length;
-      var i = 0;
-
-      // If diff is positive, we need to add steps until sum == divisions.
-      // If diff is negative, we need to subtract steps.
-      while (diff != 0) {
-        // Don't reduce a step below 1 (if we want strictly positive intervals).
-        // Or you could allow zero steps if that makes sense musically for you.
-        if (diff >= 0 && scaledSteps[i] != 1) {
-          scaledSteps[i] += (diff > 0 ? 1 : -1);
-          diff += (diff > 0 ? -1 : 1);
-        }
-        i = (i + 1) % length; // cycle through steps if needed
-      }
-    }
-
-    return EqualTemperament(List.unmodifiable(scaledSteps), fork: fork);
-  }
-
-  /// The equal divisions of the octave of this [EqualTemperament].
-  ///
-  /// See [EDO](https://en.xen.wiki/w/EDO).
-  int get edo => _steps.reduce((value, element) => value + element);
+  /// The standard 12-EDO system.
+  const EqualTemperament.edo12({super.fork = .a440}) : edo = chromaticDivisions;
 
   /// The cents for each division step in this [EqualTemperament].
   ///
@@ -92,7 +39,41 @@ final class EqualTemperament extends TuningSystem {
   Iterable<Cent> get cents =>
       .generate(edo, (i) => .fromRatio(ratioFromSemitones(i)));
 
-  /// The ratio from [semitones] for this [EqualTemperament].
+  /// Nearest integer `edo` steps approximating a just fifth (3/2) —
+  /// the single generator that `.steps` and `.generator` both now
+  /// derive from, instead of two separately-tuned approximations.
+  static int fifthSteps(int edo) =>
+      (edo * (math.log(3 / 2) / math.ln2)).round();
+
+  /// This [edo]'s step position for [name], via the circle of fifths.s
+  int stepsFor(NoteName name) {
+    // [NoteName.values] is in diatonic order, so consecutive notes advance
+    // by two positions around the circle of fifths.
+    final fifthsIndex = (name.index * 2) % 7;
+    final signedFifthsIndex = fifthsIndex == 6 ? -1 : fifthsIndex;
+
+    return (signedFifthsIndex * fifthSteps(edo)) % edo;
+  }
+
+  /// The diatonic gaps between consecutive letters (e.g. `[2,2,1,2,2,2,1]`
+  /// at edo=12) — derived, not hardcoded, by walking NoteName.values
+  /// sorted by their `stepsFor` position and diffing neighbors.
+  List<int> get steps {
+    final ordered = NoteName.values.map(stepsFor).toList()..sort();
+
+    return [
+      for (var i = 0; i < ordered.length; i++)
+        (ordered[(i + 1) % ordered.length] - ordered[i]) % edo,
+    ];
+  }
+
+  @override
+  Cent get generator => Cent(fifthSteps(edo) * (Cent.octave / edo));
+
+  /// The ratio from [semitones] steps of this [EqualTemperament].
+  ///
+  /// [semitones] is already counted in this [EqualTemperament.edo] steps,
+  /// so no grid conversion or validation is needed.
   ///
   /// See [Twelfth root of two](https://en.wikipedia.org/wiki/Twelfth_root_of_two).
   ///
@@ -103,24 +84,37 @@ final class EqualTemperament extends TuningSystem {
   /// ```
   num ratioFromSemitones(int semitones) => math.pow(2, semitones / edo);
 
-  @override
-  num ratio(Pitch pitch) => ratioFromSemitones(fork.pitch.difference(pitch));
+  /// The ratio for an exact offset in 12-EDO-relative semitones (e.g. an
+  /// Accidental's or Interval's `.semitones`).
+  ///
+  /// Converts onto this edo's own grid, then delegates to [ratioFromSemitones].
+  /// Throws when [semitones] has no exact step here.
+  num ratioFromRationalSemitones(Rational semitones) {
+    final edoSteps = semitones * Rational(edo, chromaticDivisions);
+    assert(
+      edoSteps == Rational(edoSteps.toInt()),
+      '$semitones has no exact step in $edo-EDO; round explicitly first.',
+    );
 
-  /// The reference generator cents.
-  static const referenceGeneratorCents = Cent(700);
+    return ratioFromSemitones(edoSteps.toInt());
+  }
 
   @override
-  Cent get generator => cents.closestTo(referenceGeneratorCents);
+  num ratio(Pitch pitch) =>
+      ratioFromRationalSemitones(Rational(fork.pitch.difference(pitch)));
+
+  /// Universal, always-defined: round the 12-EDO nominal directly onto
+  /// this edo's grid. No generator, so it can't fail to produce *a*
+  /// mapping — only, for exotic EDOs, a musically awkward one.
+  int nominalStepFor(NoteName name) => (name.semitones * edo / 12).round();
 
   @override
-  String toString() => 'EDO $edo (${_steps.join(' ')}) at ${fork.format()}';
+  String toString() => 'EDO $edo (${steps.join(' ')}) at ${fork.format()}';
 
   @override
   bool operator ==(Object other) =>
-      other is EqualTemperament &&
-      const ListEquality<int>().equals(_steps, other._steps) &&
-      fork == other.fork;
+      other is EqualTemperament && edo == other.edo && fork == other.fork;
 
   @override
-  int get hashCode => Object.hash(.hashAll(_steps), fork);
+  int get hashCode => Object.hash(edo, fork);
 }
