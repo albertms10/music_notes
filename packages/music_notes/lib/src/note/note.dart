@@ -1,0 +1,550 @@
+import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/utils.dart';
+
+import '../accidental/accidental.dart';
+import '../chord/chord.dart';
+import '../chord_pattern/chord_pattern.dart';
+import '../interval/interval.dart';
+import '../key/key.dart';
+import '../key_signature/key_signature.dart';
+import '../notation_system/notation_system.dart';
+import '../note_name/note_name.dart';
+import '../pitch/pitch.dart';
+import '../respellable.dart';
+import '../scalable.dart';
+import '../size/size.dart';
+import '../tuning_system/equal_temperament.dart';
+import 'english_note_notation.dart';
+import 'german_note_notation.dart';
+import 'romance_note_notation.dart';
+
+/// A musical note.
+///
+/// ---
+/// See also:
+/// * [NoteName].
+/// * [Accidental].
+/// * [Pitch].
+/// * [KeySignature].
+/// * [Key].
+@immutable
+final class Note extends Scalable<Note>
+    with RespellableScalable<Note>
+    implements Comparable<Note>, Formattable<Note> {
+  /// The name that defines this [Note].
+  final NoteName noteName;
+
+  /// The accidental that modifies the [noteName].
+  final Accidental accidental;
+
+  /// Creates a new [Note] from [noteName] and [accidental].
+  const Note(this.noteName, [this.accidental = .natural]);
+
+  /// Note C.
+  static const c = Note(.c);
+
+  /// Note D.
+  static const d = Note(.d);
+
+  /// Note E.
+  static const e = Note(.e);
+
+  /// Note F.
+  static const f = Note(.f);
+
+  /// Note G.
+  static const g = Note(.g);
+
+  /// Note A.
+  static const a = Note(.a);
+
+  /// Note B.
+  static const b = Note(.b);
+
+  /// The chain of [StringParser]s used to parse a [Note].
+  static const parsers = [
+    EnglishNoteNotation(),
+    EnglishNoteNotation.symbol(),
+    EnglishNoteNotation.ascii(),
+    GermanNoteNotation(),
+    RomanceNoteNotation(),
+    RomanceNoteNotation.symbol(),
+    RomanceNoteNotation.ascii(),
+  ];
+
+  /// Parse [source] as a [Note] and return its value.
+  ///
+  /// If the [source] string does not contain a valid [Note], a
+  /// [FormatException] is thrown.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.parse('Bb') == .b.flat
+  /// Note.parse('c') == .c
+  /// Note.parse('z') // throws a FormatException
+  /// ```
+  factory Note.parse(
+    String source, {
+    List<StringParser<Note>> chain = parsers,
+  }) => chain.parse(source);
+
+  /// [Comparator] for [Note]s by fifths distance.
+  static int compareByFifthsDistance(Note a, Note b) =>
+      a.circleOfFifthsDistance.compareTo(b.circleOfFifthsDistance);
+
+  /// [Comparator] for [Note]s by closest distance.
+  static int compareByClosestDistance(Note a, Note b) => compareMultiple([
+    () {
+      final distance = (a.semitones - b.semitones).abs();
+
+      return (distance <= chromaticDivisions - distance)
+          ? a.semitones.compareTo(b.semitones)
+          : b.semitones.compareTo(a.semitones);
+    },
+    ..._comparators(a, b),
+  ]);
+
+  static List<int Function()> _comparators(Note a, Note b) => [
+    () => Scalable.compareEnharmonically(a, b),
+    () => a.noteName.semitones.compareTo(b.noteName.semitones),
+  ];
+
+  /// The semitones distance of this [Note] relative to [Note.c].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.semitones == 0
+  /// Note.d.semitones == 2
+  /// Note.f.sharp.semitones == 6
+  /// Note.b.sharp.semitones == 12
+  /// Note.c.flat.semitones == -1
+  /// ```
+  @override
+  int get semitones => noteName.semitones + accidental.semitones;
+
+  /// The difference in semitones between this [Note] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.difference(.d) == 2
+  /// Note.a.difference(.g) == -2
+  /// Note.e.flat.difference(.b.flat) == -5
+  /// ```
+  @override
+  int difference(Note other) => super.difference(other);
+
+  /// This [Note] sharpened by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.sharp == const Note(.c, .sharp)
+  /// Note.a.sharp == const Note(.a, .sharp)
+  /// ```
+  Note get sharp => Note(noteName, accidental + 1);
+
+  /// This [Note] flattened by 1 semitone.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.flat == const Note(.e, .flat)
+  /// Note.f.flat == const Note(.f, .flat)
+  /// ```
+  Note get flat => Note(noteName, accidental - 1);
+
+  /// This [Note] without an accidental (natural).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.natural == .g
+  /// Note.c.sharp.sharp.natural == .c
+  /// Note.a.natural == .a
+  /// ```
+  Note get natural => Note(noteName);
+
+  /// The [TonalMode.major] [Key] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.major == const Key(.c, .major)
+  /// Note.e.flat.major == Key(.e.flat, .major)
+  /// ```
+  Key get major => Key(this, .major);
+
+  /// The [TonalMode.minor] [Key] from this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.minor == const Key(.d, .minor)
+  /// Note.g.sharp.minor == Key(.g.sharp, .minor)
+  /// ```
+  Key get minor => Key(this, .minor);
+
+  /// The [ChordPattern.diminishedTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.a.diminishedTriad == Chord([.a, .c, .e.flat])
+  /// Note.b.diminishedTriad == Chord([.b, .d, .f])
+  /// ```
+  Chord get diminishedTriad => ChordPattern.diminishedTriad.on(this);
+
+  /// The [ChordPattern.minorTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.minorTriad == Chord([.e, .g, .b])
+  /// Note.f.sharp.minorTriad == Chord([.f.sharp, .a, .c.sharp])
+  /// ```
+  Chord get minorTriad => ChordPattern.minorTriad.on(this);
+
+  /// The [ChordPattern.majorTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.majorTriad == Chord([.d, .f.sharp, .a])
+  /// Note.a.flat.majorTriad == Chord([.a.flat, .c, .e.flat])
+  /// ```
+  Chord get majorTriad => ChordPattern.majorTriad.on(this);
+
+  /// The [ChordPattern.augmentedTriad] on this [Note].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.augmentedTriad == Chord([.d.flat, .f, .a])
+  /// Note.g.augmentedTriad == Chord([.g, .b, .d.sharp])
+  /// ```
+  Chord get augmentedTriad => ChordPattern.augmentedTriad.on(this);
+
+  /// This [Note] respelled by [noteName] while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.sharp.respellByNoteName(.d) == .d.flat
+  /// Note.f.respellByNoteName(.e) == .e.sharp
+  /// Note.g.respellByNoteName(.a) == .a.flat.flat
+  /// ```
+  @override
+  Note respellByNoteName(NoteName noteName) {
+    final rawSemitones = semitones - noteName.semitones;
+    final deltaSemitones =
+        rawSemitones +
+        (rawSemitones.abs() > (chromaticDivisions * 0.5)
+            ? chromaticDivisions * -rawSemitones.sign
+            : 0);
+
+    return Note(noteName, Accidental(deltaSemitones));
+  }
+
+  /// This [Note] respelled by [NoteName.ordinal] distance while keeping the
+  /// same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.respellByOrdinalDistance(-1) == .f.sharp
+  /// Note.e.sharp.respellByOrdinalDistance(2) == .g.flat.flat
+  /// ```
+  @override
+  Note respellByOrdinalDistance(int distance) =>
+      respellByNoteName(.fromOrdinal(noteName.ordinal + distance));
+
+  /// This [Note] respelled upwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.sharp.respelledUpwards == .a.flat
+  /// Note.e.sharp.respelledUpwards == .f
+  /// ```
+  @override
+  Note get respelledUpwards => super.respelledUpwards;
+
+  /// This [Note] respelled downwards while keeping the same number of
+  /// [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.g.flat.respelledDownwards == .f.sharp
+  /// Note.c.respelledDownwards == .b.sharp
+  /// ```
+  @override
+  Note get respelledDownwards => super.respelledDownwards;
+
+  /// This [Note] respelled by [accidental] while keeping the same number of
+  /// [semitones].
+  ///
+  /// When no respelling is possible with [accidental], the next closest
+  /// spelling is returned.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.flat.respellByAccidental(Accidental.sharp) == .d.sharp
+  /// Note.b.respellByAccidental(Accidental.flat) == .c.flat
+  /// Note.g.respellByAccidental(Accidental.sharp) == .f.sharp.sharp
+  /// ```
+  @override
+  Note respellByAccidental(Accidental accidental) {
+    final noteName = NoteName.fromSemitones(semitones - accidental.semitones);
+    if (noteName != null) return Note(noteName, accidental);
+
+    if (accidental.isNatural) {
+      return respellByAccidental(Accidental(this.accidental.semitones.sign));
+    }
+
+    return respellByAccidental(accidental.incrementBy(1));
+  }
+
+  /// This [Note] with the simplest [Accidental] spelling while keeping the
+  /// same number of [semitones].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.e.sharp.respelledSimple == .f
+  /// Note.d.flat.flat.respelledSimple == .c
+  /// Note.f.sharp.sharp.sharp.respelledSimple == .g.sharp
+  /// ```
+  @override
+  Note get respelledSimple => super.respelledSimple;
+
+  /// This [Note] positioned in the given [octave] as a [Pitch].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.inOctave(3) == const Pitch(.c, octave: 3)
+  /// Note.a.flat.inOctave(2) == Pitch(.a.flat, octave: 2)
+  /// ```
+  Pitch inOctave(int octave) => Pitch(this, octave: octave);
+
+  /// The [Interval] between this [Note] and [other].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.interval(.d) == .M2
+  /// Note.d.interval(.a.flat) == .d5
+  /// ```
+  @override
+  Interval interval(Note other) => .fromSizeAndSemitones(
+    noteName.intervalSize(other.noteName),
+    difference(other) % chromaticDivisions,
+  );
+
+  /// Transposes this [Note] by [interval].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.transposeBy(.tritone) == .f.sharp
+  /// Note.a.transposeBy(.M2.descending) == .g
+  /// ```
+  @override
+  Note transposeBy(Interval interval) {
+    final transposedNoteName = noteName.transposeBySize(interval.size);
+    final positiveDifference = interval.isDescending
+        ? transposedNoteName.positiveDifference(noteName)
+        : noteName.positiveDifference(transposedNoteName);
+
+    final accidentalSemitones =
+        (accidental.semitones * interval.size.sign) +
+        ((interval.semitones * interval.size.sign) - positiveDifference);
+    final semitonesOctaveMod =
+        accidentalSemitones -
+        chromaticDivisions * ((interval.size.abs() - 1) ~/ 7);
+
+    return Note(
+      transposedNoteName,
+      Accidental(semitonesOctaveMod * interval.size.sign),
+    );
+  }
+
+  /// The string representation of this [Note] based on [formatter].
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.d.flat.format() == 'D♭'
+  /// Note.d.flat.format(const GermanNoteNotation()) == 'Des'
+  /// Note.d.flat.format(const RomanceNoteNotation.symbol()) == 'Re♭'
+  /// ```
+  @override
+  String format([
+    StringFormatter<Note> formatter = const EnglishNoteNotation.symbol(),
+  ]) => formatter.format(this);
+
+  @override
+  String toString() =>
+      '$runtimeType(noteName: $noteName, accidental: $accidental)';
+
+  @override
+  bool operator ==(Object other) =>
+      other is Note &&
+      noteName == other.noteName &&
+      accidental == other.accidental;
+
+  @override
+  int get hashCode => Object.hash(noteName, accidental);
+
+  @override
+  int compareTo(Note other) => compareMultiple(_comparators(this, other));
+}
+
+/// A Note extension method for circle of fifths operations.
+extension NoteCircleOfFifths on Note {
+  /// The circle of fifths starting from this [Note] split by sharps (`up`) and
+  /// flats (`down`).
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.splitCircleOfFifths.up.take(6).toList()
+  ///   == <Note>[.g, .d, .a, .e, .b, .f.sharp]
+  ///
+  /// Note.c.splitCircleOfFifths.down.take(4).toList()
+  ///   == <Note>[.f, .b.flat, .e.flat, .a.flat]
+  ///
+  /// Note.a.splitCircleOfFifths.up.take(4).toList()
+  ///   == <Note>[.e, .b, .f.sharp, .c.sharp]
+  /// ```
+  /// ---
+  /// See also:
+  /// * [circleOfFifths] for a continuous list version of [splitCircleOfFifths].
+  ({Iterable<Note> up, Iterable<Note> down}) get splitCircleOfFifths => (
+    up: Interval.P5.circleFrom(this).skip(1),
+    down: Interval.P4.circleFrom(this).skip(1),
+  );
+
+  /// The continuous circle of fifths up to [distance] including this [Note],
+  /// from flats to sharps.
+  ///
+  /// Example:
+  /// ```dart
+  /// Note.c.circleOfFifths(distance: 3)
+  ///   == <Note>[.e.flat, .b.flat, .f, .c, .g, .d, .a]
+  ///
+  /// Note.a.circleOfFifths(distance: 3)
+  ///   == <Note>[.c, .g, .d, .a, .e, .b, .f.sharp]
+  /// ```
+  ///
+  /// It is equivalent to sorting an array of the same [Note]s using the
+  /// [compareByFifthsDistance] comparator:
+  ///
+  /// ```dart
+  /// Note.c.circleOfFifths(distance: 3)
+  ///   == ScalePattern.dorian.on(Note.c).degrees.skip(1)
+  ///        .sorted(Note.compareByFifthsDistance)
+  /// ```
+  /// ---
+  /// See also:
+  /// * [splitCircleOfFifths] for a different representation of the same
+  ///   circle of fifths.
+  List<Note> circleOfFifths({int distance = chromaticDivisions ~/ 2}) {
+    final (:down, :up) = splitCircleOfFifths;
+
+    return [
+      ...down.take(distance).toList(growable: false).reversed,
+      this,
+      ...up.take(distance),
+    ];
+  }
+
+  /// The distance in relation to the circle of fifths.
+  ///
+  /// A perfect fifth generates the cycle of fifths in ℤ₁₂: it is coprime to
+  /// [chromaticDivisions] and, since 7 × 7 ≡ 1 mod 12, its own modular
+  /// inverse. Multiplying a natural note’s semitones by that same generator
+  /// and re-centering the result recovers its position on the cycle (F=−1
+  /// through B=5) without tabulating the seven positions by hand. Each
+  /// accidental then shifts that position by exactly one generator’s worth,
+  /// with no wraparound.
+  int get circleOfFifthsDistance {
+    const halfOctave = chromaticDivisions ~/ 2;
+    final fifthGenerator = Interval.P5.semitones;
+
+    final naturalPosition =
+        (fifthGenerator * noteName.semitones + halfOctave) %
+            chromaticDivisions -
+        halfOctave;
+
+    return naturalPosition + fifthGenerator * accidental.semitones;
+  }
+
+  /// The fifths distance between this [Note] and [other].
+  int fifthsDistanceWith(Note other) =>
+      other.circleOfFifthsDistance - circleOfFifthsDistance;
+}
+
+/// A Note iterable.
+extension NoteIterable on Iterable<Note> {
+  /// The closest [Interval]s between [Scalable]s in this [Iterable].
+  Iterable<Interval> get closestSteps sync* {
+    for (var i = 0; i < length - 1; i++) {
+      final interval = elementAt(i).interval(elementAt(i + 1));
+      yield interval >= .P5 ? interval - Interval.m6 : interval;
+    }
+  }
+
+  /// Whether this [Iterable] is built entirely from steps (no skips).
+  ///
+  /// Overrides [ScalableIterable.isStepwise] to use [closestSteps].
+  ///
+  /// See [Steps and skips](https://en.wikipedia.org/wiki/Steps_and_skips).
+  ///
+  /// Example:
+  /// ```dart
+  /// <Note>[.c, .d, .e, .f.sharp].isStepwise == true
+  /// const <Note>[.c, .e, .g, .a].isStepwise == false
+  /// ```
+  bool get isStepwise =>
+      closestSteps.every((interval) => interval.size.abs() <= Size.second);
+}
+
+/// A list of notes.
+extension NoteList on List<Note> {
+  /// Flattens all notes on this [List].
+  List<Note> get flat => map((note) => note.flat).toList();
+
+  /// Sharpens all notes on this [List].
+  List<Note> get sharp => map((note) => note.sharp).toList();
+
+  /// Makes all notes on this [List] natural.
+  List<Note> get natural => map((note) => note.natural).toList();
+
+  /// Creates a [Pitch] at [octave] for each [Note] in this list.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.a, .c, .e].inOctave(4)
+  ///   == [Note.a.inOctave(4), Note.c.inOctave(4), Note.e.inOctave(4)]
+  /// ```
+  List<Pitch> inOctave(int octave) =>
+      map((note) => note.inOctave(octave)).toList();
+
+  /// Stacks ascending from [octave], like a chord voicing.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.e, .g, .c].toStacked(octave: 4)
+  ///   == [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)]
+  /// ```
+  List<Pitch> toStacked({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.nearestAbove(note));
+
+  /// Places each note at the pitch closest to the previous one, like a
+  /// melodic line.
+  ///
+  /// Example:
+  /// ```dart
+  /// const <Note>[.c, .a, .d].toMelody(octave: 3)
+  ///   == [Note.c.inOctave(3), Note.a.inOctave(2), Note.d.inOctave(3)]
+  /// ```
+  List<Pitch> toMelody({int octave = 4}) =>
+      _mapToPitches(octave, (previous, note) => previous.closestTo(note));
+
+  List<Pitch> _mapToPitches(
+    int octave,
+    Pitch Function(Pitch previous, Note note) next,
+  ) {
+    var current = first.inOctave(octave);
+
+    return [
+      current,
+      for (final note in skip(1)) current = next(current, note),
+    ];
+  }
+}
