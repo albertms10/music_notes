@@ -111,7 +111,7 @@ void main() {
   ScaleDegree.i.format(const SolfegeScaleDegreeNotation()); // Do
 
   Note.a.inOctave(4).frequency(); // 440 Hz
-  Note.a.inOctave(4).frequency(temperature: const Celsius(18)); // 438.46 Hz
+  Note.a.inOctave(4).frequency(temperature: const .celsius(18)); // 438.46 Hz
 
   TuningFork.a440; // A440
   TuningFork.c256; // C256

@@ -739,10 +739,8 @@ void main() {
         );
         expect(() => Note.parse('Bis', chain: chain), throwsFormatException);
         expect(() => Note.parse('hes', chain: chain), throwsFormatException);
-        expect(
-          () => Note.parse('Heses', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Note.parse('Bes', chain: chain), throwsFormatException);
+        expect(() => Note.parse('beses', chain: chain), throwsFormatException);
       });
 
       test('parses source as a Note', () {
@@ -753,8 +751,7 @@ void main() {
         expect(Note.parse('H', chain: chain), Note.b);
         expect(Note.parse('hisis', chain: chain), Note.b.sharp.sharp);
         expect(Note.parse('His', chain: chain), Note.b.sharp);
-        expect(Note.parse('bes', chain: chain), Note.b.flat.flat);
-        expect(Note.parse('Beses', chain: chain), Note.b.flat.flat.flat);
+        expect(Note.parse('Heses', chain: chain), Note.b.flat.flat);
         expect(Note.parse('As', chain: chain), Note.a.flat);
         expect(Note.parse('ais', chain: chain), Note.a.sharp);
         expect(Note.parse('Es', chain: chain), Note.e.flat);

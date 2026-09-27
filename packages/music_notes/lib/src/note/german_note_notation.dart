@@ -24,18 +24,22 @@ final class GermanNoteNotation extends NoteNotation {
     final noteName = match.namedGroup('noteName')!;
     final textualAccidental = match.namedGroup('accidental') ?? '';
     final accidental = accidentalNotation.parseMatch(match);
+
     switch (noteName.toLowerCase()) {
-      case 'b' when accidental.isSharp:
-        throw FormatException('Invalid Note', match);
+      // dealing with special b/h treatment
       case 'b':
-        return Note(.b, accidental - 1);
-      case 'h' when accidental.isFlat:
+        if (textualAccidental.isEmpty) return const Note(.b, .flat);
         throw FormatException('Invalid Note', match);
+      case 'h' when accidental == .flat:
+        throw FormatException('Invalid Note', match);
+
+      // dealing with flat shorthand
       case 'a' || 'e':
         if (textualAccidental.startsWith('e')) {
           throw FormatException('Invalid Note', match);
         }
       case _ when textualAccidental.startsWith('s'):
+        // other note names must have the full accidental suffix
         throw FormatException('Invalid Note', match);
     }
 

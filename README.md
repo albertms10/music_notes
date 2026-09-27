@@ -301,7 +301,7 @@ temperature. The default is 12-tone equal temperament at A440:
 ```dart
 Note.a.inOctave(4).frequency(); // 440 Hz
 
-Note.a.inOctave(4).frequency(temperature: const Celsius(18)); // 438.46 Hz
+Note.a.inOctave(4).frequency(temperature: const .celsius(18)); // 438.46 Hz
 ```
 
 A `TuningFork` fixes a reference pitch to a reference frequency, which lets
