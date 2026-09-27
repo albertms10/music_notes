@@ -24,13 +24,6 @@ final class RootBassXmlNotation extends XmlNotationSystem<Note> {
   /// The [AlterXmlNotation] used to format/parse the alter.
   final AlterXmlNotation alterNotation;
 
-  /// Creates a new [RootBassXmlNotation] from [prefix].
-  const RootBassXmlNotation(
-    this.prefix, {
-    this.noteNameNotation = const NoteNameXmlNotation(),
-    this.alterNotation = const AlterXmlNotation(),
-  });
-
   /// A [RootBassXmlNotation] for `<root>`.
   const RootBassXmlNotation.root({
     this.noteNameNotation = const NoteNameXmlNotation(),

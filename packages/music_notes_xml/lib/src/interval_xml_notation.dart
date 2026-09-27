@@ -1,4 +1,5 @@
 import 'package:music_notes/music_notes.dart';
+import 'package:music_notes/utils.dart';
 import 'package:xml/xml.dart';
 
 import 'xml_notation_system.dart';
@@ -37,7 +38,7 @@ final class IntervalXmlNotation extends XmlNotationSystem<Interval> {
 
     final diatonic = int.parse(diatonicElement.innerText.trim());
     final chromatic = int.parse(chromaticElement.innerText.trim());
-    final size = Size(diatonic.sign * (diatonic.abs() + 1));
+    final size = Size(diatonic.nonZeroSign * (diatonic.abs() + 1));
 
     return .fromSizeAndSemitones(size, chromatic);
   }

@@ -27,7 +27,7 @@ final class AlterXmlNotation extends XmlNotationSystem<Accidental> {
   /// ```
   @override
   Accidental parseElement(XmlElement element) =>
-      Accidental(int.parse(element.innerText.trim()));
+      Accidental(.parse(element.innerText.trim()));
 
   /// Example:
   /// ```dart

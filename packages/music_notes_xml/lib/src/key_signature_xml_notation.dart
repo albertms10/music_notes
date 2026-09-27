@@ -30,7 +30,7 @@ final class KeySignatureXmlNotation extends XmlNotationSystem<KeySignature> {
         element.getElement('fifths') ??
         (throw const FormatException('Missing <fifths> in <key>'));
 
-    return .fromDistance(int.parse(fifths.innerText.trim()));
+    return .fromDistance(.parse(fifths.innerText.trim()));
   }
 
   /// Example:

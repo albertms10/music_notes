@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:music_notes/music_notes.dart';
 import 'package:xml/xml.dart';
 
@@ -28,10 +29,9 @@ final class ModeXmlNotation extends XmlNotationSystem<Mode> {
     return switch (word) {
       'major' => TonalMode.major,
       'minor' => TonalMode.minor,
-      _ => ModalMode.values.firstWhere(
-        (mode) => mode.name == word,
-        orElse: () => throw FormatException('Unsupported mode', word),
-      ),
+      _ =>
+        ModalMode.values.firstWhereOrNull((mode) => mode.name == word) ??
+            (throw FormatException('Unsupported mode', word)),
     };
   }
 

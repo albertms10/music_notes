@@ -21,8 +21,8 @@ final class ChordXmlNotation extends XmlNotationSystem<Chord> {
 
   /// Creates a new [ChordXmlNotation].
   const ChordXmlNotation({
-    this.rootNotation = const RootBassXmlNotation.root(),
-    this.bassNotation = const RootBassXmlNotation.bass(),
+    this.rootNotation = const .root(),
+    this.bassNotation = const .bass(),
     this.chordPatternNotation = const ChordPatternXmlNotation(),
   });
 

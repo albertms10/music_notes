@@ -28,16 +28,16 @@ final class ChordPatternXmlNotation extends XmlNotationSystem<ChordPattern> {
     final word = element.innerText.trim().toLowerCase();
 
     return switch (word) {
-      'major' => ChordPattern.majorTriad,
-      'minor' => ChordPattern.minorTriad,
-      'augmented' => ChordPattern.augmentedTriad,
-      'diminished' => ChordPattern.diminishedTriad,
-      'dominant' => ChordPattern.majorTriad.add7(),
-      'major-seventh' => ChordPattern.majorTriad.add7(.major),
-      'minor-seventh' => ChordPattern.minorTriad.add7(),
-      'diminished-seventh' => ChordPattern.diminishedTriad.add7(.diminished),
-      'half-diminished' => ChordPattern.diminishedTriad.add7(),
-      'augmented-seventh' => ChordPattern.augmentedTriad.add7(),
+      'major' => .majorTriad,
+      'minor' => .minorTriad,
+      'augmented' => .augmentedTriad,
+      'diminished' => .diminishedTriad,
+      'dominant' => .majorTriad.add7(),
+      'major-seventh' => .majorTriad.add7(.major),
+      'minor-seventh' => .minorTriad.add7(),
+      'diminished-seventh' => .diminishedTriad.add7(.diminished),
+      'half-diminished' => .diminishedTriad.add7(),
+      'augmented-seventh' => .augmentedTriad.add7(),
       _ => throw FormatException('Unsupported kind-value', word),
     };
   }
@@ -49,7 +49,7 @@ final class ChordPatternXmlNotation extends XmlNotationSystem<ChordPattern> {
   /// ```
   @override
   XmlElement format(ChordPattern value) {
-    final seventh = value.at(Size.seventh);
+    final seventh = value.at(.seventh);
     final word = switch (value) {
       _ when value.isDiminished && seventh == null => 'diminished',
       _

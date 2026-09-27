@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:music_notes/music_notes.dart';
 import 'package:xml/xml.dart';
 
@@ -37,13 +38,9 @@ final class AccidentalXmlNotation extends XmlNotationSystem<Accidental> {
   @override
   Accidental parseElement(XmlElement element) {
     final word = element.innerText.trim().toLowerCase();
-    final semitones = _values.entries
-        .firstWhere(
-          (entry) => entry.value == word,
-          orElse: () =>
-              throw FormatException('Unsupported accidental-value', word),
-        )
-        .key;
+    final semitones =
+        _values.entries.firstWhereOrNull((entry) => entry.value == word)?.key ??
+        (throw FormatException('Unsupported accidental-value', word));
 
     return Accidental(semitones);
   }
