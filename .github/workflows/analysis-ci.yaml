@@ -11,8 +11,7 @@ on:
 env:
   DART_SDK_VERSION: "3.10"
 
-permissions:
-  contents: read
+permissions: read-all
 
 jobs:
   analyze:
@@ -70,6 +69,10 @@ jobs:
           - music_notes
           - music_notes_xml
 
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -92,22 +95,18 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
-        working-directory: packages/${{ matrix.package }}
         run: dart pub get
 
       - name: Run web tests
-        working-directory: packages/${{ matrix.package }}
         run: dart test test/main.dart -p chrome
 
       - name: Run tests with coverage
-        working-directory: packages/${{ matrix.package }}
         run: dart test test/main.dart --coverage=coverage
 
       - name: Install coverage formatter
         run: dart pub global activate coverage
 
       - name: Format coverage
-        working-directory: packages/${{ matrix.package }}
         run: |
           dart pub global run coverage:format_coverage \
             --lcov \
@@ -128,7 +127,7 @@ jobs:
   coveralls:
     name: Close Coveralls build
     needs: test
-    # The build must be closed even if one package's test job failed,
+    # The build must be closed even if one package’s test job failed,
     # otherwise the build will sit open on Coveralls forever.
     if: ${{ always() }}
     runs-on: ubuntu-latest
