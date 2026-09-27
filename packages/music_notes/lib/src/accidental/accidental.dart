@@ -1,13 +1,8 @@
 import 'package:meta/meta.dart' show immutable;
+import 'package:music_notes/music_notes.dart';
 import 'package:music_notes/utils.dart';
 
-import '../notation_system/notation_system.dart';
-import '../note/note.dart';
 import 'abc_accidental_notation.dart';
-import 'english_accidental_notation.dart';
-import 'german_accidental_notation.dart';
-import 'romance_accidental_notation.dart';
-import 'symbol_accidental_notation.dart';
 
 /// An accidental.
 ///
@@ -24,8 +19,11 @@ final class Accidental
   /// - `< 0` for flats.
   final int semitones;
 
+  /// The total octave divisions.
+  final int divisions;
+
   /// Creates a new [Accidental] from [semitones].
-  const Accidental(this.semitones);
+  const Accidental(this.semitones, [this.divisions = chromaticDivisions]);
 
   /// A triple-sharp (♯𝄪) [Accidental].
   static const tripleSharp = Accidental(3);
@@ -73,6 +71,10 @@ final class Accidental
     String source, {
     List<StringParser<Accidental>> chain = parsers,
   }) => chain.parse(source);
+
+  /// The semitones taking [divisions] into account
+  Rational get rationalSemitones =>
+      Rational(semitones * chromaticDivisions, divisions);
 
   /// Whether this [Accidental] is flat (♭, 𝄫, etc.).
   ///
@@ -129,9 +131,12 @@ final class Accidental
 
   @override
   bool operator ==(Object other) =>
-      other is Accidental && semitones == other.semitones;
+      other is Accidental && rationalSemitones == other.rationalSemitones;
 
   /// Adds [semitones] to this [Accidental].
+  ///
+  /// It performs an exact int arithmetic via LCM: no reduction, divisions are
+  /// preserved at the finer of the two.
   ///
   /// Example:
   /// ```dart
@@ -139,10 +144,21 @@ final class Accidental
   /// Accidental.flat + 2 == .sharp
   /// Accidental.doubleFlat + 1 == .flat
   /// ```
-  Accidental operator +(int semitones) =>
-      Accidental(this.semitones + semitones);
+  Accidental operator +(Accidental other) {
+    final common =
+        divisions * other.divisions ~/ divisions.gcd(other.divisions);
+
+    return Accidental(
+      semitones * (common ~/ divisions) +
+          other.semitones * (common ~/ other.divisions),
+      common,
+    );
+  }
 
   /// Subtracts [semitones] from this [Accidental].
+  ///
+  /// It performs an exact int arithmetic via LCM: no reduction, divisions are
+  /// preserved at the finer of the two.
   ///
   /// Example:
   /// ```dart
@@ -150,8 +166,16 @@ final class Accidental
   /// Accidental.flat - 2 == .tripleFlat
   /// Accidental.doubleSharp - 1 == .sharp
   /// ```
-  Accidental operator -(int semitones) =>
-      Accidental(this.semitones - semitones);
+  Accidental operator -(Accidental other) {
+    final common =
+        divisions * other.divisions ~/ divisions.gcd(other.divisions);
+
+    return Accidental(
+      semitones * (common ~/ divisions) -
+          other.semitones * (common ~/ other.divisions),
+      common,
+    );
+  }
 
   @override
   int get hashCode => semitones.hashCode;

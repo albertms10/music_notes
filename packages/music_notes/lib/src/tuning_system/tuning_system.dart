@@ -57,7 +57,7 @@ abstract class TuningSystem {
   /// const EqualTemperament.edo12().centsOffset(Note.g.inOctave(4))
   ///   == const Cent(0)
   /// ```
-  num centsOffset(Pitch pitch) {
+  Cent centsOffset(Pitch pitch) {
     final equalCents = Cent(
       fork.pitch.interval(pitch).semitones * Cent.divisionsPerSemitone,
     );
@@ -66,11 +66,11 @@ abstract class TuningSystem {
     return _normalizeCents(Cent(actualCents - equalCents));
   }
 
-  num _normalizeCents(Cent cents) {
+  Cent _normalizeCents(Cent cents) {
     var normalized = cents % Cent.octave;
     if (normalized > Cent.octave / 2) normalized -= Cent.octave;
     if (normalized < -Cent.octave / 2) normalized += Cent.octave;
 
-    return normalized;
+    return Cent(normalized);
   }
 }
