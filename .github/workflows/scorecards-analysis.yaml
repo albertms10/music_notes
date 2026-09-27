@@ -5,7 +5,6 @@ on:
   push:
     branches: [main]
 
-# Declare default permissions as read only.
 permissions: read-all
 
 jobs:
@@ -36,7 +35,7 @@ jobs:
           path: results.sarif
           retention-days: 5
 
-      # Upload the results to GitHub's code scanning dashboard.
+      # Upload the results to GitHub’s code scanning dashboard.
       - name: Upload to code-scanning
         uses: github/codeql-action/upload-sarif@1c5b675653bb5c22dbe9b12b556ec555138e09fd # v4.38.1
         with:
