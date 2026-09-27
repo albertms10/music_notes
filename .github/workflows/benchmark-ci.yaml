@@ -1,0 +1,58 @@
+name: Benchmark CI
+
+on:
+  workflow_run:
+    workflows: ["Analysis CI"]
+    branches: [main]
+    types:
+      - completed
+
+env:
+  DART_SDK_VERSION: "3.10"
+
+permissions: read-all
+
+jobs:
+  benchmark:
+    name: Benchmark ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # A package only needs an entry here once it has a benchmark/ directory
+        package:
+          - music_notes
+
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      - name: Cache dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: ~/.pub-cache/hosted
+          key: ${{ runner.os }}-pubspec-benchmark-${{ hashFiles('**/pubspec.yaml') }}
+
+      - name: Resolve workspace
+        working-directory: .   # workspace pubspec.yaml lives at repo root
+        run: dart pub get
+
+      - name: Run benchmarks against main
+        run: |
+          dart run bench_press run --diff origin/main \
+            --fail-on-unstable -t jit benchmark/ \
+            | tee "$GITHUB_STEP_SUMMARY"
