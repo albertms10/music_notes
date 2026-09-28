@@ -19,6 +19,7 @@ dependencies:
   meta: ^1.19.0
 
 dev_dependencies:
+  bench_press: ^0.3.1
   test: ^1.31.1
   very_good_analysis: ^10.1.0
 
