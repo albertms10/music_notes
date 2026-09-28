@@ -6,6 +6,8 @@ import '../note/romance_note_notation.dart';
 import 'key.dart';
 
 /// The Romance notation system for [Key].
+///
+/// ![RomanceKeyNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/RomanceKeyNotation.svg)
 final class RomanceKeyNotation extends StringNotationSystem<Key> {
   /// The [RomanceNoteNotation] used to format the [Key.note].
   final RomanceNoteNotation noteNotation;

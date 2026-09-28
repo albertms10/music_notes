@@ -1,0 +1,426 @@
+(*
+# `music_notes` Notation Grammar (ISO/IEC 14977 EBNF)
+
+This document formalizes, as an ISO/IEC 14977 EBNF grammar, the family of
+string notation systems implemented by `StringNotationSystem<V>` across the
+`music_notes` library (note names, accidentals, notes, pitches, intervals,
+scale degrees, keys, chords, frequencies, tuning forks, and pitch classes).
+
+## Conventions
+
+- Syntax follows ISO/IEC 14977: `=` defines a rule, `;` terminates it,
+  `,` is concatenation, `|` is alternation, `[ x ]` is "zero or one `x`",
+  `{ x }` is "zero or more `x`", `( x )` groups, `"x"` is a terminal, and
+  `\(* ... *\)` is a comment.
+- Rule (meta-)identifiers use `snake_case` (underscores instead of spaces or
+  dashes), per ISO/IEC 14977 §5.1's allowance for identifier characters.
+- Unless stated otherwise, alphabetic terminals are matched **case-insensitively**
+  (e.g. `"c"` also matches `"C"`); this mirrors every notation system's
+  `caseSensitive: false` regular expressions.
+- `whitespace` denotes any single space/tab character, matching `\s` in the
+  source regular expressions.
+- Each top-level notation (`scientific_pitch`, `helmholtz_pitch`,
+  `roman_scale_degree`, ...) is an independent grammar entry point
+  corresponding to one concrete `StringNotationSystem` class; several share
+  the lexical productions defined in §1–§3.
+*)
+
+(*
+## 1. Lexical primitives
+*)
+
+digit
+  = "0" | "1" | "2" | "3" | "4" | "5" | "6"
+  | "7" | "8" | "9"
+  ;
+
+digit without zero
+  = "1" | "2" | "3" | "4" | "5" | "6" | "7"
+  | "8" | "9"
+  ;
+
+natural_number = digit without zero , { digit } | "0" ;
+
+minus_sign = "-" | "\u2212" ;
+
+plus_minus_sign = "+" | "\u00B1" ;
+
+integer = [ minus_sign ] , natural_number ;
+
+decimal = natural_number , [ "." , { digit } ] ;
+
+signed_decimal = [ ( "+" | minus_sign ) ] , decimal ;
+
+delta_decimal = ( "+" | minus_sign | plus_minus_sign ) , decimal ;
+
+whitespace = " " | "\t" ;
+
+letter_a_to_g
+  = "a" | "b" | "c" | "d" | "e" | "f" | "g"
+  ;
+
+(*
+## 2. Note name notations
+*)
+
+english_note_name = letter_a_to_g ;
+
+german_note_name = letter_a_to_g | "h" ;
+
+romance_note_name
+  = "do" | "re" | "mi" | "fa" | "sol" | "la"
+  | "si"
+  ;
+
+note_name
+  = english_note_name
+  | german_note_name
+  | romance_note_name
+  ;
+
+(*
+## 3. Accidental notations
+*)
+
+(* Unicode/ASCII symbolic accidental: an unordered run of glyphs, summed to
+   a semitone count (e.g. "♯𝄪" and "𝄪♯" are both +3 semitones). *)
+
+symbol_accidental = 
+  { double_sharp_glyph
+  | sharp_glyph
+  | natural_glyph
+  | flat_glyph
+  | double_flat_glyph
+  } ;
+
+double_sharp_glyph = "\uD834\uDD2A" (* 𝄪 *) | "x" ;
+
+sharp_glyph = "\u266F" (* ♯ *) | "#" ;
+
+natural_glyph = "\u266E" (* ♮ *) | "n" ;
+
+flat_glyph = "\u266D" (* ♭ *) | "b" ;
+
+double_flat_glyph = "\uD834\uDD2B" ;
+
+(* 𝄫 *)
+
+(* English textual form, e.g. "double-sharp", "flat", "natural". *)
+
+english_accidental
+  = "natural"
+  | [ ( "double" | "triple" ) , { separator } ] ,
+    ( "flat" | "sharp" )
+  ;
+
+separator = "-" ;
+
+(* configurable, default "-" *)
+
+(* German suffix form, e.g. "is", "isis", "es", "As" (elided "aes"). *)
+
+german_accidental = [ "s" ] , { "es" } | "is" , { "is" } ;
+
+(* Romance textual form, e.g. "diesis", "doppio bemolle". *)
+
+romance_accidental
+  = "naturale"
+  | [ ( "doppio" | "triplo" ) , whitespace , { whitespace } ] ,
+    ( "bemolle" | "diesis" )
+  ;
+
+(* ABC notation prefix form: "^" sharp, "_" flat, "=" natural, doubled for
+   double sharp/flat. *)
+
+abc_accidental = { "^" | "_" | "=" } ;
+
+accidental
+  = symbol_accidental
+  | english_accidental
+  | german_accidental
+  | romance_accidental
+  | abc_accidental
+  ;
+
+(*
+## 4. Note notations
+*)
+
+english_note_symbol = english_note_name ,
+  { whitespace } , symbol_accidental ;
+
+english_note_textual = english_note_name ,
+  ( separator | { whitespace } ) , english_accidental ;
+
+english_note
+  = english_note_symbol
+  | english_note_textual
+  ;
+
+german_note = german_note_name , german_accidental ;
+
+(* Semantic constraints enforced beyond this surface grammar:
+   - "b" cannot carry a sharp accidental ("Bis" is invalid: use "His").
+   - "h" cannot carry a flat accidental ("hes" is invalid: use "b").
+   - "a" or "e" combined with a leading "es" elide to "as"/"es",
+     not "aes"/"ees". *)
+
+romance_note = romance_note_name , { whitespace } ,
+  ( symbol_accidental | romance_accidental ) ;
+
+note
+  = english_note
+  | german_note
+  | romance_note
+  ;
+
+(*
+## 5. Pitch notations
+*)
+
+signed_octave = [ minus_sign ] , natural_number ;
+
+(* Octave 4 (containing middle C) is the canonical reference octave. *)
+
+scientific_pitch = note , signed_octave ;
+
+(* Helmholtz notation: bare letter = reference octave; marks raise/lower it. *)
+
+helmholtz_pitch = note , [ helmholtz_octave_mark ] ;
+
+helmholtz_octave_mark
+  = compound_super_prime
+  | super_prime , { super_prime }
+  | sub_prime , { sub_prime }
+  ;
+
+compound_super_prime = "\u2033" | "\u2034" | "\u2057" ;
+
+(* ″ ‴ ⁗ *)
+
+super_prime = "\u2032" | "'" ;
+
+(* ′ or apostrophe: raises octave *)
+
+sub_prime = "\u0375" | "," ;
+
+(* ͵ or comma: lowers octave *)
+
+(* German-numbered Helmholtz variant, e.g. "c1", "Ais10". *)
+
+numbered_helmholtz_pitch = german_note ,
+  [ natural_number ] ;
+
+(* ABC notation: case of the bare letter selects octave 4 (upper) or 5
+   (lower); each "," lowers and each "'" raises by one further octave. *)
+
+abc_pitch = abc_accidental , english_note_name ,
+  { "'" | "," } ;
+
+pitch
+  = scientific_pitch
+  | helmholtz_pitch
+  | numbered_helmholtz_pitch
+  | abc_pitch
+  ;
+
+(*
+## 6. Size, quality, and interval notations
+*)
+
+size = integer ;
+
+(* size ≠ 0 *)
+
+standard_interval_quality
+  = "d" , { "d" } (* diminished(s) *)
+  | "P" (* perfect *)
+  | "m" (* minor *)
+  | "M" (* major *)
+  | "A" , { "A" }
+  ;
+
+(* augmented(s) *)
+
+standard_interval = standard_interval_quality ,
+  { whitespace } , size ;
+
+german_interval_quality
+  = "v" , { "v" } (* vermindert, diminished(s) *)
+  | "r" (* rein, perfect *)
+  | "k" (* klein, minor *)
+  | "g" (* groß, major *)
+  | "ü" , { "ü" } (* übermäßig, augmented(s): ü *)
+  ;
+
+german_interval = german_interval_quality ,
+  { whitespace } , size ;
+
+interval = standard_interval | german_interval ;
+
+(*
+## 7. Scale degree notations
+*)
+
+roman_numeral
+  = "i"   | "ii" | "iii" | "iv" | "v" | "vi"
+  | "vii"
+  ;
+
+roman_scale_degree = accidental , [ whitespace ,
+  { whitespace } ] , roman_numeral ;
+
+caret_symbol = "\u0302" | "^" ;
+
+(* combining circumflex, or ASCII *)
+
+numeric_scale_degree = accidental , [ whitespace ,
+  { whitespace } ] , natural_number , [ caret_symbol ] ;
+
+solfege_syllable_natural
+  = "do" | "re" | "mi" | "fa" | "sol" | "la"
+  | "ti"
+  ;
+
+solfege_syllable_raised = "di" | "ri" | "fi" | "si" | "li" ;
+
+(* mi, ti have none *)
+
+solfege_syllable_lowered = "ra" | "me" | "se" | "le" | "te" ;
+
+(* do, fa have none *)
+
+solfege_scale_degree
+  = solfege_syllable_natural
+  | solfege_syllable_raised
+  | solfege_syllable_lowered
+  ;
+
+scale_degree
+  = roman_scale_degree
+  | numeric_scale_degree
+  | solfege_scale_degree
+  ;
+
+(*
+## 8. Mode and key notations
+*)
+
+english_tonal_mode = "major" | "minor" ;
+
+german_tonal_mode = "dur" | "moll" ;
+
+romance_tonal_mode = "maggiore" | "minore" ;
+
+tonal_mode
+  = english_tonal_mode
+  | german_tonal_mode
+  | romance_tonal_mode
+  ;
+
+english_key = english_note , [ whitespace ,
+  { whitespace } , english_tonal_mode ] ;
+
+german_key = german_note , [ "-" , german_tonal_mode ] ;
+
+romance_key = romance_note , [ whitespace ,
+  { whitespace } , romance_tonal_mode ] ;
+
+(* When the mode suffix is omitted, major/minor is instead conveyed by the
+   letter case of the tonic note letter: uppercase = major, lowercase = minor. *)
+
+key = english_key | german_key | romance_key ;
+
+(*
+## 9. Chord and chord-pattern notations
+*)
+
+triad_symbol = whitespace | "+" | "-" | "dim" ;
+
+half_diminished_marker = "\u00F8" ;
+
+(* ø *)
+
+seventh_symbol = "maj7" | "7" ;
+
+sus_symbol = "sus2" | "sus4" ;
+
+extension_degree = "9" | "11" | "13" ;
+
+chord_extension = [ symbol_accidental ] ,
+  extension_degree ;
+
+chord_pattern
+  = half_diminished_marker
+  | triad_symbol ,
+  [ seventh_symbol
+  | sus_symbol , [ seventh_symbol ]
+  ] , { whitespace , chord_extension }
+  ;
+
+(* Approximation: the concrete quality of each extension (e.g. a raised 9th
+   vs. a diminished 13th) is resolved from accidental semitones together
+   with the chord's own diatonic context, not purely from this surface form. *)
+
+chord = note , [ chord_pattern ] , [ "/" , note ] ;
+
+(* "/" introduces an explicit bass note: either a genuine chord tone
+   (an inversion, e.g. "C/E") or a foreign bass note (e.g. "C/D"). *)
+
+(*
+## 10. Frequency, tuning fork, and closest-pitch notations
+*)
+
+frequency = natural_number , [ "." , { digit } ] ,
+  [ { whitespace } , "Hz" ] ;
+
+compact_tuning_fork = note , [ signed_octave ] ,
+  { whitespace } , frequency ;
+
+(* must not contain "=" *)
+
+scientific_tuning_fork = pitch , { whitespace } ,
+  "=" , { whitespace } , frequency ;
+
+tuning_fork
+  = compact_tuning_fork
+  | scientific_tuning_fork
+  ;
+
+cents = ( "+" | minus_sign | plus_minus_sign ) ,
+  natural_number , [ "." , { digit } ] ;
+
+closest_pitch = pitch , { whitespace } , [ cents ] ;
+
+(*
+## 11. Pitch class notations
+*)
+
+enharmonic_pitch_class = "{" , note , { "|" , note } , "}" ;
+
+integer_pitch_class = digit | "t" | "e" ;
+
+(* "t"=10, "e"=11 *)
+
+pitch_class
+  = enharmonic_pitch_class
+  | integer_pitch_class
+  ;
+
+(*
+## 12. Root grammar
+
+Each alternative of `notation` is parsed independently by its own
+`StringNotationSystem`/`StringParser` chain (e.g. `Pitch.parsers`,
+`Note.parsers`, `Key.parsers`); `notation` itself is not a single unified
+entry point in the library but the union of all recognized surface forms,
+built compositionally from §1–§3's shared lexical productions.
+*)
+
+notation
+  = note_name     | accidental    | note
+  | pitch         | interval      | size
+  | scale_degree  | tonal_mode    | key
+  | chord_pattern | chord         | frequency
+  | tuning_fork   | closest_pitch | pitch_class
+  ;

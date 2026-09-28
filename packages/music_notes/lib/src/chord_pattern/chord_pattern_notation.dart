@@ -7,6 +7,8 @@ import '../size/size.dart';
 import 'chord_pattern.dart';
 
 /// A notation system for [ChordPattern].
+///
+/// ![ChordPatternNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/ChordPatternNotation.svg)
 final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
   /// The [StringFormatter] for [Accidental].
   final StringFormatter<Accidental> accidentalNotation;
