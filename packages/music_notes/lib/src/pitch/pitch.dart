@@ -2,7 +2,6 @@ import 'package:meta/meta.dart' show immutable;
 import 'package:music_notes/utils.dart';
 
 import '../accidental/accidental.dart';
-import '../celsius/celsius.dart';
 import '../cent/cent.dart';
 import '../closest_pitch/closest_pitch.dart';
 import '../comparators.dart';
@@ -16,6 +15,7 @@ import '../pitch_class/pitch_class.dart';
 import '../respellable.dart';
 import '../scalable.dart';
 import '../size/size.dart';
+import '../temperature/temperature.dart';
 import '../tuning_fork/tuning_fork.dart';
 import '../tuning_system/equal_temperament.dart';
 import '../tuning_system/tuning_system.dart';
@@ -386,8 +386,8 @@ final class Pitch extends Scalable<Pitch>
   /// ```
   Frequency frequency({
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = .reference,
-    Celsius referenceTemperature = .reference,
+    Temperature temperature = .reference,
+    Temperature referenceTemperature = .reference,
   }) => Frequency(
     tuningSystem.fork.frequency * tuningSystem.ratio(this),
   ).at(temperature, referenceTemperature);
@@ -413,8 +413,8 @@ final class Pitch extends Scalable<Pitch>
   Iterable<ClosestPitch> harmonics({
     bool undertone = false,
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
-    Celsius temperature = .reference,
-    Celsius referenceTemperature = .reference,
+    Temperature temperature = .reference,
+    Temperature referenceTemperature = .reference,
   }) =>
       frequency(
             tuningSystem: tuningSystem,

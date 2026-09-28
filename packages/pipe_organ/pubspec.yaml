@@ -1,9 +1,9 @@
 name: pipe_organ
 description: A comprehensive Dart library for effortlessly working with music
   theory concepts.
-version: 0.28.0
+version: 0.1.0
 
-repository: https://github.com/albertms10/music_notes/tree/main/packages/pipe_organ
+repository: https://github.com/albertms10/music_notes
 topics:
   - music
   - pipe-organ

@@ -831,15 +831,15 @@ void main() {
         );
 
         expect(
-          Note.a.inOctave(4).frequency(temperature: const Celsius(18)),
+          Note.a.inOctave(4).frequency(temperature: const .celsius(18)),
           const Frequency(438.4619866006409),
         );
         expect(
-          Note.a.inOctave(4).frequency(temperature: const Celsius(24)),
+          Note.a.inOctave(4).frequency(temperature: const .celsius(24)),
           const Frequency(443.07602679871826),
         );
         expect(
-          Note.c.inOctave(4).frequency(temperature: const Celsius(18)),
+          Note.c.inOctave(4).frequency(temperature: const .celsius(18)),
           const Frequency(260.71105706185494),
         );
       });
@@ -978,7 +978,7 @@ void main() {
         expect(
           Note.c
               .inOctave(1)
-              .harmonics(temperature: const Celsius(18))
+              .harmonics(temperature: const .celsius(18))
               .take(16)
               .map((closestPitch) => closestPitch.format())
               .toSet()

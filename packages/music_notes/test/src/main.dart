@@ -27,6 +27,7 @@ import 'scale_degree_test.dart' as scale_degree_test;
 import 'scale_pattern_test.dart' as scale_pattern_test;
 import 'scale_test.dart' as scale_test;
 import 'size_test.dart' as size_test;
+import 'temperature_test.dart' as temperature_test;
 import 'tuning_fork_test.dart' as tuning_fork_test;
 
 void main() {
@@ -59,5 +60,6 @@ void main() {
   scale_pattern_test.main();
   scale_test.main();
   size_test.main();
+  temperature_test.main();
   tuning_fork_test.main();
 }

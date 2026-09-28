@@ -11,8 +11,7 @@ on:
 env:
   DART_SDK_VERSION: "3.10"
 
-permissions:
-  contents: read
+permissions: read-all
 
 jobs:
   analyze:
@@ -68,7 +67,12 @@ jobs:
         # known coverage instead of reporting it as uncovered.
         package:
           - music_notes
+          - music_notes_xml
           - pipe_organ
+
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
 
     steps:
       - name: Checkout code
@@ -92,22 +96,18 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install dependencies
-        working-directory: packages/${{ matrix.package }}
         run: dart pub get
 
       - name: Run web tests
-        working-directory: packages/${{ matrix.package }}
         run: dart test test/main.dart -p chrome
 
       - name: Run tests with coverage
-        working-directory: packages/${{ matrix.package }}
         run: dart test test/main.dart --coverage=coverage
 
       - name: Install coverage formatter
         run: dart pub global activate coverage
 
       - name: Format coverage
-        working-directory: packages/${{ matrix.package }}
         run: |
           dart pub global run coverage:format_coverage \
             --lcov \
@@ -141,6 +141,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
           # Keep this in sync with the `matrix.package` list above. If a
-          # package’s job is ever skipped, Coveralls reuses its last known
+          # package’s job is ever skipped, sCoveralls reuses its last known
           # report instead of scoring it as 0% covered.
-          carryforward: "music_notes,pipe_organ"
+          carryforward: "music_notes,music_notes_xml,pipe_organ"

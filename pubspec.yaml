@@ -3,6 +3,7 @@ publish_to: none
 
 workspace:
   - packages/music_notes
+  - packages/music_notes_xml
   - packages/pipe_organ
 
 environment:
