@@ -822,6 +822,16 @@ void main() {
       });
     });
 
+    group('.ratio()', () {
+      test('returns the ratio for this Interval', () {
+        expect(Interval.P1.ratio(), 1);
+        expect(Interval.P4.ratio(), 4 / 3);
+        expect(Interval.P5.ratio(), 3 / 2);
+        expect(Interval.P8.ratio(), 2);
+        expect(const Interval.perfect(Size(15)).ratio(), 4);
+      });
+    });
+
     group('.toString()', () {
       test('returns the verbose string representation of this Interval', () {
         expect(
