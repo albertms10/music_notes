@@ -20,7 +20,7 @@ void main() {
           closeTo(1200, 0.01),
         );
 
-        const edo19 = EqualTemperament.edo19();
+        const edo19 = EqualTemperament(19);
         expect(
           Cent.fromRatio(edo19.ratioFromSemitones(1)),
           closeTo(63.16, 0.01),
