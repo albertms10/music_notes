@@ -1304,15 +1304,7 @@ void main() {
       test('throws a FormatException when source is invalid', () {
         expect(() => Pitch.parse('x', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('aa', chain: chain), throwsFormatException);
-        expect(() => Pitch.parse('re,', chain: chain), throwsFormatException);
         expect(() => Pitch.parse("A,'", chain: chain), throwsFormatException);
-        expect(() => Pitch.parse("A'", chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse("Sol'", chain: chain),
-          throwsFormatException,
-        );
-        expect(() => Pitch.parse('bb,', chain: chain), throwsFormatException);
-        expect(() => Pitch.parse("F#'", chain: chain), throwsFormatException);
         expect(
           () => Pitch.parse("g''h", chain: chain),
           throwsFormatException,
@@ -1384,6 +1376,12 @@ void main() {
           Pitch.parse('gisis‴', chain: chain),
           Note.g.sharp.sharp.inOctave(6),
         );
+        expect(Pitch.parse('re,', chain: chain), Note.d.inOctave(1));
+        expect(Pitch.parse("A'", chain: chain), Note.a.inOctave(4));
+        expect(Pitch.parse("Sol'", chain: chain), Note.g.inOctave(4));
+        expect(Pitch.parse('bb,', chain: chain), Note.b.flat.inOctave(1));
+        expect(Pitch.parse("F#'", chain: chain), Note.f.sharp.inOctave(4));
+
         const chain2 = [numbered];
         expect(
           Pitch.parse('Ais10', chain: chain2),
