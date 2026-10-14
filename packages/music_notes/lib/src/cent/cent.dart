@@ -26,7 +26,7 @@ extension type const Cent(num value) implements num {
   ///
   /// Example:
   /// ```dart
-  /// const pt = PythagoreanTuning();
+  /// const pt = PrimeLimitTuning.threeLimit;
   /// Cent.fromRatio(pt.ratio(Note.f.inOctave(4))) == const Cent(498.04)
   /// Cent.fromRatio(pt.ratio(Note.g.inOctave(4))) == const Cent(701.96)
   ///

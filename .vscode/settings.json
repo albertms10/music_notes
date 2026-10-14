@@ -5,6 +5,7 @@
     "Ascii",
     "barline",
     "bitmask",
+    "cartesian",
     "chordable",
     "Chordable",
     "codeql",
