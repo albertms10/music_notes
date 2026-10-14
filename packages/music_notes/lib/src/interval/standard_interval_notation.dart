@@ -5,6 +5,8 @@ import '../size/size_notation.dart';
 import 'interval.dart';
 
 /// A standard notation system for [Interval].
+///
+/// ![StandardIntervalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/StandardIntervalNotation.svg)
 class StandardIntervalNotation extends StringNotationSystem<Interval> {
   /// The [SizeNotation].
   final SizeNotation sizeNotation;

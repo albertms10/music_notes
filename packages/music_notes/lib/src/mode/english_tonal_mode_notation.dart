@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'mode.dart';
 
 /// The English notation system for [TonalMode].
+///
+/// ![EnglishTonalModeNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/EnglishTonalModeNotation.svg)
 final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [EnglishTonalModeNotation].
   const EnglishTonalModeNotation();

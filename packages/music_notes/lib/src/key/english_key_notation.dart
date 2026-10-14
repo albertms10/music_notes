@@ -6,6 +6,8 @@ import '../note/english_note_notation.dart';
 import 'key.dart';
 
 /// The English notation system for [Key].
+///
+/// ![EnglishKeyNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/EnglishKeyNotation.svg)
 final class EnglishKeyNotation extends StringNotationSystem<Key> {
   /// The [EnglishNoteNotation] used to format the [Key.note].
   final EnglishNoteNotation noteNotation;

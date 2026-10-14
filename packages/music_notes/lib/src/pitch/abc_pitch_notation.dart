@@ -25,6 +25,8 @@ import 'pitch.dart';
 /// `_` (flat), `^^` (double sharp), `__` (double flat), and `=` (explicit
 /// natural, only emitted when [AbcAccidentalNotation.showNatural] is `true`).
 ///
+/// ![AbcPitchNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/AbcPitchNotation.svg)
+///
 /// ---
 /// See also:
 /// * [Pitch].

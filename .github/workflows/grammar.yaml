@@ -1,0 +1,59 @@
+name: Diagrams CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/**/doc/grammar/grammar.ebnf"
+      - "packages/**/tool/extract_diagrams.dart"
+
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+    paths:
+      - "packages/**/doc/grammar/grammar.ebnf"
+      - "packages/**/tool/extract_diagrams.dart"
+
+env:
+  DART_SDK_VERSION: "3.10"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-diagrams:
+    name: Verify diagrams are up to date
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Dart
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d # v1.8.1
+        with:
+          sdk: ${{ env.DART_SDK_VERSION }}
+
+      # `ebnf2railroad` has no Dart equivalent; this is the one acknowledged
+      # non-Dart tool call the extractor makes (see tool/extract_diagrams.dart's
+      # header comment).
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Render diagrams to a scratch directory
+        working-directory: packages/music_notes
+        run: dart run tool/extract_diagrams.dart --out /tmp/diagrams
+
+      - name: Fail if committed SVGs are out of date
+        working-directory: packages/music_notes
+        run: |
+          if ! diff -rq doc/diagrams /tmp/diagrams; then
+            echo "::error::doc/diagrams is out of date. Run" \
+              "'dart run tool/extract_diagrams.dart' locally and commit the result."
+            exit 1
+          fi

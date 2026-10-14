@@ -7,6 +7,8 @@ import '../pitch/pitch.dart';
 import 'tuning_fork.dart';
 
 /// The [StringNotationSystem] for compact [TuningFork].
+///
+/// ![CompactTuningForkNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/CompactTuningForkNotation.svg)
 final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
   /// The [StringNotationSystem] for [Note].
   final StringNotationSystem<Note> noteNotation;

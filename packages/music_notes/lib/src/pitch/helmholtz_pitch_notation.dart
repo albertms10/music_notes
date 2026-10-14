@@ -11,6 +11,8 @@ import 'pitch.dart';
 /// The Helmholtz [Pitch] notation formatter.
 ///
 /// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+///
+/// ![HelmholtzPitchNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/HelmholtzPitchNotation.svg)
 final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;

@@ -4,6 +4,8 @@ import '../notation_system/notation_system.dart';
 import 'mode.dart';
 
 /// The German notation system for [TonalMode].
+///
+/// ![GermanTonalModeNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/GermanTonalModeNotation.svg)
 final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [GermanTonalModeNotation].
   const GermanTonalModeNotation();
