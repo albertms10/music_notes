@@ -32,7 +32,7 @@ final class Chord
   List<Note> get items => UnmodifiableListView(_items);
 
   /// Creates a new [Chord] from [_items].
-  const Chord(this._items);
+  const new(this._items);
 
   /// The chain of [StringParser]s used to parse a [Chord].
   static const parsers = [ChordNotation()];
@@ -47,13 +47,11 @@ final class Chord
   /// Chord.parse('Cmaj7') == ChordPattern.majorTriad.add7(.major).on(.c)
   /// Chord.parse('z') // throws a FormatException
   /// ```
-  factory Chord.parse(
-    String source, {
-    List<StringParser<Chord>> chain = parsers,
-  }) => chain.parse(source);
+  factory parse(String source, {List<StringParser<Chord>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Creates a new [Chord] from a list of [Pitch]es.
-  factory Chord.fromPitches(List<Pitch> pitches) =>
+  factory fromPitches(List<Pitch> pitches) =>
       Chord(pitches.map((pitch) => pitch.note).toSet().toList());
 
   /// The root [Scalable] of this [Chord].

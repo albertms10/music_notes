@@ -11,7 +11,7 @@ import 'xml_notation_system.dart';
 /// See the [mode element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/mode/).
 final class ModeXmlNotation extends XmlNotationSystem<Mode> {
   /// Creates a new [ModeXmlNotation].
-  const ModeXmlNotation();
+  const new();
 
   @override
   String get elementName => 'mode';
@@ -42,5 +42,5 @@ final class ModeXmlNotation extends XmlNotationSystem<Mode> {
   /// ```
   @override
   XmlElement format(Mode value) =>
-      XmlElement(XmlName(elementName), [], [XmlText(value.name)]);
+      XmlElement(XmlName.parts(elementName), [], [XmlText(value.name)]);
 }

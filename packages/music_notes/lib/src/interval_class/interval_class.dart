@@ -34,7 +34,7 @@ final class IntervalClass
   final int semitones;
 
   /// Creates an [IntervalClass] from [semitones].
-  const IntervalClass(int semitones)
+  const new(int semitones)
     : semitones = (semitones % chromaticDivisions) > (chromaticDivisions ~/ 2)
           ? chromaticDivisions - (semitones % chromaticDivisions)
           : semitones % chromaticDivisions;
@@ -197,9 +197,8 @@ final class IntervalClass
   /// ```
   Interval resolveClosestSpelling([Quality? preferredQuality]) {
     if (preferredQuality != null) {
-      final interval = spellings(
-        distance: 1,
-      ).firstWhereOrNull((interval) => interval.quality == preferredQuality);
+      final interval = spellings(distance: 1)
+          .firstWhereOrNull((interval) => interval.quality == preferredQuality);
       if (interval != null) return interval;
     }
 

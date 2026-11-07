@@ -20,7 +20,7 @@ final class ChordXmlNotation extends XmlNotationSystem<Chord> {
   final ChordPatternXmlNotation chordPatternNotation;
 
   /// Creates a new [ChordXmlNotation].
-  const ChordXmlNotation({
+  const new({
     this.rootNotation = const .root(),
     this.bassNotation = const .bass(),
     this.chordPatternNotation = const ChordPatternXmlNotation(),
@@ -96,7 +96,7 @@ final class ChordXmlNotation extends XmlNotationSystem<Chord> {
   }
 
   XmlElement _element(Note root, ChordPattern pattern, Note? bass) =>
-      XmlElement(XmlName(elementName), [], [
+      XmlElement(XmlName.parts(elementName), [], [
         rootNotation.format(root),
         chordPatternNotation.format(pattern),
         if (bass != null) bassNotation.format(bass),

@@ -32,7 +32,7 @@ final class KeySignature
   List<Note> get notes => UnmodifiableListView(_notes);
 
   /// Creates a new [KeySignature] from [_notes].
-  const KeySignature(this._notes);
+  const new(this._notes);
 
   /// An empty [KeySignature].
   static const empty = KeySignature([]);
@@ -48,7 +48,7 @@ final class KeySignature
   /// KeySignature.fromDistance(-1) == KeySignature([.b.flat])
   /// KeySignature.fromDistance(2) == KeySignature([.f.sharp, .c.sharp])
   /// ```
-  factory KeySignature.fromDistance(int distance) {
+  factory fromDistance(int distance) {
     if (distance == 0) return empty;
 
     final firstNote = distance.isNegative
@@ -178,9 +178,7 @@ final class KeySignature
   String format() =>
       '${isCanonical ? '${keys.values.map((key) => key.format()).toSet()} '
                 '${distance?.toDeltaString()} fifths' : 'Non-canonical'} '
-      '(${_notes.isEmpty ? 'empty' : _notes.map(
-              EnglishNoteNotation.showNatural.format,
-            ).join(' ')})';
+      '(${_notes.isEmpty ? 'empty' : _notes.map(EnglishNoteNotation.showNatural.format).join(' ')})';
 
   @override
   String toString() => '$runtimeType(notes: ${_notes.prettyToString()})';

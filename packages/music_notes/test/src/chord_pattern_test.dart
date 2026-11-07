@@ -221,17 +221,11 @@ void main() {
 
         expect(ChordPattern.majorTriad.inverted.inversion, 1);
         expect(ChordPattern.majorTriad.inverted.inverted.inversion, 2);
-        expect(
-          ChordPattern.majorTriad.inverted.inverted.inverted.inversion,
-          0,
-        );
+        expect(ChordPattern.majorTriad.inverted.inverted.inverted.inversion, 0);
 
         expect(ChordPattern.majorTriad.add7().inversion, 0);
         expect(ChordPattern.majorTriad.add7().inverted.inversion, 1);
-        expect(
-          ChordPattern.majorTriad.add7().inverted.inverted.inversion,
-          2,
-        );
+        expect(ChordPattern.majorTriad.add7().inverted.inverted.inversion, 2);
         expect(
           ChordPattern.majorTriad.add7().inverted.inverted.inverted.inversion,
           3,
@@ -513,23 +507,17 @@ void main() {
     group('.toString()', () {
       test('returns the verbose string representation of this '
           'ChordPattern', () {
-        expect(
-          ChordPattern.majorTriad.toString(),
-          '''
+        expect(ChordPattern.majorTriad.toString(), '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 1)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0))
-])''',
-        );
-        expect(
-          ChordPattern.minorTriad.add7(.major).toString(),
-          '''
+])''');
+        expect(ChordPattern.minorTriad.add7(.major).toString(), '''
 ChordPattern(intervals: [
 \tInterval(size: 3, quality: ImperfectQuality(semitones: 0)),
 \tInterval(size: 5, quality: PerfectQuality(semitones: 0)),
 \tInterval(size: 7, quality: ImperfectQuality(semitones: 1))
-])''',
-        );
+])''');
       });
     });
 
@@ -597,10 +585,7 @@ ChordPattern(intervals: [
         expect(ChordPattern.minorTriad.add13().format(), '-13');
         expect(ChordPattern.minorTriad.add7(.major).format(), '-maj7');
         expect(ChordPattern.diminishedTriad.add7().format(), 'ø');
-        expect(
-          ChordPattern.diminishedTriad.add7(.diminished).format(),
-          'º',
-        );
+        expect(ChordPattern.diminishedTriad.add7(.diminished).format(), 'º');
 
         expect(ChordPattern.majorTriad.sus2().format(), 'sus2');
         expect(ChordPattern.majorTriad.sus4().format(), 'sus4');
@@ -611,10 +596,7 @@ ChordPattern(intervals: [
         expect(ChordPattern.majorTriad.add7().add9().format(), '7 9');
         expect(ChordPattern.minorTriad.add7().add9().format(), '-7 9');
         expect(ChordPattern.minorTriad.add7().add9().format(), '-7 9');
-        expect(
-          ChordPattern.majorTriad.add7(.major).add9().format(),
-          'maj7 9',
-        );
+        expect(ChordPattern.majorTriad.add7(.major).add9().format(), 'maj7 9');
 
         expect(ChordPattern.majorTriad.add9(.diminished).format(), '𝄫9');
         expect(ChordPattern.majorTriad.add9(.minor).format(), '♭9');

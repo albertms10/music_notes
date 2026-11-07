@@ -19,7 +19,7 @@ final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   final bool showNatural;
 
   /// Creates a new [AbcAccidentalNotation].
-  const AbcAccidentalNotation({this.showNatural = true});
+  const new({this.showNatural = true});
 
   static const _flatSymbol = '_';
   static const _naturalSymbol = '=';

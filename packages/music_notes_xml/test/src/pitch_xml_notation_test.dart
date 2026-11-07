@@ -16,16 +16,14 @@ void main() {
       });
 
       test('throws a FormatException when <step> is missing', () {
-        final element = XmlDocument.parse(
-          '<pitch><octave>4</octave></pitch>',
-        ).rootElement;
+        final element = XmlDocument.parse('<pitch><octave>4</octave></pitch>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 
       test('throws a FormatException when <octave> is missing', () {
-        final element = XmlDocument.parse(
-          '<pitch><step>C</step></pitch>',
-        ).rootElement;
+        final element = XmlDocument.parse('<pitch><step>C</step></pitch>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 

@@ -149,15 +149,9 @@ void main() {
       const chain = [GermanNoteNameNotation()];
 
       test('throws a FormatException when source is invalid', () {
-        expect(
-          () => NoteName.parse('X', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => NoteName.parse('X', chain: chain), throwsFormatException);
         expect(() => NoteName.parse('', chain: chain), throwsFormatException);
-        expect(
-          () => NoteName.parse('AH', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => NoteName.parse('AH', chain: chain), throwsFormatException);
       });
 
       test('parses source as a NoteName', () {
@@ -193,15 +187,9 @@ void main() {
       const chain = [RomanceNoteNameNotation()];
 
       test('throws a FormatException when source is invalid', () {
-        expect(
-          () => NoteName.parse('X', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => NoteName.parse('X', chain: chain), throwsFormatException);
         expect(() => NoteName.parse('', chain: chain), throwsFormatException);
-        expect(
-          () => NoteName.parse('A', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => NoteName.parse('A', chain: chain), throwsFormatException);
         expect(
           () => NoteName.parse('DoRe', chain: chain),
           throwsFormatException,

@@ -27,7 +27,7 @@ import 'just_intonation.dart';
 /// See [Five-limit tuning](https://en.wikipedia.org/wiki/Five-limit_tuning).
 class FiveLimitTuning extends JustIntonation {
   /// Creates a new [FiveLimitTuning] from [fork].
-  const FiveLimitTuning({super.fork});
+  const new({super.fork});
 
   /// The 5-limit ratio (relative to [Note.c]) of each of the 12 standard
   /// chromatic notes, expressed as products of the ascending fifth (3/2)

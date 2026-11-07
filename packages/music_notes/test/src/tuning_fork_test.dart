@@ -65,17 +65,11 @@ void main() {
         expect(TuningFork.a415.format(), 'A415');
         expect(TuningFork.c256.format(), 'C256');
         expect(
-          TuningFork(
-            Note.f.sharp.inOctave(4),
-            const Frequency(402.3),
-          ).format(),
+          TuningFork(Note.f.sharp.inOctave(4), const Frequency(402.3)).format(),
           'F♯402.3',
         );
         expect(
-          TuningFork(
-            Note.a.flat.inOctave(3),
-            const Frequency(437.15),
-          ).format(),
+          TuningFork(Note.a.flat.inOctave(3), const Frequency(437.15)).format(),
           'A♭3 437.15',
         );
 
@@ -96,10 +90,7 @@ void main() {
 
     group('.parse()', () {
       test('throws a FormatException when source is invalid', () {
-        expect(
-          () => TuningFork.parse('', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => TuningFork.parse('', chain: chain), throwsFormatException);
         expect(
           () => TuningFork.parse('X', chain: chain),
           throwsFormatException,
@@ -149,10 +140,7 @@ void main() {
         );
 
         const germanHelmholtz = ScientificTuningForkNotation.germanHelmholtz;
-        expect(
-          TuningFork.a440.format(germanHelmholtz),
-          'a′ = 440 Hz',
-        );
+        expect(TuningFork.a440.format(germanHelmholtz), 'a′ = 440 Hz');
         expect(
           TuningFork(
             Note.f.sharp.inOctave(4),

@@ -13,7 +13,7 @@ import 'xml_notation_system.dart';
 /// See the [key element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/key/).
 final class KeySignatureXmlNotation extends XmlNotationSystem<KeySignature> {
   /// Creates a new [KeySignatureXmlNotation].
-  const KeySignatureXmlNotation();
+  const new();
 
   @override
   String get elementName => 'key';
@@ -48,8 +48,8 @@ final class KeySignatureXmlNotation extends XmlNotationSystem<KeySignature> {
           'Non-canonical KeySignature has no fifths representation',
         ));
 
-    return XmlElement(XmlName(elementName), [], [
-      XmlElement(XmlName('fifths'), [], [XmlText('$distance')]),
+    return XmlElement(XmlName.parts(elementName), [], [
+      XmlElement(const XmlName.parts('fifths'), [], [XmlText('$distance')]),
     ]);
   }
 }

@@ -17,14 +17,14 @@ final class RomanScaleDegreeNotation extends StringNotationSystem<ScaleDegree> {
   final StringNotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [RomanScaleDegreeNotation].
-  const RomanScaleDegreeNotation({
+  const new({
     this.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),
   });
 
   /// Creates a new [RomanScaleDegreeNotation] using ASCII symbols.
-  const RomanScaleDegreeNotation.ascii({
+  const new ascii({
     this.accidentalNotation = const SymbolAccidentalNotation.ascii(
       showNatural: false,
     ),

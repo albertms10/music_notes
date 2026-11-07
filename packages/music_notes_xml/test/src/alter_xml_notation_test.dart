@@ -9,9 +9,8 @@ void main() {
 
     group('.parse()', () {
       test('throws a FormatException when the tag name is not <alter>', () {
-        final element = XmlDocument.parse(
-          '<accidental>1</accidental>',
-        ).rootElement;
+        final element = XmlDocument.parse('<accidental>1</accidental>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 

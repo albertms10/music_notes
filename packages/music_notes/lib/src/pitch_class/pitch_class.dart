@@ -33,7 +33,7 @@ final class PitchClass extends Scalable<PitchClass>
   final int semitones;
 
   /// Creates a new [PitchClass] from [semitones].
-  const PitchClass(int semitones) : semitones = semitones % chromaticDivisions;
+  const new(int semitones) : semitones = semitones % chromaticDivisions;
 
   /// Pitch class 0, which corresponds to [Note.c].
   static const c = PitchClass(0);
@@ -95,7 +95,7 @@ final class PitchClass extends Scalable<PitchClass>
   /// PitchClass.parse('t') == .aSharp
   /// PitchClass.parse('z') // throws a FormatException
   /// ```
-  factory PitchClass.parse(
+  factory parse(
     String source, {
     List<StringParser<PitchClass>> chain = parsers,
   }) => chain.parse(source);
@@ -150,9 +150,8 @@ final class PitchClass extends Scalable<PitchClass>
   /// PitchClass.cSharp.resolveSpelling(.natural) // throws
   /// ```
   Note resolveSpelling([Accidental? withAccidental]) {
-    final matchedNote = spellings(
-      distance: 1,
-    ).firstWhereOrNull((note) => note.accidental == withAccidental);
+    final matchedNote = spellings(distance: 1)
+        .firstWhereOrNull((note) => note.accidental == withAccidental);
     if (matchedNote != null) return matchedNote;
 
     if (withAccidental != null) {
@@ -218,9 +217,9 @@ final class PitchClass extends Scalable<PitchClass>
   Interval interval(PitchClass other) {
     final diff = difference(other);
 
-    return IntervalClass(
-      diff,
-    ).resolveClosestSpelling().withDescending(diff.isNegative);
+    return IntervalClass(diff)
+        .resolveClosestSpelling()
+        .withDescending(diff.isNegative);
   }
 
   /// The difference in semitones between this [PitchClass] and [other].

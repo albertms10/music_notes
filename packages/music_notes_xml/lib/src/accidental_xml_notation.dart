@@ -14,7 +14,7 @@ import 'xml_notation_system.dart';
 /// See the [accidental element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/accidental/).
 final class AccidentalXmlNotation extends XmlNotationSystem<Accidental> {
   /// Creates a new [AccidentalXmlNotation].
-  const AccidentalXmlNotation();
+  const new();
 
   @override
   String get elementName => 'accidental';
@@ -60,6 +60,6 @@ final class AccidentalXmlNotation extends XmlNotationSystem<Accidental> {
           'No MusicXML accidental-value for this Accidental',
         ));
 
-    return XmlElement(XmlName(elementName), [], [XmlText(word)]);
+    return XmlElement(XmlName.parts(elementName), [], [XmlText(word)]);
   }
 }

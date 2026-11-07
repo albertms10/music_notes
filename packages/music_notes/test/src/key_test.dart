@@ -87,54 +87,54 @@ void main() {
 
     group('.relationshipWith()', () {
       test('returns the relationship between this Key and other', () {
-        expect(
-          Note.c.major.relationshipWith(Note.c.major),
-          (distance: 0, relationship: KeyRelationship.direct),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.f.major),
-          (distance: -1, relationship: KeyRelationship.direct),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.g.major),
-          (distance: 1, relationship: KeyRelationship.direct),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.f.minor),
-          (distance: -1, relationship: KeyRelationship.doubleDirect),
-        );
-        expect(
-          Note.c.minor.relationshipWith(Note.f.major),
-          (distance: -1, relationship: KeyRelationship.indirect),
-        );
-        expect(
-          Note.c.minor.relationshipWith(Note.f.minor),
-          (distance: -1, relationship: KeyRelationship.direct),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.a.minor),
-          (distance: 3, relationship: KeyRelationship.indirect),
-        );
-        expect(
-          Note.c.minor.relationshipWith(Note.a.major),
-          (distance: 3, relationship: KeyRelationship.doubleDirect),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.e.flat.major),
-          (distance: -3, relationship: KeyRelationship.direct),
-        );
-        expect(
-          Note.c.minor.relationshipWith(Note.e.flat.major),
-          (distance: -3, relationship: KeyRelationship.indirect),
-        );
-        expect(
-          Note.c.major.relationshipWith(Note.e.flat.minor),
-          (distance: -3, relationship: KeyRelationship.doubleDirect),
-        );
-        expect(
-          Note.c.minor.relationshipWith(Note.e.flat.minor),
-          (distance: -3, relationship: KeyRelationship.direct),
-        );
+        expect(Note.c.major.relationshipWith(Note.c.major), (
+          distance: 0,
+          relationship: KeyRelationship.direct,
+        ));
+        expect(Note.c.major.relationshipWith(Note.f.major), (
+          distance: -1,
+          relationship: KeyRelationship.direct,
+        ));
+        expect(Note.c.major.relationshipWith(Note.g.major), (
+          distance: 1,
+          relationship: KeyRelationship.direct,
+        ));
+        expect(Note.c.major.relationshipWith(Note.f.minor), (
+          distance: -1,
+          relationship: KeyRelationship.doubleDirect,
+        ));
+        expect(Note.c.minor.relationshipWith(Note.f.major), (
+          distance: -1,
+          relationship: KeyRelationship.indirect,
+        ));
+        expect(Note.c.minor.relationshipWith(Note.f.minor), (
+          distance: -1,
+          relationship: KeyRelationship.direct,
+        ));
+        expect(Note.c.major.relationshipWith(Note.a.minor), (
+          distance: 3,
+          relationship: KeyRelationship.indirect,
+        ));
+        expect(Note.c.minor.relationshipWith(Note.a.major), (
+          distance: 3,
+          relationship: KeyRelationship.doubleDirect,
+        ));
+        expect(Note.c.major.relationshipWith(Note.e.flat.major), (
+          distance: -3,
+          relationship: KeyRelationship.direct,
+        ));
+        expect(Note.c.minor.relationshipWith(Note.e.flat.major), (
+          distance: -3,
+          relationship: KeyRelationship.indirect,
+        ));
+        expect(Note.c.major.relationshipWith(Note.e.flat.minor), (
+          distance: -3,
+          relationship: KeyRelationship.doubleDirect,
+        ));
+        expect(Note.c.minor.relationshipWith(Note.e.flat.minor), (
+          distance: -3,
+          relationship: KeyRelationship.direct,
+        ));
       });
     });
 
@@ -299,10 +299,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         expect(Key.parse('b-dur', chain: chain), Note.b.flat.major);
         expect(Key.parse('H-Moll', chain: chain), Note.b.minor);
         expect(Key.parse('D-dur', chain: chain), Note.d.major);
-        expect(
-          Key.parse('Gisis-dur', chain: chain),
-          Note.g.sharp.sharp.major,
-        );
+        expect(Key.parse('Gisis-dur', chain: chain), Note.g.sharp.sharp.major);
         expect(Key.parse('a-Moll', chain: chain), Note.a.minor);
         expect(Key.parse('As-moll', chain: chain), Note.a.flat.minor);
         expect(Key.parse('d-Moll', chain: chain), Note.d.minor);
@@ -317,10 +314,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         ];
 
         for (final key in testKeys) {
-          expect(
-            key,
-            Key.parse(key.format(formatter), chain: chain),
-          );
+          expect(key, Key.parse(key.format(formatter), chain: chain));
         }
       });
     });
@@ -334,14 +328,8 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         expect(Note.d.minor.format(formatter), 'd-Moll');
         expect(Note.a.flat.major.format(formatter), 'As-Dur');
         expect(Note.f.sharp.minor.format(formatter), 'fis-Moll');
-        expect(
-          Note.g.sharp.sharp.major.format(formatter),
-          'Gisis-Dur',
-        );
-        expect(
-          Note.e.flat.flat.minor.format(formatter),
-          'eses-Moll',
-        );
+        expect(Note.g.sharp.sharp.major.format(formatter), 'Gisis-Dur');
+        expect(Note.e.flat.flat.minor.format(formatter), 'eses-Moll');
       });
     });
   });
@@ -375,16 +363,10 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         expect(Key.parse('Do', chain: chain), Note.c.major);
         expect(Key.parse('Do maggiore', chain: chain), Note.c.major);
         expect(Key.parse('Sol# maggiore', chain: chain), Note.g.sharp.major);
-        expect(
-          Key.parse('Fa diesis minore', chain: chain),
-          Note.f.sharp.minor,
-        );
+        expect(Key.parse('Fa diesis minore', chain: chain), Note.f.sharp.minor);
         expect(Key.parse('Re maggiore', chain: chain), Note.d.major);
         expect(Key.parse('La♭ minore', chain: chain), Note.a.flat.minor);
-        expect(
-          Key.parse('La bemolle minore', chain: chain),
-          Note.a.flat.minor,
-        );
+        expect(Key.parse('La bemolle minore', chain: chain), Note.a.flat.minor);
         expect(Key.parse('La minore', chain: chain), Note.a.minor);
         expect(Key.parse('Re minore', chain: chain), Note.d.minor);
 
@@ -403,10 +385,7 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
         ];
 
         for (final key in testKeys) {
-          expect(
-            key,
-            Key.parse(key.format(symbol), chain: chain),
-          );
+          expect(key, Key.parse(key.format(symbol), chain: chain));
         }
       });
     });
@@ -415,24 +394,15 @@ Key(note: Note(noteName: NoteName.g, accidental: Accidental(semitones: 1)), mode
       test('returns the string representation of this Key', () {
         expect(Note.c.major.format(symbol), 'Do maggiore');
         expect(Note.d.minor.format(symbol), 'Re minore');
-        expect(
-          Note.a.flat.major.format(textual),
-          'La bemolle maggiore',
-        );
+        expect(Note.a.flat.major.format(textual), 'La bemolle maggiore');
         expect(Note.a.flat.major.format(symbol), 'La♭ maggiore');
         expect(Note.f.sharp.minor.format(symbol), 'Fa♯ minore');
-        expect(
-          Note.g.sharp.sharp.major.format(symbol),
-          'Sol𝄪 maggiore',
-        );
+        expect(Note.g.sharp.sharp.major.format(symbol), 'Sol𝄪 maggiore');
         expect(
           Note.a.sharp.sharp.major.format(textual),
           'La doppio diesis maggiore',
         );
-        expect(
-          Note.e.flat.flat.minor.format(symbol),
-          'Mi𝄫 minore',
-        );
+        expect(Note.e.flat.flat.minor.format(symbol), 'Mi𝄫 minore');
 
         expect(Note.c.major.format(short), 'Do');
         expect(Note.b.minor.format(short), 'si');

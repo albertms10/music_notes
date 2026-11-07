@@ -48,15 +48,12 @@ void main() {
 
     group('.cycles', () {
       test('returns all distinct cycles', () {
-        expect(
-          IntervalClass.M3.cycles.toSet(),
-          <Set<PitchClass>>{
-            {.c, .e, .gSharp},
-            {.cSharp, .f, .a},
-            {.d, .fSharp, .aSharp},
-            {.dSharp, .g, .b},
-          },
-        );
+        expect(IntervalClass.M3.cycles.toSet(), <Set<PitchClass>>{
+          {.c, .e, .gSharp},
+          {.cSharp, .f, .a},
+          {.d, .fSharp, .aSharp},
+          {.dSharp, .g, .b},
+        });
       });
 
       test('returns one cycle for an interval class coprime to 12', () {
@@ -179,10 +176,7 @@ void main() {
       test('returns the verbose string representation of this '
           'IntervalClass', () {
         expect(IntervalClass.P1.toString(), 'IntervalClass(semitones: 0)');
-        expect(
-          IntervalClass.tritone.toString(),
-          'IntervalClass(semitones: 6)',
-        );
+        expect(IntervalClass.tritone.toString(), 'IntervalClass(semitones: 6)');
       });
     });
 

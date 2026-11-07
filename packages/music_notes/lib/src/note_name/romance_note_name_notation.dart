@@ -4,7 +4,7 @@ import 'note_name.dart';
 /// The Romance notation system for [NoteName].
 final class RomanceNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [RomanceNoteNameNotation].
-  const RomanceNoteNameNotation();
+  const new();
 
   static final _noteNames = <NoteName, String>{
     .c: 'Do',

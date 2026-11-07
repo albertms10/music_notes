@@ -42,7 +42,7 @@ final class Pitch extends Scalable<Pitch>
   final int octave;
 
   /// Creates a new [Pitch] from [note] and [octave].
-  const Pitch(this.note, {required this.octave});
+  const new(this.note, {required this.octave});
 
   /// The reference [Pitch].
   static const reference = Pitch(.a, octave: referenceOctave);
@@ -77,10 +77,8 @@ final class Pitch extends Scalable<Pitch>
   /// Pitch.parse("_e'") == Note.e.flat.inOctave(6)
   /// Pitch.parse('z') // throws a FormatException
   /// ```
-  factory Pitch.parse(
-    String source, {
-    List<StringParser<Pitch>> chain = parsers,
-  }) => chain.parse(source);
+  factory parse(String source, {List<StringParser<Pitch>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Create a [Pitch] from a MIDI number.
   ///
@@ -90,7 +88,7 @@ final class Pitch extends Scalable<Pitch>
   /// Pitch.fromMidi(72) == Note.c.inOctave(5)
   /// Pitch.fromMidi(127) // throws an ArgumentError
   /// ```
-  factory Pitch.fromMidi(int midiNumber) {
+  factory fromMidi(int midiNumber) {
     if (midiNumber case < 0 || > 127) {
       throw ArgumentError('MIDI number must be between 0 and 127');
     }
@@ -388,9 +386,9 @@ final class Pitch extends Scalable<Pitch>
     TuningSystem tuningSystem = const EqualTemperament.edo12(),
     Temperature temperature = .reference,
     Temperature referenceTemperature = .reference,
-  }) => Frequency(
-    tuningSystem.fork.frequency * tuningSystem.ratio(this),
-  ).at(temperature, referenceTemperature);
+  }) =>
+      Frequency(tuningSystem.fork.frequency * tuningSystem.ratio(this))
+          .at(temperature, referenceTemperature);
 
   /// Returns the [TuningFork] from this [Pitch] at a given [frequency].
   ///

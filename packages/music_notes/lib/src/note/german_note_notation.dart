@@ -8,7 +8,7 @@ import 'note_notation.dart';
 /// See [Versetzungszeichen](https://de.wikipedia.org/wiki/Versetzungszeichen).
 final class GermanNoteNotation extends NoteNotation {
   /// Creates a new [GermanNoteNotation].
-  const GermanNoteNotation({
+  const new({
     super.noteNameNotation = const GermanNoteNameNotation(),
     super.accidentalNotation = const GermanAccidentalNotation(),
   });

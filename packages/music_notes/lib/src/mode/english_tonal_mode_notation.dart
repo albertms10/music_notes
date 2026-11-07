@@ -4,7 +4,7 @@ import 'mode.dart';
 /// The English notation system for [TonalMode].
 final class EnglishTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [EnglishTonalModeNotation].
-  const EnglishTonalModeNotation();
+  const new();
 
   static const _major = 'major';
   static const _minor = 'minor';

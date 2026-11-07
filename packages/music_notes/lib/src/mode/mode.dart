@@ -46,8 +46,7 @@ enum TonalMode implements Mode, Formattable<TonalMode> {
   major(.major, brightness: 2),
 
   /// See [Minor mode](https://en.wikipedia.org/wiki/Minor_mode).
-  minor(.naturalMinor, brightness: -1)
-  ;
+  minor(.naturalMinor, brightness: -1);
 
   @override
   final ScalePattern scale;
@@ -55,7 +54,7 @@ enum TonalMode implements Mode, Formattable<TonalMode> {
   @override
   final int brightness;
 
-  const TonalMode(this.scale, {required this.brightness});
+  new(this.scale, {required this.brightness});
 
   /// The chain of [StringParser]s used to parse a [TonalMode].
   static const parsers = [
@@ -65,7 +64,7 @@ enum TonalMode implements Mode, Formattable<TonalMode> {
   ];
 
   /// Parse [source] as a [TonalMode] and return its value.
-  factory TonalMode.parse(
+  factory parse(
     String source, {
     List<StringParser<TonalMode>> chain = parsers,
   }) => chain.parse(source);
@@ -122,8 +121,7 @@ enum ModalMode implements Mode {
   phrygian(.phrygian, brightness: -2),
 
   /// See [Locrian mode](https://en.wikipedia.org/wiki/Locrian_mode).
-  locrian(.locrian, brightness: -3)
-  ;
+  locrian(.locrian, brightness: -3);
 
   @override
   final ScalePattern scale;
@@ -131,7 +129,7 @@ enum ModalMode implements Mode {
   @override
   final int brightness;
 
-  const ModalMode(this.scale, {required this.brightness});
+  new(this.scale, {required this.brightness});
 
   /// The brightness distance between this [Mode] and [other].
   ///

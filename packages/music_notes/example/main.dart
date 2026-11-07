@@ -288,9 +288,8 @@ void main() {
 
   ClosestPitch.parse('A4'); // A4
   ClosestPitch.parse('E♭3-28'); // E♭3−28
-  ClosestPitch.parse('A4+12.6').format(
-    const StandardClosestPitchNotation(fractionDigits: 1),
-  ); // A4+12.6
+  ClosestPitch.parse('A4+12.6')
+      .format(const StandardClosestPitchNotation(fractionDigits: 1)); // A4+12.6
 
   // In a nutshell
   ScalePattern

@@ -667,7 +667,7 @@ void main() {
 
     group('.circleDistance()', () {
       test('returns the circle distance between two Scalable instances', () {
-        var (distance, notes: dynamic notes) = Interval.P5.circleDistance(
+        var (distance, :dynamic notes) = Interval.P5.circleDistance(
           from: Note.c,
           to: Note.b.flat.flat,
         );

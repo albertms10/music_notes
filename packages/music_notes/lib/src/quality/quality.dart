@@ -19,7 +19,7 @@ sealed class Quality implements Comparable<Quality> {
   final int semitones;
 
   /// Creates a new [Quality] from [semitones].
-  const Quality(this.semitones);
+  const new(this.semitones);
 
   /// The inversion of this [Quality].
   ///
@@ -60,7 +60,7 @@ final class PerfectQuality extends Quality
   int get semitones;
 
   /// Creates a new [PerfectQuality] from [semitones].
-  const PerfectQuality(super.semitones);
+  const new(super.semitones);
 
   /// A triply diminished [PerfectQuality].
   static const triplyDiminished = PerfectQuality(-3);
@@ -97,7 +97,7 @@ final class PerfectQuality extends Quality
   /// PerfectQuality.parse('dd') == .doublyDiminished
   /// PerfectQuality.parse('z') // throws a FormatException
   /// ```
-  factory PerfectQuality.parse(
+  factory parse(
     String source, {
     List<StringParser<PerfectQuality>> chain = parsers,
   }) => chain.parse(source);
@@ -156,7 +156,7 @@ final class ImperfectQuality extends Quality
   int get semitones;
 
   /// Creates a new [ImperfectQuality] from [semitones].
-  const ImperfectQuality(super.semitones);
+  const new(super.semitones);
 
   /// A triply diminished [ImperfectQuality].
   static const triplyDiminished = ImperfectQuality(-3);
@@ -196,7 +196,7 @@ final class ImperfectQuality extends Quality
   /// ImperfectQuality.parse('A') == .augmented
   /// ImperfectQuality.parse('z') // throws a FormatException
   /// ```
-  factory ImperfectQuality.parse(
+  factory parse(
     String source, {
     List<StringParser<ImperfectQuality>> chain = parsers,
   }) => chain.parse(source);

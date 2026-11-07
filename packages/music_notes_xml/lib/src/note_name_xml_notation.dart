@@ -8,7 +8,7 @@ import 'xml_notation_system.dart';
 /// See the [step element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/data-types/step/).
 final class NoteNameXmlNotation extends XmlNotationSystem<NoteName> {
   /// Creates a new [NoteNameXmlNotation].
-  const NoteNameXmlNotation();
+  const new();
 
   @override
   String get elementName => 'step';
@@ -29,7 +29,9 @@ final class NoteNameXmlNotation extends XmlNotationSystem<NoteName> {
   ///   == '<step>F</step>'
   /// ```
   @override
-  XmlElement format(NoteName value) => XmlElement(XmlName(elementName), [], [
-    XmlText(value.name.toUpperCase()),
-  ]);
+  XmlElement format(NoteName value) => XmlElement(
+    XmlName.parts(elementName),
+    [],
+    [XmlText(value.name.toUpperCase())],
+  );
 }

@@ -23,17 +23,15 @@ final class SymbolAccidentalNotation extends StringNotationSystem<Accidental> {
   final bool useAscii;
 
   /// Creates a new [SymbolAccidentalNotation].
-  const SymbolAccidentalNotation({
+  const new({
     this.showNatural = true,
     this.largerFirst = false,
     this.useAscii = false,
   });
 
   /// Creates a new [SymbolAccidentalNotation] using ASCII characters.
-  const SymbolAccidentalNotation.ascii({
-    this.showNatural = true,
-    this.largerFirst = false,
-  }) : useAscii = true;
+  const new ascii({this.showNatural = true, this.largerFirst = false})
+    : useAscii = true;
 
   static const _doubleSharpSymbol = '𝄪';
   static const _doubleSharpSymbolAscii = 'x';

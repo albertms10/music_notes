@@ -22,10 +22,7 @@ void main() {
           const FiveLimitTuning().ratio(Note.c.sharp.inOctave(4)),
           135 / 128,
         );
-        expect(
-          const FiveLimitTuning().ratio(Note.d.flat.inOctave(4)),
-          16 / 15,
-        );
+        expect(const FiveLimitTuning().ratio(Note.d.flat.inOctave(4)), 16 / 15);
         expect(
           const FiveLimitTuning().ratio(Note.d.sharp.inOctave(4)),
           75 / 64,
@@ -35,10 +32,7 @@ void main() {
           const FiveLimitTuning().ratio(Note.f.sharp.inOctave(4)),
           45 / 32,
         );
-        expect(
-          const FiveLimitTuning().ratio(Note.g.flat.inOctave(4)),
-          64 / 45,
-        );
+        expect(const FiveLimitTuning().ratio(Note.g.flat.inOctave(4)), 64 / 45);
         expect(
           const FiveLimitTuning().ratio(Note.g.sharp.inOctave(4)),
           25 / 16,
@@ -48,10 +42,7 @@ void main() {
           const FiveLimitTuning().ratio(Note.a.sharp.inOctave(4)),
           225 / 128,
         );
-        expect(
-          const FiveLimitTuning().ratio(Note.b.flat.inOctave(4)),
-          16 / 9,
-        );
+        expect(const FiveLimitTuning().ratio(Note.b.flat.inOctave(4)), 16 / 9);
       });
 
       test('gives enharmonic spellings different ratios', () {

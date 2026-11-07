@@ -14,7 +14,7 @@ abstract class NoteNotation extends StringNotationSystem<Note> {
   final StringNotationSystem<Accidental> accidentalNotation;
 
   /// Creates a new [NoteNotation].
-  const NoteNotation({
+  const new({
     this.noteNameNotation = const EnglishNoteNameNotation(),
     this.accidentalNotation = const SymbolAccidentalNotation(),
   });

@@ -4,7 +4,7 @@ import 'frequency.dart';
 /// The [StringNotationSystem] for SI-notated [Frequency].
 final class FrequencySINotation extends StringNotationSystem<Frequency> {
   /// Creates a new [FrequencySINotation].
-  const FrequencySINotation();
+  const new();
 
   /// The symbol for the Hertz unit.
   static const _hertzUnitSymbol = 'Hz';

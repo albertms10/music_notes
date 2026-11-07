@@ -9,9 +9,8 @@ void main() {
 
     group('.parse()', () {
       test('throws a FormatException when the tag name is not <mode>', () {
-        final element = XmlDocument.parse(
-          '<tonality>major</tonality>',
-        ).rootElement;
+        final element = XmlDocument.parse('<tonality>major</tonality>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 
@@ -33,9 +32,8 @@ void main() {
 
       test('parses ModalMode words', () {
         for (final modalMode in ModalMode.values) {
-          final element = XmlDocument.parse(
-            '<mode>${modalMode.name}</mode>',
-          ).rootElement;
+          final element = XmlDocument.parse('<mode>${modalMode.name}</mode>')
+              .rootElement;
           expect(notation.parse(element), modalMode);
         }
       });

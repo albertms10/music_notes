@@ -8,7 +8,7 @@ import 'note_notation.dart';
 /// The Romance alphabetic notation system for [Note].
 final class RomanceNoteNotation extends NoteNotation {
   /// Creates a new [RomanceNoteNotation].
-  const RomanceNoteNotation({
+  const new({
     super.noteNameNotation = const RomanceNoteNameNotation(),
     super.accidentalNotation = const RomanceAccidentalNotation(
       showNatural: false,
@@ -16,20 +16,18 @@ final class RomanceNoteNotation extends NoteNotation {
   });
 
   /// Creates a new symbolic [RomanceNoteNotation].
-  const RomanceNoteNotation.symbol({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
-       );
+  const new symbol({super.noteNameNotation = const RomanceNoteNameNotation()})
+    : super(
+        accidentalNotation: const SymbolAccidentalNotation(showNatural: false),
+      );
 
   /// Creates a new symbolic [RomanceNoteNotation] using ASCII characters.
-  const RomanceNoteNotation.ascii({
-    super.noteNameNotation = const RomanceNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-         ),
-       );
+  const new ascii({super.noteNameNotation = const RomanceNoteNameNotation()})
+    : super(
+        accidentalNotation: const SymbolAccidentalNotation.ascii(
+          showNatural: false,
+        ),
+      );
 
   /// The [RomanceNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.

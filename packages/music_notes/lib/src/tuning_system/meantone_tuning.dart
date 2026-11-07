@@ -10,7 +10,7 @@ class MeantoneTuning extends JustIntonation {
   final Rational commaFraction;
 
   /// Creates a new [MeantoneTuning] tuning system.
-  const MeantoneTuning(this.commaFraction, {super.fork = .c256});
+  const new(this.commaFraction, {super.fork = .c256});
 
   /// Meantone tuning with fifth-comma temperament (1/5).
   static const fifth = MeantoneTuning(Rational(1, 5));

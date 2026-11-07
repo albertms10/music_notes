@@ -739,10 +739,7 @@ void main() {
     group('.isEnharmonicWith()', () {
       test('returns whether this Pitch is enharmonically equivalent to '
           'other', () {
-        expect(
-          Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)),
-          isTrue,
-        );
+        expect(Note.e.inOctave(4).isEnharmonicWith(Note.e.inOctave(4)), isTrue);
         expect(
           Note.a.sharp.inOctave(4).isEnharmonicWith(Note.b.flat.inOctave(4)),
           isTrue,
@@ -1184,10 +1181,10 @@ void main() {
           voicing.doubling(.c, octaves: -1),
           <Note>[.c, .c, .e].toStacked(octave: 2),
         );
-        expect(
-          voicing.doubling(.c, octaves: -2),
-          [Note.c.inOctave(1), ...voicing],
-        );
+        expect(voicing.doubling(.c, octaves: -2), [
+          Note.c.inOctave(1),
+          ...voicing,
+        ]);
       });
 
       test('can be chained for multi-octave doubling', () {
@@ -1260,20 +1257,11 @@ void main() {
 
       test('returns the ASCII scientific string representation', () {
         const formatter = ScientificPitchNotation.ascii();
-        expect(
-          Note.g.sharp.inOctave(-1).format(formatter),
-          'G#-1',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(formatter), 'G#-1');
         expect(Note.d.inOctave(0).format(formatter), 'D0');
         expect(Note.b.flat.inOctave(1).format(formatter), 'Bb1');
-        expect(
-          Note.c.sharp.inOctave(4).format(formatter),
-          'C#4',
-        );
-        expect(
-          Note.f.sharp.inOctave(5).format(formatter),
-          'F#5',
-        );
+        expect(Note.c.sharp.inOctave(4).format(formatter), 'C#4');
+        expect(Note.f.sharp.inOctave(5).format(formatter), 'F#5');
       });
     });
   });
@@ -1307,47 +1295,26 @@ void main() {
         expect(() => Pitch.parse('re,', chain: chain), throwsFormatException);
         expect(() => Pitch.parse("A,'", chain: chain), throwsFormatException);
         expect(() => Pitch.parse("A'", chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse("Sol'", chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Pitch.parse("Sol'", chain: chain), throwsFormatException);
         expect(() => Pitch.parse('bb,', chain: chain), throwsFormatException);
         expect(() => Pitch.parse("F#'", chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse("g''h", chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Pitch.parse("g''h", chain: chain), throwsFormatException);
         expect(() => Pitch.parse('C,d', chain: chain), throwsFormatException);
         expect(() => Pitch.parse("d′'", chain: chain), throwsFormatException);
         expect(() => Pitch.parse('f″″', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('e-2', chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse('Dis-2', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Pitch.parse('Dis-2', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('2H', chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse('2fis', chain: chain),
-          throwsFormatException,
-        );
-        expect(
-          () => Pitch.parse('-2ais', chain: chain),
-          throwsFormatException,
-        );
-        expect(
-          () => Pitch.parse('-1Ges', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Pitch.parse('2fis', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('-2ais', chain: chain), throwsFormatException);
+        expect(() => Pitch.parse('-1Ges', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('0A', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('0b', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('F0', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('g0', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('h00', chain: chain), throwsFormatException);
         expect(() => Pitch.parse("g1'", chain: chain), throwsFormatException);
-        expect(
-          () => Pitch.parse("ais'1", chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Pitch.parse("ais'1", chain: chain), throwsFormatException);
         expect(() => Pitch.parse('b#′', chain: chain), throwsFormatException);
         expect(() => Pitch.parse('gx‴', chain: chain), throwsFormatException);
       });
@@ -1385,10 +1352,7 @@ void main() {
           Note.g.sharp.sharp.inOctave(6),
         );
         const chain2 = [numbered];
-        expect(
-          Pitch.parse('Ais10', chain: chain2),
-          Note.a.sharp.inOctave(-8),
-        );
+        expect(Pitch.parse('Ais10', chain: chain2), Note.a.sharp.inOctave(-8));
         expect(Pitch.parse('Gis3', chain: chain2), Note.g.sharp.inOctave(-1));
         expect(Pitch.parse('Des2', chain: chain2), Note.d.flat.inOctave(0));
         expect(Pitch.parse('B1', chain: chain2), Note.b.flat.inOctave(1));
@@ -1399,10 +1363,7 @@ void main() {
         expect(Pitch.parse('a1', chain: chain2), Note.a.inOctave(4));
         expect(Pitch.parse('as2', chain: chain2), Note.a.flat.inOctave(5));
         expect(Pitch.parse('e3', chain: chain2), Note.e.inOctave(6));
-        expect(
-          Pitch.parse('fis10', chain: chain2),
-          Note.f.sharp.inOctave(13),
-        );
+        expect(Pitch.parse('fis10', chain: chain2), Note.f.sharp.inOctave(13));
 
         final pitch = Note.a.sharp.inOctave(7);
         expect(Pitch.parse(pitch.format(english)), pitch);
@@ -1411,10 +1372,7 @@ void main() {
 
     group('.format()', () {
       test('returns the English Helmholtz string representation', () {
-        expect(
-          Note.g.sharp.inOctave(-1).format(english),
-          'G♯͵͵͵',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(english), 'G♯͵͵͵');
         expect(Note.d.inOctave(0).format(english), 'D͵͵');
         expect(Note.b.flat.inOctave(1).format(english), 'B♭͵');
         expect(Note.g.inOctave(2).format(english), 'G');
@@ -1424,17 +1382,11 @@ void main() {
         expect(Note.a.inOctave(4).format(english), 'a′');
         expect(Note.f.sharp.inOctave(5).format(english), 'f♯″');
         expect(Note.e.inOctave(7).format(english), 'e⁗');
-        expect(
-          Note.b.flat.inOctave(8).format(english),
-          'b♭′′′′′',
-        );
+        expect(Note.b.flat.inOctave(8).format(english), 'b♭′′′′′');
       });
 
       test('returns the German Helmholtz string representation', () {
-        expect(
-          Note.g.sharp.inOctave(-1).format(german),
-          'Gis͵͵͵',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(german), 'Gis͵͵͵');
         expect(Note.d.flat.inOctave(0).format(german), 'Des͵͵');
         expect(Note.b.flat.inOctave(1).format(german), 'B͵');
         expect(Note.g.inOctave(2).format(german), 'G');
@@ -1447,10 +1399,7 @@ void main() {
       });
 
       test('returns the Romance Helmholtz string representation', () {
-        expect(
-          Note.g.sharp.inOctave(-1).format(romance),
-          'Sol♯͵͵͵',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(romance), 'Sol♯͵͵͵');
         expect(Note.d.flat.inOctave(0).format(romance), 'Re♭͵͵');
         expect(Note.b.flat.inOctave(1).format(romance), 'Si♭͵');
         expect(Note.g.inOctave(2).format(romance), 'Sol');
@@ -1463,67 +1412,40 @@ void main() {
       });
 
       test('returns the ASCII Helmholtz string representation', () {
-        expect(
-          Note.g.sharp.inOctave(-1).format(englishAscii),
-          'G#,,,',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(englishAscii), 'G#,,,');
         expect(Note.a.flat.inOctave(1).format(englishAscii), 'Ab,');
         expect(Note.g.inOctave(2).format(englishAscii), 'G');
         expect(Note.c.inOctave(4).format(englishAscii), "c'");
         expect(Note.f.sharp.inOctave(5).format(englishAscii), "f#''");
         expect(Note.e.inOctave(7).format(englishAscii), "e''''");
-        expect(
-          Note.b.flat.inOctave(8).format(englishAscii),
-          "bb'''''",
-        );
+        expect(Note.b.flat.inOctave(8).format(englishAscii), "bb'''''");
 
         const romance = HelmholtzPitchNotation.ascii(
           noteNotation: RomanceNoteNotation.ascii(),
         );
 
-        expect(
-          Note.g.sharp.inOctave(-1).format(romance),
-          'Sol#,,,',
-        );
+        expect(Note.g.sharp.inOctave(-1).format(romance), 'Sol#,,,');
         expect(Note.a.flat.inOctave(1).format(romance), 'Lab,');
         expect(Note.g.inOctave(2).format(romance), 'Sol');
         expect(Note.c.inOctave(4).format(romance), "do'");
-        expect(
-          Note.f.sharp.inOctave(5).format(romance),
-          "fa#''",
-        );
+        expect(Note.f.sharp.inOctave(5).format(romance), "fa#''");
         expect(Note.e.inOctave(7).format(romance), "mi''''");
-        expect(
-          Note.b.flat.inOctave(8).format(romance),
-          "sib'''''",
-        );
+        expect(Note.b.flat.inOctave(8).format(romance), "sib'''''");
       });
 
       test('returns the numbered German Helmholtz string representation', () {
-        expect(
-          Note.a.sharp.inOctave(-8).format(numbered),
-          'Ais10',
-        );
-        expect(
-          Note.g.sharp.inOctave(-1).format(numbered),
-          'Gis3',
-        );
+        expect(Note.a.sharp.inOctave(-8).format(numbered), 'Ais10');
+        expect(Note.g.sharp.inOctave(-1).format(numbered), 'Gis3');
         expect(Note.d.flat.inOctave(0).format(numbered), 'Des2');
         expect(Note.b.flat.inOctave(1).format(numbered), 'B1');
         expect(Note.b.inOctave(2).format(numbered), 'H');
         expect(Note.a.inOctave(3).format(numbered), 'a');
         expect(Note.c.inOctave(4).format(numbered), 'c1');
-        expect(
-          Note.c.sharp.inOctave(4).format(numbered),
-          'cis1',
-        );
+        expect(Note.c.sharp.inOctave(4).format(numbered), 'cis1');
         expect(Note.a.inOctave(4).format(numbered), 'a1');
         expect(Note.a.flat.inOctave(5).format(numbered), 'as2');
         expect(Note.e.inOctave(6).format(numbered), 'e3');
-        expect(
-          Note.f.sharp.inOctave(13).format(numbered),
-          'fis10',
-        );
+        expect(Note.f.sharp.inOctave(13).format(numbered), 'fis10');
       });
     });
   });

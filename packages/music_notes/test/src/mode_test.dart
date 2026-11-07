@@ -93,10 +93,7 @@ void main() {
           () => TonalMode.parse('invalid', chain: chain),
           throwsFormatException,
         );
-        expect(
-          () => TonalMode.parse('', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => TonalMode.parse('', chain: chain), throwsFormatException);
       });
 
       test('parses a TonalMode from source', () {
@@ -125,10 +122,7 @@ void main() {
           () => TonalMode.parse('invalid', chain: chain),
           throwsFormatException,
         );
-        expect(
-          () => TonalMode.parse('', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => TonalMode.parse('', chain: chain), throwsFormatException);
       });
 
       test('parses a TonalMode from source', () {

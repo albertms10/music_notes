@@ -9,16 +9,14 @@ void main() {
 
     group('.parse()', () {
       test('throws a FormatException when the tag name is not <kind>', () {
-        final element = XmlDocument.parse(
-          '<quality>major</quality>',
-        ).rootElement;
+        final element = XmlDocument.parse('<quality>major</quality>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 
       test('throws a FormatException for an unsupported kind-value', () {
-        final element = XmlDocument.parse(
-          '<kind>suspended-fourth</kind>',
-        ).rootElement;
+        final element = XmlDocument.parse('<kind>suspended-fourth</kind>')
+            .rootElement;
         expect(() => notation.parse(element), throwsFormatException);
       });
 

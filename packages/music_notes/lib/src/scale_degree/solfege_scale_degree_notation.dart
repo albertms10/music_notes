@@ -73,10 +73,10 @@ final class SolfegeScaleDegreeNotation
   final bool laBased;
 
   /// Creates a new [SolfegeScaleDegreeNotation].
-  const SolfegeScaleDegreeNotation({this.laBased = false});
+  const new({this.laBased = false});
 
   /// A [SolfegeScaleDegreeNotation] using the La-based minor convention.
-  const SolfegeScaleDegreeNotation.laBased() : laBased = true;
+  const new laBased() : laBased = true;
 
   /// The base-table index (0–6) for [ordinal], octave-reduced and rotated
   /// according to [laBased].

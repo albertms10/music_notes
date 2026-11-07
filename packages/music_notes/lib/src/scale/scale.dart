@@ -39,7 +39,7 @@ final class Scale<T extends Scalable<T>> implements Transposable<Scale<T>> {
 
   /// Creates a new [Scale] instance from [_degrees] and optional
   /// [_descendingDegrees].
-  const Scale(this._degrees, [this._descendingDegrees]);
+  const new(this._degrees, [this._descendingDegrees]);
 
   /// The length of this [Scale].
   ///
@@ -175,10 +175,7 @@ extension NoteScale on Scale<Note> {
   /// Note.d.minor.scale.degreeChord(.ii) == Note.d.diminishedTriad
   /// Note.c.major.scale.degreeChord(.ii.lowered) == Note.d.flat.majorTriad
   /// ```
-  Chord degreeChord(
-    ScaleDegree scaleDegree, {
-    Set<Size> shape = Size.triad,
-  }) =>
+  Chord degreeChord(ScaleDegree scaleDegree, {Set<Size> shape = Size.triad}) =>
       // TODO(albertms10): find a better way of handling altered scale degrees.
       (scaleDegree.isLowered
               ? ChordPattern.majorTriad
@@ -194,9 +191,9 @@ extension NoteScale on Scale<Note> {
   /// Note.b.flat.minor.scale.functionChord(HarmonicFunction.ii / .dominantV)
   ///   == Note.g.minorTriad
   /// ```
-  Chord functionChord(HarmonicFunction harmonicFunction) => scaleOf(
-    harmonicFunction.tonicization,
-  ).degreeChord(harmonicFunction.scaleDegree);
+  Chord functionChord(HarmonicFunction harmonicFunction) =>
+      scaleOf(harmonicFunction.tonicization)
+          .degreeChord(harmonicFunction.scaleDegree);
 
   /// Returns the tonal scale established by [harmonicFunction] relative to this
   /// [Scale].

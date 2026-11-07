@@ -45,10 +45,7 @@ void main() {
         const a = Temperature.celsius(0);
         const b = Temperature.celsius(20);
 
-        expect(
-          a.ratio() * b.ratio(a),
-          closeTo(1, 1e-10),
-        );
+        expect(a.ratio() * b.ratio(a), closeTo(1, 1e-10));
       });
 
       test('uses the custom reference temperature', () {

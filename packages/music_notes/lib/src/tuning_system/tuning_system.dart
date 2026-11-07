@@ -16,7 +16,7 @@ abstract class TuningSystem {
   final TuningFork fork;
 
   /// Creates a new [TuningSystem].
-  const TuningSystem({required this.fork});
+  const new({required this.fork});
 
   /// The number of [Cent] for the generator at [Interval.P5] in this
   /// [TuningSystem].

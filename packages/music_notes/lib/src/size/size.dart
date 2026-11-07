@@ -11,7 +11,7 @@ import 'size_notation.dart';
 /// An [Interval] size.
 extension type const Size._(int size) implements int {
   /// Creates a new [Size] from [size].
-  const Size(this.size) : assert(size != 0, 'Value must be non-zero.');
+  const new(this.size) : assert(size != 0, 'Value must be non-zero.');
 
   /// A unison [PerfectSize].
   static const unison = PerfectSize(1);
@@ -75,10 +75,8 @@ extension type const Size._(int size) implements int {
   static const parsers = [SizeNotation()];
 
   /// Parses [source] as a [Size].
-  factory Size.parse(
-    String source, {
-    List<StringParser<Size>> chain = parsers,
-  }) => chain.parse(source);
+  factory parse(String source, {List<StringParser<Size>> chain = parsers}) =>
+      chain.parse(source);
 
   /// Map a semitones value to a value between 0 and 12.
   static int _normalizeSemitones(int semitones) {
@@ -91,7 +89,7 @@ extension type const Size._(int size) implements int {
 
   /// Scale a given normalized [Size] (one of the entries in [_sizeToSemitones])
   /// to the given [semitones].
-  factory Size._scaleToSemitones(Size normalizedSize, int semitones) {
+  factory _scaleToSemitones(Size normalizedSize, int semitones) {
     final absSemitones = semitones.abs();
     if (absSemitones == chromaticDivisions) {
       return Size(normalizedSize * semitones.sign);
@@ -124,7 +122,7 @@ extension type const Size._(int size) implements int {
 
   /// The [Size] that is nearest, truncating towards zero, to the given
   /// interval in [semitones].
-  factory Size.nearestFromSemitones(int semitones) {
+  factory nearestFromSemitones(int semitones) {
     final normalizedSemitones = _normalizeSemitones(semitones);
     final MapEntry<Size, int>(key: closest) = minBy(
       _sizeToSemitones.entries,
@@ -278,7 +276,7 @@ extension type const Size._(int size) implements int {
 /// An [Interval.perfect] size.
 extension type const PerfectSize._(int size) implements Size {
   /// Creates a new [PerfectSize] from [size].
-  const PerfectSize(this.size)
+  const new(this.size)
     // Copied from [Size.isPerfect] to allow const.
     : assert(
         ((1 << ((size < 0 ? -size : size) % 7)) & 50) != 0,
@@ -315,7 +313,7 @@ extension type const PerfectSize._(int size) implements Size {
 /// An [Interval.imperfect] size.
 extension type const ImperfectSize._(int size) implements Size {
   /// Creates a new [ImperfectSize] from [size].
-  const ImperfectSize(this.size)
+  const new(this.size)
     // Copied from [Size.isPerfect] to allow const.
     : assert(
         ((1 << ((size < 0 ? -size : size) % 7)) & 50) == 0,

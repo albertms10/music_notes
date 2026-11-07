@@ -1,14 +1,14 @@
 /// The representation of a Celsius temperature.
 extension type const Temperature._(num celsius) implements num {
   /// Creates a new [Temperature] from Celsius.
-  const Temperature.celsius(this.celsius);
+  const new celsius(this.celsius);
 
   /// Creates a new [Temperature] from Fahrenheit.
-  const Temperature.fahrenheit(num fahrenheit)
+  const new fahrenheit(num fahrenheit)
     : this.celsius((fahrenheit - 32) * 5 / 9);
 
   /// Creates a new [Temperature] from Kelvin.
-  const Temperature.kelvin(num kelvin) : this.celsius(kelvin - 273.15);
+  const new kelvin(num kelvin) : this.celsius(kelvin - 273.15);
 
   /// The absolute zero Celsius temperature.
   static const zero = Temperature.celsius(0);

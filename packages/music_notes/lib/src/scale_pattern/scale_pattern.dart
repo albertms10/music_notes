@@ -36,7 +36,7 @@ final class ScalePattern {
 
   /// Creates a new [ScalePattern] from [_intervalSteps] and optional
   /// [_descendingIntervalSteps].
-  const ScalePattern(this._intervalSteps, [this._descendingIntervalSteps]);
+  const new(this._intervalSteps, [this._descendingIntervalSteps]);
 
   /// ![C Ionian scale](https://upload.wikimedia.org/score/p/2/p2fun2296uif26uyy61yxjli7ocfq9d/p2fun229.png).
   static const ionian = ScalePattern([.M2, .M2, .m2, .M2, .M2, .M2, .m2]);
@@ -162,7 +162,7 @@ final class ScalePattern {
   /// ScalePattern.fromChordPattern(.majorTriad) == .major
   /// ScalePattern.fromChordPattern(.minorTriad) == .naturalMinor
   /// ```
-  factory ScalePattern.fromChordPattern(ChordPattern chordPattern) {
+  factory fromChordPattern(ChordPattern chordPattern) {
     if (chordPattern.isAugmented) return lydianAugmented;
     if (chordPattern.isMajor) return major;
     if (chordPattern.isMinor) return naturalMinor;
@@ -184,7 +184,7 @@ final class ScalePattern {
   /// ScalePattern.fromBinary(1010_1010_1101.b, 0101_1010_1101.b)
   ///   == .melodicMinor
   /// ```
-  factory ScalePattern.fromBinary(int sequence, [int? descendingSequence]) {
+  factory fromBinary(int sequence, [int? descendingSequence]) {
     assert(sequence > 0, 'Sequence must be greater than 0');
 
     final degrees = [

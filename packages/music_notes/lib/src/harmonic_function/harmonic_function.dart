@@ -26,7 +26,7 @@ final class HarmonicFunction implements Formattable<HarmonicFunction> {
   final HarmonicFunction? tonicization;
 
   /// Creates a new [HarmonicFunction] from [scaleDegree] and [tonicization].
-  const HarmonicFunction(this.scaleDegree, {this.pattern, this.tonicization});
+  const new(this.scaleDegree, {this.pattern, this.tonicization});
 
   /// A I (tonic) degree [HarmonicFunction].
   static const i = HarmonicFunction(.i);

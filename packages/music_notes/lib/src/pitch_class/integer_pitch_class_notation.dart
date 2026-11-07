@@ -6,7 +6,7 @@ import 'pitch_class.dart';
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
 final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
-  const IntegerPitchClassNotation();
+  const new();
 
   static final _regExp = RegExp('(?<pitchClass>[0-9et])');
 

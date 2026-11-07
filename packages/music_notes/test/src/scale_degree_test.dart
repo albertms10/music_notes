@@ -41,10 +41,7 @@ void main() {
 
     group('.lowered', () {
       test('returns this ScaleDegree lowered by 1 semitone', () {
-        expect(
-          ScaleDegree.ii.lowered,
-          const ScaleDegree(2, accidental: .flat),
-        );
+        expect(ScaleDegree.ii.lowered, const ScaleDegree(2, accidental: .flat));
         expect(
           ScaleDegree.vi.lowered.lowered,
           const ScaleDegree(6, accidental: .doubleFlat),
@@ -290,10 +287,7 @@ void main() {
         expect(ScaleDegree.parse('DO'), ScaleDegree.i);
         expect(ScaleDegree.parse('ti'), ScaleDegree.vii);
 
-        expect(
-          ScaleDegree.parse('La', chain: const [laBased]),
-          ScaleDegree.i,
-        );
+        expect(ScaleDegree.parse('La', chain: const [laBased]), ScaleDegree.i);
         expect(
           ScaleDegree.parse('Do', chain: const [laBased]),
           ScaleDegree.iii,

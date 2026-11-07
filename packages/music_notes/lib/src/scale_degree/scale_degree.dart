@@ -23,7 +23,7 @@ final class ScaleDegree
   final Accidental accidental;
 
   /// Creates a new [ScaleDegree].
-  const ScaleDegree(this.ordinal, {this.accidental = .natural})
+  const new(this.ordinal, {this.accidental = .natural})
     : assert(ordinal > 0, 'Ordinal must be greater than zero.');
 
   /// The I (tonic) [ScaleDegree].
@@ -79,7 +79,7 @@ final class ScaleDegree
   /// ScaleDegree.parse('fi', chain: solfege) == .iv.raised
   /// ScaleDegree.parse('Te', chain: solfege) == .vii.lowered
   /// ```
-  factory ScaleDegree.parse(
+  factory parse(
     String source, {
     List<StringParser<ScaleDegree>> chain = parsers,
   }) => chain.parse(source);

@@ -387,18 +387,15 @@ void main() {
           .majorTriad,
           .majorTriad,
         ]);
-        expect(
-          ScalePattern.harmonicMinor.degreePatterns,
-          const <ChordPattern>[
-            .minorTriad,
-            .diminishedTriad,
-            .augmentedTriad,
-            .minorTriad,
-            .majorTriad,
-            .majorTriad,
-            .diminishedTriad,
-          ],
-        );
+        expect(ScalePattern.harmonicMinor.degreePatterns, const <ChordPattern>[
+          .minorTriad,
+          .diminishedTriad,
+          .augmentedTriad,
+          .minorTriad,
+          .majorTriad,
+          .majorTriad,
+          .diminishedTriad,
+        ]);
         expect(ScalePattern.melodicMinor.degreePatterns, const <ChordPattern>[
           .minorTriad,
           .minorTriad,
@@ -415,15 +412,9 @@ void main() {
       test('returns the ChordPattern for the ScaleDegree of this '
           'ScalePattern', () {
         expect(ScalePattern.major.degreePattern(.i), ChordPattern.majorTriad);
+        expect(ScalePattern.major.degreePattern(.vi), ChordPattern.minorTriad);
         expect(
-          ScalePattern.major.degreePattern(.vi),
-          ChordPattern.minorTriad,
-        );
-        expect(
-          ScalePattern.major.degreePattern(
-            .vi,
-            shape: {...Size.triad, .sixth},
-          ),
+          ScalePattern.major.degreePattern(.vi, shape: {...Size.triad, .sixth}),
           ChordPattern.minorTriad.add6(.minor),
         );
         expect(
@@ -493,11 +484,8 @@ void main() {
       test('returns whether this ScalePattern is enharmonically equivalent to '
           'other', () {
         expect(
-          const ScalePattern([
-            .m2,
-            .m3,
-            .M2,
-          ]).isEnharmonicWith(const ScalePattern([.m2, .A2, .d3])),
+          const ScalePattern([.m2, .m3, .M2])
+              .isEnharmonicWith(const ScalePattern([.m2, .A2, .d3])),
           isTrue,
         );
       });

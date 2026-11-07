@@ -14,16 +14,15 @@ final class PerfectQualityNotation
   final String augmentedSymbol;
 
   /// Creates a new [PerfectQualityNotation].
-  const PerfectQualityNotation({
+  const new({
     this.diminishedSymbol = 'd',
     this.perfectSymbol = 'P',
     this.augmentedSymbol = 'A',
   });
 
   @override
-  RegExp get regExp => RegExp(
-    '(?<quality>$diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)',
-  );
+  RegExp get regExp =>
+      RegExp('(?<quality>$diminishedSymbol+|$perfectSymbol|$augmentedSymbol+)');
 
   @override
   String format(PerfectQuality quality) => switch (quality.semitones) {
@@ -60,7 +59,7 @@ final class ImperfectQualityNotation
   final String majorSymbol;
 
   /// Creates a new [ImperfectQualityNotation].
-  const ImperfectQualityNotation({
+  const new({
     this.diminishedSymbol = 'd',
     this.minorSymbol = 'm',
     this.majorSymbol = 'M',

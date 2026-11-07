@@ -12,7 +12,7 @@ final class ChordPatternNotation extends StringNotationSystem<ChordPattern> {
   final StringFormatter<Accidental> accidentalNotation;
 
   /// Creates a new [ChordPatternNotation].
-  const ChordPatternNotation({
+  const new({
     this.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),

@@ -17,21 +17,21 @@ final class EnglishKeyNotation extends StringNotationSystem<Key> {
   final bool showMode;
 
   /// Creates a new [EnglishKeyNotation].
-  const EnglishKeyNotation({
+  const new({
     this.noteNotation = const EnglishNoteNotation(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
     this.showMode = true,
   });
 
   /// Creates a new symbolic [EnglishKeyNotation].
-  const EnglishKeyNotation.symbol({
+  const new symbol({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
     this.showMode = true,
   });
 
   /// Creates a new symbolic [EnglishKeyNotation] using ASCII characters.
-  const EnglishKeyNotation.ascii({
+  const new ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
     this.tonalModeNotation = const EnglishTonalModeNotation(),
     this.showMode = true,

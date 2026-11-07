@@ -15,7 +15,7 @@ import 'pitch_xml_notation.dart';
 /// original value.
 abstract class XmlNotationSystem<V> extends NotationSystem<V, XmlElement> {
   /// Creates a new [XmlNotationSystem].
-  const XmlNotationSystem();
+  const new();
 
   /// The local name of the root element this system parses and formats
   /// (e.g. `'pitch'`, `'key'`, `'harmony'`).

@@ -18,14 +18,12 @@ final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
   final bool _useAscii;
 
   /// Creates a new [ScientificPitchNotation].
-  const ScientificPitchNotation({
-    this.noteNotation = const EnglishNoteNotation.symbol(),
-  }) : _useAscii = false;
+  const new({this.noteNotation = const EnglishNoteNotation.symbol()})
+    : _useAscii = false;
 
   /// Creates a new [ScientificPitchNotation] using ASCII characters.
-  const ScientificPitchNotation.ascii({
-    this.noteNotation = const EnglishNoteNotation.ascii(),
-  }) : _useAscii = true;
+  const new ascii({this.noteNotation = const EnglishNoteNotation.ascii()})
+    : _useAscii = true;
 
   /// The [EnglishNoteNotation] variant of this [ScientificPitchNotation].
   static const english = ScientificPitchNotation();

@@ -32,7 +32,7 @@ final class ChordPattern
   List<Interval> get intervals => UnmodifiableListView(_intervals);
 
   /// Creates a new [ChordPattern] from [_intervals].
-  const ChordPattern(this._intervals);
+  const new(this._intervals);
 
   /// A diminished triad [ChordPattern].
   static const diminishedTriad = ChordPattern([.m3, .d5]);
@@ -53,12 +53,11 @@ final class ChordPattern
   /// ChordPattern.fromIntervalSteps([.m3, .M3]) == .minorTriad
   /// ChordPattern.fromIntervalSteps([.M3, .M3]) == .augmentedTriad
   /// ```
-  factory ChordPattern.fromIntervalSteps(Iterable<Interval> intervalSteps) =>
-      ChordPattern(
-        intervalSteps.skip(1).fold([
-          intervalSteps.first,
-        ], (steps, interval) => [...steps, interval + steps.last]),
-      );
+  factory fromIntervalSteps(Iterable<Interval> intervalSteps) => ChordPattern(
+    intervalSteps.skip(1).fold([
+      intervalSteps.first,
+    ], (steps, interval) => [...steps, interval + steps.last]),
+  );
 
   /// Creates a new [ChordPattern] from the given [quality].
   ///
@@ -67,14 +66,13 @@ final class ChordPattern
   /// ChordPattern.fromQuality(.augmented) == .augmentedTriad
   /// ChordPattern.fromQuality(.minor) == .minorTriad
   /// ```
-  factory ChordPattern.fromQuality(ImperfectQuality quality) =>
-      switch (quality) {
-        .diminished => diminishedTriad,
-        .minor => minorTriad,
-        .major => majorTriad,
-        .augmented => augmentedTriad,
-        _ => majorTriad,
-      };
+  factory fromQuality(ImperfectQuality quality) => switch (quality) {
+    .diminished => diminishedTriad,
+    .minor => minorTriad,
+    .major => majorTriad,
+    .augmented => augmentedTriad,
+    _ => majorTriad,
+  };
 
   /// The chain of [StringParser]s used to parse a [ChordPattern].
   static const parsers = [ChordPatternNotation()];
@@ -89,7 +87,7 @@ final class ChordPattern
   /// ChordPattern.parse('maj7') == .majorTriad.add7(.major)
   /// ChordPattern.parse('z') // throws a FormatException
   /// ```
-  factory ChordPattern.parse(
+  factory parse(
     String source, {
     List<StringParser<ChordPattern>> chain = parsers,
   }) => chain.parse(source);
@@ -101,10 +99,9 @@ final class ChordPattern
   /// ChordPattern.majorTriad.on(.c) == const Chord([.c, .e, .g])
   /// ```
   Chord on(Note note) => Chord(
-    _intervals.fold(
-      [note],
-      (chordItems, interval) => [...chordItems, note.transposeBy(interval)],
-    ),
+    _intervals.fold([
+      note,
+    ], (chordItems, interval) => [...chordItems, note.transposeBy(interval)]),
   );
 
   /// The [Chord] built under [note].

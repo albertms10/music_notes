@@ -90,9 +90,8 @@ void main() {
     group('.pythagoreanComma', () {
       test('returns the ratio of the Pythagorean comma', () {
         expect(
-          PythagoreanTuning(
-            fork: Note.f.sharp.inOctave(5).at(.reference),
-          ).pythagoreanComma,
+          PythagoreanTuning(fork: Note.f.sharp.inOctave(5).at(.reference))
+              .pythagoreanComma,
           const PythagoreanTuning().pythagoreanComma,
         );
       });

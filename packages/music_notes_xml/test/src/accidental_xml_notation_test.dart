@@ -32,9 +32,8 @@ void main() {
               'double-sharp': .doubleSharp,
               'triple-sharp': .tripleSharp,
             }.entries) {
-          final element = XmlDocument.parse(
-            '<accidental>$source</accidental>',
-          ).rootElement;
+          final element = XmlDocument.parse('<accidental>$source</accidental>')
+              .rootElement;
           expect(notation.parse(element), accidental);
         }
       });
