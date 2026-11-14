@@ -18,6 +18,9 @@ final class const AbcAccidentalNotation({
   /// same bar.
   final bool showNatural = true,
 }) extends StringNotationSystem<Accidental> {
+  /// Creates a new [AbcAccidentalNotation].
+  this;
+
   static const _flatSymbol = '_';
   static const _naturalSymbol = '=';
   static const _sharpSymbol = '^';

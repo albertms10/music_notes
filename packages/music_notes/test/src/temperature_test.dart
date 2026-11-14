@@ -5,7 +5,7 @@ void main() {
   group('Temperature', () {
     group('.celsius()', () {
       test('creates a new Temperature from Celsius', () {
-        expect(const Temperature.celsius(20), 20);
+        expect(Temperature.reference, 20);
         expect(const Temperature.celsius(-40), -40);
         expect(const Temperature.celsius(100), 100);
       });

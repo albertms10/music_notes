@@ -30,3 +30,5 @@ analyzer:
     no_runtimetype_tostring: ignore
     sort_constructors_first: ignore
     specify_nonobvious_property_types: ignore
+
+    lines_longer_than_80_chars: ignore

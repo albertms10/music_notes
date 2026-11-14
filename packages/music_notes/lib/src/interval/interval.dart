@@ -323,7 +323,6 @@ final class Interval
   /// (-Interval.P5).withDescending(true) == -Interval.P5
   /// (-Interval.M7).withDescending(false) == .M7
   /// ```
-  // ignore: avoid_positional_boolean_parameters for conciseness
   Interval withDescending(bool isDescending) =>
       isDescending ? descending : ascending;
 

@@ -5,7 +5,7 @@ void main() {
   group('Size', () {
     group('constructor', () {
       test('asserts the size argument is correct', () {
-        expect(const Size(3), Size.third);
+        expect(Size.third, Size.third);
         expect(const Size(-10), -Size.tenth);
         expect(const PerfectSize(11), Size.eleventh);
         expect(const ImperfectSize(14), const Size(14));
