@@ -6,8 +6,4 @@ workspace:
   - packages/music_notes_xml
 
 environment:
-  sdk: ">=3.13.0 <4.0.0"
-dev_dependencies:
-  music_notes: any
-  pipe_organ: any
-  collection: any
+  sdk: ">=3.14.0 <4.0.0"

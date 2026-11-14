@@ -813,7 +813,7 @@ void main() {
           Note.a.flat.inOctave(4).frequency(),
           const Frequency(415.3046975799451),
         );
-        expect(Note.a.inOctave(4).frequency(), const Frequency(440));
+        expect(Note.a.inOctave(4).frequency(), Frequency.reference);
         expect(
           Note.a.sharp.inOctave(4).frequency(),
           const Frequency(466.1637615180899),

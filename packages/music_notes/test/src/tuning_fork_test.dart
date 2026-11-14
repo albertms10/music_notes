@@ -7,7 +7,7 @@ void main() {
       test('returns the verbose string representation of this '
           'TuningFork', () {
         expect(
-          Note.a.sharp.inOctave(4).at(const Frequency(440)).toString(),
+          Note.a.sharp.inOctave(4).at(Frequency.reference).toString(),
           'TuningFork(pitch: Pitch(note: '
           'Note(noteName: NoteName.a, accidental: Accidental(semitones: 1)), '
           'octave: 4), frequency: 440)',

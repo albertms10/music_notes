@@ -9,7 +9,7 @@ void main() {
         expect(Cent.fromRatio(1), const Cent(0));
         expect(Cent.fromRatio(3 / 2), const Cent(701.9550008653874));
         expect(Cent.fromRatio(9 / 8), const Cent(203.91000173077484));
-        expect(Cent.fromRatio(2), const Cent(1200));
+        expect(Cent.fromRatio(2), Cent.octave);
         expect(Cent.fromRatio(4), const Cent(2400));
 
         const edo12 = EqualTemperament.edo12();
@@ -40,10 +40,10 @@ void main() {
       test('returns the ratio for this Cent', () {
         expect(const Cent(0).ratio, 1);
         expect(const Cent(-63.16).ratio, 0.9641748254592175);
-        expect(const Cent(100).ratio, 1.0594630943592953);
+        expect(Cent.divisionsPerSemitone.ratio, 1.0594630943592953);
         expect(const Cent(600).ratio, 1.4142135623730951);
         expect(const Cent(631.58).ratio, 1.4402474132432592);
-        expect(const Cent(1200).ratio, 2);
+        expect(Cent.octave.ratio, 2);
       });
     });
 
@@ -56,7 +56,7 @@ void main() {
 
     group('operator -()', () {
       test('returns the negation of this Cent', () {
-        expect(-const Cent(100), const Cent(-100));
+        expect(-Cent.divisionsPerSemitone, const Cent(-100));
         expect(-const Cent(-701.955), const Cent(701.955));
       });
     });
