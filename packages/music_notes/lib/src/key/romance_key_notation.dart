@@ -17,21 +17,21 @@ final class RomanceKeyNotation extends StringNotationSystem<Key> {
   final bool showMode;
 
   /// Creates a new [RomanceKeyNotation].
-  const RomanceKeyNotation({
+  const new({
     this.noteNotation = const RomanceNoteNotation(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
     this.showMode = true,
   });
 
   /// Creates a new symbolic [RomanceKeyNotation].
-  const RomanceKeyNotation.symbol({
+  const new symbol({
     this.noteNotation = const RomanceNoteNotation.symbol(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
     this.showMode = true,
   });
 
   /// Creates a new symbolic [RomanceKeyNotation] using ASCII characters.
-  const RomanceKeyNotation.ascii({
+  const new ascii({
     this.noteNotation = const RomanceNoteNotation.ascii(),
     this.tonalModeNotation = const RomanceTonalModeNotation(),
     this.showMode = true,

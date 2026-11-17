@@ -8,7 +8,7 @@ import 'accidental.dart';
 ///
 /// For other accidentals, returns a combination of sharp (^) or flat (_)
 /// depending on the number of semitones above or below the natural note.
-final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
+final class const AbcAccidentalNotation({
   /// Whether to emit an explicit `=` for natural pitches.
   ///
   /// ABC scores normally infer naturals from the prevailing key signature,
@@ -16,10 +16,10 @@ final class AbcAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Set this to `true` when you need the symbol to be unambiguous outside
   /// of that context, e.g., cancelling an accidental from earlier in the
   /// same bar.
-  final bool showNatural;
-
+  final bool showNatural = true,
+}) extends StringNotationSystem<Accidental> {
   /// Creates a new [AbcAccidentalNotation].
-  const AbcAccidentalNotation({this.showNatural = true});
+  this;
 
   static const _flatSymbol = '_';
   static const _naturalSymbol = '=';

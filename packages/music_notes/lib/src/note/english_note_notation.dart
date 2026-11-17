@@ -8,7 +8,7 @@ import 'note_notation.dart';
 /// The English notation system for [Note].
 final class EnglishNoteNotation extends NoteNotation {
   /// Creates a new [EnglishNoteNotation].
-  const EnglishNoteNotation({
+  const new({
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const EnglishAccidentalNotation(
       showNatural: false,
@@ -16,7 +16,7 @@ final class EnglishNoteNotation extends NoteNotation {
   });
 
   /// Creates a new symbolic [EnglishNoteNotation].
-  const EnglishNoteNotation.symbol({
+  const new symbol({
     super.noteNameNotation = const EnglishNoteNameNotation(),
     super.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
@@ -25,14 +25,13 @@ final class EnglishNoteNotation extends NoteNotation {
   });
 
   /// Creates a new symbolic [EnglishNoteNotation] using ASCII characters.
-  const EnglishNoteNotation.ascii({
-    super.noteNameNotation = const EnglishNoteNameNotation(),
-  }) : super(
-         accidentalNotation: const SymbolAccidentalNotation.ascii(
-           showNatural: false,
-           largerFirst: true,
-         ),
-       );
+  const new ascii({super.noteNameNotation = const EnglishNoteNameNotation()})
+    : super(
+        accidentalNotation: const SymbolAccidentalNotation.ascii(
+          showNatural: false,
+          largerFirst: true,
+        ),
+      );
 
   /// The [EnglishNoteNotation] format variant that shows the
   /// [Accidental.natural] accidental.

@@ -38,9 +38,10 @@ void main() {
         ]);
         expect(
           skip: 'Unsupported cyclic wrapping.',
-          () => (from: Note.e, to: Note.e.flat).explode(
-            nextValue: (note) => note.transposeBy(.A1).respelledSimple,
-          ),
+          () => (
+            from: Note.e,
+            to: Note.e.flat,
+          ).explode(nextValue: (note) => note.transposeBy(.A1).respelledSimple),
           <Note>[
             .e,
             .f,
@@ -59,16 +60,13 @@ void main() {
         expect(
           skip: 'Unsupported cyclic wrapping.',
           () => (from: Note.b, to: Note.c.sharp).explode(),
-          <Note>[
-            .b,
-            .c,
-            .d.flat,
-          ],
+          <Note>[.b, .c, .d.flat],
         );
         expect(
-          const (from: Note.c, to: Note.b).explode(
-            nextValue: (note) => note.transposeBy(.M2).respelledSimple,
-          ),
+          const (
+            from: Note.c,
+            to: Note.b,
+          ).explode(nextValue: (note) => note.transposeBy(.M2).respelledSimple),
           <Note>[.c, .d, .e, .f.sharp, .g.sharp, .a.sharp],
         );
 

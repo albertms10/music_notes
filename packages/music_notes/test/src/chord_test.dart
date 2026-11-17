@@ -209,58 +209,23 @@ void main() {
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          Chord([
-            .c,
-            .e.flat,
-            .g.flat,
-            .a.flat,
-            .b.flat,
-            .d.flat,
-          ]).rootPosition,
+          Chord([.c, .e.flat, .g.flat, .a.flat, .b.flat, .d.flat]).rootPosition,
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          Chord([
-            .e.flat,
-            .g.flat,
-            .a.flat,
-            .b.flat,
-            .c,
-            .d.flat,
-          ]).rootPosition,
+          Chord([.e.flat, .g.flat, .a.flat, .b.flat, .c, .d.flat]).rootPosition,
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          Chord([
-            .g.flat,
-            .a.flat,
-            .b.flat,
-            .c,
-            .d.flat,
-            .e.flat,
-          ]).rootPosition,
+          Chord([.g.flat, .a.flat, .b.flat, .c, .d.flat, .e.flat]).rootPosition,
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          Chord([
-            .b.flat,
-            .c,
-            .d.flat,
-            .e.flat,
-            .g.flat,
-            .a.flat,
-          ]).rootPosition,
+          Chord([.b.flat, .c, .d.flat, .e.flat, .g.flat, .a.flat]).rootPosition,
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
         expect(
-          Chord([
-            .d.flat,
-            .e.flat,
-            .g.flat,
-            .a.flat,
-            .b.flat,
-            .c,
-          ]).rootPosition,
+          Chord([.d.flat, .e.flat, .g.flat, .a.flat, .b.flat, .c]).rootPosition,
           Chord([.a.flat, .c, .e.flat, .g.flat, .b.flat, .d.flat]),
         );
 
@@ -270,104 +235,32 @@ void main() {
               .add9(.minor)
               .add11()
               .rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
         expect(
-          Chord([
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .d.sharp,
-            .e,
-            .g.sharp,
-          ]).rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.f.sharp, .a.sharp, .c.sharp.sharp, .d.sharp, .e, .g.sharp])
+              .rootPosition,
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
         expect(
-          Chord([
-            .a.sharp,
-            .c.sharp.sharp,
-            .d.sharp,
-            .e,
-            .f.sharp,
-            .g.sharp,
-          ]).rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.a.sharp, .c.sharp.sharp, .d.sharp, .e, .f.sharp, .g.sharp])
+              .rootPosition,
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
         expect(
-          Chord([
-            .c.sharp.sharp,
-            .d.sharp,
-            .e,
-            .f.sharp,
-            .g.sharp,
-            .a.sharp,
-          ]).rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.c.sharp.sharp, .d.sharp, .e, .f.sharp, .g.sharp, .a.sharp])
+              .rootPosition,
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
         expect(
-          Chord([
-            .e,
-            .f.sharp,
-            .g.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .d.sharp,
-          ]).rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.e, .f.sharp, .g.sharp, .a.sharp, .c.sharp.sharp, .d.sharp])
+              .rootPosition,
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
         expect(
-          Chord([
-            .g.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .d.sharp,
-            .e,
-            .f.sharp,
-          ]).rootPosition,
-          Chord([
-            .d.sharp,
-            .f.sharp,
-            .a.sharp,
-            .c.sharp.sharp,
-            .e,
-            .g.sharp,
-          ]),
+          Chord([.g.sharp, .a.sharp, .c.sharp.sharp, .d.sharp, .e, .f.sharp])
+              .rootPosition,
+          Chord([.d.sharp, .f.sharp, .a.sharp, .c.sharp.sharp, .e, .g.sharp]),
         );
 
         expect(Note.c.majorTriad.rootPosition, Note.c.majorTriad);
@@ -375,29 +268,18 @@ void main() {
         expect(Note.b.flat.majorTriad.rootPosition, Note.b.flat.majorTriad);
       });
 
-      test(
-        'supports a 13th chord only when already in root position, since '
-        'generic structure alone cannot otherwise tell which of its 7 '
-        'note names is the root',
-        () {
-          final root13 = Note.c.majorTriad.add7().add9().add11().add13();
-          expect(root13.items, <Note>[.c, .e, .g, .b.flat, .d, .f, .a]);
-          expect(root13.rootPosition, root13);
+      test('supports a 13th chord only when already in root position, since '
+          'generic structure alone cannot otherwise tell which of its 7 '
+          'note names is the root', () {
+        final root13 = Note.c.majorTriad.add7().add9().add11().add13();
+        expect(root13.items, <Note>[.c, .e, .g, .b.flat, .d, .f, .a]);
+        expect(root13.rootPosition, root13);
 
-          expect(
-            () => Chord([
-              .e,
-              .g,
-              .b.flat,
-              .c,
-              .d,
-              .f,
-              .a,
-            ]).rootPosition,
-            throwsStateError,
-          );
-        },
-      );
+        expect(
+          () => Chord([.e, .g, .b.flat, .c, .d, .f, .a]).rootPosition,
+          throwsStateError,
+        );
+      });
     });
 
     group('.modifiers', () {
@@ -602,21 +484,19 @@ void main() {
 
     group('.toPitches()', () {
       test('realizes a close-position triad ascending from octave', () {
-        expect(
-          const Chord([.c, .e, .g]).toPitches(),
-          [Note.c.inOctave(4), Note.e.inOctave(4), Note.g.inOctave(4)],
-        );
+        expect(const Chord([.c, .e, .g]).toPitches(), [
+          Note.c.inOctave(4),
+          Note.e.inOctave(4),
+          Note.g.inOctave(4),
+        ]);
       });
 
       test('wraps tones into the next octave when needed', () {
-        expect(
-          Chord([.b, .d.sharp, .f.sharp]).toPitches(octave: 3),
-          [
-            Note.b.inOctave(3),
-            Note.d.sharp.inOctave(4),
-            Note.f.sharp.inOctave(4),
-          ],
-        );
+        expect(Chord([.b, .d.sharp, .f.sharp]).toPitches(octave: 3), [
+          Note.b.inOctave(3),
+          Note.d.sharp.inOctave(4),
+          Note.f.sharp.inOctave(4),
+        ]);
       });
 
       test('matches toVoicing() over the identity voice order', () {
@@ -627,10 +507,11 @@ void main() {
 
     group('.toVoicing()', () {
       test('anchors the first voice at octave', () {
-        expect(
-          const Chord([.c, .e, .g]).toVoicing([0, 1, 2], octave: 2),
-          [Note.c.inOctave(2), Note.e.inOctave(2), Note.g.inOctave(2)],
-        );
+        expect(const Chord([.c, .e, .g]).toVoicing([0, 1, 2], octave: 2), [
+          Note.c.inOctave(2),
+          Note.e.inOctave(2),
+          Note.g.inOctave(2),
+        ]);
       });
 
       test('doubles a repeated index an octave above, never in unison', () {
@@ -649,10 +530,11 @@ void main() {
       test('indexes into items literally, ignoring inversion/root order', () {
         // Chord is already in first inversion; index 0 means the literal
         // first item (E), not the harmonic root (C).
-        expect(
-          const Chord([.e, .g, .c]).toVoicing([0, 1, 2]),
-          [Note.e.inOctave(4), Note.g.inOctave(4), Note.c.inOctave(5)],
-        );
+        expect(const Chord([.e, .g, .c]).toVoicing([0, 1, 2]), [
+          Note.e.inOctave(4),
+          Note.g.inOctave(4),
+          Note.c.inOctave(5),
+        ]);
       });
 
       test('throws a RangeError for an out-of-range voice index', () {
@@ -681,25 +563,19 @@ void main() {
 
     group('.toString()', () {
       test('returns the verbose string representation of this Chord', () {
-        expect(
-          ChordPattern.majorTriad.on(.c).toString(),
-          '''
+        expect(ChordPattern.majorTriad.on(.c).toString(), '''
 Chord(items: [
 \tNote(noteName: NoteName.c, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.e, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.g, accidental: Accidental(semitones: 0))
-])''',
-        );
-        expect(
-          ChordPattern.minorTriad.add9().on(.f.sharp).toString(),
-          '''
+])''');
+        expect(ChordPattern.minorTriad.add9().on(.f.sharp).toString(), '''
 Chord(items: [
 \tNote(noteName: NoteName.f, accidental: Accidental(semitones: 1)),
 \tNote(noteName: NoteName.a, accidental: Accidental(semitones: 0)),
 \tNote(noteName: NoteName.c, accidental: Accidental(semitones: 1)),
 \tNote(noteName: NoteName.g, accidental: Accidental(semitones: 1))
-])''',
-        );
+])''');
       });
     });
 

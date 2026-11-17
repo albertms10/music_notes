@@ -106,10 +106,7 @@ void main() {
       test('returns the augmented triad on this Note', () {
         expect(Note.c.augmentedTriad, Chord([.c, .e, .g.sharp]));
         expect(Note.a.augmentedTriad, Chord([.a, .c.sharp, .e.sharp]));
-        expect(
-          Note.b.augmentedTriad,
-          Chord([.b, .d.sharp, .f.sharp.sharp]),
-        );
+        expect(Note.b.augmentedTriad, Chord([.b, .d.sharp, .f.sharp.sharp]));
       });
     });
 
@@ -123,10 +120,7 @@ void main() {
 
     group('.minorTriad', () {
       test('returns the minor triad on this Note', () {
-        expect(
-          Note.d.flat.minorTriad,
-          Chord([.d.flat, .f.flat, .a.flat]),
-        );
+        expect(Note.d.flat.minorTriad, Chord([.d.flat, .f.flat, .a.flat]));
         expect(Note.g.sharp.minorTriad, Chord([.g.sharp, .b, .d.sharp]));
         expect(Note.a.minorTriad, const Chord([.a, .c, .e]));
       });
@@ -707,18 +701,9 @@ void main() {
         expect(Note.c.format(textual), 'C');
         expect(Note.c.sharp.format(textual), 'C-sharp');
         expect(Note.d.flat.format(textual), 'D-flat');
-        expect(
-          Note.b.flat.flat.format(textual),
-          'B-double-flat',
-        );
-        expect(
-          Note.f.sharp.sharp.format(textual),
-          'F-double-sharp',
-        );
-        expect(
-          Note.g.sharp.sharp.sharp.format(textual),
-          'G-triple-sharp',
-        );
+        expect(Note.b.flat.flat.format(textual), 'B-double-flat');
+        expect(Note.f.sharp.sharp.format(textual), 'F-double-sharp');
+        expect(Note.g.sharp.sharp.sharp.format(textual), 'G-triple-sharp');
       });
     });
   });
@@ -733,10 +718,7 @@ void main() {
         expect(() => Note.parse('X', chain: chain), throwsFormatException);
         expect(() => Note.parse('cs', chain: chain), throwsFormatException);
         expect(() => Note.parse('aes', chain: chain), throwsFormatException);
-        expect(
-          () => Note.parse('bisis', chain: chain),
-          throwsFormatException,
-        );
+        expect(() => Note.parse('bisis', chain: chain), throwsFormatException);
         expect(() => Note.parse('Bis', chain: chain), throwsFormatException);
         expect(() => Note.parse('hes', chain: chain), throwsFormatException);
         expect(() => Note.parse('Bes', chain: chain), throwsFormatException);
@@ -860,18 +842,9 @@ void main() {
         expect(Note.e.format(textual), 'Mi');
         expect(Note.c.sharp.format(textual), 'Do diesis');
         expect(Note.d.flat.format(textual), 'Re bemolle');
-        expect(
-          Note.b.flat.flat.format(textual),
-          'Si doppio bemolle',
-        );
-        expect(
-          Note.f.sharp.sharp.format(textual),
-          'Fa doppio diesis',
-        );
-        expect(
-          Note.g.sharp.sharp.sharp.format(textual),
-          'Sol triplo diesis',
-        );
+        expect(Note.b.flat.flat.format(textual), 'Si doppio bemolle');
+        expect(Note.f.sharp.sharp.format(textual), 'Fa doppio diesis');
+        expect(Note.g.sharp.sharp.sharp.format(textual), 'Sol triplo diesis');
       });
     });
   });

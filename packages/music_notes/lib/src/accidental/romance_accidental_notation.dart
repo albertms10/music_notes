@@ -9,7 +9,7 @@ final class RomanceAccidentalNotation extends StringNotationSystem<Accidental> {
   final bool showNatural;
 
   /// Creates a new [RomanceAccidentalNotation].
-  const RomanceAccidentalNotation({this.showNatural = true});
+  const new({this.showNatural = true});
 
   static const _natural = 'naturale';
   static const _flat = 'bemolle';

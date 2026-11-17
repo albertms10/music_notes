@@ -27,7 +27,7 @@ final class ChordNotation extends StringNotationSystem<Chord> {
   final StringNotationSystem<ChordPattern> chordPatternNotation;
 
   /// Creates a new [ChordNotation].
-  const ChordNotation({
+  const new({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.chordPatternNotation = const ChordPatternNotation(),
   });
@@ -78,9 +78,7 @@ final class ChordNotation extends StringNotationSystem<Chord> {
 
     final symbol =
         '${noteNotation.format(root)}'
-        '${rootItems.length < 2 ? '' : chordPatternNotation.format(
-                rootPositionChord.pattern,
-              )}';
+        '${rootItems.length < 2 ? '' : chordPatternNotation.format(rootPositionChord.pattern)}';
     if (root == bass) return symbol;
 
     return '$symbol$_slash${noteNotation.format(bass)}';

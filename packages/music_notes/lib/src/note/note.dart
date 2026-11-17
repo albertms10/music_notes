@@ -38,7 +38,7 @@ final class Note extends Scalable<Note>
   final Accidental accidental;
 
   /// Creates a new [Note] from [noteName] and [accidental].
-  const Note(this.noteName, [this.accidental = .natural]);
+  const new(this.noteName, [this.accidental = .natural]);
 
   /// Note C.
   static const c = Note(.c);
@@ -83,10 +83,8 @@ final class Note extends Scalable<Note>
   /// Note.parse('c') == .c
   /// Note.parse('z') // throws a FormatException
   /// ```
-  factory Note.parse(
-    String source, {
-    List<StringParser<Note>> chain = parsers,
-  }) => chain.parse(source);
+  factory parse(String source, {List<StringParser<Note>> chain = parsers}) =>
+      chain.parse(source);
 
   /// [Comparator] for [Note]s by fifths distance.
   static int compareByFifthsDistance(Note a, Note b) =>
@@ -542,9 +540,6 @@ extension NoteList on List<Note> {
   ) {
     var current = first.inOctave(octave);
 
-    return [
-      current,
-      for (final note in skip(1)) current = next(current, note),
-    ];
+    return [current, for (final note in skip(1)) current = next(current, note)];
   }
 }

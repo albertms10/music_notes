@@ -18,14 +18,14 @@ final class CompactTuningForkNotation extends StringNotationSystem<TuningFork> {
   final int referenceOctave;
 
   /// Creates a new [CompactTuningForkNotation].
-  const CompactTuningForkNotation({
+  const new({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.frequencyNotation = const FrequencySINotation(),
     this.referenceOctave = Pitch.referenceOctave,
   });
 
   /// Creates a new [CompactTuningForkNotation] using ASCII symbols.
-  const CompactTuningForkNotation.ascii({
+  const new ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
     this.frequencyNotation = const FrequencySINotation(),
     this.referenceOctave = Pitch.referenceOctave,

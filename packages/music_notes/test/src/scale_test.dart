@@ -193,20 +193,14 @@ void main() {
       test('returns whether this Scale is enharmonically equivalent to '
           'other', () {
         expect(
-          const Scale<Note>([
-            .c,
-            .d,
-            .f,
-            .g,
-          ]).isEnharmonicWith(Scale<Note>([.b.sharp, .d, .e.sharp, .g])),
+          const Scale<Note>([.c, .d, .f, .g])
+              .isEnharmonicWith(Scale<Note>([.b.sharp, .d, .e.sharp, .g])),
           isTrue,
         );
         expect(
           ScalePattern.chromatic
               .on(Note.d.flat)
-              .isEnharmonicWith(
-                ScalePattern.chromatic.on(Note.b.sharp.sharp),
-              ),
+              .isEnharmonicWith(ScalePattern.chromatic.on(Note.b.sharp.sharp)),
           isTrue,
         );
       });

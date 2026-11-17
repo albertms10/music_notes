@@ -16,7 +16,7 @@ class StandardIntervalNotation extends StringNotationSystem<Interval> {
   final ImperfectQualityNotation imperfectQualityNotation;
 
   /// Creates a new [StandardIntervalNotation].
-  const StandardIntervalNotation({
+  const new({
     this.sizeNotation = const SizeNotation(),
     this.perfectQualityNotation = const PerfectQualityNotation(),
     this.imperfectQualityNotation = const ImperfectQualityNotation(),

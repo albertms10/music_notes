@@ -45,13 +45,13 @@ final class AbcPitchNotation extends StringNotationSystem<Pitch> {
   static const _baseLowercaseOctave = 5;
 
   /// Creates a new [AbcPitchNotation].
-  const AbcPitchNotation({
+  const new({
     this.accidentalNotation = const AbcAccidentalNotation(showNatural: false),
     this.noteNameNotation = const EnglishNoteNameNotation(),
   });
 
   /// An [AbcPitchNotation] that always writes `=` for natural pitches.
-  const AbcPitchNotation.showNatural({
+  const new showNatural({
     this.noteNameNotation = const EnglishNoteNameNotation(),
   }) : accidentalNotation = const AbcAccidentalNotation();
 

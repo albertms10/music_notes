@@ -5,7 +5,7 @@ import 'standard_interval_notation.dart';
 /// The German notation system for [Interval].
 final class GermanIntervalNotation extends StandardIntervalNotation {
   /// Creates a new [GermanIntervalNotation].
-  const GermanIntervalNotation({
+  const new({
     super.perfectQualityNotation = const PerfectQualityNotation(
       diminishedSymbol: 'v',
       perfectSymbol: 'r',

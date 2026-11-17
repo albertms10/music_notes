@@ -12,14 +12,10 @@ final class EnharmonicSpellingsPitchClassNotation
   final StringNotationSystem<Note> noteNotation;
 
   /// Creates a new [EnharmonicSpellingsPitchClassNotation].
-  const EnharmonicSpellingsPitchClassNotation({
-    this.noteNotation = const EnglishNoteNotation.symbol(),
-  });
+  const new({this.noteNotation = const EnglishNoteNotation.symbol()});
 
   /// Creates a new [EnharmonicSpellingsPitchClassNotation] using ASCII symbols.
-  const EnharmonicSpellingsPitchClassNotation.ascii({
-    this.noteNotation = const EnglishNoteNotation.ascii(),
-  });
+  const new ascii({this.noteNotation = const EnglishNoteNotation.ascii()});
 
   @override
   RegExp get regExp => RegExp(

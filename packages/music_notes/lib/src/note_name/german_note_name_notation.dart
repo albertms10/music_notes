@@ -5,7 +5,7 @@ import 'note_name.dart';
 /// The German notation system for [NoteName].
 final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [GermanNoteNameNotation].
-  const GermanNoteNameNotation();
+  const new();
 
   static const _altB = 'h';
 

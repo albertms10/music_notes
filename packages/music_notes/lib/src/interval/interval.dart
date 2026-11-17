@@ -36,7 +36,7 @@ final class Interval
   /// depending on the nature of this [Interval].
   final Quality quality;
 
-  const Interval._(this.size, this.quality);
+  const new _(this.size, this.quality);
 
   /// A diminished unison [Interval].
   static const d1 = Interval.perfect(.unison, .diminished);
@@ -177,7 +177,7 @@ final class Interval
   static const A13 = Interval.imperfect(.thirteenth, .augmented);
 
   /// Creates a new [Interval] allowing only perfect quality [size]s.
-  const Interval.perfect(this.size, [PerfectQuality this.quality = .perfect])
+  const new perfect(this.size, [PerfectQuality this.quality = .perfect])
     : assert(
         // This operation uses a bitmask implementation, modified to be allowed
         // in a const context:
@@ -218,7 +218,7 @@ final class Interval
       );
 
   /// Creates a new [Interval] allowing only imperfect quality [size]s.
-  const Interval.imperfect(this.size, ImperfectQuality this.quality)
+  const new imperfect(this.size, ImperfectQuality this.quality)
     : assert(
         // See [Interval.perfect] for an explanation of this bitmask operation.
         ((1 << ((size < 0 ? 0 - size : size) % 7)) & 50) == 0,
@@ -226,25 +226,23 @@ final class Interval
       );
 
   /// Creates a new [Interval] from [size] and [Quality.semitones].
-  factory Interval.fromSizeAndQualitySemitones(Size size, int semitones) =>
+  factory fromSizeAndQualitySemitones(Size size, int semitones) =>
       size.isPerfect
       ? .perfect(size, PerfectQuality(semitones))
       : .imperfect(size, ImperfectQuality(semitones));
 
   /// Creates a new [Interval] from [size] and [Interval.semitones].
-  factory Interval.fromSizeAndSemitones(
-    Size size,
-    int semitones,
-  ) => .fromSizeAndQualitySemitones(
-    size,
-    // adding 0 to prevent -0 from being treated as negative,
-    // which would cause the quality to be inverted
-    (semitones + 0) * size.sign - size.semitones.abs(),
-  );
+  factory fromSizeAndSemitones(Size size, int semitones) =>
+      .fromSizeAndQualitySemitones(
+        size,
+        // adding 0 to prevent -0 from being treated as negative,
+        // which would cause the quality to be inverted
+        (semitones + 0) * size.sign - size.semitones.abs(),
+      );
 
   /// Creates a new [Interval] from the given distance in [semitones].
   /// The size is inferred.
-  factory Interval.fromSemitones(int semitones) =>
+  factory fromSemitones(int semitones) =>
       .fromSizeAndSemitones(.nearestFromSemitones(semitones), semitones);
 
   /// The chain of [StringParser]s used to parse an [Interval].
@@ -261,7 +259,7 @@ final class Interval
   /// Interval.parse('P-5') == .P5.descending
   /// Interval.parse('z') // throws a FormatException
   /// ```
-  factory Interval.parse(
+  factory parse(
     String source, {
     List<StringParser<Interval>> chain = parsers,
   }) => chain.parse(source);
@@ -325,7 +323,6 @@ final class Interval
   /// (-Interval.P5).withDescending(true) == -Interval.P5
   /// (-Interval.M7).withDescending(false) == .M7
   /// ```
-  // ignore: avoid_positional_boolean_parameters for conciseness
   Interval withDescending(bool isDescending) =>
       isDescending ? descending : ascending;
 

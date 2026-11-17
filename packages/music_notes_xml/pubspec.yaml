@@ -1,5 +1,7 @@
 name: music_notes_xml
-description: Provides a set of classes and functions to handle MusicXML files. It allows for parsing, manipulating, and generating MusicXML data, making it easier to work with musical notation programmatically.
+description: Provides a set of classes and functions to handle MusicXML files.
+  It allows for parsing, manipulating, and generating MusicXML data, making it
+  easier to work with musical notation programmatically.
 version: 0.28.0
 
 repository: https://github.com/albertms10/music_notes
@@ -11,16 +13,16 @@ topics:
   - education
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.14.0 <4.0.0"
 
 dependencies:
   collection: ^1.19.1
   meta: ^1.19.0
   music_notes: ^0.28.0
-  xml: ^6.6.1
+  xml: ^7.1.0
 
 dev_dependencies:
-  test: ^1.31.1
-  very_good_analysis: ^10.1.0
+  test: ^1.33.0
+  very_good_analysis: ^11.0.0
 
 resolution: workspace

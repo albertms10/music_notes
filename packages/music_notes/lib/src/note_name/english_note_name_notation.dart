@@ -4,7 +4,7 @@ import 'note_name.dart';
 /// The English notation system for [NoteName].
 final class EnglishNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [EnglishNoteNameNotation].
-  const EnglishNoteNameNotation();
+  const new();
 
   static final _noteNames =
       (NoteName.values

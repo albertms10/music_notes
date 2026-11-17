@@ -4,7 +4,7 @@ import 'size.dart';
 /// A notation system for [Size].
 final class SizeNotation extends StringNotationSystem<Size> {
   /// Creates a new [SizeNotation].
-  const SizeNotation();
+  const new();
 
   static final _regExp = RegExp(r'(?<size>-?\d+)');
 

@@ -34,14 +34,13 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   a(9),
 
   /// Note name B.
-  b(11)
-  ;
+  b(11);
 
   /// The number of semitones that identify this [NoteName].
   final int semitones;
 
   /// Creates a new [NoteName] from [semitones].
-  const NoteName(this.semitones);
+  new(this.semitones);
 
   /// Returns a [NoteName] that matches with [semitones] as in [NoteName],
   /// otherwise returns `null`.
@@ -64,7 +63,7 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// NoteName.fromOrdinal(7) == .b
   /// NoteName.fromOrdinal(10) == .e
   /// ```
-  factory NoteName.fromOrdinal(int ordinal) =>
+  factory fromOrdinal(int ordinal) =>
       values[ordinal.nonZeroMod(values.length) - 1];
 
   /// The chain of [StringParser]s used to parse a [NoteName].
@@ -85,7 +84,7 @@ enum NoteName implements Comparable<NoteName>, Formattable<NoteName> {
   /// NoteName.parse('a') == .a
   /// NoteName.parse('z') // throws a FormatException
   /// ```
-  factory NoteName.parse(
+  factory parse(
     String source, {
     List<StringParser<NoteName>> chain = parsers,
   }) => chain.parse(source);

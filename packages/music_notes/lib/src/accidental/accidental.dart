@@ -25,7 +25,7 @@ final class Accidental
   final int semitones;
 
   /// Creates a new [Accidental] from [semitones].
-  const Accidental(this.semitones);
+  const new(this.semitones);
 
   /// A triple-sharp (♯𝄪) [Accidental].
   static const tripleSharp = Accidental(3);
@@ -69,7 +69,7 @@ final class Accidental
   /// Accidental.parse('x') == .doubleSharp
   /// Accidental.parse('z') // throws a FormatException
   /// ```
-  factory Accidental.parse(
+  factory parse(
     String source, {
     List<StringParser<Accidental>> chain = parsers,
   }) => chain.parse(source);

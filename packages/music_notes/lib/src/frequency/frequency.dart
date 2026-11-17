@@ -17,7 +17,7 @@ import 'frequency_si_notation.dart';
 /// * [ClosestPitch].
 extension type const Frequency._(num hertz) implements num {
   /// Creates a new [Frequency] instance from [hertz].
-  const Frequency(this.hertz) : assert(hertz >= 0, 'Hertz must be positive.');
+  const new(this.hertz) : assert(hertz >= 0, 'Hertz must be positive.');
 
   /// The standard reference [Frequency].
   static const reference = Frequency(440);
@@ -26,7 +26,7 @@ extension type const Frequency._(num hertz) implements num {
   static const parsers = [FrequencySINotation()];
 
   /// Parses [source] as a [Frequency].
-  factory Frequency.parse(
+  factory parse(
     String source, {
     List<StringParser<Frequency>> chain = parsers,
   }) => chain.parse(source);
@@ -75,9 +75,9 @@ extension type const Frequency._(num hertz) implements num {
         tuningSystem.fork.pitch.semitones +
         (cents / Cent.divisionsPerSemitone).round();
 
-    final closestPitch = PitchClass(
-      semitones,
-    ).resolveClosestSpelling().inOctave(Pitch.octaveFromSemitones(semitones));
+    final closestPitch = PitchClass(semitones)
+        .resolveClosestSpelling()
+        .inOctave(Pitch.octaveFromSemitones(semitones));
 
     final closestPitchFrequency = closestPitch.frequency(
       tuningSystem: tuningSystem,

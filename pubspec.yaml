@@ -6,4 +6,4 @@ workspace:
   - packages/music_notes_xml
 
 environment:
-  sdk: ">=3.10.0 <4.0.0"
+  sdk: ">=3.14.0 <4.0.0"

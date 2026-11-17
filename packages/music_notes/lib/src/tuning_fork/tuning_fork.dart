@@ -18,7 +18,7 @@ final class TuningFork implements Formattable<TuningFork> {
   final Frequency frequency;
 
   /// Creates a new [TuningFork] from [pitch] and [frequency].
-  const TuningFork(this.pitch, this.frequency);
+  const new(this.pitch, this.frequency);
 
   /// The [A440 (pitch standard)](https://en.wikipedia.org/wiki/A440_(pitch_standard))
   /// tuning fork.
@@ -63,7 +63,7 @@ final class TuningFork implements Formattable<TuningFork> {
   /// TuningFork.parse('C = 256') == .c256
   /// TuningFork.parse('z') // throws a FormatException
   /// ```
-  factory TuningFork.parse(
+  factory parse(
     String source, {
     List<StringParser<TuningFork>> chain = parsers,
   }) => chain.parse(source);

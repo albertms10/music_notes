@@ -6,7 +6,7 @@ import 'mode.dart';
 /// The German notation system for [TonalMode].
 final class GermanTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [GermanTonalModeNotation].
-  const GermanTonalModeNotation();
+  const new();
 
   static const _major = 'dur';
   static const _minor = 'moll';

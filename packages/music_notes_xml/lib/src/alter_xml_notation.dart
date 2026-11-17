@@ -14,7 +14,7 @@ import 'xml_notation_system.dart';
 /// See the [alter element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/alter/).
 final class AlterXmlNotation extends XmlNotationSystem<Accidental> {
   /// Creates a new [AlterXmlNotation].
-  const AlterXmlNotation();
+  const new();
 
   @override
   String get elementName => 'alter';
@@ -35,7 +35,9 @@ final class AlterXmlNotation extends XmlNotationSystem<Accidental> {
   ///   == '<alter>1</alter>'
   /// ```
   @override
-  XmlElement format(Accidental value) => XmlElement(XmlName(elementName), [], [
-    XmlText('${value.semitones}'),
-  ]);
+  XmlElement format(Accidental value) => XmlElement(
+    XmlName.parts(elementName),
+    [],
+    [XmlText('${value.semitones}')],
+  );
 }

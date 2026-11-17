@@ -13,10 +13,7 @@ final class EnglishAccidentalNotation extends StringNotationSystem<Accidental> {
   final String separator;
 
   /// Creates a new [EnglishAccidentalNotation].
-  const EnglishAccidentalNotation({
-    this.showNatural = true,
-    this.separator = '-',
-  });
+  const new({this.showNatural = true, this.separator = '-'});
 
   static const _natural = 'natural';
   static const _flat = 'flat';

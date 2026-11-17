@@ -187,9 +187,7 @@ void main() {
         expect(const Accidental(-4).format(formatter), 'bbbb');
         expect(const Accidental(-5).format(formatter), 'bbbbb');
 
-        const hideNatural = SymbolAccidentalNotation.ascii(
-          showNatural: false,
-        );
+        const hideNatural = SymbolAccidentalNotation.ascii(showNatural: false);
         expect(Accidental.sharp.format(hideNatural), '#');
         expect(Accidental.natural.format(hideNatural), '');
         expect(Accidental.flat.format(hideNatural), 'b');
@@ -230,33 +228,15 @@ void main() {
       test('returns the string representation of this Accidental', () {
         const formatter = EnglishAccidentalNotation();
 
-        expect(
-          const Accidental(4).format(formatter),
-          '×4-sharp',
-        );
-        expect(
-          Accidental.tripleSharp.format(formatter),
-          'triple-sharp',
-        );
-        expect(
-          Accidental.doubleSharp.format(formatter),
-          'double-sharp',
-        );
+        expect(const Accidental(4).format(formatter), '×4-sharp');
+        expect(Accidental.tripleSharp.format(formatter), 'triple-sharp');
+        expect(Accidental.doubleSharp.format(formatter), 'double-sharp');
         expect(Accidental.sharp.format(formatter), 'sharp');
         expect(Accidental.natural.format(formatter), 'natural');
         expect(Accidental.flat.format(formatter), 'flat');
-        expect(
-          Accidental.doubleFlat.format(formatter),
-          'double-flat',
-        );
-        expect(
-          Accidental.tripleFlat.format(formatter),
-          'triple-flat',
-        );
-        expect(
-          const Accidental(-4).format(formatter),
-          '×4-flat',
-        );
+        expect(Accidental.doubleFlat.format(formatter), 'double-flat');
+        expect(Accidental.tripleFlat.format(formatter), 'triple-flat');
+        expect(const Accidental(-4).format(formatter), '×4-flat');
 
         const hideNatural = EnglishAccidentalNotation(showNatural: false);
         expect(Accidental.sharp.format(hideNatural), 'sharp');
@@ -289,27 +269,15 @@ void main() {
       test('returns the string representation of this Accidental', () {
         const formatter = GermanAccidentalNotation();
 
-        expect(
-          const Accidental(4).format(formatter),
-          'isisisis',
-        );
-        expect(
-          Accidental.tripleSharp.format(formatter),
-          'isisis',
-        );
+        expect(const Accidental(4).format(formatter), 'isisisis');
+        expect(Accidental.tripleSharp.format(formatter), 'isisis');
         expect(Accidental.doubleSharp.format(formatter), 'isis');
         expect(Accidental.sharp.format(formatter), 'is');
         expect(Accidental.natural.format(formatter), '');
         expect(Accidental.flat.format(formatter), 'es');
         expect(Accidental.doubleFlat.format(formatter), 'eses');
-        expect(
-          Accidental.tripleFlat.format(formatter),
-          'eseses',
-        );
-        expect(
-          const Accidental(-4).format(formatter),
-          'eseseses',
-        );
+        expect(Accidental.tripleFlat.format(formatter), 'eseses');
+        expect(const Accidental(-4).format(formatter), 'eseseses');
       });
     });
   });
@@ -337,33 +305,15 @@ void main() {
       test('returns the string representation of this Accidental', () {
         const formatter = RomanceAccidentalNotation();
 
-        expect(
-          const Accidental(4).format(formatter),
-          '×4 diesis',
-        );
-        expect(
-          Accidental.tripleSharp.format(formatter),
-          'triplo diesis',
-        );
-        expect(
-          Accidental.doubleSharp.format(formatter),
-          'doppio diesis',
-        );
+        expect(const Accidental(4).format(formatter), '×4 diesis');
+        expect(Accidental.tripleSharp.format(formatter), 'triplo diesis');
+        expect(Accidental.doubleSharp.format(formatter), 'doppio diesis');
         expect(Accidental.sharp.format(formatter), 'diesis');
         expect(Accidental.natural.format(formatter), 'naturale');
         expect(Accidental.flat.format(formatter), 'bemolle');
-        expect(
-          Accidental.doubleFlat.format(formatter),
-          'doppio bemolle',
-        );
-        expect(
-          Accidental.tripleFlat.format(formatter),
-          'triplo bemolle',
-        );
-        expect(
-          const Accidental(-4).format(formatter),
-          '×4 bemolle',
-        );
+        expect(Accidental.doubleFlat.format(formatter), 'doppio bemolle');
+        expect(Accidental.tripleFlat.format(formatter), 'triplo bemolle');
+        expect(const Accidental(-4).format(formatter), '×4 bemolle');
 
         const hideNatural = RomanceAccidentalNotation(showNatural: false);
         expect(Accidental.sharp.format(hideNatural), 'diesis');

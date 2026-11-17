@@ -12,7 +12,7 @@ final class Rational implements Comparable<Rational> {
   final int _denominator;
 
   /// Creates a new [Rational] from [_numerator] and [_denominator].
-  const Rational(this._numerator, [this._denominator = 1])
+  const new(this._numerator, [this._denominator = 1])
     : assert(_denominator != 0, 'The denominator cannot be zero.');
 
   /// A [Rational] of value zero.
@@ -20,16 +20,13 @@ final class Rational implements Comparable<Rational> {
 
   /// Creates a new [Rational] from [wholePart], [numerator],
   /// and [_denominator].
-  const Rational.fromMixed(
-    int wholePart, [
-    int numerator = 0,
-    this._denominator = 1,
-  ]) : assert(numerator >= 0, 'The numerator cannot be negative.'),
-       assert(_denominator != 0, 'The denominator cannot be zero.'),
-       _numerator =
-           ((wholePart < 0 ? -wholePart : wholePart) * _denominator +
-               numerator) *
-           (wholePart < 0 ? -1 : 1);
+  const new fromMixed(int wholePart, [int numerator = 0, this._denominator = 1])
+    : assert(numerator >= 0, 'The numerator cannot be negative.'),
+      assert(_denominator != 0, 'The denominator cannot be zero.'),
+      _numerator =
+          ((wholePart < 0 ? -wholePart : wholePart) * _denominator +
+              numerator) *
+          (wholePart < 0 ? -1 : 1);
 
   static final _regExp = RegExp(
     r'^(?<integer>-?\d+)'
@@ -45,7 +42,7 @@ final class Rational implements Comparable<Rational> {
   /// Rational.parse('3/4') == const Rational(3, 4)
   /// Rational.parse('-35/4') == const Rational.fromMixed(-8, 3, 4)
   /// ```
-  factory Rational.parse(String source) {
+  factory parse(String source) {
     final match =
         _regExp.firstMatch(source) ??
         (throw FormatException('Invalid Ratio', source));
@@ -66,7 +63,7 @@ final class Rational implements Comparable<Rational> {
   }
 
   /// Creates a new [Rational] from [number] and [tolerance].
-  factory Rational.fromDouble(double number, {int tolerance = 100}) {
+  factory fromDouble(double number, {int tolerance = 100}) {
     assert(!tolerance.isNegative, 'Tolerance must be positive.');
 
     if (number == 0) return .zero;

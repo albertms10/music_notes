@@ -25,13 +25,13 @@ final class RootBassXmlNotation extends XmlNotationSystem<Note> {
   final AlterXmlNotation alterNotation;
 
   /// A [RootBassXmlNotation] for `<root>`.
-  const RootBassXmlNotation.root({
+  const new root({
     this.noteNameNotation = const NoteNameXmlNotation(),
     this.alterNotation = const AlterXmlNotation(),
   }) : prefix = 'root';
 
   /// A [RootBassXmlNotation] for `<bass>`.
-  const RootBassXmlNotation.bass({
+  const new bass({
     this.noteNameNotation = const NoteNameXmlNotation(),
     this.alterNotation = const AlterXmlNotation(),
   }) : prefix = 'bass';
@@ -69,12 +69,12 @@ final class RootBassXmlNotation extends XmlNotationSystem<Note> {
   ///   == '<root><root-step>F</root-step><root-alter>1</root-alter></root>'
   /// ```
   @override
-  XmlElement format(Note value) => XmlElement(XmlName(prefix), [], [
-    XmlElement(XmlName(_stepName), [], [
+  XmlElement format(Note value) => XmlElement(XmlName.parts(prefix), [], [
+    XmlElement(XmlName.parts(_stepName), [], [
       XmlText(value.noteName.name.toUpperCase()),
     ]),
     if (!value.accidental.isNatural)
-      XmlElement(XmlName(_alterName), [], [
+      XmlElement(XmlName.parts(_alterName), [], [
         XmlText('${value.accidental.semitones}'),
       ]),
   ]);

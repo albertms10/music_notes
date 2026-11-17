@@ -22,21 +22,21 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   final bool useAscii;
 
   /// Creates a new [HelmholtzPitchNotation].
-  const HelmholtzPitchNotation({
+  const new({
     this.noteNotation = const EnglishNoteNotation.symbol(),
     this.useNumbers = false,
     this.useAscii = false,
   });
 
   /// Creates a new [HelmholtzPitchNotation] using ASCII characters.
-  const HelmholtzPitchNotation.ascii({
+  const new ascii({
     this.noteNotation = const EnglishNoteNotation.ascii(),
     this.useNumbers = false,
   }) : useAscii = true;
 
   /// Creates a new [HelmholtzPitchNotation] using numbers instead of prime
   /// symbols.
-  const HelmholtzPitchNotation.numbered({
+  const new numbered({
     this.noteNotation = const GermanNoteNotation(),
     this.useAscii = false,
   }) : useNumbers = true;
@@ -78,10 +78,7 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
     '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
             if (useAscii)
               for (final symbol in _asciiPrimeSymbols) '$symbol+'
-            else ...[
-              ..._compoundPrimeSymbols,
-              for (final symbol in _primeSymbols) '$symbol+',
-            ],
+            else ...[..._compoundPrimeSymbols, for (final symbol in _primeSymbols) '$symbol+'],
           ].join('|')})?'}',
     caseSensitive: false,
   );

@@ -22,7 +22,7 @@ void main() {
     group('.closestPitch()', () {
       test('returns the closest Pitch to this Frequency', () {
         expect(
-          const Frequency(440).closestPitch(),
+          Frequency.reference.closestPitch(),
           Note.a.inOctave(4) + const Cent(0),
         );
         expect(
@@ -39,7 +39,7 @@ void main() {
         );
 
         expect(
-          const Frequency(440).closestPitch(
+          Frequency.reference.closestPitch(
             tuningSystem: const EqualTemperament.edo12(fork: .a415),
           ),
           Note.b.flat.inOctave(4) + const Cent(1.270624748447127),
@@ -53,7 +53,7 @@ void main() {
           Note.c.inOctave(5) + const Cent(0),
         );
         expect(
-          const Frequency(440).closestPitch(
+          Frequency.reference.closestPitch(
             tuningSystem: EqualTemperament.edo12(
               fork: Note.c.inOctave(5).at(const Frequency(512)),
             ),
@@ -62,11 +62,11 @@ void main() {
         );
 
         expect(
-          const Frequency(440).closestPitch(temperature: const .celsius(24)),
+          Frequency.reference.closestPitch(temperature: const .celsius(24)),
           Note.a.inOctave(4) - const Cent(12.060895566170192),
         );
         expect(
-          const Frequency(440).closestPitch(temperature: const .celsius(18)),
+          Frequency.reference.closestPitch(temperature: const .celsius(18)),
           Note.a.inOctave(4) + const Cent(6.062103827228064),
         );
         expect(
@@ -115,7 +115,7 @@ void main() {
     group('.harmonic()', () {
       test('returns the harmonic at index from this Frequency', () {
         expect(const Frequency(880).harmonic(-3), const Frequency(220));
-        expect(const Frequency(440).harmonic(-1), const Frequency(220));
+        expect(Frequency.reference.harmonic(-1), const Frequency(220));
         expect(const Frequency(110).harmonic(0), const Frequency(110));
         expect(const Frequency(110).harmonic(-0), const Frequency(110));
         expect(const Frequency(256).harmonic(1), const Frequency(512));
@@ -191,8 +191,8 @@ void main() {
       });
 
       test('parses source as a Frequency', () {
-        expect(Frequency.parse('440'), const Frequency(440));
-        expect(Frequency.parse('440 Hz'), const Frequency(440));
+        expect(Frequency.parse('440'), Frequency.reference);
+        expect(Frequency.parse('440 Hz'), Frequency.reference);
         expect(Frequency.parse('415.3 Hz'), const Frequency(415.3));
         expect(Frequency.parse('15.356 Hz'), const Frequency(15.356));
         expect(Frequency.parse('256 Hz'), const Frequency(256));
@@ -203,7 +203,7 @@ void main() {
 
     group('.format()', () {
       test('returns this Frequency formatted as a string', () {
-        expect(const Frequency(440).format(), '440 Hz');
+        expect(Frequency.reference.format(), '440 Hz');
         expect(const Frequency(415.62).format(), '415.62 Hz');
         expect(const Frequency(2200.296).format(), '2200.296 Hz');
       });

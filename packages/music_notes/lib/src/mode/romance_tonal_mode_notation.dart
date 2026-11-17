@@ -4,7 +4,7 @@ import 'mode.dart';
 /// The Romance notation system for [TonalMode].
 final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [RomanceTonalModeNotation].
-  const RomanceTonalModeNotation();
+  const new();
 
   static const _major = 'maggiore';
   static const _minor = 'minore';

@@ -19,13 +19,13 @@ final class StandardClosestPitchNotation
   final bool _useAscii;
 
   /// Creates a new [StandardClosestPitchNotation].
-  const StandardClosestPitchNotation({
+  const new({
     this.pitchNotation = ScientificPitchNotation.english,
     this.fractionDigits = 0,
   }) : _useAscii = false;
 
   /// Creates a new [StandardClosestPitchNotation] using ASCII characters.
-  const StandardClosestPitchNotation.ascii({
+  const new ascii({
     this.pitchNotation = const ScientificPitchNotation.ascii(),
     this.fractionDigits = 0,
   }) : _useAscii = true;

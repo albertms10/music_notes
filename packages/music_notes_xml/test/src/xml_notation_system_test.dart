@@ -25,9 +25,8 @@ void main() {
         // A differently-named element is still accepted by parseElement,
         // which is what lets composite systems reuse a sub-system's
         // parseElement on a differently-named child element.
-        final element = XmlDocument.parse(
-          '<root-step>C</root-step>',
-        ).rootElement;
+        final element = XmlDocument.parse('<root-step>C</root-step>')
+            .rootElement;
         expect(notation.parseElement(element), 'C');
       });
     });
@@ -51,7 +50,7 @@ void main() {
 /// A minimal concrete [XmlNotationSystem] used only to exercise the
 /// shared [XmlNotationSystem.parse] contract in isolation.
 final class _EchoXmlNotation extends XmlNotationSystem<String> {
-  const _EchoXmlNotation();
+  const new();
 
   @override
   String get elementName => 'echo';
@@ -61,5 +60,5 @@ final class _EchoXmlNotation extends XmlNotationSystem<String> {
 
   @override
   XmlElement format(String value) =>
-      XmlElement(XmlName(elementName), [], [XmlText(value)]);
+      XmlElement(XmlName.parts(elementName), [], [XmlText(value)]);
 }

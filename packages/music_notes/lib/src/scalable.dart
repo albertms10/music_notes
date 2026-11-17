@@ -16,7 +16,7 @@ abstract class Scalable<T extends Scalable<T>>
     with Enharmonic<PitchClass>, Respellable<T>
     implements Transposable<T>, Formattable<T> {
   /// Creates a new [Scalable].
-  const Scalable();
+  const new();
 
   /// Predicate to transpose this [Scalable] by ascending chromatic motion.
   static T chromaticMotion<T extends Scalable<T>>(T scalable) =>

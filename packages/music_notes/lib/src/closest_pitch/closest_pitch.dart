@@ -25,7 +25,7 @@ final class ClosestPitch implements Formattable<ClosestPitch> {
   final Cent cents;
 
   /// Creates a new [ClosestPitch] from [pitch] and [cents].
-  const ClosestPitch(this.pitch, {this.cents = const Cent(0)});
+  const new(this.pitch, {this.cents = const Cent(0)});
 
   /// The chain of [StringParser]s used to parse a [ClosestPitch].
   static const parsers = [
@@ -45,7 +45,7 @@ final class ClosestPitch implements Formattable<ClosestPitch> {
   /// ClosestPitch.parse('E♭3-28') == Note.e.flat.inOctave(3) - const Cent(28)
   /// ClosestPitch.parse('z') // throws a FormatException
   /// ```
-  factory ClosestPitch.parse(
+  factory parse(
     String source, {
     List<StringParser<ClosestPitch>> chain = parsers,
   }) => chain.parse(source);

@@ -16,7 +16,7 @@ import 'xml_notation_system.dart';
 /// See the [transpose element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/transpose/).
 final class IntervalXmlNotation extends XmlNotationSystem<Interval> {
   /// Creates a new [IntervalXmlNotation].
-  const IntervalXmlNotation();
+  const new();
 
   @override
   String get elementName => 'transpose';
@@ -52,9 +52,9 @@ final class IntervalXmlNotation extends XmlNotationSystem<Interval> {
   XmlElement format(Interval value) {
     final diatonic = value.size.sign * (value.size.abs() - 1);
 
-    return XmlElement(XmlName(elementName), [], [
-      XmlElement(XmlName('diatonic'), [], [XmlText('$diatonic')]),
-      XmlElement(XmlName('chromatic'), [], [
+    return XmlElement(XmlName.parts(elementName), [], [
+      XmlElement(const XmlName.parts('diatonic'), [], [XmlText('$diatonic')]),
+      XmlElement(const XmlName.parts('chromatic'), [], [
         XmlText('${value.semitones}'),
       ]),
     ]);

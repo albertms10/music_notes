@@ -16,7 +16,7 @@ final class PitchXmlNotation extends XmlNotationSystem<Pitch> {
   final AlterXmlNotation alterNotation;
 
   /// Creates a new [PitchXmlNotation].
-  const PitchXmlNotation({
+  const new({
     this.noteNameNotation = const NoteNameXmlNotation(),
     this.alterNotation = const AlterXmlNotation(),
   });
@@ -56,10 +56,10 @@ final class PitchXmlNotation extends XmlNotationSystem<Pitch> {
   ///   == '<pitch><step>B</step><alter>-1</alter><octave>3</octave></pitch>'
   /// ```
   @override
-  XmlElement format(Pitch value) => XmlElement(XmlName(elementName), [], [
+  XmlElement format(Pitch value) => XmlElement(XmlName.parts(elementName), [], [
     noteNameNotation.format(value.note.noteName),
     if (!value.note.accidental.isNatural)
       alterNotation.format(value.note.accidental),
-    XmlElement(XmlName('octave'), [], [XmlText('${value.octave}')]),
+    XmlElement(const XmlName.parts('octave'), [], [XmlText('${value.octave}')]),
   ]);
 }

@@ -9,9 +9,8 @@ void main() {
         const generator = Cent(701.9550008653874);
         expect(const PythagoreanTuning().generator, generator);
         expect(
-          PythagoreanTuning(
-            fork: Note.a.flat.inOctave(3).at(.reference),
-          ).generator,
+          PythagoreanTuning(fork: Note.a.flat.inOctave(3).at(.reference))
+              .generator,
           generator,
         );
       });

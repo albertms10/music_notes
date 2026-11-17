@@ -45,7 +45,7 @@ final class NumericScaleDegreeNotation
   final bool useAscii;
 
   /// Creates a new [NumericScaleDegreeNotation].
-  const NumericScaleDegreeNotation({
+  const new({
     this.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),
@@ -54,7 +54,7 @@ final class NumericScaleDegreeNotation
   });
 
   /// Creates a new [NumericScaleDegreeNotation] using ASCII symbols.
-  const NumericScaleDegreeNotation.ascii({
+  const new ascii({
     this.accidentalNotation = const SymbolAccidentalNotation.ascii(
       showNatural: false,
     ),
@@ -62,7 +62,7 @@ final class NumericScaleDegreeNotation
        useAscii = true;
 
   /// Creates a new [NumericScaleDegreeNotation] without the caret diacritic.
-  const NumericScaleDegreeNotation.plain({
+  const new plain({
     this.accidentalNotation = const SymbolAccidentalNotation(
       showNatural: false,
     ),

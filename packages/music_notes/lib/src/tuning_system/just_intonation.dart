@@ -17,7 +17,7 @@ import 'tuning_system.dart';
 /// * [TuningSystem].
 abstract class JustIntonation extends TuningSystem {
   /// Creates a new [JustIntonation] from [fork].
-  const JustIntonation({super.fork = .c256});
+  const new({super.fork = .c256});
 
   /// The ratio of an ascending [Interval.P5].
   static const ascendingFifthRatio = 3 / 2;

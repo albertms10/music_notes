@@ -9,10 +9,7 @@ extension RangeExtension<E> on Range<E> {
     required E Function(E current) nextValue,
     required Comparator<E> compare,
   }) {
-    assert(
-      compare(from, to) <= 0,
-      'To must be greater than or equal to from.',
-    );
+    assert(compare(from, to) <= 0, 'To must be greater than or equal to from.');
 
     final values = <E>[];
     var current = from;

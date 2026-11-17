@@ -34,10 +34,11 @@ void main() {
     group('.descendingIntervalSteps', () {
       test('returns the descending Interval steps of this '
           'ScalableIterable', () {
-        expect(
-          <Note>[.b, .a, .g, .f].descendingIntervalSteps,
-          const <Interval>[.M2, .M2, .M2],
-        );
+        expect(<Note>[.b, .a, .g, .f].descendingIntervalSteps, const <Interval>[
+          .M2,
+          .M2,
+          .M2,
+        ]);
 
         expect(
           <Note>[.c, .d, .e, .f.sharp].descendingIntervalSteps,
@@ -180,10 +181,10 @@ void main() {
           const <int>[],
         );
         expect({PitchClass.g}.deltaNumericRepresentation.toList(), const [0]);
-        expect(
-          <PitchClass>{.g, .a}.deltaNumericRepresentation.toList(),
-          const [0, 2],
-        );
+        expect(<PitchClass>{.g, .a}.deltaNumericRepresentation.toList(), const [
+          0,
+          2,
+        ]);
         expect(
           <Note>{
             .b, .b.flat, .d, .d.sharp, .g, .f.sharp, .a.flat, //

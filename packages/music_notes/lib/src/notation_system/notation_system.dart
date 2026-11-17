@@ -1,5 +1,3 @@
-// ignore_for_file: one_member_abstracts - Code reusability
-
 import 'package:meta/meta.dart' show immutable;
 
 /// An abstract representation of a notation system for parsing
@@ -12,7 +10,7 @@ import 'package:meta/meta.dart' show immutable;
 @immutable
 abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
   /// Creates a new formatter.
-  const NotationSystem();
+  const new();
 
   /// Parses [source] as [I].
   ///
@@ -37,7 +35,7 @@ abstract class NotationSystem<I, O> implements Parser<O, I>, Formatter<I, O> {
 abstract class StringNotationSystem<V> extends NotationSystem<V, String>
     implements StringFormatter<V>, StringParser<V> {
   /// Creates a new formatter.
-  const StringNotationSystem();
+  const new();
 
   @override
   RegExp? get regExp => null;
@@ -123,7 +121,7 @@ abstract interface class Formatter<V, O> {
 }
 
 /// An abstract representation of a string formatter for [V].
-abstract interface class StringFormatter<V> extends Formatter<V, String> {}
+abstract interface class StringFormatter<V> extends Formatter<V, String>;
 
 /// A value that can be formatted using a [Formatter].
 abstract class Formattable<V> {

@@ -5,7 +5,7 @@ void main() {
   group('Temperature', () {
     group('.celsius()', () {
       test('creates a new Temperature from Celsius', () {
-        expect(const Temperature.celsius(20), 20);
+        expect(Temperature.reference, 20);
         expect(const Temperature.celsius(-40), -40);
         expect(const Temperature.celsius(100), 100);
       });
@@ -31,24 +31,18 @@ void main() {
 
     group('.ratio()', () {
       test('is 1 at the reference temperature', () {
-        expect(const Temperature.celsius(20).ratio(), 1);
+        expect(Temperature.reference.ratio(), 1);
       });
 
       test('compares two Celsius temperatures', () {
-        expect(
-          const Temperature.celsius(0).ratio(),
-          closeTo(331.3 / 343.3, 1e-10),
-        );
+        expect(Temperature.zero.ratio(), closeTo(331.3 / 343.3, 1e-10));
       });
 
       test('is symmetric through the reciprocal', () {
-        const a = Temperature.celsius(0);
-        const b = Temperature.celsius(20);
+        const a = Temperature.zero;
+        const b = Temperature.reference;
 
-        expect(
-          a.ratio() * b.ratio(a),
-          closeTo(1, 1e-10),
-        );
+        expect(a.ratio() * b.ratio(a), closeTo(1, 1e-10));
       });
 
       test('uses the custom reference temperature', () {

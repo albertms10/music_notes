@@ -10,9 +10,7 @@ final class HarmonicFunctionNotation
   final StringNotationSystem<ScaleDegree> scaleDegreeNotation;
 
   /// Creates a new [HarmonicFunctionNotation].
-  const HarmonicFunctionNotation({
-    this.scaleDegreeNotation = const RomanScaleDegreeNotation(),
-  });
+  const new({this.scaleDegreeNotation = const RomanScaleDegreeNotation()});
 
   @override
   String format(HarmonicFunction harmonicFunction) {

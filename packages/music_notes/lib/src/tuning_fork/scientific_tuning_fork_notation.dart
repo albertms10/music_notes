@@ -16,13 +16,13 @@ final class ScientificTuningForkNotation
   final StringNotationSystem<Frequency> frequencyNotation;
 
   /// Creates a new [ScientificTuningForkNotation].
-  const ScientificTuningForkNotation({
+  const new({
     this.pitchNotation = ScientificPitchNotation.english,
     this.frequencyNotation = const FrequencySINotation(),
   });
 
   /// Creates a new [ScientificTuningForkNotation] using ASCII symbols.
-  const ScientificTuningForkNotation.ascii({
+  const new ascii({
     this.pitchNotation = const ScientificPitchNotation.ascii(),
     this.frequencyNotation = const FrequencySINotation(),
   });

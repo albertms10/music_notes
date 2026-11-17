@@ -4,7 +4,7 @@ import 'accidental.dart';
 /// The German notation system for [Accidental].
 final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Creates a new [GermanAccidentalNotation].
-  const GermanAccidentalNotation();
+  const new();
 
   static const _flatShort = 's';
   static const _flat = 'es';

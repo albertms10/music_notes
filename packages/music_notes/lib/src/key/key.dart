@@ -29,7 +29,7 @@ final class Key implements Comparable<Key>, Formattable<Key> {
   final TonalMode mode;
 
   /// Creates a new [Key] from [note] and [mode].
-  const Key(this.note, this.mode);
+  const new(this.note, this.mode);
 
   /// The chain of [StringParser]s used to parse a [Key].
   static const parsers = [
@@ -56,7 +56,7 @@ final class Key implements Comparable<Key>, Formattable<Key> {
   /// Key.parse('f# minor') == Note.f.sharp.minor
   /// Key.parse('z') // throws a FormatException
   /// ```
-  factory Key.parse(String source, {List<StringParser<Key>> chain = parsers}) =>
+  factory parse(String source, {List<StringParser<Key>> chain = parsers}) =>
       chain.parse(source);
 
   /// The [TonalMode.major] or [TonalMode.minor] relative [Key] of this [Key].

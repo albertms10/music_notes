@@ -12,7 +12,7 @@ import 'xml_notation_system.dart';
 /// See the [kind element](https://www.w3.org/2021/06/musicxml40/musicxml-reference/elements/kind/).
 final class ChordPatternXmlNotation extends XmlNotationSystem<ChordPattern> {
   /// Creates a new [ChordPatternXmlNotation].
-  const ChordPatternXmlNotation();
+  const new();
 
   @override
   String get elementName => 'kind';
@@ -72,6 +72,6 @@ final class ChordPatternXmlNotation extends XmlNotationSystem<ChordPattern> {
       ),
     };
 
-    return XmlElement(XmlName(elementName), [], [XmlText(word)]);
+    return XmlElement(XmlName.parts(elementName), [], [XmlText(word)]);
   }
 }

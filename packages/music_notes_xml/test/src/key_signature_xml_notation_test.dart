@@ -21,23 +21,20 @@ void main() {
       });
 
       test('parses a positive fifths distance', () {
-        final element = XmlDocument.parse(
-          '<key><fifths>2</fifths></key>',
-        ).rootElement;
+        final element = XmlDocument.parse('<key><fifths>2</fifths></key>')
+            .rootElement;
         expect(notation.parse(element), KeySignature.fromDistance(2));
       });
 
       test('parses a negative fifths distance', () {
-        final element = XmlDocument.parse(
-          '<key><fifths>-4</fifths></key>',
-        ).rootElement;
+        final element = XmlDocument.parse('<key><fifths>-4</fifths></key>')
+            .rootElement;
         expect(notation.parse(element), KeySignature.fromDistance(-4));
       });
 
       test('parses a zero fifths distance as empty', () {
-        final element = XmlDocument.parse(
-          '<key><fifths>0</fifths></key>',
-        ).rootElement;
+        final element = XmlDocument.parse('<key><fifths>0</fifths></key>')
+            .rootElement;
         expect(notation.parse(element), KeySignature.empty);
       });
     });

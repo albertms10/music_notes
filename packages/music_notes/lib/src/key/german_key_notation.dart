@@ -17,7 +17,7 @@ final class GermanKeyNotation extends StringNotationSystem<Key> {
   final bool showMode;
 
   /// Creates a new [GermanKeyNotation].
-  const GermanKeyNotation({
+  const new({
     this.noteNotation = const GermanNoteNotation(),
     this.tonalModeNotation = const GermanTonalModeNotation(),
     this.showMode = true,
