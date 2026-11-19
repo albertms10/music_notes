@@ -23,7 +23,7 @@ abstract class TuningSystem {
   ///
   /// Example:
   /// ```dart
-  /// const PythagoreanTuning().generator == const Cent(701.96)
+  /// PrimeLimitTuning.threeLimit.generator == const Cent(701.96)
   /// const EqualTemperament.edo12().generator == const Cent(700)
   /// const EqualTemperament.edo19().generator == const Cent(694.74)
   /// ```
@@ -39,7 +39,7 @@ abstract class TuningSystem {
   /// edo12.ratio(Note.b.inOctave(4)) == 1.12
   /// edo12.ratio(Note.d.inOctave(5)) == 1.33
   ///
-  /// final pt = PythagoreanTuning(fork: .c256);
+  /// final pt = PrimeLimitTuning(const [], fork: .c256); // Pythagorean
   /// pt.ratio(Note.d.inOctave(4)) == 9 / 8
   /// pt.ratio(Note.f.inOctave(4)) == 4 / 3
   /// ```
