@@ -6,11 +6,13 @@ import '../note/german_note_notation.dart';
 import '../note/note.dart';
 import '../note/note_notation.dart';
 import '../note/romance_note_notation.dart';
+import '../octave/helmholtz_octave_notation.dart';
+import '../octave/octave.dart';
 import 'pitch.dart';
 
 /// The Helmholtz [Pitch] notation formatter.
 ///
-/// See [Helmholtz’s pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
+/// See [Helmholtz's pitch notation](https://en.wikipedia.org/wiki/Helmholtz_pitch_notation).
 final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
   /// The [Note] formatter for [Pitch.note].
   final NoteNotation noteNotation;
@@ -54,55 +56,25 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
     noteNotation: RomanceNoteNotation.symbol(),
   );
 
-  static const _superPrime = '′';
-  static const _superDoublePrime = '″';
-  static const _superTriplePrime = '‴';
-  static const _superQuadruplePrime = '⁗';
-  static const _superPrimeAscii = "'";
-  static const _subPrime = '͵';
-  static const _subPrimeAscii = ',';
-
-  static const _compoundPrimeSymbols = [
-    _superDoublePrime,
-    _superTriplePrime,
-    _superQuadruplePrime,
-  ];
-  static const _primeSymbols = [_superPrime, _subPrime];
-  static const _asciiPrimeSymbols = [_superPrimeAscii, _subPrimeAscii];
-
-  static const _middleOctave = Pitch.referenceOctave - 1;
+  /// The [HelmholtzOctaveNotation] for [isBass], sharing this
+  /// [HelmholtzPitchNotation]'s [useNumbers] and [useAscii] settings.
+  ///
+  /// [isBass] only affects [StringNotationSystem.parseMatch] and
+  /// [StringNotationSystem.format]; [StringNotationSystem.regExp] is the
+  /// same regardless, so any [isBass] value can be used to build [regExp].
+  HelmholtzOctaveNotation _octaveNotation({required bool isBass}) =>
+      HelmholtzOctaveNotation(
+        isBass: isBass,
+        useNumbers: useNumbers,
+        useAscii: useAscii,
+      );
 
   @override
   RegExp get regExp => RegExp(
     '${noteNotation.regExp?.pattern}'
-    '${useNumbers ? r'(?<numbers>[1-9]\d*)?' : '(?<primes>${[
-            if (useAscii)
-              for (final symbol in _asciiPrimeSymbols) '$symbol+'
-            else ...[
-              ..._compoundPrimeSymbols,
-              for (final symbol in _primeSymbols) '$symbol+',
-            ],
-          ].join('|')})?'}',
+    '${_octaveNotation(isBass: false).regExp.pattern}',
     caseSensitive: false,
   );
-
-  int _octaveFromNumbers(int numbers, bool isBass) =>
-      isBass ? 2 - numbers : numbers + 3;
-
-  int? _octaveFromPrimes(List<String>? primes, bool isBass) => isBass
-      ? switch (primes?.first) {
-          '' || null => _middleOctave - 1,
-          _subPrime || _subPrimeAscii => _middleOctave - primes!.length - 1,
-          _ => null,
-        }
-      : switch (primes?.first) {
-          '' || null => _middleOctave,
-          _superPrime || _superPrimeAscii => _middleOctave + primes!.length,
-          _superDoublePrime => _middleOctave + 2,
-          _superTriplePrime => _middleOctave + 3,
-          _superQuadruplePrime => _middleOctave + 4,
-          _ => null,
-        };
 
   @override
   Pitch parseMatch(RegExpMatch match) {
@@ -111,44 +83,16 @@ final class HelmholtzPitchNotation extends StringNotationSystem<Pitch> {
 
     return Pitch(
       noteNotation.parseMatch(match),
-      octave: useNumbers
-          ? _octaveFromNumbers(
-              .parse(match.namedGroup('numbers') ?? '0'),
-              isBass,
-            )
-          : _octaveFromPrimes(match.namedGroup('primes')?.split(''), isBass) ??
-                (throw FormatException('Invalid Pitch', match[0])),
+      octave: _octaveNotation(isBass: isBass).parseMatch(match),
     );
   }
 
-  static String _symbols(int n) => switch (n) {
-    4 => _superQuadruplePrime,
-    3 => _superTriplePrime,
-    2 => _superDoublePrime,
-    < 0 && final n => _subPrime * n.abs(),
-    final n => _superPrime * n,
-  };
-
-  static String _asciiSymbols(int n) => switch (n) {
-    < 0 && final n => _subPrimeAscii * n.abs(),
-    final n => _superPrimeAscii * n,
-  };
-
-  static String _numbered(int n) => n == 0 ? '' : '${n.abs()}';
-
   @override
   String format(Pitch pitch) {
+    final isBass = pitch.octave < HelmholtzOctaveNotation.middle;
     final note = noteNotation.format(pitch.note);
-    final symbols = useNumbers
-        ? _numbered
-        : useAscii
-        ? _asciiSymbols
-        : _symbols;
 
-    return switch (pitch.octave) {
-      >= _middleOctave && final octave =>
-        '${note.toLowerCase()}${symbols(octave - 3)}',
-      final octave => '$note${symbols(octave - 2)}',
-    };
+    return '${isBass ? note : note.toLowerCase()}'
+        '${_octaveNotation(isBass: isBass).format(Octave(pitch.octave))}';
   }
 }
