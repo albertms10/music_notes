@@ -140,7 +140,7 @@ final class Note extends Scalable<Note>
   /// Note.c.sharp == const Note(.c, .sharp)
   /// Note.a.sharp == const Note(.a, .sharp)
   /// ```
-  Note get sharp => Note(noteName, accidental + 1);
+  Note get sharp => Note(noteName, accidental + .sharp);
 
   /// This [Note] flattened by 1 semitone.
   ///
@@ -149,7 +149,7 @@ final class Note extends Scalable<Note>
   /// Note.e.flat == const Note(.e, .flat)
   /// Note.f.flat == const Note(.f, .flat)
   /// ```
-  Note get flat => Note(noteName, accidental - 1);
+  Note get flat => Note(noteName, accidental + .flat);
 
   /// This [Note] without an accidental (natural).
   ///

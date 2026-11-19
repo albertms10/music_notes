@@ -109,7 +109,8 @@ final class ScaleDegree
   /// ```dart
   /// ScaleDegree.vi.raised == const ScaleDegree(6, accidental: .sharp)
   /// ```
-  ScaleDegree get raised => ScaleDegree(ordinal, accidental: accidental + 1);
+  ScaleDegree get raised =>
+      ScaleDegree(ordinal, accidental: accidental + .sharp);
 
   /// This [ScaleDegree] lowered by 1 semitone.
   ///
@@ -117,7 +118,8 @@ final class ScaleDegree
   /// ```dart
   /// ScaleDegree.ii.lowered == const ScaleDegree(2, accidental: .flat)
   /// ```
-  ScaleDegree get lowered => ScaleDegree(ordinal, accidental: accidental - 1);
+  ScaleDegree get lowered =>
+      ScaleDegree(ordinal, accidental: accidental + .flat);
 
   /// The string representation of this [ScaleDegree] based on [formatter].
   ///
