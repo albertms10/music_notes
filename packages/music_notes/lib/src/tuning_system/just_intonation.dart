@@ -45,28 +45,55 @@ abstract class JustIntonation extends TuningSystem {
   /// (e.g. `MeantoneTuning`) override this with their own tempered fifth.
   num get fifthRatio => ascendingFifthRatio;
 
-  /// The ratio of the ascending fourth, i.e. the octave complement of
+  /// The ratio of the ascending fourth, e.g., the octave complement of
   /// [fifthRatio] (a fourth and a fifth together span an octave).
   num get fourthRatio => 2 / fifthRatio;
 
   @override
   num ratio(Pitch pitch) {
     final distance = fork.pitch.note.fifthsDistanceWith(pitch.note);
+
+    return octaveAdjustedRatio(pitch, chainRatio(distance, fifthRatio));
+  }
+
+  /// Builds a pitch-class ratio by applying [ascendingRatio] (or its octave
+  /// complement, `2 / ascendingRatio`, if [distance] is negative) up to
+  /// [distance] times, folding the running product back into a single
+  /// octave whenever it reaches `2`.
+  ///
+  /// The result always lies within `[1, 2)`.
+  @protected
+  num chainRatio(int distance, num ascendingRatio) {
+    final descendingRatio = 2 / ascendingRatio;
     var ratio = 1.0;
     for (var i = 1; i <= distance.abs(); i++) {
-      ratio *= distance.isNegative ? fourthRatio : fifthRatio;
+      ratio *= distance.isNegative ? descendingRatio : ascendingRatio;
       // When ratio is greater than 2, so greater than [Size.octave],
       // divide by 2 to transpose it down by one octave.
       if (ratio >= 2) ratio /= 2;
     }
 
-    return octaveAdjustedRatio(pitch, ratio);
+    return ratio;
+  }
+
+  /// Folds [ratio] into a single octave, e.g., `[1, 2)`.
+  @protected
+  num foldIntoOctave(num ratio) {
+    var folded = ratio;
+    while (folded >= 2) {
+      folded /= 2;
+    }
+    while (folded < 1) {
+      folded *= 2;
+    }
+
+    return folded;
   }
 
   /// Applies the correct octave transposition to [pitchClassRatio] for
   /// [pitch] relative to [fork].
   ///
-  /// [pitchClassRatio] is assumed to lie within `[1, 2)`, i.e. as if [pitch]
+  /// [pitchClassRatio] is assumed to lie within `[1, 2)`, e.g., as if [pitch]
   /// were in the same octave as [fork]. This method derives the real octave
   /// delta between [pitch] and [fork] from their real semitone distance,
   /// discounting the octave already embedded in [pitchClassRatio],
