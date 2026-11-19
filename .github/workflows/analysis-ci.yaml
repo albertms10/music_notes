@@ -68,6 +68,7 @@ jobs:
         package:
           - music_notes
           - music_notes_xml
+          - pipe_organ
 
     defaults:
       run:
@@ -140,6 +141,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
           # Keep this in sync with the `matrix.package` list above. If a
-          # package's job is ever skipped, Coveralls reuses its last known
+          # package’s job is ever skipped, sCoveralls reuses its last known
           # report instead of scoring it as 0% covered.
-          carryforward: "music_notes,music_notes_xml"
+          carryforward: "music_notes,music_notes_xml,pipe_organ"
