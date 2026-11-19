@@ -18,6 +18,8 @@ import 'chord.dart';
 /// * [Chord].
 /// * [ChordPattern].
 /// * [ChordPatternNotation].
+///
+/// ![ChordNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/ChordNotation.svg)
 final class ChordNotation extends StringNotationSystem<Chord> {
   /// The [StringNotationSystem] used to format and parse the root and bass
   /// [Note] of this [Chord].

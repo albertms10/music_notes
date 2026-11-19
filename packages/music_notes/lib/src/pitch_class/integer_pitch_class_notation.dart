@@ -4,6 +4,8 @@ import 'pitch_class.dart';
 /// The [StringNotationSystem] for integer [PitchClass].
 ///
 /// See [Integer notation](https://en.wikipedia.org/wiki/Pitch_class#Integer_notation).
+///
+/// ![IntegerPitchClassNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/IntegerPitchClassNotation.svg)
 final class IntegerPitchClassNotation extends StringNotationSystem<PitchClass> {
   /// Creates a new [IntegerPitchClassNotation].
   const IntegerPitchClassNotation();

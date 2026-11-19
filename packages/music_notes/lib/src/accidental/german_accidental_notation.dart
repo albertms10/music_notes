@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'accidental.dart';
 
 /// The German notation system for [Accidental].
+///
+/// ![GermanAccidentalNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/GermanAccidentalNotation.svg)
 final class GermanAccidentalNotation extends StringNotationSystem<Accidental> {
   /// Creates a new [GermanAccidentalNotation].
   const GermanAccidentalNotation();

@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'frequency.dart';
 
 /// The [StringNotationSystem] for SI-notated [Frequency].
+///
+/// ![FrequencySINotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/FrequencySINotation.svg)
 final class FrequencySINotation extends StringNotationSystem<Frequency> {
   /// Creates a new [FrequencySINotation].
   const FrequencySINotation();

@@ -10,6 +10,8 @@ import 'pitch.dart';
 /// The scientific notation system for [Pitch].
 ///
 /// See [scientific pitch notation](https://en.wikipedia.org/wiki/Scientific_pitch_notation).
+///
+/// ![ScientificPitchNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/ScientificPitchNotation.svg)
 final class ScientificPitchNotation extends StringNotationSystem<Pitch> {
   /// The [StringNotationSystem] used to format the [Pitch.note].
   final StringNotationSystem<Note> noteNotation;

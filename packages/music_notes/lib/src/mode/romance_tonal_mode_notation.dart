@@ -2,6 +2,8 @@ import '../notation_system/notation_system.dart';
 import 'mode.dart';
 
 /// The Romance notation system for [TonalMode].
+///
+/// ![RomanceTonalModeNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/RomanceTonalModeNotation.svg)
 final class RomanceTonalModeNotation extends StringNotationSystem<TonalMode> {
   /// Creates a new [RomanceTonalModeNotation].
   const RomanceTonalModeNotation();

@@ -7,6 +7,8 @@ import 'solfege_scale_degree_notation.dart';
 
 /// The roman [ScaleDegree] notation formatter.
 ///
+/// ![RomanScaleDegreeNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/RomanScaleDegreeNotation.svg)
+///
 /// ---
 /// See also:
 /// * [ScaleDegree].

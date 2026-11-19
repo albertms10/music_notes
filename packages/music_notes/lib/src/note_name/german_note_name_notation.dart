@@ -3,6 +3,8 @@ import 'english_note_name_notation.dart';
 import 'note_name.dart';
 
 /// The German notation system for [NoteName].
+///
+/// ![GermanNoteNameNotation](https://raw.githubusercontent.com/albertms10/music_notes/v0.29.0/packages/music_notes/doc/diagrams/GermanNoteNameNotation.svg)
 final class GermanNoteNameNotation extends StringNotationSystem<NoteName> {
   /// Creates a new [GermanNoteNameNotation].
   const GermanNoteNameNotation();
