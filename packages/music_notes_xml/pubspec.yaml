@@ -17,7 +17,7 @@ dependencies:
   collection: ^1.19.1
   meta: ^1.19.0
   music_notes: ^0.28.0
-  xml: ^6.6.1
+  xml: ^7.1.0
 
 dev_dependencies:
   test: ^1.31.1
